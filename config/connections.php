@@ -6,18 +6,10 @@ Connection::add(array(
         'host' => 'localhost',
         'user' => 'root',
         'password' => '',
-        'database' => 'spaghetti',
+        'database' => 'mobuilder',
         'prefix' => ''
     ),
     'production' => array(
-        'driver' => 'MySql',
-        'host' => 'localhost',
-        'user' => 'root',
-        'password' => '',
-        'database' => 'spaghetti',
-        'prefix' => ''
-    ),
-    'test' => array(
         'driver' => 'MySql',
         'host' => 'localhost',
         'user' => 'root',
