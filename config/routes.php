@@ -1,0 +1,3 @@
+<?php
+
+Mapper::root('home');
