@@ -4,7 +4,6 @@ require 'lib/SimplePie.php';
 
 class Feeds extends AppModel {
     protected $defaultScope = array(
-        'recursion' => 0,
         'orm' => true
     );
     
