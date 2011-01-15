@@ -231,7 +231,7 @@ class Mapper {
             $path['action'] = $path['prefix'] . '_' . $path['action'];
         }
         if(empty($path['id'])) $path['id'] = null;
-        if(empty($path['extension'])) $path['extension'] = 'htm';
+        if(empty($path['extension'])) $path['extension'] = null;
         if(!empty($path['queryString'])) {
             parse_str($path['queryString'], $queryString);
             $path['named'] = array_merge($path['named'], $queryString);

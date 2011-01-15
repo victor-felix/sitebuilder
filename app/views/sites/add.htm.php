@@ -3,6 +3,7 @@
 <?php echo $this->form->create('/sites/add') ?>
     
     <?php echo $this->form->input('segment') ?>
+    <?php echo $this->form->input('theme') ?>
     <?php echo $this->form->input('title') ?>
     <?php echo $this->form->input('domain') ?>
     <?php echo $this->form->input('description', array(

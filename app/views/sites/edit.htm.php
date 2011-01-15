@@ -5,6 +5,9 @@
     <?php echo $this->form->input('segment', array(
         'value' => $site->segment
     )) ?>
+    <?php echo $this->form->input('theme', array(
+        'value' => $site->theme
+    )) ?>
     <?php echo $this->form->input('title', array(
         'value' => $site->title
     )) ?>

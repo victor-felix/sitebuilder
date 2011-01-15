@@ -3,11 +3,15 @@
 require 'app/controllers/api/api_controller.php';
 
 class ArticlesController extends ApiController {
-    public function api_index($slug = null) {
-        $this->respondToJSON($this->Articles->allBySiteSlug($slug));
+    public function api_index($domain = null) {
+        $this->respondToJSON(
+            $this->Articles->allByDomain($domain)
+        );
     }
     
-    public function api_view($id = null) {
-        $this->respondToJSON($this->Articles->firstById($id));
+    public function api_view($domain, $id = null) {
+        $this->respondToJSON(
+            $this->Articles->firstById($id)
+        );
     }
 }

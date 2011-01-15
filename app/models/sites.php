@@ -9,6 +9,16 @@ class Sites extends AppModel {
             return Model::load('Feeds')->firstById($this->feed_id);
         }
     }
+    
+    public function firstByDomain($domain) {
+        $site = $this->first(array(
+            'conditions' => compact('domain')
+        ));
+        
+        if(!$site) throw new Exception('Missing domain');
+        
+        return $site;
+    }
 
     protected function getFeedId($data) {
         if(array_key_exists('feed', $data)) {
@@ -29,7 +39,7 @@ class Sites extends AppModel {
         return $data;
     }
     
-    public function checkAndDeleteFeed($id) {
+    protected function checkAndDeleteFeed($id) {
         $self = $this->firstById($id);
         if($self->feed_id) {
             $self->deleteFeedIfUnique();
