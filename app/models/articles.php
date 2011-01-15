@@ -8,7 +8,7 @@ class Articles extends AppModel {
         'order' => 'pubdate DESC'
     );
     
-    public function allBySiteSlug($slug) {
+    public function allByDomain($slug) {
         return $this->all();
     }
     
