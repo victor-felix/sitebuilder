@@ -11,7 +11,7 @@ class ApiController extends AppController {
     }
     
     protected function respondToJSON($record) {
-        // header('Content-type: application/json');
+        header('Content-type: application/json');
         $object = $this->objectTemplate($record);
         echo json_encode($this->toJSON($object));
     }
@@ -30,12 +30,7 @@ class ApiController extends AppController {
     }
     
     protected function objectTemplate($content) {
-        dump($this->domain);
-        dump($this->param('extension'));
-        die();
-        $theme = Model::load('Sites')->firstByDomain($this->domain)->theme;
-        
-        
+        $theme = Model::load('Sites')->firstByDomain($this->domain)->theme;       
         $controller = $this->param('controller');
         $action = substr($this->param('action'), 4); // remote "api_" from prefixed action
         $templatePath = String::insert(':controller/:action.:ext.tpl', array(
