@@ -20,5 +20,9 @@ class Feeds extends AppModel {
                 $articles->addToFeed($this, $item);
             }
         }
+        
+        $this->save(array(
+            'updated' => date('Y-m-d H:i:s')
+        ));
     }
 }

@@ -28,7 +28,7 @@ class Articles extends AppModel {
             'title' => $item->get_title(),
             'description' => $item->get_content(),
             'author' => $item->get_author()->get_name(),
-            'pubdate' => $item->get_date('Y-m-d')
+            'pubdate' => $item->get_date('Y-m-d H:i:s')
         );
         
         // $enclosure = $this->getEnclosure($item);
@@ -63,15 +63,12 @@ class Articles extends AppModel {
         $content = file_get_contents($enclosure->get_link());
         Filesystem::write($path, $content);
 
-
         // @$detailsImage = exif_read_data($mapped_object['imageUrl']);
         // if($detailsImage !=null && is_array($detailsImage)){
         //   $mapped_object['imageLength'] = $detailsImage["FileSize"];
         //   $mapped_object['imageLengthOctal'] = decoct($detailsImage["FileSize"]);
         //   $mapped_object['imageType'] = $detailsImage["MimeType"];
         // }
-
-
     }
     
     protected function isBlackListed($link) {
