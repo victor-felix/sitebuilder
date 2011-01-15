@@ -12,9 +12,9 @@ Connection::add(array(
     'production' => array(
         'driver' => 'MySql',
         'host' => 'localhost',
-        'user' => 'root',
-        'password' => '',
-        'database' => 'spaghetti',
+        'user' => 'bkuser',
+        'password' => 'bkuser',
+        'database' => 'mobile-site-builder',
         'prefix' => ''
     )
 ));
