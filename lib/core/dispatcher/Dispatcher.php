@@ -6,7 +6,14 @@ class Dispatcher {
         
         try {
             $class = Inflector::camelize($request['controller']) . 'Controller';
-            $controller = Controller::load($class, true);
+            
+            if(empty($request['prefix'])) {
+                $controller = Controller::load($class, true);
+            }
+            else {
+                AppController::load($request['prefix'] . '/' . $class);
+                $controller = new $class;
+            }
             return $controller->callAction($request);
         }
         catch(MissingControllerException $e) {
