@@ -5,8 +5,6 @@ class Articles extends AppModel {
         'gravatar.com'
     );
     protected $defaultScope = array(
-        'recursion' => 0,
-        'orm' => false,
         'order' => 'pubdate DESC'
     );
     
@@ -14,8 +12,8 @@ class Articles extends AppModel {
         return $this->all();
     }
     
-    public function articleExists($guid) {
-        return $this->exists(compact('guid'));
+    public function articleExists($feed_id, $guid) {
+        return $this->exists(compact('feed_id', 'guid'));
     }
     
     public function addToFeed($feed, $item) {

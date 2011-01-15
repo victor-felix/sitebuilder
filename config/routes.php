@@ -2,5 +2,5 @@
 
 Mapper::root('sites');
 Mapper::prefix('api');
-Mapper::connect('/articles/view/:fragment', '/articles/view/$1');
-Mapper::connect('/articles/:fragment', '/articles/index/$1');
+Mapper::connect('/api/:fragment/:fragment', '/api/$2/index/$1');
+Mapper::connect('/api/:fragment/:any', '/api/$2/$1');

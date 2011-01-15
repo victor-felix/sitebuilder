@@ -3,10 +3,6 @@
 require 'lib/SimplePie.php';
 
 class Feeds extends AppModel {
-    protected $defaultScope = array(
-        'orm' => true
-    );
-    
     public function updateArticles() {
         $articles = Model::load('Articles');
         $feed = new SimplePie();
@@ -16,7 +12,7 @@ class Feeds extends AppModel {
         
         $items = $feed->get_items();
         foreach($items as $item) {
-            if(!$articles->articleExists($item->get_id())) {
+            if(!$articles->articleExists($this->id, $item->get_id())) {
                 $articles->addToFeed($this, $item);
             }
         }
@@ -24,5 +20,17 @@ class Feeds extends AppModel {
         $this->save(array(
             'updated' => date('Y-m-d H:i:s')
         ));
+    }
+    
+    public function saveFeed($link) {
+        $feed = $this->firstByLink($link);
+        if(is_null($feed)) {
+            $this->save(array(
+                'link' => $link
+            ));
+            $feed = $this->firstById($this->id);
+            $feed->updateArticles();
+        }
+        return $feed;
     }
 }

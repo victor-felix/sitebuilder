@@ -1,6 +1,6 @@
 CREATE TABLE `sites` (
     `id` int(12) NOT NULL AUTO_INCREMENT,
-    `feed_id` int(12) NOT NULL,
+    `feed_id` int(12) DEFAULT NULL,
     `domain` varchar(255) NOT NULL,
     `title` varchar(255) NOT NULL,
     `description` text DEFAULT NULL,

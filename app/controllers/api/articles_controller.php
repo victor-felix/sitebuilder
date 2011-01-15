@@ -1,13 +1,13 @@
 <?php
 
-require 'app/controllers/api/api_controller.php'
+require 'app/controllers/api/api_controller.php';
 
-class ArticlesController extends AppController {
+class ArticlesController extends ApiController {
     public function api_index($slug = null) {
-        $this->respondTo('json', $this->Articles->allBySiteSlug($slug));
+        $this->respondToJSON($this->Articles->allBySiteSlug($slug));
     }
     
     public function api_view($id = null) {
-        $this->respondTo('json', $this->Articles->firstById($id));
+        $this->respondToJSON($this->Articles->firstById($id));
     }
 }

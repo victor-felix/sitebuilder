@@ -1,30 +1,52 @@
 <?php
 
 class Sites extends AppModel {
-    protected $defaultScope = array(
-        'orm' => true
-    );
-    protected $afterSave = array('saveFeed');
-    
-    public function saveFeed() {
-        if(array_key_exists('feed', $this->data) && !empty($this->data['feed'])) {
-            $link = $this->data['feed'];
-            $feeds = Model::load('Feeds');
-            $feed = $feeds->firstByLink($link);
-            if(is_null($feed)) {
-                $feeds->save(array(
-                    'link' => $link
-                ));
-                $feed = $feeds->firstById($feeds->id);
-                $feed->updateArticles();
-            }
-            $this->save(array(
-                'feed_id' => $feed->id
-            ));
-        }
-    }
+    protected $beforeSave = array('getFeedId');
+    protected $beforeDelete = array('checkAndDeleteFeed');
     
     public function feed() {
-        return Model::load('Feeds')->firstById($this->feed_id)->link;
+        if($this->feed_id) {
+            return Model::load('Feeds')->firstById($this->feed_id);
+        }
+    }
+
+    protected function getFeedId($data) {
+        if(array_key_exists('feed', $data)) {
+            if(!empty($data['feed'])) {
+                $link = $data['feed'];
+                $feed = Model::load('Feeds')->saveFeed($link);
+                $data['feed_id'] = $feed->id;
+            }
+            else {
+                if($this->id) {
+                    $this->checkAndDeleteFeed();
+                }
+                
+                $data['feed_id'] = null;
+            }
+        }
+        
+        return $data;
+    }
+    
+    public function checkAndDeleteFeed($id) {
+        $self = $this->firstById($id);
+        if($self->feed_id) {
+            $self->deleteFeedIfUnique();
+        }
+        
+        return true;
+    }
+    
+    protected function deleteFeedIfUnique() {
+        $count = $this->count(array(
+            'conditions' => array(
+                'feed_id' => $this->feed_id
+            )
+        ));
+        
+        if($count == 1) {
+            Model::load('Feeds')->delete($this->feed_id);
+        }
     }
 }

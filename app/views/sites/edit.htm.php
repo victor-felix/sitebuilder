@@ -2,6 +2,9 @@
 
 <?php echo $this->form->create('/sites/edit/' . $site->id) ?>
     
+    <?php echo $this->form->input('segment', array(
+        'value' => $site->segment
+    )) ?>
     <?php echo $this->form->input('title', array(
         'value' => $site->title
     )) ?>
@@ -33,7 +36,7 @@
     )) ?>
     <?php echo $this->form->input('logo') ?>
     <?php echo $this->form->input('feed', array(
-        'value' => $site->feed()
+        'value' => $site->feed()->link
     )) ?>
     
 <?php echo $this->form->close('Save') ?>

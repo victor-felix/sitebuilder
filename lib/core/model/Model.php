@@ -24,8 +24,7 @@ class Model extends Hookable {
     protected $connection = 'default';
 
     protected $defaultScope = array(
-        'recursion' => 0,
-        'orm' => false
+        'recursion' => 0
     );
 
     protected $perPage = 20;
@@ -269,19 +268,10 @@ class Model extends Hookable {
 
         $results = array();
         while($result = $query->fetch()) {
-            if($params['orm']) {
-                $self = get_class($this);
-                $results []= new $self($result);
-            }
-            else {
-                $results []= $result;
-            }
+            $self = get_class($this);
+            $results []= new $self($result);
         }
 
-        if(!$params['orm'] && $params['recursion'] >= 0) {
-            $results = $this->dependent($results, $params['recursion']);
-        }
-        
         return $results;
     }
     
@@ -290,40 +280,6 @@ class Model extends Hookable {
         $results = $this->all($scope, $params);
 
         return empty($results) ? null : $results[0];
-    }
-    
-    public function dependent($results, $recursion = 0) {
-        foreach(array_keys($this->associations) as $type):
-            if($recursion < 0 and ($type != 'belongsTo' && $recursion <= 0)) continue;
-            foreach($this->{$type} as $name => $association):
-                foreach($results as $key => $result):
-                    $name = Inflector::underscore($name);
-                    $model = $association['className'];
-                    $params = array();
-                    if($type == 'belongsTo'):
-                        $params['conditions'] = array(
-                            $association['primaryKey'] => $result[$association['foreignKey']]
-                        );
-                        $params['recursion'] = $recursion - 1;
-                    else:
-                        $params['conditions'] = array(
-                            $association['foreignKey'] => $result[$association["primaryKey"]]
-                        );
-                        $params['recursion'] = $recursion - 2;
-                        if($type == 'hasMany'):
-                            $params['limit'] = $association['limit'];
-                            $params['order'] = $association['order'];
-                        endif;
-                    endif;
-                    $result = $this->_models[$model]->all($params);
-                    if($type != 'hasMany' && !empty($result)):
-                        $result = $result[0];
-                    endif;
-                    $results[$key][$name] = $result;
-                endforeach;
-            endforeach;
-        endforeach;
-        return $results;
     }
     
     public function count($scope = null, $params = array()) {
@@ -524,13 +480,22 @@ class Model extends Hookable {
             ),
             'limit' => 1
         );
-        if($this->exists(array($this->primaryKey() => $id)) && $this->deleteAll($params)):
-            if($dependent):
+        
+        $delete = false;
+        
+        if($this->exists(array($this->primaryKey() => $id))) {
+            if(!$this->fireFilter('beforeDelete', $id)) return false;
+
+            if($dependent) {
                 $this->deleteDependent($id);
-            endif;
-            return true;
-        endif;
-        return false;
+            }
+
+            $delete = (bool) $this->deleteAll($params);
+
+            $this->fireAction('afterDelete', $id);
+        }
+        
+        return $delete;
     }
     
     public function deleteDependent($id) {
