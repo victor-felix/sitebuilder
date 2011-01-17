@@ -2,7 +2,6 @@
 
 class ApiController extends AppController {
     protected $autoRender = false;
-    protected $autoLayout = false;
     protected $domain;
     
     protected function beforeFilter() {
