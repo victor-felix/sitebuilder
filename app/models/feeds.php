@@ -29,8 +29,9 @@ class Feeds extends AppModel {
                 'link' => $link
             ));
             $feed = $this->firstById($this->id);
-            $feed->updateArticles();
         }
+        $feed->updateArticles();
+
         return $feed;
     }
 }

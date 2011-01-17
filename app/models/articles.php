@@ -29,12 +29,21 @@ class Articles extends AppModel {
             'pubdate' => $item->get_date('Y-m-d H:i:s')
         );
         
-        // $enclosure = $this->getEnclosure($item);
-        // if(!empty($enclosure)) {
-        //     
-        // }
-        
-        return $this->save($article);
+        try {
+            $this->begin();
+            
+            $this->save($article);
+            $enclosure = $this->getEnclosure($item);
+            if($enclosure) {
+                Model::load('Images')->download($this, $enclosure, 'images/:model/:id.:ext');
+            }
+
+            $this->commit();
+        }
+        catch(ImageNotFoundException $e) {
+            $this->rollback();
+            return false;
+        }
     }
     
     protected function getEnclosure($item) {
@@ -45,11 +54,11 @@ class Articles extends AppModel {
             
             $link = $enclosure->get_link();
             if(!$this->isBlackListed($link)) {
-                return $this->saveEnclosure($enclosure);
+                return $link;
             }
         }
         
-        return array();
+        return null;
     }
     
     protected function saveEnclosure($enclosure) {

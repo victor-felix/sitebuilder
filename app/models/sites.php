@@ -96,7 +96,7 @@ class Sites extends AppModel {
     
     protected function saveLogo() {
         // if(valid) {
-        Model::load('Images')->upload($this->data['logo'], 'images/:model/:id.:ext');
+        Model::load('Images')->upload($this, $this->data['logo'], 'images/:model/:id.:ext');
         // }
     }
     

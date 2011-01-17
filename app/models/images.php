@@ -3,12 +3,12 @@
 class Images extends AppModel {
     protected $beforeDelete = array('deleteFile');
     
-    public function upload($image, $path) {
+    public function upload($model, $image, $path) {
         
     }
     
-    public function download($image, $path) {
-        
+    public function download($model, $image, $path) {
+        // throw new ImageNotFoundException();
     }
     
     public function resize() {
@@ -19,3 +19,5 @@ class Images extends AppModel {
         
     }
 }
+
+class ImageNotFoundException extends Exception {}
