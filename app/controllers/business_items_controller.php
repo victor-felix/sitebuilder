@@ -4,7 +4,7 @@ class BusinessItemsController extends AppController {
     protected $uses = array('BusinessItems', 'BusinessItemsValues', 'BusinessItemsTypes');
     
     public function index() {
-        $this->set('business_items', $this->BusinessItems->all());
+        $this->set('business_items', $this->BusinessItems->allBySiteId($this->getCurrentSite()->id));
     }
     
     public function add() {
