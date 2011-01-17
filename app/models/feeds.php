@@ -5,11 +5,7 @@ require 'lib/SimplePie.php';
 class Feeds extends AppModel {
     public function updateArticles() {
         $articles = Model::load('Articles');
-        $feed = new SimplePie();
-        $feed->set_cache_location(FileSystem::path('tmp/cache/simplepie'));
-        $feed->set_feed_url($this->link);
-        $feed->init();
-        
+        $feed = $this->getFeed();
         $items = $feed->get_items();
         foreach($items as $item) {
             if(!$articles->articleExists($this->id, $item->get_id())) {
@@ -32,6 +28,15 @@ class Feeds extends AppModel {
         }
         $feed->updateArticles();
 
+        return $feed;
+    }
+    
+    protected function getFeed() {
+        $feed = new SimplePie();
+        $feed->set_cache_location(FileSystem::path('tmp/cache/simplepie'));
+        $feed->set_feed_url($this->link);
+        $feed->init();
+        
         return $feed;
     }
 }

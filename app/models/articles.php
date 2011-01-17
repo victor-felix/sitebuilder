@@ -1,5 +1,7 @@
 <?php
 
+require 'lib/html_purifier/HTMLPurifier.auto.php';
+
 class Articles extends AppModel {
     protected static $blacklist = array(
         'gravatar.com'
@@ -24,7 +26,7 @@ class Articles extends AppModel {
             'guid' => $item->get_id(),
             'link' => $item->get_link(),
             'title' => $item->get_title(),
-            'description' => $item->get_content(),
+            'description' => $this->cleanupHtml($item->get_content()),
             'author' => $item->get_author()->get_name(),
             'pubdate' => $item->get_date('Y-m-d H:i:s')
         );
@@ -87,5 +89,17 @@ class Articles extends AppModel {
         }
         
         return false;
+    }
+    
+    protected function getPurifier() {
+        $config = HTMLPurifier_Config::createDefault();
+        $config->set('Cache.SerializerPath', FileSystem::path('tmp/cache/html_purifier'));
+        $config->set('HTML.Allowed', 'p,a[href]');
+        return new HTMLPurifier($config);
+    }
+    
+    protected function cleanupHtml($html) {
+        $purifier = $this->getPurifier();
+        return $purifier->purify($html);
     }
 }

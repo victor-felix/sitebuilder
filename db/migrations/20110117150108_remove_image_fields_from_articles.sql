@@ -1,0 +1,9 @@
+ALTER TABLE `articles`
+    DROP COLUMN `image_path`,
+    DROP COLUMN `image_url`,
+    DROP COLUMN `image_author`,
+    DROP COLUMN `image_title`,
+    DROP COLUMN `image_description`,
+    DROP COLUMN `image_filesize`,
+    DROP COLUMN `image_filesize_octal`,
+    DROP COLUMN `image_type`;
