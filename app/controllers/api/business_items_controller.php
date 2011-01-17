@@ -2,10 +2,10 @@
 
 require 'app/controllers/api/api_controller.php';
 
-class ArticlesController extends ApiController {
+class BusinessItemsController extends ApiController {
     public function api_index($domain = null) {
         $this->respondToJSON(
-            $this->Articles->topByDomain($domain)
+            $this->Articles->allByDomain($domain)
         );
     }
     

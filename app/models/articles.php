@@ -3,6 +3,7 @@
 require 'lib/html_purifier/HTMLPurifier.auto.php';
 
 class Articles extends AppModel {
+    const ARTICLES_LIMIT = 20;
     protected static $blacklist = array(
         'gravatar.com'
     );
@@ -10,12 +11,22 @@ class Articles extends AppModel {
         'order' => 'pubdate DESC'
     );
     
-    public function allByDomain($slug) {
-        return $this->all();
+    public function topByDomain($domain) {
+        $feed = Model::load('Sites')->firstByDomain($domain)->feed();
+        return $this->topByFeedId($feed->id);
     }
     
     public function articleExists($feed_id, $guid) {
         return $this->exists(compact('feed_id', 'guid'));
+    }
+    
+    public function topByFeedId($feed_id) {
+        return $this->all(array(
+            'conditions' => array(
+                'feed_id' => $feed_id
+            ),
+            'limit' => self::ARTICLES_LIMIT,
+        ));
     }
     
     public function addToFeed($feed, $item) {
