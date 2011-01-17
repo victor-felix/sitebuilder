@@ -2,6 +2,7 @@
 
 class Sites extends AppModel {
     protected $beforeSave = array('getFeedId');
+    protected $afterSave = array('saveLogo');
     protected $beforeDelete = array('checkAndDeleteFeed');
     
     public function feed() {
@@ -58,5 +59,9 @@ class Sites extends AppModel {
         if($count == 1) {
             Model::load('Feeds')->delete($this->feed_id);
         }
+    }
+    
+    protected function saveLogo() {
+        Image::upload($this->data['logo'], 'images/:model/:id.:ext');
     }
 }
