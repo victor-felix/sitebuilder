@@ -107,7 +107,7 @@ class Model extends Hookable {
 
             if(class_exists($name)) {
                 Model::$instances[$name] = new $name();
-                Model::$instances[$name]->createLinks();
+                // Model::$instances[$name]->createLinks();
             }
             else {
                 throw new RuntimeException('The model "' . $name . '" was not found.');

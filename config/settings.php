@@ -7,5 +7,6 @@ Config::write('Debug.level', 3);
 
 require 'config/environments/' . Config::read('App.environment') . '.php';
 require 'config/app/segments.php';
+require 'config/app/business_items.php';
 
 Debug::reportErrors(Config::read('Debug.level'));
