@@ -10,7 +10,7 @@ class ApiController extends AppController {
     }
     
     protected function respondToJSON($record) {
-        header('Content-type: application/json');
+        // header('Content-type: application/json');
         $object = $this->objectTemplate($record);
         echo json_encode($this->toJSON($object));
     }
@@ -29,7 +29,7 @@ class ApiController extends AppController {
     }
     
     protected function objectTemplate($content) {
-        $theme = Model::load('Sites')->firstByDomain($this->domain)->theme;       
+        $site = Model::load('Sites')->firstByDomain($this->domain);
         $controller = $this->param('controller');
         $action = substr($this->param('action'), 4); // remote "api_" from prefixed action
         $templatePath = String::insert(':controller/:action.:ext.tpl', array(
@@ -38,6 +38,15 @@ class ApiController extends AppController {
             'ext' => 'bkml',
         ));
         
-        return compact('theme', 'templatePath', 'content');
+        return array(
+            'theme' => $site->theme,
+            'templatePath' => $templatePath,
+            'skin' => $site->skin,
+            'siteInfo' => array(
+                'title' => $site->title,
+                'description' => $site->description
+            ),
+            'content' => $content
+        );
     }
 }
