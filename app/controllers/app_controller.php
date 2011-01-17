@@ -25,6 +25,7 @@ class AppController extends Controller {
     }
 }
 
-function __($text) {
-    return $text;
+function __() {
+    $arguments = func_get_args();
+    return call_user_func_array('sprintf', $arguments);
 }

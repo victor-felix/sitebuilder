@@ -24,7 +24,11 @@ class SitesController extends AppController {
             $this->redirect('/sites');
         }
         else {
-            $this->set('site', $this->Sites->firstById($id));
+            $site = $this->Sites->firstById($id);
+            $this->set(array(
+                'site' => $site,
+                'themes' => $this->getThemes($site->segment)
+            ));
         }
     }
     
@@ -42,5 +46,10 @@ class SitesController extends AppController {
         }
         
         return $normalized;
+    }
+    
+    protected function getThemes($segment) {
+        $segments = Config::read('Segments');
+        return $segments[$segment]['themes'];
     }
 }
