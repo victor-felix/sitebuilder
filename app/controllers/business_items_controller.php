@@ -47,7 +47,7 @@ class BusinessItemsController extends AppController {
         ));
     }
     
-    public function delete() {
+    public function delete($id = null) {
         $this->BusinessItems->delete($id);
         $this->redirect('/business_items');
     }

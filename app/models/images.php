@@ -15,6 +15,10 @@ class Images extends AppModel {
         
     }
     
+    public function allByRecord($model, $fk) {
+        
+    }
+    
     protected function deleteFile() {
         
     }

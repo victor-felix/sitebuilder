@@ -17,4 +17,10 @@ class AppModel extends Model {
     protected function asciiOnly($value) {
         return preg_match('/^[\w._-]+$/', $value);
     }
+
+    protected function deleteSet($model, $set) {
+        foreach($set as $item) {
+            $model->delete($item->id);
+        }
+    }
 }

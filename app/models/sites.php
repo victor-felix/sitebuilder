@@ -3,7 +3,7 @@
 class Sites extends AppModel {
     protected $beforeSave = array('getFeedId');
     protected $afterSave = array('saveLogo');
-    protected $beforeDelete = array('checkAndDeleteFeed');
+    protected $beforeDelete = array('checkAndDeleteFeed', 'deleteImages', 'deleteBusinessItems');
     protected $validates = array(
         'domain' => array(
             array(
@@ -87,7 +87,7 @@ class Sites extends AppModel {
             $self->deleteFeedIfUnique();
         }
         
-        return true;
+        return $id;
     }
     
     protected function deleteFeedIfUnique() {
@@ -102,10 +102,25 @@ class Sites extends AppModel {
         }
     }
     
+    
+    protected function deleteImages($id) {
+        $model = Model::load('Images');
+        $images = $model->allByRecord('Sites', $id);
+        $this->deleteSet($model, $images);
+
+        return $id;
+    }
+
+    protected function deleteBusinessItems($id) {
+        $model = Model::load('BusinessItems');
+        $items = $model->allBySiteId($id);
+        $this->deleteSet($model, $items);
+
+        return $id;
+    }
+    
     protected function saveLogo() {
-        // if(valid) {
         Model::load('Images')->upload($this, $this->data['logo'], 'images/:model/:id.:ext');
-        // }
     }
     
     // only allows domains in meumobi.com - may change in the future

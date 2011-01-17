@@ -3,6 +3,7 @@
 class BusinessItems extends AppModel {
     protected $beforeSave = array('setSiteValues');
     protected $afterSave = array('saveItemValues');
+    protected $beforeDelete = array('deleteValues');
 
     public function values() {
         $obj = array();
@@ -48,5 +49,15 @@ class BusinessItems extends AppModel {
             );
             $model->save($data);
         }
+    }
+    
+    protected function deleteValues($id) {
+        Model::load('BusinessItemsValues')->deleteAll(array(
+            'conditions' => array(
+                'item_id' => $id
+            )
+        ));
+        
+        return $id;
     }
 }

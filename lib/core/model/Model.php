@@ -8,15 +8,6 @@ require 'lib/core/model/Behavior.php';
 class Model extends Hookable {
     public $id;
 
-    public $associations = array(
-        'hasMany' => array('primaryKey', 'foreignKey', 'limit', 'order'),
-        'belongsTo' => array('primaryKey', 'foreignKey'),
-        'hasOne' => array('primaryKey', 'foreignKey')
-    );
-    protected $belongsTo = array();
-    protected $hasMany = array();
-    protected $hasOne = array();
-
     protected $behaviors = array();
 
     protected $displayField;
@@ -107,7 +98,6 @@ class Model extends Hookable {
 
             if(class_exists($name)) {
                 Model::$instances[$name] = new $name();
-                // Model::$instances[$name]->createLinks();
             }
             else {
                 throw new RuntimeException('The model "' . $name . '" was not found.');
@@ -139,55 +129,6 @@ class Model extends Hookable {
 
     public function primaryKey() {
         return Table::load($this)->primaryKey();
-    }
-
-    public function createLinks() {
-        foreach(array_keys($this->associations) as $type):
-            $associations =& $this->{$type};
-            foreach($associations as $key => $properties):
-                if(is_numeric($key)):
-                    unset($associations[$key]);
-                    if(is_array($properties)):
-                        $associations[$key = $properties['className']] = $properties;
-                    else:
-                        $associations[$key = $properties] = array('className' => $properties);
-                    endif;
-                elseif(!isset($properties['className'])):
-                    $associations[$key]['className'] = $key;
-                endif;
-
-                $model = $associations[$key]['className'];
-                if(!array_key_exists($model, $this->_models)) {
-                    $this->_models[$model] = Model::load($model);
-                }
-
-                $associations[$key] = $this->generateAssociation($type, $associations[$key]);
-            endforeach;
-        endforeach;
-    }
-    
-    public function generateAssociation($type, $association) {
-        foreach($this->associations[$type] as $key):
-            if(!isset($association[$key])):
-                $data = null;
-                switch($key):
-                    case 'primaryKey':
-                        $data = $this->primaryKey();
-                        break;
-                    case 'foreignKey':
-                        if($type == 'belongsTo'):
-                            $data = Inflector::underscore($association['className'] . 'Id');
-                        else:
-                            $data = Inflector::underscore(get_class($this)) . '_' . $this->primaryKey();
-                        endif;
-                        break;
-                    default:
-                        $data = null;
-                endswitch;
-                $association[$key] = $data;
-            endif;
-        endforeach;
-        return $association;
     }
 
     protected function loadBehaviors($behaviors) {
@@ -488,30 +429,12 @@ class Model extends Hookable {
         
         if($this->exists(array($this->primaryKey() => $id))) {
             if(!$this->fireFilter('beforeDelete', $id)) return false;
-
-            if($dependent) {
-                $this->deleteDependent($id);
-            }
-
             $delete = (bool) $this->deleteAll($params);
 
             $this->fireAction('afterDelete', $id);
         }
         
         return $delete;
-    }
-    
-    public function deleteDependent($id) {
-        foreach(array('hasOne', 'hasMany') as $type):
-            foreach($this->{$type} as $model => $assoc):
-                $this->{$assoc['className']}->deleteAll(array(
-                    'conditions' => array(
-                        $assoc['foreignKey'] => $id
-                    )
-                ));
-            endforeach;
-        endforeach;
-        return true;
     }
     
     public function deleteAll($params = array()) {

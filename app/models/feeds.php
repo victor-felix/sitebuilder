@@ -3,6 +3,8 @@
 require 'lib/SimplePie.php';
 
 class Feeds extends AppModel {
+    protected $beforeDelete = array('deleteArticles');
+
     public function updateArticles() {
         $articles = Model::load('Articles');
         $feed = $this->getFeed();
@@ -38,5 +40,13 @@ class Feeds extends AppModel {
         $feed->init();
         
         return $feed;
+    }
+    
+    protected function deleteArticles($id) {
+        $model = Model::load('Articles');
+        $items = $model->allByFeedId($id);
+        $this->deleteSet($model, $items);
+        
+        return $id;
     }
 }
