@@ -105,7 +105,7 @@ class Articles extends AppModel {
     protected function getPurifier() {
         $config = HTMLPurifier_Config::createDefault();
         $config->set('Cache.SerializerPath', FileSystem::path('tmp/cache/html_purifier'));
-        $config->set('HTML.Allowed', 'p,a[href]');
+        $config->set('HTML.Allowed', 'b,i,br');
         return new HTMLPurifier($config);
     }
     
