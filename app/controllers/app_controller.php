@@ -23,6 +23,10 @@ class AppController extends Controller {
             ));
         }
     }
+    
+    protected function getCurrentSite() {
+        return Model::load('Sites')->first();
+    }
 }
 
 function __() {

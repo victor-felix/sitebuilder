@@ -54,6 +54,14 @@ class Sites extends AppModel {
         return $site;
     }
 
+    public function businessItemTypeName() {
+        return Model::load('Segments')->firstById($this->segment)->business_item;
+    }
+    
+    public function businessItemType() {
+        return Model::load('BusinessItemsTypes')->firstById($this->businessItemTypeName());
+    }
+
     protected function getFeedId($data) {
         if(array_key_exists('feed', $data)) {
             if(!empty($data['feed'])) {

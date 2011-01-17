@@ -2,7 +2,7 @@
 
 class SitesController extends AppController {
     public function index() {
-        $this->set('results', $this->Sites->all());
+        $this->set('sites', $this->Sites->all());
     }
     
     public function add() {
@@ -16,11 +16,9 @@ class SitesController extends AppController {
                 // TODO http://ipanemax.goplanapp.com/msb/ticket/view/8
             }
         }
-        else {
-            $this->set(array(
-                'segments' => $this->getSegments()
-            ));
-        }
+        $this->set(array(
+            'segments' => Model::load('Segments')->toList()
+        ));
     }
     
     public function edit($id = null) {
@@ -36,30 +34,15 @@ class SitesController extends AppController {
             }
         }
         $site = $this->Sites->firstById($id);
+        $themes = Model::load('Segments')->firstById($site->segment)->themes;
         $this->set(array(
             'site' => $site,
-            'themes' => $this->getThemes($site->segment)
+            'themes' => $themes
         ));
     }
     
     public function delete($id = null) {
         $this->Sites->delete($id);
         $this->redirect('/sites');
-    }
-    
-    protected function getSegments() {
-        $segments = Config::read('Segments');
-        $normalized = array();
-        
-        foreach($segments as $slug => $segment) {
-            $normalized[$slug] = $segment['title'];
-        }
-        
-        return $normalized;
-    }
-    
-    protected function getThemes($segment) {
-        $segments = Config::read('Segments');
-        return $segments[$segment]['themes'];
     }
 }

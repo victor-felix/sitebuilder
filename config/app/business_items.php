@@ -1,8 +1,8 @@
 <?php
 
-Config::write('BusinessItems', array(
+Config::write('BusinessItemsTypes', array(
     'product' => array(
-        'title' => 'Restaurante',
+        'title' => 'Produto',
         'fields' => array(
             'title' => array(
                 'title' => 'Título',
