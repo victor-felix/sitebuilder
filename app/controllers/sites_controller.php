@@ -10,6 +10,11 @@ class SitesController extends AppController {
             $this->Sites->save($this->data);
             $this->redirect('/sites');
         }
+        else {
+            $this->set(array(
+                'segments' => $this->getSegments()
+            ));
+        }
     }
     
     public function edit($id = null) {
@@ -26,5 +31,16 @@ class SitesController extends AppController {
     public function delete($id = null) {
         $this->Sites->delete($id);
         $this->redirect('/sites');
+    }
+    
+    protected function getSegments() {
+        $segments = Config::read('Segments');
+        $normalized = array();
+        
+        foreach($segments as $slug => $segment) {
+            $normalized[$slug] = $segment['title'];
+        }
+        
+        return $normalized;
     }
 }

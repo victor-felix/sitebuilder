@@ -2,9 +2,6 @@
 
 <?php echo $this->form->create('/sites/edit/' . $site->id) ?>
     
-    <?php echo $this->form->input('segment', array(
-        'value' => $site->segment
-    )) ?>
     <?php echo $this->form->input('theme', array(
         'value' => $site->theme
     )) ?>

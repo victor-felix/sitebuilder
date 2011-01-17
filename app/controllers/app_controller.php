@@ -24,3 +24,7 @@ class AppController extends Controller {
         }
     }
 }
+
+function __($text) {
+    return $text;
+}

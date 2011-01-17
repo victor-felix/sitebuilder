@@ -3,7 +3,9 @@
 Config::write('Segments', array(
     'restaurant' => array(
         'title' => 'Restaurante',
-        'themes' => array(),
+        'themes' => array(
+            'boteco' => 'Boteco'
+        ),
         'business_item' => 'product'
     )
 ));

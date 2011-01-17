@@ -7,5 +7,7 @@
     
     <body>
         <?php echo $this->contentForLayout ?>
+        
+        <?php echo $this->html->script('jquery', 'main') ?>
     </body>
 </html>
