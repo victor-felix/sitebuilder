@@ -7,8 +7,14 @@ class SitesController extends AppController {
     
     public function add() {
         if(!empty($this->data)) {
-            $this->Sites->save($this->data);
-            $this->redirect('/sites');
+            if($this->Sites->validate($this->data)) {
+                $this->Sites->save($this->data);
+                $this->redirect('/sites');
+            }
+            else {
+                die(__('Erro de Validação'));
+                // TODO http://ipanemax.goplanapp.com/msb/ticket/view/8
+            }
         }
         else {
             $this->set(array(
@@ -20,16 +26,20 @@ class SitesController extends AppController {
     public function edit($id = null) {
         if(!empty($this->data)) {
             $this->Sites->id = $id;
-            $this->Sites->save($this->data);
-            $this->redirect('/sites');
+            if($this->Sites->validate($this->data)) {
+                $this->Sites->save($this->data);
+                $this->redirect('/sites');
+            }
+            else {
+                die(__('Erro de Validação'));
+                // TODO http://ipanemax.goplanapp.com/msb/ticket/view/8
+            }
         }
-        else {
-            $site = $this->Sites->firstById($id);
-            $this->set(array(
-                'site' => $site,
-                'themes' => $this->getThemes($site->segment)
-            ));
-        }
+        $site = $this->Sites->firstById($id);
+        $this->set(array(
+            'site' => $site,
+            'themes' => $this->getThemes($site->segment)
+        ));
     }
     
     public function delete($id = null) {

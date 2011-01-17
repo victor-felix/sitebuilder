@@ -13,12 +13,7 @@
         'label' => __('Título'),
         'value' => $site->title
     )) ?>
-    
-    <?php echo $this->form->input('domain', array(
-        'label' => __('Domínio'),
-        'value' => $site->domain
-    )) ?>
-    
+        
     <?php echo $this->form->input('description', array(
         'label' => 'Descrição',
         'type' => 'textarea',

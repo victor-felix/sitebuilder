@@ -4,6 +4,39 @@ class Sites extends AppModel {
     protected $beforeSave = array('getFeedId');
     protected $afterSave = array('saveLogo');
     protected $beforeDelete = array('checkAndDeleteFeed');
+    protected $validates = array(
+        'domain' => array(
+            array(
+                'rule' => array('unique', 'domain'),
+                'on' => 'create',
+                'message' => 'O domínio já foi escolhido'
+            ),
+            array(
+                'rule' => 'asciiOnly',
+                'on' => 'create',
+                'message' => 'O domínio só pode conter caracteres minúsculos, hifens e underscores',
+            ),
+            array(
+                'rule' => 'subdomain',
+                'on' => 'create',
+                'message' => 'O domínio só pode conter caracteres minúsculos, hifens e underscores',
+            )
+        ),
+        'segment' => array(
+            'rule' => 'notEmpty',
+            'on' => 'create',
+            'message' => 'Você precisa selecionar um segmento'
+        ),
+        'theme' => array(
+            'rule' => 'notEmpty',
+            'on' => 'create',
+            'message' => 'Você precisa selecionar um tema'
+        ),
+        'title' => array(
+            'rule' => 'notEmpty',
+            'message' => 'Você precisa definir um título'
+        )
+    );
     
     public function feed() {
         if($this->feed_id) {
@@ -62,6 +95,13 @@ class Sites extends AppModel {
     }
     
     protected function saveLogo() {
-        Image::upload($this->data['logo'], 'images/:model/:id.:ext');
+        // if(valid) {
+        Model::load('Images')->upload($this->data['logo'], 'images/:model/:id.:ext');
+        // }
+    }
+    
+    // only allows domains in meumobi.com - may change in the future
+    protected function subdomain($value) {
+        return preg_match('/[\w_-]+.meumobi.com$/', $value);
     }
 }

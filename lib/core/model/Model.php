@@ -429,7 +429,8 @@ class Model extends Hookable {
         $defaults = array(
             'required' => false,
             'allowEmpty' => false,
-            'message' => null
+            'message' => null,
+            'on' => false
         );
         foreach($this->validates as $field => $rules):
             if(!is_array($rules) || (is_array($rules) && isset($rules['rule']))):
@@ -441,6 +442,8 @@ class Model extends Hookable {
                 endif;
                 $rule += $defaults;
                 if($rule['allowEmpty'] && empty($data[$field])):
+                    continue;
+                elseif($rule['on'] == 'create' && $this->id != null):
                     continue;
                 endif;
                 $required = !isset($data[$field]) && $rule['required'];
