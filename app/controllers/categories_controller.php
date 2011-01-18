@@ -19,6 +19,9 @@ class CategoriesController extends AppController {
                 // TODO http://ipanemax.goplanapp.com/msb/ticket/view/8
             }
         }
+        $this->set(array(
+            'parents' => $this->Categories->listAvailableParents($site->id)
+        ));
     }
     
     public function edit($id = null) {
@@ -36,7 +39,8 @@ class CategoriesController extends AppController {
             }
         }
         $this->set(array(
-            'category' => $this->Categories->firstById($id)
+            'category' => $this->Categories->firstById($id),
+            'parents' => $this->Categories->listAvailableParents($site->id)
         ));
     }
     

@@ -1,6 +1,8 @@
 <?php
 
 class AppModel extends Model {
+    protected $displayField = 'title';
+    
     public function toJSON() {
         return $this->data;
     }

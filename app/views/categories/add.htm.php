@@ -6,6 +6,11 @@
         'label' => __('Título')
     )) ?>
 
-    <!-- TODO parent category -->
+    <?php echo $this->form->input('parent_id', array(
+        'label' => __('Pai'),
+        'type' => 'select',
+        'options' => $parents,
+        'empty' => array(0 => '')
+    )) ?>
     
 <?php echo $this->form->close(__('Salvar')) ?>
