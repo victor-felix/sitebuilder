@@ -1,6 +1,13 @@
 <?php
 
 class Categories extends AppModel {
+    protected $validates = array(
+        'title' => array(
+            'rule' => 'notEmpty',
+            'message' => 'Você precisa definir um título'
+        )
+    );
+
     public function listAvailableParents($site_id) {
         $root = $this->getRoot($site_id);
         $list = array(
