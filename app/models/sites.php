@@ -3,7 +3,7 @@
 class Sites extends AppModel {
     protected $beforeSave = array('getFeedId');
     protected $afterSave = array('saveLogo', 'createRootCategory');
-    protected $beforeDelete = array('checkAndDeleteFeed', 'deleteImages', 'deleteBusinessItems');
+    protected $beforeDelete = array('checkAndDeleteFeed', 'deleteImages', 'deleteCategories');
     protected $validates = array(
         'domain' => array(
             array(
@@ -111,10 +111,10 @@ class Sites extends AppModel {
         return $id;
     }
 
-    protected function deleteBusinessItems($id) {
-        $model = Model::load('BusinessItems');
-        $items = $model->allBySiteId($id);
-        $this->deleteSet($model, $items);
+    protected function deleteCategories($id) {
+        $model = Model::load('Categories');
+        $root = $model->getRoot($id);
+        $model->forceDelete($root->id);
 
         return $id;
     }

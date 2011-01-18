@@ -1,7 +1,7 @@
 <?php
 
 class Categories extends AppModel {
-    protected $beforeDelete = array('promoteChildren');
+    protected $beforeDelete = array('deleteChildren');
     protected $defaultScope = array(
         'order' => '`order` ASC'
     );
@@ -39,19 +39,33 @@ class Categories extends AppModel {
         ));
     }
     
-    public function children() {
-        $categories = Model::load('Categories')->allByParentId($this->id);
-        $bis = Model::load('BusinessItems')->allByParentId($this->id);
-        return array_merge($categories, $bis);
-    }
-    
-    protected function getRoot($site_id) {
+    public function getRoot($site_id) {
         return $this->firstBySiteIdAndParentId($site_id, 0);
     }
     
-    protected function promoteChildren($id) {
+    public function children($id = null) {
+        if(is_null($id)) {
+            $id = $this->id;
+        }
+        
+        $categories = Model::load('Categories')->allByParentId($id);
+        $bis = Model::load('BusinessItems')->allByParentId($id);
+        
+        return array_merge($categories, $bis);
+    }
+    
+    public function forceDelete($id) {
+        $this->deleteChildren($id, true);
+        $this->deleteAll(array(
+            'conditions' => array(
+                'id' => $id
+            )
+        ));
+    }
+    
+    protected function deleteChildren($id, $force = false) {
         $self = $this->firstById($id);
-        if($self->parent_id == 0) {
+        if($self->parent_id == 0 && !$force) {
             return false; // don't allow root's deletion
         }
         
