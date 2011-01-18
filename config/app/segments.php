@@ -6,6 +6,7 @@ Config::write('Segments', array(
         'themes' => array(
             'boteco' => 'Boteco'
         ),
-        'business_item' => 'product'
+        'business_item' => 'product',
+        'root' => 'Cardápio'
     )
 ));

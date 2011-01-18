@@ -360,7 +360,7 @@ class Model extends Hookable {
         endif;
 
         // fire afterSave action
-        $this->fireAction('afterSave');
+        $this->fireAction('afterSave', array(!$exists));
 
         return $save;
     }

@@ -34,16 +34,14 @@ class BusinessItems extends AppModel {
         if(is_null($this->id) && array_key_exists('site', $data)) {
             $data['site_id'] = $this->site->id;
             $data['type'] = $this->site->businessItemTypeName();
-            $data['is_new'] = true;
         }
         
         return $data;
     }
     
-    protected function saveItemValues() {
+    protected function saveItemValues($is_new) {
         $fields = $this->site->businessItemType()->fields;
         $model = Model::load('BusinessItemsValues');
-        $is_new = array_key_exists('is_new', $this->data);
         
         if(!$is_new) {
             $values = $model->toListByItemId($this->id);

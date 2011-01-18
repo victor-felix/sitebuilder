@@ -2,7 +2,7 @@
 
 class Sites extends AppModel {
     protected $beforeSave = array('getFeedId');
-    protected $afterSave = array('saveLogo');
+    protected $afterSave = array('saveLogo', 'createRootCategory');
     protected $beforeDelete = array('checkAndDeleteFeed', 'deleteImages', 'deleteBusinessItems');
     protected $validates = array(
         'domain' => array(
@@ -121,6 +121,12 @@ class Sites extends AppModel {
     
     protected function saveLogo() {
         Model::load('Images')->upload($this, $this->data['logo'], 'images/:model/:id.:ext');
+    }
+    
+    protected function createRootCategory($created) {
+        if($created) {
+            Model::load('Categories')->createRoot($this);
+        }
     }
     
     // only allows domains in meumobi.com - may change in the future
