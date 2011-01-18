@@ -14,12 +14,12 @@ class Sites extends AppModel {
             array(
                 'rule' => 'asciiOnly',
                 'on' => 'create',
-                'message' => 'O domínio só pode conter caracteres minúsculos, hifens e underscores',
+                'message' => 'O domínio só pode conter caracteres minúsculos, hifens e underscores'
             ),
             array(
                 'rule' => 'subdomain',
                 'on' => 'create',
-                'message' => 'O domínio só pode conter caracteres minúsculos, hifens e underscores',
+                'message' => 'O domínio só pode conter caracteres minúsculos, hifens e underscores'
             )
         ),
         'segment' => array(

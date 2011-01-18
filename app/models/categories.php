@@ -29,6 +29,14 @@ class Categories extends AppModel {
         return $list;
     }
     
+    public function toListBySiteId($site_id) {
+        return $this->toList(array(
+            'conditions' => array(
+                'site_id' => $site_id
+            )
+        ));
+    }
+    
     public function createRoot($site) {
         $root = Model::load('Segments')->firstById($site->segment)->root;
         $this->id = null;

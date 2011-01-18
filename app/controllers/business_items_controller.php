@@ -22,7 +22,8 @@ class BusinessItemsController extends AppController {
             }
         }
         $this->set(array(
-            'type' => $site->businessItemType()
+            'type' => $site->businessItemType(),
+            'categories' => Model::load('Categories')->toListBySiteId($site->id)
         ));
     }
     
@@ -43,7 +44,8 @@ class BusinessItemsController extends AppController {
         }
         $this->set(array(
             'business_item' => $this->BusinessItems->firstById($id),
-            'type' => $site->businessItemType()
+            'type' => $site->businessItemType(),
+            'categories' => Model::load('Categories')->toListBySiteId($site->id)
         ));
     }
     

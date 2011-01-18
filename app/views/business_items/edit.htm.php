@@ -2,6 +2,13 @@
 
 <?php echo $this->form->create('/business_items/edit/' . $business_item->id) ?>
 
+    <?php echo $this->form->input('parent_id', array(
+        'label' => __('Categoria'),
+        'type' => 'select',
+        'options' => $categories,
+        'value' => $business_item->parent_id
+    )) ?>
+
     <?php foreach($type->fields as $id => $field): ?>
         <?php echo $this->form->input($id, array(
             'label' => __($field['title']),
