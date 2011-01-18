@@ -26,7 +26,12 @@ class BusinessItems extends AppModel {
 
     public function toJSON() {
         $values = $this->values();
-        $values->id = $this->id;
+        
+        $fields = array('id', 'site_id', 'parent_id', 'type', 'order', 'created', 'modified');
+        foreach($fields as $field) {
+            $values->{$field} = $this->data[$field];
+        }
+        
         return $values;
     }
 

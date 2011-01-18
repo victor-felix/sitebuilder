@@ -62,6 +62,20 @@ class Categories extends AppModel {
         return array_merge($categories, $bis);
     }
     
+    public function toJSON($recursive = true) {
+        $data = $this->data;
+        
+        if($recursive) {
+            $data['children'] = array();
+            $children = $this->children();
+            foreach($children as $child) {
+                $data['children'] []= $child->toJSON(false);
+            }
+        }
+        
+        return $data;
+    }    
+    
     public function forceDelete($id) {
         $this->deleteChildren($id, true);
         $this->deleteAll(array(
