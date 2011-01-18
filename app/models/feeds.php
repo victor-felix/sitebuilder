@@ -33,6 +33,10 @@ class Feeds extends AppModel {
         return $feed;
     }
     
+    public function topArticles() {
+        return Model::load('Articles')->topByFeedId($this->id);
+    }
+    
     protected function getFeed() {
         $feed = new SimplePie();
         $feed->set_cache_location(FileSystem::path('tmp/cache/simplepie'));

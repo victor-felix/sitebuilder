@@ -62,6 +62,20 @@ class Categories extends AppModel {
         return array_merge($categories, $bis);
     }
     
+    public function hasChildren() {
+        $conditions = array(
+            'conditions' => array(
+                'parent_id' => $this->id
+            )
+        );
+        
+        $total = 0;
+        $total += Model::load('Categories')->count($conditions);
+        $total += Model::load('BusinessItems')->count($conditions);
+        
+        return (bool) $total;
+    }
+    
     public function toJSON($recursive = true) {
         $data = $this->data;
         

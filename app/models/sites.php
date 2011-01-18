@@ -44,6 +44,18 @@ class Sites extends AppModel {
         }
     }
     
+    public function images() {
+        return array();
+    }
+    
+    public function logo() {
+        return null;
+    }
+    
+    public function rootCategory() {
+        return Model::load('Categories')->getRoot($this->id);
+    }
+    
     public function firstByDomain($domain) {
         $site = $this->first(array(
             'conditions' => compact('domain')
@@ -52,6 +64,31 @@ class Sites extends AppModel {
         if(!$site) throw new Exception('Missing domain');
         
         return $site;
+    }
+
+    public function toJSON() {
+        $data = array_merge($this->data, array(
+            'images' => array(),
+            'articles' => array(),
+            'rootCategory' => null
+        ));
+        
+        $root = $this->rootCategory();
+        if($root->hasChildren()) {
+            $data['rootCategory'] = $root->toJSON();
+        }
+        
+        $fields = array(
+            'articles' => $this->feed()->topArticles(),
+            'images' => $this->images(),
+        );
+        foreach($fields as $field => $values) {
+            foreach($values as $value) {
+                $data[$field] []= $value->toJSON();
+            }
+        }
+        
+        return $data;
     }
 
     public function businessItemTypeName() {

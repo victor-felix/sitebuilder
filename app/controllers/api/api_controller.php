@@ -6,11 +6,11 @@ class ApiController extends AppController {
     
     protected function beforeFilter() {
         $params = $this->param('params');
-        $this->domain = $params[0];
+        $this->site = Model::load('Sites')->firstByDomain($params[0]);
     }
     
     protected function respondToJSON($record) {
-        header('Content-type: application/json');
+        // header('Content-type: application/json');
         $object = $this->objectTemplate($record);
         echo json_encode($this->toJSON($object));
     }
@@ -29,7 +29,6 @@ class ApiController extends AppController {
     }
     
     protected function objectTemplate($content) {
-        $site = Model::load('Sites')->firstByDomain($this->domain);
         $controller = $this->param('controller');
         $action = substr($this->param('action'), 4); // remote "api_" from prefixed action
         $templatePath = String::insert(':controller/:action.:ext.tpl', array(
@@ -39,12 +38,12 @@ class ApiController extends AppController {
         ));
         
         return array(
-            'theme' => $site->theme,
+            'theme' => $this->site->theme,
             'templatePath' => $templatePath,
-            'skin' => $site->skin,
+            'skin' => $this->site->skin,
             'siteInfo' => array(
-                'title' => $site->title,
-                'description' => $site->description
+                'title' => $this->site->title,
+                'logo' => $this->site->logo(),
             ),
             'content' => $content
         );
