@@ -29,7 +29,7 @@ class BusinessItems extends AppModel {
         $values->id = $this->id;
         return $values;
     }
-    
+
     protected function setSiteValues($data) {
         if(is_null($this->id) && array_key_exists('site', $data)) {
             $data['site_id'] = $this->site->id;

@@ -11,7 +11,6 @@
         'label' => __('Pai'),
         'type' => 'select',
         'options' => $parents,
-        'empty' => array(0 => ''),
         'value' => $category->parent_id
     )) ?>
     

@@ -9,8 +9,7 @@
     <?php echo $this->form->input('parent_id', array(
         'label' => __('Pai'),
         'type' => 'select',
-        'options' => $parents,
-        'empty' => array(0 => '')
+        'options' => $parents
     )) ?>
     
 <?php echo $this->form->close(__('Salvar')) ?>

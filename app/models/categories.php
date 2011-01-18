@@ -1,6 +1,11 @@
 <?php
 
 class Categories extends AppModel {
+    protected $beforeDelete = array('promoteChildren');
+    protected $defaultScope = array(
+        'order' => '`order` ASC'
+    );
+    
     protected $validates = array(
         'title' => array(
             'rule' => 'notEmpty',
@@ -34,7 +39,27 @@ class Categories extends AppModel {
         ));
     }
     
+    public function children() {
+        $categories = Model::load('Categories')->allByParentId($this->id);
+        $bis = Model::load('BusinessItems')->allByParentId($this->id);
+        return array_merge($categories, $bis);
+    }
+    
     protected function getRoot($site_id) {
         return $this->firstBySiteIdAndParentId($site_id, 0);
+    }
+    
+    protected function promoteChildren($id) {
+        $self = $this->firstById($id);
+        if($self->parent_id == 0) {
+            return false; // don't allow root's deletion
+        }
+        
+        $children = $self->children();
+        foreach($children as $child) {
+            $child->delete($child->id);
+        }
+        
+        return $id;
     }
 }
