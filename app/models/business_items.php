@@ -4,6 +4,14 @@ class BusinessItems extends AppModel {
     protected $beforeSave = array('setSiteValues');
     protected $afterSave = array('saveItemValues');
     protected $beforeDelete = array('deleteValues');
+    protected $defaultScope = array(
+        'order' => '`order` ASC'
+    );
+
+    public function allByDomain($domain) {
+        $site = Model::load('Sites')->firstByDomain($domain);
+        return $this->allBySiteId($site->id);
+    }
 
     public function values() {
         $obj = array();
@@ -14,6 +22,12 @@ class BusinessItems extends AppModel {
         }
         
         return (object) $obj;
+    }
+
+    public function toJSON() {
+        $values = $this->values();
+        $values->id = $this->id;
+        return $values;
     }
     
     protected function setSiteValues($data) {

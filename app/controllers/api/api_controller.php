@@ -10,7 +10,7 @@ class ApiController extends AppController {
     }
     
     protected function respondToJSON($record) {
-        header('Content-type: application/json');
+        // header('Content-type: application/json');
         $object = $this->objectTemplate($record);
         echo json_encode($this->toJSON($object));
     }
