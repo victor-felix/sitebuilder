@@ -11,9 +11,6 @@ class Images extends AppModel {
         $this->saveImage('downloadFile', $model, $image);
     }
     
-    public function resize() {
-        
-    }
     
     public function allByRecord($model, $fk) {
         return $this->all(array(
@@ -54,10 +51,10 @@ class Images extends AppModel {
                 'foreign_key' => $model->id
             ));
             
-            $path = String::insert('images/:model', array(
-                'model' => Inflector::underscore(get_class($model))
-            ));
+            $path = $this->getPath($model);
             $filename = $this->{$method}($model, $image);
+            
+            $this->resizeImage($model, $path, $filename);
             
             $info = $this->getImageInfo($path, $filename);
             $this->save($info);
@@ -73,14 +70,11 @@ class Images extends AppModel {
         }
     }
     
-    
     protected function uploadFile($model, $image) {
         require_once 'lib/utils/FileUpload.php';
 
         $uploader = new FileUpload();
-        $uploader->path = String::insert('images/:model', array(
-            'model' => Inflector::underscore(get_class($model))
-        ));
+        $uploader->path = $this->getPath($model);
 
         return $uploader->upload($image, String::insert(':id.:extension', array(
             'id' => $this->id
@@ -91,17 +85,50 @@ class Images extends AppModel {
         require_once 'lib/utils/FileDownload.php';
 
         $downloader = new FileDownload();
-        $downloader->path = String::insert('images/:model', array(
-            'model' => Inflector::underscore(get_class($model))
-        ));
+        $downloader->path = $this->getPath();
 
         return $downloader->download($image, String::insert(':id.:extension', array(
             'id' => $this->id
         )));
     }
-    
-    protected function deleteFile() {
+
+    protected function resizeImage($model, $path, $filename) {
+        require_once 'lib/phpthumb/ThumbLib.inc.php';
+        $fullpath = Filesystem::path('public/' . $path . '/' . $filename);
+        $resizes = $model->resizes();
+        $modes = array(
+            '' => 'resize',
+            '#' => 'adaptiveResize',
+            '!' => 'cropFromCenter'
+        );
         
+        foreach($resizes as $resize) {
+            preg_match('/^(\d+)x(\d+)(#|!|>)$/', $resize, $options);
+            list($resize, $w, $h, $mode) = $options;
+
+            $image = PhpThumbFactory::create($fullpath);
+
+            $method = $modes[$mode];
+            $image->{$method}($w, $h);
+
+            $image->save(String::insert(':path/:wx:h_:filename', array(
+                'path' => Filesystem::path('public/' . $path),
+                'filename' => $filename,
+                'w' => $w,
+                'h' => $h,
+            )));
+        }
+    }
+    
+    protected function deleteFile($id) {
+        $self = $this->firstById($id);
+        
+        Filesystem::delete(String::insert('public/:path/:filename', array(
+            'path' => $this->getPath($this->model),
+            'filename' => $this->path
+        )));
+        
+        return $id;
     }
     
     protected function getImageInfo($path, $filename) {
@@ -113,6 +140,16 @@ class Images extends AppModel {
             'filesize' => $size,
             'filesize_octal' => decoct($size)
         );
+    }
+    
+    protected function getPath($model) {
+        if(!is_string($model)) {
+            $model = get_class($model);
+        }
+        
+        return String::insert('images/:model', array(
+            'model' => Inflector::underscore($model)
+        ));
     }
 }
 

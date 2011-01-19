@@ -2,9 +2,14 @@
 
 class AppModel extends Model {
     protected $displayField = 'title';
+    protected $resizes = array();
     
     public function toJSON() {
         return $this->data;
+    }
+    
+    public function resizes() {
+        return $this->resizes;
     }
     
     protected function unique($value, $field) {

@@ -180,8 +180,13 @@ class Sites extends AppModel {
 
 class SiteLogos {
     public $id;
+    protected $resizes = array('100x100#');
     
     public function __construct($id) {
         $this->id = $id;
+    }
+    
+    public function resizes() {
+        return $this->resizes;
     }
 }

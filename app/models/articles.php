@@ -10,6 +10,7 @@ class Articles extends AppModel {
     protected $defaultScope = array(
         'order' => 'pubdate DESC'
     );
+    protected $resizes = array('100x100');
     
     public function topByDomain($domain) {
         $feed = Model::load('Sites')->firstByDomain($domain)->feed();
