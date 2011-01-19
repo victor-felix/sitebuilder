@@ -60,9 +60,17 @@ $(function() {
 		e.preventDefault();
 	});
 	
+	/* TO DO */
 	$('.theme-picker a').click(function(e){
 		$('.theme-picker li').removeClass("selected");
 		$(this).parent().addClass("selected");
 		e.preventDefault();
 	});
+	
+	/* TO DO */
+	$('.categories-list .controls .delete').click(function(e){
+		e.preventDefault();
+		$(this).parent().next(".delete-confirm").fadeIn("fast");
+	})
+	
 });

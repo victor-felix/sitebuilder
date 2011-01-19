@@ -141,12 +141,15 @@ a img {
 	width: 940px;
 }
 
+#content #page-heading {
+	height: 120px;
+}
+
 #content h1 {
 	border-top: 11px solid #DBDBDB;
 	color: #B5B5B5;
 	font: lighter 48px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica,arial,sans-serif;
 	letter-spacing: -1px;
-	margin-left: 320px;
 	text-transform: lowercase;
 }
 

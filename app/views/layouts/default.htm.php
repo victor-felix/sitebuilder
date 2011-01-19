@@ -4,7 +4,7 @@
         <?php echo $this->html->charset() ?>
         <title><?php echo $this->pageTitle ?></title>
 
-		<?php echo $this->html->stylesheet('base', 'uikit'); ?>
+		<?php echo $this->html->stylesheet('base', 'uikit', 'categories'); ?>
     </head>
     
     <body>
