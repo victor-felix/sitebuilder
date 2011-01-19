@@ -347,3 +347,67 @@ a img {
 .registration-finished img {
 	margin: 50px 0 30px 182px;
 }
+
+.registration-finished h2 {
+	color: #666;
+	font-size: 22px;
+	text-align: center;
+	font-weight: normal;
+	margin-bottom: 50px;
+}
+
+.registration-finished h2 a {
+	color: #c02926;
+	font: lighter 36px/36px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica,arial,sans-serif;
+	display: block;
+	letter-spacing: -1px;
+	text-transform: lowercase;
+	text-decoration: none;
+}
+
+	.registration-finished h2 a:hover {
+		text-decoration: underline;
+	}
+
+.registration-finished a {
+	display: block;
+}
+
+.registration-finished .next-steps {
+	border-top: 1px solid #DDD;
+	padding: 20px 25px;
+}
+
+.registration-finished .next-steps h3 {
+	color: #777;
+	font: lighter 20px/24px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica,arial,sans-serif;
+	margin-bottom: 5px;
+	text-transform: lowercase;
+	width: 220px;
+}
+
+.registration-finished .next-steps p {
+	color: #777;
+	width: 220px;
+	font-size: 12px;
+}
+
+.registration-finished .next-steps ul {
+	float: right;
+	margin-top: -48px;
+}
+
+.registration-finished .next-steps ul li {
+	list-style: none;
+	margin-bottom: 5px;
+}
+
+.registration-finished .next-steps ul li a {
+	color: #c02926;
+	font-size: 14px;
+	text-decoration: none;
+}
+
+.registration-finished .next-steps ul li a:hover {
+	text-decoration: underline;
+}
