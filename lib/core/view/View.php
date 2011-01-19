@@ -28,12 +28,13 @@ class View {
         return $this->loadedHelpers[$helper] = new $helper_class($this);
     }
     public function render($action, $data = array(), $layout = false) {
+        $this->layout = $layout;
         $view_file = Filesystem::path('app/views/') . $this->filename($action);
         
         if(Filesystem::exists($view_file)):
             $output = $this->renderView($view_file, $data);
-            if($layout):
-                $output = $this->renderLayout($layout, $output, $data);
+            if($this->layout):
+                $output = $this->renderLayout($this->layout, $output, $data);
             endif;
             return $output;
         else:
@@ -92,6 +93,9 @@ class View {
         return $this->blocks[$name];
     }
     public static function path($request) {
+        if(is_null($request['extension'])) {
+            $request['extension'] = 'htm';
+        }
         return $request['controller'] . '/' . $request['action'] . '.' . $request['extension'];
     }
 }

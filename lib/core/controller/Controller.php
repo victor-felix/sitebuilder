@@ -71,7 +71,7 @@ class Controller {
         if(is_null($request['extension'])) {
             $request['extension'] = 'htm';
         }
-        return Filesystem::exists('app/views/' . $request['controller'] . '/' . $request['action'] . '.' . $request['extension']);
+        return Filesystem::exists('app/views/' . $request['controller'] . '/' . $request['action'] . '.' . $request['extension'] . '.php');
     }
     
     public function name() {
