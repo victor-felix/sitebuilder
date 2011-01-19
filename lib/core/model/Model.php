@@ -168,6 +168,10 @@ class Model extends Hookable {
         return $this->connection()->rollback();
     }
 
+    public function transactionStarted() {
+        return $this->connection()->transactionStarted();
+    }
+
     public function insertId() {
         return $this->connection()->insertId();
     }

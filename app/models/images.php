@@ -20,7 +20,7 @@ class Images extends AppModel {
             $this->id = null;
             $this->save(array(
                 'model' => $model_name,
-                'foreign_key' => $model->id
+                'foreign_key' => $id
             ));
             
             $filename = $uploader->upload($image, String::insert(':id.:extension', array(
@@ -37,8 +37,29 @@ class Images extends AppModel {
         }
     }
     
-    public function download($model, $image, $path) {
-        // throw new ImageNotFoundException();
+    public function download($model, $image) {
+        require_once 'lib/utils/FileDownload.php';
+
+        $model_name = get_class($model);
+        $id = $model->id;
+
+        $downloader = new FileDownload();
+        $downloader->path = String::insert('images/:model', array(
+            'model' => Inflector::underscore($model_name)
+        ));
+
+        $this->id = null;
+        $this->save(array(
+            'model' => $model_name,
+            'foreign_key' => $id
+        ));
+
+        $filename = $downloader->download($image, String::insert(':id.:extension', array(
+            'id' => $this->id
+        )));
+
+        $info = $this->getImageInfo($downloader->path, $filename);
+        $this->save($info);
     }
     
     public function resize() {
@@ -69,6 +90,10 @@ class Images extends AppModel {
             'filename' => $this->path
         ));
         return Mapper::url($path, true);
+    }
+    
+    protected function saveImage($model, $path) {
+        
     }
     
     protected function deleteFile() {
