@@ -10,3 +10,8 @@ require 'config/app/segments.php';
 require 'config/app/business_items.php';
 
 Debug::reportErrors(Config::read('Debug.level'));
+
+Config::write('Articles.limit', 20);
+
+Config::write('SiteLogos.resizes', array('100x100#'));
+Config::write('Articles.resizes', array('100x100'));
