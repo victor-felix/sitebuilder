@@ -10,6 +10,9 @@ class Model extends Hookable {
 
     protected $behaviors = array();
 
+    protected $getters = array();
+    protected $setters = array();
+
     protected $displayField;
     protected $table;
     protected $connection = 'default';
@@ -89,6 +92,18 @@ class Model extends Hookable {
         }
         
         throw new RuntimeException(get_class($this) . '->' . $name . ' does not exist.');
+    }
+    
+    public function hasAttribute($attr) {
+        return array_key_exists($attr, $this->data);
+    }
+
+    public function hasGetter($attr) {
+        return in_array($attr, $this->getters);
+    }
+
+    public function hasSetter($attr) {
+        return in_array($attr, $this->setters);
     }
     
     public static function load($name) {
@@ -299,6 +314,10 @@ class Model extends Hookable {
         ));
     }
     
+    public function updateAttributes($data) {
+        $this->data = array_merge($this->data, $data);
+    }
+    
     public function insert($data) {
         $params = array(
             'values' => $data,
@@ -398,16 +417,16 @@ class Model extends Hookable {
                     $rule = array('rule' => $rule);
                 endif;
                 $rule += $defaults;
-                if($rule['allowEmpty'] && empty($data[$field])):
+                if($rule['allowEmpty'] && empty($this->data[$field])):
                     continue;
                 elseif($rule['on'] == 'create' && $this->id != null):
                     continue;
                 endif;
-                $required = !isset($data[$field]) && $rule['required'];
+                $required = !isset($this->data[$field]) && $rule['required'];
                 if($required):
                     $this->errors[$field] = is_null($rule['message']) ? $rule['rule'] : $rule['message'];
-                elseif(isset($data[$field])):
-                    if(!$this->callValidationMethod($rule['rule'], $data[$field])):
+                elseif(isset($this->data[$field])):
+                    if(!$this->callValidationMethod($rule['rule'], $this->data[$field])):
                         $message = is_null($rule['message']) ? $rule['rule'] : $rule['message'];
                         $this->errors[$field] = $message;
                         break;
@@ -431,6 +450,10 @@ class Model extends Hookable {
                 return $this->$params($value);
             endif;
         endif;
+    }
+    
+    public function errors() {
+        return $this->errors;
     }
     
     public function delete($id, $dependent = true) {
