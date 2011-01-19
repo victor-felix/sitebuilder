@@ -9,6 +9,7 @@ class PdoDatasource extends Datasource {
     protected $connection;
     protected $connected;
     protected $config;
+    protected $transactionStarted;
     protected $lastQuery;
     protected $params = array(
         'fields' => '*',
@@ -50,15 +51,22 @@ class PdoDatasource extends Datasource {
     }
     
     public function begin() {
+        $this->transactionStarted = true;
         return $this->connection->beginTransaction();
     }
     
     public function commit() {
+        $this->transactionStarted = false;
         return $this->connection->commit();
     }
     
     public function rollback() {
+        $this->transactionStarted = false;
         return $this->connection->rollBack();
+    }
+    
+    public function transactionStarted() {
+        return (bool) $this->transactionStarted;
     }
     
     public function insertId() {

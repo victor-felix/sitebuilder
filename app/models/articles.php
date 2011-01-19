@@ -10,6 +10,7 @@ class Articles extends AppModel {
     protected $defaultScope = array(
         'order' => 'pubdate DESC'
     );
+    protected $resizes = array('100x100');
     
     public function topByDomain($domain) {
         $feed = Model::load('Sites')->firstByDomain($domain)->feed();
@@ -48,12 +49,12 @@ class Articles extends AppModel {
             $this->save($article);
             $enclosure = $this->getEnclosure($item);
             if($enclosure) {
-                Model::load('Images')->download($this, $enclosure, 'images/:model/:id.:ext');
+                Model::load('Images')->download($this, $enclosure);
             }
 
             $this->commit();
         }
-        catch(ImageNotFoundException $e) {
+        catch(Exception $e) {
             $this->rollback();
             return false;
         }

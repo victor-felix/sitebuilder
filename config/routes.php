@@ -1,6 +1,6 @@
 <?php
 
-Mapper::root('sites');
+Mapper::root('home');
 Mapper::prefix('api');
 
 Mapper::connect('/api/:fragment', '/api/home/index/$1$3');

@@ -45,7 +45,7 @@ class FileUpload {
     }
     
     protected static function validateUpload($file) {
-        if($file['error'] == UPLOAD_ERR_OK) {
+        if($file['error'] == UPLOAD_ERR_OK || $file['error'] == UPLOAD_ERR_NO_FILE) {
             return array(true, null);
         }
         
@@ -53,13 +53,12 @@ class FileUpload {
             UPLOAD_ERR_INI_SIZE => 'IniFileSizeExceeded',
             UPLOAD_ERR_FORM_SIZE => 'FormFileSizeExceeded',
             UPLOAD_ERR_PARTIAL => 'PartiallyUploaded',
-            UPLOAD_ERR_NO_FILE => 'NoFile',
             UPLOAD_ERR_NO_TMP_DIR => 'MissingTempDir',
             UPLOAD_ERR_CANT_WRITE => 'CantWriteFile'
         );
         
-        if(array_key_exists($error, $errors)) {
-            return array(false, $errors[$error]);
+        if(array_key_exists($file['error'], $errors)) {
+            return array(false, $errors[$file['error']]);
         }
         else {
             return array(false, 'UnknownFileError');
