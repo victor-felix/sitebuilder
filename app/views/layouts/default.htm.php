@@ -22,10 +22,10 @@
 			        </div>
 			    </div>
 			    <ul>
-			        <li><?php echo $this->html->link('Cardápio', '/'); ?></li>
-			        <li><?php echo $this->html->link('Configurações', '/'); ?></li>
-			        <li><?php echo $this->html->link('Customização', '/'); ?></li>
-			        <li><?php echo $this->html->link('Minha Conta', '/'); ?></li>
+			        <li><?php echo $this->html->link('Cardápio', '/categories'); ?></li>
+			        <li><?php echo $this->html->link('Configurações', '/settings'); ?></li>
+			        <li><?php echo $this->html->link('Customização', '/settings/customization'); ?></li>
+			        <li><?php echo $this->html->link('Minha Conta', '/settings/account'); ?></li>
 			    </ul>
 			</div>
 			<div class="clear"></div>
@@ -33,6 +33,12 @@
 	
 	    <div id="content">
         <?php echo $this->contentForLayout ?>
+        </div>
+        
+        <div id="footer">
+            <div id="footer-wrapper">
+                s
+            <div>
         </div>
         
         <?php echo $this->html->script('jquery', 'main') ?>
