@@ -53,4 +53,16 @@ $(function() {
         keyup: updateSlug,
         blur: updateSlug
     }).blur();
+
+	$('.fieldset-expand').click(function(e){
+		$(this).slideToggle();
+		$(this).next("fieldset").slideToggle();
+		e.preventDefault();
+	});
+	
+	$('.theme-picker a').click(function(e){
+		$('.theme-picker li').removeClass("selected");
+		$(this).parent().addClass("selected");
+		e.preventDefault();
+	});
 });
