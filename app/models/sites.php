@@ -182,7 +182,7 @@ class SiteLogos {
     public $id;
     protected $resizes = array('100x100#');
     
-    public function __construct($id) {
+    public function __construct($id = null) {
         $this->id = $id;
     }
     

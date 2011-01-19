@@ -2,16 +2,15 @@
 
 class Images extends AppModel {
     protected $beforeDelete = array('deleteFile');
-    
+
     public function upload($model, $image) {
         $this->saveImage('uploadFile', $model, $image);
     }
-    
+
     public function download($model, $image) {
         $this->saveImage('downloadFile', $model, $image);
     }
-    
-    
+
     public function allByRecord($model, $fk) {
         return $this->all(array(
             'conditions' => array(
@@ -103,11 +102,9 @@ class Images extends AppModel {
         );
         
         foreach($resizes as $resize) {
-            preg_match('/^(\d+)x(\d+)(#|!|>)$/', $resize, $options);
-            list($resize, $w, $h, $mode) = $options;
-
             $image = PhpThumbFactory::create($fullpath);
 
+            extract($this->parseResizeValue($resize)); // extracts $resize, $w, $h, $mode
             $method = $modes[$mode];
             $image->{$method}($w, $h);
 
@@ -115,7 +112,7 @@ class Images extends AppModel {
                 'path' => Filesystem::path('public/' . $path),
                 'filename' => $filename,
                 'w' => $w,
-                'h' => $h,
+                'h' => $h
             )));
         }
     }
@@ -124,11 +121,33 @@ class Images extends AppModel {
         $self = $this->firstById($id);
         
         Filesystem::delete(String::insert('public/:path/:filename', array(
-            'path' => $this->getPath($this->model),
-            'filename' => $this->path
+            'path' => $this->getPath($self->model),
+            'filename' => $self->path
         )));
         
+        $this->deleteResizedFiles($self->model, $self->path);
+        
         return $id;
+    }
+    
+    protected function deleteResizedFiles($model, $filename) {
+        $model = Model::load($model);
+        $resizes = $model->resizes();
+        foreach($resizes as $resize) {
+            $values = $this->parseResizeValue($resize);
+            Filesystem::delete(String::insert(':path/:wx:h_:filename', array(
+                'path' => Filesystem::path('public/' . $this->getPath($model)),
+                'filename' => $filename,
+                'w' => $values['w'],
+                'h' => $values['h']
+            )));
+        }
+    }
+    
+    protected function parseResizeValue($value) {
+        preg_match('/^(\d+)x(\d+)(#|!|>)$/', $value, $options);
+        $keys = array('resize', 'w', 'h', 'mode');
+        return array_combine($keys, $options);
     }
     
     protected function getImageInfo($path, $filename) {
