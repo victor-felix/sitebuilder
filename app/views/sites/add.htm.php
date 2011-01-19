@@ -11,8 +11,7 @@
             <?php echo $this->form->input('firstname', array(
                 'label' => __('Nome'),
                 'type' => 'text',
-                'class' => 'ui-text',
-                'empty' => ''
+                'class' => 'ui-text'
             )) ?>
         </div>
         
@@ -20,8 +19,7 @@
             <?php echo $this->form->input('lastname', array(
                 'label' => __('Sobrenome'),
                 'type' => 'text',
-                'class' => 'ui-text',
-                'empty' => ''
+                'class' => 'ui-text'
             )) ?>
         </div>
         
@@ -30,8 +28,7 @@
             <?php echo $this->form->input('email', array(
                 'label' => __('E-mail'),
                 'type' => 'text',
-                'class' => 'ui-text large',
-                'empty' => ''
+                'class' => 'ui-text large'
             )) ?>
             <small>Digite um endereço de e-mail válido. Uma mensagem de ativação da sua conta será enviada para o endereço informado.</small>
         </div>
@@ -41,8 +38,7 @@
             <?php echo $this->form->input('email', array(
                 'label' => __('E-mail'),
                 'type' => 'text',
-                'class' => 'ui-text large error',
-                'empty' => ''
+                'class' => 'ui-text large error'
             )) ?>
             <p class="error">endereço de e-mail inválido </p>
             <small>Digite um endereço de e-mail válido. Uma mensagem de ativação da sua conta será enviada para o endereço informado.</small>
@@ -52,8 +48,7 @@
             <?php echo $this->form->input('password', array(
                 'label' => __('Senha'),
                 'type' => 'password',
-                'class' => 'ui-text',
-                'empty' => ''
+                'class' => 'ui-text'
             )) ?>
             <small>A senha deve conter 6 ou mais caracteres.</small>
         </div>
@@ -62,8 +57,7 @@
             <?php echo $this->form->input('password2', array(
                 'label' => __('Confirmação da senha'),
                 'type' => 'password',
-                'class' => 'ui-text',
-                'empty' => ''
+                'class' => 'ui-text'
             )) ?>
         </div>
     </div>
@@ -82,8 +76,7 @@
             <?php echo $this->form->input('title', array(
                 'label' => __('Nome da empresa'),
                 'type' => 'text',
-                'class' => 'ui-text large',
-                'empty' => ''
+                'class' => 'ui-text large'
             )) ?>
         </div>
         
@@ -92,8 +85,7 @@
             <?php echo $this->form->input('description', array(
                 'label' => __('Descrição da empresa'),
                 'type' => 'textarea',
-                'class' => 'ui-textarea large',
-                'empty' => '',
+                'class' => 'ui-textarea large'
                 'maxlenght' => 500
             )) ?>
             <small>Forneça uma breve descrição sobre a empresa e suas atividades. Máximo de 500 caracteres.</small>
@@ -109,11 +101,11 @@
                     'label' => false,
                     'div' => false,
                     'type' => 'text',
-                    'class' => 'ui-text',
-                    'empty' => 'dd'
+                    'class' => 'ui-text'
                     )) ?><span>.meumobi.com</span>
                 </p>
                 <div class="clear"></div>
+            </div>
             </div>
             <small>Escolha o seu endereço com cuidado, você não poderá alterá-lo posteriormente.</small>
         </div>
@@ -129,8 +121,7 @@
             <?php echo $this->form->input('feed', array(
                 'label' => __('Endereço do feed RSS'),
                 'type' => 'text',
-                'class' => 'ui-text large',
-                'empty' => ''
+                'class' => 'ui-text large'
             )) ?>
             <small>RSS é um formato de arquivo disponibilizado na maioria dos sites e blogs que permite que um site ou aplicativo externo acesse suas notícias. Você pode utilizar o RSS do seu site para alimentar a seção de notícias do seu site mobi.</small>
         </div>
@@ -146,8 +137,7 @@
             <?php echo $this->form->input('street', array(
                 'label' => __('Endereço'),
                 'type' => 'text',
-                'class' => 'ui-text large',
-                'empty' => ''
+                'class' => 'ui-text large'
             )) ?>
         </div>
         
@@ -156,8 +146,7 @@
             <?php echo $this->form->input('street', array(
                 'label' => __('Número'),
                 'type' => 'text',
-                'class' => 'ui-text',
-                'empty' => ''
+                'class' => 'ui-text'
             )) ?>
         </div>
         
@@ -166,8 +155,7 @@
             <?php echo $this->form->input('complement', array(
                 'label' => __('Complemento'),
                 'type' => 'text',
-                'class' => 'ui-text',
-                'empty' => ''
+                'class' => 'ui-text'
             )) ?>
         </div>
         
@@ -176,8 +164,7 @@
             <?php echo $this->form->input('zone', array(
                 'label' => __('Bairro'),
                 'type' => 'text',
-                'class' => 'ui-text large',
-                'empty' => ''
+                'class' => 'ui-text large'
             )) ?>
         </div>
         
@@ -186,8 +173,7 @@
             <?php echo $this->form->input('city', array(
                 'label' => __('Cidade'),
                 'type' => 'text',
-                'class' => 'ui-text',
-                'empty' => ''
+                'class' => 'ui-text'
             )) ?>
         </div>
         
@@ -197,8 +183,7 @@
                 'label' => __('Estado'),
                 'type' => 'select',
                 'options' => array('RJ'=>'Rio de Janeiro', 'SP'=>'São Paulo'),
-                'class' => 'ui-select',
-                'empty' => ''
+                'class' => 'ui-select'
             )) ?>
         </div>
         
@@ -207,8 +192,7 @@
             <?php echo $this->form->input('zip', array(
                 'label' => __('CEP'),
                 'type' => 'text',
-                'class' => 'ui-text',
-                'empty' => ''
+                'class' => 'ui-text'
             )) ?>
         </div>
         
@@ -218,8 +202,7 @@
                 'label' => __('País'),
                 'type' => 'select',
                 'options' => array('BR'=>'Brasil', 'PT'=>'Portugal'),
-                'class' => 'ui-select',
-                'empty' => ''
+                'class' => 'ui-select'
             )) ?>
         </div>
     </div>
@@ -235,20 +218,17 @@
             <?php echo $this->form->input('phone', array(
                 'label' => __('Telefone comercial'),
                 'type' => 'text',
-                'class' => 'ui-text',
-                'empty' => ''
+                'class' => 'ui-text'
             )) ?>
             <small>Ex.: (00) 0000-0000</small>
         </div>
-        
         
         <div class="form-grid-460 first">
             <span class="optional">Opcional</span>
             <?php echo $this->form->input('email', array(
                 'label' => __('E-mail comercial'),
                 'type' => 'text',
-                'class' => 'ui-text large',
-                'empty' => ''
+                'class' => 'ui-text large'
             )) ?>
         </div>
     </div>
@@ -263,8 +243,7 @@
             <?php echo $this->form->input('timetable', array(
                 'label' => __('Horários de funcionamento'),
                 'type' => 'textarea',
-                'class' => 'ui-textarea large',
-                'empty' => ''
+                'class' => 'ui-textarea large'
             )) ?>
         </div>
     </div>
@@ -279,8 +258,7 @@
             <?php echo $this->form->input('facebook', array(
                 'label' => __('Página no Facebook'),
                 'type' => 'text',
-                'class' => 'ui-text large',
-                'empty' => ''
+                'class' => 'ui-text large'
             )) ?>
         </div>
         
@@ -289,8 +267,7 @@
             <?php echo $this->form->input('twitter', array(
                 'label' => __('Página no Twitter'),
                 'type' => 'text',
-                'class' => 'ui-text large',
-                'empty' => ''
+                'class' => 'ui-text large'
             )) ?>
         </div>
         
@@ -299,8 +276,7 @@
             <?php echo $this->form->input('website', array(
                 'label' => __('Endereço do website atual'),
                 'type' => 'text',
-                'class' => 'ui-text large',
-                'empty' => ''
+                'class' => 'ui-text large'
             )) ?>
         </div>
     </div>
@@ -320,8 +296,7 @@
             <?php echo $this->form->input('logo', array(
                 'label' => __('Logotipo'),
                 'type' => 'file',
-                'class' => 'ui-text large',
-                'empty' => ''
+                'class' => 'ui-text large'
             )) ?>
             <small>Para melhor aparência do logotipo no seu site mobi, recomendamos utilizar uma imagem com fundo transparente, no formato GIF ou PNG. Tamanho máximo 500kb.</small>
         </div>
@@ -367,6 +342,11 @@
                 </ul>
                 <div class="clear"></div>
             </div>
+            <?php echo $this->form->input('skin', array(
+                'label' => false,
+                'div' => false,
+                'type' => 'hidden'
+            )) ?>
         </div>
     </div>
 </fieldset>
@@ -377,7 +357,7 @@
 )) ?>
 </fieldset>
 
-</form>
+<?php echo $this->form->close() ?>
 
 <!--
 <?php echo $this->form->create('/sites/add', array(

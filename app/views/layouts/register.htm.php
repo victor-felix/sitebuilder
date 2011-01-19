@@ -13,7 +13,9 @@
 			<?php echo $this->html->link($this->html->image('layout/logo.png', array('class'=>'MeuMobi')), '/', array('class'=>'logo')); ?>
 	    </div>
 	    
+	    
 	    <div id="content">
+	        <?php if(!isset($this->showTitle) || (isset($this->showTitle) && $this->showTitle)): ?>
     	    <div class="head">
     	        <h1>crie seu mobi</h1>
     	        <ul class="steps">
@@ -23,6 +25,7 @@
     	        </ul>
     	        <div class="clear"></div>
     	    </div>
+    	    <?php endif ?>
     	    
             <?php echo $this->contentForLayout ?>
         </div>
