@@ -341,3 +341,9 @@ a img {
 .skin-picker ul li a span {
 	padding: 0 4px;
 }
+
+.registration-finished {}
+
+.registration-finished img {
+	margin: 50px 0 30px 182px;
+}
