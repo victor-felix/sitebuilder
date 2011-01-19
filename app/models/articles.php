@@ -3,7 +3,6 @@
 require 'lib/html_purifier/HTMLPurifier.auto.php';
 
 class Articles extends AppModel {
-    const ARTICLES_LIMIT = 20;
     protected static $blacklist = array(
         'gravatar.com'
     );
@@ -11,7 +10,6 @@ class Articles extends AppModel {
     protected $defaultScope = array(
         'order' => 'pubdate DESC'
     );
-    protected $resizes = array('100x100');
     
     public function topByDomain($domain) {
         $feed = Model::load('Sites')->firstByDomain($domain)->feed();
@@ -27,7 +25,7 @@ class Articles extends AppModel {
             'conditions' => array(
                 'feed_id' => $feed_id
             ),
-            'limit' => self::ARTICLES_LIMIT,
+            'limit' => Config::read('Articles.limit')
         ));
     }
     
