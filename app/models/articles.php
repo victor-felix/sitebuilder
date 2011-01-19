@@ -7,6 +7,7 @@ class Articles extends AppModel {
     protected static $blacklist = array(
         'gravatar.com'
     );
+    protected $beforeDelete = array('deleteImages');
     protected $defaultScope = array(
         'order' => 'pubdate DESC'
     );

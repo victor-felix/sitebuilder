@@ -3,7 +3,7 @@
 class BusinessItems extends AppModel {
     protected $beforeSave = array('setSiteValues');
     protected $afterSave = array('saveItemValues');
-    protected $beforeDelete = array('deleteValues');
+    protected $beforeDelete = array('deleteValues', 'deleteImages');
     protected $defaultScope = array(
         'order' => '`order` ASC'
     );
