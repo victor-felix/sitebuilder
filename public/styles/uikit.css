@@ -1,0 +1,156 @@
+.ui-button {
+	background: url(/images/layout/ui-button-white.png) center repeat-x;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border: 1px solid #CCC;
+	color: #C02926;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 12px;
+	padding: 5px 10px;
+	outline: none;
+	text-decoration: none;
+	-webkit-box-shadow: 0 1px 0px #E8E8E8;
+	-moz-box-shadow: 0 1px 0px #E8E8E8;
+}
+
+.ui-button:hover {
+	border-color: #AAA;
+}
+
+	.ui-button:active {
+		background-image: url(/images/layout/ui-button-white-active.png);
+		border-color: #AAA;
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+	}
+
+	.ui-button.large {
+		font-size: 18px;
+		padding: 7px 14px;
+	}
+
+	.ui-button.larger {
+		font-size: 22px;
+		padding: 9px 18px;
+	}
+
+	.ui-button.small {
+		font-size: 11px;
+		padding: 4px 8px;
+	}
+
+	.ui-button.smaller {
+		font-size: 10px;
+		padding: 2px 6px;
+	}
+	
+	.ui-button.red {
+		border-radius: 3px;
+		-moz-border-radius: 3px;
+		-webkit-border-radius: 3px;
+		background-color: #b22623;
+		background-image: url(/images/layout/ui-button-red.png);
+		color: #FFF;
+		border-color: #b22623;
+	}
+	
+	.ui-button.red:hover {
+		background-color: #c02926;
+		border-color: #871d1b;
+	}
+	
+	.ui-button.red:active {
+		background-image: url(/images/layout/ui-button-red-active.png);
+	}
+	
+	.ui-button.disabled,
+	.ui-button.disabled:hover,
+	.ui-button.disabled:active {
+		border-color: #CCC;
+		background: #EEE;
+		color: #666;
+		cursor: default;
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+	}
+	
+.ui-text,
+.ui-textarea {
+	border: 1px solid #CCC;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	background: #FFF;
+	font: 17px "Arial", "Helvetica", sans-serif;
+	color: #444;
+	cursor: pointer;
+	outline: none;
+	padding: 3px 6px 4px;
+	width: 206px;
+}
+
+	.ui-text:hover,
+	.ui-textarea:hover {
+		border-color: #AAA;
+	}
+	
+	.ui-text:focus,
+	.ui-textarea:focus {
+		background: #EFEFEF url(/images/layout/ui-text-bg.png) top repeat-x;
+		border-color: #AAA;
+	}
+	
+	.ui-text.large,
+	.ui-textarea.large {
+		width: 446px;
+	}
+	
+	.ui-text.disabled,
+	.ui-text.disabled:hover,
+	.ui-text.disabled:active,
+	.ui-textarea.disabled,
+	.ui-textarea.disabled:hover,
+	.ui-textarea.disabled:active {
+		border-color: #BBB;
+		background: #DDD;
+		cursor: default;
+		color: #555;
+	}
+	
+	.ui-text.error,
+	.ui-textarea.error {
+		border-color: #F00;
+		-webkit-box-shadow: 0 0 4px #F00;
+		-moz-box-shadow: 0 0 4px #F00;
+	}
+	
+	.ui-textarea {
+		font-size: 12px;
+		line-height: 16px;
+	}
+	
+	.ui-textarea.large {
+		height: 100px;
+	}
+	
+.ui-select {
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border: 1px solid #CCC;
+	font: 17px "Arial", "Helvetica", sans-serif;
+	color: #444;
+	cursor: pointer;
+	padding: 3px 4px 4px;
+	width: 220px;
+}
+
+	.ui-select.large {
+		width: 460px;
+	}
+
+/* as seen on https://github.com/paulirish/html5-boilerplate/wiki/Make-it-better */
+button:focus { outline-width:0px; outline-style:dotted; }
+button::-moz-focus-inner { padding:0; border:0; }

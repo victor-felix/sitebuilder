@@ -19,6 +19,7 @@ class SitesController extends AppController {
         $this->set(array(
             'segments' => Model::load('Segments')->toList()
         ));
+        $this->layout = "register";
     }
     
     public function edit($id = null) {

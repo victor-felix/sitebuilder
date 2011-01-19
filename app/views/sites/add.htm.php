@@ -1,5 +1,82 @@
-<h1><?php echo __('Adicionar Novo Site') ?></h1>
+<?php echo $this->form->create('/sites/add', array(
+    'id' => 'form-register-personal-info',
+    'class' => 'form-register',
+    'method' => 'file'
+)) ?>
 
+<fieldset>
+    <h2>informações pessoais</h2>
+    <div class="field-group">
+        
+        <div class="form-grid-220 first">
+            <?php echo $this->form->input('firstname', array(
+                'label' => __('Nome'),
+                'type' => 'text',
+                'class' => 'ui-text',
+                'empty' => ''
+            )) ?>
+        </div>
+        
+        <div class="form-grid-220 last">
+            <?php echo $this->form->input('lastname', array(
+                'label' => __('Sobrenome'),
+                'type' => 'text',
+                'class' => 'ui-text',
+                'empty' => ''
+            )) ?>
+        </div>
+        
+        <div class="form-grid-460">
+            <span class="optional">Opcional</span>
+            <?php echo $this->form->input('email', array(
+                'label' => __('E-mail'),
+                'type' => 'text',
+                'class' => 'ui-text large',
+                'empty' => ''
+            )) ?>
+            <small>Digite um endereço de e-mail válido. Uma mensagem de ativação da sua conta será enviada para o endereço informado.</small>
+        </div>
+        
+        <div class="form-grid-460">
+            <span class="optional">Opcional</span>
+            <?php echo $this->form->input('email', array(
+                'label' => __('E-mail'),
+                'type' => 'text',
+                'class' => 'ui-text large error',
+                'empty' => ''
+            )) ?>
+            <p class="error">endereço de e-mail inválido </p>
+            <small>Digite um endereço de e-mail válido. Uma mensagem de ativação da sua conta será enviada para o endereço informado.</small>
+        </div>
+        
+        <div class="form-grid-220 first">
+            <?php echo $this->form->input('password', array(
+                'label' => __('Senha'),
+                'type' => 'password',
+                'class' => 'ui-text',
+                'empty' => ''
+            )) ?>
+            <small>A senha deve conter 6 ou mais caracteres.</small>
+        </div>
+        
+        <div class="form-grid-220 first">
+            <?php echo $this->form->input('password2', array(
+                'label' => __('Confirmação da senha'),
+                'type' => 'password',
+                'class' => 'ui-text',
+                'empty' => ''
+            )) ?>
+        </div>
+        
+    </div>
+</fieldset>
+
+<?php echo $this->form->close(__('Avançar'), array(
+    'class' => 'ui-button large'
+)) ?>
+
+
+<!--
 <?php echo $this->form->create('/sites/add', array(
     'method' => 'file'
 )) ?>
@@ -65,3 +142,4 @@
     )) ?>
     
 <?php echo $this->form->close(__('Salvar')) ?>
+-->
