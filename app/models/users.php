@@ -3,7 +3,7 @@
 class Users extends AppModel {
     protected $beforeValidate = array('joinName');
     protected $beforeSave = array('hashPassword', 'createToken');
-    protected $afterSave = array('createSite');
+    protected $afterSave = array('createSite', 'authenticate');
     protected $validates = array(
         'name' => array(
             'rule' => 'notEmpty',
@@ -67,10 +67,13 @@ class Users extends AppModel {
                 'domain' => '',
                 'title' => ''
             ));
-            $this->save(array(
-                'site_id' => $model->id
-            ));
+            $this->site_id = $model->id;
+            $this->save();
         }
+    }
+    
+    protected function authenticate() {
+        
     }
     
     protected function joinName($data) {

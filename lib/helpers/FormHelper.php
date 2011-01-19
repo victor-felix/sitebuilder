@@ -1,11 +1,16 @@
 <?php
 
 class FormHelper extends Helper {
+    protected $stack = array();
+    
     public function create($action = null, $options = array()) {
         $options += array(
             'method' => 'post',
             'action' => Mapper::url($action)
         );
+        
+        $object = array_unset($options, 'object');
+        array_push($this->stack, $object);
         
         if($options['method'] == 'file'):
             $options['method'] = 'post';
@@ -14,7 +19,9 @@ class FormHelper extends Helper {
         
         return $this->html->openTag('form', $options);
     }
+    
     public function close($submit = null, $attributes = array()) {
+        array_pop($this->stack);
         $form = $this->html->closeTag('form');
 
         if(!is_null($submit)):
@@ -23,6 +30,7 @@ class FormHelper extends Helper {
 
         return $form;
     }
+    
     public function submit($text, $attributes = array()) {
         $attributes += array(
             'type' => 'submit',
@@ -40,6 +48,7 @@ class FormHelper extends Helper {
                 return $this->html->tag('button', $text, $attributes);
         endswitch;
     }
+    
     public function select($name, $options = array()) {
         $options += array(
             'name' => $name,
@@ -76,6 +85,7 @@ class FormHelper extends Helper {
         
         return $this->html->tag('select', $content, $options);
     }
+    
     public function radio($name, $options = array()) {
         $options += array(
             'options' => array(),
@@ -106,53 +116,7 @@ class FormHelper extends Helper {
         
         return $this->html->tag('fieldset', $content);
     }
-    public function date($name, $options = array()) {
-        if(is_array($options['value'])):
-            $date = mktime(0, 0, 0, $v['m'], $v['d'], $v['y']);
-        elseif(!is_null($options['value'])):
-            $date = strtotime($options['value']);
-        else:
-            $date = time();
-        endif;
-
-        $options += array(
-            'value' => null,
-            'startYear' => 1980,
-            'endYear' => date('Y'),
-            'currentDay' => date('j', $date),
-            'currentMonth' => date('n', $date),
-            'currentYear' => date('Y', $date),
-            'format' => 'dmy'
-        );
-
-        $days = array_range(1, 31);
-        $months = array_range(1, 12);
-        $years = array_range($options['startYear'], $options['endYear']);
-        
-        $select_day = $this->select($name . '[d]', array(
-            'value' => $options['currentDay'],
-            'options' => $days,
-            'id' => $options['id'] . 'D'
-        ));
-        
-        $select_month = $this->select($name . '[m]', array(
-            'value' => $options['currentMonth'],
-            'options' => $months,
-            'id' => $options['id'] . 'M'
-        ));
-        
-        $select_year = $this->select($name . '[y]', array(
-            'value' => $options['currentYear'],
-            'options' => $years,
-            'id' => $options['id'] . 'Y'
-        ));
-        
-        if($format == 'ymd'):
-            return $select_year . $select_month . $select_day;
-        else:
-            return $select_day . $select_month . $select_year;
-        endif;
-    }
+    
     public function input($name, $options = array()) {
         $options += array(
             'name' => $name,
@@ -160,7 +124,7 @@ class FormHelper extends Helper {
             'id' => 'Form' . Inflector::camelize($name),
             'label' => Inflector::humanize($name),
             'div' => true,
-            'value' => ''
+            'value' => $this->value($name)
         );
         
         $label = array_unset($options, 'label');
@@ -219,5 +183,28 @@ class FormHelper extends Helper {
         endif;
         
         return $this->html->tag('div', $content, $attr);
+    }
+
+    protected function model() {
+        $object = end($this->stack);
+        
+        if(is_object($object)) {
+            return $object;
+        }
+        
+        return false;
+    }
+
+    protected function value($name) {
+        if($model = $this->model()):
+            if($model->hasAttribute($name)) {
+                return $model->{$name};
+            }
+            else if($model->hasGetter($name)) {
+                return $model->{$name}();
+            }
+        endif;
+        
+        return '';
     }
 }

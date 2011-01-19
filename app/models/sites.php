@@ -1,6 +1,8 @@
 <?php
 
 class Sites extends AppModel {
+    protected $getters = array('feed_url');
+    protected $beforeValidate = array('addMeuMobi');
     protected $beforeSave = array('getFeedId');
     protected $afterSave = array('saveLogo', 'createRootCategory');
     protected $beforeDelete = array('checkAndDeleteFeed', 'deleteImages', 'deleteCategories',
@@ -23,16 +25,6 @@ class Sites extends AppModel {
                 'message' => 'O domínio só pode conter caracteres minúsculos, hifens e underscores'
             )
         ),
-        'segment' => array(
-            'rule' => 'notEmpty',
-            'on' => 'create',
-            'message' => 'Você precisa selecionar um segmento'
-        ),
-        'theme' => array(
-            'rule' => 'notEmpty',
-            'on' => 'create',
-            'message' => 'Você precisa selecionar um tema'
-        ),
         'title' => array(
             'rule' => 'notEmpty',
             'message' => 'Você precisa definir um título'
@@ -40,12 +32,44 @@ class Sites extends AppModel {
         'logo' => array(
             'rule' => array('fileUpload', 1, array('jpg', 'gif', 'png')),
             'message' => 'Você precisa usar uma imagem válida',
+        ),
+        'feed' => array(
+            'rule' => 'url',
+            'message' => 'Você precisa informar uma URL válida',
+            'allowEmpty' => true
+        ),
+        'facebook' => array(
+            'rule' => 'url',
+            'message' => 'Você precisa informar uma URL válida',
+            'allowEmpty' => true
+        ),
+        'twitter' => array(
+            'rule' => 'url',
+            'message' => 'Você precisa informar uma URL válida',
+            'allowEmpty' => true
+        ),
+        'website' => array(
+            'rule' => 'url',
+            'message' => 'Você precisa informar uma URL válida',
+            'allowEmpty' => true
+        ),
+        'email' => array(
+            'rule' => 'email',
+            'message' => 'Você precisa informar um e-mail válido',
+            'allowEmpty' => true
         )
     );
     
     public function feed() {
         if($this->feed_id) {
             return Model::load('Feeds')->firstById($this->feed_id);
+        }
+    }
+    
+    public function feed_url() {
+        $feed = $this->feed();
+        if($feed) {
+            return $feed->link;
         }
     }
     
@@ -105,9 +129,9 @@ class Sites extends AppModel {
     }
 
     protected function getFeedId($data) {
-        if(array_key_exists('feed', $data)) {
-            if(!empty($data['feed'])) {
-                $link = $data['feed'];
+        if(array_key_exists('feed_url', $data)) {
+            if(!empty($data['feed_url'])) {
+                $link = $data['feed_url'];
                 $feed = Model::load('Feeds')->saveFeed($link);
                 $data['feed_id'] = $feed->id;
             }
@@ -170,6 +194,15 @@ class Sites extends AppModel {
         if($created) {
             Model::load('Categories')->createRoot($this);
         }
+    }
+    
+    // add meumobi.com to all domains - may change in the future
+    protected function addMeuMobi($data) {
+        if(array_key_exists('domain', $this->data) && !$this->subdomain($this->data['domain'])) {
+            $this->data['domain'] = $this->data['domain'] . '.meumobi.com';
+        }
+        
+        return $this->data;
     }
     
     // only allows domains in meumobi.com - may change in the future
