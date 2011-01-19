@@ -1,7 +1,10 @@
-<div id="page-heading">
+<div class="slidingpanels">
+<div id="Panel1" class="slidepanel">
+
+<div class="page-heading">
     <div class="grid-4 first">&nbsp;</div>
     <div class="grid-8">
-        <h1><?php echo __('Categorias') ?></h1>
+        <h1><?php echo __('Cardápio') ?></h1>
     </div>
     <div class="clear"></div>
 </div>
@@ -20,7 +23,7 @@
             <span class="title" title="<?php echo __('clique para editar') ?>">Teste</span>
             <div class="controls">
                 <?php echo $this->html->link(__('adicionar produto'), '/manage', array('class' => 'ui-button highlight')) ?>
-                <?php echo $this->html->link(__('gerenciar produtos'), '/manage', array('class' => 'ui-button')) ?>
+                <?php echo $this->html->link(__('gerenciar produtos'), '/manage', array('class' => 'ui-button manage')) ?>
             </div>
         </li>
         <li class="level-1">
@@ -158,6 +161,21 @@
         'class' => 'ui-button large',
         'style' => 'margin-bottom: 40px'
     )) ?>
+</div>
+
+<div class="clear"></div>
+</div>
+
+</div> <!-- end Panel1 -->
+
+<div id="Panel2" class="slidepanel">
+    <div class="page-heading">
+        <div class="grid-4 first">&nbsp;</div>
+        <div class="grid-8">
+            <h1><?php echo __('Cardápio') ?></h1>
+        </div>
+        <div class="clear"></div>
+    </div>
 </div>
 
 <div class="clear"></div>

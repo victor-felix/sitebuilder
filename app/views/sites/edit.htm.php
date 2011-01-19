@@ -1,7 +1,14 @@
-<?php $this->layout = 'register' ?>
+<div class="page-heading">
+    <div class="grid-4 first">&nbsp;</div>
+    <div class="grid-8">
+        <h1><?php echo __('Configurações') ?></h1>
+    </div>
+    <div class="clear"></div>
+</div>
+
 <?php echo $this->form->create('/sites/edit/' . $site->id, array(
-    'id' => 'form-register-site-info',
-    'class' => 'form-register',
+    'id' => 'form-edit-site-info',
+    'class' => 'form-edit',
     'method' => 'file',
     'object' => $site
 )) ?>
@@ -220,8 +227,8 @@
 </fieldset>
 
 <fieldset class="actions">
-    <?php echo $this->form->submit(__('Avançar ›'), array(
-        'class' => 'ui-button red large'
+    <?php echo $this->form->submit(__('Salvar'), array(
+        'class' => 'ui-button red larger'
     )) ?>
 </fieldset>
 

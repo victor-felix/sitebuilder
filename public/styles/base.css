@@ -138,10 +138,11 @@ a img {
 	background: #FFF;
 	clear: both;
 	margin: 0 auto 50px auto;
+	overflow: hidden;
 	width: 940px;
 }
 
-#content #page-heading {
+#content .page-heading {
 	height: 120px;
 }
 
@@ -160,5 +161,14 @@ a img {
 
 #footer #footer-wrapper {
 	margin: 0 auto;
+	width: 940px;
+}
+
+.slidingpanels {
+	width: 2080px;
+}
+
+.slidepanel {
+	float: left;
 	width: 940px;
 }
