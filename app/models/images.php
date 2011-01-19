@@ -84,7 +84,7 @@ class Images extends AppModel {
         require_once 'lib/utils/FileDownload.php';
 
         $downloader = new FileDownload();
-        $downloader->path = $this->getPath();
+        $downloader->path = $this->getPath($model);
 
         return $downloader->download($image, String::insert(':id.:extension', array(
             'id' => $this->id
@@ -145,7 +145,7 @@ class Images extends AppModel {
     }
     
     protected function parseResizeValue($value) {
-        preg_match('/^(\d+)x(\d+)(#|!|>)$/', $value, $options);
+        preg_match('/^(\d+)x(\d+)(#|!|>|)$/', $value, $options);
         $keys = array('resize', 'w', 'h', 'mode');
         return array_combine($keys, $options);
     }
