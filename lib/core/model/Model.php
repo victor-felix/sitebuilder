@@ -45,7 +45,9 @@ class Model extends Hookable {
 
     public function __construct($data = null) {
         if(!is_null($data)) {
-            $this->id = $data['id'];
+            if(array_key_exists('id', $data)) {
+                $this->id = $data['id'];
+            }
             $this->data = $data;
         }
         $this->loadBehaviors($this->behaviors);
@@ -369,7 +371,11 @@ class Model extends Hookable {
         return $save;
     }
 
-    public function validate($data) {
+    public function validate($data = array()) {
+        if(!empty($data)) {
+            $this->data = $data;
+        }
+
         $this->errors = array();
         $defaults = array(
             'required' => false,
@@ -377,6 +383,12 @@ class Model extends Hookable {
             'message' => null,
             'on' => false
         );
+
+        $this->data = $this->fireFilter('beforeValidate', $this->data);
+        if(!$this->data):
+            return false;
+        endif;
+
         foreach($this->validates as $field => $rules):
             if(!is_array($rules) || (is_array($rules) && isset($rules['rule']))):
                 $rules = array($rules);

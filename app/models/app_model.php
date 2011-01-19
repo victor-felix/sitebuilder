@@ -24,6 +24,10 @@ class AppModel extends Model {
             )
         ));
     }
+
+    protected function confirmField($value, $field) {
+        return $value == $this->data[$field];
+    }
     
     protected function asciiOnly($value) {
         return preg_match('/^[\w._-]+$/', $value);

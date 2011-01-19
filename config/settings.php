@@ -15,3 +15,5 @@ Config::write('Articles.limit', 20);
 
 Config::write('SiteLogos.resizes', array('100x100#'));
 Config::write('Articles.resizes', array('100x100'));
+
+Config::write('Segments.default', 'restaurant');
