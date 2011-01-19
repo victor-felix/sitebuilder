@@ -15,4 +15,4 @@ CREATE TABLE `images` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE UNIQUE INDEX `by_foreign_key` ON `images`(`foreign_key`, `model`);
+CREATE INDEX `by_foreign_key` ON `images`(`foreign_key`, `model`);

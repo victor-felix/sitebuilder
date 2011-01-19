@@ -74,23 +74,6 @@ class Articles extends AppModel {
         return null;
     }
     
-    protected function saveEnclosure($enclosure) {
-        $params = array(
-            'filename' => 'image',
-            'ext' => 'jpg'
-        );
-        $path = String::insert('public/images/articles/:filename.:ext', $params);
-        $content = file_get_contents($enclosure->get_link());
-        Filesystem::write($path, $content);
-
-        // @$detailsImage = exif_read_data($mapped_object['imageUrl']);
-        // if($detailsImage !=null && is_array($detailsImage)){
-        //   $mapped_object['imageLength'] = $detailsImage["FileSize"];
-        //   $mapped_object['imageLengthOctal'] = decoct($detailsImage["FileSize"]);
-        //   $mapped_object['imageType'] = $detailsImage["MimeType"];
-        // }
-    }
-    
     protected function isBlackListed($link) {
         foreach(self::$blacklist as $i) {
             $pattern = preg_quote($i);

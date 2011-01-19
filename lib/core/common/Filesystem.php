@@ -107,26 +107,33 @@ class Filesystem {
 
         return rmdir($dir);
     }
-    public static function createDir($dir, $mode = 0755) {
+    public static function createDir($dir, $mode = 0644) {
         $dir = self::path($dir);
-
-        if(!self::exists($dir)):
+        
+        if(!self::exists($dir)) {
             return mkdir($dir, $mode, true);
-        endif;
+        }
+        else if(!self::isDir($dir)) {
+            throw new Exception('path exists and is not a directory');
+        }
     }
+    
     public static function isUploadedFile($file) {
         return is_uploaded_file(self::path($file));
     }
+    
     public static function moveUploadedFile($name, $destination) {
         $destination = self::path($destination);
 
         return move_uploaded_file($name, $destination);
     }
-    public static function exists($file) {
-        return file_exists(self::path($file));
+    
+    public static function exists($path) {
+        return file_exists(self::path($path));
     }
-    public static function hasPermission($file, $permission = 'rwx') {
-        $file = self::path($file);
+    
+    public static function hasPermission($path, $permission = 'rwx') {
+        $path = self::path($path);
         $functions = array(
             'x' => 'is_executable',
             'r' => 'is_readable',
@@ -134,29 +141,32 @@ class Filesystem {
         );
         $permissions = str_split($permission);
         
-        foreach($permissions as $permission):
-            if(!$functions[$permission]($file)):
+        foreach($permissions as $permission) {
+            if(!$functions[$permission]($path)) {
                 return false;
-            endif;
-        endforeach;
+            }
+        }
 
         return true;
     }
+    
     public static function extension($file) {
-        $explode = explode('.', $file);
-        
-        if(($count = count($explode)) > 1):
-            return strtolower($explode[$count - 1]);
-        endif;
-        
-        return null;
+        $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+        if($extension) {
+            return $extension;
+        }
     }
+    
+    public static function filename($file) {
+        return strtolower(pathinfo($file, PATHINFO_FILENAME));
+    }
+    
     public static function path($path, $absolute = true) {
-         if(strpos($path, SPAGHETTI_ROOT) === false && !preg_match('(^[a-z]+:)i', $path, $out)):
-            if($absolute):
+         if(strpos($path, SPAGHETTI_ROOT) === false && !preg_match('(^[a-z]+:)i', $path, $out)) {
+            if($absolute) {
                 $path = SPAGHETTI_ROOT . '/' . $path;
-            endif;
-        endif;
+            }
+        }
 
         $pattern = '(([^:])[/\\\]+|\\\)'; // v.4.3    
         return preg_replace($pattern, '$1/', $path);

@@ -1,6 +1,8 @@
 <h1><?php echo __('Adicionar Novo Site') ?></h1>
 
-<?php echo $this->form->create('/sites/add') ?>
+<?php echo $this->form->create('/sites/add', array(
+    'method' => 'file'
+)) ?>
     
     <?php echo $this->form->input('segment', array(
         'label' => __('Segmento'),

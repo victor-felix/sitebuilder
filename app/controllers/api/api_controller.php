@@ -30,21 +30,26 @@ class ApiController extends AppController {
     
     protected function objectTemplate($content) {
         $controller = $this->param('controller');
-        $action = substr($this->param('action'), 4); // remote "api_" from prefixed action
+        $action = substr($this->param('action'), 4); // remove "api_" from prefixed action
         $templatePath = String::insert(':controller/:action.:ext.tpl', array(
             'controller' => $controller,
             'action' => $action,
             'ext' => 'bkml',
         ));
         
+        $site_info = array(
+            'title' => $this->site->title,
+            'logo' => null
+        );
+        if($logo = $this->site->logo()) {
+            $site_info['logo'] = $logo->link();
+        }
+        
         return array(
             'theme' => $this->site->theme,
             'templatePath' => $templatePath,
             'skin' => $this->site->skin,
-            'siteInfo' => array(
-                'title' => $this->site->title,
-                'logo' => $this->site->logo(),
-            ),
+            'siteInfo' => $site_info,
             'content' => $content
         );
     }

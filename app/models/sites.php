@@ -35,6 +35,10 @@ class Sites extends AppModel {
         'title' => array(
             'rule' => 'notEmpty',
             'message' => 'Você precisa definir um título'
+        ),
+        'logo' => array(
+            'rule' => array('fileUpload', 1, array('jpg', 'gif', 'png')),
+            'message' => 'Você precisa usar uma imagem válida',
         )
     );
     
@@ -49,7 +53,7 @@ class Sites extends AppModel {
     }
     
     public function logo() {
-        return null;
+        return Model::load('Images')->firstByRecord('SiteLogos', $this->id);
     }
     
     public function rootCategory() {
@@ -157,7 +161,9 @@ class Sites extends AppModel {
     }
     
     protected function saveLogo() {
-        Model::load('Images')->upload($this, $this->data['logo'], 'images/:model/:id.:ext');
+        if($this->data['logo']) {
+            Model::load('Images')->upload(new SiteLogos($this->id), $this->data['logo']);
+        }
     }
     
     protected function createRootCategory($created) {
@@ -169,5 +175,13 @@ class Sites extends AppModel {
     // only allows domains in meumobi.com - may change in the future
     protected function subdomain($value) {
         return preg_match('/[\w_-]+.meumobi.com$/', $value);
+    }
+}
+
+class SiteLogos {
+    public $id;
+    
+    public function __construct($id) {
+        $this->id = $id;
     }
 }
