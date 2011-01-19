@@ -57,13 +57,19 @@
 	height: 30px;
 	width: 30px;
 	padding: 0;
-	top: 10px;
-	left: 5px;
+	top: 9px;
+	left: 10px;
 } 
 
-.categories-list li:hover .ui-button-add {
-	display: block;
-}
+	.categories-list li:hover .ui-button-add {
+		display: block;
+	}
+
+	.categories-list li:hover .ui-button-add img {
+		position: absolute;
+		top: 7px;
+		left: 8px;
+	}
 
 .categories-list li .controls {
 	float: right;
@@ -144,25 +150,25 @@
 	width: 100%;
 }
 
-.delete-confirm .ui-button {
-	-webkit-box-shadow: none;
-	-moz-box-shadow: none;
-}
+	.delete-confirm .ui-button {
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+	}
 
-.delete-confirm p {
-	color: #FFF;
-	float: left;
-	height: 50px;
-	width: 340px;
-	margin-right: 30px;
-	padding: 11px 0 0 12px;
-}
+	.delete-confirm p {
+		color: #FFF;
+		float: left;
+		height: 50px;
+		width: 340px;
+		margin-right: 30px;
+		padding: 11px 0 0 12px;
+	}
 
-.delete-confirm p small {
-	display: block;
-	font-size: 11px;
-}
+	.delete-confirm p small {
+		display: block;
+		font-size: 11px;
+	}
 
-.delete-confirm .ui-button {
-	margin-top: 12px;
-}
+	.delete-confirm .ui-button {
+		margin-top: 12px;
+	}
