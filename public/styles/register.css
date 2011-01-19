@@ -198,3 +198,29 @@ a img {
 	.form-register .fieldset-expand:active {
 		background: url(/images/layout/ui-button-white-active.png) center repeat-x;
 	}
+	
+	.form-register .fieldset-expand span {
+		background: url(/images/register/arrow-expand-fieldset.png) right no-repeat;
+		font-style: italic;
+		color: #999;
+		float: right;
+		font-size: 16;
+		padding-right: 40px;
+	}
+	
+.form-register .meumobi-url {
+}
+
+.form-register .meumobi-url span {
+	color: #999;
+	font-size: 17px;
+	display: inline-block;
+	line-height: 29px;
+	margin-right: 5px;
+	float: left;
+}
+
+.form-register .meumobi-url input {
+	float: left;
+	margin-right: 5px;
+}

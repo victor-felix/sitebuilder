@@ -69,7 +69,7 @@
     </div>
 </fieldset>
 
-<a href="#" class="fieldset-expand">informações do negócio</a>
+<a href="#" class="fieldset-expand">informações do negócio <span>opcional</span></a>
 
 <fieldset>
     <h2>informações do negócio</h2>
@@ -95,13 +95,23 @@
             <small>Forneça uma breve descrição sobre a empresa e suas atividades. Máximo de 500 caracteres.</small>
         </div>
         
-        <div class="form-grid-220 first">
-            <?php echo $this->form->input('domain', array(
-                'label' => __('Endereço do site mobile'),
-                'type' => 'text',
-                'class' => 'ui-text',
-                'empty' => ''
-            )) ?>
+        <div class="form-grid-460 first">
+            <div class="site-mobile-url">
+            <div class="input text">
+                <label for="FormDomain">Endereço do site mobile</label>
+                <p class="meumobi-url">
+                    <span>http://</span>
+                    <?php echo $this->form->input('domain', array(
+                    'label' => false,
+                    'div' => false,
+                    'type' => 'text',
+                    'class' => 'ui-text',
+                    'empty' => ''
+                    )) ?><span>.meumobi.com</span>
+                </p>
+                <div class="clear"></div>
+            </div>
+            <small>Escolha o seu endereço com cuidado, você não poderá alterá-lo posteriormente.</small>
         </div>
     </div>
 </fieldset>
