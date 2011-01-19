@@ -33,6 +33,14 @@ class AppModel extends Model {
         return $valid;
     }
 
+    protected function deleteImages($id) {
+        $model = Model::load('Images');
+        $images = $model->allByRecord(get_class($this), $id);
+        $this->deleteSet($model, $images);
+
+        return $id;
+    }
+
     protected function deleteSet($model, $set) {
         foreach($set as $item) {
             $model->delete($item->id);

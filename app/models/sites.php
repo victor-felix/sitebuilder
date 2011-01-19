@@ -3,7 +3,8 @@
 class Sites extends AppModel {
     protected $beforeSave = array('getFeedId');
     protected $afterSave = array('saveLogo', 'createRootCategory');
-    protected $beforeDelete = array('checkAndDeleteFeed', 'deleteImages', 'deleteCategories');
+    protected $beforeDelete = array('checkAndDeleteFeed', 'deleteImages', 'deleteCategories',
+        'deleteLogo');
     protected $validates = array(
         'domain' => array(
             array(
@@ -142,11 +143,10 @@ class Sites extends AppModel {
             Model::load('Feeds')->delete($this->feed_id);
         }
     }
-    
-    
-    protected function deleteImages($id) {
+
+    protected function deleteLogo($id) {
         $model = Model::load('Images');
-        $images = $model->allByRecord('Sites', $id);
+        $images = $model->allByRecord('SiteLogos', $id);
         $this->deleteSet($model, $images);
 
         return $id;
@@ -182,7 +182,7 @@ class SiteLogos {
     public $id;
     protected $resizes = array('100x100#');
     
-    public function __construct($id) {
+    public function __construct($id = null) {
         $this->id = $id;
     }
     
