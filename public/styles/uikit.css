@@ -46,6 +46,19 @@
 		padding: 2px 6px;
 	}
 	
+	.ui-button.highlight {
+		font-weight: bold;
+	}
+	
+	.ui-button.delete {
+		border-color: #b22623;
+	}
+	
+	.ui-button.delete:hover,
+	.ui-button.delete:active {
+		border-color: #871d1b;
+	}
+	
 	.ui-button.red {
 		border-radius: 3px;
 		-moz-border-radius: 3px;
