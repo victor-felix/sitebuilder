@@ -1,6 +1,8 @@
 <h1><?php echo __('Editar o site %s', $site->title) ?></h1>
 
-<?php echo $this->form->create('/sites/edit/' . $site->id) ?>
+<?php echo $this->form->create('/sites/edit/' . $site->id, array(
+    'method' => 'file'
+)) ?>
     
     <?php echo $this->form->input('theme', array(
         'label' => __('Tema'),

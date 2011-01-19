@@ -20,6 +20,14 @@ class AppModel extends Model {
         return preg_match('/^[\w._-]+$/', $value);
     }
 
+    protected function fileUpload($value, $size = null, $types = null) {
+        require_once 'lib/utils/FileUpload.php';
+        
+        list($valid, $errors) = FileUpload::validate($value);
+        
+        return $valid;
+    }
+
     protected function deleteSet($model, $set) {
         foreach($set as $item) {
             $model->delete($item->id);
