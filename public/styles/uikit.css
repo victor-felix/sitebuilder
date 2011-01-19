@@ -129,6 +129,7 @@
 	.ui-textarea {
 		font-size: 12px;
 		line-height: 16px;
+		resize: none;
 	}
 	
 	.ui-textarea.large {
