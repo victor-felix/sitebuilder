@@ -2,7 +2,7 @@
 
 Config::write('App.environment', 'development');
 Config::write('App.encoding', 'utf-8');
-Config::write('Security.salt', '37b1ffe6afe7577a90f1ac2098605d5711fdc59f');
+Config::write('Security.salt', '0b693e040f5c7ffd13d62330d6c8f901');
 Config::write('Debug.level', 3);
 
 require 'config/environments/' . Config::read('App.environment') . '.php';
