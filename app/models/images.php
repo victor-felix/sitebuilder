@@ -4,62 +4,11 @@ class Images extends AppModel {
     protected $beforeDelete = array('deleteFile');
     
     public function upload($model, $image) {
-        require_once 'lib/utils/FileUpload.php';
-        
-        $model_name = get_class($model);
-        $id = $model->id;
-        
-        $uploader = new FileUpload();
-        $uploader->path = String::insert('images/:model', array(
-            'model' => Inflector::underscore($model_name)
-        ));
-        
-        $this->begin();
-        
-        try {
-            $this->id = null;
-            $this->save(array(
-                'model' => $model_name,
-                'foreign_key' => $id
-            ));
-            
-            $filename = $uploader->upload($image, String::insert(':id.:extension', array(
-                'id' => $this->id
-            )));
-            
-            $info = $this->getImageInfo($uploader->path, $filename);
-            $this->save($info);
-            
-            $this->commit();
-        }
-        catch(Exception $e) {
-            $this->rollback();
-        }
+        $this->saveImage('uploadFile', $model, $image);
     }
     
     public function download($model, $image) {
-        require_once 'lib/utils/FileDownload.php';
-
-        $model_name = get_class($model);
-        $id = $model->id;
-
-        $downloader = new FileDownload();
-        $downloader->path = String::insert('images/:model', array(
-            'model' => Inflector::underscore($model_name)
-        ));
-
-        $this->id = null;
-        $this->save(array(
-            'model' => $model_name,
-            'foreign_key' => $id
-        ));
-
-        $filename = $downloader->download($image, String::insert(':id.:extension', array(
-            'id' => $this->id
-        )));
-
-        $info = $this->getImageInfo($downloader->path, $filename);
-        $this->save($info);
+        $this->saveImage('downloadFile', $model, $image);
     }
     
     public function resize() {
@@ -92,8 +41,63 @@ class Images extends AppModel {
         return Mapper::url($path, true);
     }
     
-    protected function saveImage($model, $path) {
+    protected function saveImage($method, $model, $image) {
+        if(!$this->transactionStarted()) {
+            $transaction = true;
+            $this->begin();
+        }
         
+        try {
+            $this->id = null;
+            $this->save(array(
+                'model' => get_class($model),
+                'foreign_key' => $model->id
+            ));
+            
+            $path = String::insert('images/:model', array(
+                'model' => Inflector::underscore(get_class($model))
+            ));
+            $filename = $this->{$method}($model, $image);
+            
+            $info = $this->getImageInfo($path, $filename);
+            $this->save($info);
+            
+            if($transaction) {
+                $this->commit();
+            }
+        }
+        catch(Exception $e) {
+            if($transaction) {
+                $this->rollback();
+            }
+        }
+    }
+    
+    
+    protected function uploadFile($model, $image) {
+        require_once 'lib/utils/FileUpload.php';
+
+        $uploader = new FileUpload();
+        $uploader->path = String::insert('images/:model', array(
+            'model' => Inflector::underscore(get_class($model))
+        ));
+
+        return $uploader->upload($image, String::insert(':id.:extension', array(
+            'id' => $this->id
+        )));
+    }
+
+    protected function downloadFile($model, $image) {
+        require_once 'lib/utils/FileDownload.php';
+
+        $downloader = new FileDownload();
+        $downloader->path = String::insert('images/:model', array(
+            'model' => Inflector::underscore(get_class($model))
+        ));
+
+        return $downloader->download($image, String::insert(':id.:extension', array(
+            'id' => $this->id
+        )));
     }
     
     protected function deleteFile() {
