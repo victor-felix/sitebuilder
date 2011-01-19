@@ -114,6 +114,15 @@ a img {
 	padding-bottom: 10px;
 }
 
+.form-register fieldset.actions {
+	border: 0;
+	padding: 25px;
+}
+
+.form-register fieldset.actions button {
+	float: right;
+}
+
 .form-register fieldset h2 {
 	color: #c02926;
 	float: left;
@@ -223,4 +232,112 @@ a img {
 .form-register .meumobi-url input {
 	float: left;
 	margin-right: 5px;
+}
+
+.theme-picker {
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	background: #EFEFEF;
+	padding: 15px 15px 5px;
+	margin-bottom: 5px;
+}
+
+.theme-picker h3,
+.skin-picker h3 {
+	color: #777;
+	font: lighter 16px/16px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica,arial,sans-serif;
+	text-transform: lowercase;
+	margin: -2px 0 10px 4px;
+}
+
+.theme-picker ul {}
+
+.theme-picker ul li {
+	display: inline;
+	float: left;
+	margin-right: 18px;
+	margin-bottom: 10px;
+	width: 125px;
+}
+
+.theme-picker ul li a:hover img {
+	border-color: #AAA;
+}
+
+.theme-picker ul li.selected a img {
+	border-color: #c02926;
+}
+
+.theme-picker ul li a {
+	color: #333;
+	font-size: 11px;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	outline: none;
+	text-decoration: none;
+}
+
+.theme-picker ul li a img {
+	border: 4px solid #EFEFEF;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	height: 125px;
+	width: 125px;
+}
+
+.theme-picker ul li a span {
+	padding: 0 4px;
+}
+
+.skin-picker {
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border: 1px solid #DDD;
+	padding: 15px 15px 10px;
+	margin-bottom: 5px;
+}
+
+.skin-picker ul {}
+
+.skin-picker ul li {
+	display: inline;
+	float: left;
+	margin-right: 11px;
+	margin-bottom: 0px;
+	width: 60px;
+}
+
+.skin-picker ul li a:hover img {
+	border-color: #DDD;
+}
+
+.skin-picker ul li.selected a img {
+	border-color: #c02926;
+}
+
+.skin-picker ul li a {
+	color: #333;
+	font-size: 11px;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	outline: none;
+	text-decoration: none;
+}
+
+.skin-picker ul li a img {
+	border: 4px solid #FFF;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	height: 60px;
+	width: 60px;
+}
+
+.skin-picker ul li a span {
+	padding: 0 4px;
 }

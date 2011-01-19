@@ -69,7 +69,11 @@
     </div>
 </fieldset>
 
-<a href="#" class="fieldset-expand">informações do negócio <span>opcional</span></a>
+<fieldset class="actions">
+<?php echo $this->form->submit(__('Avançar ›'), array(
+    'class' => 'ui-button red large'
+)) ?>
+</fieldset>
 
 <fieldset>
     <h2>informações do negócio</h2>
@@ -106,7 +110,7 @@
                     'div' => false,
                     'type' => 'text',
                     'class' => 'ui-text',
-                    'empty' => ''
+                    'empty' => 'dd'
                     )) ?><span>.meumobi.com</span>
                 </p>
                 <div class="clear"></div>
@@ -116,7 +120,8 @@
     </div>
 </fieldset>
 
-<fieldset>
+<a href="#" class="fieldset-expand">fonte de notícias rss <span>opcional</span></a>
+<fieldset style="display:none">
     <h2>fonte de notícias rss</h2>
     <div class="field-group">
         <div class="form-grid-460 first">
@@ -132,7 +137,8 @@
     </div>
 </fieldset>
 
-<fieldset>
+<a href="#" class="fieldset-expand">localização <span>opcional</span></a>
+<fieldset style="display:none">
     <h2>localização</h2>
     <div class="field-group">
         <div class="form-grid-460 first">
@@ -219,7 +225,8 @@
     </div>
 </fieldset>
 
-<fieldset>
+<a href="#" class="fieldset-expand">informações de contato <span>opcional</span></a>
+<fieldset style="display:none">
     <h2>informações de contato</h2>
     <div class="field-group">
         
@@ -247,7 +254,8 @@
     </div>
 </fieldset>
 
-<fieldset>
+<a href="#" class="fieldset-expand">horários de funcionamento <span>opcional</span></a>
+<fieldset style="display:none">
     <h2>horário de funcionamento</h2>
     <div class="field-group">
         <div class="form-grid-460 first">
@@ -262,7 +270,8 @@
     </div>
 </fieldset>
 
-<fieldset>
+<a href="#" class="fieldset-expand">links na web <span>opcional</span></a>
+<fieldset style="display:none">
     <h2>links na web</h2>
     <div class="field-group">
         <div class="form-grid-460 first">
@@ -297,10 +306,78 @@
     </div>
 </fieldset>
 
-<?php echo $this->form->close(__('Avançar'), array(
-    'class' => 'ui-button large'
+<fieldset class="actions">
+<?php echo $this->form->submit(__('Avançar ›'), array(
+    'class' => 'ui-button red large'
 )) ?>
+</fieldset>
 
+<fieldset>
+    <h2>logotipo</h2>
+    <div class="field-group">
+        <div class="form-grid-460 first">
+            <span class="optional">Opcional</span>
+            <?php echo $this->form->input('logo', array(
+                'label' => __('Logotipo'),
+                'type' => 'file',
+                'class' => 'ui-text large',
+                'empty' => ''
+            )) ?>
+            <small>Para melhor aparência do logotipo no seu site mobi, recomendamos utilizar uma imagem com fundo transparente, no formato GIF ou PNG. Tamanho máximo 500kb.</small>
+        </div>
+    </div>
+</fieldset>
+
+<fieldset>
+    <h2>temas</h2>
+    <div class="field-group">
+        <div class="form-grid-460 first">
+            <small style="margin: 0 0 15px 0">Você pode customizar a aparência de seu site mobi para deixá-lo com a cara de sua empresa. Escolha um dos temas abaixo e depois personalize-o com as cores da sua empresa.</small>
+            
+            <div class="theme-picker">
+                <h3>Escolha um tema</h3>
+                <ul>
+                    <li><a href="#"><img src="http://www-sop.inria.fr/ariana/Projets/P2R/commons/images/blank.gif" alt="blank" /><span>Tema 1</span></a></li>
+                    <li><a href="#"><img src="http://www-sop.inria.fr/ariana/Projets/P2R/commons/images/blank.gif" alt="blank" /><span>Tema 2</span></a></li>
+                    <li><a href="#"><img src="http://www-sop.inria.fr/ariana/Projets/P2R/commons/images/blank.gif" alt="blank" /><span>Tema 3</span></a></li>
+                </ul>
+                <div class="clear"></div>
+            </div>
+            <?php echo $this->form->input('theme', array(
+                'label' => false,
+                'div' => false,
+                'type' => 'hidden'
+            )) ?>
+            
+            <div class="skin-picker">
+                <h3>Personalize o tema</h3>
+                <ul>
+                    <li><a href="#"><img src="http://www-sop.inria.fr/ariana/Projets/P2R/commons/images/blank.gif" alt="blank" /></a></li>
+                    <li><a href="#"><img src="http://www-sop.inria.fr/ariana/Projets/P2R/commons/images/blank.gif" alt="blank" /></a></li>
+                    <li><a href="#"><img src="http://www-sop.inria.fr/ariana/Projets/P2R/commons/images/blank.gif" alt="blank" /></a></li>
+                    <li><a href="#"><img src="http://www-sop.inria.fr/ariana/Projets/P2R/commons/images/blank.gif" alt="blank" /></a></li>
+                    <li><a href="#"><img src="http://www-sop.inria.fr/ariana/Projets/P2R/commons/images/blank.gif" alt="blank" /></a></li>
+                    <li><a href="#"><img src="http://www-sop.inria.fr/ariana/Projets/P2R/commons/images/blank.gif" alt="blank" /></a></li>
+                    <li><a href="#"><img src="http://www-sop.inria.fr/ariana/Projets/P2R/commons/images/blank.gif" alt="blank" /></a></li>
+                    <li><a href="#"><img src="http://www-sop.inria.fr/ariana/Projets/P2R/commons/images/blank.gif" alt="blank" /></a></li>
+                    <li><a href="#"><img src="http://www-sop.inria.fr/ariana/Projets/P2R/commons/images/blank.gif" alt="blank" /></a></li>
+                    <li><a href="#"><img src="http://www-sop.inria.fr/ariana/Projets/P2R/commons/images/blank.gif" alt="blank" /></a></li>
+                    <li><a href="#"><img src="http://www-sop.inria.fr/ariana/Projets/P2R/commons/images/blank.gif" alt="blank" /></a></li>
+                    <li><a href="#"><img src="http://www-sop.inria.fr/ariana/Projets/P2R/commons/images/blank.gif" alt="blank" /></a></li>
+                </ul>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+</fieldset>
+
+<fieldset class="actions">
+<?php echo $this->form->submit(__('Finalizar ›'), array(
+    'class' => 'ui-button red large'
+)) ?>
+</fieldset>
+
+</form>
 
 <!--
 <?php echo $this->form->create('/sites/add', array(
