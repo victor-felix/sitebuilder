@@ -101,6 +101,43 @@
                 </div>
             </div>
         </li>
+        
+        <!-- add subcategory -->
+        <li class="level-2-form">
+            <?php echo $this->form->create('/categories/add') ?>
+            <?php echo $this->form->input('title', array(
+                'type' => 'text',
+                'div' => false,
+                'label' => false,
+                'class' => 'ui-text'
+            )) ?>
+            <?php echo $this->form->submit('salvar', array(
+                'class' => 'ui-button highlight'
+            )) ?>
+            <?php echo $this->html->link('cancelar', '#', array(
+                'class' => 'ui-button small'
+            )); ?>
+            <?php echo $this->form->close() ?>
+        </li>
+        
+        <!-- add category -->
+        <li class="level-1-form">
+            <?php echo $this->form->create('/categories/add') ?>
+            <?php echo $this->form->input('title', array(
+                'type' => 'text',
+                'div' => false,
+                'label' => false,
+                'class' => 'ui-text'
+            )) ?>
+            <?php echo $this->form->submit('salvar', array(
+                'class' => 'ui-button highlight'
+            )) ?>
+            <?php echo $this->html->link('cancelar', '#', array(
+                'class' => 'ui-button small'
+            )); ?>
+            <?php echo $this->form->close() ?>
+        </li>
+        
     </ul>
     <!--
     <table>

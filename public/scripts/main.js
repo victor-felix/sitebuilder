@@ -73,4 +73,15 @@ $(function() {
 		$(this).parent().next(".delete-confirm").fadeIn("fast");
 	})
 	
+	/* TO DO */
+	$('.delete-confirm .ui-button.delete').click(function(e){
+		$(this).parent().parent().parent().slideUp();
+		e.preventDefault();
+	})
+	
+	$('.delete-confirm .ui-button:nth-of-type(2)').click(function(e){
+		$(this).parent().parent().hide();
+		e.preventDefault();
+	})
+	
 });
