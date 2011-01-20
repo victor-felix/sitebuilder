@@ -2,7 +2,7 @@
 <html>
     <head>
         <?php echo $this->html->charset() ?>
-        <title><?php echo $this->pageTitle ?></title>
+        <title>MeuMobi - <?php echo $this->pageTitle ?></title>
 
 		<?php echo $this->html->stylesheet('base', 'uikit', 'categories', 'edit-forms', 'businessitems'); ?>
     </head>

@@ -4,7 +4,7 @@
     )) ?>
     </div>
     <div class="grid-8">
-        <h1><?php echo __($category->title) ?></h1>
+        <h1><?php echo $this->pageTitle =  __($category->title) ?></h1>
         <p class="breadcrumb"></p>
         
         <?php echo $this->html->link(__('adicionar produto'), '/business_items/add/' . $category->id, array(
