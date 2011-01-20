@@ -10,7 +10,7 @@
     <body>
 		<div id="header">
 		    <div class="logo">
-			    <?php echo $this->html->link($this->html->image('layout/logo.png', array('alt'=>'MeuMobi')), '/', array('class'=>'logo')) ?>
+			    <?php echo $this->html->link($this->html->image('layout/logo-home.png', array('alt'=>'MeuMobi')), '/', array('class'=>'logo')) ?>
 			</div>
 			
 			<p class="login">

@@ -31,6 +31,12 @@
 			<div class="clear"></div>
 		</div>
 	
+	    <?php //if($success = Session::flash('success')) ?>
+	    <div id="success-feed">
+	        <p><?php echo $success ?></p>
+	    </div>
+	    <?php //endif ?>
+	
 	    <div id="content">
         <?php echo $this->contentForLayout ?>
         </div>
