@@ -81,6 +81,10 @@ class Sites extends AppModel {
         return Model::load('Images')->firstByRecord('SiteLogos', $this->id);
     }
     
+    public function link() {
+        return 'http://' . $this->domain;
+    }
+    
     public function rootCategory() {
         return Model::load('Categories')->getRoot($this->id);
     }
