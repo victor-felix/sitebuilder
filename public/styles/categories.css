@@ -172,3 +172,43 @@
 	.delete-confirm .ui-button {
 		margin-top: 12px;
 	}
+	
+	.delete-confirm .wrapper {
+		height: 50px;
+		width: 570px;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		margin-left: -285px;
+		margin-top: -25px;
+	}
+	
+.categories-list li.level-1-form form {
+	margin-left: 50px;
+	margin-top: 11px;
+}
+
+	.categories-list li.level-1-form input {
+		color: #444;
+		font-size: 16px;
+		height: 19px;
+		line-height: 24px;
+	}
+
+.categories-list li.level-2-form {
+	background-image: url('/images/categories/dash.gif');
+	background-position: 55px 20px;
+	background-repeat: no-repeat;
+}
+
+	.categories-list li.level-2-form form {
+		margin-left: 115px;
+		margin-top: 10px;
+	}
+	
+	.categories-list li.level-2-form input {
+		color: #777;
+		font-size: 14px;
+		height: 18px;
+		line-height: 24px;
+	}

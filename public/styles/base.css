@@ -138,10 +138,12 @@ a img {
 	background: #FFF;
 	clear: both;
 	margin: 0 auto 50px auto;
+	overflow: hidden;
+	position: relative;
 	width: 940px;
 }
 
-#content #page-heading {
+#content .page-heading {
 	height: 120px;
 }
 
@@ -149,6 +151,8 @@ a img {
 	border-top: 11px solid #DBDBDB;
 	color: #B5B5B5;
 	font: lighter 48px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica,arial,sans-serif;
+	height: 60px;
+	overflow: hidden;
 	letter-spacing: -1px;
 	text-transform: lowercase;
 }
@@ -160,5 +164,14 @@ a img {
 
 #footer #footer-wrapper {
 	margin: 0 auto;
+	width: 940px;
+}
+
+.slidingpanels {
+	width: 2080px;
+}
+
+.slidepanel {
+	float: left;
 	width: 940px;
 }

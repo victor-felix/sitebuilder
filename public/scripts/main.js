@@ -5,7 +5,7 @@ var Utils = {
             /Ò|ò|Ó|ó|Ô|ô|ø|Õ|õ/g, /Ù|ù|Ú|ú|ů|Û|û|Ü|ü/g, /ç|Ç/g, /ñ|Ñ/g,
             /ä|æ|Ä|ä/g, /Ö|ö/g, /ß/g, /[^\w\s]/g, /\s/g, /^-+|-+$/g, /-{2,}/g
         ];
-        var replaces = ['a', 'e', 'i', 'o', 'u', 'c', 'n', 'ae', 'oe', 'ss', ' ', '-', '', '-'];
+        var replaces = ['a', 'e', 'i', 'o', 'u', 'c', 'n', 'ae', 'oe', 'ss', ' ', '', '', ''];
         
         $.each(patterns, function(i, pattern) {
             string = string.replace(pattern, replaces[i]);
@@ -65,4 +65,24 @@ $(function() {
 		$(this).parent().next(".delete-confirm").fadeIn("fast");
 	})
 	
+	$('#form-edit-businessitem .delete').click(function(e){
+		e.preventDefault();
+		$(".delete-confirm").fadeIn("fast");
+	})
+	
+	/* TO DO */
+	$('.delete-confirm .ui-button.delete').click(function(e){
+		$(this).parent().parent().parent().slideUp();
+		e.preventDefault();
+	})
+	
+	$('.delete-confirm .ui-button:nth-of-type(2)').click(function(e){
+		$(this).parent().parent().hide();
+		e.preventDefault();
+	})
+	
+	$('.manage').click(function(e){
+		$(".slidingpanels").animate({'margin-left': -940}, "slow");
+		e.preventDefault();
+	})
 });

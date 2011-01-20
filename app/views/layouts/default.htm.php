@@ -4,7 +4,7 @@
         <?php echo $this->html->charset() ?>
         <title><?php echo $this->pageTitle ?></title>
 
-		<?php echo $this->html->stylesheet('base', 'uikit', 'categories'); ?>
+		<?php echo $this->html->stylesheet('base', 'uikit', 'categories', 'edit-forms', 'businessitems'); ?>
     </head>
     
     <body>
@@ -18,7 +18,7 @@
 			        <p class="business-name">Balada Mix</h1>
 			        <div class="user">
 			            <p>Olá <strong>Rafael</strong></p>
-			            <?php echo $this->html->link('sair ›', '/') ?>
+			            <?php echo $this->html->link('sair ›', '/logout') ?>
 			        </div>
 			    </div>
 			    <ul>
