@@ -172,9 +172,41 @@ small.facts {
 	
 h2.porque {
 	color: #9b9794;
+	clear: both;
 	font: 38px "Myriad Pro", "Myriad Web", "Helvetica Neue", Helvetica,arial,sans-serif;
 	font-style: italic;
 	letter-spacing: -1px;
 	margin-bottom: -45px;
 	text-transform: lowercase;
+}
+
+.features {
+	margin-bottom: 20px;
+}
+
+.features li {
+	border-bottom: 1px solid #DDD;
+	display: inline;
+	float: left;
+	width: 220px;
+	height: 140px;
+	margin-bottom: 40px;
+	list-style: none;
+	margin-left: 20px;
+}
+
+.features li.first {
+	margin-left: 0;
+}
+
+.features li p.title {
+	color: #C02926;
+	font: 18px/18px "Myriad Pro", "Myriad Web", "Helvetica Neue", Helvetica,arial,sans-serif;
+	margin-bottom: 10px;
+}
+
+.features li p.description {
+	color: #9b9794;
+	font-size: 12px;
+	line-height: 16px;
 }

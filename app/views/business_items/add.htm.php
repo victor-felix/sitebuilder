@@ -5,7 +5,7 @@
     </div>
     <div class="grid-8">
         <h1><?php echo __('Adicionar %s', $type->title) ?></h1>
-        <p class="breadcrumb">Cardápio / Pratos / Entradas</p>
+        <p class="breadcrumb"></p>
     </div>
     <div class="clear"></div>
 </div>

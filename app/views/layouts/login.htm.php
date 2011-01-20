@@ -6,7 +6,6 @@
 
 		<?php echo $this->html->stylesheet('register', 'uikit'); ?>
     </head>
-    
     <body>
 	
 		<div id="header">
@@ -19,9 +18,9 @@
     	    <div class="head">
     	        <h1>crie seu mobi</h1>
     	        <ul class="steps">
-    	            <li <?php if(!isset($this->selectedTab) || $selectedTabclass == 0): ?>class="current"<?php endif ?>>informações pessoais</li>
-    	            <li <?php if(isset($this->selectedTab) && $selectedTabclass == 1): ?>class="current"<?php endif ?>>informações do negócio</li>
-    	            <li <?php if(isset($this->selectedTab) && $selectedTabclass == 2): ?>class="current"<?php endif ?>>customização e logotipo</li>
+    	            <li class="current">informações pessoais</li>
+    	            <li>informações do negócio</li>
+    	            <li>customização e logotipo</li>
     	        </ul>
     	        <div class="clear"></div>
     	    </div>

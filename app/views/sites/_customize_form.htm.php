@@ -20,12 +20,12 @@
             <small style="margin: 0 0 15px 0">Você pode customizar a aparência de seu site mobi para deixá-lo com a cara de sua empresa. Escolha um dos temas abaixo e depois personalize-o com as cores da sua empresa.</small>
             
             <div class="theme-picker">
-                <h3>Escolha um tema</h3>
+                <h3>Escolha um tema <em>(mais temas em breve)</em></h3>
                 <ul>
                     <?php foreach($themes as $slug => $theme): ?>
                         <li>
                             <a href="<?php echo '#' . $slug ?>">
-                                <img src="http://www-sop.inria.fr/ariana/Projets/P2R/commons/images/blank.gif" alt="blank" />
+                                <?php echo $this->html->image('themes/'.$slug.'.png'); ?>
                                 <span><?php echo $theme ?></span>
                             </a>
                         </li>
@@ -44,9 +44,7 @@
                 <ul>
                     <?php foreach($skins as $skin): ?>
                         <li>
-                            <a href="<?php echo '#' . $skin ?>">
-                                <img src="http://www-sop.inria.fr/ariana/Projets/P2R/commons/images/blank.gif" alt="" />
-                            </a>
+                            <a href="<?php echo '#' . $skin ?>" style="background-color:#<?php echo $skin; ?>"></a>
                         </li>
                     <?php endforeach ?>
                 </ul>

@@ -6,7 +6,7 @@ class BusinessItemsController extends AppController {
     public function index($parent_id = null) {
         $this->set(array(
             'business_items' => $this->BusinessItems->allByParentId($parent_id),
-            'category' => '',
+            'category' => $this->Categories->firstById($parent_id)
         ));
     }
     
