@@ -252,3 +252,15 @@ h2.porque {
 #login-window button {
 	margin-top: 10px;
 }
+
+#login-window .cancel {
+	color: #C02926;
+	font-size: 11px;
+	text-decoration: none;
+	margin-top: 17px;
+	float: right;
+}
+
+#login-window .cancel:hover {
+	text-decoration: underline;
+}

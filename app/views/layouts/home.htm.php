@@ -45,6 +45,9 @@
                     <?php echo $this->form->submit('Login', array(
                         'class' => 'ui-button red'
                     ))?>
+                    <?php echo $this->html->link('cancelar', '#', array(
+                        'class' => 'cancel'
+                    ))?>
                 <?php echo $this->form->close();?>
             </div>
 		</div>
