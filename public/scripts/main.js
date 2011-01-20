@@ -89,7 +89,7 @@ $(function() {
 	})
 	
 	$('#success-feedback').click(function(e){
-		$(this).slideUp();
+		$(this).slideUp("fast");
 		e.preventDefault();
 	});
 	
