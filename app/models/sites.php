@@ -10,12 +10,10 @@ class Sites extends AppModel {
         'domain' => array(
             array(
                 'rule' => array('unique', 'domain'),
-                'on' => 'create',
                 'message' => 'O domínio já foi escolhido'
             ),
             array(
                 'rule' => 'asciiOnly',
-                'on' => 'create',
                 'message' => 'O domínio só pode conter caracteres minúsculos, hifens e underscores'
             )
         ),

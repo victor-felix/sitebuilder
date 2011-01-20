@@ -26,7 +26,8 @@ class Users extends AppModel {
         ),
         'password' => array(
             'rule' => array('minLength', 6),
-            'message' => 'A senha deve conter 6 ou mais caracteres'
+            'message' => 'A senha deve conter 6 ou mais caracteres',
+            'allowEmpty' => true
         ),
         'confirm_password' => array(
             'rule' => array('confirmField', 'password'),

@@ -17,11 +17,8 @@ class BusinessItemsController extends AppController {
             $business_item->site = $site;
             if($business_item->validate()) {
                 $business_item->save();
+                Session::writeFlash("success", __("Item adicionado com sucesso."));
                 $this->redirect('/business_items/index/' . $business_item->parent_id);
-            }
-            else {
-                die(__('Erro de Validação'));
-                // TODO http://ipanemax.goplanapp.com/msb/ticket/view/8
             }
         }
         $this->set(array(
@@ -39,11 +36,8 @@ class BusinessItemsController extends AppController {
             $this->data['site'] = $site;
             if($this->BusinessItems->validate($this->data)) {
                 $this->BusinessItems->save($this->data);
+                Session::writeFlash("success", __("Item editado com sucesso."));
                 $this->redirect('/business_items/index/' . $business_item->parent_id);
-            }
-            else {
-                die(__('Erro de Validação'));
-                // TODO http://ipanemax.goplanapp.com/msb/ticket/view/8
             }
         }
         $this->set(array(
@@ -57,6 +51,7 @@ class BusinessItemsController extends AppController {
     public function delete($id = null) {
         $business_item = $this->BusinessItems->firstById($id);
         $this->BusinessItems->delete($id);
+        Session::writeFlash("success", __("Item excluído com sucesso."));
         $this->redirect('/business_items/index/' . $business_item->parent_id);
     }
 }

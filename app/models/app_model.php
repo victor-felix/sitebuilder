@@ -32,12 +32,14 @@ class AppModel extends Model {
     }
     
     protected function unique($value, $field) {
-        return !$this->count(array(
-            'conditions' => array(
-                $field => $value,
-                'id <>' => $this->id
-            )
+        $params = array('conditions' => array(
+            $field => $value
         ));
+        if(!is_null($this->id)) {
+            $params['conditions']['id <>'] = $this->id;
+        }
+        
+        return !$this->count($params);
     }
 
     protected function confirmField($value, $field) {

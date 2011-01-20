@@ -29,7 +29,8 @@ class Auth {
     }
     
     public static function user() {
-        Model::load('Users');
-        return unserialize(Session::read(self::SESSION_KEY));
+        $model = Model::load('Users');
+        $serialized = unserialize(Session::read(self::SESSION_KEY));
+        return new Users($serialized->data());
     }
 }

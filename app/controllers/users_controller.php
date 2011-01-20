@@ -3,7 +3,7 @@
 class UsersController extends AppController {
     protected $redirectIf = array('register', 'login');
     
-    public function beforeFilter() {
+    protected function beforeFilter() {
         if(Auth::loggedIn()) {
             foreach($this->redirectIf as $rule) {
                 if($rule == $this->param('action')) {
@@ -45,12 +45,8 @@ class UsersController extends AppController {
             $user->updateAttributes($this->data);
             if($user->validate()) {
                 $user->save();
+                Session::writeFlash("success", __("Configurações salvas com sucesso."));
                 $this->redirect($redirect);
-            }
-            else {
-                pr($user->errors());
-                die(__('Erro de Validação'));
-                // TODO http://ipanemax.goplanapp.com/msb/ticket/view/8
             }
         }
         $this->set(array(

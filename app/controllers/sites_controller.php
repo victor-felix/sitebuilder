@@ -29,11 +29,8 @@ class SitesController extends AppController {
             $site->updateAttributes($this->data);
             if($site->validate()) {
                 $site->save();
+                Session::writeFlash("success", __("Configurações salvas com sucesso."));
                 $this->redirect($redirect_to);
-            }
-            else {
-                die(__('Erro de Validação'));
-                // TODO http://ipanemax.goplanapp.com/msb/ticket/view/8
             }
         }
         $this->set(array(
@@ -47,11 +44,8 @@ class SitesController extends AppController {
             $site->updateAttributes($this->data);
             if($site->validate()) {
                 $site->save();
+                Session::writeFlash("success", __("Configurações salvas com sucesso."));
                 $this->redirect($redirect_to);
-            }
-            else {
-                die(__('Erro de Validação'));
-                // TODO http://ipanemax.goplanapp.com/msb/ticket/view/8
             }
         }
         
