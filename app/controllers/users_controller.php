@@ -1,6 +1,18 @@
 <?php
 
 class UsersController extends AppController {
+    protected $redirectIf = array('register', 'login');
+    
+    public function beforeFilter() {
+        if(Auth::loggedIn()) {
+            foreach($this->redirectIf as $rule) {
+                if($rule == $this->param('action')) {
+                    $this->redirect('/categories');
+                }
+            }
+        }
+    }
+    
     public function edit() {
         $user = Auth::user();
         $this->saveUser($user, '/users/edit');

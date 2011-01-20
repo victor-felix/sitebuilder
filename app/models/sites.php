@@ -2,7 +2,6 @@
 
 class Sites extends AppModel {
     protected $getters = array('feed_url');
-    protected $beforeValidate = array('addMeuMobi');
     protected $beforeSave = array('getFeedId');
     protected $afterSave = array('saveLogo', 'createRootCategory');
     protected $beforeDelete = array('checkAndDeleteFeed', 'deleteImages', 'deleteCategories',
@@ -16,11 +15,6 @@ class Sites extends AppModel {
             ),
             array(
                 'rule' => 'asciiOnly',
-                'on' => 'create',
-                'message' => 'O domínio só pode conter caracteres minúsculos, hifens e underscores'
-            ),
-            array(
-                'rule' => 'subdomain',
                 'on' => 'create',
                 'message' => 'O domínio só pode conter caracteres minúsculos, hifens e underscores'
             )
@@ -141,7 +135,7 @@ class Sites extends AppModel {
             }
             else {
                 if($this->id) {
-                    $this->checkAndDeleteFeed();
+                    $this->checkAndDeleteFeed($this->id);
                 }
                 
                 $data['feed_id'] = null;
@@ -198,20 +192,6 @@ class Sites extends AppModel {
         if($created) {
             Model::load('Categories')->createRoot($this);
         }
-    }
-    
-    // add meumobi.com to all domains - may change in the future
-    protected function addMeuMobi($data) {
-        if(array_key_exists('domain', $this->data) && !$this->subdomain($this->data['domain'])) {
-            $this->data['domain'] = $this->data['domain'] . '.meumobi.com';
-        }
-        
-        return $this->data;
-    }
-    
-    // only allows domains in meumobi.com - may change in the future
-    protected function subdomain($value) {
-        return preg_match('/[\w_-]+.meumobi.com$/', $value);
     }
 }
 

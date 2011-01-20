@@ -17,12 +17,12 @@
 			    <div class="navigation">
 			        <p class="business-name">Balada Mix</h1>
 			        <div class="user">
-			            <p>Olá <strong>Rafael</strong></p>
+			            <p>Olá <strong><?php echo Auth::user()->firstname() ?></strong></p>
 			            <?php echo $this->html->link('sair ›', '/logout') ?>
 			        </div>
 			    </div>
 			    <ul>
-			        <li><?php echo $this->html->link('Cardápio', '/categories') ?></li>
+			        <li><?php echo $this->html->link(Auth::user()->site()->rootCategory()->title, '/categories') ?></li>
 			        <li><?php echo $this->html->link('Configurações', '/settings') ?></li>
 			        <li><?php echo $this->html->link('Customização', '/settings/customize') ?></li>
 			        <li><?php echo $this->html->link('Minha Conta', '/settings/account') ?></li>

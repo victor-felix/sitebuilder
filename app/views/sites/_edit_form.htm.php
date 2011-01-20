@@ -73,7 +73,7 @@
         
         <div class="form-grid-220 first">
             <span class="optional">Opcional</span>
-            <?php echo $this->form->input('street', array(
+            <?php echo $this->form->input('number', array(
                 'label' => __('Número'),
                 'type' => 'text',
                 'class' => 'ui-text'
@@ -112,7 +112,7 @@
             <?php echo $this->form->input('state', array(
                 'label' => __('Estado'),
                 'type' => 'select',
-                'options' => array('RJ'=>'Rio de Janeiro', 'SP'=>'São Paulo'),
+                'options' => Config::read('States'),
                 'class' => 'ui-select'
             )) ?>
         </div>
@@ -131,7 +131,7 @@
             <?php echo $this->form->input('country', array(
                 'label' => __('País'),
                 'type' => 'select',
-                'options' => array('BR'=>'Brasil', 'PT'=>'Portugal'),
+                'options' => Config::read('Countries'),
                 'class' => 'ui-select'
             )) ?>
         </div>

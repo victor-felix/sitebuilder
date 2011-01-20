@@ -39,7 +39,7 @@ class BusinessItemsController extends AppController {
             $this->data['site'] = $site;
             if($this->BusinessItems->validate($this->data)) {
                 $this->BusinessItems->save($this->data);
-                $this->redirect('/business_items');
+                $this->redirect('/business_items/index/' . $business_item->parent_id);
             }
             else {
                 die(__('Erro de Validação'));

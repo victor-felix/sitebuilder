@@ -16,6 +16,21 @@ class AppModel extends Model {
         return $config;
     }
     
+    public function firstById($id) {
+        $first = $this->first(array(
+            'conditions' => array(
+                'id' => $id
+            )
+        ));
+        
+        if(is_null($first)) {
+            throw new Exception('record not found');
+        }
+        else {
+            return $first;
+        }
+    }
+    
     protected function unique($value, $field) {
         return !$this->count(array(
             'conditions' => array(

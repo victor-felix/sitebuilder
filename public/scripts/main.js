@@ -80,7 +80,7 @@ $(function() {
 	/* TO DO */
 	$('.delete-confirm .ui-button.delete').click(function(e){
 		$(this).parent().parent().parent().slideUp();
-		e.preventDefault();
+		// e.preventDefault();
 	})
 	
 	$('.delete-confirm .ui-button:nth-of-type(2)').click(function(e){
