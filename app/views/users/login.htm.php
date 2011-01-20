@@ -7,11 +7,10 @@ $this->showTitle = false; ?>
 <fieldset>
     <h2>login</h2>
     <div class="field-group">
-        
         <div class="form-grid-220 first">
         <?php echo $this->form->input('email', array(
             'label' => __('E-Mail'),
-            'class' => 'ui-text'
+            'class' => 'ui-text error'
         )) ?>
         </div>
         
