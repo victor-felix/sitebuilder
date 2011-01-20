@@ -1,7 +1,7 @@
 <div class="page-heading">
     <div class="grid-4 first">&nbsp;</div>
     <div class="grid-8">
-        <h1><?php echo __('Configurações') ?></h1>
+        <h1><?php echo $this->pageTitle = __('Configurações') ?></h1>
     </div>
     <div class="clear"></div>
 </div>
