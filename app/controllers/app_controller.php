@@ -4,7 +4,7 @@ require 'lib/core/security/Sanitize.php';
 require 'lib/utils/Auth.php';
 
 class AppController extends Controller {
-    public function beforeFilter() {
+    protected function beforeFilter() {
         if($this->isXhr()) {
             $this->autoRender = false;
         }

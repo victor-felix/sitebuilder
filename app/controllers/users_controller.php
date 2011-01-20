@@ -3,7 +3,7 @@
 class UsersController extends AppController {
     protected $redirectIf = array('register', 'login');
     
-    public function beforeFilter() {
+    protected function beforeFilter() {
         if(Auth::loggedIn()) {
             foreach($this->redirectIf as $rule) {
                 if($rule == $this->param('action')) {
