@@ -1,11 +1,11 @@
 <div class="page-heading">
-    <div class="grid-4 first"><?php echo $this->html->link(__('‹ voltar'), '#BACK', array(
+    <div class="grid-4 first"><?php echo $this->html->link(__('‹ voltar'), 'javascript:history.back()', array(
         'class' => 'ui-button large back'
     )) ?>
     </div>
     <div class="grid-8">
         <h1><?php echo __($business_item->values()->title) ?></h1>
-        <p class="breadcrumb">Cardápio / Pratos / Entradas</p>
+        <p class="breadcrumb"></p>
     </div>
     <div class="clear"></div>
 </div>
@@ -38,7 +38,7 @@
     </fieldset>
 
     <fieldset class="actions">
-        <?php echo $this->html->link(__('‹ voltar'), '#BACK', array(
+        <?php echo $this->html->link(__('‹ voltar'), 'javascript:history.back()', array(
             'class' => 'ui-button large back'
         )) ?>
         <?php echo $this->form->submit(__('Salvar'), array(

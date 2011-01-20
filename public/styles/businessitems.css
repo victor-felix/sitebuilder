@@ -26,9 +26,14 @@
 	overflow: hidden;
 	padding-left: 320px;
 }
+.businessitems-list li a.photo {
+	background: #EEE;
+	float: left;
+	height: 80px;
+	width: 80px;
+}
 
 .businessitems-list li a.photo img {
-	float: left;
 	height: 80px;
 	width: 80px;
 }

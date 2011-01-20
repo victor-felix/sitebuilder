@@ -16,25 +16,26 @@
 
 <div class="grid-8">
     <ul class="categories-list">
-        <li class="level-0">
-            <span class="title" title="<?php echo __('clique para editar') ?>">Teste</span>
+        
+        <?php foreach($categories as $i=>$category): ?>
+        
+        <?php
+        $level = 0;
+        if($i > 0)
+            $level = ($category->parent_id == $categories[0]->id) ? 1 : 2;
+        ?>
+        <li class="level-<?php echo $level ?>">
+            <?php if($category->parent_id != 0) echo $this->html->link($this->html->image('categories/add-subcat.png'), '#ADD', array('class' => 'ui-button ui-button-add highlight')) ?>
+            <span class="title" title="<?php echo __('clique para editar') ?>"><?php echo $category->title; ?></span>
             <div class="controls">
-                <?php echo $this->html->link(__('adicionar produto'), '/manage', array('class' => 'ui-button highlight')) ?>
-                <?php echo $this->html->link(__('gerenciar produtos'), '/manage', array('class' => 'ui-button manage')) ?>
-            </div>
-        </li>
-        <li class="level-1">
-            <?php echo $this->html->link($this->html->image('categories/add-subcat.png'), '/manage', array('class' => 'ui-button ui-button-add highlight')) ?>
-            <span class="title" title="<?php echo __('clique para editar') ?>">Teste</span>
-            <div class="controls">
-                <?php echo $this->html->link(__('adicionar produto'), '/manage', array('class' => 'ui-button highlight')) ?>
-                <?php echo $this->html->link(__('gerenciar produtos'), '/manage', array('class' => 'ui-button ')) ?>
-                <?php echo $this->html->link($this->html->image('categories/delete.gif'), '/manage', array('class' => 'ui-button delete icon')) ?>
+                <?php echo $this->html->link(__('adicionar produto'), '/business_items/add', array('class' => 'ui-button highlight')) ?>
+                <?php echo $this->html->link(__('gerenciar produtos'), '/business_items/', array('class' => 'ui-button ')) ?>
+                <?php if($category->parent_id != 0) echo $this->html->link($this->html->image('categories/delete.gif'), '#DELETE', array('class' => 'ui-button delete icon')) ?>
             </div>
             <div class="delete-confirm">
                 <div class="wrapper">
-                    <p>Deseja realmente apagar <strong>Sobremesas</strong>? <small>Todos os produtos e subcategorias associados serão apagados.</small></p>
-                    <?php echo $this->html->link('Sim, apagar', '/categories/delete/1', array(
+                    <p>Deseja realmente apagar <strong><?php echo $category->title; ?></strong>? <small>Todos os produtos e subcategorias associados serão apagados.</small></p>
+                    <?php echo $this->html->link('Sim, apagar', '/categories/delete/'.$category->id, array(
                         'class' => 'ui-button delete highlight'
                     )); ?>
                     <?php echo $this->html->link('Não, voltar', '#', array(
@@ -43,67 +44,10 @@
                 </div>
             </div>
         </li>
-        <li class="level-1">
-            <?php echo $this->html->link($this->html->image('categories/add-subcat.png'), '/manage', array('class' => 'ui-button ui-button-add highlight')) ?>
-            <span class="title" title="<?php echo __('clique para editar') ?>">Teste</span>
-            <div class="controls">
-                <?php echo $this->html->link(__('adicionar produto'), '/manage', array('class' => 'ui-button highlight')) ?>
-                <?php echo $this->html->link(__('gerenciar produtos'), '/manage', array('class' => 'ui-button ')) ?>
-                <?php echo $this->html->link($this->html->image('categories/delete.gif'), '/manage', array('class' => 'ui-button delete icon')) ?>
-            </div>
-            <div class="delete-confirm">
-                <div class="wrapper">
-                    <p>Deseja realmente apagar <strong>Sobremesas</strong>? <small>Todos os produtos e subcategorias associados serão apagados.</small></p>
-                    <?php echo $this->html->link('Sim, apagar', '/categories/delete/1', array(
-                        'class' => 'ui-button delete highlight'
-                    )); ?>
-                    <?php echo $this->html->link('Não, voltar', '#', array(
-                        'class' => 'ui-button'
-                    )); ?>
-                </div>
-            </div>
-        </li>
-        <li class="level-2">
-            <span class="title" title="<?php echo __('clique para editar') ?>">Teste</span>
-            <div class="controls">
-                <?php echo $this->html->link(__('adicionar produto'), '/manage', array('class' => 'ui-button highlight')) ?>
-                <?php echo $this->html->link(__('gerenciar produtos'), '/manage', array('class' => 'ui-button ')) ?>
-                <?php echo $this->html->link($this->html->image('categories/delete.gif'), '/manage', array('class' => 'ui-button delete icon')) ?>
-            </div>
-            <div class="delete-confirm">
-                <div class="wrapper">
-                    <p>Deseja realmente apagar <strong>Sobremesas</strong>? <small>Todos os produtos e subcategorias associados serão apagados.</small></p>
-                    <?php echo $this->html->link('Sim, apagar', '/categories/delete/1', array(
-                        'class' => 'ui-button delete highlight'
-                    )); ?>
-                    <?php echo $this->html->link('Não, voltar', '#', array(
-                        'class' => 'ui-button'
-                    )); ?>
-                </div>
-            </div>
-        </li>
-        <li class="level-2">
-            <span class="title" title="<?php echo __('clique para editar') ?>">Teste</span>
-            <div class="controls">
-                <?php echo $this->html->link(__('adicionar produto'), '/manage', array('class' => 'ui-button highlight')) ?>
-                <?php echo $this->html->link(__('gerenciar produtos'), '/manage', array('class' => 'ui-button ')) ?>
-                <?php echo $this->html->link($this->html->image('categories/delete.gif'), '/manage', array('class' => 'ui-button delete icon')) ?>
-            </div>
-            <div class="delete-confirm">
-                <div class="wrapper">
-                    <p>Deseja realmente apagar <strong>Sobremesas</strong>? <small>Todos os produtos e subcategorias associados serão apagados.</small></p>
-                    <?php echo $this->html->link('Sim, apagar', '/categories/delete/1', array(
-                        'class' => 'ui-button delete highlight'
-                    )); ?>
-                    <?php echo $this->html->link('Não, voltar', '#', array(
-                        'class' => 'ui-button'
-                    )); ?>
-                </div>
-            </div>
-        </li>
+        <?php endforeach ?>
         
         <!-- add subcategory -->
-        <li class="level-2-form">
+        <li class="level-2-form" style="display: none">
             <?php echo $this->form->create('/categories/add') ?>
             <?php echo $this->form->input('title', array(
                 'type' => 'text',
@@ -121,7 +65,7 @@
         </li>
         
         <!-- add category -->
-        <li class="level-1-form">
+        <li class="level-1-form" style="display: none">
             <?php echo $this->form->create('/categories/add') ?>
             <?php echo $this->form->input('title', array(
                 'type' => 'text',

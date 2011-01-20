@@ -30,11 +30,7 @@
             <?php echo $this->contentForLayout ?>
         </div>
         
-        <div id="footer">
-            <div id="footer-wrapper">
-                s
-            <div>
-        </div>
+        <?php echo $this->element("layouts/footer") ?>
         
         <?php echo $this->html->script('jquery', 'main') ?>
     </body>
