@@ -25,7 +25,7 @@
                     <?php foreach($themes as $slug => $theme): ?>
                         <li>
                             <a href="<?php echo '#' . $slug ?>">
-                                <?php echo $this->html->image('themes/'.$slug.'.png'); ?>
+                                <?php echo $this->html->image('themes/' . $slug . '.png') ?>
                                 <span><?php echo $theme ?></span>
                             </a>
                         </li>
@@ -44,7 +44,7 @@
                 <ul>
                     <?php foreach($skins as $skin): ?>
                         <li>
-                            <a href="<?php echo '#' . $skin ?>" style="background-color:#<?php echo $skin; ?>"></a>
+                            <a href="<?php echo '#' . $skin ?>" style="background-color:#<?php echo $skin ?>"></a>
                         </li>
                     <?php endforeach ?>
                 </ul>

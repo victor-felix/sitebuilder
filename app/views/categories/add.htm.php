@@ -1,5 +1,5 @@
 <div class="page-heading">
-    <div class="grid-4 first"><?php echo $this->html->link(__('‹ voltar'), 'javascript:history.back()', array(
+    <div class="grid-4 first"><?php echo $this->html->link(__('‹ voltar'), '/categories', array(
         'class' => 'ui-button large back'
     )) ?>
     </div>
@@ -10,27 +10,24 @@
 </div>
 
 <?php echo $this->form->create('/categories/add', array(
-    'class' => 'form-edit'
+    'class' => 'form-edit',
+    'object' => $category
 )) ?>
 
 <fieldset>
     <h2>categoria</h2>
     <div class="field-group">
         <div class="form-grid-460 first">
-        <?php echo $this->form->input('title', array(
-            'label' => __('Título'),
-            'class' => 'ui-text large'
-        )) ?>
+            <?php echo $this->form->input('title', array(
+                'label' => __('Título'),
+                'class' => 'ui-text large'
+            )) ?>
         </div>
 
-        <div class="form-grid-460 first">
         <?php echo $this->form->input('parent_id', array(
-            'label' => __('Pai'),
-            'type' => 'select',
-            'options' => $parents,
-            'class' => 'ui-select'
+            'type' => 'hidden',
+            'value' => $parent_id
         )) ?>
-        </div>
     </div>
 </fieldset>
 

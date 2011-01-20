@@ -17,7 +17,7 @@
 			    <div class="navigation">
 			        <p class="business-name">Balada Mix</h1>
 			        <div class="user">
-			            <p>Olá <strong>Rafael</strong></p>
+			            <p>Olá <strong><?php echo Auth::user()->firstname() ?></strong></p>
 			            <?php echo $this->html->link('sair ›', '/logout') ?>
 			        </div>
 			    </div>

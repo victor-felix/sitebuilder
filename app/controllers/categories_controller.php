@@ -14,13 +14,13 @@ class CategoriesController extends AppController {
         ));
     }
     
-    public function add() {
+    public function add($parent_id = null) {
         $site = $this->getCurrentSite();
-        
+        $category = new Categories($this->data);
         if(!empty($this->data)) {
-            $this->data['site_id'] = $site->id;
-            if($this->Categories->validate($this->data)) {
-                $this->Categories->save($this->data);
+            $category->site_id = $site->id;
+            if($category->validate()) {
+                $category->save();
                 $this->redirect('/categories');
             }
             else {
@@ -29,7 +29,8 @@ class CategoriesController extends AppController {
             }
         }
         $this->set(array(
-            'parents' => $this->Categories->listAvailableParents($site->id)
+            'category' => $category,
+            'parent_id' => $parent_id
         ));
     }
     

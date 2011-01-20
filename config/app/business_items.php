@@ -8,6 +8,10 @@ Config::write('BusinessItemsTypes', array(
                 'title' => 'Título',
                 'field_type' => 'char'
             ),
+            'price' => array(
+                'title' => 'Preço',
+                'field_type' => 'number'
+            ),
             'description' => array(
                 'title' => 'Descrição',
                 'field_type' => 'text'
