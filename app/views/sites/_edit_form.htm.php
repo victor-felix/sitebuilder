@@ -113,7 +113,8 @@
                 'label' => __('Estado'),
                 'type' => 'select',
                 'options' => Config::read('States'),
-                'class' => 'ui-select'
+                'class' => 'ui-select',
+                'empty' => ''
             )) ?>
         </div>
         

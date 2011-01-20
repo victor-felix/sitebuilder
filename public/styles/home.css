@@ -210,3 +210,45 @@ h2.porque {
 	font-size: 12px;
 	line-height: 16px;
 }
+
+#login-window {
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border: 3px solid #BBB;
+	display: none;
+	background: #FFF;
+	position: absolute;
+	top: 67px;
+	left: 302px;
+	padding: 15px;
+	z-index: 10;
+	-webkit-box-shadow: 0 0px 1px #333;
+	-moz-box-shadow: 0 0px 1px #333;
+}
+
+#login-window p {
+	font-size: 13px;
+	margin-bottom: 15px;
+	border-bottom: 1px solid #DDD;
+	padding-bottom: 10px;
+}
+
+#login-window p a {
+	text-decoration: none;
+	color: #C02926;
+}
+
+#login-window .input {
+	margin-bottom: 6px;
+}
+
+#login-window label {
+	display: block;
+	font-size: 11px;
+	margin-bottom: 4px;
+}
+
+#login-window button {
+	margin-top: 10px;
+}
