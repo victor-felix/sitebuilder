@@ -20,4 +20,4 @@ Connection::add(array(
 ));
 
 $env = Config::read('App.environment');
-Connection::add('default', Connection::config($env));
+Connection::add('development', Connection::config($env));
