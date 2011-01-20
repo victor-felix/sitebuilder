@@ -6,7 +6,7 @@
     <div class="clear"></div>
 </div>
 
-<?php echo $this->form->create('/users/register', array(
+<?php echo $this->form->create('/users/edit', array(
     'id' => 'form-edit-personal-info',
     'class' => 'form-edit',
     'object' => $user

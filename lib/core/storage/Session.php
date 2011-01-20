@@ -1,42 +1,84 @@
 <?php
 
 class Session {
+    protected static $cookieParams = array(
+        'lifetime' => 0,
+        'path' => '/',
+        'domain' => '',
+        'secure' => false,
+        'httponly' => true
+    );
+    
     public static function start() {
-        return session_start();
+        if(!self::started()) {
+            extract(self::$cookieParams);
+            session_set_cookie_params(
+                $lifetime,
+                $path,
+                $domain,
+                $secure,
+                $httponly
+            );
+            return session_start();
+        }
     }
+    
     public static function started() {
         return isset($_SESSION);
     }
+    
     public static function read($name) {
-        if(!self::started()) self::start();
-        if(array_key_exists($name, $_SESSION)):
+        self::start();
+        
+        if(array_key_exists($name, $_SESSION)) {
             return $_SESSION[$name];
-        endif;
+        }
+
         return null;
     }
+    
     public static function write($name, $value) {
-        if(!self::started()) self::start();
+        self::start();
+        
         $_SESSION[$name] = $value;
     }
+    
     public static function delete($name) {
-        if(!self::started()) self::start();
+        self::start();
+
         unset($_SESSION[$name]);
-        return true;
     }
+    
     public static function writeFlash($key, $value) {
         self::write('Flash.' . $key, $value);
     }
+    
     public static function flash($key, $value = null) {
-        if(!is_null($value)):
+        if(!is_null($value)) {
             return self::writeFlash($key, $value);
-        endif;
-        
-        $value = self::read('Flash.' . $key);
-        self::delete('Flash.' . $key);
-        return $value;
+        }
+        else {
+            $value = self::read('Flash.' . $key);
+            self::delete('Flash.' . $key);
+            return $value;
+        }
     }
+    
     public static function id() {
-        if(!self::started()) self::start();
+        self::start();
+        
         return session_id();
+    }
+    
+    public static function regenerate() {
+        self::start();
+
+        session_regenerate_id();
+    }
+    
+    public static function destroy() {
+        self::start();
+
+        session_destroy();
     }
 }

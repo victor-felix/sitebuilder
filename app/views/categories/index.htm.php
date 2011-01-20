@@ -1,7 +1,7 @@
 <div class="page-heading">
     <div class="grid-4 first">&nbsp;</div>
     <div class="grid-8">
-        <h1><?php echo __('Cardápio') ?></h1>
+        <h1><?php echo $root->title ?></h1>
     </div>
     <div class="clear"></div>
 </div>
@@ -16,7 +16,6 @@
 
 <div class="grid-8">
     <ul class="categories-list">
-        
         <?php foreach($categories as $i=>$category): ?>
         
         <?php
@@ -45,7 +44,7 @@
             </div>
         </li>
         <?php endforeach ?>
-        
+
         <!-- add subcategory -->
         <li class="level-2-form" style="display: none">
             <?php echo $this->form->create('/categories/add') ?>
@@ -60,7 +59,7 @@
             )) ?>
             <?php echo $this->html->link('cancelar', '#', array(
                 'class' => 'ui-button small'
-            )); ?>
+            )) ?>
             <?php echo $this->form->close() ?>
         </li>
         
@@ -78,21 +77,11 @@
             )) ?>
             <?php echo $this->html->link('cancelar', '#', array(
                 'class' => 'ui-button small'
-            )); ?>
+            )) ?>
             <?php echo $this->form->close() ?>
         </li>
         
     </ul>
-    <!--
-    <table>
-        <?php foreach($categories as $category): ?>
-            <tr>
-                <td><?php echo $category->title ?></td>
-                <td><?php echo $this->html->link(__('Editar'), '/categories/edit/' . $category->id) ?></td>
-                <td><?php echo $this->html->link(__('Apagar'), '/categories/delete/' . $category->id) ?></td>
-            </tr>
-        <?php endforeach ?>
-    </table>-->
 
     <?php echo $this->html->link(__('Adicionar Categoria'), '/categories/add', array(
         'class' => 'ui-button large',

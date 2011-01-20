@@ -1,5 +1,8 @@
 <?php
 
+require_once 'lib/core/security/Security.php';
+require_once 'lib/core/storage/Session.php';
+
 class Auth {
     const SESSION_KEY = 'Auth.user';
     
@@ -15,10 +18,9 @@ class Auth {
     public static function identify($data) {
         return Model::load('Users')->first(array(
             'conditions' => array(
-                'username' => $data['username'],
-                'password' => Security::hash($data['password'])
-            ),
-            'orm' => true
+                'email' => $data['email'],
+                'password' => Security::hash($data['password'], 'sha1')
+            )
         ));
     }
     

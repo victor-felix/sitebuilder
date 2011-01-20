@@ -39,17 +39,17 @@ class ApiController extends AppController {
         
         $site_info = array(
             'title' => $this->site->title,
-            'logo' => null
+            'logo' => null,
+            'theme' => $this->site->theme,
+            'skin' => $this->site->skin,
         );
         if($logo = $this->site->logo()) {
             $site_info['logo'] = $logo->link();
         }
         
         return array(
-            'theme' => $this->site->theme,
+            'site' => $site_info,
             'templatePath' => $templatePath,
-            'skin' => $this->site->skin,
-            'siteInfo' => $site_info,
             'content' => $content
         );
     }

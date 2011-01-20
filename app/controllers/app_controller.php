@@ -1,6 +1,7 @@
 <?php
 
 require 'lib/core/security/Sanitize.php';
+require 'lib/utils/Auth.php';
 
 class AppController extends Controller {
     public static function load($name, $instance = false) {
@@ -25,9 +26,12 @@ class AppController extends Controller {
     }
     
     protected function getCurrentSite() {
-        return Model::load('Sites')->first(array(
-            'order' => 'id DESC',
-        ));
+        if(Auth::loggedIn()) {
+            return Auth::user()->site();
+        }
+        else {
+            $this->redirect('/users/login');
+        }
     }
 }
 
