@@ -25,31 +25,31 @@ class Sites extends AppModel {
             'rule' => array('fileUpload', 1, array('jpg', 'gif', 'png')),
             'message' => 'Você precisa usar uma imagem válida',
         ),
-        'feed' => array(
-            'rule' => 'url',
-            'message' => 'Você precisa informar uma URL válida',
-            'allowEmpty' => true
-        ),
-        'facebook' => array(
-            'rule' => 'url',
-            'message' => 'Você precisa informar uma URL válida',
-            'allowEmpty' => true
-        ),
-        'twitter' => array(
-            'rule' => 'url',
-            'message' => 'Você precisa informar uma URL válida',
-            'allowEmpty' => true
-        ),
-        'website' => array(
-            'rule' => 'url',
-            'message' => 'Você precisa informar uma URL válida',
-            'allowEmpty' => true
-        ),
-        'email' => array(
-            'rule' => 'email',
-            'message' => 'Você precisa informar um e-mail válido',
-            'allowEmpty' => true
-        )
+        // 'feed' => array(
+        //     'rule' => 'url',
+        //     'message' => 'Você precisa informar uma URL válida',
+        //     'allowEmpty' => true
+        // ),
+        // 'facebook' => array(
+        //     'rule' => 'url',
+        //     'message' => 'Você precisa informar uma URL válida',
+        //     'allowEmpty' => true
+        // ),
+        // 'twitter' => array(
+        //     'rule' => 'url',
+        //     'message' => 'Você precisa informar uma URL válida',
+        //     'allowEmpty' => true
+        // ),
+        // 'website' => array(
+        //     'rule' => 'url',
+        //     'message' => 'Você precisa informar uma URL válida',
+        //     'allowEmpty' => true
+        // ),
+        // 'email' => array(
+        //     'rule' => 'email',
+        //     'message' => 'Você precisa informar um e-mail válido',
+        //     'allowEmpty' => true
+        // )
     );
     
     public function feed() {
@@ -182,6 +182,12 @@ class Sites extends AppModel {
     
     protected function saveLogo() {
         if(array_key_exists('logo', $this->data)) {
+            // dump($this->logo());
+            if($logo = $this->logo()) {
+                Model::load('Images')->delete($logo->id);
+            }
+            // die();
+            
             Model::load('Images')->upload(new SiteLogos($this->id), $this->data['logo']);
         }
     }

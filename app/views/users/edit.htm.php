@@ -37,16 +37,16 @@
                 'type' => 'text',
                 'class' => 'ui-text large'
             )) ?>
-            <small>Digite um endereço de e-mail válido. Uma mensagem de ativação da sua conta será enviada para o endereço informado.</small>
+            <small>Digite um endereço de e-mail válido.</small>
         </div>
         
-        <div class="form-grid-220 first">
+        <div class="form-grid-460 first">
             <?php echo $this->form->input('password', array(
                 'label' => __('Senha'),
                 'type' => 'password',
                 'class' => 'ui-text'
             )) ?>
-            <small>A senha deve conter 6 ou mais caracteres.</small>
+            <small>Para manter sua senha atual, mantenha os campos senha e confirmação da senha em branco. A senha deve conter 6 ou mais caracteres.</small>
         </div>
         
         <div class="form-grid-220 first">
