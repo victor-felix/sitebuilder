@@ -21,13 +21,20 @@ class CategoriesController extends AppController {
             $category->site_id = $site->id;
             if($category->validate()) {
                 $category->save();
-                $this->redirect('/categories');
+                
+                if($this->isXhr()) {
+                    $this->renderJSON($category);
+                }
+                else {
+                    $this->redirect('/categories');
+                }
             }
             else {
                 die(__('Erro de Validação'));
                 // TODO http://ipanemax.goplanapp.com/msb/ticket/view/8
             }
         }
+
         $this->set(array(
             'category' => $category,
             'parent_id' => $parent_id
@@ -35,23 +42,33 @@ class CategoriesController extends AppController {
     }
     
     public function edit($id = null) {
-        $site = $this->getCurrentSite();
-
+        $category = $this->Categories->firstById($id);
         if(!empty($this->data)) {
-            $this->Categories->id = $id;
-            if($this->Categories->validate($this->data)) {
-                $this->Categories->save($this->data);
-                $this->redirect('/categories');
+            $category->updateAttributes($this->data);
+            if($category->validate()) {
+                $category->save();
+                if($this->isXhr()) {
+                    $this->renderJSON($category);
+                }
+                else {
+                    $this->redirect('/categories');
+                }
             }
             else {
                 die(__('Erro de Validação'));
                 // TODO http://ipanemax.goplanapp.com/msb/ticket/view/8
             }
         }
-        $this->set(array(
-            'category' => $this->Categories->firstById($id),
-            'parents' => $this->Categories->listAvailableParents($site->id)
-        ));
+        
+        if($this->isXhr()) {
+            $this->renderJSON($category);
+        }
+        else {
+            $this->set(array(
+                'category' => $category,
+                'parent_id' => $category->parent_id
+            ));
+        }
     }
     
     public function delete($id = null) {

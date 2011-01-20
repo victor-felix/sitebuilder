@@ -4,6 +4,12 @@ require 'lib/core/security/Sanitize.php';
 require 'lib/utils/Auth.php';
 
 class AppController extends Controller {
+    public function beforeFilter() {
+        if($this->isXhr()) {
+            $this->autoRender = false;
+        }
+    }
+    
     public static function load($name, $instance = false) {
         $filename = 'app/controllers/' . Inflector::underscore($name) . '.php';
         $name = basename($name);
@@ -32,6 +38,12 @@ class AppController extends Controller {
         else {
             $this->redirect('/users/login');
         }
+    }
+
+    protected function renderJSON($record) {
+        header('Content-type: application/json');
+        echo json_encode($record->toJSON());
+        $this->stop();
     }
 }
 
