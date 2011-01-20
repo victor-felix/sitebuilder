@@ -1,6 +1,3 @@
-<div class="slidingpanels">
-<div id="Panel1" class="slidepanel">
-
 <div class="page-heading">
     <div class="grid-4 first">&nbsp;</div>
     <div class="grid-8">
@@ -144,10 +141,6 @@
     </ul>
     <!--
     <table>
-        <tr>
-            <th><?php echo __('Título') ?></th>
-            <th colspan="2"><?php echo __('Ações') ?></th>
-        </tr>
         <?php foreach($categories as $category): ?>
             <tr>
                 <td><?php echo $category->title ?></td>
@@ -161,21 +154,6 @@
         'class' => 'ui-button large',
         'style' => 'margin-bottom: 40px'
     )) ?>
-</div>
-
-<div class="clear"></div>
-</div>
-
-</div> <!-- end Panel1 -->
-
-<div id="Panel2" class="slidepanel">
-    <div class="page-heading">
-        <div class="grid-4 first">&nbsp;</div>
-        <div class="grid-8">
-            <h1><?php echo __('Cardápio') ?></h1>
-        </div>
-        <div class="clear"></div>
-    </div>
 </div>
 
 <div class="clear"></div>

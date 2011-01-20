@@ -111,9 +111,4 @@ $(function() {
 		$(this).parent().parent().hide();
 		e.preventDefault();
 	})
-	
-	$('.manage').click(function(e){
-		$(".slidingpanels").animate({'margin-left': -940}, "slow");
-		e.preventDefault();
-	})
 });
