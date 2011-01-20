@@ -12,6 +12,7 @@
 		    <div class="logo">
 			    <?php echo $this->html->link($this->html->image('layout/logo.png', array('alt'=>'MeuMobi')), '/', array('class'=>'logo')) ?>
 			</div>
+			
 			<p class="login">
 			    <?php echo $this->html->link('Efetue login', '/login') ?> ou <?php echo $this->html->link('Cadastre-se', '/register') ?>
 			</p>
@@ -30,6 +31,22 @@
 			</div>
             
 			<div class="clear"></div>
+			<div id="login-window">
+                <p><?php echo $this->html->link('Efetue login', '/login') ?></p>
+                <?php echo $this->form->create('/users/login') ?>
+                        <?php echo $this->form->input('email', array(
+                            'label' => __('E-Mail'),
+                            'class' => 'ui-text'
+                        )) ?>
+                        <?php echo $this->form->input('password', array(
+                            'label' => __('Senha'),
+                            'class' => 'ui-text'
+                        )) ?>
+                    <?php echo $this->form->submit('Login', array(
+                        'class' => 'ui-button red'
+                    ))?>
+                <?php echo $this->form->close();?>
+            </div>
 		</div>
 	
 	    <div id="content">
@@ -41,6 +58,17 @@
         <?php echo $this->html->script('jquery', 'jquery.cycle.all.min.js') ?>
         <script type="text/javascript">
         $('#slideshow').cycle({'fx': 'scrollUp'});
+        
+        $('p.login a:first-of-type').click(function(e){
+            $('#login-window').show();
+            $('#FormEmail').focus();
+            e.preventDefault();
+        });
+        
+        $('#login-window a').click(function(e){
+            $('#login-window').hide();
+            e.preventDefault();
+        });
         </script>
     </body>
 </html>
