@@ -1,6 +1,7 @@
 <?php
 
 class Users extends AppModel {
+    protected $getters = array('firstname', 'lastname');
     protected $beforeValidate = array('joinName');
     protected $beforeSave = array('hashPassword', 'createToken');
     protected $afterSave = array('createSite', 'authenticate');
@@ -38,12 +39,28 @@ class Users extends AppModel {
         )
     );
 
+    public function firstname() {
+        if(array_key_exists('name', $this->data)) {
+            preg_match('/([^,]+),([^,]+)/', $this->data['name'], $name);
+            return $name[1];
+        }
+    }
+
+    public function lastname() {
+        if(array_key_exists('name', $this->data)) {
+            preg_match('/([^,]+),([^,]+)/', $this->data['name'], $name);
+            return $name[2];
+        }
+    }
+    
+    public function site() {
+        return Model::load('Sites')->firstById($this->site_id);
+    }
+    
     protected function hashPassword($data) {
-        require_once 'lib/core/security/Security.php';
-        
-        if(array_key_exists('password', $data)) {
-            $password = array_unset($data, "password");
-            if(!empty($password)) {
+        if(array_key_exists('password', $data) && !$this->id) {
+            $password = array_unset($data, 'password');
+            if(!empty($password) || strlen($password) != 40) {
                 $data['password'] = Security::hash($password, 'sha1');
             }
         }

@@ -124,8 +124,12 @@ class FormHelper extends Helper {
             'id' => 'Form' . Inflector::camelize($name),
             'label' => Inflector::humanize($name),
             'div' => true,
-            'value' => $this->value($name)
+            'value' => null
         );
+        
+        if(is_null($options['value']) && $options['type'] != 'password') {
+            $options['value'] = $this->value($name);
+        }
         
         $label = array_unset($options, 'label');
         $div = array_unset($options, 'div');
