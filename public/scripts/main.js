@@ -16,23 +16,6 @@ var Utils = {
 };
 
 $(function() {
-    // load themes for selected segment
-    $('#FormSegment').change(function() {
-        var self = $(this);
-        if(self.val()) {
-            $.get('/segments/view/' + self.val(), {}, function(response) {
-                var themes = response.themes;
-                var theme_select = $('#FormTheme');
-                $('option', theme_select).slice(1).remove();
-
-                $.each(themes, function(key, value) {
-                    var option = $('<option />').html(value).attr('value', key);
-                    option.appendTo(theme_select);
-                });
-            });
-        }
-    }).change();
-    
     // create slug for domain name from site title
     var updateSlug = function() {
         if(!$('#FormDomain').attr('disabled')) {
@@ -52,7 +35,7 @@ $(function() {
 		e.preventDefault();
 	});
 	
-	/* TO DO */
+	// theme picker
 	$('.theme-picker a').click(function(e) {
 		var self = $(this),
 		    href = self.attr('href'),
@@ -61,34 +44,27 @@ $(function() {
 
 		e.preventDefault();
 		$('.theme-picker li.selected').removeClass('selected');
-		    
 		self.parent().addClass('selected');
 		$('#FormTheme').val(theme);
-		$.get('/themes/skins/' + theme, {}, function(response) {
-		    skin_picker.empty();
-		    $.each(response, function(i) {
-		        var img = $('<img />').attr('src', 'http://www-sop.inria.fr/ariana/Projets/P2R/commons/images/blank.gif');
-		        var a = $('<a />').attr({
-		            href: '#' + i,
-		            title: this
-		        }).append(img);
-
-		        skin_picker.append($('<li />').append(a));
-		    });
-		    skin_picker.parent().slideDown();
-		});
 	});
+	if($('#FormTheme').val()) {
+	    $('.theme-picker a[href*=' + $('#FormTheme').val() + ']').parent().addClass('selected');
+	}
+	
 
 	$('.skin-picker a').live('click', function(e) {
-		e.preventDefault();
 		var self = $(this),
 		    href = self.attr('href'),
 		    skin = href.substr(href.indexOf('#') + 1);
-    		e.preventDefault();
-    		$('.skin-picker li.selected').removeClass('selected');
-    		self.parent().addClass('selected');
-    		$('#FormSkin').val(theme);
+
+    	e.preventDefault();
+		$('.skin-picker li.selected').removeClass('selected');
+		self.parent().addClass('selected');
+		$('#FormSkin').val(skin);
     });
+	if($('#FormSkin').val()) {
+	    $('.skin-picker a[href*=' + $('#FormSkin').val() + ']').parent().addClass('selected');
+	}
 	
 	/* TO DO */
 	$('.categories-list .controls .delete').click(function(e){

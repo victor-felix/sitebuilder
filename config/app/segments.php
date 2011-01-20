@@ -8,32 +8,7 @@ Config::write('Segments', array(
             'boteco2' => 'Boteco 2',
             'boteco3' => 'Boteco 3'
         ),
-        'skins' => array(
-            'boteco1' => array(
-                'azul' => 'Azul',
-                'vermelho' => 'Vermelho',
-                'amarelo' => 'Amarelo',
-                'verde' => 'Verde',
-                'branco' => 'Branco',
-                'preto' => 'Preto'
-            ),
-            'boteco2' => array(
-                'azul' => 'Azul',
-                'vermelho' => 'Vermelho',
-                'amarelo' => 'Amarelo',
-                'verde' => 'Verde',
-                'branco' => 'Branco',
-                'preto' => 'Preto'
-            ),
-            'boteco3' => array(
-                'azul' => 'Azul',
-                'vermelho' => 'Vermelho',
-                'amarelo' => 'Amarelo',
-                'verde' => 'Verde',
-                'branco' => 'Branco',
-                'preto' => 'Preto'
-            )
-        ),
+        'skins' => array('f00', '0f0', '0ff'),
         'business_item' => 'product',
         'root' => 'Cardápio'
     )

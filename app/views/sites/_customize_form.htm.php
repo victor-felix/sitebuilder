@@ -1,11 +1,3 @@
-<?php $this->layout = 'register' ?>
-<?php echo $this->form->create('/sites/edit/' . $site->id, array(
-    'id' => 'form-register-customize',
-    'class' => 'form-register',
-    'method' => 'file',
-    'object' => $site
-)) ?>
-
 <fieldset>
     <h2>logotipo</h2>
     <div class="field-group">
@@ -41,27 +33,29 @@
                 </ul>
                 <div class="clear"></div>
             </div>
+            <?php $keys = array_keys($themes) ?>
             <?php echo $this->form->input('theme', array(
-                'type' => 'hidden'
+                'type' => 'hidden',
+                'value' => $site->theme ? $site->theme : $keys[0]
             )) ?>
             
-            <div class="skin-picker" style="display:none">
+            <div class="skin-picker">
                 <h3>Personalize o tema</h3>
                 <ul>
+                    <?php foreach($skins as $skin): ?>
+                        <li>
+                            <a href="<?php echo '#' . $skin ?>">
+                                <img src="http://www-sop.inria.fr/ariana/Projets/P2R/commons/images/blank.gif" alt="" />
+                            </a>
+                        </li>
+                    <?php endforeach ?>
                 </ul>
                 <div class="clear"></div>
             </div>
             <?php echo $this->form->input('skin', array(
-                'type' => 'hidden'
+                'type' => 'hidden',
+                'value' => $site->skin ? $site->skin : $skins[0]
             )) ?>
         </div>
     </div>
 </fieldset>
-
-<fieldset class="actions">
-    <?php echo $this->form->submit(__('Finalizar ›'), array(
-        'class' => 'ui-button red large'
-    )) ?>
-</fieldset>
-
-<?php echo $this->form->close() ?>

@@ -6,7 +6,7 @@ class UsersController extends AppController {
         if(!empty($this->data)) {
             if($user->validate()) {
                 $user->save();
-                $this->redirect('/sites/edit/' . $user->site_id);
+                $this->redirect('/sites/register');
             }
             else {
                 die(__('Erro de Validação'));
