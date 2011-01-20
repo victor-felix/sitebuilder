@@ -15,7 +15,7 @@
 			</div>
 			<div class="menu">
 			    <div class="navigation">
-			        <p class="business-name">Balada Mix</h1>
+			        <p class="business-name"><?php echo Sanitize::html(Auth::user()->site()->title) ?></h1>
 			        <div class="user">
 			            <p>Olá <strong><?php echo Auth::user()->firstname() ?></strong></p>
 			            <?php echo $this->html->link('sair ›', '/logout') ?>

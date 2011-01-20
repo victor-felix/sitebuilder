@@ -191,6 +191,7 @@
                 'type' => 'text',
                 'class' => 'ui-text large'
             )) ?>
+            <small>Ex: http://www.facebook.com/seuusuario/</small>
         </div>
         
         <div class="form-grid-460 first">
@@ -200,6 +201,7 @@
                 'type' => 'text',
                 'class' => 'ui-text large'
             )) ?>
+            <small>Ex: http://www.twitter.com/seuusuario/</small>
         </div>
         
         <div class="form-grid-460 first">
@@ -209,6 +211,7 @@
                 'type' => 'text',
                 'class' => 'ui-text large'
             )) ?>
+            <small>Ex: http://www.seusite.com.br/</small>
         </div>
     </div>
 </fieldset>
