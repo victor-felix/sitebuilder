@@ -1,11 +1,3 @@
-<?php $this->layout = 'register' ?>
-<?php echo $this->form->create('/sites/customize/' . $site->id, array(
-    'id' => 'form-register-customize',
-    'class' => 'form-register',
-    'method' => 'file',
-    'object' => $site
-)) ?>
-
 <fieldset>
     <h2>logotipo</h2>
     <div class="field-group">
@@ -41,9 +33,10 @@
                 </ul>
                 <div class="clear"></div>
             </div>
+            <?php $keys = array_keys($themes) ?>
             <?php echo $this->form->input('theme', array(
                 'type' => 'hidden',
-                'value' => $site->theme ? $site->theme : reset($themes)
+                'value' => $site->theme ? $site->theme : $keys[0]
             )) ?>
             
             <div class="skin-picker">
@@ -66,11 +59,3 @@
         </div>
     </div>
 </fieldset>
-
-<fieldset class="actions">
-    <?php echo $this->form->submit(__('Finalizar ›'), array(
-        'class' => 'ui-button red large'
-    )) ?>
-</fieldset>
-
-<?php echo $this->form->close() ?>

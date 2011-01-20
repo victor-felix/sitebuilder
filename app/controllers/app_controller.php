@@ -25,7 +25,9 @@ class AppController extends Controller {
     }
     
     protected function getCurrentSite() {
-        return Model::load('Sites')->first();
+        return Model::load('Sites')->first(array(
+            'order' => 'id DESC',
+        ));
     }
 }
 

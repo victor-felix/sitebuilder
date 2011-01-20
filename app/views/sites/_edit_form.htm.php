@@ -30,8 +30,8 @@
                         'label' => false,
                         'div' => false,
                         'type' => 'text',
-                        'class' => 'ui-text' . ($page == 'edit' ? ' disabled' : ''),
-                        'disabled' => $page == 'edit'
+                        'class' => 'ui-text' . ($action == 'edit' ? ' disabled' : ''),
+                        'disabled' => $action == 'edit'
                     )) ?><span>.meumobi.com</span>
                 </p>
                 <div class="clear"></div>
