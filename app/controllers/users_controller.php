@@ -48,11 +48,6 @@ class UsersController extends AppController {
                 Session::writeFlash("success", __("Configurações salvas com sucesso."));
                 $this->redirect($redirect);
             }
-            else {
-                pr($user->errors());
-                die(__('Erro de Validação'));
-                // TODO http://ipanemax.goplanapp.com/msb/ticket/view/8
-            }
         }
         $this->set(array(
             'user' => $user

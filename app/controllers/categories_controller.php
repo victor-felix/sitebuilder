@@ -21,7 +21,6 @@ class CategoriesController extends AppController {
             $category->site_id = $site->id;
             if($category->validate()) {
                 $category->save();
-                
                 if($this->isXhr()) {
                     $this->renderJSON($category);
                 }
@@ -29,10 +28,6 @@ class CategoriesController extends AppController {
                     Session::writeFlash("success", __("Categoria adicionada com sucesso."));
                     $this->redirect('/categories');
                 }
-            }
-            else {
-                die(__('Erro de Validação'));
-                // TODO http://ipanemax.goplanapp.com/msb/ticket/view/8
             }
         }
 
@@ -55,10 +50,6 @@ class CategoriesController extends AppController {
                     Session::writeFlash("success", __("Categoria editada com sucesso."));
                     $this->redirect('/categories');
                 }
-            }
-            else {
-                die(__('Erro de Validação'));
-                // TODO http://ipanemax.goplanapp.com/msb/ticket/view/8
             }
         }
         

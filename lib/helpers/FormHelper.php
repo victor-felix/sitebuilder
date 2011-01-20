@@ -124,11 +124,16 @@ class FormHelper extends Helper {
             'id' => 'Form' . Inflector::camelize($name),
             'label' => Inflector::humanize($name),
             'div' => true,
-            'value' => null
+            'value' => null,
+            'class' => ''
         );
         
         if(is_null($options['value']) && $options['type'] != 'password') {
             $options['value'] = $this->value($name);
+        }
+        
+        if($this->error($name)) {
+            $options['class'] .= ' error';
         }
         
         $label = array_unset($options, 'label');
@@ -173,6 +178,12 @@ class FormHelper extends Helper {
             $input = $this->div($div, $input, $type);
         endif;
 
+        if($error = $this->error($name)) {
+            $input .= $this->html->tag('p', $error, array(
+                'class' => 'error'
+            ));
+        }
+
         return $input;
     }
     protected function div($class, $content, $type) {
@@ -206,6 +217,17 @@ class FormHelper extends Helper {
             }
             else if($model->hasGetter($name)) {
                 return $model->{$name}();
+            }
+        endif;
+        
+        return '';
+    }
+
+    protected function error($name) {
+        if($model = $this->model()):
+            $errors = $this->model()->errors();
+            if(array_key_exists($name, $errors)) {
+                return $errors[$name];
             }
         endif;
         
