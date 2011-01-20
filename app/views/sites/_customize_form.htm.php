@@ -1,6 +1,9 @@
 <fieldset>
     <h2>logotipo</h2>
     <div class="field-group">
+        <?php if($site->logo()) echo $this->html->image($site->logo()->link(), array(
+            'class' => 'logo'
+        )) ?>
         <div class="form-grid-460 first">
             <span class="optional">Opcional</span>
             <?php echo $this->form->input('logo', array(

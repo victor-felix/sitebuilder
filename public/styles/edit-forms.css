@@ -128,6 +128,16 @@
 	margin-right: 5px;
 }
 
+.form-edit .logo {
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	border: 1px solid #CCC;
+	padding: 5px;
+	margin-bottom: 10px;
+	max-width: 200px;
+}
+
 .theme-picker {
 	border-radius: 3px;
 	-webkit-border-radius: 3px;
