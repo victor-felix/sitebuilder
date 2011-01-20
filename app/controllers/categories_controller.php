@@ -2,7 +2,16 @@
 
 class CategoriesController extends AppController {
     public function index() {
-        $this->set('categories', $this->Categories->allBySiteId($this->getCurrentSite()->id));
+        $categories = $this->Categories->allBySiteId($this->getCurrentSite()->id);
+        $tree = array();
+        foreach($categories as $category) {
+            $tree[$category->parent_id] []= $category;
+        }
+        
+        $this->set(array(
+            'categories' => $tree,
+            'root' => $this->getCurrentSite()->rootCategory()
+        ));
     }
     
     public function add() {
