@@ -6,7 +6,7 @@ Config::write('Segments', array(
         'themes' => array(
             'boteco' => 'Boteco'
         ),
-        'skins' => array('f00', '0f0', '0ff'),
+        'skins' => array('ae3232', '278740', '326cae'),
         'business_item' => 'product',
         'root' => 'Cardápio'
     )
