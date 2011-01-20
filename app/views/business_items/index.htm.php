@@ -17,7 +17,7 @@
 <ul class="businessitems-list">
     <?php foreach($business_items as $bi): ?>
     <li>
-        <?php echo $this->html->link('', '/business_items/edit/', array(
+        <?php echo $this->html->link('', '/business_items/edit/' . $bi->id, array(
             'class' => 'photo'
         )) ?>
         <div class="info">

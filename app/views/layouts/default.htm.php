@@ -22,7 +22,7 @@
 			        </div>
 			    </div>
 			    <ul>
-			        <li><?php echo $this->html->link('Cardápio', '/categories') ?></li>
+			        <li><?php echo $this->html->link(Auth::user()->site()->rootCategory()->title, '/categories') ?></li>
 			        <li><?php echo $this->html->link('Configurações', '/settings') ?></li>
 			        <li><?php echo $this->html->link('Customização', '/settings/customize') ?></li>
 			        <li><?php echo $this->html->link('Minha Conta', '/settings/account') ?></li>
