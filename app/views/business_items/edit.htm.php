@@ -4,7 +4,7 @@
     )) ?>
     </div>
     <div class="grid-8">
-        <h1><?php echo __($business_item->values()->title) ?></h1>
+        <h1><?php echo $this->pageTitle = __($business_item->values()->title) ?></h1>
         <p class="breadcrumb"></p>
     </div>
     <div class="clear"></div>

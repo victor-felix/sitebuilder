@@ -4,7 +4,7 @@
     )) ?>
     </div>
     <div class="grid-8">
-        <h1><?php echo __('adicionar categoria') ?></h1>
+        <h1><?php echo $this->pageTitle = __('Adicionar Categoria') ?></h1>
     </div>
     <div class="clear"></div>
 </div>
