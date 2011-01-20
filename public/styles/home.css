@@ -45,8 +45,8 @@ a img {
 #header div.logo {
 	border-bottom: 1px solid #D3D3D3;
 	float: left;
-	height: 50px;
-	padding-top: 60px;
+	height: 62px;
+	padding-top: 48px;
 	width: 300px;
 }
 
@@ -251,4 +251,16 @@ h2.porque {
 
 #login-window button {
 	margin-top: 10px;
+}
+
+#login-window .cancel {
+	color: #C02926;
+	font-size: 11px;
+	text-decoration: none;
+	margin-top: 17px;
+	float: right;
+}
+
+#login-window .cancel:hover {
+	text-decoration: underline;
 }

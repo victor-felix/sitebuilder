@@ -45,6 +45,7 @@ class UsersController extends AppController {
             $user->updateAttributes($this->data);
             if($user->validate()) {
                 $user->save();
+                Session::writeFlash("success", __("Configurações salvas com sucesso."));
                 $this->redirect($redirect);
             }
             else {
