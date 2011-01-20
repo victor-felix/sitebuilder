@@ -91,10 +91,7 @@ class Users extends AppModel {
     }
     
     protected function authenticate() {
-        Auth::login(array(
-            'email' => $this->email,
-            'password' => $this->originalPassword
-        ));
+        Auth::login($this);
     }
     
     protected function joinName($data) {

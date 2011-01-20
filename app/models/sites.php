@@ -189,7 +189,7 @@ class Sites extends AppModel {
     }
     
     protected function saveLogo() {
-        if($this->data['logo']) {
+        if(array_key_exists('logo', $this->data)) {
             Model::load('Images')->upload(new SiteLogos($this->id), $this->data['logo']);
         }
     }
