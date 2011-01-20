@@ -159,19 +159,39 @@ a img {
 
 #footer {
 	background: #E8E8E8;
-	height: 300px;
+	height: 150px;
 }
 
 #footer #footer-wrapper {
 	margin: 0 auto;
+	padding-top: 30px;
 	width: 940px;
 }
 
-.slidingpanels {
-	width: 2080px;
+#footer #footer-wrapper ul {
+	float: right;
+	margin-top: 10px;
 }
 
-.slidepanel {
+#footer #footer-wrapper img {
 	float: left;
-	width: 940px;
+}
+
+#footer #footer-wrapper ul li {
+	color: #ACACAC;
+	display: inline;
+	float: left;
+	font-size: 11px;
+	list-style: none;
+	margin-left: 10px;
+}
+
+#footer #footer-wrapper ul li a {
+	color: #ACACAC;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+#footer #footer-wrapper ul li a:hover {
+	text-decoration: underline;
 }
