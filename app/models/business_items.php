@@ -8,6 +8,14 @@ class BusinessItems extends AppModel {
         'order' => '`order` ASC'
     );
 
+    public function __construct($data = null) {
+        parent::__construct($data);
+        
+        if(!is_null($this->id)) {
+            $this->data = array_merge($this->data, (array) $this->values());
+        }
+    }
+
     public function allByDomain($domain) {
         $site = Model::load('Sites')->firstByDomain($domain);
         return $this->allBySiteId($site->id);

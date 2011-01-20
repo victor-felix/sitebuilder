@@ -1,5 +1,5 @@
 <div class="page-heading">
-    <div class="grid-4 first"><?php echo $this->html->link(__('‹ voltar'), '#BACK', array(
+    <div class="grid-4 first"><?php echo $this->html->link(__('‹ voltar'), '/categories/index/' . $parent_id, array(
         'class' => 'ui-button large back'
     )) ?>
     </div>
@@ -12,36 +12,21 @@
 
 <?php echo $this->form->create('/business_items/add', array(
     'class' => 'form-edit',
-    'id' => 'form-add-businessitem'
+    'id' => 'form-add-businessitem',
+    'object' => $business_item
 )) ?>
-    
-    <?php echo $this->form->input('parent_id', array(
-        'label' => false,
-        'type' => 'hidden'
-    )) ?>
-    <fieldset>
-    <h2>informações gerais</h2>
-    <div class="field-group">
-    <?php foreach($type->fields as $id => $field): ?>
-        <div class="form-grid-460 first">
-        <?php echo $this->form->input($id, array(
-            'label' => __($field['title']),
-            'type' => BusinessItemsTypes::$inputTypes[$field['field_type']],
-            'class' => 'large ui-' . BusinessItemsTypes::$inputTypes[$field['field_type']]
-        )) ?>
-        </div>
-    <?php endforeach ?>
-    </div>
-    </fieldset>
+
+    <?php echo $this->element('business_items/form', compact('parent_id', 'type', 'business_item')) ?>
 
     <fieldset class="actions">
-        <?php echo $this->html->link(__('‹ voltar'), '#BACK', array(
+        <?php echo $this->html->link(__('‹ voltar'), '/categories/index/' . $parent_id, array(
             'class' => 'ui-button large back'
         )) ?>
         <?php echo $this->form->submit(__('Salvar'), array(
             'class' => 'ui-button red larger'
         )) ?>
     </fieldset>
+
 <?php echo $this->form->close() ?>
 
 

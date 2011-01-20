@@ -60,6 +60,7 @@ class Users extends AppModel {
     protected function hashPassword($data) {
         if(array_key_exists('password', $data) && !$this->id) {
             $password = array_unset($data, 'password');
+            $this->originalPassword = $password;
             if(!empty($password) || strlen($password) != 40) {
                 $data['password'] = Security::hash($password, 'sha1');
             }
@@ -90,7 +91,10 @@ class Users extends AppModel {
     }
     
     protected function authenticate() {
-        
+        Auth::login(array(
+            'email' => $this->email,
+            'password' => $this->originalPassword
+        ));
     }
     
     protected function joinName($data) {

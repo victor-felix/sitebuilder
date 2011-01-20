@@ -1,20 +1,23 @@
 <?php
 
 class BusinessItemsController extends AppController {
-    protected $uses = array('BusinessItems', 'BusinessItemsValues', 'BusinessItemsTypes');
+    protected $uses = array('BusinessItems', 'BusinessItemsValues', 'BusinessItemsTypes', 'Categories');
     
-    public function index() {
-        $this->set('business_items', $this->BusinessItems->allBySiteId($this->getCurrentSite()->id));
+    public function index($parent_id = null) {
+        $this->set(array(
+            'business_items' => $this->BusinessItems->allByParentId($parent_id),
+            'category' => '',
+        ));
     }
     
-    public function add() {
+    public function add($parent_id = null) {
         $site = $this->getCurrentSite();
-        
+        $business_item = new BusinessItems($this->data);
         if(!empty($this->data)) {
-            $this->data['site'] = $site;
-            if($this->BusinessItems->validate($this->data)) {
-                $this->BusinessItems->save($this->data);
-                $this->redirect('/business_items');
+            $business_item->site = $site;
+            if($business_item->validate()) {
+                $business_item->save();
+                $this->redirect('/business_items/index/' . $business_item->parent_id);
             }
             else {
                 die(__('Erro de Validação'));
@@ -22,14 +25,15 @@ class BusinessItemsController extends AppController {
             }
         }
         $this->set(array(
-            'type' => $site->businessItemType(),
-            'categories' => Model::load('Categories')->toListBySiteId($site->id)
+            'business_item' => $business_item,
+            'parent_id' => $parent_id,
+            'type' => $site->businessItemType()
         ));
     }
     
     public function edit($id = null) {
         $site = $this->getCurrentSite();
-
+        $business_item = $this->BusinessItems->firstById($id);
         if(!empty($this->data)) {
             $this->BusinessItems->id = $id;
             $this->data['site'] = $site;
@@ -43,6 +47,7 @@ class BusinessItemsController extends AppController {
             }
         }
         $this->set(array(
+            'parent_id' => $business_item->parent_id,
             'business_item' => $this->BusinessItems->firstById($id),
             'type' => $site->businessItemType(),
             'categories' => Model::load('Categories')->toListBySiteId($site->id)
@@ -50,7 +55,8 @@ class BusinessItemsController extends AppController {
     }
     
     public function delete($id = null) {
+        $business_item = $this->BusinessItems->firstById($id);
         $this->BusinessItems->delete($id);
-        $this->redirect('/business_items');
+        $this->redirect('/business_items/index/' . $business_item->parent_id);
     }
 }

@@ -1,5 +1,5 @@
 <div class="page-heading">
-    <div class="grid-4 first"><?php echo $this->html->link(__('‹ voltar'), '#BACK', array(
+    <div class="grid-4 first"><?php echo $this->html->link(__('‹ voltar'), '/categories/index/' . $parent_id, array(
         'class' => 'ui-button large back'
     )) ?>
     </div>
@@ -12,52 +12,35 @@
 
 <?php echo $this->form->create('/business_items/edit/' . $business_item->id, array(
     'class' => 'form-edit',
-    'id' => 'form-edit-businessitem'
+    'id' => 'form-edit-businessitem',
+    'object' => $business_item
 )) ?>
     
-    <?php echo $this->form->input('parent_id', array(
-        'label' => false,
-        'type' => 'hidden',
-        'value' => $business_item->parent_id
-    )) ?>
-    
-    <fieldset>
-        <h2>informações gerais</h2>
-        <div class="field-group">
-        <?php foreach($type->fields as $id => $field): ?>
-            <div class="form-grid-460 first">
-            <?php echo $this->form->input($id, array(
-                'label' => __($field['title']),
-                'type' => BusinessItemsTypes::$inputTypes[$field['field_type']],
-                'class' => 'large ui-' . BusinessItemsTypes::$inputTypes[$field['field_type']],
-                'value' => $business_item->values()->{$id}
-            )) ?>
-            </div>
-        <?php endforeach ?>
-        </div>
-    </fieldset>
+    <?php echo $this->element('business_items/form', compact('parent_id', 'type', 'business_item')) ?>
 
     <fieldset class="actions">
-        <?php echo $this->html->link(__('‹ voltar'), '#BACK', array(
+        <?php echo $this->html->link(__('‹ voltar'), '/categories/index/' . $parent_id, array(
             'class' => 'ui-button large back'
         )) ?>
         <?php echo $this->form->submit(__('Salvar'), array(
             'class' => 'ui-button red larger'
         )) ?>
-        <?php echo $this->html->link($this->html->image('categories/delete.gif').__('Apagar %s', $type->title), '#BACK', array(
-            'class' => 'ui-button delete'
-        )) ?>
+        <?php echo $this->html->link(
+            $this->html->image('categories/delete.gif') . __('Apagar %s', $type->title),
+            '/business_items/delete/' . $business_item->id,
+            array( 'class' => 'ui-button delete' )
+        ) ?>
     </fieldset>
 <?php echo $this->form->close() ?>
 
 <div class="delete-confirm">
     <div class="wrapper">
-        <p>Deseja realmente apagar <strong><?php echo __($business_item->values()->title) ?></strong>? <small>Todos os produtos e subcategorias associados serão apagados.</small></p>
-        <?php echo $this->html->link('Sim, apagar', '/business_items/delete/'.$business_item->id, array(
+        <p>Deseja realmente apagar <strong><?php echo __($business_item->title) ?></strong>?</p>
+        <?php echo $this->html->link('Sim, apagar', '/business_items/delete/' . $business_item->id, array(
             'class' => 'ui-button delete highlight'
-        )); ?>
+        )) ?>
         <?php echo $this->html->link('Não, voltar', '#', array(
             'class' => 'ui-button'
-        )); ?>
+        )) ?>
     </div>
 </div>
