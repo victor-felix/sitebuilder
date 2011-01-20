@@ -76,6 +76,14 @@ class Categories extends AppModel {
         return (bool) $total;
     }
     
+    public function childrenCount() {
+        return Model::load('BusinessItems')->count(array(
+            'conditions' => array(
+                'parent_id' => $this->id
+            )
+        ));
+    }
+    
     public function toJSON($recursive = true) {
         $data = $this->data;
         

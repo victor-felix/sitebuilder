@@ -32,6 +32,9 @@ class UsersController extends AppController {
                 Auth::login($user);
                 $this->redirect('/categories');
             }
+            else {
+                Session::writeFlash('error', __('Usuário ou senha incorretos'));
+            }
         }
     }
     

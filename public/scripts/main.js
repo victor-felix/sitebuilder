@@ -85,7 +85,7 @@ $(function() {
 	
 	$('.delete-confirm .ui-button:nth-of-type(2)').click(function(e){
 		$(this).parent().parent().hide();
-		e.preventDefault();
+        // e.preventDefault();
 	})
 	
 	$('#success-feedback').click(function(e){

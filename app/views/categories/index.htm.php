@@ -29,6 +29,7 @@
 
             <?php if(array_key_exists($root->id, $categories)) foreach($categories[$root->id] as $category): ?>
             <li class="level-1">
+                <?php // $category->childrenCount() ?>
                 <?php echo $this->html->link($this->html->image('categories/add-subcat.png'), '/categories/add/' . $category->id, array('class' => 'ui-button ui-button-add highlight')) ?>
                 <span class="title" title="<?php echo __('clique para editar') ?>">
                     <?php echo $category->title ?>
