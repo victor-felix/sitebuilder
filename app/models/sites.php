@@ -76,7 +76,7 @@ class Sites extends AppModel {
     }
     
     public function link() {
-        return 'http://' . $this->domain;
+        return 'http://' . $this->domain . '.meumobi.com';
     }
     
     public function rootCategory() {

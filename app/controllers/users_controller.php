@@ -42,6 +42,7 @@ class UsersController extends AppController {
     
     protected function saveUser($user, $redirect) {
         if(!empty($this->data)) {
+            $user->updateAttributes($this->data);
             if($user->validate()) {
                 $user->save();
                 $this->redirect($redirect);

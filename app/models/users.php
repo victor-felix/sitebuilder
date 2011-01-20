@@ -10,11 +10,6 @@ class Users extends AppModel {
             'rule' => 'notEmpty',
             'message' => 'Você precisa informar seu nome'
         ),
-        'username' => array(
-            'rule' => array('unique', 'username'),
-            'on' => 'create',
-            'message' => 'O nome de usuário já foi escolhido'
-        ),
         'email' => array(
             array(
                 'rule' => 'notEmpty',
@@ -58,12 +53,12 @@ class Users extends AppModel {
     }
     
     protected function hashPassword($data) {
-        if(array_key_exists('password', $data) && !$this->id) {
+        if(array_key_exists('password', $data) && array_key_exists('confirm_password', $data)) {
             $password = array_unset($data, 'password');
-            $this->originalPassword = $password;
-            if(!empty($password) || strlen($password) != 40) {
+            if(!empty($password)) {
                 $data['password'] = Security::hash($password, 'sha1');
             }
+            unset($data['confirm_password']);
         }
 
         return $data;
