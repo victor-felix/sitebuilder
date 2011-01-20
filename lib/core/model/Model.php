@@ -407,7 +407,7 @@ class Model extends Hookable {
         if(!$this->data):
             return false;
         endif;
-
+        
         foreach($this->validates as $field => $rules):
             if(!is_array($rules) || (is_array($rules) && isset($rules['rule']))):
                 $rules = array($rules);
@@ -416,7 +416,7 @@ class Model extends Hookable {
                 if(!is_array($rule)):
                     $rule = array('rule' => $rule);
                 endif;
-                $rule += $defaults;
+                $rule = array_merge($defaults, $rule);
                 if($rule['allowEmpty'] && empty($this->data[$field])):
                     continue;
                 elseif($rule['on'] == 'create' && $this->id != null):
@@ -454,6 +454,10 @@ class Model extends Hookable {
     
     public function errors() {
         return $this->errors;
+    }
+
+    public function data() {
+        return $this->data;
     }
     
     public function delete($id, $dependent = true) {
