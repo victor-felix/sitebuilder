@@ -87,4 +87,13 @@ $(function() {
 		$(this).parent().parent().hide();
 		e.preventDefault();
 	})
+	
+	$('#success-feedback').click(function(e){
+		$(this).slideUp();
+		e.preventDefault();
+	});
+	
+	setTimeout(function(){
+		$('#success-feedback').slideUp();
+	}, 2000);
 });
