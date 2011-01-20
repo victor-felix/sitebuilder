@@ -139,6 +139,7 @@ a img {
 	clear: both;
 	margin: 0 auto 50px auto;
 	overflow: hidden;
+	position: relative;
 	width: 940px;
 }
 
@@ -150,6 +151,8 @@ a img {
 	border-top: 11px solid #DBDBDB;
 	color: #B5B5B5;
 	font: lighter 48px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica,arial,sans-serif;
+	height: 60px;
+	overflow: hidden;
 	letter-spacing: -1px;
 	text-transform: lowercase;
 }

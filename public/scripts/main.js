@@ -65,6 +65,11 @@ $(function() {
 		$(this).parent().next(".delete-confirm").fadeIn("fast");
 	})
 	
+	$('#form-edit-businessitem .delete').click(function(e){
+		e.preventDefault();
+		$(".delete-confirm").fadeIn("fast");
+	})
+	
 	/* TO DO */
 	$('.delete-confirm .ui-button.delete').click(function(e){
 		$(this).parent().parent().parent().slideUp();

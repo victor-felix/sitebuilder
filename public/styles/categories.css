@@ -173,6 +173,16 @@
 		margin-top: 12px;
 	}
 	
+	.delete-confirm .wrapper {
+		height: 50px;
+		width: 570px;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		margin-left: -285px;
+		margin-top: -25px;
+	}
+	
 .categories-list li.level-1-form form {
 	margin-left: 50px;
 	margin-top: 11px;
