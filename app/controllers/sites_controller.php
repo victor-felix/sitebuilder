@@ -46,7 +46,7 @@ class SitesController extends AppController {
         if(!empty($this->data)) {
             $site->updateAttributes($this->data);
             if($site->validate()) {
-                $site->save($this->data);
+                $site->save();
                 $this->redirect($redirect_to);
             }
             else {

@@ -11,6 +11,8 @@ class UsersController extends AppController {
                 }
             }
         }
+        
+        parent::beforeFilter();
     }
     
     public function edit() {

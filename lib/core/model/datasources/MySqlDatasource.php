@@ -144,7 +144,7 @@ class MySqlDatasource extends PdoDatasource {
         $fields = array_keys($params['values']);
         $update_fields = array();
         foreach($fields as $field):
-            $update_fields []= $field . ' = ?';
+            $update_fields []= '`' . $field . '` = ?';
         endforeach;
         $sql .= join(', ', $update_fields);
 
