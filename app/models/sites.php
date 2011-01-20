@@ -141,7 +141,7 @@ class Sites extends AppModel {
             }
             else {
                 if($this->id) {
-                    $this->checkAndDeleteFeed();
+                    $this->checkAndDeleteFeed($this->id);
                 }
                 
                 $data['feed_id'] = null;
