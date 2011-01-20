@@ -7,7 +7,7 @@ class SitesController extends AppController {
             $site->updateAttributes($this->data);
             if($site->validate()) {
                 $site->save($this->data);
-                $this->redirect('/sites');
+                $this->redirect('/sites/customize/' . $site->id);
             }
             else {
                 die(__('Erro de Validação'));
@@ -19,8 +19,22 @@ class SitesController extends AppController {
         ));
     }
     
-    public function delete($id = null) {
-        $this->Sites->delete($id);
-        $this->redirect('/sites');
+    public function customize($id = null) {
+        $site = $this->Sites->firstById($id);
+        if(!empty($this->data)) {
+            $site->updateAttributes($this->data);
+            if($site->validate()) {
+                $site->save($this->data);
+                $this->redirect('/sites/finished');
+            }
+            else {
+                die(__('Erro de Validação'));
+                // TODO http://ipanemax.goplanapp.com/msb/ticket/view/8
+            }
+        }
+        $this->set(array(
+            'site' => $site,
+            'themes' => Model::load('Segments')->firstById($site->segment)->themes
+        ));
     }
 }

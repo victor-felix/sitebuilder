@@ -46,18 +46,49 @@ $(function() {
         blur: updateSlug
     }).blur();
 
-	$('.fieldset-expand').click(function(e){
+	$('.fieldset-expand').click(function(e) {
 		$(this).slideToggle();
 		$(this).next('fieldset').slideToggle();
 		e.preventDefault();
 	});
 	
 	/* TO DO */
-	$('.theme-picker a').click(function(e){
-		$('.theme-picker li').removeClass('selected');
-		$(this).parent().addClass('selected');
+	$('.theme-picker a').click(function(e) {
+		var self = $(this),
+		    href = self.attr('href'),
+		    theme = href.substr(href.indexOf('#') + 1),
+		    skin_picker = $('.skin-picker ul');
+
 		e.preventDefault();
+		$('.theme-picker li.selected').removeClass('selected');
+		    
+		self.parent().addClass('selected');
+		$('#FormTheme').val(theme);
+		$.get('/themes/skins/' + theme, {}, function(response) {
+		    skin_picker.empty();
+		    $.each(response, function(i) {
+		        var img = $('<img />').attr('src', 'http://www-sop.inria.fr/ariana/Projets/P2R/commons/images/blank.gif');
+		        var a = $('<a />').attr({
+		            href: '#' + i,
+		            title: this
+		        }).append(img);
+
+		        skin_picker.append($('<li />').append(a));
+		    });
+		    skin_picker.parent().slideDown();
+		});
 	});
+
+	$('.skin-picker a').live('click', function(e) {
+		e.preventDefault();
+		var self = $(this),
+		    href = self.attr('href'),
+		    skin = href.substr(href.indexOf('#') + 1);
+    		e.preventDefault();
+    		$('.skin-picker li.selected').removeClass('selected');
+    		self.parent().addClass('selected');
+    		$('#FormSkin').val(theme);
+    });
 	
 	/* TO DO */
 	$('.categories-list .controls .delete').click(function(e){
