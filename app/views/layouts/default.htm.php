@@ -3,7 +3,7 @@
     <head>
         <?php echo $this->html->charset() ?>
         <title>MeuMobi - <?php echo $this->pageTitle ?></title>
-
+        <link rel="shortcut icon" href="<?php echo Mapper::url("/images/layout/favicon.png"); ?>" type="image/png" />
 		<?php echo $this->html->stylesheet('base', 'uikit', 'categories', 'edit-forms', 'businessitems'); ?>
     </head>
     

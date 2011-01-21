@@ -3,7 +3,7 @@
     <head>
         <?php echo $this->html->charset() ?>
         <title>MeuMobi Restaurant - Seu restaurante na Web móvel em 3 minutos!</title>
-
+        <link rel="shortcut icon" href="<?php echo Mapper::url("/images/layout/favicon.png"); ?>" type="image/png" />
 		<?php echo $this->html->stylesheet('home', 'uikit'); ?>
     </head>
     

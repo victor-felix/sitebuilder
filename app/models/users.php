@@ -24,7 +24,7 @@ class Users extends AppModel {
             ),
             array(
                 'rule' => array('unique', 'email'),
-                'message' => 'Seu e-mail já está cadastrado em nossa base de dados'
+                'message' => 'Este e-mail já está cadastrado em nossa base de dados'
             )
         ),
         'password' => array(
