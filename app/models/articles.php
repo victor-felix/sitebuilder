@@ -32,13 +32,14 @@ class Articles extends AppModel {
     public function addToFeed($feed, $item) {
         $this->id = null;
         
+        $author = $item->get_author();
         $article = array(
             'feed_id' => $feed->id,
             'guid' => $item->get_id(),
             'link' => $item->get_link(),
             'title' => $item->get_title(),
             'description' => $this->cleanupHtml($item->get_content()),
-            'author' => $item->get_author()->get_name(),
+            'author' => $author ? $author->get_name() : '',
             'pubdate' => $item->get_date('Y-m-d H:i:s')
         );
         
@@ -61,6 +62,7 @@ class Articles extends AppModel {
     
     protected function getEnclosure($item) {
         $enclosures = $item->get_enclosures();
+        if(is_null($enclosures)) return;
         
         foreach($enclosures as $enclosure) {
             if($enclosure->get_medium() != 'image') continue;
@@ -70,8 +72,6 @@ class Articles extends AppModel {
                 return $link;
             }
         }
-        
-        return null;
     }
     
     protected function isBlackListed($link) {
