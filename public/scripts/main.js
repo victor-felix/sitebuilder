@@ -88,12 +88,12 @@ $(function() {
         // e.preventDefault();
 	})
 	
-	$('#success-feedback').click(function(e){
+	$('#success-feedback, #error-feedback').click(function(e){
 		$(this).slideUp("fast");
 		e.preventDefault();
 	});
 	
 	setTimeout(function(){
-		$('#success-feedback').slideUp();
+		$('#success-feedback, #error-feedback').slideUp();
 	}, 2000);
 });

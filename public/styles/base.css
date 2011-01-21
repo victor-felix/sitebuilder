@@ -196,7 +196,8 @@ a img {
 	text-decoration: underline;
 }
 
-#success-feedback {
+#success-feedback,
+#error-feedback {
 	background: #278740 url(/images/layout/feedback-close.png) 900px 26px no-repeat;
 	color: #FFF;
 	display: block;
@@ -210,4 +211,12 @@ a img {
 
 	#success-feedback:hover {
 		background-color: #227738;
+	}
+	
+	#error-feedback {
+		background-color: #ed0d0d;
+	}
+	
+	#error-feedback:hover {
+		background-color: #be0a0a;
 	}

@@ -434,3 +434,29 @@ a img {
 .registration-finished .next-steps ul li a:hover {
 	text-decoration: underline;
 }
+
+#success-feedback,
+#error-feedback {
+	background: #278740 url(/images/layout/feedback-close.png) 740px 26px no-repeat;
+	color: #FFF;
+	display: block;
+	font: lighter 20px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica,arial,sans-serif;
+	margin: 0 auto;
+	margin-bottom: 30px;
+	padding: 20px 25px;
+	text-decoration: none;
+	text-align: left;
+	width: 730px;
+}
+
+	#success-feedback:hover {
+		background-color: #227738;
+	}
+	
+	#error-feedback {
+		background-color: #ed0d0d;
+	}
+	
+	#error-feedback:hover {
+		background-color: #be0a0a;
+	}

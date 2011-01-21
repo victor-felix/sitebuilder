@@ -12,20 +12,15 @@
 			<?php echo $this->html->link($this->html->image('layout/logo.png', array('class'=>'MeuMobi')), '/', array('class'=>'logo')); ?>
 	    </div>
 	    
+	    <?php if($success = Session::flash('success')): ?>
+	    <a href="#" id="success-feedback"><?php echo $success ?></a>
+	    <?php endif ?>
+	    
+	    <?php if($error = Session::flash('error')): ?>
+	    <a href="#" id="error-feedback"><?php echo $error ?></a>
+	    <?php endif ?>
 	    
 	    <div id="content">
-	        <?php if(!isset($this->showTitle) || (isset($this->showTitle) && $this->showTitle)): ?>
-    	    <div class="head">
-    	        <h1>crie seu mobi</h1>
-    	        <ul class="steps">
-    	            <li class="current">informações pessoais</li>
-    	            <li>informações do negócio</li>
-    	            <li>customização e logotipo</li>
-    	        </ul>
-    	        <div class="clear"></div>
-    	    </div>
-    	    <?php endif ?>
-    	    
             <?php echo $this->contentForLayout ?>
         </div>
         

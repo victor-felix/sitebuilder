@@ -1,5 +1,4 @@
-<?php $this->layout = "register";
-$this->showTitle = false; ?>
+<?php $this->layout = "login"; ?>
 
 <?php echo $this->form->create('/users/login', array(
     'class' => 'form-register'
@@ -10,7 +9,7 @@ $this->showTitle = false; ?>
         <div class="form-grid-220 first">
         <?php echo $this->form->input('email', array(
             'label' => __('E-Mail'),
-            'class' => 'ui-text error'
+            'class' => 'ui-text'
         )) ?>
         </div>
         
