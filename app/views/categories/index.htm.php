@@ -25,11 +25,11 @@
                 <?php echo $this->html->link(__('adicionar produto'), '/business_items/add/' . $root->id, array('class' => 'ui-button highlight')) ?>
                 <?php echo $this->html->link(__('gerenciar produtos'), '/business_items/index/' . $root->id, array('class' => 'ui-button manage')) ?>
             </div>
+            <div class="children-count"><?php echo $root->childrenCount() ?></div>
         </li>
 
             <?php if(array_key_exists($root->id, $categories)) foreach($categories[$root->id] as $category): ?>
             <li class="level-1">
-                <?php // $category->childrenCount() ?>
                 <?php echo $this->html->link($this->html->image('categories/add-subcat.png'), '/categories/add/' . $category->id, array('class' => 'ui-button ui-button-add highlight')) ?>
                 <span class="title" title="<?php echo __('clique para editar') ?>">
                     <?php echo $category->title ?>
@@ -41,6 +41,7 @@
                         'class' => 'ui-button delete icon'
                     )) ?>
                 </div>
+                <div class="children-count"><?php echo $category->childrenCount() ?></div>
                 <div class="delete-confirm">
                     <div class="wrapper">
                         <p>Deseja realmente apagar <strong><?php echo $category->title ?></strong>? <small>Todos os produtos e subcategorias associados serão apagados.</small></p>
@@ -64,6 +65,7 @@
                         <?php echo $this->html->link(__('gerenciar produtos'), '/business_items/index/' . $subcategory->id, array('class' => 'ui-button ')) ?>
                         <?php echo $this->html->link($this->html->image('categories/delete.gif'), '#', array('class' => 'ui-button delete icon')) ?>
                     </div>
+                    <div class="children-count"><?php echo $subcategory->childrenCount() ?></div>
                     <div class="delete-confirm">
                         <div class="wrapper">
                             <p>Deseja realmente apagar <strong><?php echo $category->title ?></strong>? <small>Todos os produtos e subcategorias associados serão apagados.</small></p>
@@ -82,7 +84,7 @@
 
         <?php endforeach ?>
 
-        
+
         <!-- add subcategory -->
         <!--
         <li class="level-2-form">

@@ -104,6 +104,21 @@
 	background: #FFFFCC;
 }
 
+.categories-list li .children-count {
+	color: #BBB;
+	font-size: 17px;
+	right: 25px;
+	position: absolute;
+	text-align: right;
+	top: 13px;
+	width: 40px;
+	line-height: 25px;
+}
+
+.categories-list li:hover .children-count {
+	display: none;
+}
+
 .categories-list li.level-0 .title {
 	color: #666;
 	font-size: 20px;

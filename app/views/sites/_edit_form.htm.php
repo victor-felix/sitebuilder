@@ -37,7 +37,11 @@
                 <div class="clear"></div>
             </div>
             </div>
-            <small>Escolha o seu endereço com cuidado, você não poderá alterá-lo posteriormente.</small>
+            <?php if($action == 'register'): ?>
+                <small>Escolha o seu endereço com cuidado, você não poderá alterá-lo posteriormente.</small>
+            <?php else: ?>
+                <small>Você não pode alterar o endereço de seu site mobi.</small>
+            <?php endif ?>
         </div>
     </div>
 </fieldset>
