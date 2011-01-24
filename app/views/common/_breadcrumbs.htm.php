@@ -1,5 +1,5 @@
 <p class="breadcrumb">
     <?php foreach($category->breadcrumbs() as $c): ?>
-        <?php echo $c->title ?> /
+        <?php echo e($c->title) ?> /
     <?php endforeach ?>
 </p>

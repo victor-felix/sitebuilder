@@ -18,7 +18,7 @@
 )) ?>
 
 <fieldset>
-    <h2>categoria</h2>
+    <h2><?php echo __('categoria') ?></h2>
     <div class="field-group">
         <div class="form-grid-460 first">
             <?php echo $this->form->input('title', array(

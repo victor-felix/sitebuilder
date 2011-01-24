@@ -4,7 +4,7 @@
     )) ?>
     </div>
     <div class="grid-8">
-        <h1><?php echo $this->pageTitle =  $category->title ?></h1>
+        <h1><?php echo $this->pageTitle =  e($category->title) ?></h1>
         <?php echo $this->element('common/breadcrumbs', array(
             'category' => $category->parent()
         )) ?>
@@ -24,8 +24,8 @@
                 'class' => 'photo'
             )) ?>
             <div class="info">
-                <?php echo $this->html->link($bi->values()->title, '/business_items/edit/' . $bi->id); ?>
-                <p><?php echo $bi->values()->description ?></p>
+                <?php echo $this->html->link(e($bi->values()->title), '/business_items/edit/' . $bi->id); ?>
+                <p><?php echo e($bi->values()->description) ?></p>
             </div>
         </li>
         <?php endforeach ?>

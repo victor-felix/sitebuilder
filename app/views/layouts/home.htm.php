@@ -52,35 +52,35 @@
                     ))?>
                     <?php echo $this->html->link(__('cancelar'), '#', array(
                         'class' => 'cancel'
-                    ))?>
-                <?php echo $this->form->close();?>
+                    )) ?>
+                <?php echo $this->form->close() ?>
             </div>
 		</div>
 	
 	    <div id="content">
-        <?php echo $this->contentForLayout ?>
+            <?php echo $this->contentForLayout ?>
         </div>
         
         <?php echo $this->element("layouts/footer") ?>
         
         <?php echo $this->html->script('jquery', 'jquery.cycle.all.min.js') ?>
         <script type="text/javascript">
-        $('#slideshow').cycle({'fx': 'scrollUp'});
+            $('#slideshow').cycle({'fx': 'scrollUp'});
         
-        $('p.login a:first-of-type').click(function(e){
-            $('#login-window').show();
-            $('#FormEmail').focus();
-            e.preventDefault();
-        });
+            $('p.login a:first-of-type').click(function(e){
+                $('#login-window').show();
+                $('#FormEmail').focus();
+                e.preventDefault();
+            });
         
-        $('#login-window a').click(function(e){
-            $('#login-window').hide();
-            e.preventDefault();
-        });
+            $('#login-window a').click(function(e){
+                $('#login-window').hide();
+                e.preventDefault();
+            });
         
-        $(document).keyup(function(e) {
-          if (e.keyCode == 27) { $('#login-window').hide(); }
-        });
+            $(document).keyup(function(e) {
+              if (e.keyCode == 27) { $('#login-window').hide(); }
+            });
         </script>
     </body>
 </html>

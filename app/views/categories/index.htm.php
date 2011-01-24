@@ -1,7 +1,7 @@
 <div class="page-heading">
     <div class="grid-4 first">&nbsp;</div>
     <div class="grid-8">
-        <h1><?php echo $this->pageTitle = $root->title ?></h1>
+        <h1><?php echo $this->pageTitle = e($root->title) ?></h1>
     </div>
     <div class="clear"></div>
 </div>
@@ -19,7 +19,7 @@
         <?php foreach($categories[0] as $root): ?>
         <li class="level-0">
             <span class="title" title="<?php echo __('clique para editar') ?>">
-                <?php echo $root->title ?>
+                <?php echo e($root->title) ?>
             </span>
             <div class="controls">
                 <?php echo $this->html->link(__('adicionar produto'), '/business_items/add/' . $root->id, array('class' => 'ui-button highlight')) ?>
@@ -32,7 +32,7 @@
             <li class="level-1">
                 <?php echo $this->html->link($this->html->image('categories/add-subcat.png'), '/categories/add/' . $category->id, array('class' => 'ui-button ui-button-add highlight')) ?>
                 <span class="title" title="<?php echo __('clique para editar') ?>">
-                    <?php echo $category->title ?>
+                    <?php echo e($category->title) ?>
                 </span>
                 <div class="controls">
                     <?php echo $this->html->link(__('adicionar produto'), '/business_items/add/' . $category->id, array('class' => 'ui-button highlight')) ?>
@@ -44,7 +44,7 @@
                 <div class="children-count"><?php echo $category->childrenCount() ?></div>
                 <div class="delete-confirm">
                     <div class="wrapper">
-                        <p><?php echo __('Deseja realmente apagar <strong>%s</strong>?', $category->title) ?> <small><?php echo __('Todos os produtos e subcategorias associados serão apagados.') ?></small></p>
+                        <p><?php echo __('Deseja realmente apagar <strong>%s</strong>?', e($category->title)) ?> <small><?php echo __('Todos os produtos e subcategorias associados serão apagados.') ?></small></p>
                         <?php echo $this->html->link(__('Sim, apagar'), '/categories/delete/' . $category->id, array(
                             'class' => 'ui-button delete highlight'
                         )) ?>
@@ -58,7 +58,7 @@
                 <?php if(array_key_exists($category->id, $categories)) foreach($categories[$category->id] as $subcategory): ?>
                 <li class="level-2">
                     <span class="title" title="<?php echo __('clique para editar') ?>">
-                        <?php echo $subcategory->title ?>
+                        <?php echo e($subcategory->title) ?>
                     </span>
                     <div class="controls">
                         <?php echo $this->html->link(__('adicionar produto'), '/business_items/add/' . $subcategory->id, array('class' => 'ui-button highlight')) ?>
@@ -68,7 +68,7 @@
                     <div class="children-count"><?php echo $subcategory->childrenCount() ?></div>
                     <div class="delete-confirm">
                         <div class="wrapper">
-                            <p><?php echo __('Deseja realmente apagar <strong>%s</strong>?', $subcategory->title) ?> <small><?php echo __('Todos os produtos e subcategorias associados serão apagados.') ?></small></p>
+                            <p><?php echo __('Deseja realmente apagar <strong>%s</strong>?', e($subcategory->title)) ?> <small><?php echo __('Todos os produtos e subcategorias associados serão apagados.') ?></small></p>
                             <?php echo $this->html->link('Sim, apagar', '/categories/delete/' . $subcategory->id, array(
                                 'class' => 'ui-button delete highlight'
                             )) ?>

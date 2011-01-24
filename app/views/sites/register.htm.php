@@ -1,5 +1,6 @@
-<?php $this->layout = 'register';
-$this->selectedTab = 1; ?>
+<?php $this->layout = 'register' ?>
+<?php $this->selectedTab = 1 ?>
+
 <?php echo $this->form->create('/sites/register', array(
     'id' => 'form-register-site-info',
     'class' => 'form-register',

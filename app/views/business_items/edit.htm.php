@@ -4,7 +4,7 @@
     )) ?>
     </div>
     <div class="grid-8">
-        <h1><?php echo $this->pageTitle = $business_item->values()->title ?></h1>
+        <h1><?php echo $this->pageTitle = e($business_item->values()->title) ?></h1>
         <?php echo $this->element('common/breadcrumbs', array(
             'category' => $parent
         )) ?>
@@ -37,11 +37,13 @@
 
 <div class="delete-confirm">
     <div class="wrapper">
-        <p>Deseja realmente apagar <strong><?php echo __($business_item->title) ?></strong>?</p>
-        <?php echo $this->html->link('Sim, apagar', '/business_items/delete/' . $business_item->id, array(
+        <p>
+            <?php echo __('Deseja realmente apagar <strong>%s</strong>?', e($business_item->title)) ?>
+        </p>
+        <?php echo $this->html->link(__('Sim, apagar'), '/business_items/delete/' . $business_item->id, array(
             'class' => 'ui-button delete highlight'
         )) ?>
-        <?php echo $this->html->link('Não, voltar', '#', array(
+        <?php echo $this->html->link(__('Não, voltar'), '#', array(
             'class' => 'ui-button'
         )) ?>
     </div>

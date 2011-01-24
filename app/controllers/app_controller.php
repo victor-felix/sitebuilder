@@ -51,3 +51,7 @@ function __() {
     $arguments = func_get_args();
     return call_user_func_array('sprintf', $arguments);
 }
+
+function e($text) {
+    return Sanitize::html($text);
+}

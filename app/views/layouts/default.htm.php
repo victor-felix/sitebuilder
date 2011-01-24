@@ -15,14 +15,14 @@
 			</div>
 			<div class="menu">
 			    <div class="navigation">
-			        <p class="business-name"><?php echo Sanitize::html(Auth::user()->site()->title) ?></h1>
+			        <p class="business-name"><?php echo e(Auth::user()->site()->title) ?></h1>
 			        <div class="user">
-			            <p>Olá <strong><?php echo Auth::user()->firstname() ?></strong></p>
+			            <p><?php echo __('Olá <strong>%s</strong>', e(Auth::user()->firstname())) ?></p>
 			            <?php echo $this->html->link(__('sair ›'), '/logout') ?>
 			        </div>
 			    </div>
 			    <ul>
-			        <li><?php echo $this->html->link(Auth::user()->site()->rootCategory()->title, '/categories') ?></li>
+			        <li><?php echo $this->html->link(e(Auth::user()->site()->rootCategory()->title), '/categories') ?></li>
 			        <li><?php echo $this->html->link(__('Configurações'), '/settings') ?></li>
 			        <li><?php echo $this->html->link(__('Customização'), '/settings/customize') ?></li>
 			        <li><?php echo $this->html->link(__('Minha Conta'), '/settings/account') ?></li>
@@ -32,15 +32,15 @@
 		</div>
 	
 	    <?php if($success = Session::flash('success')): ?>
-	    <a href="#" id="success-feedback"><?php echo __($success) ?></a>
+    	    <a href="#" id="success-feedback"><?php echo __($success) ?></a>
 	    <?php endif ?>
 	    
 	    <?php if($error = Session::flash('error')): ?>
-	    <a href="#" id="error-feedback"><?php echo __($error) ?></a>
+    	    <a href="#" id="error-feedback"><?php echo __($error) ?></a>
 	    <?php endif ?>
 	
 	    <div id="content">
-        <?php echo $this->contentForLayout ?>
+            <?php echo $this->contentForLayout ?>
         </div>
         
         <?php echo $this->element("layouts/footer") ?>
