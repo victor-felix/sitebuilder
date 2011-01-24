@@ -1,7 +1,8 @@
 <?php $this->layout = "login"; ?>
 
 <?php echo $this->form->create('/users/login', array(
-    'class' => 'form-register'
+    'class' => 'form-register',
+    'id' => 'FormLogin'
 )) ?>
 <fieldset>
     <h2>login</h2>
@@ -18,6 +19,14 @@
             'label' => __('Senha'),
             'class' => 'ui-text'
         )) ?>
+        </div>
+        
+        <div class="form-grid-220 first">
+        <?php echo $this->form->input('remember', array(
+            'label' => false,
+            'type' => 'checkbox'
+        )) ?>
+        <label for="FormRemember" class="checkbox"><?php echo __('Manter conectado') ?></label>
         </div>
     </div>
 </fieldset>

@@ -34,14 +34,19 @@
 			<div id="login-window">
                 <p><?php echo $this->html->link('Efetue login', '/login') ?></p>
                 <?php echo $this->form->create('/users/login') ?>
-                        <?php echo $this->form->input('email', array(
-                            'label' => __('E-Mail'),
-                            'class' => 'ui-text'
-                        )) ?>
-                        <?php echo $this->form->input('password', array(
-                            'label' => __('Senha'),
-                            'class' => 'ui-text'
-                        )) ?>
+                    <?php echo $this->form->input('email', array(
+                        'label' => __('E-Mail'),
+                        'class' => 'ui-text'
+                    )) ?>
+                    <?php echo $this->form->input('password', array(
+                        'label' => __('Senha'),
+                        'class' => 'ui-text'
+                    )) ?>
+                    <?php echo $this->form->input('remember', array(
+                        'label' => false,
+                        'type' => 'checkbox'
+                    )) ?>
+                    <label for="FormRemember" class="checkbox"><?php echo __('Manter conectado') ?></label>
                     <?php echo $this->form->submit('Login', array(
                         'class' => 'ui-button red'
                     ))?>
