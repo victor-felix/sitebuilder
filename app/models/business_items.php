@@ -1,5 +1,7 @@
 <?php
 
+require_once 'app/models/business_items_types.php';
+
 class BusinessItems extends AppModel {
     protected $beforeSave = array('setSiteValues');
     protected $afterSave = array('saveItemValues');
@@ -43,6 +45,19 @@ class BusinessItems extends AppModel {
         return $values;
     }
 
+    public function validate($data = array()) {
+        $fields = $this->site->businessItemType()->fields;
+
+        foreach($fields as $id => $field) {
+            list($valid, $message) = BusinessItemsTypes::validate($field, $this->data[$id]);
+            if(!$valid) {
+                $this->errors[$id] = $message;
+            }
+        }
+        
+        return empty($this->errors);
+    }
+
     protected function setSiteValues($data) {
         if(is_null($this->id) && array_key_exists('site', $data)) {
             $data['site_id'] = $this->site->id;
@@ -52,16 +67,16 @@ class BusinessItems extends AppModel {
         return $data;
     }
     
-    protected function saveItemValues($is_new) {
+    protected function saveItemValues($created) {
         $fields = $this->site->businessItemType()->fields;
         $model = Model::load('BusinessItemsValues');
         
-        if(!$is_new) {
+        if(!$created) {
             $values = $model->toListByItemId($this->id);
         }
 
         foreach($fields as $id => $field) {
-            if($is_new) {
+            if($created) {
                 $model->id = null;
             }
             else {

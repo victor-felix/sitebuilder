@@ -17,7 +17,7 @@ class BusinessItemsController extends AppController {
             $business_item->site = $site;
             if($business_item->validate()) {
                 $business_item->save();
-                Session::writeFlash("success", __("Item adicionado com sucesso."));
+                Session::writeFlash('success', __('Item adicionado com sucesso.'));
                 $this->redirect('/business_items/index/' . $business_item->parent_id);
             }
         }
@@ -32,26 +32,25 @@ class BusinessItemsController extends AppController {
         $site = $this->getCurrentSite();
         $business_item = $this->BusinessItems->firstById($id);
         if(!empty($this->data)) {
-            $this->BusinessItems->id = $id;
-            $this->data['site'] = $site;
-            if($this->BusinessItems->validate($this->data)) {
-                $this->BusinessItems->save($this->data);
-                Session::writeFlash("success", __("Item editado com sucesso."));
+            $business_item->updateAttributes($this->data);
+            $business_item->site = $site;
+            if($business_item->validate()) {
+                $business_item->save();
+                Session::writeFlash('success', __('Item editado com sucesso.'));
                 $this->redirect('/business_items/index/' . $business_item->parent_id);
             }
         }
         $this->set(array(
             'parent_id' => $business_item->parent_id,
-            'business_item' => $this->BusinessItems->firstById($id),
-            'type' => $site->businessItemType(),
-            'categories' => Model::load('Categories')->toListBySiteId($site->id)
+            'business_item' => $business_item,
+            'type' => $site->businessItemType()
         ));
     }
     
     public function delete($id = null) {
         $business_item = $this->BusinessItems->firstById($id);
         $this->BusinessItems->delete($id);
-        Session::writeFlash("success", __("Item excluído com sucesso."));
+        Session::writeFlash('success', __('Item excluído com sucesso.'));
         $this->redirect('/business_items/index/' . $business_item->parent_id);
     }
 }
