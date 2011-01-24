@@ -27,6 +27,10 @@ Config::write('BusinessItemsTypes', array(
                 'title' => 'Descrição',
                 'field_type' => 'text',
                 'limit' => 500
+            ),
+            'featured' => array(
+                'title' => 'Destaque?',
+                'field_type' => 'boolean'
             )
         )
     )

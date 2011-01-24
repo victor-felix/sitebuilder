@@ -1,7 +1,7 @@
 ALTER TABLE `sites`
     ADD COLUMN `segment` varchar(64) AFTER `feed_id`,
     ADD COLUMN `latitude` varchar(255) AFTER `twitter`,
-    ADD COLUMN `longitutde` varchar(255) AFTER `latitude`,
+    ADD COLUMN `longitude` varchar(255) AFTER `latitude`,
     DROP COLUMN `logo_path`,
     DROP COLUMN `logo_url`,
     DROP COLUMN `logo_author`,

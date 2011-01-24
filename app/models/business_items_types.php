@@ -5,7 +5,8 @@ class BusinessItemsTypes {
         'char' => 'text',
         'text' => 'textarea',
         'number' => 'text',
-        'date' => 'text'
+        'date' => 'text',
+        'boolean' => 'checkbox'
     );
     
     public function all() {

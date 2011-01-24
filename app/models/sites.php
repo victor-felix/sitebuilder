@@ -1,8 +1,10 @@
 <?php
 
+require_once 'lib/GoogleGeocoding.php';
+
 class Sites extends AppModel {
     protected $getters = array('feed_url');
-    protected $beforeSave = array('getFeedId');
+    protected $beforeSave = array('getFeedId', 'getLatLng');
     protected $afterSave = array('saveLogo', 'createRootCategory');
     protected $beforeDelete = array('checkAndDeleteFeed', 'deleteImages', 'deleteCategories',
         'deleteLogo');
@@ -124,6 +126,33 @@ class Sites extends AppModel {
         return Model::load('BusinessItemsTypes')->firstById($this->businessItemTypeName());
     }
 
+    protected function getLatLng($data) {
+        if(array_key_exists('street', $data)) {
+            if(empty($data['street'])) {
+                $data['latitude'] = $data['longitude'] = null;
+            }
+            else {
+                try {
+                    $address = String::insert(':street, :number, :city - :state, :country', array(
+                        'street' => $data['street'],
+                        'number' => $data['number'],
+                        'city' => $data['city'],
+                        'state' => $data['state'],
+                        'country' => $data['country']
+                    ));
+                    $geocode = GoogleGeocoding::geocode($address);
+                    $data['latitude'] = $geocode->results[0]->geometry->location->lat;
+                    $data['longitude'] = $geocode->results[0]->geometry->location->lng;
+                }
+                catch(Exception $e) {
+                    $data['latitude'] = $data['longitude'] = null;
+                }
+            }
+        }
+        
+        return $data;
+    }
+
     protected function getFeedId($data) {
         if(array_key_exists('feed_url', $data)) {
             if(!empty($data['feed_url'])) {
@@ -182,11 +211,9 @@ class Sites extends AppModel {
     
     protected function saveLogo() {
         if(array_key_exists('logo', $this->data)) {
-            // dump($this->logo());
             if($logo = $this->logo()) {
                 Model::load('Images')->delete($logo->id);
             }
-            // die();
             
             Model::load('Images')->upload(new SiteLogos($this->id), $this->data['logo']);
         }
