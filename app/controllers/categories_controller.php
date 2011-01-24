@@ -33,7 +33,7 @@ class CategoriesController extends AppController {
 
         $this->set(array(
             'category' => $category,
-            'parent_id' => $parent_id
+            'parent' => $this->Categories->firstById($parent_id)
         ));
     }
     

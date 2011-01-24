@@ -90,6 +90,23 @@ class Categories extends AppModel {
         ));
     }
     
+    public function breadcrumbs() {
+        $parent_id = $this->parent_id;
+        $breadcrumbs = array($this);
+
+        while($parent_id > 0) {
+            $category = $this->firstById($parent_id);
+            $breadcrumbs []= $category;
+            $parent_id = $category->parent_id;
+        }
+        
+        return array_reverse($breadcrumbs);
+    }
+    
+    public function parent() {
+        return $this->firstById($this->parent_id);
+    }
+    
     public function toJSON($recursive = true) {
         $data = $this->data;
         

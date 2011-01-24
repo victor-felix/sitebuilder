@@ -3,7 +3,7 @@
     <div class="field-group">
         <?php echo $this->form->input('parent_id', array(
             'type' => 'hidden',
-            'value' => $parent_id
+            'value' => $parent->id
         )) ?>
         
         <?php foreach($type->fields as $id => $field): ?>

@@ -18,6 +18,10 @@ class BusinessItems extends AppModel {
         }
     }
 
+    public function breadcrumbs($category_id) {
+        return Model::load('Categories')->firstById($category_id)->bredcrumbs();
+    }
+
     public function allByDomain($domain) {
         $site = Model::load('Sites')->firstByDomain($domain);
         return $this->allBySiteId($site->id);
@@ -32,6 +36,10 @@ class BusinessItems extends AppModel {
         }
         
         return (object) $obj;
+    }
+
+    public function parent() {
+        return Model::load('Categories')->firstById($this->parent_id);
     }
 
     public function toJSON() {

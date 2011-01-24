@@ -4,8 +4,10 @@
     )) ?>
     </div>
     <div class="grid-8">
-        <h1><?php echo $this->pageTitle =  __($category->title) ?></h1>
-        <p class="breadcrumb"></p>
+        <h1><?php echo $this->pageTitle =  $category->title ?></h1>
+        <?php echo $this->element('common/breadcrumbs', array(
+            'category' => $category->parent()
+        )) ?>
         
         <?php echo $this->html->link(__('adicionar produto'), '/business_items/add/' . $category->id, array(
             'class' => 'ui-button highlight large add-business-item'
@@ -28,7 +30,7 @@
         </li>
         <?php endforeach ?>
     <?php else: ?>
-        <li class="no-results">Ainda não há nenhum produto cadastrado nesta categoria.</li>
+        <li class="no-results"><?php echo __('Ainda não há nenhum produto cadastrado nesta categoria.') ?></li>
     <?php endif ?>
 </ul>
 

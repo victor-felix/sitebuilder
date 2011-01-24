@@ -23,7 +23,7 @@ class BusinessItemsController extends AppController {
         }
         $this->set(array(
             'business_item' => $business_item,
-            'parent_id' => $parent_id,
+            'parent' => $this->Categories->firstById($parent_id),
             'type' => $site->businessItemType()
         ));
     }
@@ -41,7 +41,7 @@ class BusinessItemsController extends AppController {
             }
         }
         $this->set(array(
-            'parent_id' => $business_item->parent_id,
+            'parent' => $business_item->parent(),
             'business_item' => $business_item,
             'type' => $site->businessItemType()
         ));
