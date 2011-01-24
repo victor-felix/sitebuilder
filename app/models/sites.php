@@ -27,6 +27,12 @@ class Sites extends AppModel {
             'rule' => array('fileUpload', 1, array('jpg', 'gif', 'png')),
             'message' => 'Você precisa usar uma imagem válida',
         ),
+        'description' => array(
+            array(
+                'rule' => array('maxLength', 500),
+                'message' => 'A descrição do site não pode conter mais do que 500 caracteres'
+            )            
+        ),
         // 'feed' => array(
         //     'rule' => 'url',
         //     'message' => 'Você precisa informar uma URL válida',

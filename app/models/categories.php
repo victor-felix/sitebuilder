@@ -8,8 +8,14 @@ class Categories extends AppModel {
     
     protected $validates = array(
         'title' => array(
-            'rule' => 'notEmpty',
-            'message' => 'Você precisa definir um título'
+            array(
+                'rule' => 'notEmpty',
+                'message' => 'Você precisa definir um título'
+            ),
+            array(
+                'rule' => array('maxLength', 50),
+                'message' => 'O título de uma categoria não pode conter mais do que 50 caracteres'
+            )
         )
     );
 
