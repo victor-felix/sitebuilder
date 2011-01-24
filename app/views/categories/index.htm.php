@@ -9,8 +9,8 @@
 <div id="categories-list">
 <div class="grid-4 first">
     <div class="tip">
-        <h4>Dica</h4>
-        <p>Utilize o gerenciador ao lado para gerenciar o seu cardápio. Você pode criar categorias (entradas, pratos, etc.), subcategorias (massas, saladas, carnes), ou qualquer estruturação que se adapte ao seu negócio. Em seguida, adicione pratos ou produtos às respectivas categorias usando o botão ‘Gerenciar produtos’ em cada categoria.</p>
+        <h4><?php echo __('Dica') ?></h4>
+        <p><?php echo __('Utilize o gerenciador ao lado para gerenciar o seu cardápio. Você pode criar categorias (entradas, pratos, etc.), subcategorias (massas, saladas, carnes), ou qualquer estruturação que se adapte ao seu negócio. Em seguida, adicione pratos ou produtos às respectivas categorias usando o botão ‘Gerenciar produtos’ em cada categoria.') ?></p>
     </div>
 </div>
 
@@ -68,7 +68,7 @@
                     <div class="children-count"><?php echo $subcategory->childrenCount() ?></div>
                     <div class="delete-confirm">
                         <div class="wrapper">
-                            <p>Deseja realmente apagar <strong><?php echo $category->title ?></strong>? <small>Todos os produtos e subcategorias associados serão apagados.</small></p>
+                            <p><?php echo __('Deseja realmente apagar <strong>%s</strong>?', $subcategory->title) ?> <small><?php echo __('Todos os produtos e subcategorias associados serão apagados.') ?></small></p>
                             <?php echo $this->html->link('Sim, apagar', '/categories/delete/' . $subcategory->id, array(
                                 'class' => 'ui-button delete highlight'
                             )) ?>

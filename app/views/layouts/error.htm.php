@@ -31,7 +31,7 @@
     <html>
         <head>
             <?php echo $this->html->charset() ?>
-            <title>:( Página não encontrada. - MeuMobi</title>
+            <title>:( <?php echo __('Página não encontrada') ?> - MeuMobi</title>
             <link rel="shortcut icon" href="<?php echo Mapper::url("/images/layout/favicon.png"); ?>" type="image/png" />
             <?php echo $this->html->stylesheet('register', 'uikit'); ?>
         </head>
@@ -45,9 +45,9 @@
     	    <div id="content" style="background:none;-webkit-box-shadow: none;-moz-box-shadow: none;border: 0">
                 <div class="registration-finished" style="padding-bottom: 10px">
                     <?php echo $this->html->image('layout/error.png', array(
-                        'alt' => 'Página não encontrada'
+                        'alt' => __('Página não encontrada')
                     )); ?>
-                    <h2>A página solicitada não foi encontrada.</h2>
+                    <h2><?php echo __('A página solicitada não foi encontrada.') ?></h2>
                     <div class="clear"></div>
                 </div>
             </div>

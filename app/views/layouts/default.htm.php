@@ -18,25 +18,25 @@
 			        <p class="business-name"><?php echo Sanitize::html(Auth::user()->site()->title) ?></h1>
 			        <div class="user">
 			            <p>Olá <strong><?php echo Auth::user()->firstname() ?></strong></p>
-			            <?php echo $this->html->link('sair ›', '/logout') ?>
+			            <?php echo $this->html->link(__('sair ›'), '/logout') ?>
 			        </div>
 			    </div>
 			    <ul>
 			        <li><?php echo $this->html->link(Auth::user()->site()->rootCategory()->title, '/categories') ?></li>
-			        <li><?php echo $this->html->link('Configurações', '/settings') ?></li>
-			        <li><?php echo $this->html->link('Customização', '/settings/customize') ?></li>
-			        <li><?php echo $this->html->link('Minha Conta', '/settings/account') ?></li>
+			        <li><?php echo $this->html->link(__('Configurações'), '/settings') ?></li>
+			        <li><?php echo $this->html->link(__('Customização'), '/settings/customize') ?></li>
+			        <li><?php echo $this->html->link(__('Minha Conta'), '/settings/account') ?></li>
 			    </ul>
 			</div>
 			<div class="clear"></div>
 		</div>
 	
 	    <?php if($success = Session::flash('success')): ?>
-	    <a href="#" id="success-feedback"><?php echo $success ?></a>
+	    <a href="#" id="success-feedback"><?php echo __($success) ?></a>
 	    <?php endif ?>
 	    
 	    <?php if($error = Session::flash('error')): ?>
-	    <a href="#" id="error-feedback"><?php echo $error ?></a>
+	    <a href="#" id="error-feedback"><?php echo __($error) ?></a>
 	    <?php endif ?>
 	
 	    <div id="content">

@@ -9,7 +9,7 @@
 )) ?>
 
 <fieldset>
-    <h2>informações pessoais</h2>
+    <h2><?php echo __('informações pessoais') ?></h2>
     <div class="field-group">
         <div class="form-grid-220 first">
             <?php echo $this->form->input('firstname', array(
@@ -33,7 +33,7 @@
                 'type' => 'text',
                 'class' => 'ui-text large'
             )) ?>
-            <small>Digite um endereço de e-mail válido. Uma mensagem de ativação da sua conta será enviada para o endereço informado.</small>
+            <small><?php echo __('Digite um endereço de e-mail válido. Uma mensagem de ativação da sua conta será enviada para o endereço informado.') ?></small>
         </div>
         
         <div class="form-grid-220 first">
@@ -42,7 +42,7 @@
                 'type' => 'password',
                 'class' => 'ui-text'
             )) ?>
-            <small>A senha deve conter 6 ou mais caracteres.</small>
+            <small><?php echo __('A senha deve conter 6 ou mais caracteres.') ?></small>
         </div>
         
         <div class="form-grid-220 first">
