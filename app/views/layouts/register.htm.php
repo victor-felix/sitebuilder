@@ -17,7 +17,7 @@
 	    <div id="content">
 	        <?php if(!isset($this->showTitle) || (isset($this->showTitle) && $this->showTitle)): ?>
     	    <div class="head">
-    	        <h1>crie seu mobi</h1>
+    	        <h1><?php echo __("Crie seu Mobi") ?></h1>
     	        <ul class="steps">
     	            <li <?php if(!isset($this->selectedTab) || $this->selectedTab == 0): ?>class="current"<?php endif ?>>informações pessoais</li>
     	            <li <?php if(isset($this->selectedTab) && $this->selectedTab == 1): ?>class="current"<?php endif ?>>informações do negócio</li>

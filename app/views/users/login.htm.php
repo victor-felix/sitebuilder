@@ -1,4 +1,5 @@
-<?php $this->layout = "login"; ?>
+<?php $this->layout = "login" ?>
+<?php $this->pageTitle = __("Login em MeuMobi") ?>
 
 <?php echo $this->form->create('/users/login', array(
     'class' => 'form-register',
@@ -31,7 +32,7 @@
     </div>
 </fieldset>
 <fieldset class="actions">
-    <?php echo $this->form->submit('Login', array(
+    <?php echo $this->form->submit(__('Login'), array(
         'class' => 'ui-button red large',
         'style' => 'margin-right: 415px'
     ))?>
