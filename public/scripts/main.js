@@ -69,7 +69,7 @@ $(function() {
 	/* TO DO */
 	$('.categories-list .controls .delete').click(function(e){
 		e.preventDefault();
-		$(this).parent().next(".delete-confirm").fadeIn("fast");
+		$(this).parent().parent().find(".delete-confirm").show();
 	})
 	
 	$('#form-edit-businessitem .delete').click(function(e){
@@ -85,7 +85,7 @@ $(function() {
 	
 	$('.delete-confirm .ui-button:nth-of-type(2)').click(function(e){
 		$(this).parent().parent().hide();
-        // e.preventDefault();
+        e.preventDefault();
 	})
 	
 	$('#success-feedback, #error-feedback').click(function(e){

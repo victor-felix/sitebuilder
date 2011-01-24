@@ -44,11 +44,11 @@
                 <div class="children-count"><?php echo $category->childrenCount() ?></div>
                 <div class="delete-confirm">
                     <div class="wrapper">
-                        <p>Deseja realmente apagar <strong><?php echo $category->title ?></strong>? <small>Todos os produtos e subcategorias associados serão apagados.</small></p>
-                        <?php echo $this->html->link('Sim, apagar', '/categories/delete/' . $category->id, array(
+                        <p><?php echo __('Deseja realmente apagar <strong>%s</strong>?', $category->title) ?> <small><?php echo __('Todos os produtos e subcategorias associados serão apagados.') ?></small></p>
+                        <?php echo $this->html->link(__('Sim, apagar'), '/categories/delete/' . $category->id, array(
                             'class' => 'ui-button delete highlight'
                         )) ?>
-                        <?php echo $this->html->link('Não, voltar', '#', array(
+                        <?php echo $this->html->link(__('Não, voltar'), '#', array(
                             'class' => 'ui-button'
                         )) ?>
                     </div>

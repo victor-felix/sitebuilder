@@ -37,7 +37,7 @@
                 'type' => 'text',
                 'class' => 'ui-text large'
             )) ?>
-            <small>Digite um endereço de e-mail válido.</small>
+            <small><?php echo __('Digite um endereço de e-mail válido.') ?></small>
         </div>
         
         <div class="form-grid-460 first">
