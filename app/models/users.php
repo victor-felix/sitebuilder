@@ -3,7 +3,7 @@
 class Users extends AppModel {
     protected $getters = array('firstname', 'lastname');
     protected $beforeSave = array('hashPassword', 'createToken', 'joinName');
-    protected $afterSave = array('createSite', 'authenticate');
+    protected $afterSave = array('createSite');
     protected $validates = array(
         'firstname' => array(
             'rule' => 'notEmpty',
@@ -94,10 +94,6 @@ class Users extends AppModel {
             $this->site_id = $model->id;
             $this->save();
         }
-    }
-    
-    protected function authenticate() {
-        Auth::login($this);
     }
     
     protected function joinName($data) {

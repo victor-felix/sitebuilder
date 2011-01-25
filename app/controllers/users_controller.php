@@ -28,7 +28,7 @@ class UsersController extends AppController {
     public function login() {
         if(!empty($this->data)) {
             $user = Auth::identify($this->data);
-            if($user) {
+            if($user && $user->active) {
                 Auth::login($user);
                 $this->redirect('/categories');
             }
