@@ -24,7 +24,7 @@ class ApiController extends AppController {
         else if($record instanceof Model) {
             $record = $record->toJSON();
         }
-        
+
         return $record;
     }
     
@@ -34,21 +34,12 @@ class ApiController extends AppController {
         $templatePath = String::insert(':controller/:action.:ext.tpl', array(
             'controller' => $controller,
             'action' => $action,
-            'ext' => 'bkml',
+            'ext' => 'bkml'
         ));
         
-        $site_info = array(
-            'title' => $this->site->title,
-            'logo' => null,
-            'theme' => $this->site->theme,
-            'skin' => $this->site->skin,
-        );
-        if($logo = $this->site->logo()) {
-            $site_info['logo'] = $logo->link();
-        }
+        $site_info = $this->site->toJSON();
         
         return array(
-            'site' => $site_info,
             'templatePath' => $templatePath,
             'content' => $content
         );

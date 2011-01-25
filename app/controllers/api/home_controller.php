@@ -6,8 +6,9 @@ class HomeController extends ApiController {
     protected $uses = array('Sites');
     
     public function api_index($domain) {
-        $this->respondToJSON(
-            $this->Sites->firstByDomain($domain)
-        );
+        $site = $this->Sites->firstByDomain($domain);
+        $this->respondToJSON(array(
+            'siteInfo' => $site->toJSON()
+        ));
     }
 }

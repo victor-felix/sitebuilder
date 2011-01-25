@@ -65,6 +65,15 @@ class Sites extends AppModel {
             return Model::load('Feeds')->firstById($this->feed_id);
         }
     }
+
+    public function topArticles() {
+        if($this->feed_id) {
+            return $this->feed()->topArticles();
+        }
+        else {
+            return array();
+        }
+    }
     
     public function feed_url() {
         $feed = $this->feed();
@@ -101,26 +110,13 @@ class Sites extends AppModel {
 
     public function toJSON() {
         $data = array_merge($this->data, array(
-            'images' => array(),
-            'articles' => array(),
-            'rootCategory' => null
+            'logo' => null
         ));
-        
-        $root = $this->rootCategory();
-        if($root->hasChildren()) {
-            $data['rootCategory'] = $root->toJSON();
+
+        if($logo = $this->logo()) {
+            $data['logo'] = $logo->link();
         }
-        
-        $fields = array(
-            'articles' => $this->feed()->topArticles(),
-            'images' => $this->images(),
-        );
-        foreach($fields as $field => $values) {
-            foreach($values as $value) {
-                $data[$field] []= $value->toJSON();
-            }
-        }
-        
+
         return $data;
     }
 

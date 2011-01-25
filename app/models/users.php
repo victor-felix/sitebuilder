@@ -3,7 +3,7 @@
 class Users extends AppModel {
     protected $getters = array('firstname', 'lastname');
     protected $beforeSave = array('hashPassword', 'createToken', 'joinName');
-    protected $afterSave = array('createSite');
+    // protected $afterSave = array('createSite');
     protected $validates = array(
         'firstname' => array(
             'rule' => 'notEmpty',
@@ -63,6 +63,21 @@ class Users extends AppModel {
         return Model::load('Sites')->firstById($this->site_id);
     }
     
+    public function hasSite() {
+        return (bool) $this->site_id;
+    }
+    
+    public function createSite() {
+        $model = Model::load('Sites');
+        $model->save(array(
+            'segment' => Config::read('Segments.default'),
+            'domain' => '',
+            'title' => ''
+        ));
+        $this->site_id = $model->id;
+        $this->save();
+    }
+
     protected function hashPassword($data) {
         if(array_key_exists('password', $data) && array_key_exists('confirm_password', $data)) {
             $password = array_unset($data, 'password');
@@ -81,19 +96,6 @@ class Users extends AppModel {
         }
         
         return $data;
-    }
-    
-    protected function createSite($created) {
-        if($created) {
-            $model = Model::load('Sites');
-            $model->save(array(
-                'segment' => Config::read('Segments.default'),
-                'domain' => '',
-                'title' => ''
-            ));
-            $this->site_id = $model->id;
-            $this->save();
-        }
     }
     
     protected function joinName($data) {

@@ -22,15 +22,22 @@ class UsersController extends AppController {
     
     public function register() {
         $user = new Users($this->data);
-        $this->saveUser($user, '/sites/register');
+        $this->saveUser($user, '/users/login');
     }
     
     public function login() {
         if(!empty($this->data)) {
             $user = Auth::identify($this->data);
             if($user && $user->active) {
-                Auth::login($user);
-                $this->redirect('/categories');
+                if($user->hasSite()) {
+                    Auth::login($user);
+                    $this->redirect('/categories');
+                }
+                else {
+                    $user->createSite();
+                    Auth::login($user);
+                    $this->redirect('/sites/register');
+                }
             }
             else {
                 Session::writeFlash('error', __('Usuário ou senha incorretos'));
@@ -48,7 +55,12 @@ class UsersController extends AppController {
             $user->updateAttributes($this->data);
             if($user->validate()) {
                 $user->save();
-                Session::writeFlash("success", __("Configurações salvas com sucesso."));
+                if($user->hasSite()) {
+                    Session::writeFlash('success', __('Configurações salvas com sucesso.'));
+                }
+                else {
+                    Session::writeFlash('success', __('Cadastro realizado com sucesso. Você receberá um e-mail em instantes com instruções para ativar sua conta.'));
+                }
                 $this->redirect($redirect);
             }
         }
