@@ -25,19 +25,22 @@ class UsersController extends AppController {
         $this->saveUser($user, '/users/login');
     }
     
+    public function confirm($id = null, $token = null) {
+        $user = $this->Users->firstById($id);
+        if($user->confirm($token)) {
+            $user->createSite();
+            Auth::login($user);
+            Session::writeFlash('success', __('Cadastro confirmado com sucesso'));
+            $this->redirect('/sites/register');
+        }
+    }
+    
     public function login() {
         if(!empty($this->data)) {
             $user = Auth::identify($this->data);
             if($user && $user->active) {
-                if($user->hasSite()) {
-                    Auth::login($user);
-                    $this->redirect('/categories');
-                }
-                else {
-                    $user->createSite();
-                    Auth::login($user);
-                    $this->redirect('/sites/register');
-                }
+                Auth::login($user);
+                $this->redirect('/categories');
             }
             else {
                 Session::writeFlash('error', __('Usuário ou senha incorretos'));

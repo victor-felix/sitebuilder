@@ -3,7 +3,7 @@
 class Users extends AppModel {
     protected $getters = array('firstname', 'lastname');
     protected $beforeSave = array('hashPassword', 'createToken', 'joinName');
-    // protected $afterSave = array('createSite');
+    protected $afterSave = array('sendConfirmationMail');
     protected $validates = array(
         'firstname' => array(
             'rule' => 'notEmpty',
@@ -58,13 +58,30 @@ class Users extends AppModel {
             return $name[2];
         }
     }
+
+    public function fullname() {
+        return preg_replace('/,/', ' ', $this->name);
+    }
     
     public function site() {
         return Model::load('Sites')->firstById($this->site_id);
     }
     
     public function hasSite() {
-        return (bool) $this->site_id;
+        return array_key_exists('site_id', $this->data) && (bool) $this->site_id;
+    }
+    
+    public function confirm($token) {
+        if($token == $this->token) {
+            $this->save(array(
+                'active' => 1
+            ));
+            
+            return true;
+        }
+        else {
+            return false;
+        }
     }
     
     public function createSite() {
@@ -96,6 +113,30 @@ class Users extends AppModel {
         }
         
         return $data;
+    }
+    
+    protected function sendConfirmationMail($created) {
+        if($created) {
+            require_once 'lib/Mailer.php';
+            
+            $mailer = new Mailer(array(
+                'from' => array(
+                    'no-reply@meumobi.com' => 'MeuMobi'
+                ),
+                'to' => array(
+                    $this->email => $this->fullname()
+                ),
+                'subject' => '[MeuMobi] Confirmação de Cadastro',
+                'views' => array(
+                    'text/html' => 'users/confirm_mail.htm'
+                ),
+                'layout' => false,
+                'data' => array(
+                    'user' => $this
+                )
+            ));
+            $mailer->send();
+        }
     }
     
     protected function joinName($data) {
