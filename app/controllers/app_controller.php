@@ -40,9 +40,22 @@ class AppController extends Controller {
         }
     }
 
+    protected function toJSON($record) {
+        if(is_array($record)) {
+            foreach($record as $k => $v) {
+                $record[$k] = $this->toJSON($v);
+            }
+        }
+        else if($record instanceof Model) {
+            $record = $record->toJSON();
+        }
+
+        return $record;
+    }
+
     protected function renderJSON($record) {
         header('Content-type: application/json');
-        echo json_encode($record->toJSON());
+        echo json_encode($this->toJSON($record));
         $this->stop();
     }
 }

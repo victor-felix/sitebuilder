@@ -26,6 +26,14 @@ class SitesController extends AppController {
         ));
     }
     
+    public function verify_domain($domain = null) {
+        $this->renderJSON(array(
+            'unique' => !$this->Sites->exists(array(
+                'domain' => $domain
+            ))
+        ));
+    }
+    
     protected function editRecord($redirect_to) {
         $site = $this->getCurrentSite();
         if(!empty($this->data)) {

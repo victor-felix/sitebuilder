@@ -17,8 +17,13 @@ class BusinessItemsController extends AppController {
             $business_item->site = $site;
             if($business_item->validate()) {
                 $business_item->save();
-                Session::writeFlash('success', __('Item adicionado com sucesso.'));
-                $this->redirect('/business_items/index/' . $business_item->parent_id);
+                if($this->isXhr()) {
+                    $this->setAction('index', $business_item->parent_id);
+                }
+                else {
+                    Session::writeFlash('success', __('Item adicionado com sucesso.'));
+                    $this->redirect('/business_items/index/' . $business_item->parent_id);
+                }
             }
         }
         $this->set(array(
@@ -36,8 +41,13 @@ class BusinessItemsController extends AppController {
             $business_item->site = $site;
             if($business_item->validate()) {
                 $business_item->save();
-                Session::writeFlash('success', __('Item editado com sucesso.'));
-                $this->redirect('/business_items/index/' . $business_item->parent_id);
+                if($this->isXhr()) {
+                    $this->setAction('index', $business_item->parent_id);
+                }
+                else {
+                    Session::writeFlash('success', __('Item editado com sucesso.'));
+                    $this->redirect('/business_items/index/' . $business_item->parent_id);
+                }
             }
         }
         $this->set(array(
@@ -51,7 +61,12 @@ class BusinessItemsController extends AppController {
         $business_item = $this->BusinessItems->firstById($id);
         $this->BusinessItems->delete($id);
         Session::writeFlash('success', __('Item excluído com sucesso.'));
-        $this->redirect('/business_items/index/' . $business_item->parent_id);
+        if($this->isXhr()) {
+            $this->autoRender = false;
+        }
+        else {
+            $this->redirect('/business_items/index/' . $business_item->parent_id);
+        }
     }
     
     public function reorder() {

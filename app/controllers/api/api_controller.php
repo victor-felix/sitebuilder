@@ -14,20 +14,7 @@ class ApiController extends AppController {
         $object = $this->objectTemplate($record);
         echo json_encode($this->toJSON($object));
     }
-    
-    protected function toJSON($record) {
-        if(is_array($record)) {
-            foreach($record as $k => $v) {
-                $record[$k] = $this->toJSON($v);
-            }
-        }
-        else if($record instanceof Model) {
-            $record = $record->toJSON();
-        }
-
-        return $record;
-    }
-    
+        
     protected function objectTemplate($content) {
         $controller = $this->param('controller');
         $action = substr($this->param('action'), 4); // remove "api_" from prefixed action
