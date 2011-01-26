@@ -3,7 +3,7 @@
 class Users extends AppModel {
     protected $getters = array('firstname', 'lastname');
     protected $beforeSave = array('hashPassword', 'createToken', 'joinName');
-    protected $afterSave = array('sendConfirmationMail');
+    protected $afterSave = array('createSite', 'authenticate', 'sendConfirmationMail');
     protected $validates = array(
         'firstname' => array(
             'rule' => 'notEmpty',
@@ -67,10 +67,6 @@ class Users extends AppModel {
         return Model::load('Sites')->firstById($this->site_id);
     }
     
-    public function hasSite() {
-        return array_key_exists('site_id', $this->data) && (bool) $this->site_id;
-    }
-    
     public function confirm($token) {
         if($token == $this->token) {
             $this->save(array(
@@ -82,17 +78,6 @@ class Users extends AppModel {
         else {
             return false;
         }
-    }
-    
-    public function createSite() {
-        $model = Model::load('Sites');
-        $model->save(array(
-            'segment' => Config::read('Segments.default'),
-            'domain' => '',
-            'title' => ''
-        ));
-        $this->site_id = $model->id;
-        $this->save();
     }
 
     protected function hashPassword($data) {
@@ -114,9 +99,22 @@ class Users extends AppModel {
         
         return $data;
     }
+
+    protected function createSite($created) {
+        if($created) {
+            $model = Model::load('Sites');
+            $model->save(array(
+                'segment' => Config::read('Segments.default'),
+                'domain' => '',
+                'title' => ''
+            ));
+            $this->site_id = $model->id;
+            $this->save();
+        }
+    }
     
     protected function sendConfirmationMail($created) {
-        if($created) {
+        if($created && !Config::read('Mail.preventSending')) {
             require_once 'lib/Mailer.php';
             
             $mailer = new Mailer(array(
@@ -137,6 +135,10 @@ class Users extends AppModel {
             ));
             $mailer->send();
         }
+    }
+    
+    protected function authenticate() {
+        Auth::login($this);
     }
     
     protected function joinName($data) {

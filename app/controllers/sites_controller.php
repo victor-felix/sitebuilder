@@ -10,11 +10,14 @@ class SitesController extends AppController {
     }
     
     public function customize_edit() {
-        $this->customizeSite('/sites/customize_edit');
+        $this->customizeSite(__('Configurações salvas com sucesso.'), '/sites/customize_edit');
     }
 
     public function customize_register() {
-        $this->customizeSite('/sites/finished');
+        $this->customizeSite(
+            __('Seu registro foi completado com sucesso, mas sua conta necessita ativação. Em instantes você receberá um e-mail com informações sobre a ativação'),
+            '/sites/finished'
+        );
     }
     
     public function finished() {
@@ -29,7 +32,7 @@ class SitesController extends AppController {
             $site->updateAttributes($this->data);
             if($site->validate()) {
                 $site->save();
-                Session::writeFlash("success", __("Configurações salvas com sucesso."));
+                Session::writeFlash('success', __('Configurações salvas com sucesso.'));
                 $this->redirect($redirect_to);
             }
         }
@@ -38,13 +41,13 @@ class SitesController extends AppController {
         ));
     }
 
-    protected function customizeSite($redirect_to) {
+    protected function customizeSite($message, $redirect_to) {
         $site = $this->getCurrentSite();
         if(!empty($this->data)) {
             $site->updateAttributes($this->data);
             if($site->validate()) {
                 $site->save();
-                Session::writeFlash("success", __("Configurações salvas com sucesso."));
+                Session::writeFlash('success', $message);
                 $this->redirect($redirect_to);
             }
         }
