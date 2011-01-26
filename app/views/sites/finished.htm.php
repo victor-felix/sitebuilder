@@ -1,5 +1,7 @@
 <?php $this->layout = 'register' ?>
 <?php $this->showTitle = false ?>
+<?php $this->pageTitle = __('Crie seu Mobi') ?>
+
 <div class="registration-finished">
     <?php echo $this->html->image('register/finished.png', array(
         'alt' => __('Registro completado com sucesso!')
