@@ -21,24 +21,25 @@ class UsersController extends AppController {
     }
     
     public function register() {
-        $user = new Users($this->data);
-        $this->saveUser($user, '/users/login');
+        $user = new Users();
+        $this->saveUser($user, '/sites/register');
     }
     
     public function confirm($id = null, $token = null) {
         $user = $this->Users->firstById($id);
         if($user->confirm($token)) {
-            $user->createSite();
-            Auth::login($user);
+            if(!Auth::loggedIn()) {
+                Auth::login($user);
+            }
             Session::writeFlash('success', __('Cadastro confirmado com sucesso'));
-            $this->redirect('/sites/register');
+            $this->redirect('/categories');
         }
     }
     
     public function login() {
         if(!empty($this->data)) {
             $user = Auth::identify($this->data);
-            if($user && $user->active) {
+            if($user) {
                 Auth::login($user);
                 $this->redirect('/categories');
             }
@@ -58,12 +59,7 @@ class UsersController extends AppController {
             $user->updateAttributes($this->data);
             if($user->validate()) {
                 $user->save();
-                if($user->hasSite()) {
-                    Session::writeFlash('success', __('Configurações salvas com sucesso.'));
-                }
-                else {
-                    Session::writeFlash('success', __('Cadastro realizado com sucesso. Você receberá um e-mail em instantes com instruções para ativar sua conta.'));
-                }
+                Session::writeFlash('success', __('Configurações salvas com sucesso.'));
                 $this->redirect($redirect);
             }
         }
