@@ -21,13 +21,8 @@ class CategoriesController extends AppController {
             $category->site_id = $site->id;
             if($category->validate()) {
                 $category->save();
-                if($this->isXhr()) {
-                    $this->renderJSON($category);
-                }
-                else {
-                    Session::writeFlash("success", __("Categoria adicionada com sucesso."));
-                    $this->redirect('/categories');
-                }
+                Session::writeFlash('success', __('Categoria adicionada com sucesso.'));
+                $this->redirect('/categories');
             }
         }
 
@@ -43,31 +38,20 @@ class CategoriesController extends AppController {
             $category->updateAttributes($this->data);
             if($category->validate()) {
                 $category->save();
-                if($this->isXhr()) {
-                    $this->renderJSON($category);
-                }
-                else {
-                    Session::writeFlash("success", __("Categoria editada com sucesso."));
-                    $this->redirect('/categories');
-                }
+                Session::writeFlash('success', __('Categoria editada com sucesso.'));
+                $this->redirect('/categories');
             }
         }
         
-        if($this->isXhr()) {
-            $this->renderJSON($category);
-        }
-        else {
-            $this->set(array(
-                'category' => $category,
-                'parent_id' => $category->parent_id
-            ));
-        }
+        $this->set(array(
+            'category' => $category,
+            'parent_id' => $category->parent_id
+        ));
     }
     
     public function delete($id = null) {
         $this->Categories->delete($id);
-        Session::writeFlash("success", __("Categoria excluída com sucesso."));
+        Session::writeFlash('success', __('Categoria excluída com sucesso.'));
         $this->redirect('/categories');
-        
     }    
 }

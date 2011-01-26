@@ -104,7 +104,9 @@ class Categories extends AppModel {
     }
     
     public function parent() {
-        return $this->firstById($this->parent_id);
+        if($this->parent_id) {
+            return $this->firstById($this->parent_id);
+        }
     }
     
     public function toJSON($recursive = true) {

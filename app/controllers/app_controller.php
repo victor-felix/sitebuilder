@@ -6,7 +6,7 @@ require 'lib/utils/Auth.php';
 class AppController extends Controller {
     protected function beforeFilter() {
         if($this->isXhr()) {
-            $this->autoRender = false;
+            $this->autoLayout = false;
         }
     }
     
