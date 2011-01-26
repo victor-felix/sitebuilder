@@ -53,4 +53,8 @@ class BusinessItemsController extends AppController {
         Session::writeFlash('success', __('Item excluído com sucesso.'));
         $this->redirect('/business_items/index/' . $business_item->parent_id);
     }
+    
+    public function reorder() {
+        $this->autoRender = false;
+    }
 }

@@ -54,4 +54,8 @@ class CategoriesController extends AppController {
         Session::writeFlash('success', __('Categoria excluída com sucesso.'));
         $this->redirect('/categories');
     }    
+
+    public function reorder() {
+        $this->autoRender = false;
+    }
 }
