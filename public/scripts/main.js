@@ -86,7 +86,10 @@ $.extend($.easing, {
     // Forms inside the slider wrapper will be serialized and posted.
     // All forms will trigger the pop-scene on success, and in case of error
     // will rewrite the current scene with the HTML returned from the app
-    slider.delegate('form', 'submit', function(e){
+    // *** juliogreff says: added :not(.skip-slide) to prevent the event's prevention
+    // *** and submit the form normally. This will be kept until we're able to send
+    // *** images in an asynchronous manner
+    slider.delegate('form:not(.skip-slide)', 'submit', function(e){
         e.preventDefault();
         var url = this.action;
         var handler = function(data,stat,xhr) {
@@ -142,7 +145,6 @@ $.extend($.easing, {
         $('.slide-elem:last').prev().html(data);
         $('.slide-elem:last .ui-button.back').click();
     });
-    
 
     // Handles the categories's deletion in categories/index
     slider.delegate('.categories-list .controls .delete', 'click', function(e) {
