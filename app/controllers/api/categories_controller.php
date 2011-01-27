@@ -3,16 +3,13 @@
 require 'app/controllers/api/api_controller.php';
 
 class CategoriesController extends ApiController {
-    public function api_index($domain = null, $id = null) {
-        if(is_null($id)) {
-            $category = $this->site->rootCategory();
-        }
-        else {
-            $category = $this->Categories->firstById($id);
+    public function api_index($domain = null, $parent_id = null) {
+        if(is_null($parent_id)) {
+            $parent_id = $this->site->rootCategory()->id;
         }
         
         $this->respondToJSON(array(
-            'categories' => $category->toJSON($this->param('depth', 1))
+            'categories' => $this->Categories->recursiveByParentId($parent_id, $this->param('depth', 1))
         ));
     }
     

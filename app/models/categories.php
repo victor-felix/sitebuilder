@@ -115,17 +115,20 @@ class Categories extends AppModel {
         }
     }
     
-    public function toJSON($depth = 0) {
-        $data = $this->data;
+    public function recursiveByParentId($parent_id, $depth) {
+        $results = $this->allByParentId($parent_id);
         
         if($depth > 0) {
-            $data['categories'] = $this->allByParentId($this->id);
-            foreach($data['categories'] as $k => $category) {
-                $data['categories'][$k] = $category->toJSON($depth - 1);
+            foreach($results as $result) {
+                $results += $this->recursiveByParentId($result->id, $depth - 1);
             }
         }
-
-        return $data;
+        
+        return $results;
+    }
+    
+    public function toJSON() {
+        return $this->data;
     }    
     
     public function forceDelete($id) {
