@@ -15,6 +15,91 @@ var Utils = {
     }
 };
 
+$.extend($.easing, {
+    easeInCubic: function (x, t, b, c, d) {
+        return c*(t/=d)*t*t + b;
+    },
+    easeOutCubic: function (x, t, b, c, d) {
+        return c*((t=t/d-1)*t*t + 1) + b;
+    },
+    easeInOutCubic: function (x, t, b, c, d) {
+        if ((t/=d/2) < 1) return c/2*t*t*t + b;
+        return c/2*((t-=2)*t*t + 2) + b;
+    }
+});
+
+(function($){
+    var content = $('#content'),
+        slider = $('#slide-container'),
+        slideSize = parseInt(content.css('width').replace('px',''),10);
+    
+    var resetSlide = function(remove) {
+        var sections = $('.slide-elem'),
+            numSections = sections.size(),
+            margin = -1*parseInt(slider.css('marginLeft').replace('px',''),10),
+            numVisible = (margin/slideSize) +1;
+        
+        if(remove && numVisible < numSections) {
+            while (numVisible < numSections) {
+                $('.slide-elem').last().remove();
+                sections = $('.slide-elem');
+                numSections = sections.size();
+            }
+        }
+        slider.css('width',slideSize*numSections+'px');
+    };
+    
+    slider.delegate('a.ui-button:not(.back)', 'click', function(e){
+        e.preventDefault();
+        $.get(this.href, function(data){
+            slider.append('<div class="slide-elem">'+data+'</div>')
+            resetSlide();
+            slider.animate(
+                {marginLeft:(parseInt(slider.css('marginLeft'),10)-slideSize)+'px'},
+                {duration:800,easing:'easeInOutCubic'}
+            );
+        });
+    });
+    
+    slider.delegate('form', 'submit', function(e){
+        e.preventDefault();
+        var url = this.action;
+        var handler = function(data,stat) {
+            var status,
+                respData='';
+            if(typeof data == 'string') {
+                status = stat;
+                respData = data;
+            } else {
+                status = data.status;
+            }
+            console.log(url+' returned status ' + status);
+            if(parseInt(status,10) == 200) {
+                console.log(data);
+            } else {
+                slider.undelegate('form');
+                $('form',slider).submit();
+            }
+        };
+        $.ajax({
+           url: url,
+           data: $(this).serialize(),
+           type: 'POST',
+           success: handler,
+           error: handler
+        });
+    });
+    
+    slider.delegate('.ui-button.back', 'click', function(e){
+        e.preventDefault();
+        slider.animate(
+            {marginLeft:(parseInt(slider.css('marginLeft'),10)+slideSize)+'px'},
+            {duration:800,easing:'easeInOutCubic',complete:function(){resetSlide(true);}}
+        );
+    });
+    
+})(jQuery);
+
 $(function() {
     // create slug for domain name from site title
     var updateSlug = function() {

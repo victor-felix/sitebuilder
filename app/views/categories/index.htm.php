@@ -1,3 +1,6 @@
+<div id="slide-container">
+<div class="slide-elem">
+
 <div class="page-heading">
     <div class="grid-4 first">&nbsp;</div>
     <div class="grid-8">
@@ -36,7 +39,7 @@
                 </span>
                 <div class="controls">
                     <?php echo $this->html->link(__('adicionar produto'), '/business_items/add/' . $category->id, array('class' => 'ui-button highlight')) ?>
-                    <?php echo $this->html->link(__('gerenciar produtos'), '/business_items/index/' . $category->id, array('class' => 'ui-button ')) ?>
+                    <?php echo $this->html->link(__('gerenciar produtos'), '/business_items/index/' . $category->id, array('class' => 'ui-button manage')) ?>
                     <?php echo $this->html->imagelink('categories/delete.gif', '#', array(), array(
                         'class' => 'ui-button delete icon'
                     )) ?>
@@ -62,7 +65,7 @@
                     </span>
                     <div class="controls">
                         <?php echo $this->html->link(__('adicionar produto'), '/business_items/add/' . $subcategory->id, array('class' => 'ui-button highlight')) ?>
-                        <?php echo $this->html->link(__('gerenciar produtos'), '/business_items/index/' . $subcategory->id, array('class' => 'ui-button ')) ?>
+                        <?php echo $this->html->link(__('gerenciar produtos'), '/business_items/index/' . $subcategory->id, array('class' => 'ui-button manage')) ?>
                         <?php echo $this->html->link($this->html->image('categories/delete.gif'), '#', array('class' => 'ui-button delete icon')) ?>
                     </div>
                     <div class="children-count"><?php echo $subcategory->childrenCount() ?></div>
@@ -128,10 +131,14 @@
     </ul>
 
     <?php echo $this->html->link(__('Adicionar Categoria'), '/categories/add/' . $root->id, array(
-        'class' => 'ui-button large',
+        'class' => 'ui-button large add',
         'style' => 'margin-bottom: 40px'
     )) ?>
 </div>
 
 <div class="clear"></div>
-</div>
+
+</div><!-- /categories-list -->
+
+</div><!-- /slide-elem -->
+</div><!-- /slide-container -->
