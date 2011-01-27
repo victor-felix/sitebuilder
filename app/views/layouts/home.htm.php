@@ -64,6 +64,7 @@
         <?php echo $this->element("layouts/footer") ?>
         
         <?php echo $this->html->script('jquery', 'jquery.cycle.all.min.js') ?>
+        <?php echo $this->html->scriptsForLayout ?>
         <script type="text/javascript">
             $('#slideshow').cycle({'fx': 'scrollUp'});
         

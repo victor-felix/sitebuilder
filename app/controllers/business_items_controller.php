@@ -15,6 +15,7 @@ class BusinessItemsController extends AppController {
         $business_item = new BusinessItems($this->data);
         if(!empty($this->data)) {
             $business_item->site = $site;
+            $parent_id = $business_item->parent_id;
             if($business_item->validate()) {
                 $business_item->save();
                 if($this->isXhr()) {
