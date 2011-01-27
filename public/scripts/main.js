@@ -70,7 +70,6 @@ $.extend($.easing, {
            dataArr[index] = item.name+'='+encodeURIComponent(item.value);
         });
         data = dataArr.join('&');
-        data = 'Content-Type: application/x-www-form-urlencoded\nContent-Length: '+data.length+'\n\n'+data;
         var handler = function(data,stat) {
             var status,
                 respData='';
@@ -83,10 +82,7 @@ $.extend($.easing, {
             console.log(url+' returned status ' + status);
             if(parseInt(status,10) == 200) {
                 console.log(data);
-            } else {
-                slider.undelegate('form');
-                $('form',slider).submit();
-            }
+            } 
         };
         var headers = function(xhr) {
             xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
