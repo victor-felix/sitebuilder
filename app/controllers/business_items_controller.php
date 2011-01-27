@@ -62,11 +62,11 @@ class BusinessItemsController extends AppController {
     public function delete($id = null) {
         $business_item = $this->BusinessItems->firstById($id);
         $this->BusinessItems->delete($id);
-        Session::writeFlash('success', __('Item excluído com sucesso.'));
         if($this->isXhr()) {
-            $this->autoRender = false;
+            $this->setAction('index', $business_item->parent_id);
         }
         else {
+            Session::writeFlash('success', __('Item excluído com sucesso.'));
             $this->redirect('/business_items/index/' . $business_item->parent_id);
         }
     }
