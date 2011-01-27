@@ -142,6 +142,11 @@ a img {
 	position: relative;
 	width: 940px;
 }
+#content .slide-elem {
+	width: 940px;
+	float:left;
+	position:relative;
+}
 
 #content .page-heading {
 	height: 120px;

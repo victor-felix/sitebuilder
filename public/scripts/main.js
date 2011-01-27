@@ -15,6 +15,101 @@ var Utils = {
     }
 };
 
+$.extend($.easing, {
+    easeInCubic: function (x, t, b, c, d) {
+        return c*(t/=d)*t*t + b;
+    },
+    easeOutCubic: function (x, t, b, c, d) {
+        return c*((t=t/d-1)*t*t + 1) + b;
+    },
+    easeInOutCubic: function (x, t, b, c, d) {
+        if ((t/=d/2) < 1) return c/2*t*t*t + b;
+        return c/2*((t-=2)*t*t + 2) + b;
+    }
+});
+
+(function($){
+    var content = $('#content'),
+        slider = $('#slide-container'),
+        slideSize = parseInt(content.css('width').replace('px',''),10);
+    
+    var resetSlide = function(remove) {
+        var sections = $('.slide-elem'),
+            numSections = sections.size(),
+            margin = -1*parseInt(slider.css('marginLeft').replace('px',''),10),
+            numVisible = (margin/slideSize) +1;
+        
+        if(remove && numVisible < numSections) {
+            while (numVisible < numSections) {
+                $('.slide-elem').last().remove();
+                sections = $('.slide-elem');
+                numSections = sections.size();
+            }
+        }
+        slider.css('width',slideSize*numSections+'px');
+    };
+    
+    slider.delegate('.push-scene', 'click', function(e){
+        e.preventDefault();
+        $.get(this.href, function(data){
+            slider.append('<div class="slide-elem">'+data+'</div>')
+            resetSlide();
+            slider.animate(
+                {marginLeft:(parseInt(slider.css('marginLeft'),10)-slideSize)+'px'},
+                {duration:800,easing:'easeInOutCubic'}
+            );
+        });
+    });
+    
+    slider.delegate('.pop-scene', 'click', function(e){
+        e.preventDefault();
+        slider.animate(
+            {marginLeft:(parseInt(slider.css('marginLeft'),10)+slideSize)+'px'},
+            {duration:800,easing:'easeInOutCubic',complete:function(){resetSlide(true);}}
+        );
+    });
+    
+    slider.delegate('form', 'submit', function(e){
+        e.preventDefault();
+        var url = this.action;
+        var data = '';
+        var dataArr = $(this).serializeArray();
+        $.each(dataArr,function(index,item){
+           dataArr[index] = item.name+'='+encodeURIComponent(item.value);
+        });
+        data = dataArr.join('&');
+        var handler = function(data,stat,xhr) {
+            var status,
+                respData='';
+            if(typeof data == 'string') {
+                status = xhr.status;
+                respData = data;
+            } else {
+                status = data.status;
+            }
+            console.log(url+' returned status ' + status);
+            if(parseInt(status,10) == 200) {
+                if(data.indexOf('error')!=-1) {
+                    $('.slide-elem:last').html(data);
+                } else {
+                    $('.slide-elem:last .ui-button.back').click();
+                }
+            } 
+        };
+        var headers = function(xhr) {
+            xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+        };
+        $.ajax({
+           url: url,
+           data: data,
+           type: 'POST',
+           success: handler,
+           error: handler
+        });
+    });
+    
+})(jQuery);
+
 $(function() {
     // create slug for domain name from site title
     var updateSlug = function() {
