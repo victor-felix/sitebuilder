@@ -4,7 +4,7 @@ require_once 'app/models/business_items_types.php';
 
 class BusinessItems extends AppModel {
     protected $beforeSave = array('setSiteValues');
-    protected $afterSave = array('saveItemValues');
+    protected $afterSave = array('saveItemValues', 'saveImages');
     protected $beforeDelete = array('deleteValues', 'deleteImages');
     protected $defaultScope = array(
         'order' => '`order` ASC'
@@ -40,6 +40,23 @@ class BusinessItems extends AppModel {
 
     public function parent() {
         return Model::load('Categories')->firstById($this->parent_id);
+    }
+
+    public function typesForParent($parent_id) {
+        return $this->all(array(
+            'fields' => 'DISTINCT type',
+            'conditions' => array(
+                'parent_id' => $parent_id
+            )
+        ));
+    }
+
+    public function images() {
+        return Model::load('Images')->allByRecord('BusinessItems', $this->id);
+    }
+
+    public function image() {
+        return Model::load('Images')->firstByRecord('BusinessItems', $this->id);
     }
 
     public function toJSON() {
@@ -98,6 +115,15 @@ class BusinessItems extends AppModel {
                 'value' => $this->data[$id]
             );
             $model->save($data);
+        }
+    }
+
+    protected function saveImages() {
+        if(array_key_exists('image', $this->data)) {
+            if($image = $this->image()) {
+                Model::load('Images')->delete($image->id);
+            }
+            Model::load('Images')->upload($this, $this->data['image']);
         }
     }
     

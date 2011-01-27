@@ -10,7 +10,7 @@
  */
 
 Config::write('BusinessItemsTypes', array(
-    'product' => array(
+    'products' => array(
         'title' => 'Produto',
         'fields' => array(
             'title' => array(

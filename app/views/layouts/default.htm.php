@@ -38,7 +38,7 @@
 	    <?php if($error = Session::flash('error')): ?>
     	    <a href="#" id="error-feedback"><?php echo __($error) ?></a>
 	    <?php endif ?>
-	
+
 	    <div id="content">
             <?php echo $this->contentForLayout ?>
         </div>

@@ -11,8 +11,9 @@
 </div>
 
 <?php echo $this->form->create('/business_items/add', array(
-    'class' => 'form-edit',
+    'class' => 'form-edit skip-slide',
     'id' => 'form-add-businessitem',
+    'method' => 'file',
     'object' => $business_item
 )) ?>
 

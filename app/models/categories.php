@@ -62,10 +62,16 @@ class Categories extends AppModel {
             $id = $this->id;
         }
         
-        $categories = Model::load('Categories')->allByParentId($id);
-        $bis = Model::load('BusinessItems')->allByParentId($id);
+        $result = array(
+            'categories' => Model::load('Categories')->allByParentId($id)
+        );
         
-        return array_merge($categories, $bis);
+        $types = Model::load('BusinessItems')->typesForParent($id);
+        foreach($types as $type) {
+            $result[$type->type] = Model::load('BusinessItems')->allByParentIdAndType($id, $type->type);
+        }
+        
+        return $result;
     }
     
     public function hasChildren() {
@@ -109,17 +115,16 @@ class Categories extends AppModel {
         }
     }
     
-    public function toJSON($recursive = true) {
+    public function toJSON($depth = 0) {
         $data = $this->data;
         
-        if($recursive) {
-            $data['children'] = array();
-            $children = $this->children();
-            foreach($children as $child) {
-                $data['children'] []= $child->toJSON(false);
+        if($depth > 0) {
+            $data['categories'] = $this->allByParentId($this->id);
+            foreach($data['categories'] as $k => $category) {
+                $data['categories'][$k] = $category->toJSON($depth - 1);
             }
         }
-        
+
         return $data;
     }    
     
@@ -138,9 +143,11 @@ class Categories extends AppModel {
             return false; // don't allow root's deletion
         }
         
-        $children = $self->children();
-        foreach($children as $child) {
-            $child->delete($child->id);
+        $types = $self->children();
+        foreach($types as $type => $children) {
+            foreach($children as $child) {
+                $child->delete($child->id);
+            }
         }
         
         return $id;

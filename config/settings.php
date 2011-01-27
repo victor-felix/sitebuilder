@@ -15,8 +15,8 @@ Config::write('Mailer.transport', 'mail');
 
 Config::write('Articles.limit', 20);
 
-Config::write('SiteLogos.resizes', array('100x100#'));
-Config::write('Articles.resizes', array('100x100'));
+Config::write('SiteLogos.resizes', array('200x200'));
+Config::write('BusinessItems.resizes', array('80x80#'));
 
 Config::write('Segments.default', 'restaurant');
 

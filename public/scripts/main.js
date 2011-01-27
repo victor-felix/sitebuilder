@@ -1,4 +1,8 @@
+// Utilitary functions
 var Utils = {
+    // Transforms non-ascii characters in its non-accented equivalents
+    // Inspired on Inflector::slug from Spaghetti* Framework, MIT
+    // https://github.com/spaghettiphp/spaghettiphp/blob/dc3ba37cbcd20a3cb4796b2c08e3611ba9f4da34/lib/core/common/Inflector.php#L13
     slug: function(string) {
         var patterns = [
             /À|à|Á|á|å|Ã|â|Ã|ã/g, /È|è|É|é|Ê|ê|ẽ|Ë|ë/g, /Ì|ì|Í|í|Î|î/g,
@@ -16,7 +20,8 @@ var Utils = {
 };
 
 // Better animation by using better easing functions
-// Copied from jQuery UI, MIT/GPL -- https://github.com/jquery/jquery-ui/blob/7a6dd71f8cf04d19c938f0678c0f2a2586ed65c5/ui/jquery.effects.core.js#L598
+// Copied from jQuery UI, MIT/GPL
+// https://github.com/jquery/jquery-ui/blob/7a6dd71f8cf04d19c938f0678c0f2a2586ed65c5/ui/jquery.effects.core.js#L598
 $.extend($.easing, {
     easeInCubic: function (x, t, b, c, d) {
         return c*(t/=d)*t*t + b;
@@ -81,7 +86,10 @@ $.extend($.easing, {
     // Forms inside the slider wrapper will be serialized and posted.
     // All forms will trigger the pop-scene on success, and in case of error
     // will rewrite the current scene with the HTML returned from the app
-    slider.delegate('form', 'submit', function(e){
+    // *** juliogreff says: added :not(.skip-slide) to prevent the event's prevention
+    // *** and submit the form normally. This will be kept until we're able to send
+    // *** images in an asynchronous manner
+    slider.delegate('form:not(.skip-slide)', 'submit', function(e){
         e.preventDefault();
         var url = this.action;
         var handler = function(data,stat,xhr) {
@@ -111,25 +119,9 @@ $.extend($.easing, {
         });
     });
     
-    slider.delegate('#form-edit-businessitem .delete', 'click', function(e) {
-        e.preventDefault();
-        $('#form-edit-businessitem + .delete-confirm').fadeIn('fast');
-    });
-
-    slider.delegate('#form-edit-businessitem + .delete-confirm .ui-button', 'ajax:success', function(e, data) {
-        $('.slide-elem:last').prev().html(data);
-        $('.slide-elem:last .ui-button.back').click();
-    });
-    
-    slider.delegate('.categories-list .controls .delete', 'click', function(e) {
-        e.preventDefault();
-        $(this).parent().parent().find('.delete-confirm').fadeIn('fast');
-    });
-    
-    slider.delegate('.categories-list .delete-confirm .ui-button', 'ajax:success', function(e) {
-        $(this).closest('li').slideUp();
-    });
-
+    // Handles the delete confirmation dialog buttons.
+    // When clicked cancel, closes the dialog. When clicked OK, makes the
+    // request and triggers ajax:success event
     slider.delegate('.delete-confirm .ui-button', 'click', function(e) {
         e.preventDefault();
         var self = $(this);
@@ -141,6 +133,28 @@ $.extend($.easing, {
         else {
             self.parent().parent().fadeOut('fast');
         }
+    });
+
+    // Handles the item's deletion in items/edit
+    slider.delegate('#form-edit-businessitem .delete', 'click', function(e) {
+        e.preventDefault();
+        $('#form-edit-businessitem + .delete-confirm').fadeIn('fast');
+    });
+
+    slider.delegate('#form-edit-businessitem + .delete-confirm .ui-button', 'ajax:success', function(e, data) {
+        $('.slide-elem:last').prev().html(data);
+        $('.slide-elem:last .ui-button.back').click();
+    });
+
+    // Handles the categories's deletion in categories/index
+    slider.delegate('.categories-list .controls .delete', 'click', function(e) {
+        e.preventDefault();
+        $(this).parent().parent().find('.delete-confirm').fadeIn('fast');
+    });
+    
+    slider.delegate('.categories-list .delete-confirm .ui-button', 'ajax:success', function(e) {
+        var li = $(this).closest('li');
+        li.nextUntil('.' + li.attr('class')).andSelf().slideUp();
     });
 
 })(jQuery);
@@ -202,5 +216,5 @@ $(function() {
         e.preventDefault();
         $(this).slideUp('fast');
     });
-    $('#success-feedback, #error-feedback').delay(2000).slideUp('fast');
+    $('#success-feedback, #error-feedback').delay(5000).slideUp('fast');
 });

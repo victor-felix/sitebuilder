@@ -7,7 +7,7 @@ Config::write('Segments', array(
             'boteco' => 'Boteco'
         ),
         'skins' => array('ae3232', '278740', '326cae'),
-        'business_item' => 'product',
+        'business_item' => 'products',
         'root' => 'Cardápio'
     )
 ));

@@ -33,31 +33,6 @@ class Sites extends AppModel {
                 'message' => 'A descrição do site não pode conter mais do que 500 caracteres'
             )            
         ),
-        // 'feed' => array(
-        //     'rule' => 'url',
-        //     'message' => 'Você precisa informar uma URL válida',
-        //     'allowEmpty' => true
-        // ),
-        // 'facebook' => array(
-        //     'rule' => 'url',
-        //     'message' => 'Você precisa informar uma URL válida',
-        //     'allowEmpty' => true
-        // ),
-        // 'twitter' => array(
-        //     'rule' => 'url',
-        //     'message' => 'Você precisa informar uma URL válida',
-        //     'allowEmpty' => true
-        // ),
-        // 'website' => array(
-        //     'rule' => 'url',
-        //     'message' => 'Você precisa informar uma URL válida',
-        //     'allowEmpty' => true
-        // ),
-        // 'email' => array(
-        //     'rule' => 'email',
-        //     'message' => 'Você precisa informar um e-mail válido',
-        //     'allowEmpty' => true
-        // )
     );
     
     public function feed() {
@@ -82,10 +57,6 @@ class Sites extends AppModel {
         }
     }
     
-    public function images() {
-        return array();
-    }
-    
     public function logo() {
         return Model::load('Images')->firstByRecord('SiteLogos', $this->id);
     }
@@ -96,6 +67,26 @@ class Sites extends AppModel {
     
     public function rootCategory() {
         return Model::load('Categories')->getRoot($this->id);
+    }
+
+    public function categories() {
+        return Model::load('Categories')->allBySiteId($this->id);
+    }
+    
+    public function businessItems($conditions = array()) {
+        return Model::load('BusinessItems')->all(array(
+            'conditions' => array(
+                'site_id' => $this->id
+            ) + $conditions
+        ));
+    }
+
+    public function businessItemTypeName() {
+        return Model::load('Segments')->firstById($this->segment)->business_item;
+    }
+    
+    public function businessItemType() {
+        return Model::load('BusinessItemsTypes')->firstById($this->businessItemTypeName());
     }
     
     public function firstByDomain($domain) {
@@ -118,14 +109,6 @@ class Sites extends AppModel {
         }
 
         return $data;
-    }
-
-    public function businessItemTypeName() {
-        return Model::load('Segments')->firstById($this->segment)->business_item;
-    }
-    
-    public function businessItemType() {
-        return Model::load('BusinessItemsTypes')->firstById($this->businessItemTypeName());
     }
 
     protected function getLatLng($data) {
