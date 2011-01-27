@@ -64,6 +64,13 @@ $.extend($.easing, {
     slider.delegate('form', 'submit', function(e){
         e.preventDefault();
         var url = this.action;
+        var data = '';
+        var dataArr = $(this).serializeArray();
+        $.each(dataArr,function(index,item){
+           dataArr[index] = item.name+'='+encodeURIComponent(item.value);
+        });
+        data = dataArr.join('&');
+        data = 'Content-Type: application/x-www-form-urlencoded\nContent-Length: '+data.length+'\n\n'+data;
         var handler = function(data,stat) {
             var status,
                 respData='';
@@ -81,9 +88,12 @@ $.extend($.easing, {
                 $('form',slider).submit();
             }
         };
+        var headers = function(xhr) {
+            xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+        };
         $.ajax({
            url: url,
-           data: $(this).serialize(),
+           data: data,
            type: 'POST',
            success: handler,
            error: handler
