@@ -115,8 +115,15 @@ class Categories extends AppModel {
         }
     }
     
-    public function toJSON() {
+    public function toJSON($depth = 0) {
         $data = $this->data;
+        
+        if($depth > 0) {
+            $data['categories'] = $this->allByParentId($this->id);
+            foreach($data['categories'] as $k => $category) {
+                $data['categories'][$k] = $category->toJSON($depth - 1);
+            }
+        }
 
         return $data;
     }    
