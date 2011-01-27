@@ -19,6 +19,7 @@ class BusinessItemsController extends AppController {
                 $business_item->save();
                 if($this->isXhr()) {
                     $this->setAction('index', $business_item->parent_id);
+                    $this->stop();
                 }
                 else {
                     Session::writeFlash('success', __('Item adicionado com sucesso.'));
