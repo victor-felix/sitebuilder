@@ -37,8 +37,8 @@
             <?php echo __('Deseja realmente apagar <strong>%s</strong>?', e($business_item->title)) ?>
         </p>
         <?php echo $this->html->link(__('Sim, apagar'), '/business_items/delete/' . $business_item->id, array(
-            'class' => 'ui-button delete highlight'
+            'class' => 'ui-button delete highlight pop-scene'
         )) ?>
-        <?php echo $this->html->link(__('Não, voltar'), '#', array( 'class' => 'ui-button pop-scene' )) ?>
+        <?php echo $this->html->link(__('Não, voltar'), '#', array( 'class' => 'ui-button' )) ?>
     </div>
 </div>

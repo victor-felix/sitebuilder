@@ -51,7 +51,7 @@
                         <?php echo $this->html->link(__('Sim, apagar'), '/categories/delete/' . $category->id, array(
                             'class' => 'ui-button delete highlight'
                         )) ?>
-                        <?php echo $this->html->link(__('Não, voltar'), '#', array( 'class' => 'ui-button pop-scene' )) ?>
+                        <?php echo $this->html->link(__('Não, voltar'), '#', array( 'class' => 'ui-button' )) ?>
                     </div>
                 </div>
             </li>
@@ -73,7 +73,7 @@
                             <?php echo $this->html->link('Sim, apagar', '/categories/delete/' . $subcategory->id, array(
                                 'class' => 'ui-button delete highlight'
                             )) ?>
-                            <?php echo $this->html->link('Não, voltar', '#', array( 'class' => 'ui-button pop-scene' )) ?>
+                            <?php echo $this->html->link('Não, voltar', '#', array( 'class' => 'ui-button' )) ?>
                         </div>
                     </div>
                 </li>
