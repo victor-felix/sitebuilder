@@ -39,5 +39,6 @@
         <?php echo $this->element("layouts/footer") ?>
         
         <?php echo $this->html->script('jquery', 'main') ?>
+        <?php echo $this->html->scriptsForLayout ?>
     </body>
 </html>
