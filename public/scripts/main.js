@@ -16,7 +16,8 @@ var Utils = {
 };
 
 // Better animation by using better easing functions
-// Copied from jQuery UI, MIT/GPL -- https://github.com/jquery/jquery-ui/blob/7a6dd71f8cf04d19c938f0678c0f2a2586ed65c5/ui/jquery.effects.core.js#L598
+// Copied from jQuery UI, MIT/GPL
+// https://github.com/jquery/jquery-ui/blob/7a6dd71f8cf04d19c938f0678c0f2a2586ed65c5/ui/jquery.effects.core.js#L598
 $.extend($.easing, {
     easeInCubic: function (x, t, b, c, d) {
         return c*(t/=d)*t*t + b;
@@ -127,7 +128,8 @@ $.extend($.easing, {
     });
     
     slider.delegate('.categories-list .delete-confirm .ui-button', 'ajax:success', function(e) {
-        $(this).closest('li').slideUp();
+        var li = $(this).closest('li');
+        li.nextUntil('.' + li.attr('class')).andSelf().slideUp();
     });
 
     slider.delegate('.delete-confirm .ui-button', 'click', function(e) {
@@ -202,5 +204,5 @@ $(function() {
         e.preventDefault();
         $(this).slideUp('fast');
     });
-    $('#success-feedback, #error-feedback').delay(2000).slideUp('fast');
+    $('#success-feedback, #error-feedback').delay(5000).slideUp('fast');
 });

@@ -136,9 +136,11 @@ class Categories extends AppModel {
             return false; // don't allow root's deletion
         }
         
-        $children = $self->children();
-        foreach($children as $child) {
-            $child->delete($child->id);
+        $types = $self->children();
+        foreach($types as $type => $children) {
+            foreach($children as $child) {
+                $child->delete($child->id);
+            }
         }
         
         return $id;
