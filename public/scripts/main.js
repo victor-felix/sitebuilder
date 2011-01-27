@@ -49,7 +49,7 @@ $.extend($.easing, {
         slider.css('width',slideSize*numSections+'px');
     };
     
-    slider.delegate('a.ui-button:not(.back)', 'click', function(e){
+    slider.delegate('.push-scene', 'click', function(e){
         e.preventDefault();
         $.get(this.href, function(data){
             slider.append('<div class="slide-elem">'+data+'</div>')
@@ -61,6 +61,14 @@ $.extend($.easing, {
         });
     });
     
+    slider.delegate('.pop-scene', 'click', function(e){
+        e.preventDefault();
+        slider.animate(
+            {marginLeft:(parseInt(slider.css('marginLeft'),10)+slideSize)+'px'},
+            {duration:800,easing:'easeInOutCubic',complete:function(){resetSlide(true);}}
+        );
+    });
+    
     slider.delegate('form', 'submit', function(e){
         e.preventDefault();
         var url = this.action;
@@ -70,18 +78,22 @@ $.extend($.easing, {
            dataArr[index] = item.name+'='+encodeURIComponent(item.value);
         });
         data = dataArr.join('&');
-        var handler = function(data,stat) {
+        var handler = function(data,stat,xhr) {
             var status,
                 respData='';
             if(typeof data == 'string') {
-                status = stat;
+                status = xhr.status;
                 respData = data;
             } else {
                 status = data.status;
             }
             console.log(url+' returned status ' + status);
             if(parseInt(status,10) == 200) {
-                console.log(data);
+                if(data.indexOf('error')!=-1) {
+                    $('.slide-elem:last').html(data);
+                } else {
+                    $('.slide-elem:last .ui-button.back').click();
+                }
             } 
         };
         var headers = function(xhr) {
@@ -94,14 +106,6 @@ $.extend($.easing, {
            success: handler,
            error: handler
         });
-    });
-    
-    slider.delegate('.ui-button.back', 'click', function(e){
-        e.preventDefault();
-        slider.animate(
-            {marginLeft:(parseInt(slider.css('marginLeft'),10)+slideSize)+'px'},
-            {duration:800,easing:'easeInOutCubic',complete:function(){resetSlide(true);}}
-        );
     });
     
 })(jQuery);

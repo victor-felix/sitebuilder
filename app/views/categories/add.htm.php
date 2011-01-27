@@ -1,7 +1,5 @@
 <div class="page-heading">
-    <div class="grid-4 first"><?php echo $this->html->link(__('‹ voltar'), '/categories', array(
-        'class' => 'ui-button large back'
-    )) ?>
+    <div class="grid-4 first"><?php echo $this->html->link(__('‹ voltar'), '/categories', array( 'class' => 'ui-button large back pop-scene' )) ?>
     </div>
     <div class="grid-8">
         <h1><?php echo $this->pageTitle = __('Adicionar Categoria') ?></h1>
