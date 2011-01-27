@@ -57,12 +57,14 @@ class BusinessItems extends AppModel {
         $fields = $this->site->businessItemType()->fields;
 
         foreach($fields as $id => $field) {
-            list($valid, $message) = BusinessItemsTypes::validate($field, $this->data[$id]);
-            if(!$valid) {
-                $this->errors[$id] = $message;
+            if(array_key_exists($id, $this->data)) {
+                list($valid, $message) = BusinessItemsTypes::validate($field, $this->data[$id]);
+                if(!$valid) {
+                    $this->errors[$id] = $message;
+                }
             }
         }
-        
+
         return empty($this->errors);
     }
 
