@@ -39,6 +39,6 @@
         <?php echo $this->html->link(__('Sim, apagar'), '/business_items/delete/' . $business_item->id, array(
             'class' => 'ui-button delete highlight'
         )) ?>
-        <?php echo $this->html->link(__('Não, voltar'), '#', array( 'class' => 'ui-button pop-scene' )) ?>
+        <?php echo $this->html->link(__('Não, voltar'), '#', array( 'class' => 'ui-button' )) ?>
     </div>
 </div>

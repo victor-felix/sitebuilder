@@ -72,12 +72,6 @@ $.extend($.easing, {
     slider.delegate('form', 'submit', function(e){
         e.preventDefault();
         var url = this.action;
-        var data = '';
-        var dataArr = $(this).serializeArray();
-        $.each(dataArr,function(index,item){
-           dataArr[index] = item.name+'='+encodeURIComponent(item.value);
-        });
-        data = dataArr.join('&');
         var handler = function(data,stat,xhr) {
             var status,
                 respData='';
@@ -96,12 +90,9 @@ $.extend($.easing, {
                 }
             } 
         };
-        var headers = function(xhr) {
-            xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-        };
         $.ajax({
            url: url,
-           data: data,
+           data: $(this).serialize(),
            type: 'POST',
            success: handler,
            error: handler
