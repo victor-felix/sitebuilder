@@ -110,7 +110,12 @@ $.extend($.easing, {
     
     slider.delegate('#form-edit-businessitem .delete', 'click', function(e) {
         e.preventDefault();
-        $('.delete-confirm').fadeIn('fast');
+        $('#form-edit-businessitem + .delete-confirm').fadeIn('fast');
+    });
+
+    slider.delegate('#form-edit-businessitem + .delete-confirm .ui-button', 'ajax:success', function(e, data) {
+        $('.slide-elem:last').prev().html(data);
+        $('.slide-elem:last .ui-button.back').click();
     });
     
     slider.delegate('.categories-list .controls .delete', 'click', function(e) {
