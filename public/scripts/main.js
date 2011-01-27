@@ -15,6 +15,8 @@ var Utils = {
     }
 };
 
+// Better animation by using better easing functions
+// Copied from jQuery UI, MIT/GPL -- https://github.com/jquery/jquery-ui/blob/7a6dd71f8cf04d19c938f0678c0f2a2586ed65c5/ui/jquery.effects.core.js#L598
 $.extend($.easing, {
     easeInCubic: function (x, t, b, c, d) {
         return c*(t/=d)*t*t + b;
@@ -33,12 +35,15 @@ $.extend($.easing, {
         slider = $('#slide-container'),
         slideSize = parseInt(content.css('width').replace('px',''),10);
     
+    // function to handle actual slide states
+    // responsable for setting wrapper setting
+    // and remove old sections when not needed anymore
     var resetSlide = function(remove) {
         var sections = $('.slide-elem'),
             numSections = sections.size(),
             margin = -1*parseInt(slider.css('marginLeft').replace('px',''),10),
             numVisible = (margin/slideSize) +1;
-        
+        // remove old sections as needed
         if(remove && numVisible < numSections) {
             while (numVisible < numSections) {
                 $('.slide-elem').last().remove();
@@ -46,9 +51,13 @@ $.extend($.easing, {
                 numSections = sections.size();
             }
         }
+        // only set the size after sections were removed
         slider.css('width',slideSize*numSections+'px');
     };
     
+    // Functions that handle the animation
+    // Any link with the push-scene class will load in a new slide scene
+    // Any link with the pop-scene class will have it's href ignored and goes back one step on the navigation
     slider.delegate('.push-scene', 'click', function(e){
         e.preventDefault();
         $.get(this.href, function(data){
@@ -69,15 +78,12 @@ $.extend($.easing, {
         );
     });
     
+    // Forms inside the slider wrapper will be serialized and posted.
+    // All forms will trigger the pop-scene on success, and in case of error
+    // will rewrite the current scene with the HTML returned from the app
     slider.delegate('form', 'submit', function(e){
         e.preventDefault();
         var url = this.action;
-        var data = '';
-        var dataArr = $(this).serializeArray();
-        $.each(dataArr,function(index,item){
-           dataArr[index] = item.name+'='+encodeURIComponent(item.value);
-        });
-        data = dataArr.join('&');
         var handler = function(data,stat,xhr) {
             var status,
                 respData='';
@@ -96,12 +102,9 @@ $.extend($.easing, {
                 }
             } 
         };
-        var headers = function(xhr) {
-            xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-        };
         $.ajax({
            url: url,
-           data: data,
+           data: $(this).serialize(),
            type: 'POST',
            success: handler,
            error: handler
