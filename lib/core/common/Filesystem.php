@@ -151,7 +151,7 @@ class Filesystem {
     }
     
     public static function extension($file) {
-        $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+        $extension = pathinfo(strtolower($file), PATHINFO_EXTENSION);
         if($extension) {
             return $extension;
         }

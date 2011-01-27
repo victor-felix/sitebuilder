@@ -16,9 +16,15 @@
     <?php if(count($business_items)): ?>
         <?php foreach($business_items as $bi): ?>
         <li>
-            <?php echo $this->html->link('', '/business_items/edit/' . $bi->id, array(
-                'class' => 'photo'
-            )) ?>
+            <?php if($image = $bi->image()): ?>
+                <?php echo $this->html->imagelink($image->link('80x80'), '/business_items/edit/' . $bi->id, array(), array(
+                    'class' => 'photo'
+                )) ?>
+            <?php else: ?>
+                <?php echo $this->html->link('', '/business_items/edit/' . $bi->id, array(
+                    'class' => 'photo'
+                )) ?>
+            <?php endif ?>
             <div class="info">
                 <?php echo $this->html->link(e($bi->values()->title), '/business_items/edit/' . $bi->id, array('class' => 'push-scene')); ?>
                 <p><?php echo e($bi->values()->description) ?></p>

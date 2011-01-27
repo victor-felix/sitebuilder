@@ -29,10 +29,11 @@ class Images extends AppModel {
         ));
     }
     
-    public function link() {
-        $path = String::insert('/images/:model/:filename', array(
+    public function link($size = null) {
+        $path = String::insert('/images/:model/:size:filename', array(
             'model' => Inflector::underscore($this->model),
-            'filename' => $this->path
+            'filename' => $this->path,
+            'size' => $size ? $size . '_' : ''
         ));
         return Mapper::url($path, true);
     }
