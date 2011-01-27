@@ -15,15 +15,22 @@ class BusinessItemsController extends AppController {
         $business_item = new BusinessItems($this->data);
         if(!empty($this->data)) {
             $business_item->site = $site;
+            $parent_id = $business_item->parent_id;
             if($business_item->validate()) {
                 $business_item->save();
-                Session::writeFlash("success", __("Item adicionado com sucesso."));
-                $this->redirect('/business_items/index/' . $business_item->parent_id);
+                if($this->isXhr()) {
+                    $this->setAction('index', $business_item->parent_id);
+                    $this->stop();
+                }
+                else {
+                    Session::writeFlash('success', __('Item adicionado com sucesso.'));
+                    $this->redirect('/business_items/index/' . $business_item->parent_id);
+                }
             }
         }
         $this->set(array(
             'business_item' => $business_item,
-            'parent_id' => $parent_id,
+            'parent' => $this->Categories->firstById($parent_id),
             'type' => $site->businessItemType()
         ));
     }
@@ -32,26 +39,39 @@ class BusinessItemsController extends AppController {
         $site = $this->getCurrentSite();
         $business_item = $this->BusinessItems->firstById($id);
         if(!empty($this->data)) {
-            $this->BusinessItems->id = $id;
-            $this->data['site'] = $site;
-            if($this->BusinessItems->validate($this->data)) {
-                $this->BusinessItems->save($this->data);
-                Session::writeFlash("success", __("Item editado com sucesso."));
-                $this->redirect('/business_items/index/' . $business_item->parent_id);
+            $business_item->updateAttributes($this->data);
+            $business_item->site = $site;
+            if($business_item->validate()) {
+                $business_item->save();
+                if($this->isXhr()) {
+                    $this->setAction('index', $business_item->parent_id);
+                }
+                else {
+                    Session::writeFlash('success', __('Item editado com sucesso.'));
+                    $this->redirect('/business_items/index/' . $business_item->parent_id);
+                }
             }
         }
         $this->set(array(
-            'parent_id' => $business_item->parent_id,
-            'business_item' => $this->BusinessItems->firstById($id),
-            'type' => $site->businessItemType(),
-            'categories' => Model::load('Categories')->toListBySiteId($site->id)
+            'parent' => $business_item->parent(),
+            'business_item' => $business_item,
+            'type' => $site->businessItemType()
         ));
     }
     
     public function delete($id = null) {
         $business_item = $this->BusinessItems->firstById($id);
         $this->BusinessItems->delete($id);
-        Session::writeFlash("success", __("Item excluído com sucesso."));
-        $this->redirect('/business_items/index/' . $business_item->parent_id);
+        if($this->isXhr()) {
+            $this->setAction('index', $business_item->parent_id);
+        }
+        else {
+            Session::writeFlash('success', __('Item excluído com sucesso.'));
+            $this->redirect('/business_items/index/' . $business_item->parent_id);
+        }
+    }
+    
+    public function reorder() {
+        $this->autoRender = false;
     }
 }

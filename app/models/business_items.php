@@ -1,5 +1,7 @@
 <?php
 
+require_once 'app/models/business_items_types.php';
+
 class BusinessItems extends AppModel {
     protected $beforeSave = array('setSiteValues');
     protected $afterSave = array('saveItemValues');
@@ -14,6 +16,10 @@ class BusinessItems extends AppModel {
         if(!is_null($this->id)) {
             $this->data = array_merge($this->data, (array) $this->values());
         }
+    }
+
+    public function breadcrumbs($category_id) {
+        return Model::load('Categories')->firstById($category_id)->bredcrumbs();
     }
 
     public function allByDomain($domain) {
@@ -32,6 +38,10 @@ class BusinessItems extends AppModel {
         return (object) $obj;
     }
 
+    public function parent() {
+        return Model::load('Categories')->firstById($this->parent_id);
+    }
+
     public function toJSON() {
         $values = $this->values();
         
@@ -43,6 +53,21 @@ class BusinessItems extends AppModel {
         return $values;
     }
 
+    public function validate($data = array()) {
+        $fields = $this->site->businessItemType()->fields;
+
+        foreach($fields as $id => $field) {
+            if(array_key_exists($id, $this->data)) {
+                list($valid, $message) = BusinessItemsTypes::validate($field, $this->data[$id]);
+                if(!$valid) {
+                    $this->errors[$id] = $message;
+                }
+            }
+        }
+
+        return empty($this->errors);
+    }
+
     protected function setSiteValues($data) {
         if(is_null($this->id) && array_key_exists('site', $data)) {
             $data['site_id'] = $this->site->id;
@@ -52,16 +77,16 @@ class BusinessItems extends AppModel {
         return $data;
     }
     
-    protected function saveItemValues($is_new) {
+    protected function saveItemValues($created) {
         $fields = $this->site->businessItemType()->fields;
         $model = Model::load('BusinessItemsValues');
         
-        if(!$is_new) {
+        if(!$created) {
             $values = $model->toListByItemId($this->id);
         }
 
         foreach($fields as $id => $field) {
-            if($is_new) {
+            if($created) {
                 $model->id = null;
             }
             else {

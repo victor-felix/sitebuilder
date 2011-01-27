@@ -1,6 +1,7 @@
 <?php
 
 class AssetsHelper extends Helper {
+    protected $useFullUrls = false;
     protected static $assets = array(
         'image' => '/images/',
         'style' => '/styles/',
@@ -33,7 +34,7 @@ class AssetsHelper extends Helper {
                 $url = $this->extension($url, $extension);
             }
             
-            $url = Mapper::url($url, false, self::$assets[$name]);
+            $url = Mapper::url($url, $this->useFullUrls, self::$assets[$name]);
         }
         
         return $url;
@@ -45,5 +46,9 @@ class AssetsHelper extends Helper {
         }
         
         return $file;
+    }
+    
+    public function useFullUrls() {
+        $this->useFullUrls = true;
     }
 }

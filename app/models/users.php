@@ -3,7 +3,7 @@
 class Users extends AppModel {
     protected $getters = array('firstname', 'lastname');
     protected $beforeSave = array('hashPassword', 'createToken', 'joinName');
-    protected $afterSave = array('createSite', 'authenticate');
+    protected $afterSave = array('createSite', 'authenticate', 'sendConfirmationMail');
     protected $validates = array(
         'firstname' => array(
             'rule' => 'notEmpty',
@@ -24,7 +24,7 @@ class Users extends AppModel {
             ),
             array(
                 'rule' => array('unique', 'email'),
-                'message' => 'Seu e-mail já está cadastrado em nossa base de dados'
+                'message' => 'Este e-mail já está cadastrado em nossa base de dados'
             )
         ),
         'password' => array(
@@ -58,11 +58,28 @@ class Users extends AppModel {
             return $name[2];
         }
     }
+
+    public function fullname() {
+        return preg_replace('/,/', ' ', $this->name);
+    }
     
     public function site() {
         return Model::load('Sites')->firstById($this->site_id);
     }
     
+    public function confirm($token) {
+        if($token == $this->token) {
+            $this->save(array(
+                'active' => 1
+            ));
+            
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     protected function hashPassword($data) {
         if(array_key_exists('password', $data) && array_key_exists('confirm_password', $data)) {
             $password = array_unset($data, 'password');
@@ -82,7 +99,7 @@ class Users extends AppModel {
         
         return $data;
     }
-    
+
     protected function createSite($created) {
         if($created) {
             $model = Model::load('Sites');
@@ -93,6 +110,30 @@ class Users extends AppModel {
             ));
             $this->site_id = $model->id;
             $this->save();
+        }
+    }
+    
+    protected function sendConfirmationMail($created) {
+        if($created && !Config::read('Mail.preventSending')) {
+            require_once 'lib/Mailer.php';
+            
+            $mailer = new Mailer(array(
+                'from' => array(
+                    'no-reply@meumobi.com' => 'MeuMobi'
+                ),
+                'to' => array(
+                    $this->email => $this->fullname()
+                ),
+                'subject' => '[MeuMobi] Confirmação de Cadastro',
+                'views' => array(
+                    'text/html' => 'users/confirm_mail.htm'
+                ),
+                'layout' => false,
+                'data' => array(
+                    'user' => $this
+                )
+            ));
+            $mailer->send();
         }
     }
     

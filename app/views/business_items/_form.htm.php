@@ -1,9 +1,9 @@
 <fieldset>
-    <h2>informações gerais</h2>
+    <h2><?php echo __('informações gerais') ?></h2>
     <div class="field-group">
         <?php echo $this->form->input('parent_id', array(
             'type' => 'hidden',
-            'value' => $parent_id
+            'value' => $parent->id
         )) ?>
         
         <?php foreach($type->fields as $id => $field): ?>

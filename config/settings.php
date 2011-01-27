@@ -11,6 +11,8 @@ require 'config/app/business_items.php';
 
 Debug::reportErrors(Config::read('Debug.level'));
 
+Config::write('Mailer.transport', 'mail');
+
 Config::write('Articles.limit', 20);
 
 Config::write('SiteLogos.resizes', array('100x100#'));

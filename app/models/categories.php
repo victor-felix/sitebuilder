@@ -8,8 +8,14 @@ class Categories extends AppModel {
     
     protected $validates = array(
         'title' => array(
-            'rule' => 'notEmpty',
-            'message' => 'Você precisa definir um título'
+            array(
+                'rule' => 'notEmpty',
+                'message' => 'Você precisa definir um título'
+            ),
+            array(
+                'rule' => array('maxLength', 50),
+                'message' => 'O título de uma categoria não pode conter mais do que 50 caracteres'
+            )
         )
     );
 
@@ -82,6 +88,25 @@ class Categories extends AppModel {
                 'parent_id' => $this->id
             )
         ));
+    }
+    
+    public function breadcrumbs() {
+        $parent_id = $this->parent_id;
+        $breadcrumbs = array($this);
+
+        while($parent_id > 0) {
+            $category = $this->firstById($parent_id);
+            $breadcrumbs []= $category;
+            $parent_id = $category->parent_id;
+        }
+        
+        return array_reverse($breadcrumbs);
+    }
+    
+    public function parent() {
+        if($this->parent_id) {
+            return $this->firstById($this->parent_id);
+        }
     }
     
     public function toJSON($recursive = true) {

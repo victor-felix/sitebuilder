@@ -15,6 +15,136 @@ var Utils = {
     }
 };
 
+// Better animation by using better easing functions
+// Copied from jQuery UI, MIT/GPL -- https://github.com/jquery/jquery-ui/blob/7a6dd71f8cf04d19c938f0678c0f2a2586ed65c5/ui/jquery.effects.core.js#L598
+$.extend($.easing, {
+    easeInCubic: function (x, t, b, c, d) {
+        return c*(t/=d)*t*t + b;
+    },
+    easeOutCubic: function (x, t, b, c, d) {
+        return c*((t=t/d-1)*t*t + 1) + b;
+    },
+    easeInOutCubic: function (x, t, b, c, d) {
+        if ((t/=d/2) < 1) return c/2*t*t*t + b;
+        return c/2*((t-=2)*t*t + 2) + b;
+    }
+});
+
+(function($){
+    var content = $('#content'),
+        slider = $('#slide-container'),
+        slideSize = parseInt(content.css('width').replace('px',''),10);
+    
+    // function to handle actual slide states
+    // responsable for setting wrapper setting
+    // and remove old sections when not needed anymore
+    var resetSlide = function(remove) {
+        var sections = $('.slide-elem'),
+            numSections = sections.size(),
+            margin = -1*parseInt(slider.css('marginLeft').replace('px',''),10),
+            numVisible = (margin/slideSize) +1;
+        // remove old sections as needed
+        if(remove && numVisible < numSections) {
+            while (numVisible < numSections) {
+                $('.slide-elem').last().remove();
+                sections = $('.slide-elem');
+                numSections = sections.size();
+            }
+        }
+        // only set the size after sections were removed
+        slider.css('width',slideSize*numSections+'px');
+    };
+    
+    // Functions that handle the animation
+    // Any link with the push-scene class will load in a new slide scene
+    // Any link with the pop-scene class will have it's href ignored and goes back one step on the navigation
+    slider.delegate('.push-scene', 'click', function(e){
+        e.preventDefault();
+        $.get(this.href, function(data){
+            slider.append('<div class="slide-elem">'+data+'</div>')
+            resetSlide();
+            slider.animate(
+                {marginLeft:(parseInt(slider.css('marginLeft'),10)-slideSize)+'px'},
+                {duration:800,easing:'easeInOutCubic'}
+            );
+        });
+    });
+    
+    slider.delegate('.pop-scene', 'click', function(e){
+        e.preventDefault();
+        slider.animate(
+            {marginLeft:(parseInt(slider.css('marginLeft'),10)+slideSize)+'px'},
+            {duration:800,easing:'easeInOutCubic',complete:function(){resetSlide(true);}}
+        );
+    });
+    
+    // Forms inside the slider wrapper will be serialized and posted.
+    // All forms will trigger the pop-scene on success, and in case of error
+    // will rewrite the current scene with the HTML returned from the app
+    slider.delegate('form', 'submit', function(e){
+        e.preventDefault();
+        var url = this.action;
+        var handler = function(data,stat,xhr) {
+            var status,
+                respData='';
+            if(typeof data == 'string') {
+                status = xhr.status;
+                respData = data;
+            } else {
+                status = data.status;
+            }
+            console.log(url+' returned status ' + status);
+            if(parseInt(status,10) == 200) {
+                if(data.indexOf('error')!=-1) {
+                    $('.slide-elem:last').html(data);
+                } else {
+                    $('.slide-elem:last .ui-button.back').click();
+                }
+            } 
+        };
+        $.ajax({
+           url: url,
+           data: $(this).serialize(),
+           type: 'POST',
+           success: handler,
+           error: handler
+        });
+    });
+    
+    slider.delegate('#form-edit-businessitem .delete', 'click', function(e) {
+        e.preventDefault();
+        $('#form-edit-businessitem + .delete-confirm').fadeIn('fast');
+    });
+
+    slider.delegate('#form-edit-businessitem + .delete-confirm .ui-button', 'ajax:success', function(e, data) {
+        $('.slide-elem:last').prev().html(data);
+        $('.slide-elem:last .ui-button.back').click();
+    });
+    
+    slider.delegate('.categories-list .controls .delete', 'click', function(e) {
+        e.preventDefault();
+        $(this).parent().parent().find('.delete-confirm').fadeIn('fast');
+    });
+    
+    slider.delegate('.categories-list .delete-confirm .ui-button', 'ajax:success', function(e) {
+        $(this).closest('li').slideUp();
+    });
+
+    slider.delegate('.delete-confirm .ui-button', 'click', function(e) {
+        e.preventDefault();
+        var self = $(this);
+        if(self.hasClass('delete')) {
+            $.get(this.href, function(data) {
+                self.trigger('ajax:success', [data]);
+            });
+        }
+        else {
+            self.parent().parent().fadeOut('fast');
+        }
+    });
+
+})(jQuery);
+
 $(function() {
     // create slug for domain name from site title
     var updateSlug = function() {
@@ -29,71 +159,48 @@ $(function() {
         blur: updateSlug
     }).blur();
 
-	$('.fieldset-expand').click(function(e) {
-		$(this).slideToggle();
-		$(this).next('fieldset').slideToggle();
-		e.preventDefault();
-	});
-	
-	// theme picker
-	$('.theme-picker a').click(function(e) {
-		var self = $(this),
-		    href = self.attr('href'),
-		    theme = href.substr(href.indexOf('#') + 1),
-		    skin_picker = $('.skin-picker ul');
-
-		e.preventDefault();
-		$('.theme-picker li.selected').removeClass('selected');
-		self.parent().addClass('selected');
-		$('#FormTheme').val(theme);
-	});
-	if($('#FormTheme').val()) {
-	    $('.theme-picker a[href*=' + $('#FormTheme').val() + ']').parent().addClass('selected');
-	}
-	
-
-	$('.skin-picker a').live('click', function(e) {
-		var self = $(this),
-		    href = self.attr('href'),
-		    skin = href.substr(href.indexOf('#') + 1);
-
-    	e.preventDefault();
-		$('.skin-picker li.selected').removeClass('selected');
-		self.parent().addClass('selected');
-		$('#FormSkin').val(skin);
+    // expand fieldsets in sites/edit
+    $('.fieldset-expand').click(function(e) {
+        $(this).slideToggle();
+        $(this).next('fieldset').slideToggle();
+        e.preventDefault();
     });
-	if($('#FormSkin').val()) {
-	    $('.skin-picker a[href*=' + $('#FormSkin').val() + ']').parent().addClass('selected');
-	}
-	
-	/* TO DO */
-	$('.categories-list .controls .delete').click(function(e){
-		e.preventDefault();
-		$(this).parent().next(".delete-confirm").fadeIn("fast");
-	})
-	
-	$('#form-edit-businessitem .delete').click(function(e){
-		e.preventDefault();
-		$(".delete-confirm").fadeIn("fast");
-	})
-	
-	/* TO DO */
-	$('.delete-confirm .ui-button.delete').click(function(e){
-		$(this).parent().parent().parent().slideUp();
-		// e.preventDefault();
-	})
-	
-	$('.delete-confirm .ui-button:nth-of-type(2)').click(function(e){
-		$(this).parent().parent().hide();
-        // e.preventDefault();
-	})
-	
-	$('#success-feedback').click(function(e){
-		$(this).slideUp("fast");
-		e.preventDefault();
-	});
-	
-	setTimeout(function(){
-		$('#success-feedback').slideUp();
-	}, 2000);
+    
+    // theme picker
+    $('.theme-picker a').click(function(e) {
+        var self = $(this),
+            href = self.attr('href'),
+            theme = href.substr(href.indexOf('#') + 1),
+            skin_picker = $('.skin-picker ul');
+
+        e.preventDefault();
+        $('.theme-picker li.selected').removeClass('selected');
+        self.parent().addClass('selected');
+        $('#FormTheme').val(theme);
+    });
+    if($('#FormTheme').val()) {
+        $('.theme-picker a[href*=' + $('#FormTheme').val() + ']').parent().addClass('selected');
+    }
+    
+    // skin picker
+    $('.skin-picker a').live('click', function(e) {
+        e.preventDefault();
+        var self = $(this),
+            href = self.attr('href'),
+            skin = href.substr(href.indexOf('#') + 1);
+
+        $('.skin-picker li.selected').removeClass('selected');
+        self.parent().addClass('selected');
+        $('#FormSkin').val(skin);
+    });
+    if($('#FormSkin').val()) {
+        $('.skin-picker a[href*=' + $('#FormSkin').val() + ']').parent().addClass('selected');
+    }
+    
+    // flash messages
+    $('#success-feedback, #error-feedback').click(function(e) {
+        e.preventDefault();
+        $(this).slideUp('fast');
+    });
+    $('#success-feedback, #error-feedback').delay(2000).slideUp('fast');
 });

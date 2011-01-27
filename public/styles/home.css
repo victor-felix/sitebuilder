@@ -249,18 +249,30 @@ h2.porque {
 	margin-bottom: 4px;
 }
 
+#login-window label.checkbox {
+	line-height: 30px;
+	float: left;
+}
+
 #login-window button {
-	margin-top: 10px;
+	clear: both;
+	float: left;
 }
 
 #login-window .cancel {
 	color: #C02926;
 	font-size: 11px;
 	text-decoration: none;
-	margin-top: 17px;
+	margin-top: 7px;
 	float: right;
 }
 
 #login-window .cancel:hover {
 	text-decoration: underline;
+}
+
+#login-window div.checkbox {
+	float: left;
+	padding: 8px 0;
+	width: 22px;
 }

@@ -21,8 +21,19 @@ class UsersController extends AppController {
     }
     
     public function register() {
-        $user = new Users($this->data);
+        $user = new Users();
         $this->saveUser($user, '/sites/register');
+    }
+    
+    public function confirm($id = null, $token = null) {
+        $user = $this->Users->firstById($id);
+        if($user->confirm($token)) {
+            if(!Auth::loggedIn()) {
+                Auth::login($user);
+            }
+            Session::writeFlash('success', __('Cadastro confirmado com sucesso'));
+            $this->redirect('/categories');
+        }
     }
     
     public function login() {
@@ -48,7 +59,7 @@ class UsersController extends AppController {
             $user->updateAttributes($this->data);
             if($user->validate()) {
                 $user->save();
-                Session::writeFlash("success", __("Configurações salvas com sucesso."));
+                Session::writeFlash('success', __('Configurações salvas com sucesso.'));
                 $this->redirect($redirect);
             }
         }

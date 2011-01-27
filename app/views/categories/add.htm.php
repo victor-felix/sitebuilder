@@ -1,10 +1,11 @@
 <div class="page-heading">
-    <div class="grid-4 first"><?php echo $this->html->link(__('‹ voltar'), '/categories', array(
-        'class' => 'ui-button large back'
-    )) ?>
+    <div class="grid-4 first"><?php echo $this->html->link(__('‹ voltar'), '/categories', array( 'class' => 'ui-button large back pop-scene' )) ?>
     </div>
     <div class="grid-8">
         <h1><?php echo $this->pageTitle = __('Adicionar Categoria') ?></h1>
+        <?php echo $this->element('common/breadcrumbs', array(
+            'category' => $parent
+        )) ?>
     </div>
     <div class="clear"></div>
 </div>
@@ -15,7 +16,7 @@
 )) ?>
 
 <fieldset>
-    <h2>categoria</h2>
+    <h2><?php echo __('categoria') ?></h2>
     <div class="field-group">
         <div class="form-grid-460 first">
             <?php echo $this->form->input('title', array(
@@ -26,7 +27,7 @@
 
         <?php echo $this->form->input('parent_id', array(
             'type' => 'hidden',
-            'value' => $parent_id
+            'value' => $parent->id
         )) ?>
     </div>
 </fieldset>

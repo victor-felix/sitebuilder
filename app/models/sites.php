@@ -1,8 +1,10 @@
 <?php
 
+require_once 'lib/GoogleGeocoding.php';
+
 class Sites extends AppModel {
     protected $getters = array('feed_url');
-    protected $beforeSave = array('getFeedId');
+    protected $beforeSave = array('getFeedId', 'getLatLng');
     protected $afterSave = array('saveLogo', 'createRootCategory');
     protected $beforeDelete = array('checkAndDeleteFeed', 'deleteImages', 'deleteCategories',
         'deleteLogo');
@@ -24,6 +26,12 @@ class Sites extends AppModel {
         'logo' => array(
             'rule' => array('fileUpload', 1, array('jpg', 'gif', 'png')),
             'message' => 'Você precisa usar uma imagem válida',
+        ),
+        'description' => array(
+            array(
+                'rule' => array('maxLength', 500),
+                'message' => 'A descrição do site não pode conter mais do que 500 caracteres'
+            )            
         ),
         // 'feed' => array(
         //     'rule' => 'url',
@@ -55,6 +63,15 @@ class Sites extends AppModel {
     public function feed() {
         if($this->feed_id) {
             return Model::load('Feeds')->firstById($this->feed_id);
+        }
+    }
+
+    public function topArticles() {
+        if($this->feed_id) {
+            return $this->feed()->topArticles();
+        }
+        else {
+            return array();
         }
     }
     
@@ -93,26 +110,13 @@ class Sites extends AppModel {
 
     public function toJSON() {
         $data = array_merge($this->data, array(
-            'images' => array(),
-            'articles' => array(),
-            'rootCategory' => null
+            'logo' => null
         ));
-        
-        $root = $this->rootCategory();
-        if($root->hasChildren()) {
-            $data['rootCategory'] = $root->toJSON();
+
+        if($logo = $this->logo()) {
+            $data['logo'] = $logo->link();
         }
-        
-        $fields = array(
-            'articles' => $this->feed()->topArticles(),
-            'images' => $this->images(),
-        );
-        foreach($fields as $field => $values) {
-            foreach($values as $value) {
-                $data[$field] []= $value->toJSON();
-            }
-        }
-        
+
         return $data;
     }
 
@@ -122,6 +126,33 @@ class Sites extends AppModel {
     
     public function businessItemType() {
         return Model::load('BusinessItemsTypes')->firstById($this->businessItemTypeName());
+    }
+
+    protected function getLatLng($data) {
+        if(array_key_exists('street', $data)) {
+            if(empty($data['street'])) {
+                $data['latitude'] = $data['longitude'] = null;
+            }
+            else {
+                try {
+                    $address = String::insert(':street, :number, :city - :state, :country', array(
+                        'street' => $data['street'],
+                        'number' => $data['number'],
+                        'city' => $data['city'],
+                        'state' => $data['state'],
+                        'country' => $data['country']
+                    ));
+                    $geocode = GoogleGeocoding::geocode($address);
+                    $data['latitude'] = $geocode->results[0]->geometry->location->lat;
+                    $data['longitude'] = $geocode->results[0]->geometry->location->lng;
+                }
+                catch(Exception $e) {
+                    $data['latitude'] = $data['longitude'] = null;
+                }
+            }
+        }
+        
+        return $data;
     }
 
     protected function getFeedId($data) {
@@ -182,11 +213,9 @@ class Sites extends AppModel {
     
     protected function saveLogo() {
         if(array_key_exists('logo', $this->data)) {
-            // dump($this->logo());
             if($logo = $this->logo()) {
                 Model::load('Images')->delete($logo->id);
             }
-            // die();
             
             Model::load('Images')->upload(new SiteLogos($this->id), $this->data['logo']);
         }

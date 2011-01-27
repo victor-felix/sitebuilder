@@ -21,19 +21,14 @@ class CategoriesController extends AppController {
             $category->site_id = $site->id;
             if($category->validate()) {
                 $category->save();
-                if($this->isXhr()) {
-                    $this->renderJSON($category);
-                }
-                else {
-                    Session::writeFlash("success", __("Categoria adicionada com sucesso."));
-                    $this->redirect('/categories');
-                }
+                Session::writeFlash('success', __('Categoria adicionada com sucesso.'));
+                $this->redirect('/categories');
             }
         }
 
         $this->set(array(
             'category' => $category,
-            'parent_id' => $parent_id
+            'parent' => $this->Categories->firstById($parent_id)
         ));
     }
     
@@ -47,27 +42,31 @@ class CategoriesController extends AppController {
                     $this->renderJSON($category);
                 }
                 else {
-                    Session::writeFlash("success", __("Categoria editada com sucesso."));
+                    Session::writeFlash('success', __('Categoria editada com sucesso.'));
                     $this->redirect('/categories');
                 }
             }
         }
         
-        if($this->isXhr()) {
-            $this->renderJSON($category);
-        }
-        else {
-            $this->set(array(
-                'category' => $category,
-                'parent_id' => $category->parent_id
-            ));
-        }
+        $this->set(array(
+            'category' => $category,
+            'parent_id' => $category->parent_id
+        ));
     }
     
     public function delete($id = null) {
         $this->Categories->delete($id);
-        Session::writeFlash("success", __("Categoria excluída com sucesso."));
-        $this->redirect('/categories');
-        
+
+        if($this->isXhr()) {
+            $this->autoRender = false;
+        }
+        else {
+            Session::writeFlash('success', __('Categoria excluída com sucesso.'));
+            $this->redirect('/categories');
+        }
     }    
+
+    public function reorder() {
+        $this->autoRender = false;
+    }
 }

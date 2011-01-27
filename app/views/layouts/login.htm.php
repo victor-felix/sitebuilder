@@ -3,34 +3,34 @@
     <head>
         <?php echo $this->html->charset() ?>
         <title><?php echo $this->pageTitle ?></title>
-
-		<?php echo $this->html->stylesheet('register', 'uikit'); ?>
+        <link rel="shortcut icon" href="<?php echo Mapper::url("/images/layout/favicon.png") ?>" type="image/png" />
+		<?php echo $this->html->stylesheet('register', 'uikit', 'login'); ?>
     </head>
     <body>
 	
 		<div id="header">
-			<?php echo $this->html->link($this->html->image('layout/logo.png', array('class'=>'MeuMobi')), '/', array('class'=>'logo')); ?>
+			<?php echo $this->html->link($this->html->image('layout/logo.png', array(
+			    'alt' => 'MeuMobi'
+			)), '/', array(
+			    'class' => 'logo'
+			)) ?>
 	    </div>
 	    
+	    <?php if($success = Session::flash('success')): ?>
+    	    <a href="#" id="success-feedback"><?php echo __($success) ?></a>
+	    <?php endif ?>
+	    
+	    <?php if($error = Session::flash('error')): ?>
+    	    <a href="#" id="error-feedback"><?php echo __($error) ?></a>
+	    <?php endif ?>
 	    
 	    <div id="content">
-	        <?php if(!isset($this->showTitle) || (isset($this->showTitle) && $this->showTitle)): ?>
-    	    <div class="head">
-    	        <h1>crie seu mobi</h1>
-    	        <ul class="steps">
-    	            <li class="current">informações pessoais</li>
-    	            <li>informações do negócio</li>
-    	            <li>customização e logotipo</li>
-    	        </ul>
-    	        <div class="clear"></div>
-    	    </div>
-    	    <?php endif ?>
-    	    
             <?php echo $this->contentForLayout ?>
         </div>
         
         <?php echo $this->element("layouts/footer") ?>
         
         <?php echo $this->html->script('jquery', 'main') ?>
+        <?php echo $this->html->scriptsForLayout ?>
     </body>
 </html>

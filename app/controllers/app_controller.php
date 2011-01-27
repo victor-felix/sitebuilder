@@ -6,7 +6,7 @@ require 'lib/utils/Auth.php';
 class AppController extends Controller {
     protected function beforeFilter() {
         if($this->isXhr()) {
-            $this->autoRender = false;
+            $this->autoLayout = false;
         }
     }
     
@@ -40,9 +40,22 @@ class AppController extends Controller {
         }
     }
 
+    protected function toJSON($record) {
+        if(is_array($record)) {
+            foreach($record as $k => $v) {
+                $record[$k] = $this->toJSON($v);
+            }
+        }
+        else if($record instanceof Model) {
+            $record = $record->toJSON();
+        }
+
+        return $record;
+    }
+
     protected function renderJSON($record) {
         header('Content-type: application/json');
-        echo json_encode($record->toJSON());
+        echo json_encode($this->toJSON($record));
         $this->stop();
     }
 }
@@ -50,4 +63,8 @@ class AppController extends Controller {
 function __() {
     $arguments = func_get_args();
     return call_user_func_array('sprintf', $arguments);
+}
+
+function e($text) {
+    return Sanitize::html($text);
 }

@@ -1,0 +1,10 @@
+#FormLogin div.checkbox {
+	float: left;
+	padding: 8px 0;
+	width: 22px;
+}
+
+#FormLogin label.checkbox {
+	line-height: 30px;
+	float: left;
+}
