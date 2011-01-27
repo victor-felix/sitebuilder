@@ -5,7 +5,7 @@ require 'app/controllers/api/api_controller.php';
 class CategoriesController extends ApiController {
     public function api_index($domain) {
         $this->respondToJSON(array(
-            'categories' => $this->site->rootCategory()
+            'categories' => $this->site->categories()
         ));
     }
     
@@ -13,5 +13,9 @@ class CategoriesController extends ApiController {
         $this->respondToJSON(array(
             'categories' => $this->Categories->firstById($id)
         ));
-    }    
+    }
+    
+    public function api_children($domain, $id) {
+        $this->respondToJSON($this->Categories->firstById($id)->children());
+    }
 }

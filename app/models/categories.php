@@ -62,10 +62,16 @@ class Categories extends AppModel {
             $id = $this->id;
         }
         
-        $categories = Model::load('Categories')->allByParentId($id);
-        $bis = Model::load('BusinessItems')->allByParentId($id);
+        $result = array(
+            'categories' => Model::load('Categories')->allByParentId($id)
+        );
         
-        return array_merge($categories, $bis);
+        $types = Model::load('BusinessItems')->typesForParent($id);
+        foreach($types as $type) {
+            $result[$type->type] = Model::load('BusinessItems')->allByParentIdAndType($id, $type->type);
+        }
+        
+        return $result;
     }
     
     public function hasChildren() {
@@ -109,17 +115,9 @@ class Categories extends AppModel {
         }
     }
     
-    public function toJSON($recursive = true) {
+    public function toJSON() {
         $data = $this->data;
-        
-        if($recursive) {
-            $data['children'] = array();
-            $children = $this->children();
-            foreach($children as $child) {
-                $data['children'] []= $child->toJSON(false);
-            }
-        }
-        
+
         return $data;
     }    
     

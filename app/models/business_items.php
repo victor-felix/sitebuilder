@@ -42,6 +42,15 @@ class BusinessItems extends AppModel {
         return Model::load('Categories')->firstById($this->parent_id);
     }
 
+    public function typesForParent($parent_id) {
+        return $this->all(array(
+            'fields' => 'DISTINCT type',
+            'conditions' => array(
+                'parent_id' => $parent_id
+            )
+        ));
+    }
+
     public function toJSON() {
         $values = $this->values();
         
