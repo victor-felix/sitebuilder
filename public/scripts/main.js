@@ -65,7 +65,7 @@ $.extend($.easing, {
     // Any link with the pop-scene class will have it's href ignored and goes back one step on the navigation
     slider.delegate('.push-scene', 'click', function(e){
         e.preventDefault();
-        var urlRequest = this.href;
+        var urlRequest = $(this).attr('href');
         $.get(urlRequest, function(data){
             slider.append('<div class="slide-elem" rel="'+urlRequest+'">'+data+'</div>');
             resetSlide();
@@ -101,6 +101,37 @@ $.extend($.easing, {
         };
     };
     
+    var globalCallback = function(data,status) {
+        if(data && typeof data.refresh != 'undefined'){
+            $.ajax({
+                url: data.refresh,
+                type: 'GET',
+                success: function(dataHTML){
+                    var target = $('.slide-elem[rel='+data.refresh+']');
+                    console.log(target);
+                    console.log(dataHTML);
+                    target.html(dataHTML);
+                }
+            });
+        }
+        if(data && typeof data.go_back != 'undefined' && data.go_back){
+            $('.slide-elem:last .ui-button.back').click();
+        }
+        var message=false;
+        if(data && typeof data.success != 'undefined') {
+            message = $('<a id="success-feedback" href="#">'+data.success+'</a>').hide();
+        }
+        if(data && data.error) {
+            message = $('<a id="error-feedback" href="#">'+data.error+'</a>').hide();
+        } else if(status != 200) {
+            message = $('<a id="error-feedback" href="#">Erro ao deletar, tente novamente</a>').hide();
+        }
+        if(message) {
+            message.prependTo('#content').slideDown('fast');
+            message.delay(5000).slideUp('fast').delay(1000,function(){$(this).remove();});
+        }
+    };
+    
     // Forms inside the slider wrapper will be serialized and posted.
     // All forms will trigger the pop-scene on success, and in case of error
     // will rewrite the current scene with the HTML returned from the app
@@ -111,25 +142,10 @@ $.extend($.easing, {
         e.preventDefault();
         var url = this.action;
         var handler = dataWithCode(function(data,status) {
-            if(status != 200) {
-                return;
-            }
             if(typeof data == 'string' && data.indexOf('error')!=-1) {
                 $('.slide-elem:last').html(data);
             }
-            if(data && typeof data.refresh != 'undefined'){
-                $.ajax({
-                    url: data.refresh,
-                    type: 'GET',
-                    success: function(dataHTML){
-                        var target = $('.slide-elem[rel='+data.refresh.replace(/\//g,'\\/')+']');
-                        target.html(dataHTML);
-                    }
-                });
-            }
-            if(data && typeof data.go_back != 'undefined' && data.go_back){
-                $('.slide-elem:last .ui-button.back').click();
-            }
+            globalCallback(data,status);
         });
         $.ajax({
            url: url,
@@ -172,9 +188,6 @@ $.extend($.easing, {
                 if(status == 200) {
                     inPlaceValue = data.title;
                 }
-                if(status == 404) {
-                    inPlaceValue = "teste 404";
-                }
                 resetEdit.call(this);
             });
             var url = inPlace.attr('data-saveurl');
@@ -196,19 +209,8 @@ $.extend($.easing, {
         var self = $(this);
         if(self.hasClass('delete')) {
             var handler = dataWithCode(function(data,status) {
-                var message = false;
-                if(data && typeof data.success != 'undefined') {
-                    message = $('<a id="success-feedback" href="#">'+data.success+'</a>').hide();
-                    self.trigger('ajax:success', [data]);
-                } else if(data && data.error) {
-                    message = $('<a id="error-feedback" href="#">'+data.error+'</a>').hide();
-                } else if(status != 200) {
-                    message = $('<a id="error-feedback" href="#">Erro ao deletar, tente novamente</a>').hide();
-                }
-                if(message) {
-                    message.prependTo('#content').slideDown('fast');
-                    message.delay(5000).slideUp('fast').delay(1000,function(){$(this).remove();});
-                }
+                self.trigger('ajax:success', [data]);
+                globalCallback(data,status);
             });
             $.ajax({
                url: this.href,
@@ -239,7 +241,7 @@ $.extend($.easing, {
         $(this).parent().parent().find('.delete-confirm').fadeIn('fast');
     });
     
-    slider.delegate('.categories-list .delete-confirm .ui-button', 'ajax:success', function(e) {
+    slider.delegate('li .delete-confirm', 'ajax:success', function(e) {
         var li = $(this).closest('li');
         li.nextUntil('.' + li.attr('class')).andSelf().slideUp();
     });

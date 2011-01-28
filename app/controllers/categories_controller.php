@@ -22,7 +22,7 @@ class CategoriesController extends AppController {
             if($category->validate()) {
                 $category->save();
                 if($this->isXhr()) {
-                    $json = array('go_back'=>'true','refresh'=>'/categories');
+                    $json = array('go_back'=>true,'refresh'=>'/categories');
                     $this->renderJSON($json);
                 }
                 else {
