@@ -20,7 +20,7 @@
 <div class="grid-8">
     <ul class="categories-list">
         <?php foreach($categories[0] as $root): ?>
-        <li class="level-0">
+        <li class="level-0" data-catid="<?php echo $root->id ?>">
             <span class="title edit-in-place" data-saveurl="/categories/edit/<?php echo $root->id ?>" title="<?php echo __('clique para editar') ?>">
                 <?php echo e($root->title) ?>
             </span>
@@ -32,7 +32,7 @@
         </li>
 
             <?php if(array_key_exists($root->id, $categories)) foreach($categories[$root->id] as $category): ?>
-            <li class="level-1">
+            <li class="level-1" data-catid="<?php echo $category->id ?>">
                 <?php echo $this->html->link($this->html->image('categories/add-subcat.png'), '/categories/add/' . $category->id, array('class' => 'ui-button ui-button-add highlight push-scene ui-button-add')) ?>
                 <span class="title edit-in-place" data-saveurl="/categories/edit/<?php echo $category->id ?>" title="<?php echo __('clique para editar') ?>">
                     <?php echo e($category->title) ?>
@@ -57,7 +57,7 @@
             </li>
 
                 <?php if(array_key_exists($category->id, $categories)) foreach($categories[$category->id] as $subcategory): ?>
-                <li class="level-2">
+                <li class="level-2" data-catid="<?php echo $subcategory->id ?>">
                     <span class="title edit-in-place" data-saveurl="http://mobuilder/categories/edit/<?php echo $subcategory->id ?>" title="<?php echo __('clique para editar') ?>">
                         <?php echo e($subcategory->title) ?>
                     </span>
