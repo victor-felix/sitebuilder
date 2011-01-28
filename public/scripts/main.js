@@ -95,7 +95,7 @@ $.extend($.easing, {
                 respData = data;
             }
             status = parseInt(status,10);
-            console.log('returned status ' + status);
+            try{console.log('returned status ' + status);}catch(e){}
             func(respData,status);
         };
     };
@@ -166,8 +166,6 @@ $.extend($.easing, {
                 resetEdit.call(this);
             });
             var url = inPlace.attr('data-saveurl');
-            console.log(inPlace);
-            console.log(url);
             $.ajax({
                url: url,
                data: {title:this.value},
