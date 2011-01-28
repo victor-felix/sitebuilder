@@ -108,8 +108,6 @@ $.extend($.easing, {
                 type: 'GET',
                 success: function(dataHTML){
                     var target = $('.slide-elem[rel='+data.refresh+']');
-                    console.log(target);
-                    console.log(dataHTML);
                     target.html(dataHTML);
                 }
             });
