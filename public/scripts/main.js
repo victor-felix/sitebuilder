@@ -65,8 +65,9 @@ $.extend($.easing, {
     // Any link with the pop-scene class will have it's href ignored and goes back one step on the navigation
     slider.delegate('.push-scene', 'click', function(e){
         e.preventDefault();
-        $.get(this.href, function(data){
-            slider.append('<div class="slide-elem">'+data+'</div>');
+        var urlRequest = this.href;
+        $.get(urlRequest, function(data){
+            slider.append('<div class="slide-elem" rel="'+urlRequest+'">'+data+'</div>');
             resetSlide();
             slider.animate(
                 {marginLeft:(parseInt(slider.css('marginLeft'),10)-slideSize)+'px'},
@@ -96,7 +97,7 @@ $.extend($.easing, {
             }
             status = parseInt(status,10);
             try{console.log('returned status ' + status);}catch(e){}
-            func(respData,status);
+            func(respData,status,xhr);
         };
     };
     
@@ -113,9 +114,20 @@ $.extend($.easing, {
             if(status != 200) {
                 return;
             }
-            if(data.indexOf('error')!=-1) {
+            if(typeof data == 'string' && data.indexOf('error')!=-1) {
                 $('.slide-elem:last').html(data);
-            } else {
+            }
+            if(data && typeof data.refresh != 'undefined'){
+                $.ajax({
+                    url: data.refresh,
+                    type: 'GET',
+                    success: function(dataHTML){
+                        var target = $('.slide-elem[rel='+data.refresh.replace(/\//g,'\\/')+']');
+                        target.html(dataHTML);
+                    }
+                });
+            }
+            if(data && typeof data.go_back != 'undefined' && data.go_back){
                 $('.slide-elem:last .ui-button.back').click();
             }
         });
@@ -184,7 +196,7 @@ $.extend($.easing, {
         var self = $(this);
         if(self.hasClass('delete')) {
             var handler = dataWithCode(function(data,status) {
-                var message = false;;
+                var message = false;
                 if(data && typeof data.success != 'undefined') {
                     message = $('<a id="success-feedback" href="#">'+data.success+'</a>').hide();
                     self.trigger('ajax:success', [data]);

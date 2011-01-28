@@ -1,5 +1,11 @@
+<?php
+if(!$this->controller->isXhr()) {
+?>
 <div id="slide-container">
-<div class="slide-elem">
+<div class="slide-elem" rel="/categories">
+<?php
+}
+?>
 
 <div class="page-heading">
     <div class="grid-4 first">&nbsp;</div>
@@ -136,5 +142,11 @@
 
 </div><!-- /categories-list -->
 
+<?php
+if(!$this->controller->isXhr()) {
+?>
 </div><!-- /slide-elem -->
 </div><!-- /slide-container -->
+<?php
+}
+?>
