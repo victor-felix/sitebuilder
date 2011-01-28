@@ -21,7 +21,7 @@
     <ul class="categories-list">
         <?php foreach($categories[0] as $root): ?>
         <li class="level-0">
-            <span class="title edit-in-place" data-saveurl="/categories/edit/<?php echo $category->id ?>" title="<?php echo __('clique para editar') ?>">
+            <span class="title edit-in-place" data-saveurl="/categories/edit/<?php echo $root->id ?>" title="<?php echo __('clique para editar') ?>">
                 <?php echo e($root->title) ?>
             </span>
             <div class="controls">

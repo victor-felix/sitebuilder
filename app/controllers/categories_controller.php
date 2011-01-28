@@ -21,8 +21,13 @@ class CategoriesController extends AppController {
             $category->site_id = $site->id;
             if($category->validate()) {
                 $category->save();
-                Session::writeFlash('success', __('Categoria adicionada com sucesso.'));
-                $this->redirect('/categories');
+                if($this->isXhr()) {
+                    $this->renderJSON($category);
+                }
+                else {
+                    Session::writeFlash('success', __('Categoria adicionada com sucesso.'));
+                    $this->redirect('/categories');
+                }
             }
         }
 
