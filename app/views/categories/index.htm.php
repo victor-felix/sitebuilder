@@ -21,7 +21,7 @@
     <ul class="categories-list">
         <?php foreach($categories[0] as $root): ?>
         <li class="level-0">
-            <span class="title edit-in-place" title="<?php echo __('clique para editar') ?>">
+            <span class="title edit-in-place" data-saveurl="/categories/edit/<?php echo $category->id ?>" title="<?php echo __('clique para editar') ?>">
                 <?php echo e($root->title) ?>
             </span>
             <div class="controls">
@@ -34,7 +34,7 @@
             <?php if(array_key_exists($root->id, $categories)) foreach($categories[$root->id] as $category): ?>
             <li class="level-1">
                 <?php echo $this->html->link($this->html->image('categories/add-subcat.png'), '/categories/add/' . $category->id, array('class' => 'ui-button ui-button-add highlight push-scene ui-button-add')) ?>
-                <span class="title edit-in-place" title="<?php echo __('clique para editar') ?>">
+                <span class="title edit-in-place" data-saveurl="/categories/edit/<?php echo $category->id ?>" title="<?php echo __('clique para editar') ?>">
                     <?php echo e($category->title) ?>
                 </span>
                 <div class="controls">
@@ -58,7 +58,7 @@
 
                 <?php if(array_key_exists($category->id, $categories)) foreach($categories[$category->id] as $subcategory): ?>
                 <li class="level-2">
-                    <span class="title edit-in-place" title="<?php echo __('clique para editar') ?>">
+                    <span class="title edit-in-place" data-saveurl="http://mobuilder/categories/edit/<?php echo $subcategory->id ?>" title="<?php echo __('clique para editar') ?>">
                         <?php echo e($subcategory->title) ?>
                     </span>
                     <div class="controls">

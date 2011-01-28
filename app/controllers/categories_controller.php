@@ -21,14 +21,8 @@ class CategoriesController extends AppController {
             $category->site_id = $site->id;
             if($category->validate()) {
                 $category->save();
-                if($this->isXhr()) {
-                    $this->setAction('index');
-                    return;
-                }
-                else {
-                    Session::writeFlash('success', __('Categoria adicionada com sucesso.'));
-                    $this->redirect('/categories');
-                }
+                Session::writeFlash('success', __('Categoria adicionada com sucesso.'));
+                $this->redirect('/categories');
             }
         }
 
@@ -62,12 +56,14 @@ class CategoriesController extends AppController {
     
     public function delete($id = null) {
         $this->Categories->delete($id);
-
+        $message = __('Categoria excluída com sucesso.');
         if($this->isXhr()) {
             $this->autoRender = false;
+            $json = array('success'=>$message);
+            $this->renderJSON($json);
         }
         else {
-            Session::writeFlash('success', __('Categoria excluída com sucesso.'));
+            Session::writeFlash('success', $message);
             $this->redirect('/categories');
         }
     }    

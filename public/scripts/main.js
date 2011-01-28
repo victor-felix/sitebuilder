@@ -30,7 +30,7 @@ $.extend($.easing, {
         return c*((t=t/d-1)*t*t + 1) + b;
     },
     easeInOutCubic: function (x, t, b, c, d) {
-        if ((t/=d/2) < 1) return c/2*t*t*t + b;
+        if ((t/=d/2) < 1) {return c/2*t*t*t + b;}
         return c/2*((t-=2)*t*t + 2) + b;
     }
 });
@@ -66,7 +66,7 @@ $.extend($.easing, {
     slider.delegate('.push-scene', 'click', function(e){
         e.preventDefault();
         $.get(this.href, function(data){
-            slider.append('<div class="slide-elem">'+data+'</div>')
+            slider.append('<div class="slide-elem">'+data+'</div>');
             resetSlide();
             slider.animate(
                 {marginLeft:(parseInt(slider.css('marginLeft'),10)-slideSize)+'px'},
@@ -83,6 +83,23 @@ $.extend($.easing, {
         );
     });
     
+    // ajax error/success helper
+    var dataWithCode = function(func) {
+        return function(data,stat,xhr) {
+            var status,
+                respData='';
+            if(data.constructor == XMLHttpRequest) {
+                status = data.status;
+            } else {
+                status = xhr.status;
+                respData = data;
+            }
+            status = parseInt(status,10);
+            try{console.log('returned status ' + status);}catch(e){}
+            func(respData,status);
+        };
+    };
+    
     // Forms inside the slider wrapper will be serialized and posted.
     // All forms will trigger the pop-scene on success, and in case of error
     // will rewrite the current scene with the HTML returned from the app
@@ -92,24 +109,16 @@ $.extend($.easing, {
     slider.delegate('form:not(.skip-slide)', 'submit', function(e){
         e.preventDefault();
         var url = this.action;
-        var handler = function(data,stat,xhr) {
-            var status,
-                respData='';
-            if(typeof data == 'string') {
-                status = xhr.status;
-                respData = data;
-            } else {
-                status = data.status;
+        var handler = dataWithCode(function(data,status) {
+            if(status != 200) {
+                return;
             }
-            console.log(url+' returned status ' + status);
-            if(parseInt(status,10) == 200) {
-                if(data.indexOf('error')!=-1) {
-                    $('.slide-elem:last').html(data);
-                } else {
-                    $('.slide-elem:last .ui-button.back').click();
-                }
-            } 
-        };
+            if(data.indexOf('error')!=-1) {
+                $('.slide-elem:last').html(data);
+            } else {
+                $('.slide-elem:last .ui-button.back').click();
+            }
+        });
         $.ajax({
            url: url,
            data: $(this).serialize(),
@@ -119,6 +128,54 @@ $.extend($.easing, {
         });
     });
     
+    // Edit in place
+    var inPlace,
+        inPlaceValue = '';
+        
+    slider.delegate('.edit-in-place','click',function(e){
+        var t = $(e.target);
+        if(!t.is('span')) {
+            return;
+        }
+        inPlace = t;
+        inPlaceValue = $.trim(inPlace.text());
+        var input = $('<input type="text"/>').val(inPlaceValue);
+        inPlace.html(input);
+        input.get(0).select();
+    });
+    
+    var resetEdit = function() {
+        if(inPlace) {
+            inPlace.html(inPlaceValue);
+        }
+        inPlace = false;
+    };
+
+    content.delegate('.edit-in-place input','blur',resetEdit);
+
+    content.delegate('.edit-in-place input','keypress',function(e){
+        if (e.keyCode == 13) {
+            // ENTER key submits
+            var handler = dataWithCode(function(data,status) {
+                if(status == 200) {
+                    inPlaceValue = data.title;
+                }
+                if(status == 404) {
+                    inPlaceValue = "teste 404";
+                }
+                resetEdit.call(this);
+            });
+            var url = inPlace.attr('data-saveurl');
+            $.ajax({
+               url: url,
+               data: {title:this.value},
+               type: 'POST',
+               success: handler,
+               error: handler
+            });
+        }
+    });
+    
     // Handles the delete confirmation dialog buttons.
     // When clicked cancel, closes the dialog. When clicked OK, makes the
     // request and triggers ajax:success event
@@ -126,8 +183,26 @@ $.extend($.easing, {
         e.preventDefault();
         var self = $(this);
         if(self.hasClass('delete')) {
-            $.get(this.href, function(data) {
-                self.trigger('ajax:success', [data]);
+            var handler = dataWithCode(function(data,status) {
+                var message = false;;
+                if(data && typeof data.success != 'undefined') {
+                    message = $('<a id="success-feedback" href="#">'+data.success+'</a>').hide();
+                    self.trigger('ajax:success', [data]);
+                } else if(data && data.error) {
+                    message = $('<a id="error-feedback" href="#">'+data.error+'</a>').hide();
+                } else if(status != 200) {
+                    message = $('<a id="error-feedback" href="#">Erro ao deletar, tente novamente</a>').hide();
+                }
+                if(message) {
+                    message.prependTo('#content').slideDown('fast');
+                    message.delay(5000).slideUp('fast').delay(1000,function(){$(this).remove();});
+                }
+            });
+            $.ajax({
+               url: this.href,
+               type: 'GET',
+               success: handler,
+               error: handler
             });
         }
         else {
@@ -216,5 +291,5 @@ $(function() {
         e.preventDefault();
         $(this).slideUp('fast');
     });
-    $('#success-feedback, #error-feedback').delay(5000).slideUp('fast');
+    $('#success-feedback, #error-feedback').delay(5000).slideUp('fast').delay(1000,function(){$(this).remove();});
 });
