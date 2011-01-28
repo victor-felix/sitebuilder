@@ -56,11 +56,14 @@ class CategoriesController extends AppController {
     
     public function delete($id = null) {
         $this->Categories->delete($id);
-        Session::writeFlash('success', __('Categoria excluída com sucesso.'));
+        $message = __('Categoria excluída com sucesso.');
         if($this->isXhr()) {
             $this->autoRender = false;
+            $json = array('success'=>$message);
+            $this->renderJSON($json);
         }
         else {
+            Session::writeFlash('success', $message);
             $this->redirect('/categories');
         }
     }    
