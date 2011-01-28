@@ -183,8 +183,26 @@ $.extend($.easing, {
         e.preventDefault();
         var self = $(this);
         if(self.hasClass('delete')) {
-            $.get(this.href, function(data) {
-                self.trigger('ajax:success', [data]);
+            var handler = dataWithCode(function(data,status) {
+                var message = false;;
+                if(data && typeof data.success != 'undefined') {
+                    message = $('<a id="success-feedback" href="#">'+data.success+'</a>').hide();
+                    self.trigger('ajax:success', [data]);
+                } else if(data && data.error) {
+                    message = $('<a id="error-feedback" href="#">'+data.error+'</a>').hide();
+                } else if(status != 200) {
+                    message = $('<a id="error-feedback" href="#">Erro ao deletar, tente novamente</a>').hide();
+                }
+                if(message) {
+                    message.prependTo('#content').slideDown('fast');
+                    message.delay(5000).slideUp('fast').delay(1000,function(){$(this).remove();});
+                }
+            });
+            $.ajax({
+               url: this.href,
+               type: 'GET',
+               success: handler,
+               error: handler
             });
         }
         else {
@@ -273,5 +291,5 @@ $(function() {
         e.preventDefault();
         $(this).slideUp('fast');
     });
-    $('#success-feedback, #error-feedback').delay(5000).slideUp('fast');
+    $('#success-feedback, #error-feedback').delay(5000).slideUp('fast').delay(1000,function(){$(this).remove();});
 });
