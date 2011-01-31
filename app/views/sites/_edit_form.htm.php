@@ -23,10 +23,10 @@
         <div class="form-grid-460 first">
             <div class="site-mobile-url">
             <div class="input text">
-                <label for="FormDomain"><?php echo __('Endereço do site mobile') ?></label>
+                <label for="FormSlug"><?php echo __('Endereço do site mobile') ?></label>
                 <p class="meumobi-url">
                     <span>http://</span>
-                    <?php echo $this->form->input('domain', array(
+                    <?php echo $this->form->input('slug', array(
                         'label' => false,
                         'div' => false,
                         'type' => 'text',

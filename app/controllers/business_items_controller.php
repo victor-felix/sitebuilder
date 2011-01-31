@@ -24,8 +24,7 @@ class BusinessItemsController extends AppController {
                 }
                 else {
                     Session::writeFlash('success', __('Item adicionado com sucesso.'));
-                    // $this->redirect('/business_items/index/' . $business_item->parent_id);
-                    $this->redirect('/categories');
+                    $this->redirect('/business_items/index/' . $business_item->parent_id);
                 }
             }
         }
@@ -49,8 +48,7 @@ class BusinessItemsController extends AppController {
                 }
                 else {
                     Session::writeFlash('success', __('Item editado com sucesso.'));
-                    // $this->redirect('/business_items/index/' . $business_item->parent_id);
-                    $this->redirect('/categories');
+                    $this->redirect('/business_items/index/' . $business_item->parent_id);
                 }
             }
         }

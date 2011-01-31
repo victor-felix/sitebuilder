@@ -3,7 +3,7 @@
 require 'app/controllers/api/api_controller.php';
 
 class ArticlesController extends ApiController {
-    public function api_index($domain = null) {
+    public function api_index($slug = null) {
         $feed = $this->site->feed();
         if($feed) {
             $articles = $feed->topArticles();
@@ -16,7 +16,7 @@ class ArticlesController extends ApiController {
         ));
     }
     
-    public function api_view($domain, $id = null) {
+    public function api_view($slug, $id = null) {
         $this->respondToJSON(array(
             'articles' => $this->Articles->firstById($id)
         ));

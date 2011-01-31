@@ -85,22 +85,6 @@ $.extend($.easing, {
     });
     
     // ajax error/success helper
-    var dataWithCode = function(func) {
-        return function(data,stat,xhr) {
-            var status,
-                respData='';
-            if(data.constructor == XMLHttpRequest) {
-                status = data.status;
-            } else {
-                status = xhr.status;
-                respData = data;
-            }
-            status = parseInt(status,10);
-            try{console.log('returned status ' + status);}catch(e){}
-            func(respData,status,xhr);
-        };
-    };
-    
     var globalCallback = function(data,status) {
         if(data && typeof data.refresh != 'undefined'){
             $.ajax({
@@ -129,6 +113,21 @@ $.extend($.easing, {
             message.delay(5000).slideUp('fast').delay(1000,function(){$(this).remove();});
         }
     };
+
+    var dataWithCode = function(func) {
+        return function(data,status,xhr) {
+            // if it's an error event, the xhr is the first param
+            if(data.constructor == XMLHttpRequest) {
+                xhr = data;
+                data = '';
+            }
+            // jQuery status is not what we want, replace it
+            status = parseInt(xhr.status,10);
+            try{console.log('returned status ' + status);}catch(e){}
+            globalCallback(data,status,xhr);
+            func(respData,status,xhr);
+        };
+    };
     
     // Forms inside the slider wrapper will be serialized and posted.
     // All forms will trigger the pop-scene on success, and in case of error
@@ -143,7 +142,6 @@ $.extend($.easing, {
             if(typeof data == 'string' && data.indexOf('error')!=-1) {
                 $('.slide-elem:last').html(data);
             }
-            globalCallback(data,status);
         });
         $.ajax({
            url: url,
@@ -208,7 +206,6 @@ $.extend($.easing, {
         if(self.hasClass('delete')) {
             var handler = dataWithCode(function(data,status) {
                 self.trigger('ajax:success', [data]);
-                globalCallback(data,status);
             });
             $.ajax({
                url: this.href,
@@ -249,9 +246,9 @@ $.extend($.easing, {
 $(function() {
     // create slug for domain name from site title
     var updateSlug = function() {
-        if(!$('#FormDomain').attr('disabled')) {
+        if(!$('#FormSlug').attr('disabled')) {
             var slug = Utils.slug($(this).val());
-            $('#FormDomain').val(slug);
+            $('#FormSlug').val(slug);
         }
     };
     

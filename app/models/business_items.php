@@ -22,8 +22,8 @@ class BusinessItems extends AppModel {
         return Model::load('Categories')->firstById($category_id)->bredcrumbs();
     }
 
-    public function allByDomain($domain) {
-        $site = Model::load('Sites')->firstByDomain($domain);
+    public function allBySlug($slug) {
+        $site = Model::load('Sites')->firstBySlug($slug);
         return $this->allBySiteId($site->id);
     }
 
@@ -119,7 +119,7 @@ class BusinessItems extends AppModel {
     }
 
     protected function saveImages() {
-        if(array_key_exists('image', $this->data)) {
+        if(array_key_exists('image', $this->data) && $this->data['image']['error'] == 0) {
             if($image = $this->image()) {
                 Model::load('Images')->delete($image->id);
             }

@@ -11,8 +11,8 @@ class Articles extends AppModel {
         'order' => 'pubdate DESC'
     );
     
-    public function topByDomain($domain) {
-        $feed = Model::load('Sites')->firstByDomain($domain)->feed();
+    public function topBySlug($slug) {
+        $feed = Model::load('Sites')->firstBySlug($slug)->feed();
         return $this->topByFeedId($feed->id);
     }
     

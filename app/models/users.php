@@ -105,7 +105,7 @@ class Users extends AppModel {
             $model = Model::load('Sites');
             $model->save(array(
                 'segment' => Config::read('Segments.default'),
-                'domain' => '',
+                'slug' => '',
                 'title' => ''
             ));
             $this->site_id = $model->id;
