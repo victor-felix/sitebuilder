@@ -195,7 +195,7 @@ class Sites extends AppModel {
     }
     
     protected function saveLogo() {
-        if(array_key_exists('logo', $this->data)) {
+        if(array_key_exists('logo', $this->data) && $this->data['logo']['error'] == 0) {
             if($logo = $this->logo()) {
                 Model::load('Images')->delete($logo->id);
             }
