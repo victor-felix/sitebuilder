@@ -24,7 +24,8 @@ class BusinessItemsController extends AppController {
                 }
                 else {
                     Session::writeFlash('success', __('Item adicionado com sucesso.'));
-                    $this->redirect('/business_items/index/' . $business_item->parent_id);
+                    // $this->redirect('/business_items/index/' . $business_item->parent_id);
+                    $this->redirect('/categories');
                 }
             }
         }
@@ -48,7 +49,8 @@ class BusinessItemsController extends AppController {
                 }
                 else {
                     Session::writeFlash('success', __('Item editado com sucesso.'));
-                    $this->redirect('/business_items/index/' . $business_item->parent_id);
+                    // $this->redirect('/business_items/index/' . $business_item->parent_id);
+                    $this->redirect('/categories');
                 }
             }
         }
@@ -61,12 +63,19 @@ class BusinessItemsController extends AppController {
     
     public function delete($id = null) {
         $business_item = $this->BusinessItems->firstById($id);
+        $parent_id = $business_item->parent_id;
+        $message = __('Item excluído com sucesso.');
         $this->BusinessItems->delete($id);
         if($this->isXhr()) {
-            $this->setAction('index', $business_item->parent_id);
+            $json = array(
+                'success'=>$message,
+                'go_back'=>true,
+                'refresh'=>'/business_items/index/' . $parent_id);
+            $this->renderJSON($json);
+            // $this->setAction('index', $business_item->parent_id);
         }
         else {
-            Session::writeFlash('success', __('Item excluído com sucesso.'));
+            Session::writeFlash('success', $message);
             $this->redirect('/business_items/index/' . $business_item->parent_id);
         }
     }
