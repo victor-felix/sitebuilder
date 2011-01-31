@@ -9,9 +9,9 @@ class Sites extends AppModel {
     protected $beforeDelete = array('checkAndDeleteFeed', 'deleteImages', 'deleteCategories',
         'deleteLogo');
     protected $validates = array(
-        'domain' => array(
+        'slug' => array(
             array(
-                'rule' => array('unique', 'domain'),
+                'rule' => array('unique', 'slug'),
                 'message' => 'O domínio já foi escolhido'
             ),
             array(
@@ -62,7 +62,7 @@ class Sites extends AppModel {
     }
     
     public function link() {
-        return 'http://' . $this->domain . '.meumobi.com';
+        return 'http://' . $this->slug . '.meumobi.com';
     }
     
     public function rootCategory() {
@@ -89,12 +89,12 @@ class Sites extends AppModel {
         return Model::load('BusinessItemsTypes')->firstById($this->businessItemTypeName());
     }
     
-    public function firstByDomain($domain) {
+    public function firstBySlug($slug) {
         $site = $this->first(array(
-            'conditions' => compact('domain')
+            'conditions' => compact('slug')
         ));
         
-        if(!$site) throw new Exception('Missing domain');
+        if(!$site) throw new Exception('Missing slug');
         
         return $site;
     }

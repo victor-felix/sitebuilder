@@ -5,7 +5,7 @@ require 'app/controllers/api/api_controller.php';
 class ItemsController extends ApiController {
     protected $uses = array('BusinessItems');
     
-    public function api_index($domain = null) {
+    public function api_index($slug = null) {
         // TODO implement type
         $conditions = array();
         
@@ -19,7 +19,7 @@ class ItemsController extends ApiController {
         ));
     }
 
-    public function api_view($domain = null, $id = null) {
+    public function api_view($slug = null, $id = null) {
         // TODO implement type
         $bi = $this->BusinessItems->firstById($id);
         $this->respondToJSON(array(

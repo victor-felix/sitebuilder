@@ -9,8 +9,8 @@ class SitesController extends ApiController {
         ));
     }
     
-    public function api_view($domain = null) {
-        $site = $this->Sites->firstByDomain($domain);
+    public function api_view($slug = null) {
+        $site = $this->Sites->firstBySlug($slug);
         $this->respondToJSON(array(
             'sites' => $site->toJSON()
         ));

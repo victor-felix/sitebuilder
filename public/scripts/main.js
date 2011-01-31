@@ -162,9 +162,9 @@ $.extend($.easing, {
 $(function() {
     // create slug for domain name from site title
     var updateSlug = function() {
-        if(!$('#FormDomain').attr('disabled')) {
+        if(!$('#FormSlug').attr('disabled')) {
             var slug = Utils.slug($(this).val());
-            $('#FormDomain').val(slug);
+            $('#FormSlug').val(slug);
         }
     };
     

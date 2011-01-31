@@ -2,11 +2,11 @@
 
 class ApiController extends AppController {
     protected $autoRender = false;
-    protected $domain;
+    protected $site;
     
     protected function beforeFilter() {
         $params = $this->param('params');
-        $this->site = Model::load('Sites')->firstByDomain($params[0]);
+        $this->site = Model::load('Sites')->firstBySlug($params[0]);
     }
     
     protected function respondToJSON($record) {
