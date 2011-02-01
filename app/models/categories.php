@@ -1,6 +1,7 @@
 <?php
 
 class Categories extends AppModel {
+    protected $beforeSave = array('getOrder');
     protected $beforeDelete = array('deleteChildren');
     protected $defaultScope = array(
         'order' => '`order` ASC'
@@ -49,7 +50,7 @@ class Categories extends AppModel {
         $this->save(array(
             'title' => __($root),
             'site_id' => $site->id,
-            'parent' => 0
+            'parent_id' => 0
         ));
     }
     
@@ -150,6 +151,30 @@ class Categories extends AppModel {
                 'id' => $id
             )
         ));
+    }
+    
+    protected function getOrder($data) {
+        if(is_null($this->id) && $data['parent_id'] != 0) {
+            $siblings = $this->toList(array(
+                'fields' => array('id', '`order`'),
+                'conditions' => array(
+                    'site_id' => $data['site_id'],
+                    'parent_id' => $data['parent_id']
+                ),
+                'order' => '`order` DESC',
+                'displayField' => 'order',
+                'limit' => 1
+            ));
+
+            if(!empty($siblings)) {                
+                $data['order'] = current($siblings) + 1;
+            }
+            else {
+                $data['order'] = 0;
+            }            
+        }
+
+        return $data;
     }
     
     protected function deleteChildren($id, $force = false) {
