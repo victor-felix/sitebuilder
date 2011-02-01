@@ -3,7 +3,7 @@
 require_once 'app/models/business_items_types.php';
 
 class BusinessItems extends AppModel {
-    protected $beforeSave = array('setSiteValues');
+    protected $beforeSave = array('setSiteValues', 'getOrder');
     protected $afterSave = array('saveItemValues', 'saveImages');
     protected $beforeDelete = array('deleteValues', 'deleteImages');
     protected $defaultScope = array(
@@ -116,6 +116,30 @@ class BusinessItems extends AppModel {
             );
             $model->save($data);
         }
+    }
+
+    protected function getOrder($data) {
+        if(is_null($this->id)) {
+            $siblings = $this->toList(array(
+                'fields' => array('id', '`order`'),
+                'conditions' => array(
+                    'site_id' => $data['site_id'],
+                    'parent_id' => $data['parent_id']
+                ),
+                'order' => '`order` DESC',
+                'displayField' => 'order',
+                'limit' => 1
+            ));
+
+            if(!empty($siblings)) {                
+                $data['order'] = current($siblings) + 1;
+            }
+            else {
+                $data['order'] = 0;
+            }            
+        }
+
+        return $data;
     }
 
     protected function saveImages() {
