@@ -115,12 +115,24 @@ class Categories extends AppModel {
         }
     }
     
+    public function recursiveById($id, $depth) {
+        $results = array($this->firstById($id));
+        
+        if($depth > 0) {
+            $children = $this->recursiveByParentId($id, $depth - 1);
+            $results = array_merge($results, $children);
+        }
+        
+        return $results;
+    }
+    
     public function recursiveByParentId($parent_id, $depth) {
         $results = $this->allByParentId($parent_id);
         
         if($depth > 0) {
             foreach($results as $result) {
-                $results += $this->recursiveByParentId($result->id, $depth - 1);
+                $children = $this->recursiveByParentId($result->id, $depth - 1);
+                $results = array_merge($results, $children);
             }
         }
         
