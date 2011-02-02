@@ -9,7 +9,7 @@ class CategoriesController extends ApiController {
         }
         
         $this->respondToJSON(array(
-            'categories' => $this->Categories->recursiveById($parent_id, $this->param('depth', 1))
+            'categories' => $this->Categories->recursiveByParentId($parent_id, $this->param('depth', 1))
         ));
     }
     
