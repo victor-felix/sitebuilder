@@ -64,7 +64,7 @@ if(!$this->controller->isXhr()) {
 
                 <?php if(array_key_exists($category->id, $categories)) foreach($categories[$category->id] as $subcategory): ?>
                 <li class="level-2" data-catid="<?php echo $subcategory->id ?>">
-                    <span class="title edit-in-place" data-saveurl="http://mobuilder/categories/edit/<?php echo $subcategory->id ?>" title="<?php echo __('clique para editar') ?>">
+                    <span class="title edit-in-place" data-saveurl="/categories/edit/<?php echo $subcategory->id ?>" title="<?php echo __('clique para editar') ?>">
                         <?php echo e($subcategory->title) ?>
                     </span>
                     <div class="controls">
