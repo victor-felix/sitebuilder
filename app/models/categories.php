@@ -1,6 +1,7 @@
 <?php
 
 class Categories extends AppModel {
+    protected $beforeSave = array('getOrder');
     protected $beforeDelete = array('deleteChildren');
     protected $defaultScope = array(
         'order' => '`order` ASC'
@@ -49,7 +50,7 @@ class Categories extends AppModel {
         $this->save(array(
             'title' => __($root),
             'site_id' => $site->id,
-            'parent' => 0
+            'parent_id' => 0
         ));
     }
     
@@ -115,12 +116,24 @@ class Categories extends AppModel {
         }
     }
     
+    public function recursiveById($id, $depth) {
+        $results = array($this->firstById($id));
+        
+        if($depth > 0) {
+            $children = $this->recursiveByParentId($id, $depth - 1);
+            $results = array_merge($results, $children);
+        }
+        
+        return $results;
+    }
+    
     public function recursiveByParentId($parent_id, $depth) {
         $results = $this->allByParentId($parent_id);
         
         if($depth > 0) {
             foreach($results as $result) {
-                $results += $this->recursiveByParentId($result->id, $depth - 1);
+                $children = $this->recursiveByParentId($result->id, $depth - 1);
+                $results = array_merge($results, $children);
             }
         }
         
@@ -138,6 +151,30 @@ class Categories extends AppModel {
                 'id' => $id
             )
         ));
+    }
+    
+    protected function getOrder($data) {
+        if(is_null($this->id) && $data['parent_id'] != 0) {
+            $siblings = $this->toList(array(
+                'fields' => array('id', '`order`'),
+                'conditions' => array(
+                    'site_id' => $data['site_id'],
+                    'parent_id' => $data['parent_id']
+                ),
+                'order' => '`order` DESC',
+                'displayField' => 'order',
+                'limit' => 1
+            ));
+
+            if(!empty($siblings)) {                
+                $data['order'] = current($siblings) + 1;
+            }
+            else {
+                $data['order'] = 0;
+            }            
+        }
+
+        return $data;
     }
     
     protected function deleteChildren($id, $force = false) {

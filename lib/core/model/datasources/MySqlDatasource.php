@@ -96,7 +96,7 @@ class MySqlDatasource extends PdoDatasource {
         $sql = 'INSERT INTO ' . $params['table'];
         
         $fields = array_keys($params['values']);
-        $sql .= '(' . join(',', $fields) . ')';
+        $sql .= '(`' . join('`,`', $fields) . '`)';
         
         $values = rtrim(str_repeat('?,', count($fields)), ',');
         $sql .= ' VALUES(' . $values . ')';
