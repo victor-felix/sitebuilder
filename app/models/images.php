@@ -43,6 +43,9 @@ class Images extends AppModel {
             $transaction = true;
             $this->begin();
         }
+        else {
+            $transaction = false;
+        }
         
         try {
             $this->id = null;
@@ -86,6 +89,10 @@ class Images extends AppModel {
 
         $downloader = new FileDownload();
         $downloader->path = $this->getPath($model);
+
+        $this->save(array(
+            'url' => $image
+        ));
 
         return $downloader->download($image, String::insert(':id.:extension', array(
             'id' => $this->id
