@@ -19,7 +19,7 @@ class Images extends AppModel {
             )
         ));
     }
-    
+
     public function firstByRecord($model, $fk) {
         return $this->first(array(
             'conditions' => array(
@@ -28,7 +28,7 @@ class Images extends AppModel {
             )
         ));
     }
-    
+
     public function link($size = null) {
         $path = String::insert('/images/:model/:size:filename', array(
             'model' => Inflector::underscore($this->model),
@@ -37,7 +37,7 @@ class Images extends AppModel {
         ));
         return Mapper::url($path, true);
     }
-    
+
     protected function saveImage($method, $model, $image, $attr) {
         if(!$this->transactionStarted()) {
             $transaction = true;
@@ -46,7 +46,7 @@ class Images extends AppModel {
         else {
             $transaction = false;
         }
-        
+
         try {
             $this->id = null;
 
@@ -55,15 +55,15 @@ class Images extends AppModel {
                 'foreign_key' => $model->id
             );
             $this->save(array_merge($defaults, $attr));
-            
+
             $path = $this->getPath($model);
             $filename = $this->{$method}($model, $image);
-            
+
             $this->resizeImage($model, $path, $filename);
-            
+
             $info = $this->getImageInfo($path, $filename);
             $this->save($info);
-            
+
             if($transaction) {
                 $this->commit();
             }
@@ -74,7 +74,7 @@ class Images extends AppModel {
             }
         }
     }
-    
+
     protected function uploadFile($model, $image) {
         require_once 'lib/utils/FileUpload.php';
 
@@ -106,7 +106,7 @@ class Images extends AppModel {
             '#' => 'adaptiveResize',
             '!' => 'cropFromCenter'
         );
-        
+
         foreach($resizes as $resize) {
             $image = PhpThumbFactory::create($fullpath);
 
@@ -122,20 +122,20 @@ class Images extends AppModel {
             )));
         }
     }
-    
+
     protected function deleteFile($id) {
         $self = $this->firstById($id);
-        
+
         Filesystem::delete(String::insert('public/:path/:filename', array(
             'path' => $this->getPath($self->model),
             'filename' => $self->path
         )));
-        
+
         $this->deleteResizedFiles($self->model, $self->path);
-        
+
         return $id;
     }
-    
+
     protected function deleteResizedFiles($model, $filename) {
         $model = Model::load($model);
         $resizes = $model->resizes();
@@ -149,13 +149,13 @@ class Images extends AppModel {
             )));
         }
     }
-    
+
     protected function parseResizeValue($value) {
         preg_match('/^(\d+)x(\d+)(#|!|>|)$/', $value, $options);
         $keys = array('resize', 'w', 'h', 'mode');
         return array_combine($keys, $options);
     }
-    
+
     protected function getImageInfo($path, $filename) {
         $filepath = Filesystem::path('public/' . $path . '/' . $filename);
         $image = new Imagick($filepath);
@@ -168,12 +168,12 @@ class Images extends AppModel {
             'filesize_octal' => decoct($size)
         );
     }
-    
+
     protected function getPath($model) {
         if(!is_string($model)) {
             $model = get_class($model);
         }
-        
+
         return String::insert('images/:model', array(
             'model' => Inflector::underscore($model)
         ));

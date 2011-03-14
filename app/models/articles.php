@@ -30,6 +30,18 @@ class Articles extends AppModel {
         ));
     }
 
+    public function toJSON() {
+        $images = Model::load('Images')->allByRecord('Articles', $this->id);
+
+        foreach($images as $k => $image) {
+            $images[$k] = $image->toJSON();
+        }
+
+        $this->images = $images;
+
+        return $this->data;
+    }
+
     public function addToFeed($feed, $item) {
         $this->id = null;
 
@@ -81,13 +93,13 @@ class Articles extends AppModel {
     protected function getContentImages($item) {
         $content = str_get_html($item->get_content());
         $links = $content->find('a[rel=lightbox]');
-        
+
         $images = array();
 
         foreach($links as $link) {
             $images []= $link->href;
         }
-        
+
         return $images;
     }
 
