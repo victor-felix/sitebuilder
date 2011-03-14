@@ -3,12 +3,12 @@
 class Images extends AppModel {
     protected $beforeDelete = array('deleteFile');
 
-    public function upload($model, $image) {
-        $this->saveImage('uploadFile', $model, $image);
+    public function upload($model, $image, $attr = array()) {
+        $this->saveImage('uploadFile', $model, $image, $attr);
     }
 
-    public function download($model, $image) {
-        $this->saveImage('downloadFile', $model, $image);
+    public function download($model, $image, $attr = array()) {
+        $this->saveImage('downloadFile', $model, $image, $attr);
     }
 
     public function allByRecord($model, $fk) {
@@ -38,7 +38,7 @@ class Images extends AppModel {
         return Mapper::url($path, true);
     }
     
-    protected function saveImage($method, $model, $image) {
+    protected function saveImage($method, $model, $image, $attr) {
         if(!$this->transactionStarted()) {
             $transaction = true;
             $this->begin();
@@ -49,10 +49,12 @@ class Images extends AppModel {
         
         try {
             $this->id = null;
-            $this->save(array(
+
+            $defaults = array(
                 'model' => get_class($model),
                 'foreign_key' => $model->id
-            ));
+            );
+            $this->save(array_merge($defaults, $attr));
             
             $path = $this->getPath($model);
             $filename = $this->{$method}($model, $image);
@@ -89,10 +91,6 @@ class Images extends AppModel {
 
         $downloader = new FileDownload();
         $downloader->path = $this->getPath($model);
-
-        $this->save(array(
-            'url' => $image
-        ));
 
         return $downloader->download($image, String::insert(':id.:extension', array(
             'id' => $this->id
@@ -159,10 +157,12 @@ class Images extends AppModel {
     }
     
     protected function getImageInfo($path, $filename) {
-        $image = new Imagick($path . '/' . $filename);
+        $filepath = Filesystem::path('public/' . $path . '/' . $filename);
+        $image = new Imagick($filepath);
         $size = $image->getImageLength();
+
         return array(
-            'path' => $filename,
+            'path' => $path . '/' . $filename,
             'type' => $image->getImageMimeType(),
             'filesize' => $size,
             'filesize_octal' => decoct($size)

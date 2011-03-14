@@ -1,6 +1,7 @@
 <?php
 
 require 'lib/html_purifier/HTMLPurifier.auto.php';
+require 'lib/SimpleHtmlDom.php';
 
 class Articles extends AppModel {
     protected static $blacklist = array(
@@ -49,7 +50,9 @@ class Articles extends AppModel {
             $this->save($article);
             $images = $this->getImages($item);
             foreach($images as $image) {
-                Model::load('Images')->download($this, $image);
+                Model::load('Images')->download($this, $image, array(
+                    'url' => $image
+                ));
             }
 
             $this->commit();
@@ -61,10 +64,10 @@ class Articles extends AppModel {
     }
 
     protected function getImages($item) {
-        $images = array_merge(
-            $this->getEnclosureImages($item),
-            $this->getContentImages($item)
-        );
+        $images = $this->getEnclosureImages($item);
+        if(empty($images)) {
+            $images = $this->getContentImages($item);
+        }
 
         foreach($images as $k => $image) {
             if($this->isBlackListed($image)) {
@@ -76,7 +79,16 @@ class Articles extends AppModel {
     }
 
     protected function getContentImages($item) {
-        return array();
+        $content = str_get_html($item->get_content());
+        $links = $content->find('a[rel=lightbox]');
+        
+        $images = array();
+
+        foreach($links as $link) {
+            $images []= $link->href;
+        }
+        
+        return $images;
     }
 
     protected function getEnclosureImages($item) {
@@ -89,7 +101,7 @@ class Articles extends AppModel {
                 $images []= $enclosure->get_link();
             }
         }
-        
+
         return $images;
     }
 
