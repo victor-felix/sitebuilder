@@ -131,12 +131,14 @@ class Articles extends AppModel {
     protected function getPurifier() {
         $config = HTMLPurifier_Config::createDefault();
         $config->set('Cache.SerializerPath', FileSystem::path('tmp/cache/html_purifier'));
-        $config->set('HTML.Allowed', 'b,i,br');
+        $config->set('HTML.Allowed', 'b,i,br,p');
         return new HTMLPurifier($config);
     }
 
     protected function cleanupHtml($html) {
         $purifier = $this->getPurifier();
-        return $purifier->purify($html);
+				$description = str_get_html($html);
+				$body = implode($description->find('p'));//('div[class=listacor4]', 0); 
+				return $purifier->purify($body);
     }
 }

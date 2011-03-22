@@ -1,6 +1,6 @@
 <?php
 
-Config::write('App.environment', 'development');
+Config::write('App.environment', 'production');
 Config::write('App.encoding', 'utf-8');
 Config::write('Security.salt', '0b693e040f5c7ffd13d62330d6c8f901');
 Config::write('Debug.level', 3);

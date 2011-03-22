@@ -4,10 +4,10 @@ Config::write('Segments', array(
     'restaurant' => array(
         'title' => 'Restaurante',
         'themes' => array(
-            'boteco' => 'Boteco'
+            'govrj' => 'govrj'
         ),
         'skins' => array('ae3232', '278740', '326cae'),
         'business_item' => 'products',
-        'root' => 'Cardápio'
+        'root' => 'Index'
     )
 ));
