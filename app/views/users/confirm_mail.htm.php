@@ -10,7 +10,7 @@
         <font face="Arial" color="#555">
         <table border="0" width="640" align="center">
             <tr>
-                <td><br /><br /><?php echo $this->html->imagelink("layout/logo.png", Mapper::url("/", true), array(), array(), true) ?><br /><br /></td>
+                <td><br /><br /><?php echo $this->html->imagelink(Mapper::url('/images/layout/logo.png', true), Mapper::url("/", true), array(), array(), true) ?><br /><br /></td>
             </tr>
             <tr>
                 <td bgcolor="#FFFFFF">
