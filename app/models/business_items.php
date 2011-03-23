@@ -12,7 +12,7 @@ class BusinessItems extends AppModel {
 
     public function __construct($data = null) {
         parent::__construct($data);
-        
+
         if(!is_null($this->id)) {
             $this->data = array_merge($this->data, (array) $this->values());
         }
@@ -30,11 +30,11 @@ class BusinessItems extends AppModel {
     public function values() {
         $obj = array();
         $values = Model::load('BusinessItemsValues')->allByItemId($this->id);
-        
+
         foreach($values as $value) {
             $obj[$value->field] = $value->value;
         }
-        
+
         return (object) $obj;
     }
 
@@ -61,12 +61,12 @@ class BusinessItems extends AppModel {
 
     public function toJSON() {
         $values = $this->values();
-        
+
         $fields = array('id', 'site_id', 'parent_id', 'type', 'order', 'created', 'modified');
         foreach($fields as $field) {
             $values->{$field} = $this->data[$field];
         }
-        
+
         return $values;
     }
 
@@ -90,14 +90,14 @@ class BusinessItems extends AppModel {
             $data['site_id'] = $this->site->id;
             $data['type'] = $this->site->businessItemTypeName();
         }
-        
+
         return $data;
     }
-    
+
     protected function saveItemValues($created) {
         $fields = $this->site->businessItemType()->fields;
         $model = Model::load('BusinessItemsValues');
-        
+
         if(!$created) {
             $values = $model->toListByItemId($this->id);
         }
@@ -109,6 +109,7 @@ class BusinessItems extends AppModel {
             else {
                 $model->id = $values[$id];
             }
+
             $data = array(
                 'item_id' => $this->id,
                 'field' => $id,
@@ -131,12 +132,12 @@ class BusinessItems extends AppModel {
                 'limit' => 1
             ));
 
-            if(!empty($siblings)) {                
+            if(!empty($siblings)) {
                 $data['order'] = current($siblings) + 1;
             }
             else {
                 $data['order'] = 0;
-            }            
+            }
         }
 
         return $data;
@@ -150,14 +151,14 @@ class BusinessItems extends AppModel {
             Model::load('Images')->upload($this, $this->data['image']);
         }
     }
-    
+
     protected function deleteValues($id) {
         Model::load('BusinessItemsValues')->deleteAll(array(
             'conditions' => array(
                 'item_id' => $id
             )
         ));
-        
+
         return $id;
     }
 }

@@ -2,24 +2,24 @@
 
 class FormHelper extends Helper {
     protected $stack = array();
-    
+
     public function create($action = null, $options = array()) {
         $options += array(
             'method' => 'post',
             'action' => Mapper::url($action)
         );
-        
+
         $object = array_unset($options, 'object');
         array_push($this->stack, $object);
-        
+
         if($options['method'] == 'file'):
             $options['method'] = 'post';
             $options['enctype'] = 'multipart/form-data';
         endif;
-        
+
         return $this->html->openTag('form', $options);
     }
-    
+
     public function close($submit = null, $attributes = array()) {
         array_pop($this->stack);
         $form = $this->html->closeTag('form');
@@ -30,7 +30,7 @@ class FormHelper extends Helper {
 
         return $form;
     }
-    
+
     public function submit($text, $attributes = array()) {
         $attributes += array(
             'type' => 'submit',
@@ -48,7 +48,7 @@ class FormHelper extends Helper {
                 return $this->html->tag('button', $text, $attributes);
         endswitch;
     }
-    
+
     public function select($name, $options = array()) {
         $options += array(
             'name' => $name,
@@ -56,10 +56,10 @@ class FormHelper extends Helper {
             'value' => null,
             'empty' => false
         );
-        
+
         $select_options = array_unset($options, 'options');
         $select_value = array_unset($options, 'value');
-        
+
         if(($empty = array_unset($options, 'empty')) !== false):
             $keys = array_keys($select_options);
             if(is_array($empty)):
@@ -73,7 +73,7 @@ class FormHelper extends Helper {
             array_unshift($keys, $key);
             $select_options = array_combine($keys, $values);
         endif;
-        
+
         $content = '';
         foreach($select_options as $key => $value):
             $option = array('value' => $key);
@@ -82,10 +82,10 @@ class FormHelper extends Helper {
             endif;
             $content .= $this->html->tag('option', $value, $option);
         endforeach;
-        
+
         return $this->html->tag('select', $content, $options);
     }
-    
+
     public function radio($name, $options = array()) {
         $options += array(
             'options' => array(),
@@ -97,7 +97,7 @@ class FormHelper extends Helper {
         if($legend = array_unset($options, 'legend')):
             $content = $this->html->tag('legend', $legend);
         endif;
-        
+
         $content = '';
         foreach($radio_options as $key => $value):
             $radio_attr = array(
@@ -113,10 +113,10 @@ class FormHelper extends Helper {
             $content .= $this->html->tag('input', '', $radio_attr, true);
             $content .= $this->html->tag('label', $value, $for);
         endforeach;
-        
+
         return $this->html->tag('fieldset', $content);
     }
-    
+
     public function input($name, $options = array()) {
         $options += array(
             'name' => $name,
@@ -127,15 +127,24 @@ class FormHelper extends Helper {
             'value' => null,
             'class' => ''
         );
-        
-        if(is_null($options['value']) && $options['type'] != 'password') {
-            $options['value'] = $this->value($name);
+
+        if(is_null($options['value'])) {
+            if(!in_array($options['type'], array('password', 'checkbox'))) {
+                $options['value'] = $this->value($name);
+            }
+            else if($options['type'] == 'checkbox') {
+                $options['value'] = 1;
+            }
         }
-        
+
+        if($options['type'] == 'checkbox' && $this->value($name) == $options['value']) {
+            $options['checked'] = true;
+        }
+
         if($this->error($name)) {
             $options['class'] .= ' error';
         }
-        
+
         $label = array_unset($options, 'label');
         $div = array_unset($options, 'div');
         $type = $options['type'];
@@ -169,6 +178,14 @@ class FormHelper extends Helper {
                 $input = $this->html->tag('input', '', $options, true);
         endswitch;
 
+        if($type == 'checkbox'):
+             $input = $this->input($name, array(
+                 'type' => 'hidden',
+                 'value' => '0',
+                 'id' => false
+             )) . $input;
+         endif;
+
         if($label):
             $for = array('for' => $options['id']);
             $input = $this->html->tag('label', $label, $for) . $input;
@@ -190,23 +207,23 @@ class FormHelper extends Helper {
         $attr = array(
             'class' => 'input ' . $type
         );
-        
+
         if(is_array($class)):
             $attr = $class + $attr;
         elseif(is_string($class)):
             $attr['class'] .= ' ' . $class;
         endif;
-        
+
         return $this->html->tag('div', $content, $attr);
     }
 
     protected function model() {
         $object = end($this->stack);
-        
+
         if(is_object($object)) {
             return $object;
         }
-        
+
         return false;
     }
 
@@ -219,7 +236,7 @@ class FormHelper extends Helper {
                 return $model->{$name}();
             }
         endif;
-        
+
         return '';
     }
 
@@ -230,7 +247,7 @@ class FormHelper extends Helper {
                 return $errors[$name];
             }
         endif;
-        
+
         return '';
     }
 }
