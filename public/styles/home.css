@@ -259,15 +259,26 @@ h2.porque {
 	float: left;
 }
 
-#login-window .cancel {
+#login-window .cancel,
+#login-window .forgot-password {
 	color: #C02926;
 	font-size: 11px;
 	text-decoration: none;
-	margin-top: 7px;
-	float: right;
 }
 
-#login-window .cancel:hover {
+#login-window .cancel {
+	float: right;
+	margin-top: 7px;
+}
+
+#login-window .forgot-password {
+	clear: both;
+	display: block;
+	margin: 0px 0 11px;
+}
+
+#login-window .cancel:hover,
+#login-window .forgot-password:hover {
 	text-decoration: underline;
 }
 
