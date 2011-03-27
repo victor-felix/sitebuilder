@@ -3,7 +3,8 @@
 
 <?php echo $this->form->create('/users/forgot_password', array(
     'class' => 'form-register',
-    'id' => 'FormLogin'
+    'id' => 'FormLogin',
+    'object' => $user
 )) ?>
 
 <fieldset>

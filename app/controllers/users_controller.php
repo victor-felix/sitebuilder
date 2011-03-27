@@ -1,8 +1,8 @@
 <?php
 
 class UsersController extends AppController {
-    protected $redirectIf = array('register', 'login');
-    
+    protected $redirectIf = array('register', 'login', 'forgot_password', 'reset_password');
+
     protected function beforeFilter() {
         if(Auth::loggedIn()) {
             foreach($this->redirectIf as $rule) {
@@ -11,20 +11,20 @@ class UsersController extends AppController {
                 }
             }
         }
-        
+
         parent::beforeFilter();
     }
-    
+
     public function edit() {
         $user = Auth::user();
         $this->saveUser($user, '/users/edit');
     }
-    
+
     public function register() {
         $user = new Users();
         $this->saveUser($user, '/sites/register');
     }
-    
+
     public function confirm($id = null, $token = null) {
         $user = $this->Users->firstById($id);
         if($user->confirm($token)) {
@@ -35,7 +35,7 @@ class UsersController extends AppController {
             $this->redirect('/categories');
         }
     }
-    
+
     public function login() {
         if(!empty($this->data)) {
             $user = Auth::identify($this->data);
@@ -48,12 +48,48 @@ class UsersController extends AppController {
             }
         }
     }
-    
+
     public function logout() {
         Auth::logout();
         $this->redirect('/');
     }
-    
+
+    public function forgot_password() {
+        $user = new Users();
+        if(!empty($this->data)) {
+            if($user->requestForNewPassword($this->data['email'])) {
+                die();
+            }
+        }
+        $this->set(array(
+            'user' => $user
+        ));
+    }
+
+    public function reset_password($user_id = null, $token = null) {
+        if($user_id) {
+            $user = $this->Users->firstById($user_id);
+
+            if($user->token != $token) {
+                $this->redirect('/');
+            }
+        }
+        else {
+            $this->redirect('/');
+        }
+
+        if(!empty($this->data)) {
+            $user->updateAttributes($this->data);
+            if($user->resetPassword()) {
+                Session::writeFlash('success', __('Senha redefinida com sucesso.'));
+                $this->redirect('/login');
+            }
+        }
+        $this->set(array(
+            'user' => $user
+        ));
+    }
+
     protected function saveUser($user, $redirect) {
         if(!empty($this->data)) {
             $user->updateAttributes($this->data);
