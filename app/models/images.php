@@ -59,10 +59,13 @@ class Images extends AppModel {
             $path = $this->getPath($model);
             $filename = $this->{$method}($model, $image);
 
-            $this->resizeImage($model, $path, $filename);
-
             $info = $this->getImageInfo($path, $filename);
+            $filename = $this->renameTempImage($info);
+
+            $info['path'] = $path . '/' . $filename;
             $this->save($info);
+
+            $this->resizeImage($model, $path, $filename);
 
             if($transaction) {
                 $this->commit();
@@ -83,9 +86,7 @@ class Images extends AppModel {
         $uploader = new FileUpload();
         $uploader->path = $this->getPath($model);
 
-        return $uploader->upload($image, String::insert(':id.:extension', array(
-            'id' => $this->id
-        )));
+        return $uploader->upload($image, ':original_name');
     }
 
     protected function downloadFile($model, $image) {
@@ -94,9 +95,22 @@ class Images extends AppModel {
         $downloader = new FileDownload();
         $downloader->path = $this->getPath($model);
 
-        return $downloader->download($image, String::insert(':id.:extension', array(
-            'id' => $this->id
-        )));
+        return $downloader->download($image, ':original_name');
+    }
+
+    protected function renameTempImage($info) {
+        $types = array(
+            'image/jpeg' => 'jpg',
+            'image/png' => 'png',
+            'image/gif' => 'gif'
+        );
+        $destination = String::insert(':id.:ext', array(
+            'id' => $this->id,
+            'ext' => $types[$info['type']]
+        ));
+        Filesystem::rename('public/' . $info['path'], $destination);
+
+        return $destination;
     }
 
     protected function resizeImage($model, $path, $filename) {
