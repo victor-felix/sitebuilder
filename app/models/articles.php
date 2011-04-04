@@ -62,6 +62,7 @@ class Articles extends AppModel {
             $this->save($article);
             $images = $this->getImages($item);
             foreach($images as $image) {
+                $image = $this->getImageUrl($image, $article['guid']);
                 Model::load('Images')->download($this, $image, array(
                     'url' => $image
                 ));
@@ -117,6 +118,15 @@ class Articles extends AppModel {
         return $images;
     }
 
+    protected function getImageUrl($url, $article) {
+        if(Mapper::isRoot($url)) {
+            $domain = parse_url($article, PHP_URL_HOST);
+            $url = 'http://' . $domain . $url;
+        }
+        
+        return $url;
+    }
+
     protected function isBlackListed($link) {
         foreach(self::$blacklist as $i) {
             $pattern = preg_quote($i);
@@ -137,8 +147,9 @@ class Articles extends AppModel {
 
     protected function cleanupHtml($html) {
         $purifier = $this->getPurifier();
-				$description = str_get_html($html);
-				$body = implode($description->find('p'));//('div[class=listacor4]', 0); 
-				return $purifier->purify($body);
+        $description = str_get_html($html);
+        $body = implode($description->find('p'));
+        
+        return $purifier->purify($body);
     }
 }
