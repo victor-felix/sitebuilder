@@ -1,7 +1,7 @@
 <?php
 
 try {
-    require dirname(dirname(__FILE__)) . '/config/bootstrap.php';
+    require dirname(dirname(dirname(__FILE__))) . '/config/bootstrap.php';
     require 'config/settings.php';
     require 'config/connections.php';
     require 'config/routes.php';
