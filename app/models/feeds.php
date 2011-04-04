@@ -1,6 +1,6 @@
 <?php
 
-require 'lib/SimplePie.php';
+require 'lib/simplepie/SimplePie.php';
 
 class Feeds extends AppModel {
     protected $beforeDelete = array('deleteArticles');

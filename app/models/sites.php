@@ -1,6 +1,6 @@
 <?php
 
-require_once 'lib/GoogleGeocoding.php';
+require_once 'lib/geocoding/GoogleGeocoding.php';
 
 class Sites extends AppModel {
     protected $getters = array('feed_url');

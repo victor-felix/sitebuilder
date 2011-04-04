@@ -1,7 +1,7 @@
 <?php
 
-require 'lib/html_purifier/HTMLPurifier.auto.php';
-require 'lib/SimpleHtmlDom.php';
+require 'lib/htmlpurifier/HTMLPurifier.auto.php';
+require 'lib/dom/SimpleHtmlDom.php';
 
 class Articles extends AppModel {
     protected static $blacklist = array(

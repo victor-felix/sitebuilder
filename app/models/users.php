@@ -148,7 +148,7 @@ class Users extends AppModel {
 
     protected function sendConfirmationMail($created) {
         if($created && !Config::read('Mail.preventSending')) {
-            require_once 'lib/Mailer.php';
+            require_once 'lib/mailer/Mailer.php';
 
             $mailer = new Mailer(array(
                 'from' => array(
@@ -173,7 +173,7 @@ class Users extends AppModel {
 
     protected function sendForgottenPasswordMail() {
         if(!Config::read('Mail.preventSending')) {
-            require_once 'lib/Mailer.php';
+            require_once 'lib/mailer/Mailer.php';
 
             $mailer = new Mailer(array(
                 'from' => array(
