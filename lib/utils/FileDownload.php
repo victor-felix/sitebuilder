@@ -29,7 +29,7 @@ class FileDownload {
     }
 
     public static function getName($file, $name) {
-        $parsed_url = parse_url($file);
+        $parsed_url = parse_url(htmlspecialchars_decode($file));
         $file = basename($parsed_url['path']);
 
         return String::insert($name, array(

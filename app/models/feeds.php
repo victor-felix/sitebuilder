@@ -1,17 +1,27 @@
 <?php
 
 require 'lib/simplepie/SimplePie.php';
+require 'lib/log/KLogger.php';
 
 class Feeds extends AppModel {
     protected $beforeDelete = array('deleteArticles');
 
     public function updateArticles() {
+        $log = KLogger::instance(Filesystem::path('log'));
+
         $articles = Model::load('Articles');
         $feed = $this->getFeed();
         $items = $feed->get_items();
+
+        $log->logInfo('Importing feed "%s"', $this->link);
+        $log->logInfo('%d articles found', count($items));
+
         foreach($items as $item) {
             if(!$articles->articleExists($this->id, $item->get_id())) {
                 $articles->addToFeed($this, $item);
+            }
+            else {
+                $log->logInfo('Article "%s" already exists. Skipping', $item->get_id());
             }
         }
 

@@ -43,6 +43,8 @@ class Articles extends AppModel {
     }
 
     public function addToFeed($feed, $item) {
+        $log = KLogger::instance(Filesystem::path('log'));
+
         $this->id = null;
 
         $author = $item->get_author();
@@ -63,15 +65,27 @@ class Articles extends AppModel {
             $images = $this->getImages($item);
             foreach($images as $image) {
                 $image = $this->getImageUrl($image, $article['guid']);
-                Model::load('Images')->download($this, $image, array(
+                $result = Model::load('Images')->download($this, $image, array(
                     'url' => $image
                 ));
+
+                if($result) {
+                    $log->logInfo('Downloaded image "%s" to "%s"', $image, $result);
+                }
+                else {
+                    $log->logInfo('Image "%s" could not be found', $image, $result);
+                }
             }
 
             $this->commit();
+
+            $log->logInfo('Imported article "%s"', $article['guid']);
         }
         catch(Exception $e) {
             $this->rollback();
+
+            $log->logInfo('Could not import article "%s". Exception: %s', $article['guid'], (string) $e);
+
             return false;
         }
     }
@@ -123,7 +137,7 @@ class Articles extends AppModel {
             $domain = parse_url($article, PHP_URL_HOST);
             $url = 'http://' . $domain . $url;
         }
-        
+
         return $url;
     }
 
@@ -149,7 +163,7 @@ class Articles extends AppModel {
         $purifier = $this->getPurifier();
         $description = str_get_html($html);
         $body = implode($description->find('p'));
-        
+
         return $purifier->purify($body);
     }
 }

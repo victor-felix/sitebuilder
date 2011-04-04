@@ -4,11 +4,11 @@ class Images extends AppModel {
     protected $beforeDelete = array('deleteFile');
 
     public function upload($model, $image, $attr = array()) {
-        $this->saveImage('uploadFile', $model, $image, $attr);
+        return $this->saveImage('uploadFile', $model, $image, $attr);
     }
 
     public function download($model, $image, $attr = array()) {
-        $this->saveImage('downloadFile', $model, $image, $attr);
+        return $this->saveImage('downloadFile', $model, $image, $attr);
     }
 
     public function allByRecord($model, $fk) {
@@ -67,6 +67,8 @@ class Images extends AppModel {
             if($transaction) {
                 $this->commit();
             }
+
+            return $path . '/' . $filename;
         }
         catch(Exception $e) {
             if($transaction) {
