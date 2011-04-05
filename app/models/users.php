@@ -137,7 +137,7 @@ class Users extends AppModel {
         if($created) {
             $model = Model::load('Sites');
             $model->save(array(
-                'segment' => Config::read('Segments.default'),
+                'segment' => MeuMobi::$segment,
                 'slug' => '',
                 'title' => '',
                 'user_id' => $this->id

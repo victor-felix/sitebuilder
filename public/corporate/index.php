@@ -6,6 +6,8 @@ try {
     require 'config/connections.php';
     require 'config/routes.php';
 
+    MeuMobi::$segment = 'corporate';
+
     echo Dispatcher::dispatch();
 }
 catch(Exception $e) {

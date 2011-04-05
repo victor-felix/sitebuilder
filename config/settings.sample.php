@@ -18,8 +18,6 @@ Config::write('Articles.limit', 20);
 Config::write('SiteLogos.resizes', array('200x200'));
 Config::write('BusinessItems.resizes', array('80x80#'));
 
-Config::write('Segments.default', 'restaurant');
-
 Config::write('States', array(
     'AC' => 'Acre',
     'AL' => 'Alagoas',

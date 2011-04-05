@@ -40,3 +40,4 @@ require 'lib/core/view/View.php';
 // includes application's files
 require 'app/controllers/app_controller.php';
 require 'app/models/app_model.php';
+require 'app/models/meu_mobi.php';
