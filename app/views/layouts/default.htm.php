@@ -4,7 +4,7 @@
         <?php echo $this->html->charset() ?>
         <title>MeuMobi - <?php echo $this->pageTitle ?></title>
         <link rel="shortcut icon" href="<?php echo Mapper::url('/images/layout/favicon.png') ?>" type="image/png" />
-        <?php echo $this->html->stylesheet('base', 'uikit', 'categories', 'edit-forms', 'businessitems') ?>
+        <?php echo $this->html->stylesheet('shared/base', 'shared/uikit', 'shared/categories', 'shared/edit-forms', 'shared/businessitems') ?>
     </head>
     
     <body>
@@ -49,7 +49,7 @@
         
         <?php echo $this->element('layouts/footer') ?>
         
-        <?php echo $this->html->script('jquery', 'main') ?>
+        <?php echo $this->html->script('shared/jquery', 'shared/main') ?>
         <?php echo $this->html->scriptsForLayout ?>
     </body>
 </html>

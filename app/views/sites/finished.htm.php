@@ -3,7 +3,7 @@
 <?php $this->pageTitle = __('Crie seu Mobi') ?>
 
 <div class="registration-finished">
-    <?php echo $this->html->image('register/finished.png', array(
+    <?php echo $this->html->image('shared/register/finished.png', array(
         'alt' => __('Registro completado com sucesso!')
     )); ?>
     <h2><?php echo __('Parabéns! Seu site <strong>mobi</strong> já pode ser acessado em %s', $this->html->link($site->link())) ?></h2>

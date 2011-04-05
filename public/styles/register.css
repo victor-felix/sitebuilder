@@ -226,18 +226,18 @@ a img {
 }
 
 	.form-register .fieldset-expand:hover {
-		background: url(/images/layout/ui-button-white.png) center repeat-x;
+		background: url(/images/shared/layout/ui-button-white.png) center repeat-x;
 		border-bottom-color: #CCC;
 		-moz-box-shadow: 0 1px 0px #EEE;
 		-webkit-box-shadow: 0 1px 0px #EEE;
 	}
 	
 	.form-register .fieldset-expand:active {
-		background: url(/images/layout/ui-button-white-active.png) center repeat-x;
+		background: url(/images/shared/layout/ui-button-white-active.png) center repeat-x;
 	}
 	
 	.form-register .fieldset-expand span {
-		background: url(/images/register/arrow-expand-fieldset.png) right no-repeat;
+		background: url(/images/shared/register/arrow-expand-fieldset.png) right no-repeat;
 		font-style: italic;
 		color: #999;
 		float: right;
@@ -437,7 +437,7 @@ a img {
 
 #success-feedback,
 #error-feedback {
-	background: #278740 url(/images/layout/feedback-close.png) 740px 26px no-repeat;
+	background: #278740 url(/images/shared/layout/feedback-close.png) 740px 26px no-repeat;
 	color: #FFF;
 	display: block;
 	font: lighter 20px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica,arial,sans-serif;

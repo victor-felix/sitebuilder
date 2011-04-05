@@ -93,18 +93,18 @@
 }
 
 	.form-edit .fieldset-expand:hover {
-		background: url(/images/layout/ui-button-white.png) center repeat-x;
+		background: url(/images/shared/layout/ui-button-white.png) center repeat-x;
 		border-bottom-color: #CCC;
 		-moz-box-shadow: 0 1px 0px #EEE;
 		-webkit-box-shadow: 0 1px 0px #EEE;
 	}
 	
 	.form-edit .fieldset-expand:active {
-		background: url(/images/layout/ui-button-white-active.png) center repeat-x;
+		background: url(/images/shared/layout/ui-button-white-active.png) center repeat-x;
 	}
 	
 	.form-edit .fieldset-expand span {
-		background: url(/images/register/arrow-expand-fieldset.png) right no-repeat;
+		background: url(/images/shared/register/arrow-expand-fieldset.png) right no-repeat;
 		float: right;
 		padding-right: 40px;
 		text-indent: -9999px;

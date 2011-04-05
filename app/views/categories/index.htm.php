@@ -42,7 +42,7 @@
                 <div class="controls">
                     <?php echo $this->html->link(__('adicionar produto'), '/business_items/add/' . $category->id, array('class' => 'ui-button highlight push-scene')) ?>
                     <?php echo $this->html->link(__('gerenciar produtos'), '/business_items/index/' . $category->id, array('class' => 'ui-button manage push-scene')) ?>
-                    <?php echo $this->html->imagelink('categories/delete.gif', '#', array(), array(
+                    <?php echo $this->html->imagelink('shared/categories/delete.gif', '#', array(), array(
                         'class' => 'ui-button delete icon'
                     )) ?>
                 </div>
@@ -66,7 +66,7 @@
                     <div class="controls">
                         <?php echo $this->html->link(__('adicionar produto'), '/business_items/add/' . $subcategory->id, array('class' => 'ui-button highlight push-scene')) ?>
                         <?php echo $this->html->link(__('gerenciar produtos'), '/business_items/index/' . $subcategory->id, array('class' => 'ui-button manage push-scene')) ?>
-                        <?php echo $this->html->link($this->html->image('categories/delete.gif'), '#', array('class' => 'ui-button delete icon')) ?>
+                        <?php echo $this->html->imagelink('shared/categories/delete.gif', '#', array('class' => 'ui-button delete icon')) ?>
                     </div>
                     <div class="children-count"><?php echo $subcategory->childrenCount() ?></div>
                     <div class="delete-confirm">

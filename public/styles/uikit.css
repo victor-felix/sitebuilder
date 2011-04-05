@@ -1,5 +1,5 @@
 .ui-button {
-	background: url(/images/layout/ui-button-white.png) center repeat-x;
+	background: url(/images/shared/layout/ui-button-white.png) center repeat-x;
 	border-radius: 2px;
 	-moz-border-radius: 2px;
 	-webkit-border-radius: 2px;
@@ -21,7 +21,7 @@
 }
 
 	.ui-button:active {
-		background-image: url(/images/layout/ui-button-white-active.png);
+		background-image: url(/images/shared/layout/ui-button-white-active.png);
 		border-color: #AAA;
 		-webkit-box-shadow: none;
 		-moz-box-shadow: none;
@@ -65,7 +65,7 @@
 		-moz-border-radius: 3px;
 		-webkit-border-radius: 3px;
 		background-color: #b22623;
-		background-image: url(/images/layout/ui-button-red.png);
+		background-image: url(/images/layout/ui-button-highlight.png);
 		color: #FFF;
 		border-color: #b22623;
 	}
@@ -76,7 +76,7 @@
 	}
 	
 	.ui-button.red:active {
-		background-image: url(/images/layout/ui-button-red-active.png);
+		background-image: url(/images/layout/ui-button-red-highlight.png);
 	}
 	
 	.ui-button.disabled,
@@ -112,7 +112,7 @@
 	
 	.ui-text:focus,
 	.ui-textarea:focus {
-		background: #EFEFEF url(/images/layout/ui-text-bg.png) top repeat-x;
+		background: #EFEFEF url(/images/shared/layout/ui-text-bg.png) top repeat-x;
 		border-color: #AAA;
 	}
 	

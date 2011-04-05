@@ -28,7 +28,7 @@
                     <?php foreach($themes as $slug => $theme): ?>
                         <li>
                             <a href="<?php echo '#' . $slug ?>">
-                                <?php echo $this->html->image('themes/' . $slug . '.png') ?>
+                                <?php echo $this->html->image('shared/themes/' . $slug . '.png') ?>
                                 <span><?php echo $theme ?></span>
                             </a>
                         </li>

@@ -4,7 +4,7 @@
         <?php echo $this->html->charset() ?>
         <title><?php echo __('MeuMobi Restaurant - Seu restaurante na Web móvel em 3 minutos!') ?></title>
         <link rel="shortcut icon" href="<?php echo Mapper::url("/images/layout/favicon.png") ?>" type="image/png" />
-        <?php echo $this->html->stylesheet('home', 'uikit') ?>
+        <?php echo $this->html->stylesheet('shared/home', 'shared/uikit') ?>
     </head>
 
     <body>
@@ -76,7 +76,7 @@
 
         <?php echo $this->element('layouts/footer') ?>
 
-        <?php echo $this->html->script('jquery', 'jquery.cycle', 'home') ?>
+        <?php echo $this->html->script('shared/jquery', 'shared/jquery.cycle', 'shared/home') ?>
         <?php echo $this->html->scriptsForLayout ?>
     </body>
 </html>

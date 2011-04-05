@@ -203,7 +203,7 @@ a img {
 
 #success-feedback,
 #error-feedback {
-	background: #278740 url(/images/layout/feedback-close.png) 900px 26px no-repeat;
+	background: #278740 url(/images/shared/layout/feedback-close.png) 900px 26px no-repeat;
 	color: #FFF;
 	display: block;
 	font: lighter 20px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica,arial,sans-serif;
