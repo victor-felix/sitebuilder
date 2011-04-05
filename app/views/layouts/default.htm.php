@@ -4,7 +4,7 @@
         <?php echo $this->html->charset() ?>
         <title>MeuMobi - <?php echo $this->pageTitle ?></title>
         <link rel="shortcut icon" href="<?php echo Mapper::url('/images/layout/favicon.png') ?>" type="image/png" />
-        <?php echo $this->html->stylesheet('shared/base', 'shared/uikit', 'shared/categories', 'shared/edit-forms', 'shared/businessitems') ?>
+        <?php echo $this->html->stylesheet('shared/base', 'shared/uikit', 'shared/categories', 'shared/edit-forms', 'shared/businessitems', 'base', 'uikit', 'edit-forms', 'businessitems') ?>
     </head>
     
     <body>
