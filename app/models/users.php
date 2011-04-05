@@ -64,7 +64,7 @@ class Users extends AppModel {
     }
 
     public function site() {
-        return Model::load('Sites')->firstById($this->site_id);
+        return Model::load('Sites')->firstByUserId($this->id);
     }
 
     public function confirm($token) {
@@ -139,10 +139,9 @@ class Users extends AppModel {
             $model->save(array(
                 'segment' => Config::read('Segments.default'),
                 'slug' => '',
-                'title' => ''
+                'title' => '',
+                'user_id' => $this->id
             ));
-            $this->site_id = $model->id;
-            $this->save();
         }
     }
 
@@ -197,7 +196,7 @@ class Users extends AppModel {
     }
 
     protected function authenticate($created) {
-        if($created) {
+        if($created || Auth::loggedIn()) {
             Auth::login($this);
         }
     }

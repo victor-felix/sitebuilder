@@ -16,7 +16,7 @@ class UsersController extends AppController {
     }
 
     public function edit() {
-        $user = Auth::user();
+        $user = $this->Users->firstById(Auth::user()->id);
         $this->saveUser($user, '/users/edit');
     }
 

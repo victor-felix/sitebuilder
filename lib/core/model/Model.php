@@ -6,8 +6,6 @@ require 'lib/core/model/Table.php';
 require 'lib/core/model/Behavior.php';
 
 class Model extends Hookable {
-    public $id;
-
     protected $behaviors = array();
 
     protected $getters = array();
@@ -48,10 +46,10 @@ class Model extends Hookable {
 
     public function __construct($data = null) {
         if(!is_null($data)) {
-            if(array_key_exists('id', $data)) {
-                $this->id = $data['id'];
-            }
             $this->data = $data;
+        }
+        if(!array_key_exists('id', $this->data)) {
+            $this->data['id'] = null;
         }
         $this->loadBehaviors($this->behaviors);
     }
@@ -339,22 +337,29 @@ class Model extends Hookable {
     public function save($data = array()) {
         if(!empty($data)) {
             $this->data = $data;
+            
+            if(!array_key_exists('id', $this->data)) {
+                $this->data['id'] = null;
+            }
         }
         
-        if(!is_null($this->id)):
-            $this->data[$this->primaryKey()] = $this->id;
-        endif;
-
         // apply modified timestamp
         $date = date('Y-m-d H:i:s');
         if(!array_key_exists('modified', $this->data)):
             $this->data['modified'] = $date;
         endif;
 
+        $pk = $this->primaryKey();
+
         // verify if the record exists
-        $exists = $this->exists(array(
-            $this->primaryKey() => $this->id
-        ));
+        if(array_key_exists($pk, $this->data) && !is_null($this->data[$pk])) {
+            $exists = $this->exists(array(
+                $pk => $this->data[$pk]
+            ));
+        }
+        else {
+            $exists = false;
+        }
 
         // apply created timestamp
         if(!$exists && !array_key_exists('created', $this->data)):
@@ -374,14 +379,14 @@ class Model extends Hookable {
         if($exists):
             $save = $this->update(array(
                 'conditions' => array(
-                    $this->primaryKey() => $this->id
+                    $pk => $this->data[$pk]
                 ),
                 'limit' => 1
             ), $data);
         // or insert a new one if it doesn't
         else:
             $save = $this->insert($data);
-            $this->id = $this->insertId();
+            $this->data[$pk] = $this->insertId();
         endif;
 
         // fire afterSave action
@@ -419,7 +424,7 @@ class Model extends Hookable {
                 $rule = array_merge($defaults, $rule);
                 if($rule['allowEmpty'] && empty($this->data[$field])):
                     continue;
-                elseif($rule['on'] == 'create' && $this->id != null):
+                elseif($rule['on'] == 'create' && (array_key_exists('id', $this->data) && $this->data['id'] != null)):
                     continue;
                 endif;
                 $required = !isset($this->data[$field]) && $rule['required'];
