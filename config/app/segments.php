@@ -18,5 +18,14 @@ Config::write('Segments', array(
         'skins' => array('ae3232', '278740', '326cae'),
         'business_item' => 'products',
         'root' => 'Index'
+    ),
+    'events' => array(
+        'title' => 'Events',
+        'themes' => array(
+            'govrj' => 'govrj'
+        ),
+        'skins' => array('ae3232', '278740', '326cae'),
+        'business_item' => 'products',
+        'root' => 'Agenda'
     )
 ));
