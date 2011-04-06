@@ -36,6 +36,7 @@ class AppController extends Controller {
             return Auth::user()->site();
         }
         else {
+            Session::flash('Auth.redirect', Mapper::here());
             $this->redirect('/users/login');
         }
     }

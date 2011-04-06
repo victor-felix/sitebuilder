@@ -20,7 +20,7 @@
             <li>powered by <a href="http://www.bkrender.com/">BkRender</a></li>
             <li>developed with <a href="http://www.spaghettiphp.org/">Spaghetti*</a></li>
             <li><a href="http://feedback.meumobi.com">feedback</a></li>
-						<li><?php echo __('&copy;2011 MeuMobi. Todos os direitos reservados.') ?></li>
+            <li><?php echo __('&copy;2011 MeuMobi. Todos os direitos reservados.') ?></li>
         </ul>
     <div>
     <div class="clear"></div>

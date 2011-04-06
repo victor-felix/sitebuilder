@@ -135,6 +135,16 @@ a img {
 	text-decoration: underline;
 }
 
+.tip-register {
+  background: #ffc;
+  line-height: 1.4em;
+  padding: 10px 15px;
+}
+
+.tip-register a {
+  color: #c02926;
+}
+
 .form-register fieldset {
 	border: 0;
 	border-bottom: 1px solid #DDD;

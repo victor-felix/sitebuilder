@@ -2,6 +2,11 @@
 <?php $this->selectedTab = 0 ?>
 <?php $this->pageTitle = __('Crie seu Mobi') ?>
 
+<p class="tip-register">
+    <strong><?php echo __('Você já tem uma conta no MeuMobi?') ?></strong><br />
+    <?php echo __('%s para usar as informações que você já tem.', $this->html->link(__('Faça login aqui'), '/users/login_and_register')) ?>
+</p>
+
 <?php echo $this->form->create('/users/register', array(
     'id' => 'form-register-personal-info',
     'class' => 'form-register',

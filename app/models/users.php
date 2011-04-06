@@ -64,7 +64,19 @@ class Users extends AppModel {
     }
 
     public function site() {
-        return Model::load('Sites')->firstByUserId($this->id);
+        return Model::load('Sites')->firstByUserIdAndSegment($this->id, MeuMobi::$segment);
+    }
+
+    public function hasSiteInSegment($segment) {
+        return Model::load('Sites')->exists(array(
+            'user_id' => $this->id,
+            'segment' => $segment
+        ));
+    }
+
+    public function registerNewSite() {
+        $this->createSite(true);
+        $this->authenticate(true);
     }
 
     public function confirm($token) {

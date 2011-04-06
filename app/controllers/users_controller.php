@@ -1,14 +1,13 @@
 <?php
 
 class UsersController extends AppController {
-    protected $redirectIf = array('register', 'login', 'forgot_password', 'reset_password');
+    protected $redirectIf = array('register', 'login', 'forgot_password',
+        'reset_password', 'login_and_register');
 
     protected function beforeFilter() {
         if(Auth::loggedIn()) {
-            foreach($this->redirectIf as $rule) {
-                if($rule == $this->param('action')) {
-                    $this->redirect('/categories');
-                }
+            if(in_array($this->param('action'), $this->redirectIf)) {
+                $this->redirect('/categories');
             }
         }
 
@@ -41,12 +40,36 @@ class UsersController extends AppController {
             $user = Auth::identify($this->data);
             if($user) {
                 Auth::login($user);
-                $this->redirect('/categories');
+
+                if(!($location = Session::flash('Auth.redirect'))) {
+                    $location = '/categories';
+                }
+                $this->redirect($location);
             }
             else {
                 Session::writeFlash('error', __('Usuário ou senha incorretos'));
             }
         }
+    }
+
+    public function login_and_register() {
+        if(!empty($this->data)) {
+            $user = Auth::identify($this->data);
+            if($user) {
+                if(!$user->hasSiteInSegment(MeuMobi::$segment)) {
+                    $user->registerNewSite();
+                    $this->redirect('/sites/register');
+                }
+                else {
+                    $this->setAction('login');
+                }
+            }
+            else {
+                Session::writeFlash('error', __('Usuário ou senha incorretos'));
+            }
+        }
+
+        echo $this->render('users/login');
     }
 
     public function logout() {

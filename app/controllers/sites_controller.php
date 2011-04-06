@@ -14,10 +14,7 @@ class SitesController extends AppController {
     }
 
     public function customize_register() {
-        $this->customizeSite(
-            __('Seu registro foi completado com sucesso, mas sua conta necessita ativação. Em instantes você receberá um e-mail com informações sobre a ativação'),
-            '/sites/finished'
-        );
+        $this->customizeSite(__('Configurações salvas com sucesso.'), '/sites/finished');
     }
     
     public function finished() {
@@ -59,7 +56,7 @@ class SitesController extends AppController {
                 $this->redirect($redirect_to);
             }
         }
-        
+
         $this->set(array(
             'site' => $site,
             'themes' => Model::load('Segments')->firstById($site->segment)->themes,
