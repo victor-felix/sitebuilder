@@ -1,0 +1,35 @@
+#content .head {
+	background: #4825bc;
+}
+
+#content .head .steps li {
+	border-left: 1px solid #4825bc;
+}
+
+.form-register fieldset h2 {
+	color: #4825bc;
+}
+
+.form-register .fieldset-expand {
+	color: #4825bc;
+}
+
+.theme-picker ul li.selected a img {
+	border-color: #4825bc;
+}
+
+.skin-picker ul li.selected a {
+	border-color: #4825bc;
+}
+
+.registration-finished h2 a {
+	color: #4825bc;
+}
+
+.registration-finished .next-steps ul li a {
+	color: #4825bc;
+}
+
+.tip-register a {
+  color: #4825bc;
+}
