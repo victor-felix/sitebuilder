@@ -16,7 +16,7 @@ Config::write('Segments', array(
             'govrj' => 'govrj'
         ),
         'skins' => array('ae3232', '278740', '326cae'),
-        'business_item' => 'products',
+        'business_item' => 'articles',
         'root' => 'Index'
     ),
     'events' => array(
@@ -25,7 +25,7 @@ Config::write('Segments', array(
             'govrj' => 'govrj'
         ),
         'skins' => array('ae3232', '278740', '326cae'),
-        'business_item' => 'products',
+        'business_item' => 'events',
         'root' => 'Agenda'
     )
 ));

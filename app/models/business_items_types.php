@@ -6,6 +6,7 @@ class BusinessItemsTypes {
         'text' => 'textarea',
         'number' => 'text',
         'date' => 'text',
+        'hour' => 'text',
         'boolean' => 'checkbox'
     );
     
@@ -92,5 +93,9 @@ class BusinessItemsTypes {
         else {
             return true;
         }
+    }
+
+    protected static function validateHour($value, $field) {
+        return true;
     }
 }
