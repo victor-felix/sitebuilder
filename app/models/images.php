@@ -30,9 +30,10 @@ class Images extends AppModel {
     }
 
     public function link($size = null) {
-        $path = String::insert('/images/:model/:size:filename', array(
+        $path = String::insert('/:path/:size:filename', array(
             'model' => Inflector::underscore($this->model),
-            'filename' => $this->path,
+            'filename' => basename($this->path),
+            'path' => dirname($this->path),
             'size' => $size ? $size . '_' : ''
         ));
         return Mapper::url($path, true);
@@ -63,7 +64,8 @@ class Images extends AppModel {
             $filename = $this->renameTempImage($info);
 
             $info['path'] = $path . '/' . $filename;
-            $this->save($info);
+            $this->updateAttributes($info);
+            $this->save();
 
             $this->resizeImage($model, $path, $filename);
 
