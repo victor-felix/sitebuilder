@@ -1,6 +1,6 @@
 <?php
 
-Config::write('App.environment', Filesystem::read('config/ENVIRONMENT'));
+Config::write('App.environment', trim(Filesystem::read('config/ENVIRONMENT')));
 Config::write('App.encoding', 'utf-8');
 Config::write('Security.salt', '0b693e040f5c7ffd13d62330d6c8f901');
 
