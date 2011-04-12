@@ -15,6 +15,9 @@ require 'lib/core/common/String.php';
 require 'lib/core/common/Filesystem.php';
 require 'lib/core/common/Hookable.php';
 
+// includes KLogger
+require 'lib/log/KLogger.php';
+
 // includes and initializes core.debug
 require 'lib/core/debug/Debug.php';
 
