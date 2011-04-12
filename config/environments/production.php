@@ -1,3 +1,3 @@
 <?php
 
-Config::write('Debug.level', 1);
+ini_set('error_reporting', 0);
