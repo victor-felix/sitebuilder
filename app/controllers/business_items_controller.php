@@ -69,7 +69,7 @@ class BusinessItemsController extends AppController {
                 'success'=>$message,
                 'go_back'=>true,
                 'refresh'=>'/business_items/index/' . $parent_id);
-            $this->renderJSON($json);
+            $this->respondToJSON($json);
             // $this->setAction('index', $business_item->parent_id);
         }
         else {

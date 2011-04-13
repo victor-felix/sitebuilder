@@ -24,7 +24,7 @@ class SitesController extends AppController {
     }
     
     public function verify_slug($slug = null) {
-        $this->renderJSON(array(
+        $this->respondToJSON(array(
             'unique' => !$this->Sites->exists(array(
                 'slug' => $slug
             ))

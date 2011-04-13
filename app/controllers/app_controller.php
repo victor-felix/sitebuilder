@@ -54,7 +54,7 @@ class AppController extends Controller {
         return $record;
     }
 
-    protected function renderJSON($record) {
+    protected function respondToJSON($record) {
         header('Content-type: application/json');
         echo json_encode($this->toJSON($record));
         $this->stop();

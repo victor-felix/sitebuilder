@@ -23,7 +23,7 @@ class CategoriesController extends AppController {
                 $category->save();
                 if($this->isXhr()) {
                     $json = array('go_back'=>true,'refresh'=>'/categories');
-                    $this->renderJSON($json);
+                    $this->respondToJSON($json);
                 }
                 else {
                     Session::writeFlash('success', __('Categoria adicionada com sucesso.'));
@@ -45,7 +45,7 @@ class CategoriesController extends AppController {
             if($category->validate()) {
                 $category->save();
                 if($this->isXhr()) {
-                    $this->renderJSON($category);
+                    $this->respondToJSON($category);
                 }
                 else {
                     Session::writeFlash('success', __('Categoria editada com sucesso.'));
@@ -65,7 +65,7 @@ class CategoriesController extends AppController {
         $message = __('Categoria excluída com sucesso.');
         if($this->isXhr()) {
             $json = array('success'=>$message);
-            $this->renderJSON($json);
+            $this->respondToJSON($json);
         }
         else {
             Session::writeFlash('success', $message);
