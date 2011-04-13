@@ -137,6 +137,9 @@ class Articles extends AppModel {
             $domain = parse_url($article, PHP_URL_HOST);
             $url = 'http://' . $domain . $url;
         }
+        else if(preg_match('%^(http://download.rj.gov.br/imagens/\d+/\d+/\d+.jpg)%', $url, $output)) {
+            return $output[0];
+        }
 
         return $url;
     }
