@@ -174,9 +174,8 @@ class Articles extends AppModel {
     protected function cleanupHtml($html) {
         $purifier = $this->getPurifier();
         $description = str_get_html($html);
-				// Remove first unecessary paragraph for PRODERJ purpose
-				$body = implode(array_slice($description->find('p'), 1));
-				
-				return $purifier->purify($body);
+        // Remove first unecessary paragraph for PRODERJ purpose
+        $body = implode(array_slice($description->find('p'), 1));
+        return $purifier->purify($body);
     }
 }
