@@ -50,7 +50,7 @@ class Articles extends AppModel {
         $author = $item->get_author();
         $article = array(
             'feed_id' => $feed->id,
-            'guid' => $item->get_id(),
+            'guid' => $this->filterGuid($item->get_id()),
             'link' => $item->get_link(),
             'title' => $item->get_title(),
             'description' => $this->cleanupHtml($item->get_content()),
@@ -88,6 +88,14 @@ class Articles extends AppModel {
 
             return false;
         }
+    }
+
+    protected function filterGuid($guid) {
+        if(preg_match("%^http://www.rj.gov.br/web/guest/exibeconteudo;.*articleId=(\d+)%", $guid, $result)) {
+            $guid = "http://www.rj.gov.br/web/guest/exibeconteudo?articleId=" . $result[1];
+        }
+
+        return $guid;
     }
 
     protected function getImages($item) {
