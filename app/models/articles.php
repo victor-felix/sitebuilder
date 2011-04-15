@@ -175,9 +175,6 @@ class Articles extends AppModel {
         $purifier = $this->getPurifier();
         $description = str_get_html($html);
 				// Remove first unecessary paragraph for PRODERJ purpose
-				//$paragraphs = $decription->find('p');
-				//$unecessary_para = array_shift($paragraphs);
-				//$body = implode($paragraphs);
 				$body = implode(array_slice($description->find('p'), 1));
 				
 				return $purifier->purify($body);
