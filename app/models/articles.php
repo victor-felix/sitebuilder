@@ -18,6 +18,7 @@ class Articles extends AppModel {
     }
 
     public function articleExists($feed_id, $guid) {
+        $guid = $this->filterGuid($guid);
         return $this->exists(compact('feed_id', 'guid'));
     }
 
