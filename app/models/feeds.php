@@ -24,9 +24,10 @@ class Feeds extends AppModel {
             }
         }
 
-        $this->save(array(
+        $this->updateAttributes(array(
             'updated' => date('Y-m-d H:i:s')
         ));
+        $this->save();
     }
 
     public function saveFeed($link) {
