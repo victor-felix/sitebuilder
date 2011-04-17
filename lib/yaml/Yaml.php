@@ -9,8 +9,21 @@ class Yaml {
         $this->load($filename);
     }
 
-    public function get($key) {
-        return $this->content[$key];
+    public function get($key, $context = null) {
+        if(is_null($context)) {
+            $context = $this->content;
+        }
+
+        $keys = explode('.', $key);
+        $key = array_shift($keys);
+
+        if(!empty($keys)) {
+            $keys = implode('.', $keys);
+            return $this->get($keys, $context[$key]);
+        }
+        else {
+            return $context[$key];
+        }
     }
 
     protected function load($filename) {
