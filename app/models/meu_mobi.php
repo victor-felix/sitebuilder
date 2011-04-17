@@ -3,7 +3,7 @@
 class MeuMobi {
     protected static $segment;
 
-    public static function segment($segment) {
+    public static function segment($segment = null) {
         if(is_null($segment)) {
             return static::$segment;
         }

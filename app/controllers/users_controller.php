@@ -38,7 +38,7 @@ class UsersController extends AppController {
     public function login() {
         if(!empty($this->data)) {
             $user = Auth::identify($this->data);
-            if($user && $user->hasSiteInSegment(MeuMobi::$segment)) {
+            if($user && $user->hasSiteInSegment(MeuMobi::segment())) {
                 Auth::login($user);
 
                 if(!($location = Session::flash('Auth.redirect'))) {

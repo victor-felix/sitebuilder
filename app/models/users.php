@@ -64,7 +64,7 @@ class Users extends AppModel {
     }
 
     public function site() {
-        return Model::load('Sites')->firstByUserIdAndSegment($this->id, MeuMobi::$segment);
+        return Model::load('Sites')->firstByUserIdAndSegment($this->id, MeuMobi::segment());
     }
 
     public function hasSiteInSegment($segment) {
