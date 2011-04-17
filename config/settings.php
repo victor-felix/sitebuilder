@@ -10,3 +10,5 @@ require 'config/environments/' . Config::read('App.environment') . '.php';
 require 'config/app/segments.php';
 require 'config/app/business_items.php';
 require 'config/app/resizes.php';
+
+YamlDictionary::path('config/segments');

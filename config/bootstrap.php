@@ -40,6 +40,10 @@ require 'lib/core/controller/Controller.php';
 // includes core.view
 require 'lib/core/view/View.php';
 
+// includes YamlDictionary and I18n
+require 'lib/yaml_dictionary/YamlDictionary.php';
+require 'lib/i18n/I18n.php';
+
 // includes application's files
 require 'app/controllers/app_controller.php';
 require 'app/models/app_model.php';
