@@ -26,8 +26,7 @@ Config::write('BusinessItemsTypes', array(
             ),
             'description' => array(
                 'title' => 'Descrição',
-                'field_type' => 'text',
-                'limit' => 500
+                'field_type' => 'text'
             ),
             'featured' => array(
                 'title' => 'Destaque?',
@@ -46,8 +45,7 @@ Config::write('BusinessItemsTypes', array(
             ),
             'description' => array(
                 'title' => 'Descrição',
-                'field_type' => 'text',
-                'limit' => 500
+                'field_type' => 'text'
             ),
             'address' => array(
                 'title' => 'Endereço',
@@ -80,8 +78,7 @@ Config::write('BusinessItemsTypes', array(
             ),
             'description' => array(
                 'title' => 'Descrição',
-                'field_type' => 'text',
-                'limit' => 500
+                'field_type' => 'text'
             ),
             'author' => array(
                 'title' => 'Autor',
