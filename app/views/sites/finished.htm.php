@@ -11,7 +11,7 @@
         <h3><?php echo __('Próximas etapas') ?></h3>
         <p><?php echo __('Seu site mobi já está online, mas você ainda pode continuar a melhorá-lo.') ?></p>
         <ul>
-            <li><?php echo $this->html->link(__('Adicione o cardápio de seu restaurante ›'), '/categories') ?></li>
+            <li><?php echo $this->html->link(s('sites/finished.categories'), '/categories') ?></li>
             <li><?php echo $this->html->link(__('Forneça mais detalhes sobre sua empresa ›'), '/settings') ?></li>
         </ul>
         <div class="clear"></div>

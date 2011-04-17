@@ -2,7 +2,7 @@
 <html>
     <head>
         <?php echo $this->html->charset() ?>
-        <title><?php echo __('MeuMobi Restaurant - Seu restaurante na Web móvel em 3 minutos!') ?></title>
+        <title><?php echo s('home/index.pagetitle') ?></title>
         <link rel="shortcut icon" href="<?php echo Mapper::url("/images/layout/favicon.png") ?>" type="image/png" />
         <?php echo $this->html->stylesheet('shared/home', 'shared/uikit', 'segment') ?>
     </head>
@@ -22,9 +22,8 @@
             </p>
 
             <div class="get-started">
-                <h2><?php echo __('Seu restaurante na palma da mão em menos de 3 minutos.') ?></h2>
-                <p class="subtitle"><?php echo __('MeuMobi Restaurant coloca o seu negócio na
-                Internet móvel em instantes.') ?></p>
+                <h2><?php echo s('home/index.title') ?></h2>
+                <p class="subtitle"><?php echo s('home/index.subtitle') ?></p>
                 <?php echo $this->html->link(__('crie seu mobi já!'), '/register') ?>
             </div>
 
