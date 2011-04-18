@@ -12,9 +12,17 @@ Connection::add(array(
     'production' => array(
         'driver' => 'MySql',
         'host' => 'localhost',
-        'user' => 'bkuser',
-        'password' => 'bkuser',
-        'database' => 'mobile-site-builder',
+        'user' => 'imax',
+        'password' => 'q1T10Cr',
+        'database' => 'meu-site-builder',
+        'prefix' => ''
+    ),
+    'staging' => array(
+        'driver' => 'MySql',
+        'host' => 'localhost',
+        'user' => 'imax',
+        'password' => 'q1T10Cr',
+        'database' => 'meu-site-builder',
         'prefix' => ''
     )
 ));
