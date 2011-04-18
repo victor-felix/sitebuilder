@@ -26,16 +26,10 @@ class ItemsController extends ApiController {
     }
 
     public function api_view($slug = null, $id = null) {
-        if($this->param('type', 'products') == 'products') {
+
             $bi = $this->BusinessItems->firstById($id);
             $this->respondToJSON(array(
                 $bi->type => $bi
             ));
-        }
-        else {
-            $this->respondToJSON(array(
-                'articles' => $this->Articles->firstById($id)
-            ));
-        }
     }
 }
