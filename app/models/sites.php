@@ -17,6 +17,10 @@ class Sites extends AppModel {
             array(
                 'rule' => 'asciiOnly',
                 'message' => 'O domínio só pode conter caracteres minúsculos, hifens e underscores'
+            ),
+            array(
+                'rule' => 'blacklist',
+                'message' => 'O domínio escolhido não pode ser utilizado'
             )
         ),
         'title' => array(
@@ -208,6 +212,11 @@ class Sites extends AppModel {
         if($created) {
             Model::load('Categories')->createRoot($this);
         }
+    }
+
+    protected function blacklist($value) {
+        $blacklist = Config::read('Sites.blacklist');
+        return !in_array($value, $blacklist);
     }
 }
 
