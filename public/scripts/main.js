@@ -301,4 +301,6 @@ $(function() {
         $(this).slideUp('fast');
     });
     $('#success-feedback, #error-feedback').delay(5000).slideUp('fast').delay(1000,function(){$(this).remove();});
+
+    $('textarea').markItUp(mySettings);
 });

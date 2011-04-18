@@ -5,6 +5,7 @@
         <title>MeuMobi - <?php echo $this->pageTitle ?></title>
         <link rel="shortcut icon" href="<?php echo Mapper::url('/images/layout/favicon.png') ?>" type="image/png" />
         <?php echo $this->html->stylesheet('shared/base', 'shared/uikit', 'shared/categories', 'shared/edit-forms', 'shared/businessitems', 'segment') ?>
+        <?php echo $this->html->stylesForLayout ?>
     </head>
     
     <body>
