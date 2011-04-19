@@ -79,6 +79,9 @@ class Images extends AppModel {
             if($transaction) {
                 $this->rollback();
             }
+            else {
+                $this->delete($this->id);
+            }
         }
     }
 
