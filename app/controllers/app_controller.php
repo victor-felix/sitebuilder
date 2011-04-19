@@ -55,7 +55,9 @@ class AppController extends Controller {
     }
 
     protected function respondToJSON($record) {
-        header('Content-type: application/json');
+        if(Config::read('Json.sendHeaders')) {
+            header('Content-type: application/json');
+        }
         echo json_encode($this->toJSON($record));
         $this->stop();
     }
