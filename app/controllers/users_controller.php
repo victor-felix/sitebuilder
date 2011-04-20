@@ -56,7 +56,7 @@ class UsersController extends AppController {
         if(!empty($this->data)) {
             $user = Auth::identify($this->data);
             if($user) {
-                if(!$user->hasSiteInSegment(MeuMobi::$segment)) {
+                if(!$user->hasSiteInSegment(MeuMobi::segment())) {
                     $user->registerNewSite();
                     $this->redirect('/sites/register');
                 }
