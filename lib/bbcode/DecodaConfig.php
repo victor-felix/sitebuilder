@@ -57,10 +57,7 @@ class DecodaConfig {
 //        'alert'		=> '/\[alert\](.*?)\[\/alert\]/is',
 //        'img'       => '/\[img(?:\swidth=([0-9%]{1,4}+))?(?:\sheight=([0-9%]{1,4}+))?\]((?:ftp|http)s?:\/\/.*?)\[\/img\]/is',
 //        'div'       => '/\[div(.*?)\](.*?)\[\/div\]/is',
-        'url'       => array(
-            '/\[url\]((?:http|ftp|irc|file|telnet)s?:\/\/.*?)\[\/url\]/is',
-            '/\[url=((?:http|ftp|irc|file|telnet)s?:\/\/.*?)\](.*?)\[\/url\]/is'
-        ),
+        'url'       => '/\[url=(.*?)\](.*?)\[\/url\]/is',
 //        'email'     => array(
 //            '/\[e?mail\](.*?)\[\/e?mail\]/is',
 //            '/\[e?mail=(.*?)\](.*?)\[\/e?mail\]/is'
