@@ -25,5 +25,3 @@
         </div>
     </div>
 </fieldset>
-<?php $this->html->script('shared/markitup', 'shared/markitup.xbbcode', false) ?>
-<?php $this->html->stylesheet('shared/markitup.simple', 'shared/markitup.xbbcode', false) ?>

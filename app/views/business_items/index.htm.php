@@ -18,11 +18,11 @@
         <li>
             <?php if($image = $bi->image()): ?>
                 <?php echo $this->html->imagelink($image->link('80x80'), '/business_items/edit/' . $bi->id, array(), array(
-                    'class' => 'photo'
+                    'class' => 'photo push-scene'
                 )) ?>
             <?php else: ?>
                 <?php echo $this->html->link('', '/business_items/edit/' . $bi->id, array(
-                    'class' => 'photo'
+                    'class' => 'photo push-scene'
                 )) ?>
             <?php endif ?>
             <div class="info">
