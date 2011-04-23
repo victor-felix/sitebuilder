@@ -82,7 +82,7 @@ class DecodaConfig {
      */
     private static $__markupResult = array(
 //        'code'      => array('__code'),
-        'strong'         => '<strong>$1</strong>',
+        'strong'         => '<b>$1</b>',
         'em'         => '<em>$1</em>',
 //        'u'         => '<u>$1</u>',
 //        's'         => '<span style="text-decoration: line-through;">$1</span>',
