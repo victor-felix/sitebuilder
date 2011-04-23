@@ -66,7 +66,8 @@ class Sites extends AppModel {
     }
     
     public function link() {
-        return 'http://' . $this->slug . '.meumobi.com';
+        $domain = MeuMobi::domain();
+        return 'http://' . $this->slug . '.' . $domain;
     }
     
     public function rootCategory() {

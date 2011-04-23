@@ -12,4 +12,9 @@ class MeuMobi {
             YamlDictionary::dictionary($segment);
         }
     }
+
+    public static function domain() {
+        $domain = Mapper::domain();
+        return substr($domain, strpos($domain, '.') + 1);
+    }
 }
