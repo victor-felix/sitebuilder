@@ -119,12 +119,12 @@ class BusinessItems extends AppModel {
                 $model->id = $values[$id];
             }
 
-            $data = array(
+            $model->updateAttributes(array(
                 'item_id' => $this->id,
                 'field' => $id,
                 'value' => $this->data[$id]
-            );
-            $model->save($data);
+            ));
+            $model->save();
         }
     }
 
