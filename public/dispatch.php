@@ -7,7 +7,7 @@ try {
     require 'config/routes.php';
 
     if(isset($segment)) {
-        MeuMobi::$segment = 'corporate';
+        MeuMobi::segment($segment);
     }
 
     echo Dispatcher::dispatch();

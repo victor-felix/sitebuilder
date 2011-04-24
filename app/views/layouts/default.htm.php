@@ -4,7 +4,10 @@
         <?php echo $this->html->charset() ?>
         <title>MeuMobi - <?php echo $this->pageTitle ?></title>
         <link rel="shortcut icon" href="<?php echo Mapper::url('/images/layout/favicon.png') ?>" type="image/png" />
-        <?php echo $this->html->stylesheet('shared/base', 'shared/uikit', 'shared/categories', 'shared/edit-forms', 'shared/businessitems', 'segment') ?>
+        <?php echo $this->html->stylesheet('shared/base', 'shared/uikit', 'shared/categories',
+            'shared/edit-forms', 'shared/businessitems', 'segment', 'shared/markitup.simple',
+            'shared/markitup.xbbcode') ?>
+        <?php echo $this->html->stylesForLayout ?>
     </head>
     
     <body>
@@ -49,7 +52,7 @@
         
         <?php echo $this->element('layouts/footer') ?>
         
-        <?php echo $this->html->script('shared/jquery', 'shared/main') ?>
+        <?php echo $this->html->script('shared/jquery', 'shared/main', 'shared/markitup') ?>
         <?php echo $this->html->scriptsForLayout ?>
     </body>
 </html>

@@ -64,7 +64,7 @@ class Users extends AppModel {
     }
 
     public function site() {
-        return Model::load('Sites')->firstByUserIdAndSegment($this->id, MeuMobi::$segment);
+        return Model::load('Sites')->firstByUserIdAndSegment($this->id, MeuMobi::segment());
     }
 
     public function hasSiteInSegment($segment) {
@@ -149,7 +149,7 @@ class Users extends AppModel {
         if($created) {
             $model = Model::load('Sites');
             $model->save(array(
-                'segment' => MeuMobi::$segment,
+                'segment' => MeuMobi::segment(),
                 'slug' => '',
                 'title' => '',
                 'user_id' => $this->id

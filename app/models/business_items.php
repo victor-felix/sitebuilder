@@ -1,6 +1,7 @@
 <?php
 
 require_once 'app/models/business_items_types.php';
+require_once 'lib/bbcode/Decoda.php';
 
 class BusinessItems extends AppModel {
     protected $beforeSave = array('setSiteValues', 'getOrder');
@@ -62,9 +63,17 @@ class BusinessItems extends AppModel {
     public function toJSON() {
         $values = $this->values();
 
+        $parser = new Decoda($values->description);
+        $bbcode = $parser->parse(true);
+        $values->description = $bbcode;
+
         $fields = array('id', 'site_id', 'parent_id', 'type', 'order', 'created', 'modified');
         foreach($fields as $field) {
-            $values->{$field} = $this->data[$field];
+            if($field == 'description') {
+            }
+            else {
+                $values->{$field} = $this->data[$field];
+            }
         }
 
         return $values;

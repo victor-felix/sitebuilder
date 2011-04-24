@@ -55,7 +55,9 @@ class AppController extends Controller {
     }
 
     protected function respondToJSON($record) {
-        header('Content-type: application/json');
+        if(Config::read('Json.sendHeaders') || $this->isXhr()) {
+            header('Content-type: application/json');
+        }
         echo json_encode($this->toJSON($record));
         $this->stop();
     }
@@ -64,6 +66,12 @@ class AppController extends Controller {
 function __() {
     $arguments = func_get_args();
     return call_user_func_array('sprintf', $arguments);
+}
+
+function s($key) {
+    $arguments = func_get_args();
+    $arguments[0] = YamlDictionary::translate($key);
+    return call_user_func_array('__', $arguments);
 }
 
 function e($text) {
