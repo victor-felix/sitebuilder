@@ -7,9 +7,16 @@ class ItemsHelper extends Helper {
             'class' => 'ui-text'
         ),
         'string' => array(),
+        'text' => array(
+            'type' => 'textarea'
+        ),
         'richtext' => array(
             'type' => 'textarea',
             'class' => 'ui-textarea markitup'
+        ),
+        'boolean' => array(
+            'type' => 'checkbox',
+            'class' => 'ui-checkbox'
         )
     );
     protected $item;
