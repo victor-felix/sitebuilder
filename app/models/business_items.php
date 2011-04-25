@@ -4,6 +4,7 @@ require_once 'app/models/business_items_types.php';
 require_once 'lib/bbcode/Decoda.php';
 
 class BusinessItems extends AppModel {
+    protected $table = 'business_items';
     protected $beforeSave = array('setSiteValues', 'getOrder');
     protected $afterSave = array('saveItemValues', 'saveImages');
     protected $beforeDelete = array('deleteValues', 'deleteImages');

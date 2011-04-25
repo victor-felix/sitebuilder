@@ -1,35 +1,38 @@
 <?php
 
 class BusinessItemsController extends AppController {
-    protected $uses = array('BusinessItems', 'BusinessItemsValues', 'BusinessItemsTypes', 'Categories');
+    protected $uses = array('BusinessItems', 'BusinessItemsValues',
+        'BusinessItemsTypes', 'Categories');
     
     public function index($parent_id = null) {
         $this->set(array(
-            'business_items' => $this->BusinessItems->allByParentId($parent_id),
+            'business_items' => $this->model()->allByParentId($parent_id),
             'category' => $this->Categories->firstById($parent_id)
         ));
     }
-    
+
     public function add($parent_id = null) {
         $site = $this->getCurrentSite();
-        $business_item = new BusinessItems($this->data);
+        $item = $this->modelInstance($this->data);
+
         if(!empty($this->data)) {
-            $business_item->site = $site;
-            $parent_id = $business_item->parent_id;
-            if($business_item->validate()) {
-                $business_item->save();
+            $item->site = $site;
+
+            if($item->validate()) {
+                $item->save();
+
                 if($this->isXhr()) {
-                    $this->setAction('index', $business_item->parent_id);
-                    return;
+                    return $this->setAction('index', $item->parent_id);
                 }
                 else {
                     Session::writeFlash('success', __('Item adicionado com sucesso.'));
-                    $this->redirect('/business_items/index/' . $business_item->parent_id);
+                    $this->redirect('/business_items/index/' . $item->parent_id);
                 }
             }
         }
+
         $this->set(array(
-            'business_item' => $business_item,
+            'business_item' => $item,
             'parent' => $this->Categories->firstById($parent_id),
             'type' => $site->businessItemType()
         ));
@@ -80,5 +83,20 @@ class BusinessItemsController extends AppController {
     
     public function reorder() {
         $this->autoRender = false;
+    }
+
+    protected function modelName() {
+        $type = $this->getCurrentSite()->businessItemTypeName();
+        return Inflector::camelize($type);
+    }
+
+    protected function model() {
+        return Model::load($this->modelName());
+    }
+
+    protected function modelInstance($data) {
+        $model = $this->modelName();
+        Model::load($model);
+        return new $model($data);
     }
 }
