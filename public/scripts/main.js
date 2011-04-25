@@ -99,6 +99,9 @@ $.extend($.easing, {
                     if($('#form-edit-businessitem #FormDescription').length) {
                         $('#form-edit-businessitem #FormDescription').markItUp(mySettings);
                     }
+                    if($('#form-add-businessitem #FormDescription').length) {
+                        $('#form-add-businessitem #FormDescription').markItUp(mySettings);
+                    }
                 }}
             );
         });
@@ -332,5 +335,8 @@ $(function() {
 
     if($('#form-edit-businessitem #FormDescription').length) {
         $('#form-edit-businessitem #FormDescription').markItUp(mySettings);
+    }
+    if($('#form-add-businessitem #FormDescription').length) {
+        $('#form-add-businessitem #FormDescription').markItUp(mySettings);
     }
 });
