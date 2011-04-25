@@ -14,6 +14,7 @@ class BusinessItemsController extends AppController {
     public function add($parent_id = null) {
         $site = $this->getCurrentSite();
         $item = $this->modelInstance($this->data);
+        $item->parent_id = $parent_id;
 
         if(!empty($this->data)) {
             $item->site = $site;
@@ -32,36 +33,40 @@ class BusinessItemsController extends AppController {
         }
 
         $this->set(array(
-            'business_item' => $item,
-            'parent' => $this->Categories->firstById($parent_id),
+            'item' => $item,
+            'parent' => $item->parent(),
             'type' => $site->businessItemType()
         ));
     }
-    
+
     public function edit($id = null) {
         $site = $this->getCurrentSite();
-        $business_item = $this->BusinessItems->firstById($id);
+        $item = $this->model()->firstById($id);
+
         if(!empty($this->data)) {
-            $business_item->updateAttributes($this->data);
-            $business_item->site = $site;
-            if($business_item->validate()) {
-                $business_item->save();
+            $item->updateAttributes($this->data);
+            $item->site = $site;
+
+            if($item->validate()) {
+                $item->save();
+
                 if($this->isXhr()) {
-                    $this->setAction('index', $business_item->parent_id);
+                    $this->setAction('index', $item->parent_id);
                 }
                 else {
                     Session::writeFlash('success', __('Item editado com sucesso.'));
-                    $this->redirect('/business_items/index/' . $business_item->parent_id);
+                    $this->redirect('/business_items/index/' . $item->parent_id);
                 }
             }
         }
+
         $this->set(array(
-            'parent' => $business_item->parent(),
-            'business_item' => $business_item,
+            'parent' => $item->parent(),
+            'item' => $item,
             'type' => $site->businessItemType()
         ));
     }
-    
+
     public function delete($id = null) {
         $business_item = $this->BusinessItems->firstById($id);
         $parent_id = $business_item->parent_id;

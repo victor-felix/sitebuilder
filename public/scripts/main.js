@@ -96,11 +96,8 @@ $.extend($.easing, {
             slider.animate(
                 {marginLeft:(parseInt(slider.css('marginLeft'),10)-slideSize)+'px'},
                 {duration:800,easing:'easeInOutCubic',complete:function() {
-                    if($('#form-edit-businessitem #FormDescription').length) {
-                        $('#form-edit-businessitem #FormDescription').markItUp(mySettings);
-                    }
-                    if($('#form-add-businessitem #FormDescription').length) {
-                        $('#form-add-businessitem #FormDescription').markItUp(mySettings);
+                    if($('.markitup').length) {
+                        $('.markitup').markItUp(mySettings);
                     }
                 }}
             );
@@ -333,10 +330,7 @@ $(function() {
     });
     $('#success-feedback, #error-feedback').delay(5000).slideUp('fast').delay(1000,function(){$(this).remove();});
 
-    if($('#form-edit-businessitem #FormDescription').length) {
-        $('#form-edit-businessitem #FormDescription').markItUp(mySettings);
-    }
-    if($('#form-add-businessitem #FormDescription').length) {
-        $('#form-add-businessitem #FormDescription').markItUp(mySettings);
+    if($('.markitup').length) {
+        $('.markitup').markItUp(mySettings);
     }
 });

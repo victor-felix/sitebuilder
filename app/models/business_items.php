@@ -12,6 +12,8 @@ class BusinessItems extends AppModel {
         'order' => '`order` ASC'
     );
 
+    protected $fields = array();
+
     public function __construct($data = null) {
         parent::__construct($data);
 
@@ -170,5 +172,13 @@ class BusinessItems extends AppModel {
         ));
 
         return $id;
+    }
+
+    public function fields() {
+        return array_keys($this->fields);
+    }
+
+    public function field($field) {
+        return (object) $this->fields[$field];
     }
 }
