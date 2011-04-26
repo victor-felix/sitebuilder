@@ -71,11 +71,14 @@ class BusinessItems extends AppModel {
 
         $fields = array('id', 'site_id', 'parent_id', 'type', 'order', 'created', 'modified');
         foreach($fields as $field) {
-            if($field == 'description') {
-            }
-            else {
-                $values->{$field} = $this->data[$field];
-            }
+            $values->{$field} = $this->data[$field];
+        }
+
+        $images = $this->images();
+        $values->images = array();
+
+        foreach($images as $image) {
+            $values->images []= $image->toJSON();
         }
 
         return $values;
