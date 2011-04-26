@@ -4,8 +4,8 @@ require_once 'lib/geocoding/GoogleGeocoding.php';
 
 class Sites extends AppModel {
     protected $getters = array('feed_url');
-    protected $beforeSave = array('getFeedId', 'getLatLng');
-    protected $afterSave = array('saveLogo', 'createRootCategory');
+    protected $beforeSave = array('getLatLng');
+    protected $afterSave = array('saveFeed', 'saveLogo', 'createRootCategory');
     protected $beforeDelete = array('checkAndDeleteFeed', 'deleteImages', 'deleteCategories',
         'deleteLogo');
     protected $validates = array(
@@ -40,14 +40,13 @@ class Sites extends AppModel {
     );
     
     public function feed() {
-        if($this->feed_id) {
-            return Model::load('Feeds')->firstById($this->feed_id);
-        }
+        return Model::load('Feeds')->firstBySiteId($this->id);
     }
 
     public function topArticles() {
-        if($this->feed_id) {
-            return $this->feed()->topArticles();
+        $feed = $this->feed();
+        if(!is_null($feed)) {
+            return $feed->topArticles();
         }
         else {
             return array();
@@ -143,46 +142,12 @@ class Sites extends AppModel {
         return $data;
     }
 
-    protected function getFeedId($data) {
-        if(array_key_exists('feed_url', $data)) {
-            if(!empty($data['feed_url'])) {
-                $link = $data['feed_url'];
-                $feed = Model::load('Feeds')->saveFeed($link);
-                $data['feed_id'] = $feed->id;
-            }
-            else {
-                if($this->id) {
-                    $this->checkAndDeleteFeed($this->id);
-                }
-                
-                $data['feed_id'] = null;
-            }
+    protected function saveFeed($created) {
+        if(array_key_exists('feed_url', $this->data)) {
+            Model::load('Feeds')->saveFeed($this, $this->data['feed_url']);
         }
-        
-        return $data;
     }
     
-    protected function checkAndDeleteFeed($id) {
-        $self = $this->firstById($id);
-        if($self->feed_id) {
-            $self->deleteFeedIfUnique();
-        }
-        
-        return $id;
-    }
-    
-    protected function deleteFeedIfUnique() {
-        $count = $this->count(array(
-            'conditions' => array(
-                'feed_id' => $this->feed_id
-            )
-        ));
-        
-        if($count == 1) {
-            Model::load('Feeds')->delete($this->feed_id);
-        }
-    }
-
     protected function deleteLogo($id) {
         $model = Model::load('Images');
         $images = $model->allByRecord('SiteLogos', $id);

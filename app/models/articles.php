@@ -36,7 +36,7 @@ class Articles extends BusinessItems {
         return $this->topByFeedId($feed->id);
     }
 
-    public function topByFeedId($feed_id) {
+    public function allByFeedId($feed_id, $limit = null) {
         return $this->all(array(
             'table' => array('a' => $this->table()),
             'fields' => 'a.*',
@@ -46,8 +46,12 @@ class Articles extends BusinessItems {
                 'v.field' => 'feed_id',
                 'v.value' => $feed_id
             ),
-            'limit' => Config::read('Articles.limit')
+            'limit' => $limit
         ));
+    }
+
+    public function topByFeedId($feed_id) {
+        return $this->allByFeedId($feed_id, Config::read('Articles.limit'));
     }
 
     public function articleExists($feed_id, $guid) {
