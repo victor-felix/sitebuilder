@@ -1,15 +1,17 @@
 <?php
 
-require_once 'app/models/business_items_types.php';
 require_once 'lib/bbcode/Decoda.php';
 
 class BusinessItems extends AppModel {
+    protected $table = 'business_items';
     protected $beforeSave = array('setSiteValues', 'getOrder');
     protected $afterSave = array('saveItemValues', 'saveImages');
     protected $beforeDelete = array('deleteValues', 'deleteImages');
     protected $defaultScope = array(
         'order' => '`order` ASC'
     );
+
+    protected $fields = array();
 
     public function __construct($data = null) {
         parent::__construct($data);
@@ -80,6 +82,8 @@ class BusinessItems extends AppModel {
     }
 
     public function validate($data = array()) {
+        return true; // temporary, mind you
+
         $fields = $this->site->businessItemType()->fields;
 
         foreach($fields as $id => $field) {
@@ -95,23 +99,25 @@ class BusinessItems extends AppModel {
     }
 
     protected function setSiteValues($data) {
-        if(is_null($this->id) && array_key_exists('site', $data)) {
-            $data['site_id'] = $this->site->id;
-            $data['type'] = $this->site->businessItemTypeName();
+        if(is_null($this->id)) {
+            if(array_key_exists('site', $data)) {
+                $data['site_id'] = $this->site->id;
+            }
+
+            $data['type'] = Inflector::underscore(get_class($this));
         }
 
         return $data;
     }
 
     protected function saveItemValues($created) {
-        $fields = $this->site->businessItemType()->fields;
         $model = Model::load('BusinessItemsValues');
 
         if(!$created) {
             $values = $model->toListByItemId($this->id);
         }
 
-        foreach($fields as $id => $field) {
+        foreach($this->fields as $id => $field) {
             if($created) {
                 $model->id = null;
             }
@@ -119,17 +125,24 @@ class BusinessItems extends AppModel {
                 $model->id = $values[$id];
             }
 
+            if(array_key_exists($id, $this->data)) {
+                $value = $this->data[$id];
+            }
+            else {
+                $value = '';
+            }
+
             $model->updateAttributes(array(
                 'item_id' => $this->id,
                 'field' => $id,
-                'value' => $this->data[$id]
+                'value' => $value
             ));
             $model->save();
         }
     }
 
     protected function getOrder($data) {
-        if(is_null($this->id)) {
+        if(is_null($this->id) && array_key_exists('parent_id', $data)) {
             $siblings = $this->toList(array(
                 'fields' => array('id', '`order`'),
                 'conditions' => array(
@@ -169,5 +182,17 @@ class BusinessItems extends AppModel {
         ));
 
         return $id;
+    }
+
+    public function fields() {
+        return array_keys($this->fields);
+    }
+
+    public function field($field) {
+        return (object) $this->fields[$field];
+    }
+
+    public function imageModel() {
+        return 'BusinessItems';
     }
 }

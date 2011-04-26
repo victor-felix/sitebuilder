@@ -52,7 +52,7 @@ class Images extends AppModel {
             $this->id = null;
 
             $defaults = array(
-                'model' => get_class($model),
+                'model' => $model->imageModel(),
                 'foreign_key' => $model->id
             );
             $this->save(array_merge($defaults, $attr));
@@ -147,8 +147,7 @@ class Images extends AppModel {
     protected function deleteFile($id) {
         $self = $this->firstById($id);
 
-        Filesystem::delete(String::insert('public/:path/:filename', array(
-            'path' => $this->getPath($self->model),
+        Filesystem::delete(String::insert('public/:filename', array(
             'filename' => $self->path
         )));
 
@@ -160,11 +159,12 @@ class Images extends AppModel {
     protected function deleteResizedFiles($model, $filename) {
         $model = Model::load($model);
         $resizes = $model->resizes();
+
         foreach($resizes as $resize) {
             $values = $this->parseResizeValue($resize);
             Filesystem::delete(String::insert(':path/:wx:h_:filename', array(
-                'path' => Filesystem::path('public/' . $this->getPath($model)),
-                'filename' => $filename,
+                'path' => Filesystem::path('public/' . dirname($filename)),
+                'filename' => basename($filename),
                 'w' => $values['w'],
                 'h' => $values['h']
             )));
@@ -192,7 +192,7 @@ class Images extends AppModel {
 
     protected function getPath($model) {
         if(!is_string($model)) {
-            $model = get_class($model);
+            $model = $model->imageModel();
         }
 
         return String::insert('images/:model', array(

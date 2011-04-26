@@ -10,18 +10,16 @@
     <div class="clear"></div>
 </div>
 
-<?php echo $this->form->create('/business_items/add', array(
+<?php echo $this->items->form(null, $item, array(
     'class' => 'form-edit skip-slide',
-    'id' => 'form-add-businessitem',
-    'method' => 'file',
-    'object' => $business_item
+    'id' => 'form-add-businessitem'
 )) ?>
 
-    <?php echo $this->element('business_items/form', compact('parent', 'type', 'business_item')) ?>
+    <?php echo $this->element('business_items/form', compact('item')) ?>
 
     <fieldset class="actions">
         <?php echo $this->html->link(__('‹ voltar'), '/categories/index/' . $parent->id, array('class' => 'ui-button large back pop-scene')) ?>
         <?php echo $this->form->submit(__('Salvar'), array('class' => 'ui-button red larger')) ?>
     </fieldset>
 
-<?php echo $this->form->close() ?>
+<?php echo $this->items->endform() ?>

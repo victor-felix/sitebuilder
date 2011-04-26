@@ -1,18 +1,9 @@
 <fieldset>
     <h2><?php echo __('informações gerais') ?></h2>
     <div class="field-group">
-        <?php echo $this->form->input('parent_id', array(
-            'type' => 'hidden',
-            'value' => $parent->id
-        )) ?>
-        
-        <?php foreach($type->fields as $id => $field): ?>
+        <?php foreach($item->fields() as $field): ?>
             <div class="form-grid-460 first">
-                <?php echo $this->form->input($id, array(
-                    'label' => __($field['title']),
-                    'type' => BusinessItemsTypes::$inputTypes[$field['field_type']],
-                    'class' => 'large ui-' . BusinessItemsTypes::$inputTypes[$field['field_type']]
-                )) ?>
+                <?php echo $this->items->input($field) ?>
             </div>
         <?php endforeach ?>
 

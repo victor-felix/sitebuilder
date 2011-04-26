@@ -30,17 +30,22 @@ class Feeds extends AppModel {
         $this->save();
     }
 
-    public function saveFeed($link) {
-        $feed = $this->firstByLink($link);
-        if(is_null($feed)) {
-            $this->save(array(
-                'link' => $link
-            ));
-            $feed = $this->firstById($this->id);
-        }
-        $feed->updateArticles();
+    public function saveFeed($site, $link) {
+        $feed = $this->firstBySiteId($site->id);
 
-        return $feed;
+        if(!empty($link)) {
+            if(is_null($feed) || $feed->link != $link) {
+                $this->save(array(
+                    'site_id' => $site->id,
+                    'link' => $link
+                ));
+                $this->updateArticles();
+            }
+        }
+
+        if(!is_null($feed) && ($link != $feed->link || empty($link))) {
+            $this->delete($feed->id);
+        }
     }
 
     public function topArticles() {

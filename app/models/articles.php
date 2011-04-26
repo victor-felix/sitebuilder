@@ -1,46 +1,63 @@
 <?php
 
-require 'lib/htmlpurifier/HTMLPurifier.auto.php';
-require 'lib/dom/SimpleHtmlDom.php';
+require_once 'app/models/business_items.php';
+require_once 'lib/htmlpurifier/HTMLPurifier.auto.php';
+require_once 'lib/dom/SimpleHtmlDom.php';
 
-class Articles extends AppModel {
+class Articles extends BusinessItems {
+    protected $fields = array(
+        'feed_id' => array(),
+        'guid' => array(),
+        'link' => array(),
+        'pubdate' => array(),
+        'title' => array(
+            'title' => 'Título',
+            'type' => 'string'
+        ),
+        'description' => array(
+            'title' => 'Descrição',
+            'type' => 'richtext'
+        ),
+        'author' => array(
+            'title' => 'Autor',
+            'type' => 'string'
+        )
+    );
     protected static $blacklist = array(
         'gravatar.com'
     );
-    protected $beforeDelete = array('deleteImages');
-    protected $defaultScope = array(
-        'order' => 'pubdate DESC'
-    );
+
+    public function fields() {
+        return array('title', 'description', 'author');
+    }
 
     public function topBySlug($slug) {
         $feed = Model::load('Sites')->firstBySlug($slug)->feed();
         return $this->topByFeedId($feed->id);
     }
 
-    public function articleExists($feed_id, $guid) {
-        $guid = $this->filterGuid($guid);
-        return $this->exists(compact('feed_id', 'guid'));
-    }
-
-    public function topByFeedId($feed_id) {
+    public function allByFeedId($feed_id, $limit = null) {
         return $this->all(array(
+            'table' => array('a' => $this->table()),
+            'fields' => 'a.*',
+            'joins' => 'JOIN business_items_values AS v ' .
+                'ON a.id = v.item_id',
             'conditions' => array(
-                'feed_id' => $feed_id
+                'v.field' => 'feed_id',
+                'v.value' => $feed_id
             ),
-            'limit' => Config::read('Articles.limit')
+            'limit' => $limit
         ));
     }
 
-    public function toJSON() {
-        $images = Model::load('Images')->allByRecord('Articles', $this->id);
+    public function topByFeedId($feed_id) {
+        return $this->allByFeedId($feed_id, Config::read('Articles.limit'));
+    }
 
-        foreach($images as $k => $image) {
-            $images[$k] = $image->toJSON();
-        }
-
-        $this->images = $images;
-
-        return $this->data;
+    public function articleExists($feed_id, $guid) {
+        $guid = $this->filterGuid($guid);
+        $model = Model::load('BusinessItemsValues');
+        return $model->itemExists(compact('feed_id', 'guid'));
     }
 
     public function addToFeed($feed, $item) {
@@ -50,6 +67,7 @@ class Articles extends AppModel {
 
         $author = $item->get_author();
         $article = array(
+            'site_id' => $feed->site_id,
             'feed_id' => $feed->id,
             'guid' => $this->filterGuid($item->get_id()),
             'link' => $item->get_link(),
@@ -89,14 +107,6 @@ class Articles extends AppModel {
 
             return false;
         }
-    }
-
-    protected function filterGuid($guid) {
-        if(preg_match("%^http://www.rj.gov.br/web/guest/exibeconteudo;.*articleId=(\d+)%", $guid, $result)) {
-            $guid = "http://www.rj.gov.br/web/guest/exibeconteudo?articleId=" . $result[1];
-        }
-
-        return $guid;
     }
 
     protected function getImages($item) {
@@ -177,5 +187,13 @@ class Articles extends AppModel {
         // Remove first unecessary paragraph for PRODERJ purpose
         $body = implode(array_slice($description->find('p'), 1));
         return $purifier->purify($body);
+    }
+
+    protected function filterGuid($guid) {
+        if(preg_match("%^http://www.rj.gov.br/web/guest/exibeconteudo;.*articleId=(\d+)%", $guid, $result)) {
+            $guid = "http://www.rj.gov.br/web/guest/exibeconteudo?articleId=" . $result[1];
+        }
+
+        return $guid;
     }
 }
