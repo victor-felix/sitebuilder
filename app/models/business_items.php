@@ -191,4 +191,8 @@ class BusinessItems extends AppModel {
     public function field($field) {
         return (object) $this->fields[$field];
     }
+
+    public function imageModel() {
+        return 'BusinessItems';
+    }
 }

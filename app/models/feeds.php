@@ -43,7 +43,7 @@ class Feeds extends AppModel {
             }
         }
 
-        if(!is_null($feed) && $link != $feed->link or empty($link)) {
+        if(!is_null($feed) && ($link != $feed->link || empty($link))) {
             $this->delete($feed->id);
         }
     }
