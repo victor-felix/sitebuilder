@@ -142,7 +142,7 @@ class BusinessItems extends AppModel {
     }
 
     protected function getOrder($data) {
-        if(is_null($this->id) && array_key_exists('site_id', $data)) {
+        if(is_null($this->id) && array_key_exists('parent_id', $data)) {
             $siblings = $this->toList(array(
                 'fields' => array('id', '`order`'),
                 'conditions' => array(

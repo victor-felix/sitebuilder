@@ -67,6 +67,7 @@ class Articles extends BusinessItems {
 
         $author = $item->get_author();
         $article = array(
+            'site_id' => $feed->site_id,
             'feed_id' => $feed->id,
             'guid' => $this->filterGuid($item->get_id()),
             'link' => $item->get_link(),
