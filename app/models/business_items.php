@@ -99,9 +99,12 @@ class BusinessItems extends AppModel {
     }
 
     protected function setSiteValues($data) {
-        if(is_null($this->id) && array_key_exists('site', $data)) {
-            $data['site_id'] = $this->site->id;
-            $data['type'] = $this->site->businessItemTypeName();
+        if(is_null($this->id)) {
+            if(array_key_exists('site', $data)) {
+                $data['site_id'] = $this->site->id;
+            }
+
+            $data['type'] = Inflector::underscore(get_class($this));
         }
 
         return $data;
@@ -139,7 +142,7 @@ class BusinessItems extends AppModel {
     }
 
     protected function getOrder($data) {
-        if(is_null($this->id)) {
+        if(is_null($this->id) && array_key_exists('site_id', $data)) {
             $siblings = $this->toList(array(
                 'fields' => array('id', '`order`'),
                 'conditions' => array(
