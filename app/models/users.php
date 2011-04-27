@@ -81,9 +81,8 @@ class Users extends AppModel {
 
     public function confirm($token) {
         if($token == $this->token) {
-            $this->save(array(
-                'active' => 1
-            ));
+            $this->active = 1;
+            $this->save();
 
             return true;
         }
