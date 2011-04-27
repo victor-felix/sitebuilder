@@ -147,11 +147,13 @@ class Images extends AppModel {
     protected function deleteFile($id) {
         $self = $this->firstById($id);
 
-        Filesystem::delete(String::insert('public/:filename', array(
-            'filename' => $self->path
-        )));
+        if(!is_null($self->path)) {
+            Filesystem::delete(String::insert('public/:filename', array(
+                'filename' => $self->path
+            )));
 
-        $this->deleteResizedFiles($self->model, $self->path);
+            $this->deleteResizedFiles($self->model, $self->path);
+        }
 
         return $id;
     }
