@@ -101,6 +101,24 @@ class BusinessItems extends AppModel {
         return empty($this->errors);
     }
 
+    public function description() {
+        $field = $this->field('description');
+
+        if(!is_null($field)) {
+            if($field->type == 'richtext') {
+                $parser = new Decoda($this->description);
+                $bbcode = $parser->parse(true);
+                return strip_tags($bbcode);
+            }
+            else {
+                return $this->description;
+            }
+        }
+        else {
+            return '';
+        }
+    }
+
     protected function setSiteValues($data) {
         if(is_null($this->id)) {
             if(array_key_exists('site', $data)) {
@@ -192,7 +210,12 @@ class BusinessItems extends AppModel {
     }
 
     public function field($field) {
-        return (object) $this->fields[$field];
+        if(array_key_exists($field, $this->fields)) {
+            return (object) $this->fields[$field];
+        }
+        else {
+            return null;
+        }
     }
 
     public function imageModel() {

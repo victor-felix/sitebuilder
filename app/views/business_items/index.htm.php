@@ -26,8 +26,8 @@
                 )) ?>
             <?php endif ?>
             <div class="info">
-                <?php echo $this->html->link(e($bi->values()->title), '/business_items/edit/' . $bi->id, array('class' => 'push-scene')); ?>
-                <p><?php echo $this->bbcode->strip($bi->values()->description) ?></p>
+                <?php echo $this->html->link(e($bi->values()->title), '/business_items/edit/' . $bi->id, array('class' => 'push-scene')) ?>
+                <p><?php echo $bi->description() ?></p>
             </div>
         </li>
         <?php endforeach ?>
