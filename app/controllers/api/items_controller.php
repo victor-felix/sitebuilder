@@ -7,16 +7,16 @@ class ItemsController extends ApiController {
     
     public function api_index($slug = null) {
         $type = $this->param('type');
-        $conditions = array(
-            'type' => $type
-        );
+        $klass = Inflector::camelize($type);
+        $conditions = array();
+        $params = array();
 
         if(!is_null($category = $this->param('category'))) {
             $conditions['parent_id'] = $category;
         }
 
         $this->respondToJSON(array(
-            $type => $this->site->businessItems($conditions)
+            $type => $this->site->businessItems($type, $conditions, $params)
         ));
     }
 

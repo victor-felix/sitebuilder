@@ -12,6 +12,7 @@ class BusinessItems extends AppModel {
     );
 
     protected $fields = array();
+    protected $scope = array();
 
     public function __construct($data = null) {
         parent::__construct($data);
@@ -28,6 +29,30 @@ class BusinessItems extends AppModel {
     public function allBySlug($slug) {
         $site = Model::load('Sites')->firstBySlug($slug);
         return $this->allBySiteId($site->id);
+    }
+
+    public function allOrdered($params) {
+        $params += $this->scope;
+        $conditions = $params['conditions'];
+        $conditions['type'] = Inflector::underscore(get_class($this));
+
+        if(array_key_exists('order', $params)) {
+            list($field, $sort) = explode(' ', $params['order']);
+            $conditions['v.field'] = $field;
+            $order = sprintf('v.value %s', $sort);
+        }
+        else {
+            $order = '`order` ASC';
+        }
+
+        return $this->all(array(
+            'table' => array('i' => $this->table()),
+            'fields' => 'DISTINCT i.*',
+            'joins' => 'JOIN business_items_values AS v ' .
+                'ON i.id = v.item_id',
+            'order' => $order,
+            'conditions' => $conditions
+        ));
     }
 
     public function values() {

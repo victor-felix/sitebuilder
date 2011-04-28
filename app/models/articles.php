@@ -26,6 +26,9 @@ class Articles extends BusinessItems {
             'type' => 'string'
         )
     );
+    protected $scope = array(
+        'order' => 'pubdate DESC'
+    );
     protected static $blacklist = array(
         'gravatar.com'
     );

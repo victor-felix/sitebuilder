@@ -77,12 +77,12 @@ class Sites extends AppModel {
         return Model::load('Categories')->allBySiteId($this->id);
     }
     
-    public function businessItems($conditions = array()) {
-        return Model::load('BusinessItems')->all(array(
+    public function businessItems($type, $conditions, $params) {
+        return Model::load($type)->allOrdered(array(
             'conditions' => array(
                 'site_id' => $this->id
             ) + $conditions
-        ));
+        ) + $params);
     }
 
     public function businessItemTypeName() {
