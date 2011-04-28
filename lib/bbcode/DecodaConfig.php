@@ -39,8 +39,8 @@ class DecodaConfig {
      */
     private static $__markupCode = array(
 //        'code'      => '/\[code(?:\slang=\"([-_\sa-zA-Z0-9]+)\")?(?:\shl=\"([0-9,]+)\")?\](.*?)\[\/code\]/is',
-        'strong'         => '/\[strong\](.*?)\[\/strong\]/is',
-        'em'         => '/\[em\](.*?)\[\/em\]/is',
+        'b'         => '/\[b\](.*?)\[\/b\]/is',
+        'i'         => '/\[i\](.*?)\[\/i\]/is',
 //        'u'         => '/\[u\](.*?)\[\/u\]/is',
 //        's'         => '/\[s\](.*?)\[\/s\]/is',
 //        'align'     => '/\[align=(left|center|right|justify)\](.*?)\[\/align\]/is',
@@ -82,8 +82,8 @@ class DecodaConfig {
      */
     private static $__markupResult = array(
 //        'code'      => array('__code'),
-        'strong'         => '<b>$1</b>',
-        'em'         => '<em>$1</em>',
+        'b'         => '<b>$1</b>',
+        'i'         => '<i>$1</i>',
 //        'u'         => '<u>$1</u>',
 //        's'         => '<span style="text-decoration: line-through;">$1</span>',
 //        'align'     => '<div style="text-align: $1">$2</div>',
