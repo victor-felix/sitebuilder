@@ -10,6 +10,9 @@ class Articles extends BusinessItems {
         'guid' => array(),
         'link' => array(),
         'pubdate' => array(),
+        'format' => array(
+            'default' => 'bbcode'
+        ),
         'title' => array(
             'title' => 'Título',
             'type' => 'string'
@@ -74,7 +77,8 @@ class Articles extends BusinessItems {
             'title' => $item->get_title(),
             'description' => $this->cleanupHtml($item->get_content()),
             'author' => $author ? $author->get_name() : '',
-            'pubdate' => $item->get_date('Y-m-d H:i:s')
+            'pubdate' => $item->get_date('Y-m-d H:i:s'),
+            'format' => 'html'
         );
 
         try {

@@ -65,9 +65,11 @@ class BusinessItems extends AppModel {
     public function toJSON() {
         $values = $this->values();
 
-        $parser = new Decoda($values->description);
-        $bbcode = $parser->parse(true);
-        $values->description = $bbcode;
+        if($values->format == 'bbcode') {
+            $parser = new Decoda($values->description);
+            $bbcode = $parser->parse(true);
+            $values->description = $bbcode;
+        }
 
         $fields = array('id', 'site_id', 'parent_id', 'type', 'order', 'created', 'modified');
         foreach($fields as $field) {
@@ -148,6 +150,9 @@ class BusinessItems extends AppModel {
 
             if(array_key_exists($id, $this->data)) {
                 $value = $this->data[$id];
+            }
+            elseif(array_key_exists('default', $field)) {
+                $value = $field['default'];
             }
             else {
                 $value = '';
