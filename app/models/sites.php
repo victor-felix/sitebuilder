@@ -85,8 +85,12 @@ class Sites extends AppModel {
         ) + $params);
     }
 
-    public function businessItemTypeName() {
-        return Model::load('Segments')->firstById($this->segment)->business_item;
+    public function itemTypes() {
+        return Model::load('Segments')->firstById($this->segment)->items;
+    }
+
+    public function hasManyTypes() {
+        return is_array($this->itemTypes());
     }
 
     public function firstBySlug($slug) {
