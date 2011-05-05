@@ -23,7 +23,7 @@
             'class' => 'ui-button red larger'
         )) ?>
         <?php echo $this->html->link(
-            $this->html->image('shared/categories/delete.gif') . __('Apagar %s', $type->title),
+            $this->html->image('shared/categories/delete.gif') . __('Apagar %s', $item->typeName()),
             '/business_items/delete/' . $item->id,
             array( 'class' => 'ui-button delete' )
         ) ?>

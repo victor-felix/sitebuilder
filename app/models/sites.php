@@ -35,10 +35,10 @@ class Sites extends AppModel {
             array(
                 'rule' => array('maxLength', 500),
                 'message' => 'A descrição do site não pode conter mais do que 500 caracteres'
-            )            
+            )
         ),
     );
-    
+
     public function feed() {
         return Model::load('Feeds')->firstBySiteId($this->id);
     }
@@ -52,23 +52,23 @@ class Sites extends AppModel {
             return array();
         }
     }
-    
+
     public function feed_url() {
         $feed = $this->feed();
         if($feed) {
             return $feed->link;
         }
     }
-    
+
     public function logo() {
         return Model::load('Images')->firstByRecord('SiteLogos', $this->id);
     }
-    
+
     public function link() {
         $domain = MeuMobi::domain();
         return 'http://' . $this->slug . '.' . $domain;
     }
-    
+
     public function rootCategory() {
         return Model::load('Categories')->getRoot($this->id);
     }
@@ -76,7 +76,7 @@ class Sites extends AppModel {
     public function categories() {
         return Model::load('Categories')->allBySiteId($this->id);
     }
-    
+
     public function businessItems($type, $conditions, $params) {
         return Model::load($type)->allOrdered(array(
             'conditions' => array(
@@ -88,18 +88,14 @@ class Sites extends AppModel {
     public function businessItemTypeName() {
         return Model::load('Segments')->firstById($this->segment)->business_item;
     }
-    
-    public function businessItemType() {
-        return Model::load('BusinessItemsTypes')->firstById($this->businessItemTypeName());
-    }
-    
+
     public function firstBySlug($slug) {
         $site = $this->first(array(
             'conditions' => compact('slug')
         ));
-        
+
         if(!$site) throw new Exception('Missing slug');
-        
+
         return $site;
     }
 
@@ -138,7 +134,7 @@ class Sites extends AppModel {
                 }
             }
         }
-        
+
         return $data;
     }
 
@@ -147,7 +143,7 @@ class Sites extends AppModel {
             Model::load('Feeds')->saveFeed($this, $this->data['feed_url']);
         }
     }
-    
+
     protected function deleteLogo($id) {
         $model = Model::load('Images');
         $images = $model->allByRecord('SiteLogos', $id);
@@ -163,17 +159,17 @@ class Sites extends AppModel {
 
         return $id;
     }
-    
+
     protected function saveLogo() {
         if(array_key_exists('logo', $this->data) && $this->data['logo']['error'] == 0) {
             if($logo = $this->logo()) {
                 Model::load('Images')->delete($logo->id);
             }
-            
+
             Model::load('Images')->upload(new SiteLogos($this->id), $this->data['logo']);
         }
     }
-    
+
     protected function createRootCategory($created) {
         if($created) {
             Model::load('Categories')->createRoot($this);
@@ -188,17 +184,17 @@ class Sites extends AppModel {
 
 class SiteLogos {
     public $id;
-    
+
     public function __construct($id = null) {
         $this->id = $id;
     }
-    
+
     public function resizes() {
         $config = Config::read('SiteLogos.resizes');
         if(is_null($config)) {
             $config = array();
         }
-        
+
         return $config;
     }
 }

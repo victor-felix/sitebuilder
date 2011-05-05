@@ -5,6 +5,7 @@ require_once 'lib/htmlpurifier/HTMLPurifier.auto.php';
 require_once 'lib/dom/SimpleHtmlDom.php';
 
 class Articles extends BusinessItems {
+    protected $typeName = 'Artigo';
     protected $fields = array(
         'feed_id' => array(),
         'guid' => array(),

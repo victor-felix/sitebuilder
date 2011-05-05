@@ -2,7 +2,7 @@
     <div class="grid-4 first"><?php echo $this->html->link(__('‹ voltar'), '/categories/index/' . $parent->id, array('class' => 'ui-button large back pop-scene')) ?>
     </div>
     <div class="grid-8">
-        <h1><?php echo $this->pageTitle =  __('Adicionar %s', $type->title) ?></h1>
+        <h1><?php echo $this->pageTitle =  __('Adicionar %s', $item->typeName()) ?></h1>
         <?php echo $this->element('common/breadcrumbs', array(
             'category' => $parent
         )) ?>

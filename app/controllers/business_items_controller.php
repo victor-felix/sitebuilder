@@ -1,8 +1,7 @@
 <?php
 
 class BusinessItemsController extends AppController {
-    protected $uses = array('BusinessItems', 'BusinessItemsValues',
-        'BusinessItemsTypes', 'Categories');
+    protected $uses = array('BusinessItems', 'BusinessItemsValues', 'Categories');
     
     public function index($parent_id = null) {
         $this->set(array(
@@ -34,8 +33,7 @@ class BusinessItemsController extends AppController {
 
         $this->set(array(
             'item' => $item,
-            'parent' => $item->parent(),
-            'type' => $site->businessItemType()
+            'parent' => $item->parent()
         ));
     }
 
@@ -62,8 +60,7 @@ class BusinessItemsController extends AppController {
 
         $this->set(array(
             'parent' => $item->parent(),
-            'item' => $item,
-            'type' => $site->businessItemType()
+            'item' => $item
         ));
     }
 
