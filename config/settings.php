@@ -8,7 +8,7 @@ Config::write('Mailer.transport', 'mail');
 
 require 'config/environments/' . Config::read('App.environment') . '.php';
 
-Config::write('Sites.blacklist', array('feedback', 'blog', 'restaurant', 'support'
+Config::write('Sites.blacklist', array('feedback', 'blog', 'restaurant', 'support',
     'events', 'corporate'));
 
 require 'config/app/segments.php';
