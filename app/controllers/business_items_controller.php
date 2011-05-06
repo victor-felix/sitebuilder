@@ -1,20 +1,18 @@
 <?php
 
 class BusinessItemsController extends AppController {
-    protected $uses = array('BusinessItems', 'BusinessItemsValues',
-        'BusinessItemsTypes', 'Categories');
+    protected $uses = array('BusinessItems', 'BusinessItemsValues', 'Categories');
     
     public function index($parent_id = null) {
-        $this->set(array(
-            'business_items' => $this->model()->allByParentId($parent_id),
-            'category' => $this->Categories->firstById($parent_id)
-        ));
+        $category = $this->Categories->firstById($parent_id);
+        $business_items = $this->model($category)->allByParentId($category->id);
+        $this->set(compact('category', 'business_items'));
     }
 
     public function add($parent_id = null) {
         $site = $this->getCurrentSite();
-        $item = $this->modelInstance($this->data);
-        $item->parent_id = $parent_id;
+        $parent = Model::load('Categories')->firstById($parent_id);
+        $item = $this->modelInstance($parent, $this->data);
 
         if(!empty($this->data)) {
             $item->site = $site;
@@ -34,14 +32,14 @@ class BusinessItemsController extends AppController {
 
         $this->set(array(
             'item' => $item,
-            'parent' => $item->parent(),
-            'type' => $site->businessItemType()
+            'parent' => $parent
         ));
     }
 
     public function edit($id = null) {
         $site = $this->getCurrentSite();
-        $item = $this->model()->firstById($id);
+        $bi = $this->BusinessItems->firstById($id);
+        $item = $this->model($bi->parent())->firstById($id);
 
         if(!empty($this->data)) {
             $item->updateAttributes($this->data);
@@ -62,8 +60,7 @@ class BusinessItemsController extends AppController {
 
         $this->set(array(
             'parent' => $item->parent(),
-            'item' => $item,
-            'type' => $site->businessItemType()
+            'item' => $item
         ));
     }
 
@@ -90,18 +87,19 @@ class BusinessItemsController extends AppController {
         $this->autoRender = false;
     }
 
-    protected function modelName() {
-        $type = $this->getCurrentSite()->businessItemTypeName();
-        return Inflector::camelize($type);
+    protected function modelName($category) {
+        return Inflector::camelize($category->type);
     }
 
-    protected function model() {
-        return Model::load($this->modelName());
+    protected function model($category) {
+        return Model::load($this->modelName($category));
     }
 
-    protected function modelInstance($data) {
-        $model = $this->modelName();
+    protected function modelInstance($category, $data) {
+        $model = $this->modelName($category);
         Model::load($model);
-        return new $model($data);
+        $instance = new $model($data);
+        $instance->parent_id = $category->id;
+        return $instance;
     }
 }

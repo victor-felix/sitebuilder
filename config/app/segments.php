@@ -7,17 +7,8 @@ Config::write('Segments', array(
             'govrj' => 'govrj'
         ),
         'skins' => array('ae3232', '278740', '326cae'),
-        'business_item' => 'products',
+        'items' => 'products',
         'root' => 'Cardápio'
-    ),
-    'corporate' => array(
-        'title' => 'Corporate',
-        'themes' => array(
-            'govrj' => 'govrj'
-        ),
-        'skins' => array('ae3232', '278740', '326cae'),
-        'business_item' => 'articles',
-        'root' => 'Index'
     ),
     'events' => array(
         'title' => 'Events',
@@ -25,7 +16,16 @@ Config::write('Segments', array(
             'govrj' => 'govrj'
         ),
         'skins' => array('ae3232', '278740', '326cae'),
-        'business_item' => 'events',
+        'items' => 'events',
         'root' => 'Agenda'
+    ),
+    'corporate' => array(
+        'title' => 'Corporate',
+        'themes' => array(
+            'govrj' => 'govrj'
+        ),
+        'skins' => array('ae3232', '278740', '326cae'),
+        'items' => array('articles', 'events', 'products', 'links'),
+        'root' => 'Index'
     )
 ));

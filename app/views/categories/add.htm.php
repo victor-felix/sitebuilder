@@ -25,6 +25,17 @@
             )) ?>
         </div>
 
+        <?php if($site->hasManyTypes()): ?>
+            <div class="form-grid-460 first">
+                <?php echo $this->form->input('type', array(
+                    'label' => __('Tipo'),
+                    'type' => 'select',
+                    'class' => 'ui-select large',
+                    'options' => Segments::listItemTypesFor($site->segment)
+                )) ?>
+            </div>
+        <?php endif ?>
+
         <?php echo $this->form->input('parent_id', array(
             'type' => 'hidden',
             'value' => $parent->id

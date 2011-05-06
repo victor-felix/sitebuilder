@@ -1,6 +1,7 @@
 <?php
 
 class Products extends BusinessItems {
+    protected $typeName = 'Produto';
     protected $fields = array(
         'title' => array(
             'title' => 'Título',

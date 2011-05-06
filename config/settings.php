@@ -12,7 +12,6 @@ Config::write('Sites.blacklist', array('feedback', 'blog', 'restaurant', 'suppor
     'events', 'corporate'));
 
 require 'config/app/segments.php';
-require 'config/app/business_items.php';
 require 'config/app/resizes.php';
 
 YamlDictionary::path('config/segments');

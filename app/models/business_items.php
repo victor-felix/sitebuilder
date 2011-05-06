@@ -7,9 +7,6 @@ class BusinessItems extends AppModel {
     protected $beforeSave = array('setSiteValues', 'getOrder');
     protected $afterSave = array('saveItemValues', 'saveImages');
     protected $beforeDelete = array('deleteValues', 'deleteImages');
-    protected $defaultScope = array(
-        'order' => '`order` ASC'
-    );
 
     protected $fields = array();
     protected $scope = array();
@@ -20,6 +17,10 @@ class BusinessItems extends AppModel {
         if(!is_null($this->id)) {
             $this->data = array_merge($this->data, (array) $this->values());
         }
+    }
+
+    public function typeName() {
+        return $this->typeName;
     }
 
     public function breadcrumbs($category_id) {
@@ -113,19 +114,6 @@ class BusinessItems extends AppModel {
 
     public function validate($data = array()) {
         return true; // temporary, mind you
-
-        $fields = $this->site->businessItemType()->fields;
-
-        foreach($fields as $id => $field) {
-            if(array_key_exists($id, $this->data)) {
-                list($valid, $message) = BusinessItemsTypes::validate($field, $this->data[$id]);
-                if(!$valid) {
-                    $this->errors[$id] = $message;
-                }
-            }
-        }
-
-        return empty($this->errors);
     }
 
     public function description() {

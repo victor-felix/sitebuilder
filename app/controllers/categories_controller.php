@@ -7,13 +7,13 @@ class CategoriesController extends AppController {
         foreach($categories as $category) {
             $tree[$category->parent_id] []= $category;
         }
-        
+
         $this->set(array(
             'categories' => $tree,
             'root' => $this->getCurrentSite()->rootCategory()
         ));
     }
-    
+
     public function add($parent_id = null) {
         $site = $this->getCurrentSite();
         $category = new Categories($this->data);
@@ -34,10 +34,11 @@ class CategoriesController extends AppController {
 
         $this->set(array(
             'category' => $category,
-            'parent' => $this->Categories->firstById($parent_id)
+            'parent' => $this->Categories->firstById($parent_id),
+            'site' => $this->getCurrentSite()
         ));
     }
-    
+
     public function edit($id = null) {
         $category = $this->Categories->firstById($id);
         if(!empty($this->data)) {
@@ -53,13 +54,13 @@ class CategoriesController extends AppController {
                 }
             }
         }
-        
+
         $this->set(array(
             'category' => $category,
             'parent_id' => $category->parent_id
         ));
     }
-    
+
     public function delete($id = null) {
         $this->Categories->delete($id);
         $message = __('Categoria excluída com sucesso.');
@@ -71,7 +72,7 @@ class CategoriesController extends AppController {
             Session::writeFlash('success', $message);
             $this->redirect('/categories');
         }
-    }    
+    }
 
     public function reorder() {
         $this->autoRender = false;
