@@ -2,5 +2,13 @@
     pagetitle: 'MeuMobi Restaurant - Seu restaurante na Web móvel em 3 minutos!'
     title: 'Seu restaurante na palma da mão em menos de 3 minutos.'
     subtitle: 'MeuMobi Restaurant coloca o seu negócio na Internet móvel em instantes.'
+    features1_title: 'Painel de controle fácil de editar:'
+    features2_title: 'Compatível com mais de 6 mil celulares:'
+    features3_title: 'Identidade visual do seu restaurante'
+    features4_title: 'Integração com mídias sociais:'
+    features1_description: 'Cardápio dividido em categorias, sub-categorias e pratos com descrição e fotos'
+    features2_description: 'Tecnologia de renderização que possibilita que seu mobi site seja visualizado perfeitamente em mais de 6 mil aparelhos'
+    features3_description: 'Seu mobi site terá a cara do seu restaurante com logomarca e cores customizadas!'
+    features4_description: 'Integre o Twitter e Facebook do seu restaurante ao seu mobi site.'
 'sites/finished':
     categories: 'Adicione o cardápio de seu restaurante ›'

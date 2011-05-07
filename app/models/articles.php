@@ -5,6 +5,7 @@ require_once 'lib/htmlpurifier/HTMLPurifier.auto.php';
 require_once 'lib/dom/SimpleHtmlDom.php';
 
 class Articles extends BusinessItems {
+    protected $typeName = 'Artigo';
     protected $fields = array(
         'feed_id' => array(),
         'guid' => array(),
@@ -83,6 +84,10 @@ class Articles extends BusinessItems {
             'pubdate' => $item->get_date('Y-m-d H:i:s'),
             'format' => 'html'
         );
+
+        if(!is_null($feed->category_id)) {
+            $article['parent_id'] = $feed->category_id;
+        }
 
         try {
             $this->begin();

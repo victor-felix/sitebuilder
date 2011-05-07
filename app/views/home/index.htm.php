@@ -1,19 +1,19 @@
 <ul class="features">
     <li class="first">
-        <p class="title"><?php echo __('Painel de controle fácil de editar') ?></p>
-        <p class="description"><?php echo __('Cardápio dividido em categorias, sub-categorias e pratos com descrição e fotos') ?></p>
+        <p class="title"><?php echo s('home/index.features1_title') ?></p>
+        <p class="description"><?php echo s('home/index.features1_description') ?></p>
     </li>
     <li>
-        <p class="title"><?php echo __('Compatível com mais de 6 mil celulares') ?></p>
-        <p class="description"><?php echo __('Tecnologia BKRender de renderização que possibilita que seu mobi site seja visualizado perfeitamente em mais de 6 mil aparelhos') ?></p>
+        <p class="title"><?php echo s('home/index.features2_title') ?></p>
+        <p class="description"><?php echo s('home/index.features2_description') ?></p>
     </li>
     <li>
-        <p class="title"><?php echo __('Identidade visual do seu restaurante') ?></p>
-        <p class="description"><?php echo __('Seu mobi site terá a cara do seu restaurante com logomarca e cores customizadas!') ?></p>
+        <p class="title"><?php echo s('home/index.features3_title') ?></p>
+        <p class="description"><?php echo s('home/index.features3_description') ?></p>
     </li>
     <li>
-        <p class="title"><?php echo __('Integração com mídias sociais') ?></p>
-        <p class="description"><?php echo __('Integre o Twitter e Facebook do seu restaurante ao seu mobi site.') ?></p>
+        <p class="title"><?php echo s('home/index.features4_title') ?></p>
+        <p class="description"><?php echo s('home/index.features4_description') ?></p>
     </li>
 </ul>
 

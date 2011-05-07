@@ -1,6 +1,7 @@
 <?php
 
 class Events extends BusinessItems {
+    protected $typeName = 'Evento';
     protected $fields = array(
         'title' => array(
             'title' => 'Título',
