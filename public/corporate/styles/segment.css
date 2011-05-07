@@ -1,3 +1,13 @@
+::selection {
+    background:#2f3e6e;
+    color:#fff;
+}
+
+::-moz-selection {
+    background:#2f3e6e;
+    color:#fff;
+}
+
 #header .menu ul li a:hover {
 	background-color: #2f3e6e;
 	border-color: #2f3e6e;
@@ -60,10 +70,6 @@
 	background: #2f3e6e;
 }
 
-#content .head .steps li {
-	border-left: 1px solid #2f3e6e;
-}
-
 .form-register fieldset h2 {
 	color: #2f3e6e;
 }
@@ -94,9 +100,13 @@
 .ui-button {
 	color: #2f3e6e;
 }
-
+.ui-button.red {
+	background-color: #2f3e6e;
+	border-color: #2f3e6e;
+}
 .ui-button.red:hover {
-		background-color: #2f3e6e;
+	background-color: #2f3e6e;
+	border-color: #2f3e6e;
 }
 
 

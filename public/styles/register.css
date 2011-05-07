@@ -79,8 +79,8 @@ a img {
 }
 
 #content .head .steps li {
-	border-left: 1px solid #C02926;
-	color: #c94845;
+	border-left: 1px solid rgba(255, 255, 255, 0.2);
+	color: rgba(255, 255, 255, 0.4);
 	display: inline;
 	float: left;
 	font-size: 15px;
@@ -136,6 +136,7 @@ a img {
 }
 
 .tip-register {
+  color: #333;
   background: #ffc;
   line-height: 1.4em;
   padding: 10px 15px;
