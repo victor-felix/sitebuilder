@@ -54,7 +54,7 @@ class Feeds extends AppModel {
 
     protected function getFeed() {
         $feed = new SimplePie();
-        $feed->set_cache_location(FileSystem::path('tmp/cache/simplepie'));
+        $feed->enable_cache(false);
         $feed->set_feed_url($this->link);
         $feed->init();
 
