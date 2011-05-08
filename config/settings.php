@@ -15,3 +15,5 @@ require 'config/app/segments.php';
 require 'config/app/resizes.php';
 
 YamlDictionary::path('config/segments');
+
+date_default_timezone_set('UTC');
