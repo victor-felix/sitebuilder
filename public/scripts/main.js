@@ -266,7 +266,8 @@ $.extend($.easing, {
     
     slider.delegate('li .delete-confirm', 'ajax:success', function(e) {
         var li = $(this).closest('li');
-        li.nextUntil('.' + li.attr('class')).andSelf().slideUp();
+        var children = $('li[data-parentid=' + li.attr('data-catid') + ']');
+        children.add(li).slideUp();
     });
 
 })(jQuery);
