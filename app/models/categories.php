@@ -141,7 +141,9 @@ class Categories extends AppModel {
     }
 
     public function toJSON() {
-        return $this->data;
+        $data = $this->data;
+        $data['items_count'] = $this->childrenCount();
+        return $data;
     }
 
     public function forceDelete($id) {
