@@ -63,8 +63,9 @@ class AppController extends Controller {
     }
 }
 
-function __() {
+function __($key) {
     $arguments = func_get_args();
+    $arguments[0] = I18n::translate($key);
     return call_user_func_array('sprintf', $arguments);
 }
 
