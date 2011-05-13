@@ -91,7 +91,7 @@ class BusinessItems extends AppModel {
     public function toJSON() {
         $values = $this->values();
 
-        if($values->format == 'bbcode') {
+        if((!isset($values->format) && isset($values->description)) || $values->format == 'bbcode') {
             $parser = new Decoda($values->description);
             $bbcode = $parser->parse(true);
             $values->description = '<p>'. $bbcode . '</p>';
