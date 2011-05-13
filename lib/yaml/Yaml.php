@@ -9,21 +9,25 @@ class Yaml {
         $this->load($filename);
     }
 
-    public function get($key, $context = null) {
-        if(is_null($context)) {
+    public function get($key, $split_key = null, $index = 0, $context = null) {
+        if(is_null($split_key)) {
             $context = $this->content;
+            $split_key = explode('.', $key);
         }
 
-        $keys = explode('.', $key);
-        $key = array_shift($keys);
+        $current_key = $split_key[$index];
 
-        if(!empty($keys)) {
-            $keys = implode('.', $keys);
-            return $this->get($keys, $context[$key]);
+        if($index < count($split_key) - 1) {
+            if(array_key_exists($current_key, $context)) {
+                $context = $context[$current_key];
+                return $this->get($key, $split_key, $index + 1, $context);
+            }
         }
-        else {
-            return $context[$key];
+        else if(array_key_exists($current_key, $context)) {
+            return $context[$current_key];
         }
+
+        return $key;
     }
 
     protected function load($filename) {
