@@ -32,4 +32,15 @@ class ItemsController extends ApiController {
             $bi->type => $bi
         ));
     }
+
+    public function api_by_category($slug = null) {
+        $categories = Model::load('Categories')->allBySiteId($this->site->id);
+        $items = array();
+
+        foreach($categories as $category) {
+            $items[$category->id] = $category->childrenItems();
+        }
+
+        $this->respondToJSON($items);
+    }
 }

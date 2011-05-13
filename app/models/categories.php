@@ -75,6 +75,12 @@ class Categories extends AppModel {
         return $result;
     }
 
+    public function childrenItems() {
+        $type = Inflector::underscore($this->type);
+        $model = Model::load($type);
+        return $model->allByParentId($this->id);
+    }
+
     public function hasChildren() {
         $conditions = array(
             'conditions' => array(
