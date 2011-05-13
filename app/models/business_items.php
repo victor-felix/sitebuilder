@@ -94,7 +94,7 @@ class BusinessItems extends AppModel {
         if($values->format == 'bbcode') {
             $parser = new Decoda($values->description);
             $bbcode = $parser->parse(true);
-            $values->description = $bbcode;
+            $values->description = '<p>'. $bbcode . '</p>';
         }
 
         $fields = array('id', 'site_id', 'parent_id', 'type', 'order', 'created', 'modified');
