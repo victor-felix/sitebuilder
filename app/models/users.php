@@ -105,7 +105,7 @@ class Users extends AppModel {
             $this->errors['email'] = 'Você precisa informar seu e-mail';
         }
 
-        return false;
+        return empty($this->errors);
     }
 
     public function resetPassword() {

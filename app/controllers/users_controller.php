@@ -81,7 +81,7 @@ class UsersController extends AppController {
         $user = new Users();
         if(!empty($this->data)) {
             if($user->requestForNewPassword($this->data['email'])) {
-                die();
+                Session::writeFlash('success', __('Recuperação de senha enviada com sucesso.'));
             }
         }
         $this->set(array(
