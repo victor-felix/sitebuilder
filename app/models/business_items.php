@@ -95,7 +95,6 @@ class BusinessItems extends AppModel {
             (!property_exists($values, 'format') && property_exists($values, 'description')) ||
             $values->format == 'bbcode'
         ) {
-        if((!isset($values->format) && isset($values->description)) || ) {
             $parser = new Decoda($values->description);
             $bbcode = $parser->parse(true);
             $values->description = '<p>'. $bbcode . '</p>';
