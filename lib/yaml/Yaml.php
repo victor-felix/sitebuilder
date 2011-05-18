@@ -23,7 +23,7 @@ class Yaml {
                 return $this->get($key, $split_key, $index + 1, $context);
             }
         }
-        else if(array_key_exists($current_key, $context)) {
+        else if(is_array($context) && array_key_exists($current_key, $context)) {
             return $context[$current_key];
         }
 
