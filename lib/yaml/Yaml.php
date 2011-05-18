@@ -17,14 +17,16 @@ class Yaml {
 
         $current_key = $split_key[$index];
 
-        if($index < count($split_key) - 1) {
-            if(array_key_exists($current_key, $context)) {
-                $context = $context[$current_key];
-                return $this->get($key, $split_key, $index + 1, $context);
+        if(is_array($context)) {
+            if($index < count($split_key) - 1) {
+                if(array_key_exists($current_key, $context)) {
+                    $context = $context[$current_key];
+                    return $this->get($key, $split_key, $index + 1, $context);
+                }
             }
-        }
-        else if(is_array($context) && array_key_exists($current_key, $context)) {
-            return $context[$current_key];
+            else if(array_key_exists($current_key, $context)) {
+                return $context[$current_key];
+            }
         }
 
         return $key;
