@@ -85,7 +85,7 @@ class Articles extends BusinessItems {
             'format' => 'html'
         );
 
-        if(!is_null($feed->category_id)) {
+        if(property_exists($feed, 'category_id') && !is_null($feed->category_id)) {
             $article['parent_id'] = $feed->category_id;
         }
 
