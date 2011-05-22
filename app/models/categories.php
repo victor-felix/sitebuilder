@@ -2,6 +2,7 @@
 
 class Categories extends AppModel {
     protected $beforeSave = array('getOrder', 'getItemType');
+    protected $afterSave = array('getFeedUrl');
     protected $beforeDelete = array('deleteChildren');
     protected $defaultScope = array(
         'order' => '`order` ASC'
@@ -196,6 +197,18 @@ class Categories extends AppModel {
         }
 
         return $data;
+    }
+
+    protected function getFeedUrl($created) {
+        if($created && array_key_exists('feed', $this->data) && !empty($this->data['feed'])) {
+            Model::load('Feeds');
+            $feed = new Feeds(array(
+                'site_id' => $this->site_id,
+                'category_id' => $this->id,
+                'link' => $this->data['feed']
+            ));
+            $feed->save();
+        }
     }
 
     protected function deleteChildren($id, $force = false) {

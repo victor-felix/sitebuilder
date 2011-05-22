@@ -85,9 +85,12 @@ class Articles extends BusinessItems {
             'format' => 'html'
         );
 
-        if(!is_null($feed->category_id)) {
-            $article['parent_id'] = $feed->category_id;
+        try {
+            if(!is_null($feed->category_id)) {
+                $article['parent_id'] = $feed->category_id;
+            }
         }
+        catch(Exception $e) {}
 
         try {
             $this->begin();

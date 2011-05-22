@@ -36,6 +36,13 @@
             </div>
         <?php endif ?>
 
+        <div class="form-grid-460 first">
+            <?php echo $this->form->input('feed', array(
+                'label' => __('URL do Feed'),
+                'class' => 'ui-text large'
+            )) ?>
+        </div>
+
         <?php echo $this->form->input('parent_id', array(
             'type' => 'hidden',
             'value' => $parent->id

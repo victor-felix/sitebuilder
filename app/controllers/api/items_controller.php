@@ -37,6 +37,7 @@ class ItemsController extends ApiController {
         $categories = Model::load('Categories')->allBySiteId($this->site->id);
         $items = array();
 
+        $items[0] = $this->BusinessItems->allByParentIdAndSiteId(0, $this->site->id);
         foreach($categories as $category) {
             $items[$category->id] = $category->childrenItems();
         }
