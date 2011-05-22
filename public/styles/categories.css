@@ -78,8 +78,16 @@
 	top: 12px;
 	right: 15px;
 }
+	.categories-list li .controls em {
+		color: #bbb;
+	}
+	
 	.categories-list li .controls a {
 		margin-left: 6px;
+	}
+	
+	.categories-list li .controls a.left-join {
+		margin-left: -5px;
 	}
 	
 	.categories-list .controls .delete {
