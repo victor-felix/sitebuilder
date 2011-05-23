@@ -38,7 +38,7 @@ class ItemsController extends ApiController {
         $items = array();
 
         foreach($categories as $category) {
-            $items[$category->id] = $category->childrenItems();
+            $items[$category->id] = $category->childrenItems($this->param('limit', 10));
         }
 
         $this->respondToJSON($items);

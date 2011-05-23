@@ -76,10 +76,12 @@ class Categories extends AppModel {
         return $result;
     }
 
-    public function childrenItems() {
+    public function childrenItems($limit = null) {
         $type = Inflector::underscore($this->type);
         $model = Model::load($type);
-        return $model->allByParentId($this->id);
+        return $model->allByParentId($this->id, array(
+            'limit' => $limit
+        ));
     }
 
     public function hasChildren() {
