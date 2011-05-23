@@ -10,18 +10,25 @@
     </span>
 
     <div class="controls">
-        <?php echo $this->html->link(__('adicionar produto'), '/business_items/add/' . $category->id, array(
-            'class' => 'ui-button highlight push-scene'
-        )) ?>
-        <?php echo $this->html->link(__('gerenciar produtos'), '/business_items/index/' . $category->id, array(
+
+        <?php if($category->title != 'automatic'): // TODO: cahnge to correct automatic category logic ?>
+
+            <?php if($level >= 1): ?>
+                <?php echo $this->html->link(__('adicionar item'), '/business_items/add/' . $category->id, array(
+                    'class' => 'ui-button highlight push-scene'
+                )) ?>
+            <?php endif ?>
+        
+            <?php echo $this->html->link(__('gerenciar items'), '/business_items/index/' . $category->id, array(
+                'class' => 'ui-button manage push-scene left-join'
+            )) ?>
+        <?php else: ?>
+            <em><?php echo __('categoria automática')?></em>
+        <?php endif ?>
+
+        <?php echo $this->html->link(__('opções'), '/categories/edit/' . $category->id, array(
             'class' => 'ui-button manage push-scene'
         )) ?>
-
-        <?php if($category->parent_id > 0): ?>
-            <?php echo $this->html->imagelink('shared/categories/delete.gif', '#', array(), array(
-                'class' => 'ui-button delete icon'
-            )) ?>
-        <?php endif ?>
     </div>
     <div class="children-count"><?php echo $category->childrenCount() ?></div>
     <?php if($category->parent_id > 0): ?>
