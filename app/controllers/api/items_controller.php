@@ -3,7 +3,7 @@
 require 'app/controllers/api/api_controller.php';
 
 class ItemsController extends ApiController {
-    protected $uses = array('BusinessItems', 'Articles');
+    protected $uses = array('BusinessItems');
     
     public function api_index($slug = null) {
         $conditions = array();
@@ -37,7 +37,6 @@ class ItemsController extends ApiController {
         $categories = Model::load('Categories')->allBySiteId($this->site->id);
         $items = array();
 
-        $items[0] = $this->BusinessItems->allByParentIdAndSiteId(0, $this->site->id);
         foreach($categories as $category) {
             $items[$category->id] = $category->childrenItems();
         }
