@@ -9,6 +9,8 @@ class NewsController extends ApiController {
         $news = $this->Articles->allByParentIdAndSiteId(0, $this->site->id, array(
             'limit' => $this->param('limit', 10)
         ));
-        $this->respondToJSON($news);
+        $this->respondToJSON(array(
+            'articles' => $news
+        ));
     }
 }
