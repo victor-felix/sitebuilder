@@ -6,7 +6,9 @@ class NewsController extends ApiController {
     protected $uses = array('Articles');
 
     public function api_index($slug = null) {
-        $news = $this->Articles->allByParentIdAndSiteId(0, $this->site->id);
+        $news = $this->Articles->allByParentIdAndSiteId(0, $this->site->id, array(
+            'limit' => $this->param('limit', 10)
+        ));
         $this->respondToJSON($news);
     }
 }
