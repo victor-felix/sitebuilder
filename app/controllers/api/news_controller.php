@@ -10,7 +10,8 @@ class NewsController extends ApiController {
             'conditions' => array(
                 'site_id' => $this->site->id,
                 'parent_id' => 0
-            )
+            ),
+            'limit' => $this->param('limit', 10)
         ));
         $this->respondToJSON(array(
             'articles' => $news
