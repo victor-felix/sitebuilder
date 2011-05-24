@@ -277,7 +277,10 @@
 		float:left;
 		margin:3px -25px 0 5px;
 	}
-
+.populate-based {
+	display:none;
+}
+	
 .form-edit div.input.checkbox input {
 	margin-top:5px;
 }
