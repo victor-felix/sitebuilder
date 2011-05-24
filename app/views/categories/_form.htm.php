@@ -64,6 +64,12 @@
     <?php echo $this->form->submit(__('Salvar'), array(
         'class' => 'ui-button red larger'
     )) ?>
+    <?php if($category->id > 0) {
+    echo $this->html->link(
+        $this->html->image('shared/categories/delete.gif') . __('Apagar categoria'),
+        '/categories/delete/' . $category->id,
+        array( 'class' => 'ui-button delete' )
+    ); } ?>
 </fieldset>
 
 <?php echo $this->form->close() ?>

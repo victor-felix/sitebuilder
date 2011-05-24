@@ -138,6 +138,19 @@
 	max-width: 200px;
 }
 
+.form-edit a.delete {
+	float: right;
+	position: relative;
+	padding-left: 25px;
+	margin-top: 8px;
+}
+
+.form-edit a.delete img {
+	position: absolute;
+	top: 5px;
+	left: 7px;
+}
+
 .theme-picker {
 	border-radius: 3px;
 	-webkit-border-radius: 3px;
