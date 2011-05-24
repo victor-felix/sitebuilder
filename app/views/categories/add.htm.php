@@ -20,7 +20,7 @@
     <div class="field-group">
         <div class="form-grid-460 first">
             <?php echo $this->form->input('title', array(
-                'label' => __('Título'),
+                'label' => __('Nome da categoria'),
                 'class' => 'ui-text large'
             )) ?>
         </div>
@@ -36,11 +36,32 @@
             </div>
         <?php endif ?>
 
+        <div class="form-grid-460 populate-fields">
+            <label><?php echo __('Tipo de categoria'); ?></label>
+            <?php echo $this->form->input("populate", array(
+                "type" => "radio",
+                "options" => array(
+                    "auto" => "Automática",
+                    "manual" => "Manual"
+                )
+            )); ?>
+            <small><?php echo __('Categorias automáticas permitem a importação automática de conteúdo a partir de feeds RSS.'); ?></small>
+            <small><?php echo __('Categorias manuais permitem a edição manual de todos os itens associados.'); ?></small>
+        </div>
+
         <div class="form-grid-460 first">
             <?php echo $this->form->input('feed', array(
                 'label' => __('URL do Feed'),
                 'class' => 'ui-text large'
             )) ?>
+        </div>
+
+        <div class="form-grid-460 first">
+            <?php echo $this->form->input('visibility', array(
+                'type' => 'checkbox',
+                'label' => __('Visibilidade')
+            )) ?>
+            <label for="FormVisibility" class="checkbox"><?php echo __('Esta categoria está visível e disponível para os usuários do site mobile') ?></label>
         </div>
 
         <?php echo $this->form->input('parent_id', array(

@@ -240,3 +240,37 @@
 .skin-picker ul li a span {
 	padding: 0 4px;
 }
+
+
+.populate-fields  {
+	overflow:hidden;
+}
+	.populate-fields fieldset {
+		border-bottom:none;
+		margin:0;
+		padding:10px 0 0;
+	}
+	.populate-fields fieldset label,
+	.populate-fields small {
+		float:left;
+		width:190px;
+		margin-left:25px;
+	}
+
+	.populate-fields fieldset label {
+		font-size:15px;
+	}
+	.populate-fields input {
+		float:left;
+		margin:3px -25px 0 5px;
+	}
+
+.form-edit div.input.checkbox input {
+	margin-top:5px;
+}
+	
+
+.form-edit label.checkbox {
+	margin:-1.2em 0 0 20px;
+	
+}
