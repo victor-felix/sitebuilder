@@ -24,10 +24,33 @@ class Feeds extends AppModel {
             }
         }
 
+        $this->cleanup();
+
         $this->updateAttributes(array(
             'updated' => date('Y-m-d H:i:s')
         ));
         $this->save();
+    }
+
+    public function cleanup() {
+        $conditions = array(
+            'site_id' => $this->site_id,
+            'parent_id' => $this->category_id
+        );
+        $count = Model::load('Articles')->count(array(
+            'conditions' => $conditions
+        ));
+
+        if($count > 5) {
+            $articles = Model::load('Articles')->allOrdered(array(
+                'conditions' => $conditions,
+                'limit' => $count - 5,
+                'order' => 'pubdate ASC'
+            ));
+            foreach($articles as $article) {
+                Model::load('Articles')->delete($article->id);
+            }
+        }
     }
 
     public function saveFeed($site, $link) {
