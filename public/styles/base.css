@@ -8,6 +8,10 @@ body {
 	font: 12px Arial, Helvetica, sans-serif;
 }
 
+.hidden {
+	display:none;
+}
+
 .clear {
 	clear: both;
 }

@@ -40,13 +40,15 @@ class CategoriesController extends AppController {
     }
 
     public function edit($id = null) {
+        $site = $this->getCurrentSite();
         $category = $this->Categories->firstById($id);
         if(!empty($this->data)) {
             $category->updateAttributes($this->data);
             if($category->validate()) {
                 $category->save();
                 if($this->isXhr()) {
-                    $this->respondToJSON($category);
+                    $json = array('go_back'=>true,'refresh'=>'/categories');
+                    $this->respondToJSON($json);
                 }
                 else {
                     Session::writeFlash('success', __('Categoria editada com sucesso.'));
@@ -57,7 +59,8 @@ class CategoriesController extends AppController {
 
         $this->set(array(
             'category' => $category,
-            'parent_id' => $category->parent_id
+            'parent_id' => $category->parent(),
+            'site' => $site
         ));
     }
 
