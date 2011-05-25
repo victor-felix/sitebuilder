@@ -210,6 +210,7 @@ class Categories extends AppModel {
                 'link' => $this->data['feed']
             ));
             $feed->save();
+            $feed->updateArticles();
         }
     }
 
