@@ -46,7 +46,7 @@ class BusinessItems extends AppModel {
             $order = '`order` ASC';
         }
 
-        return $this->all(array(
+        $params = array_merge($params, array(
             'table' => array('i' => $this->table()),
             'fields' => 'DISTINCT i.*',
             'joins' => 'JOIN business_items_values AS v ' .
@@ -54,6 +54,7 @@ class BusinessItems extends AppModel {
             'order' => $order,
             'conditions' => $conditions
         ));
+        return $this->all($params);
     }
 
     public function values() {
