@@ -84,6 +84,12 @@ class Categories extends AppModel {
         ));
     }
 
+    public function hasFeed() {
+        return Model::load('Feeds')->exists(array(
+            'category_id' => $this->id
+        ));
+    }
+
     public function hasChildren() {
         $conditions = array(
             'conditions' => array(

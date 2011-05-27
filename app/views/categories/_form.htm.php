@@ -1,4 +1,3 @@
-
 <?php echo $this->form->create($action, array(
     'class' => 'form-edit',
     'object' => $category
@@ -29,7 +28,7 @@
             <small><?php echo __('Categorias automáticas permitem a importação automática de conteúdo a partir de feeds RSS.'); ?></small>
             <small><?php echo __('Categorias manuais permitem a edição manual de todos os itens associados.'); ?></small>
         </div>
-        
+
         <?php
             // when model is implemented, remove this
             $category->populate = 'auto';

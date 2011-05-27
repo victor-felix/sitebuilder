@@ -170,11 +170,13 @@ class BusinessItems extends AppModel {
         if($field) {
             if($field->type == 'richtext') {
                 $bbcode = $this->formatRichtext('description', $this->description);
-                return strip_tags($bbcode);
+                $value = strip_tags($bbcode);
             }
             else {
-                return $this->description;
+                $value = $this->description;
             }
+
+            return substr($value, 0, 200) . '...';
         }
         else {
             return '';
