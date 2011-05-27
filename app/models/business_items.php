@@ -122,7 +122,7 @@ class BusinessItems extends AppModel {
             }
 
             if($formatter = $this->getFormatter($field)) {
-                $value = $this->{$formatter}();
+                $value = $this->{$formatter}($field, $value);
             }
 
             $data[$field] = $value;
@@ -144,6 +144,22 @@ class BusinessItems extends AppModel {
         return false;
     }
 
+    protected function formatRichtext($field, $value) {
+        $values = $this->values();
+        if(!property_exists($values, 'format') || $values->format == 'bbcode') {
+            $parser = new Decoda($value);
+            $bbcode = '<p>' . $parser->parse(true) . '</p>';
+            return $bbcode;
+        }
+        else {
+            return $value;
+        }
+    }
+
+    protected function formatText($field, $value) {
+        return nl2br($value);
+    }
+
     public function validate($data = array()) {
         return true; // temporary, mind you
     }
@@ -151,10 +167,9 @@ class BusinessItems extends AppModel {
     public function description() {
         $field = $this->field('description');
 
-        if(!is_null($field)) {
+        if($field) {
             if($field->type == 'richtext') {
-                $parser = new Decoda($this->description);
-                $bbcode = $parser->parse(true);
+                $bbcode = $this->formatRichtext('description', $this->description);
                 return strip_tags($bbcode);
             }
             else {
