@@ -90,6 +90,10 @@ class Categories extends AppModel {
         ));
     }
 
+    public function feed() {
+        return Model::load('Feeds')->firstByCategoryId($this->id);
+    }
+
     public function hasChildren() {
         $conditions = array(
             'conditions' => array(
@@ -208,8 +212,22 @@ class Categories extends AppModel {
     }
 
     protected function getFeedUrl($created) {
-        if($created && array_key_exists('feed', $this->data) && !empty($this->data['feed'])) {
-            Model::load('Feeds');
+        $feeds = Model::load('Feeds');
+        $is_set = isset($this->data['feed']);
+        $is_empty = $is_set && empty($this->data['feed']);
+
+        if(!$created && $is_set) {
+            $feed = $feeds->firstByCategoryId($this->id);
+
+            if($feed->link != $this->data['feed']) {
+                $feeds->delete($feed->id);
+            }
+            else {
+                return;
+            }
+        }
+
+        if($is_set && !$is_empty) {
             $feed = new Feeds(array(
                 'site_id' => $this->site_id,
                 'category_id' => $this->id,
