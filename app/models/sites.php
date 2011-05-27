@@ -112,6 +112,8 @@ class Sites extends AppModel {
             $data['logo'] = $logo->link();
         }
 
+        $data['description'] = nl2br($data['description']);
+
         return $data;
     }
 
