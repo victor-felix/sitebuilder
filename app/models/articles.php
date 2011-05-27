@@ -96,7 +96,7 @@ class Articles extends BusinessItems {
             $this->begin();
 
             $this->save($article);
-            $images = $this->getImages($item);
+            $images = $this->getArticleImages($item);
             foreach($images as $image) {
                 $image = $this->getImageUrl($image, $article['guid']);
                 $result = Model::load('Images')->download($this, $image, array(
@@ -124,7 +124,7 @@ class Articles extends BusinessItems {
         }
     }
 
-    protected function getImages($item) {
+    protected function getArticleImages($item) {
         $images = $this->getEnclosureImages($item);
         if(empty($images)) {
             $images = $this->getContentImages($item);

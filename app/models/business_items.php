@@ -10,6 +10,7 @@ class BusinessItems extends AppModel {
 
     protected $fields = array();
     protected $scope = array();
+    protected $json = null;
 
     public function __construct($data = null) {
         parent::__construct($data);
@@ -89,31 +90,58 @@ class BusinessItems extends AppModel {
         return Model::load('Images')->firstByRecord('BusinessItems', $this->id);
     }
 
-    public function toJSON() {
-        $values = $this->values();
-
-        if(
-            (property_exists($values, 'format') && $values->format == 'bbcode') ||
-            (!property_exists($values, 'format') && property_exists($values, 'description'))
-        ) {
-            $parser = new Decoda($values->description);
-            $bbcode = $parser->parse(true);
-            $values->description = '<p>'. $bbcode . '</p>';
-        }
-
-        $fields = array('id', 'site_id', 'parent_id', 'type', 'order', 'created', 'modified');
-        foreach($fields as $field) {
-            $values->{$field} = $this->data[$field];
-        }
-
+    public function getImages() {
         $images = $this->images();
-        $values->images = array();
+        $data = array();
 
         foreach($images as $image) {
-            $values->images []= $image->toJSON();
+            $data []= $image->toJSON();
         }
 
-        return $values;
+        return $data;
+    }
+
+    public function toJSON() {
+        if(is_null($this->json)) {
+            $fields = array_merge(array_keys($this->fields), (array) 'images');
+        }
+        else {
+            $field = $this->json;
+        }
+
+        $data = $this->data;
+        $values = $this->values();
+
+        foreach($fields as $field) {
+            $method = 'get' . Inflector::camelize($field);
+            if(method_exists($this, $method)) {
+                $value = $this->{$method}();
+            }
+            else {
+                $value = $values->{$field};
+            }
+
+            if($formatter = $this->getFormatter($field)) {
+                $value = $this->{$formatter}();
+            }
+
+            $data[$field] = $value;
+        }
+
+        return $data;
+    }
+
+    protected function getFormatter($field) {
+        if(isset($this->fields[$field]['type'])) {
+            $type = $this->fields[$field]['type'];
+            $formatter = 'format' . Inflector::camelize($type);
+
+            if(method_exists($this, $formatter)) {
+                return $formatter;
+            }
+        }
+
+        return false;
     }
 
     public function validate($data = array()) {
