@@ -17,7 +17,7 @@ class SpecRunner {
     			if (is_dir($fqd)) {
     				$stack[] = $fqd;
     			} elseif (preg_match($ext_match, $fqd)) {
-    			  if(preg_match("/_spec\.php$/", $fqd)) {
+    			  if(preg_match("/Spec\.php$/", $fqd)) {
     			   array_push($this->files, $fqd);
     			  }
     			}

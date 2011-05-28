@@ -9,7 +9,7 @@ class YamlDictionary {
 
     public static function path($path = null) {
         if(is_null($path)) {
-            return $path;
+            return static::$path;
         }
         else {
             static::$path = $path;
@@ -18,7 +18,7 @@ class YamlDictionary {
 
     public static function dictionary($dictionary = null) {
         if(is_null($dictionary)) {
-            static::$dictionary;
+            return static::$dictionary;
         }
         else {
             static::$dictionary = $dictionary;
