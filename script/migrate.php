@@ -67,7 +67,14 @@ function migrate($migration, $connection) {
     echo 'done' . PHP_EOL;
 }
 
-$connection = Connection::get(Config::read('App.environment'));
+if(isset($argv[1])) {
+    $environment = $argv[1];
+}
+else {
+    $environment = Config::read('App.environment');
+}
+
+$connection = Connection::get($environment);
 if(!in_array('schema_migrations', $connection->listSources())) {
     create_schema_migrations($connection);
 }

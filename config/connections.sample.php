@@ -6,7 +6,15 @@ Connection::add(array(
         'host' => '127.0.0.1',
         'user' => 'root',
         'password' => '',
-        'database' => 'mobuilder',
+        'database' => 'meu-site-builder',
+        'prefix' => ''
+    ),
+    'test' => array(
+        'driver' => 'MySql',
+        'host' => '127.0.0.1',
+        'user' => 'root',
+        'password' => '',
+        'database' => 'meu-site-builder-test',
         'prefix' => ''
     ),
     'production' => array(
