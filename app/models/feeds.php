@@ -54,7 +54,7 @@ class Feeds extends AppModel {
     }
 
     public function saveFeed($site, $link) {
-        $feed = $this->firstBySiteId($site->id);
+        $feed = $site->feed();
 
         if(!empty($link)) {
             if(is_null($feed) || $feed->link != $link) {
