@@ -40,7 +40,7 @@ class Sites extends AppModel {
     );
 
     public function feed() {
-        return Model::load('Feeds')->firstBySiteId($this->id);
+        return Model::load('Feeds')->firstBySiteIdAndCategoryId($this->id, 0);
     }
 
     public function topArticles() {

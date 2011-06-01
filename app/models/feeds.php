@@ -35,7 +35,7 @@ class Feeds extends AppModel {
     public function cleanup() {
         $conditions = array(
             'site_id' => $this->site_id,
-            'parent_id' => isset($this->data['category_id']) ? $this->category_id : null
+            'parent_id' => isset($this->data['category_id']) ? $this->category_id : 0
         );
         $count = Model::load('Articles')->count(array(
             'conditions' => $conditions
@@ -60,7 +60,8 @@ class Feeds extends AppModel {
             if(is_null($feed) || $feed->link != $link) {
                 $this->save(array(
                     'site_id' => $site->id,
-                    'link' => $link
+                    'link' => $link,
+                    'category_id' => 0
                 ));
                 $this->updateArticles();
             }
