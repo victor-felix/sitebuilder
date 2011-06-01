@@ -41,10 +41,10 @@ class Feeds extends AppModel {
             'conditions' => $conditions
         ));
 
-        if($count > 5) {
+        if($count > 50) {
             $articles = Model::load('Articles')->allOrdered(array(
                 'conditions' => $conditions,
-                'limit' => $count - 5,
+                'limit' => $count - 50,
                 'order' => 'pubdate ASC'
             ));
             foreach($articles as $article) {
