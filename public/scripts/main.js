@@ -165,6 +165,7 @@ $.extend($.easing, {
     // *** images in an asynchronous manner
     slider.delegate('form:not(.skip-slide)', 'submit', function(e){
         e.preventDefault();
+        $(this).find('button[type=submit]').attr('disabled', 'disabled');
         var url = this.action;
         var handler = dataWithCode(function(data,status) {
             if(typeof data == 'string' && data.indexOf('error')!=-1) {
