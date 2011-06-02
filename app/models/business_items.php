@@ -288,4 +288,17 @@ class BusinessItems extends AppModel {
     public function imageModel() {
         return 'BusinessItems';
     }
+
+    public function itemExists($conditions) {
+        return (bool) $this->count(array(
+            'table' => array('item' => $this->table()),
+            'joins' => array(array(
+                'table' => array(
+                    'values' => Model::load('BusinessItemsValues')->table()
+                ),
+                'on' => 'item.id = values.item_id'
+            )),
+            'conditions' => $conditions
+        ));
+    }
 }

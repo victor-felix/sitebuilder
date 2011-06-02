@@ -63,8 +63,11 @@ class Articles extends BusinessItems {
 
     public function articleExists($feed_id, $guid) {
         $guid = $this->filterGuid($guid);
-        $model = Model::load('BusinessItemsValues');
-        return $model->itemExists(compact('feed_id', 'guid'));
+        return $this->itemExists(array(
+            'item.parent_id' => $feed_id,
+            'values.field' => 'guid',
+            'values.value' => $guid
+        ));
     }
 
     public function addToFeed($feed, $item) {
@@ -75,7 +78,7 @@ class Articles extends BusinessItems {
         $author = $item->get_author();
         $article = array(
             'site_id' => $feed->site_id,
-            'feed_id' => $feed->id,
+            'parent_id' => $feed->id,
             'guid' => $this->filterGuid($item->get_id()),
             'link' => $item->get_link(),
             'title' => $item->get_title(),
@@ -84,13 +87,6 @@ class Articles extends BusinessItems {
             'pubdate' => $item->get_date('Y-m-d H:i:s'),
             'format' => 'html'
         );
-
-        try {
-            if(!is_null($feed->category_id)) {
-                $article['parent_id'] = $feed->category_id;
-            }
-        }
-        catch(Exception $e) {}
 
         try {
             $this->begin();

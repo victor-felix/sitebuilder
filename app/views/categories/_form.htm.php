@@ -44,7 +44,7 @@
             $classname = '';
             if($category->id) $classname .= !$category->hasFeed() ? 'hidden' : '';
             else $classname .= 'populate-based';
-            $feed = $category->id ? $category->feed()->link : '';
+            $feed = $category->id ? $category->feed_url : '';
         ?>
         <div class="form-grid-460 first auto <?php echo $classname ?>">
             <?php echo $this->form->input('feed', array(
