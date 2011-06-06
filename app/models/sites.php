@@ -226,4 +226,8 @@ class SiteLogos {
 
         return $config;
     }
+
+    public function imageModel() {
+        return 'SiteLogos';
+    }
 }
