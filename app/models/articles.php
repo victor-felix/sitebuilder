@@ -7,7 +7,6 @@ require_once 'lib/dom/SimpleHtmlDom.php';
 class Articles extends BusinessItems {
     protected $typeName = 'Artigo';
     protected $fields = array(
-        'feed_id' => array(),
         'guid' => array(),
         'link' => array(),
         'pubdate' => array(),

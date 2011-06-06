@@ -237,13 +237,21 @@ class Categories extends AppModel {
         if($is_empty || $this->data['feed'] != $this->data['feed_url']) {
             $children = $this->childrenItems();
             $this->deleteSet(Model::load('BusinessItems'), $children);
+            $this->update(array(
+                'conditions' => array('id' => $this->id)
+            ), array(
+                'feed_url' => ''
+            ));
         }
 
         if($is_set && !$is_empty && $this->data['feed'] != $this->data['feed_url']) {
-            $this->updateAttributes(array(
-                'feed_url' => $this->data['feed']
+            $this->feed_url = $this->data['feed'];
+            $this->update(array(
+                'conditions' => array('id' => $this->id)
+            ), array(
+                'feed_url' => $this->feed_url
             ));
-            $this->save();
+
             $this->updateArticles();
         }
     }
