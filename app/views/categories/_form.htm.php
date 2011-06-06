@@ -57,8 +57,8 @@
         <div class="form-grid-460 first">
             <?php echo $this->form->input('visibility', array(
                 'type' => 'checkbox',
-                'checked' => 'checked',
-                'label' => __('Visibilidade')
+                'label' => __('Visibilidade'),
+                'value' => 1
             )) ?>
             <label for="FormVisibility" class="checkbox"><?php echo __('Esta categoria está visível e disponível para os usuários do site mobile') ?></label>
         </div>
