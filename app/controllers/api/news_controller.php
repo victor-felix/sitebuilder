@@ -6,7 +6,7 @@ class NewsController extends ApiController {
     protected $uses = array('Articles');
 
     public function api_index($slug = null) {
-        $news_category = $this->getCurrentSite()->newsCategory();
+        $news_category = $this->site->newsCategory();
         $news = $this->Articles->allOrdered(array(
             'conditions' => array(
                 'site_id' => $this->site->id,
