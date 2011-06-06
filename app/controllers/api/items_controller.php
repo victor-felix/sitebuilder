@@ -34,7 +34,7 @@ class ItemsController extends ApiController {
     }
 
     public function api_by_category($slug = null) {
-        $categories = Model::load('Categories')->allBySiteId($this->site->id);
+        $categories = Model::load('Categories')->allBySiteIdAndVisibility($this->site->id, 1);
         $items = array();
 
         foreach($categories as $category) {

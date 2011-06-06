@@ -2,7 +2,7 @@
 
 class CategoriesController extends AppController {
     public function index() {
-        $categories = $this->Categories->allBySiteId($this->getCurrentSite()->id);
+        $categories = $this->getCurrentSite()->categories();
         $tree = array();
         foreach($categories as $category) {
             $tree[$category->parent_id] []= $category;

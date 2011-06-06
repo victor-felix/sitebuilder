@@ -72,7 +72,12 @@ class Sites extends AppModel {
     }
 
     public function categories() {
-        return Model::load('Categories')->allBySiteId($this->id);
+        return Model::load('Categories')->all(array(
+            'conditions' => array(
+                'site_id' => $this->id,
+                'visibility >' => -1
+            )
+        ));
     }
 
     public function businessItems($type, $conditions, $params) {
@@ -130,8 +135,9 @@ class Sites extends AppModel {
                         'country' => $data['country']
                     ));
                     $geocode = GoogleGeocoding::geocode($address);
-                    $data['latitude'] = $geocode->results[0]->geometry->location->lat;
-                    $data['longitude'] = $geocode->results[0]->geometry->location->lng;
+                    $location = $geocode->results[0]->geometry->location;
+                    $data['latitude'] = $location->lat;
+                    $data['longitude'] = $location->lng;
                 }
                 catch(Exception $e) {
                     $data['latitude'] = $data['longitude'] = null;

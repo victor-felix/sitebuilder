@@ -106,7 +106,7 @@ class Categories extends AppModel {
     }
 
     public function recursiveByParentId($parent_id, $depth) {
-        $results = $this->allByParentId($parent_id);
+        $results = $this->allByParentIdAndVisibility($parent_id, 1);
 
         if($depth > 0) {
             foreach($results as $result) {

@@ -5,7 +5,7 @@ require 'app/controllers/api/api_controller.php';
 class CategoriesController extends ApiController {
     public function api_index($slug = null) {
         $this->respondToJSON(array(
-            'categories' => $this->Categories->allBySiteId($this->site->id)
+            'categories' => $this->Categories->allBySiteIdAndVisibility($this->site->id, 1)
         ));
     }
     
