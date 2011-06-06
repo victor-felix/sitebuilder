@@ -5,7 +5,8 @@ require_once 'lib/geocoding/GoogleGeocoding.php';
 class Sites extends AppModel {
     protected $getters = array('feed_url');
     protected $beforeSave = array('getLatLng');
-    protected $afterSave = array('saveFeed', 'saveLogo', 'createRootCategory');
+    protected $afterSave = array('saveLogo', 'createRootCategory', 'createNewsCategory',
+        'updateFeed');
     protected $beforeDelete = array('checkAndDeleteFeed', 'deleteImages', 'deleteCategories',
         'deleteLogo');
     protected $validates = array(
@@ -39,24 +40,21 @@ class Sites extends AppModel {
         ),
     );
 
-    public function feed() {
-        return Model::load('Feeds')->firstBySiteIdAndCategoryId($this->id, 0);
-    }
-
-    public function topArticles() {
-        $feed = $this->feed();
-        if(!is_null($feed)) {
-            return $feed->topArticles();
-        }
-        else {
-            return array();
-        }
+    public function newsCategory() {
+        return Model::load('Categories')->first(array(
+            'conditions' => array(
+                'site_id' => $this->id,
+                'visibility' => -1,
+                'title' => '__news__'
+            )
+        ));
     }
 
     public function feed_url() {
-        $feed = $this->feed();
-        if($feed) {
-            return $feed->link;
+        $category = $this->newsCategory();
+
+        if($category) {
+            return $category->feed_url;
         }
     }
 
@@ -144,9 +142,28 @@ class Sites extends AppModel {
         return $data;
     }
 
-    protected function saveFeed($created) {
-        if(array_key_exists('feed_url', $this->data)) {
-            Model::load('Feeds')->saveFeed($this, $this->data['feed_url']);
+    protected function createNewsCategory($created) {
+        if($created) {
+            $parent_id = Model::load('Categories')->firstBySiteIdAndParentId(
+                $this->id, 0
+            )->id;
+            $category = new Categories(array(
+                'site_id' => $this->id,
+                'parent_id' => $parent_id,
+                'type' => 'articles',
+                'title' => '__news__',
+                'visibility' => -1
+            ));
+            $category->save();
+        }
+    }
+    protected function updateFeed($created) {
+        if(isset($this->data['feed_url'])) {
+            $category = $this->newsCategory();
+            $category->updateAttributes(array(
+                'feed' => $this->data['feed_url']
+            ));
+            $category->save();
         }
     }
 

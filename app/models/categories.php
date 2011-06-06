@@ -1,6 +1,6 @@
 <?php
 
-require 'lib/simplepie/SimplePie.php';
+require_once 'lib/simplepie/SimplePie.php';
 
 class Categories extends AppModel {
     protected $beforeSave = array('getOrder', 'getItemType');
@@ -234,7 +234,7 @@ class Categories extends AppModel {
         $is_set = isset($this->data['feed']);
         $is_empty = $is_set && empty($this->data['feed']);
 
-        if($is_empty || $this->data['feed'] != $this->data['feed_url']) {
+        if($is_empty or $is_set && $this->data['feed'] != $this->data['feed_url']) {
             $children = $this->childrenItems();
             $this->deleteSet(Model::load('BusinessItems'), $children);
             $this->update(array(
