@@ -63,8 +63,8 @@ class Categories extends AppModel {
     }
 
     public function hasFeed() {
-        $url = $this->feed_url;
-        return !(is_null($url) or empty($url));
+        $populate = $this->populate;
+        return $populate == 'auto';
     }
 
     public function childrenCount() {
