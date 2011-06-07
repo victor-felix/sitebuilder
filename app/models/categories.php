@@ -228,31 +228,33 @@ class Categories extends AppModel {
     }
 
     protected function updateFeed($created) {
-        if(!isset($this->data['feed_url'])) {
-            $this->data['feed_url'] = '';
-        }
-        $is_set = isset($this->data['feed']);
-        $is_empty = $is_set && empty($this->data['feed']);
+        if(isset($this->data['populate']) && $this->data['populate'] == 'auto') {
+            if(!isset($this->data['feed_url'])) {
+                $this->data['feed_url'] = '';
+            }
+            $is_set = isset($this->data['feed']);
+            $is_empty = $is_set && empty($this->data['feed']);
 
-        if($is_empty or $is_set && $this->data['feed'] != $this->data['feed_url']) {
-            $children = $this->childrenItems();
-            $this->deleteSet(Model::load('BusinessItems'), $children);
-            $this->update(array(
-                'conditions' => array('id' => $this->id)
-            ), array(
-                'feed_url' => ''
-            ));
-        }
+            if($is_empty or $is_set && $this->data['feed'] != $this->data['feed_url']) {
+                $children = $this->childrenItems();
+                $this->deleteSet(Model::load('BusinessItems'), $children);
+                $this->update(array(
+                    'conditions' => array('id' => $this->id)
+                ), array(
+                    'feed_url' => ''
+                ));
+            }
 
-        if($is_set && !$is_empty && $this->data['feed'] != $this->data['feed_url']) {
-            $this->feed_url = $this->data['feed'];
-            $this->update(array(
-                'conditions' => array('id' => $this->id)
-            ), array(
-                'feed_url' => $this->feed_url
-            ));
+            if($is_set && !$is_empty && $this->data['feed'] != $this->data['feed_url']) {
+                $this->feed_url = $this->data['feed'];
+                $this->update(array(
+                    'conditions' => array('id' => $this->id)
+                ), array(
+                    'feed_url' => $this->feed_url
+                ));
 
-            $this->updateArticles();
+                $this->updateArticles();
+            }
         }
     }
 
