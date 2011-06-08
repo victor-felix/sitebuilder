@@ -158,7 +158,8 @@ class Sites extends AppModel {
                 'parent_id' => $parent_id,
                 'type' => 'articles',
                 'title' => '__news__',
-                'visibility' => -1
+                'visibility' => -1,
+                'populate' => 'auto'
             ));
             $category->save();
         }
