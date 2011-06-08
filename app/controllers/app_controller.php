@@ -1,6 +1,7 @@
 <?php
 
 require 'lib/core/security/Sanitize.php';
+require 'lib/core/storage/Session.php';
 require 'lib/utils/Auth.php';
 
 class AppController extends Controller {

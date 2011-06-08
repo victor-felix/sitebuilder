@@ -17,3 +17,9 @@ foreach($dir as $file) {
         require $file->getPathname();
     }
 }
+
+\lithium\storage\Session::config(array(
+    'default' => array(
+        'adapter' => 'Php'
+    )
+));
