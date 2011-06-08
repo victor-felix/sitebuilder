@@ -24,3 +24,12 @@ Dispatcher::applyFilter('run', function($self, $params, $chain) {
         echo \Dispatcher::dispatch();
     }
 });
+
+Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
+    $controller = $chain->next($self, $params, $chain);
+
+    $slug = $params['request']->params['slug'];
+    $controller->site(Model::load('Sites')->firstBySlug($slug));
+
+    return $controller;
+});

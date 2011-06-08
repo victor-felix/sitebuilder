@@ -1,20 +1,19 @@
 <?php
 
-require 'app/controllers/api/api_controller.php';
+namespace app\controllers\api;
 
-class NewsController extends ApiController {
-    protected $uses = array('Articles');
-
-    public function api_index($slug = null) {
+class NewsController extends \app\controllers\api\ApiController {
+    public function index() {
         $news_category = $this->site->newsCategory();
-        $news = $this->Articles->allOrdered(array(
+        $news = \Model::load('Articles')->allOrdered(array(
             'conditions' => array(
                 'site_id' => $this->site->id,
                 'parent_id' => $news_category->id
             ),
             'limit' => $this->param('limit', 10)
         ));
-        $this->respondToJSON(array(
+
+        return $this->toJSON(array(
             'articles' => $news
         ));
     }
