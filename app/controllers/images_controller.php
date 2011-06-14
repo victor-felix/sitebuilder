@@ -2,7 +2,7 @@
 
 class ImagesController extends AppController {
     public function delete($id = null) {
-        // TODO implement some security here
         $this->Images->delete($id);
+        $this->redirect($_SERVER['HTTP_REFERER']);
     }
 }
