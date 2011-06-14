@@ -52,6 +52,15 @@
     <div class="field-group">
         <div class="form-grid-460 first">
             <span class="optional"><?php echo __('Opcional') ?></span>
+            <?php echo $this->form->input('feed_title', array(
+                'label' => __('Título'),
+                'type' => 'text',
+                'class' => 'ui-text large'
+            )) ?>
+        </div>
+
+        <div class="form-grid-460 first">
+            <span class="optional"><?php echo __('Opcional') ?></span>
             <?php echo $this->form->input('feed_url', array(
                 'label' => __('Endereço do feed RSS'),
                 'type' => 'text',

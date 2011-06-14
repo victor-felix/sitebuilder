@@ -3,7 +3,7 @@
 require_once 'lib/geocoding/GoogleGeocoding.php';
 
 class Sites extends AppModel {
-    protected $getters = array('feed_url');
+    protected $getters = array('feed_url', 'feed_title');
     protected $beforeSave = array('getLatLng');
     protected $afterSave = array('saveLogo', 'createRootCategory', 'createNewsCategory',
         'updateFeed');
@@ -44,8 +44,7 @@ class Sites extends AppModel {
         return Model::load('Categories')->first(array(
             'conditions' => array(
                 'site_id' => $this->id,
-                'visibility' => -1,
-                'title' => '__news__'
+                'visibility' => -1
             )
         ));
     }
@@ -55,6 +54,14 @@ class Sites extends AppModel {
 
         if($category) {
             return $category->feed_url;
+        }
+    }
+
+    public function feed_title() {
+        $category = $this->newsCategory();
+
+        if($category) {
+            return $category->title;
         }
     }
 
@@ -168,6 +175,7 @@ class Sites extends AppModel {
         if(isset($this->data['feed_url'])) {
             $category = $this->newsCategory();
             $category->updateAttributes(array(
+                'title' => $this->data['feed_title'],
                 'feed' => $this->data['feed_url']
             ));
             $category->save();
