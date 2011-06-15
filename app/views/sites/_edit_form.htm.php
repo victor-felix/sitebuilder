@@ -228,3 +228,23 @@
         </div>
     </div>
 </fieldset>
+
+<a href="#" class="fieldset-expand"><?php echo __('fotos da empresa') ?> <span><?php echo __('opcional') ?></span></a>
+<fieldset style="display:none">
+    <h2><?php echo __('fotos da empresa') ?></h2>
+    <div class="field-group">
+        <div class="form-grid-460 first">
+            <span class="optional"><?php echo __('Opcional') ?></span>
+            <?php echo $this->form->input('photo', array(
+                'label' => __('Foto'),
+                'type' => 'file',
+                'class' => 'ui-text large'
+            )) ?>
+        </div>
+
+        <?php if($site->id && $image = $site->photo()): ?>
+            <?php echo $this->html->link('Apagar Imagem', '/images/delete/' . $image->id) ?>
+            <?php echo $this->html->image($image->link('80x80')) ?>
+        <?php endif ?>
+    </div>
+</fieldset>

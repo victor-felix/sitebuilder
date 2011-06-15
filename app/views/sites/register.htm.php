@@ -5,7 +5,8 @@
 <?php echo $this->form->create('/sites/register', array(
     'id' => 'form-register-site-info',
     'class' => 'form-register',
-    'object' => $site
+    'object' => $site,
+    'method' => 'file'
 )) ?>
 
     <?php echo $this->element('sites/edit_form', array(

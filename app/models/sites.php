@@ -5,8 +5,8 @@ require_once 'lib/geocoding/GoogleGeocoding.php';
 class Sites extends AppModel {
     protected $getters = array('feed_url', 'feed_title');
     protected $beforeSave = array('getLatLng');
-    protected $afterSave = array('saveLogo', 'createRootCategory', 'createNewsCategory',
-        'updateFeed');
+    protected $afterSave = array('saveLogo', 'savePhoto', 'createRootCategory',
+        'createNewsCategory', 'updateFeed');
     protected $beforeDelete = array('checkAndDeleteFeed', 'deleteImages', 'deleteCategories',
         'deleteLogo');
     protected $validates = array(
@@ -65,6 +65,10 @@ class Sites extends AppModel {
         }
     }
 
+    public function photo() {
+        return Model::load('Images')->firstByRecord('SitePhotos', $this->id);
+    }
+
     public function logo() {
         return Model::load('Images')->firstByRecord('SiteLogos', $this->id);
     }
@@ -115,11 +119,16 @@ class Sites extends AppModel {
 
     public function toJSON() {
         $data = array_merge($this->data, array(
-            'logo' => null
+            'logo' => null,
+            'photos' => array()
         ));
 
         if($logo = $this->logo()) {
             $data['logo'] = $logo->link();
+        }
+
+        if($photo = $this->photo()) {
+            $data['photos'] []= $photo;
         }
 
         $data['description'] = nl2br($data['description']);
@@ -208,6 +217,16 @@ class Sites extends AppModel {
         }
     }
 
+    protected function savePhoto() {
+        if(array_key_exists('photo', $this->data) && $this->data['photo']['error'] == 0) {
+            if($photo = $this->photo()) {
+                Model::load('Images')->delete($photo->id);
+            }
+
+            Model::load('Images')->upload(new SitePhotos($this->id), $this->data['photo']);
+        }
+    }
+
     protected function createRootCategory($created) {
         if($created) {
             Model::load('Categories')->createRoot($this);
@@ -238,5 +257,26 @@ class SiteLogos {
 
     public function imageModel() {
         return 'SiteLogos';
+    }
+}
+
+class SitePhotos {
+    public $id;
+
+    public function __construct($id = null) {
+        $this->id = $id;
+    }
+
+    public function resizes() {
+        $config = Config::read('SitePhotos.resizes');
+        if(is_null($config)) {
+            $config = array();
+        }
+
+        return $config;
+    }
+
+    public function imageModel() {
+        return 'SitePhotos';
     }
 }

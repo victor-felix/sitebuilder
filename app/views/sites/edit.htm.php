@@ -9,7 +9,8 @@
 <?php echo $this->form->create('/sites/edit/' . $site->id, array(
     'id' => 'form-edit-site-info',
     'class' => 'form-edit',
-    'object' => $site
+    'object' => $site,
+    'method' => 'file'
 )) ?>
 
     <?php echo $this->element('sites/edit_form', array(
