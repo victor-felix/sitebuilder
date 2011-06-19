@@ -55,7 +55,7 @@ function migrate($migration, $connection) {
         $classname::migrate($connection);
     }
     else {
-        $connection->query(utf8_decode(Filesystem::read('db/migrations/' . $migration)));
+        $connection->query(Filesystem::read('db/migrations/' . $migration));
     }
     $connection->create(array(
         'table' => 'schema_migrations',

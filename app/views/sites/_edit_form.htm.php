@@ -8,7 +8,7 @@
                 'class' => 'ui-text large'
             )) ?>
         </div>
-        
+
         <div class="form-grid-460">
             <span class="optional"><?php echo __('Opcional') ?></span>
             <?php echo $this->form->input('description', array(
@@ -19,7 +19,7 @@
             )) ?>
             <small><?php echo __('Forneça uma breve descrição sobre a empresa e suas atividades. Máximo de 500 caracteres.') ?></small>
         </div>
-        
+
         <div class="form-grid-460 first">
             <div class="site-mobile-url">
             <div class="input text">
@@ -83,7 +83,7 @@
                 'class' => 'ui-text large'
             )) ?>
         </div>
-        
+
         <div class="form-grid-220 first">
             <span class="optional"><?php echo __('Opcional') ?></span>
             <?php echo $this->form->input('number', array(
@@ -92,7 +92,7 @@
                 'class' => 'ui-text'
             )) ?>
         </div>
-        
+
         <div class="form-grid-220">
             <span class="optional"><?php echo __('Opcional') ?></span>
             <?php echo $this->form->input('complement', array(
@@ -101,7 +101,7 @@
                 'class' => 'ui-text'
             )) ?>
         </div>
-        
+
         <div class="form-grid-460 first">
             <span class="optional"><?php echo __('Opcional') ?></span>
             <?php echo $this->form->input('zone', array(
@@ -110,7 +110,29 @@
                 'class' => 'ui-text large'
             )) ?>
         </div>
-        
+
+        <div class="form-grid-220 first">
+            <span class="optional"><?php echo __('Opcional') ?></span>
+            <?php echo $this->form->input('country', array(
+                'label' => __('País'),
+                'type' => 'select',
+                'empty' => array(''),
+                'options' => $countries,
+                'class' => 'ui-select'
+            )) ?>
+        </div>
+
+        <div class="form-grid-220">
+            <span class="optional"><?php echo __('Opcional') ?></span>
+            <?php echo $this->form->input('state', array(
+                'label' => __('Estado'),
+                'type' => 'select',
+                //'options' => Config::read('States'),
+                'class' => 'ui-select',
+                'empty' => ''
+            )) ?>
+        </div>
+
         <div class="form-grid-220 first">
             <span class="optional"><?php echo __('Opcional') ?></span>
             <?php echo $this->form->input('city', array(
@@ -119,19 +141,8 @@
                 'class' => 'ui-text'
             )) ?>
         </div>
-        
+
         <div class="form-grid-220">
-            <span class="optional"><?php echo __('Opcional') ?></span>
-            <?php echo $this->form->input('state', array(
-                'label' => __('Estado'),
-                'type' => 'select',
-                'options' => Config::read('States'),
-                'class' => 'ui-select',
-                'empty' => ''
-            )) ?>
-        </div>
-        
-        <div class="form-grid-220 first">
             <span class="optional"><?php echo __('Opcional') ?></span>
             <?php echo $this->form->input('zip', array(
                 'label' => __('CEP'),
@@ -139,16 +150,7 @@
                 'class' => 'ui-text'
             )) ?>
         </div>
-        
-        <div class="form-grid-220">
-            <span class="optional"><?php echo __('Opcional') ?></span>
-            <?php echo $this->form->input('country', array(
-                'label' => __('País'),
-                'type' => 'select',
-                'options' => Config::read('Countries'),
-                'class' => 'ui-select'
-            )) ?>
-        </div>
+
     </div>
 </fieldset>
 
@@ -156,7 +158,7 @@
 <fieldset style="display:none">
     <h2><?php echo __('informações de contato') ?></h2>
     <div class="field-group">
-        
+
         <div class="form-grid-220 first">
             <span class="optional"><?php echo __('Opcional') ?></span>
             <?php echo $this->form->input('phone', array(
@@ -166,7 +168,7 @@
             )) ?>
             <small><?php echo __('Ex.: (00) 0000-0000') ?></small>
         </div>
-        
+
         <div class="form-grid-460 first">
             <span class="optional"><?php echo __('Opcional') ?></span>
             <?php echo $this->form->input('email', array(
@@ -206,7 +208,7 @@
             )) ?>
             <small><?php echo __('Ex: http://www.facebook.com/seuusuario/') ?></small>
         </div>
-        
+
         <div class="form-grid-460 first">
             <span class="optional"><?php echo __('Opcional') ?></span>
             <?php echo $this->form->input('twitter', array(
@@ -216,7 +218,7 @@
             )) ?>
             <small><?php echo __('Ex: http://www.twitter.com/seuusuario/') ?></small>
         </div>
-        
+
         <div class="form-grid-460 first">
             <span class="optional"><?php echo __('Opcional') ?></span>
             <?php echo $this->form->input('website', array(

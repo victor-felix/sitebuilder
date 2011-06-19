@@ -42,7 +42,8 @@ class SitesController extends AppController {
             }
         }
         $this->set(array(
-            'site' => $site
+            'site' => $site,
+            'countries' => Model::load('Countries')->toList()
         ));
     }
 
