@@ -9,7 +9,6 @@ class Categories extends AppModel {
     protected $defaultScope = array(
         'order' => '`order` ASC'
     );
-
     protected $validates = array(
         'title' => array(
             array(
@@ -22,6 +21,14 @@ class Categories extends AppModel {
             )
         )
     );
+
+    public function __construct($data = array()) {
+        parent::__construct($data);
+
+        if(is_null($this->id)) {
+            $this->data['visibility'] = true;
+        }
+    }
 
     public function createRoot($site) {
         $root = Model::load('Segments')->firstById($site->segment)->root;
