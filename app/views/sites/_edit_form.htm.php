@@ -127,9 +127,8 @@
             <?php echo $this->form->input('state', array(
                 'label' => __('Estado'),
                 'type' => 'select',
-                //'options' => Config::read('States'),
                 'class' => 'ui-select',
-                'empty' => ''
+                'empty' => array('')
             )) ?>
         </div>
 
