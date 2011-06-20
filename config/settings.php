@@ -19,5 +19,3 @@ require 'config/app/ui.php';
 
 I18n::locale('en');
 YamlDictionary::path('config/segments');
-
-date_default_timezone_set('UTC');

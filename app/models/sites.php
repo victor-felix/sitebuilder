@@ -40,6 +40,14 @@ class Sites extends AppModel {
         ),
     );
 
+    public function __construct($data = array()) {
+        parent::__construct($data);
+
+        if(!isset($this->data['timezone']) or !$this->data['timezone']) {
+            $this->timezone = 'America/Sao_Paulo';
+        }
+    }
+
     public function newsCategory() {
         return Model::load('Categories')->first(array(
             'conditions' => array(
@@ -117,10 +125,39 @@ class Sites extends AppModel {
         return $site;
     }
 
+    public function dateFormats() {
+        return array(
+            'd/m/Y' => 'DD/MM/YYYY',
+            'm/d/Y' => 'MM/DD/YYYY',
+            'Y-m-d' => 'YYYY-MM-DD'
+        );
+    }
+
+    public function timezones() {
+        $timezones = DateTimeZone::listIdentifiers();
+        $options = array();
+
+        foreach($timezones as $tz) {
+            $options[$tz] = str_replace('_', ' ', $tz);
+        }
+
+        return $options;
+    }
+
+    public function timezone() {
+        $tz_site = new DateTimeZone($this->timezone);
+        $tz_server = new DateTimeZone(date_default_timezone_get());
+        $time_site = new DateTime('now', $tz_site);
+        $time_server = new DateTime('now', $tz_server);
+
+        return $tz_server->getOffset($time_site) / 3600;
+    }
+
     public function toJSON() {
         $data = array_merge($this->data, array(
             'logo' => null,
-            'photos' => array()
+            'photos' => array(),
+            'timezone' => $this->timezone()
         ));
 
         if($logo = $this->logo()) {

@@ -25,7 +25,7 @@ class Categories extends AppModel {
     public function __construct($data = array()) {
         parent::__construct($data);
 
-        if(is_null($this->id)) {
+        if(is_null($this->id) && !isset($this->data['visibility'])) {
             $this->data['visibility'] = true;
         }
     }

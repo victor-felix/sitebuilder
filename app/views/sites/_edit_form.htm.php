@@ -151,6 +151,24 @@
             )) ?>
         </div>
 
+        <div class="form-grid-220 first">
+            <?php echo $this->form->input('timezone', array(
+                'label' => __('Fuso Horário'),
+                'type' => 'select',
+                'class' => 'ui-select',
+                'options' => $site->timezones()
+            )) ?>
+        </div>
+
+        <div class="form-grid-220">
+            <?php echo $this->form->input('date_format', array(
+                'label' => __('Formato de Data'),
+                'type' => 'select',
+                'class' => 'ui-select',
+                'options' => $site->dateFormats()
+            )) ?>
+        </div>
+
     </div>
 </fieldset>
 
