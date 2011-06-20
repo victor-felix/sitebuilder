@@ -16,7 +16,8 @@
     <?php echo $this->element('sites/edit_form', array(
         'action' => 'edit',
         'site' => $site,
-        'countries' => $countries
+        'countries' => $countries,
+        'states' => $states
     )) ?>
 
 <fieldset class="actions">

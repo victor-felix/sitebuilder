@@ -5,7 +5,8 @@ class States extends AppModel {
 
     public function toListByCountryId($country_id) {
         return $this->toList(array(
-            'conditions' => array('country_id' => $country_id)
+            'conditions' => array('country_id' => $country_id),
+            'order' => 'name ASC'
         ));
     }
 }

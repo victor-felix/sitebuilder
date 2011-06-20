@@ -131,6 +131,22 @@ class Sites extends AppModel {
             $data['photos'] []= $photo;
         }
 
+        if($this->country_id) {
+            $country = Model::load('Countries')->firstById($this->country_id)->name;
+            $data['country'] = $country;
+        }
+        else {
+            $data['country'] = '';
+        }
+
+        if($this->state_id) {
+            $state = Model::load('States')->firstById($this->state_id)->name;
+            $data['state'] = $state;
+        }
+        else {
+            $data['state'] = '';
+        }
+
         $data['description'] = nl2br($data['description']);
 
         return $data;

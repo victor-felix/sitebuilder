@@ -113,7 +113,7 @@
 
         <div class="form-grid-220 first">
             <span class="optional"><?php echo __('Opcional') ?></span>
-            <?php echo $this->form->input('country', array(
+            <?php echo $this->form->input('country_id', array(
                 'label' => __('País'),
                 'type' => 'select',
                 'empty' => array(''),
@@ -124,10 +124,11 @@
 
         <div class="form-grid-220">
             <span class="optional"><?php echo __('Opcional') ?></span>
-            <?php echo $this->form->input('state', array(
+            <?php echo $this->form->input('state_id', array(
                 'label' => __('Estado'),
                 'type' => 'select',
                 'class' => 'ui-select',
+                'options' => $states,
                 'empty' => array('')
             )) ?>
         </div>

@@ -278,19 +278,19 @@ $.extend($.easing, {
     });
 
     var site_edit = $('#form-edit-site-info, #form-register-site-info');
-    site_edit.delegate('#FormCountry', 'change', function() {
+    site_edit.delegate('#FormCountryId', 'change', function() {
         var data = {
             country_id: $(this).val()
         };
-        $.get('/states/index', data, function(response) {
-            var states = $("#FormState");
+
+        $.get('/states', data, function(response) {
+            var states = $("#FormStateId");
             states.children().not(':first-child').remove();
             $.each(response, function(key, value) {
                 $('<option>').html(value).attr('value', key).appendTo(states);
             });
         });
     });
-
 })(jQuery);
 
 $(function() {
