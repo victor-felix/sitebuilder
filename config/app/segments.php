@@ -22,7 +22,8 @@ Config::write('Segments', array(
     'corporate' => array(
         'title' => 'Corporate',
         'themes' => array(
-            'govrj' => 'govrj'
+					'govrj' => 'govrj',
+					'cahpcu' => 'cahpcu'
         ),
         'skins' => array('ae3232', '278740', '326cae'),
         'items' => array('articles', 'events', 'products', 'links'),
