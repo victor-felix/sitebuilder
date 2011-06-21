@@ -294,9 +294,9 @@ class BusinessItems extends AppModel {
             'table' => array('item' => $this->table()),
             'joins' => array(array(
                 'table' => array(
-                    'values' => Model::load('BusinessItemsValues')->table()
+                    '`values`' => Model::load('BusinessItemsValues')->table()
                 ),
-                'on' => 'item.id = values.item_id'
+                'on' => 'item.id = `values`.item_id'
             )),
             'conditions' => $conditions
         ));

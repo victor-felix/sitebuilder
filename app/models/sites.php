@@ -3,10 +3,10 @@
 require_once 'lib/geocoding/GoogleGeocoding.php';
 
 class Sites extends AppModel {
-    protected $getters = array('feed_url');
+    protected $getters = array('feed_url', 'feed_title');
     protected $beforeSave = array('getLatLng');
-    protected $afterSave = array('saveLogo', 'createRootCategory', 'createNewsCategory',
-        'updateFeed');
+    protected $afterSave = array('saveLogo', 'savePhoto', 'createRootCategory',
+        'createNewsCategory', 'updateFeed');
     protected $beforeDelete = array('checkAndDeleteFeed', 'deleteImages', 'deleteCategories',
         'deleteLogo');
     protected $validates = array(
@@ -40,12 +40,19 @@ class Sites extends AppModel {
         ),
     );
 
+    public function __construct($data = array()) {
+        parent::__construct($data);
+
+        if(!isset($this->data['timezone']) or !$this->data['timezone']) {
+            $this->timezone = 'America/Sao_Paulo';
+        }
+    }
+
     public function newsCategory() {
         return Model::load('Categories')->first(array(
             'conditions' => array(
                 'site_id' => $this->id,
-                'visibility' => -1,
-                'title' => '__news__'
+                'visibility' => -1
             )
         ));
     }
@@ -56,6 +63,18 @@ class Sites extends AppModel {
         if($category) {
             return $category->feed_url;
         }
+    }
+
+    public function feed_title() {
+        $category = $this->newsCategory();
+
+        if($category) {
+            return $category->title;
+        }
+    }
+
+    public function photo() {
+        return Model::load('Images')->firstByRecord('SitePhotos', $this->id);
     }
 
     public function logo() {
@@ -106,13 +125,63 @@ class Sites extends AppModel {
         return $site;
     }
 
+    public function dateFormats() {
+        return array(
+            'd/m/Y' => 'DD/MM/YYYY',
+            'm/d/Y' => 'MM/DD/YYYY',
+            'Y-m-d' => 'YYYY-MM-DD'
+        );
+    }
+
+    public function timezones() {
+        $timezones = DateTimeZone::listIdentifiers();
+        $options = array();
+
+        foreach($timezones as $tz) {
+            $options[$tz] = str_replace('_', ' ', $tz);
+        }
+
+        return $options;
+    }
+
+    public function timezone() {
+        $tz_site = new DateTimeZone($this->timezone);
+        $tz_server = new DateTimeZone(date_default_timezone_get());
+        $time_site = new DateTime('now', $tz_site);
+        $time_server = new DateTime('now', $tz_server);
+
+        return $tz_server->getOffset($time_site) / 3600;
+    }
+
     public function toJSON() {
         $data = array_merge($this->data, array(
-            'logo' => null
+            'logo' => null,
+            'photos' => array(),
+            'timezone' => $this->timezone()
         ));
 
         if($logo = $this->logo()) {
             $data['logo'] = $logo->link();
+        }
+
+        if($photo = $this->photo()) {
+            $data['photos'] []= $photo;
+        }
+
+        if($this->country_id) {
+            $country = Model::load('Countries')->firstById($this->country_id)->name;
+            $data['country'] = $country;
+        }
+        else {
+            $data['country'] = '';
+        }
+
+        if($this->state_id) {
+            $state = Model::load('States')->firstById($this->state_id)->name;
+            $data['state'] = $state;
+        }
+        else {
+            $data['state'] = '';
         }
 
         $data['description'] = nl2br($data['description']);
@@ -158,7 +227,8 @@ class Sites extends AppModel {
                 'parent_id' => $parent_id,
                 'type' => 'articles',
                 'title' => '__news__',
-                'visibility' => -1
+                'visibility' => -1,
+                'populate' => 'auto'
             ));
             $category->save();
         }
@@ -167,6 +237,7 @@ class Sites extends AppModel {
         if(isset($this->data['feed_url'])) {
             $category = $this->newsCategory();
             $category->updateAttributes(array(
+                'title' => $this->data['feed_title'],
                 'feed' => $this->data['feed_url']
             ));
             $category->save();
@@ -199,6 +270,16 @@ class Sites extends AppModel {
         }
     }
 
+    protected function savePhoto() {
+        if(array_key_exists('photo', $this->data) && $this->data['photo']['error'] == 0) {
+            if($photo = $this->photo()) {
+                Model::load('Images')->delete($photo->id);
+            }
+
+            Model::load('Images')->upload(new SitePhotos($this->id), $this->data['photo']);
+        }
+    }
+
     protected function createRootCategory($created) {
         if($created) {
             Model::load('Categories')->createRoot($this);
@@ -225,5 +306,30 @@ class SiteLogos {
         }
 
         return $config;
+    }
+
+    public function imageModel() {
+        return 'SiteLogos';
+    }
+}
+
+class SitePhotos {
+    public $id;
+
+    public function __construct($id = null) {
+        $this->id = $id;
+    }
+
+    public function resizes() {
+        $config = Config::read('SitePhotos.resizes');
+        if(is_null($config)) {
+            $config = array();
+        }
+
+        return $config;
+    }
+
+    public function imageModel() {
+        return 'SitePhotos';
     }
 }

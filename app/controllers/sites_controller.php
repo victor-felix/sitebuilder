@@ -41,8 +41,18 @@ class SitesController extends AppController {
                 $this->redirect($redirect_to);
             }
         }
+
+        if($site->state_id) {
+            $states = Model::load('States')->toListByCountryId($site->country_id);
+        }
+        else {
+            $states = array();
+        }
+
         $this->set(array(
-            'site' => $site
+            'site' => $site,
+            'countries' => Model::load('Countries')->toList(),
+            'states' => $states
         ));
     }
 

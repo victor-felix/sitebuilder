@@ -15,16 +15,9 @@
             )) ?>
         </div>
 
-        <?php
-            // juliogreff says:
-            // to delete image, use something like this:
-            // if($item->id && $image = $item->image()):
-            //     echo $this->html->link('/images/delete/' . $image->id)
-            // endif
-            // to get the image's path, use $image->link('80x80')
-            // the default size is 80x80, try to use that.
-            // if it's really necessary to use another size, change it in the
-            // config file or just tell me and I can change it for you
-        ?>
+        <?php if($item->id && $image = $item->image()): ?>
+            <?php echo $this->html->link('Apagar Imagem', '/images/delete/' . $image->id) ?>
+            <?php echo $this->html->image($image->link('80x80')) ?>
+        <?php endif ?>
     </div>
 </fieldset>

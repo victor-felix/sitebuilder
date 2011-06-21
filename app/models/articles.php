@@ -42,24 +42,6 @@ class Articles extends BusinessItems {
         return $this->topByFeedId($feed->id);
     }
 
-    public function allByFeedId($feed_id, $limit = null) {
-        return $this->all(array(
-            'table' => array('a' => $this->table()),
-            'fields' => 'a.*',
-            'joins' => 'JOIN business_items_values AS v ' .
-                'ON a.id = v.item_id',
-            'conditions' => array(
-                'v.field' => 'feed_id',
-                'v.value' => $feed_id
-            ),
-            'limit' => $limit
-        ));
-    }
-
-    public function topByFeedId($feed_id) {
-        return $this->allByFeedId($feed_id, Config::read('Articles.limit'));
-    }
-
     public function articleExists($feed_id, $guid) {
         $guid = $this->filterGuid($guid);
         return $this->itemExists(array(
@@ -82,8 +64,8 @@ class Articles extends BusinessItems {
             'link' => $item->get_link(),
             'title' => $item->get_title(),
             'description' => $this->cleanupHtml($item->get_content()),
+            'pubdate' => gmdate('Y-m-d H:i:s', $item->get_date('U')),
             'author' => $author ? $author->get_name() : '',
-            'pubdate' => $item->get_date('Y-m-d H:i:s'),
             'format' => 'html'
         );
 
@@ -202,6 +184,9 @@ class Articles extends BusinessItems {
     protected function filterGuid($guid) {
         if(preg_match("%^http://www.rj.gov.br/web/guest/exibeconteudo;.*articleId=(\d+)%", $guid, $result)) {
             $guid = "http://www.rj.gov.br/web/guest/exibeconteudo?articleId=" . $result[1];
+        }
+        else if(preg_match("%^http://www.rj.gov.br/web/seeduc/exibeconteudo;.*articleId=(\d+)%", $guid, $result)) {
+            $guid = "http://www.rj.gov.br/web/seeduc/exibeconteudo?articleId=" . $result[1];
         }
 
         return $guid;
