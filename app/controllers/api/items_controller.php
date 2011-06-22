@@ -28,6 +28,8 @@ class ItemsController extends ApiController {
 
     public function api_view($slug = null, $id = null) {
         $bi = $this->BusinessItems->firstById($id);
+        $type = Inflector::camelize($bi->type);
+        $bi = Model::load($type)->firstById($id);
         $this->respondToJSON(array(
             $bi->type => $bi
         ));
