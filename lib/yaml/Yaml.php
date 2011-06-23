@@ -12,7 +12,12 @@ class Yaml {
     public function get($key, $split_key = null, $index = 0, $context = null) {
         if(is_null($split_key)) {
             $context = $this->content;
-            $split_key = explode('.', $key);
+            if(preg_match('/\s/', $key)) {
+                $split_key = (array) $key;
+            }
+            else {
+                $split_key = explode('.', $key);
+            }
         }
 
         $current_key = $split_key[$index];
