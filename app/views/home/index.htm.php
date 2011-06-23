@@ -17,5 +17,5 @@
     </li>
 </ul>
 
-<h2 class="porque"><?php echo __('Por que ser <strong>mobi</strong>?') ?></h2>
+<h2 class="porque"><?php echo s('home/index.being_mobi') ?></h2>
 <?php echo $this->html->image('home/facts.png') ?>

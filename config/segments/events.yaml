@@ -10,5 +10,7 @@
     features2_description: 'Todas as sessões do seu portal atualizadas via RSS automaticamente;'
     features3_description: 'Tecnologia de renderização que possibilita que seu mobi site seja visualizado perfeitamente em mais de 6 mil aparelhos;'
     features4_description: 'Integração com Twitter, Facebook e Google Maps;'
+    getting_started: 'crie seu mobi já!'
+    being_mobi: 'Por que ser <strong>mobi</strong>?'
 'sites/finished':
     categories: 'Adicione o cardápio de seu restaurante ›'
