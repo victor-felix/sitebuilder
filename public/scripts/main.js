@@ -277,6 +277,20 @@ $.extend($.easing, {
         children.add(li).slideUp();
     });
 
+    var site_edit = $('#form-edit-site-info, #form-register-site-info');
+    site_edit.delegate('#FormCountryId', 'change', function() {
+        var data = {
+            country_id: $(this).val()
+        };
+
+        $.get('/states', data, function(response) {
+            var states = $("#FormStateId");
+            states.children().not(':first-child').remove();
+            $.each(response, function(key, value) {
+                $('<option>').html(value).attr('value', key).appendTo(states);
+            });
+        });
+    });
 })(jQuery);
 
 $(function() {

@@ -24,7 +24,7 @@
             <div class="get-started">
                 <h2><?php echo s('home/index.title') ?></h2>
                 <p class="subtitle"><?php echo s('home/index.subtitle') ?></p>
-                <?php echo $this->html->link(__('crie seu mobi já!'), '/register') ?>
+                <?php echo $this->html->link(s('home/index.getting_started'), '/register') ?>
             </div>
 
             <div id="slideshow">

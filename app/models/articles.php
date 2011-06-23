@@ -64,8 +64,8 @@ class Articles extends BusinessItems {
             'link' => $item->get_link(),
             'title' => $item->get_title(),
             'description' => $this->cleanupHtml($item->get_content()),
+            'pubdate' => gmdate('Y-m-d H:i:s', $item->get_date('U')),
             'author' => $author ? $author->get_name() : '',
-            'pubdate' => $item->get_date('Y-m-d H:i:s'),
             'format' => 'html'
         );
 

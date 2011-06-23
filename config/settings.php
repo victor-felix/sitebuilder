@@ -15,8 +15,7 @@ Config::write('Sites.blacklist', array('feedback', 'blog', 'restaurant', 'suppor
 
 require 'config/app/segments.php';
 require 'config/app/resizes.php';
+require 'config/app/ui.php';
 
 I18n::locale('en');
 YamlDictionary::path('config/segments');
-
-date_default_timezone_set('UTC');
