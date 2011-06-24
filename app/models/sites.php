@@ -226,7 +226,7 @@ class Sites extends AppModel {
                 'site_id' => $this->id,
                 'parent_id' => $parent_id,
                 'type' => 'articles',
-                'title' => '__news__',
+                'title' => 'Últimas Notícias',
                 'visibility' => -1,
                 'populate' => 'auto'
             ));
