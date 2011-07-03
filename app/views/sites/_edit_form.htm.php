@@ -1,29 +1,29 @@
 <fieldset>
-    <h2><?php echo __('informações do negócio') ?></h2>
+    <h2><?php echo s('details about your business') ?></h2>
     <div class="field-group">
         <div class="form-grid-460 first">
             <?php echo $this->form->input('title', array(
-                'label' => __('Nome da empresa'),
+                'label' => s('Name of business'),
                 'type' => 'text',
                 'class' => 'ui-text large'
             )) ?>
         </div>
 
         <div class="form-grid-460">
-            <span class="optional"><?php echo __('Opcional') ?></span>
+            <span class="optional"><?php echo s('Optional') ?></span>
             <?php echo $this->form->input('description', array(
-                'label' => __('Descrição da empresa'),
+                'label' => s('Description of business'),
                 'type' => 'textarea',
                 'class' => 'ui-textarea large',
                 'maxlenght' => 500
             )) ?>
-            <small><?php echo __('Forneça uma breve descrição sobre a empresa e suas atividades. Máximo de 500 caracteres.') ?></small>
+            <small><?php echo s('Give a brief description baout your business and related activities. Max of 500 chars.') ?></small>
         </div>
 
         <div class="form-grid-460 first">
             <div class="site-mobile-url">
             <div class="input text">
-                <label for="FormSlug"><?php echo __('Endereço do site mobile') ?></label>
+                <label for="FormSlug"><?php echo s('url of mobile site') ?></label>
                 <p class="meumobi-url">
                     <span>http://</span>
                     <?php echo $this->form->input('slug', array(
@@ -38,83 +38,83 @@
             </div>
             </div>
             <?php if($action == 'register'): ?>
-                <small><?php echo __('Escolha o seu endereço com cuidado, você não poderá alterá-lo posteriormente.') ?></small>
+                <small><?php echo s("Be careful, you couldn't change your url later") ?></small>
             <?php else: ?>
-                <small><?php echo __('Você não pode alterar o endereço de seu site mobi.') ?></small>
+                <small><?php echo s("You can't change the url of your mobile site") ?></small>
             <?php endif ?>
         </div>
     </div>
 </fieldset>
 
-<a href="#" class="fieldset-expand"><?php echo __('fonte de notícias rss') ?> <span><?php echo __('opcional') ?></span></a>
+<a href="#" class="fieldset-expand"><?php echo s('News feed - RSS') ?> <span><?php echo s('Optional') ?></span></a>
 <fieldset style="display:none">
-    <h2><?php echo __('fonte de notícias rss') ?></h2>
+    <h2><?php echo s('News feed - RSS') ?></h2>
     <div class="field-group">
         <div class="form-grid-460 first">
-            <span class="optional"><?php echo __('Opcional') ?></span>
+            <span class="optional"><?php echo s('Optional') ?></span>
             <?php echo $this->form->input('feed_title', array(
-                'label' => __('Título'),
+                'label' => s('Title'),
                 'type' => 'text',
                 'class' => 'ui-text large'
             )) ?>
         </div>
 
         <div class="form-grid-460 first">
-            <span class="optional"><?php echo __('Opcional') ?></span>
+            <span class="optional"><?php echo s('Optional') ?></span>
             <?php echo $this->form->input('feed_url', array(
-                'label' => __('Endereço do feed RSS'),
+                'label' => s('url of RSS feed'),
                 'type' => 'text',
                 'class' => 'ui-text large'
             )) ?>
-            <small><?php echo __('RSS é um formato de arquivo disponibilizado na maioria dos sites e blogs que permite que um site ou aplicativo externo acesse suas notícias. Você pode utilizar o RSS do seu site para alimentar a seção de notícias do seu site mobi.') ?></small>
+            <small><?php echo s('RSS (most commonly expanded as "Really Simple Syndication") is a family of web feed formats used to publish frequently updated works—such as blog entries, news headlines—in a standardized format. You can use it to feed news section of your mobi site') ?></small>
         </div>
     </div>
 </fieldset>
 
-<a href="#" class="fieldset-expand"><?php echo __('localização') ?> <span><?php echo __('opcional') ?></span></a>
+<a href="#" class="fieldset-expand"><?php echo s('Location') ?> <span><?php echo s('Optional') ?></span></a>
 <fieldset style="display:none">
-    <h2><?php echo __('localização') ?></h2>
+    <h2><?php echo s('Location') ?></h2>
     <div class="field-group">
         <div class="form-grid-460 first">
-            <span class="optional"><?php echo __('Opcional') ?></span>
+            <span class="optional"><?php echo s('Optional') ?></span>
             <?php echo $this->form->input('street', array(
-                'label' => __('Endereço'),
+                'label' => s('Street'),
                 'type' => 'text',
                 'class' => 'ui-text large'
             )) ?>
         </div>
 
         <div class="form-grid-220 first">
-            <span class="optional"><?php echo __('Opcional') ?></span>
+            <span class="optional"><?php echo s('Optional') ?></span>
             <?php echo $this->form->input('number', array(
-                'label' => __('Número'),
+                'label' => s('Number'),
                 'type' => 'text',
                 'class' => 'ui-text'
             )) ?>
         </div>
 
         <div class="form-grid-220">
-            <span class="optional"><?php echo __('Opcional') ?></span>
+            <span class="optional"><?php echo s('Optional') ?></span>
             <?php echo $this->form->input('complement', array(
-                'label' => __('Complemento'),
+                'label' => s('Complement'),
                 'type' => 'text',
                 'class' => 'ui-text'
             )) ?>
         </div>
 
         <div class="form-grid-460 first">
-            <span class="optional"><?php echo __('Opcional') ?></span>
+            <span class="optional"><?php echo s('Optional') ?></span>
             <?php echo $this->form->input('zone', array(
-                'label' => __('Bairro'),
+                'label' => s('District'),
                 'type' => 'text',
                 'class' => 'ui-text large'
             )) ?>
         </div>
 
         <div class="form-grid-220 first">
-            <span class="optional"><?php echo __('Opcional') ?></span>
+            <span class="optional"><?php echo s('Optional') ?></span>
             <?php echo $this->form->input('country_id', array(
-                'label' => __('País'),
+                'label' => s('Country'),
                 'type' => 'select',
                 'empty' => array(''),
                 'options' => $countries,
@@ -123,9 +123,9 @@
         </div>
 
         <div class="form-grid-220">
-            <span class="optional"><?php echo __('Opcional') ?></span>
+            <span class="optional"><?php echo s('Optional') ?></span>
             <?php echo $this->form->input('state_id', array(
-                'label' => __('Estado'),
+                'label' => s('State'),
                 'type' => 'select',
                 'class' => 'ui-select',
                 'options' => $states,
@@ -134,18 +134,18 @@
         </div>
 
         <div class="form-grid-220 first">
-            <span class="optional"><?php echo __('Opcional') ?></span>
+            <span class="optional"><?php echo s('Optional') ?></span>
             <?php echo $this->form->input('city', array(
-                'label' => __('Cidade'),
+                'label' => s('City'),
                 'type' => 'text',
                 'class' => 'ui-text'
             )) ?>
         </div>
 
         <div class="form-grid-220">
-            <span class="optional"><?php echo __('Opcional') ?></span>
+            <span class="optional"><?php echo s('Optional') ?></span>
             <?php echo $this->form->input('zip', array(
-                'label' => __('CEP'),
+                'label' => s('zip'),
                 'type' => 'text',
                 'class' => 'ui-text'
             )) ?>
@@ -153,7 +153,7 @@
 
         <div class="form-grid-220 first">
             <?php echo $this->form->input('timezone', array(
-                'label' => __('Fuso Horário'),
+                'label' => s('Timezone'),
                 'type' => 'select',
                 'class' => 'ui-select',
                 'options' => $site->timezones()
@@ -162,7 +162,7 @@
 
         <div class="form-grid-220">
             <?php echo $this->form->input('date_format', array(
-                'label' => __('Formato de Data'),
+                'label' => s('Date format'),
                 'type' => 'select',
                 'class' => 'ui-select',
                 'options' => $site->dateFormats()
@@ -172,25 +172,25 @@
     </div>
 </fieldset>
 
-<a href="#" class="fieldset-expand"><?php echo __('informações de contato') ?> <span><?php echo __('opcional') ?></span></a>
+<a href="#" class="fieldset-expand"><?php echo s('Contact') ?> <span><?php echo s('Optional') ?></span></a>
 <fieldset style="display:none">
-    <h2><?php echo __('informações de contato') ?></h2>
+    <h2><?php echo s('Contact') ?></h2>
     <div class="field-group">
 
         <div class="form-grid-220 first">
-            <span class="optional"><?php echo __('Opcional') ?></span>
+            <span class="optional"><?php echo s('Optional') ?></span>
             <?php echo $this->form->input('phone', array(
-                'label' => __('Telefone comercial'),
+                'label' => s('Phone'),
                 'type' => 'text',
                 'class' => 'ui-text'
             )) ?>
-            <small><?php echo __('Ex.: (00) 0000-0000') ?></small>
+            <small><?php echo s('Ex.: (00) 0000-0000') ?></small>
         </div>
 
         <div class="form-grid-460 first">
-            <span class="optional"><?php echo __('Opcional') ?></span>
+            <span class="optional"><?php echo s('Optional') ?></span>
             <?php echo $this->form->input('email', array(
-                'label' => __('E-mail comercial'),
+                'label' => s('Mail'),
                 'type' => 'text',
                 'class' => 'ui-text large'
             )) ?>
@@ -198,14 +198,14 @@
     </div>
 </fieldset>
 
-<a href="#" class="fieldset-expand"><?php echo __('horários de funcionamento') ?> <span><?php echo __('opcional') ?></span></a>
+<a href="#" class="fieldset-expand"><?php echo s('Open hours') ?> <span><?php echo s('Optional') ?></span></a>
 <fieldset style="display:none">
-    <h2><?php echo __('horário de funcionamento') ?></h2>
+    <h2><?php echo s('Open hours') ?></h2>
     <div class="field-group">
         <div class="form-grid-460 first">
-            <span class="optional"><?php echo __('Opcional') ?></span>
+            <span class="optional"><?php echo s('Optional') ?></span>
             <?php echo $this->form->input('timetable', array(
-                'label' => __('Horários de funcionamento'),
+                'label' => s('Open hours'),
                 'type' => 'textarea',
                 'class' => 'ui-textarea large'
             )) ?>
@@ -213,57 +213,57 @@
     </div>
 </fieldset>
 
-<a href="#" class="fieldset-expand"><?php echo __('links na web') ?> <span><?php echo __('opcional') ?></span></a>
+<a href="#" class="fieldset-expand"><?php echo s('Your links on web') ?> <span><?php echo s('Optional') ?></span></a>
 <fieldset style="display:none">
-    <h2><?php echo __('links na web') ?></h2>
+    <h2><?php echo s('Your links on web') ?></h2>
     <div class="field-group">
         <div class="form-grid-460 first">
-            <span class="optional"><?php echo __('Opcional') ?></span>
+            <span class="optional"><?php echo s('Optional') ?></span>
             <?php echo $this->form->input('facebook', array(
-                'label' => __('Página no Facebook'),
+                'label' => s('Facebook Page'),
                 'type' => 'text',
                 'class' => 'ui-text large'
             )) ?>
-            <small><?php echo __('Ex: http://www.facebook.com/seuusuario/') ?></small>
+            <small><?php echo s('Ex: http://www.facebook.com/username/') ?></small>
         </div>
 
         <div class="form-grid-460 first">
-            <span class="optional"><?php echo __('Opcional') ?></span>
+            <span class="optional"><?php echo s('Optional') ?></span>
             <?php echo $this->form->input('twitter', array(
-                'label' => __('Página no Twitter'),
+                'label' => s('Twitter Page'),
                 'type' => 'text',
                 'class' => 'ui-text large'
             )) ?>
-            <small><?php echo __('Ex: http://www.twitter.com/seuusuario/') ?></small>
+            <small><?php echo s('Ex: http://www.twitter.com/username/') ?></small>
         </div>
 
         <div class="form-grid-460 first">
-            <span class="optional"><?php echo __('Opcional') ?></span>
+            <span class="optional"><?php echo s('Optional') ?></span>
             <?php echo $this->form->input('website', array(
-                'label' => __('Endereço do website atual'),
+                'label' => s('Url of your current website'),
                 'type' => 'text',
                 'class' => 'ui-text large'
             )) ?>
-            <small><?php echo __('Ex: http://www.seusite.com.br/') ?></small>
+            <small><?php echo s('Ex: http://www.yourwebsite.com/') ?></small>
         </div>
     </div>
 </fieldset>
 
-<a href="#" class="fieldset-expand"><?php echo __('fotos da empresa') ?> <span><?php echo __('opcional') ?></span></a>
+<a href="#" class="fieldset-expand"><?php echo s('Photos of Business') ?> <span><?php echo s('Optional') ?></span></a>
 <fieldset style="display:none">
-    <h2><?php echo __('fotos da empresa') ?></h2>
+    <h2><?php echo s('Photos of Business') ?></h2>
     <div class="field-group">
         <div class="form-grid-460 first">
-            <span class="optional"><?php echo __('Opcional') ?></span>
+            <span class="optional"><?php echo s('Optional') ?></span>
             <?php echo $this->form->input('photo', array(
-                'label' => __('Foto'),
+                'label' => s('Image'),
                 'type' => 'file',
                 'class' => 'ui-text large'
             )) ?>
         </div>
 
         <?php if($site->id && $image = $site->photo()): ?>
-            <?php echo $this->html->link('Apagar Imagem', '/images/delete/' . $image->id) ?>
+            <?php echo $this->html->link(s('Delete image'), '/images/delete/' . $image->id) ?>
             <?php echo $this->html->image($image->link('80x80')) ?>
         <?php endif ?>
     </div>

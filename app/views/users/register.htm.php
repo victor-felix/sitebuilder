@@ -1,10 +1,10 @@
 <?php $this->layout = 'register' ?>
 <?php $this->selectedTab = 0 ?>
-<?php $this->pageTitle = __('Crie seu Mobi') ?>
+<?php $this->pageTitle = s('Create your Mobi') ?>
 
 <p class="tip-register">
-    <strong><?php echo __('Você já tem uma conta no MeuMobi?') ?></strong><br />
-    <?php echo __('%s para usar as informações que você já tem.', $this->html->link(__('Faça login aqui'), '/users/login_and_register')) ?>
+    <strong><?php echo s('Did you already have a MeuMobi account?') ?></strong><br />
+    <?php echo s('%s tu use your existing account', $this->html->link(s('Log in here'), '/users/login_and_register')) ?>
 </p>
 
 <?php echo $this->form->create('/users/register', array(
@@ -14,11 +14,11 @@
 )) ?>
 
 <fieldset>
-    <h2><?php echo __('informações pessoais') ?></h2>
+    <h2><?php echo s('Personal details') ?></h2>
     <div class="field-group">
         <div class="form-grid-220 first">
             <?php echo $this->form->input('firstname', array(
-                'label' => __('Nome'),
+                'label' => s('Firstname'),
                 'type' => 'text',
                 'class' => 'ui-text'
             )) ?>
@@ -26,7 +26,7 @@
         
         <div class="form-grid-220">
             <?php echo $this->form->input('lastname', array(
-                'label' => __('Sobrenome'),
+                'label' => s('Lastname'),
                 'type' => 'text',
                 'class' => 'ui-text'
             )) ?>
@@ -34,25 +34,25 @@
         
         <div class="form-grid-460">
             <?php echo $this->form->input('email', array(
-                'label' => __('E-mail'),
+                'label' => s('E-mail'),
                 'type' => 'text',
                 'class' => 'ui-text large'
             )) ?>
-            <small><?php echo __('Digite um endereço de e-mail válido. Uma mensagem de ativação da sua conta será enviada para o endereço informado.') ?></small>
+            <small><?php echo s('Type a valid E-mail address.') ?><?php echo s('An activation message should be sent') ?></small>
         </div>
         
         <div class="form-grid-220 first">
             <?php echo $this->form->input('password', array(
-                'label' => __('Senha'),
+                'label' => s('Password'),
                 'type' => 'password',
                 'class' => 'ui-text'
             )) ?>
-            <small><?php echo __('A senha deve conter 6 ou mais caracteres.') ?></small>
+            <small><?php echo s('The password should contain at least 6 characters.') ?></small>
         </div>
         
         <div class="form-grid-220 first">
             <?php echo $this->form->input('confirm_password', array(
-                'label' => __('Confirmação da senha'),
+                'label' => s('Confirm your password'),
                 'type' => 'password',
                 'class' => 'ui-text'
             )) ?>
@@ -61,7 +61,7 @@
 </fieldset>
 
 <fieldset class="actions">
-    <?php echo $this->form->submit(__('Avançar ›'), array(
+    <?php echo $this->form->submit(s('Continue >'), array(
         'class' => 'ui-button red large'
     )) ?>
 </fieldset>

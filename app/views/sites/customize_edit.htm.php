@@ -1,7 +1,7 @@
 <div class="page-heading">
     <div class="grid-4 first">&nbsp;</div>
     <div class="grid-8">
-        <h1><?php echo $this->pageTitle = __('Customização') ?></h1>
+        <h1><?php echo $this->pageTitle = s('Customization') ?></h1>
     </div>
     <div class="clear"></div>
 </div>
@@ -21,7 +21,7 @@
     )) ?>
 
 <fieldset class="actions">
-    <?php echo $this->form->submit(__('Salvar'), array(
+    <?php echo $this->form->submit(s('Save'), array(
         'class' => 'ui-button red larger'
     )) ?>
 </fieldset>

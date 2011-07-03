@@ -10,11 +10,11 @@ class SitesController extends AppController {
     }
     
     public function customize_edit() {
-        $this->customizeSite(__('Configurações salvas com sucesso.'), '/sites/customize_edit');
+        $this->customizeSite(s('Configuration successfully saved.'), '/sites/customize_edit');
     }
 
     public function customize_register() {
-        $this->customizeSite(__('Configurações salvas com sucesso.'), '/sites/finished');
+        $this->customizeSite(s('Configuration successfully saved.'), '/sites/finished');
     }
     
     public function finished() {
@@ -37,7 +37,7 @@ class SitesController extends AppController {
             $site->updateAttributes($this->data);
             if($site->validate()) {
                 $site->save();
-                Session::writeFlash('success', __('Configurações salvas com sucesso.'));
+                Session::writeFlash('success', s('Configuration successfully saved.'));
                 $this->redirect($redirect_to);
             }
         }

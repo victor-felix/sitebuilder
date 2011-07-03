@@ -5,7 +5,7 @@ require_once 'lib/htmlpurifier/HTMLPurifier.auto.php';
 require_once 'lib/dom/SimpleHtmlDom.php';
 
 class Articles extends BusinessItems {
-    protected $typeName = 'Artigo';
+    protected $typeName = 'Article';
     protected $fields = array(
         'guid' => array(),
         'link' => array(),
@@ -14,15 +14,15 @@ class Articles extends BusinessItems {
             'default' => 'bbcode'
         ),
         'title' => array(
-            'title' => 'Título',
+            'title' => 'Title',
             'type' => 'string'
         ),
         'description' => array(
-            'title' => 'Descrição',
+            'title' => 'Description',
             'type' => 'richtext'
         ),
         'author' => array(
-            'title' => 'Autor',
+            'title' => 'Author',
             'type' => 'string'
         )
     );

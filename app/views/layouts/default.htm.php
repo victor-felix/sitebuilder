@@ -25,7 +25,7 @@
                     <p class="business-name"><?php echo e(Auth::user()->site()->title) ?></h1>
                     <div class="user">
                         <p><?php echo s('Hi <strong>%s</strong>', e(Auth::user()->firstname())) ?></p>
-                        <?php echo $this->html->link(s('logout >'), '/logout') ?>
+                        <?php echo $this->html->link(s('Log out >'), '/logout') ?>
                     </div>
                 </div>
                 <ul>
@@ -39,11 +39,11 @@
         </div>
     
         <?php if($success = Session::flash('success')): ?>
-            <a href="#" id="success-feedback"><?php echo __($success) ?></a>
+            <a href="#" id="success-feedback"><?php echo s($success) ?></a>
         <?php endif ?>
         
         <?php if($error = Session::flash('error')): ?>
-            <a href="#" id="error-feedback"><?php echo __($error) ?></a>
+            <a href="#" id="error-feedback"><?php echo s($error) ?></a>
         <?php endif ?>
 
         <div id="content">

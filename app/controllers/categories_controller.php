@@ -26,7 +26,7 @@ class CategoriesController extends AppController {
                     $this->respondToJSON($json);
                 }
                 else {
-                    Session::writeFlash('success', __('Categoria adicionada com sucesso.'));
+                    Session::writeFlash('success', s('Category successfully added.'));
                     $this->redirect('/categories');
                 }
             }
@@ -51,7 +51,7 @@ class CategoriesController extends AppController {
                     $this->respondToJSON($json);
                 }
                 else {
-                    Session::writeFlash('success', __('Categoria editada com sucesso.'));
+                    Session::writeFlash('success', s('Category successfully updated.'));
                     $this->redirect('/categories');
                 }
             }
@@ -66,7 +66,7 @@ class CategoriesController extends AppController {
 
     public function delete($id = null) {
         $this->Categories->delete($id);
-        $message = __('Categoria excluída com sucesso.');
+        $message = s('Category successfully deleted.');
         if($this->isXhr()) {
             $json = array('success'=>$message);
             $this->respondToJSON($json);

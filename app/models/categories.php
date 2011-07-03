@@ -13,11 +13,11 @@ class Categories extends AppModel {
         'title' => array(
             array(
                 'rule' => 'notEmpty',
-                'message' => 'Você precisa definir um título'
+                'message' => 'A non empty title is required'
             ),
             array(
                 'rule' => array('maxLength', 50),
-                'message' => 'O título de uma categoria não pode conter mais do que 50 caracteres'
+                'message' => 'The title of a category could contain 50 chars max.'
             )
         )
     );
