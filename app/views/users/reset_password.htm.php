@@ -1,5 +1,5 @@
 <?php $this->layout = 'login' ?>
-<?php $this->pageTitle = __('Redefinir sua senha do MeuMobi') ?>
+<?php $this->pageTitle = s('Reset password') ?>
 
 <?php echo $this->form->create('', array(
     'class' => 'form-register',
@@ -8,11 +8,11 @@
 )) ?>
 
 <fieldset>
-    <h2><?php echo __('redefinir senha') ?></h2>
+    <h2><?php echo s('Reset password') ?></h2>
     <div class="field-group">
         <div class="form-grid-220 first">
             <?php echo $this->form->input('password', array(
-                'label' => __('Nova Senha'),
+                'label' => s('New password'),
                 'class' => 'ui-text',
                 'value' => ''
             )) ?>
@@ -20,7 +20,7 @@
 
         <div class="form-grid-220 first">
             <?php echo $this->form->input('confirm_password', array(
-                'label' => __('Confirmar Nova Senha'),
+                'label' => s('Confirm password'),
                 'class' => 'ui-text',
                 'type' => 'password'
             )) ?>
@@ -29,7 +29,7 @@
 </fieldset>
 
 <fieldset class="actions">
-    <?php echo $this->form->submit(__('Redefinir Senha'), array(
+    <?php echo $this->form->submit(s('Reset password'), array(
         'class' => 'ui-button red large',
         'style' => 'margin-right: 415px'
     ))?>

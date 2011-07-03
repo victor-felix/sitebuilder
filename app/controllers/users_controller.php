@@ -30,7 +30,7 @@ class UsersController extends AppController {
             if(!Auth::loggedIn()) {
                 Auth::login($user);
             }
-            Session::writeFlash('success', __('Cadastro confirmado com sucesso'));
+            Session::writeFlash('success', s('Account successfully created'));
             $this->redirect('/categories');
         }
     }
@@ -47,7 +47,7 @@ class UsersController extends AppController {
                 $this->redirect($location);
             }
             else {
-                Session::writeFlash('error', __('Usuário ou senha incorretos'));
+                Session::writeFlash('error', s('Invalid username or password'));
             }
         }
     }
@@ -65,7 +65,7 @@ class UsersController extends AppController {
                 }
             }
             else {
-                Session::writeFlash('error', __('Usuário ou senha incorretos'));
+                Session::writeFlash('error', s('Invalid username or password'));
             }
         }
 
@@ -81,7 +81,7 @@ class UsersController extends AppController {
         $user = new Users();
         if(!empty($this->data)) {
             if($user->requestForNewPassword($this->data['email'])) {
-                Session::writeFlash('success', __('Recuperação de senha enviada com sucesso.'));
+                Session::writeFlash('success', s('Forgot password mail send successfully'));
             }
         }
         $this->set(array(
@@ -104,7 +104,7 @@ class UsersController extends AppController {
         if(!empty($this->data)) {
             $user->updateAttributes($this->data);
             if($user->resetPassword()) {
-                Session::writeFlash('success', __('Senha redefinida com sucesso.'));
+                Session::writeFlash('success', s('Password successfully reseted'));
                 $this->redirect('/login');
             }
         }
@@ -118,7 +118,7 @@ class UsersController extends AppController {
             $user->updateAttributes($this->data);
             if($user->validate()) {
                 $user->save();
-                Session::writeFlash('success', __('Configurações salvas com sucesso.'));
+                Session::writeFlash('success', s('Configuration successfully saved'));
                 $this->redirect($redirect);
             }
         }

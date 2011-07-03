@@ -1,22 +1,22 @@
 <?php
 
 class Products extends BusinessItems {
-    protected $typeName = 'Produto';
+    protected $typeName = 'Product';
     protected $fields = array(
         'title' => array(
-            'title' => 'Título',
+            'title' => 'Title',
             'type' => 'string'
         ),
         'price' => array(
-            'title' => 'Preço',
+            'title' => 'Price',
             'type' => 'string'
         ),
         'description' => array(
-            'title' => 'Descrição',
+            'title' => 'Description',
             'type' => 'richtext'
         ),
         'featured' => array(
-            'title' => 'Destaque?',
+            'title' => 'Featured?',
             'type' => 'boolean'
         )
     );

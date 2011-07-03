@@ -1,30 +1,30 @@
 <?php
 
 class Events extends BusinessItems {
-    protected $typeName = 'Evento';
+    protected $typeName = 'Event';
     protected $fields = array(
         'title' => array(
-            'title' => 'Título',
+            'title' => 'Title',
             'type' => 'string'
         ),
         'description' => array(
-            'title' => 'Descrição',
+            'title' => 'Description',
             'type' => 'richtext'
         ),
         'address' => array(
-            'title' => 'Endereço',
+            'title' => 'Location',
             'type' => 'text'
         ),
         'contact' => array(
-            'title' => 'Contato',
+            'title' => 'Contact',
             'type' => 'text'
         ),
         'date' => array(
-            'title' => 'Data',
+            'title' => 'Date',
             'type' => 'string'
         ),
         'hour' => array(
-            'title' => 'Hora',
+            'title' => 'Time',
             'type' => 'string'
         )
     );

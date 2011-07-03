@@ -19,16 +19,16 @@
         <div id="content">
             <?php if(!isset($this->showTitle) || (isset($this->showTitle) && $this->showTitle)): ?>
                 <div class="head">
-                    <h1><?php echo __('Crie seu Mobi') ?></h1>
+                    <h1><?php echo s('Create your Mobi') ?></h1>
                     <ul class="steps">
                         <li <?php if(!isset($this->selectedTab) || $this->selectedTab == 0): ?>class="current"<?php endif ?>>
-                            <?php echo __('informações pessoais') ?>
+                            <?php echo s('Personal details') ?>
                         </li>
                         <li <?php if(isset($this->selectedTab) && $this->selectedTab == 1): ?>class="current"<?php endif ?>>
-                            <?php echo __('informações do negócio') ?>
+                            <?php echo s('Business details') ?>
                         </li>
                         <li <?php if(isset($this->selectedTab) && $this->selectedTab == 2): ?>class="current"<?php endif ?>>
-                            <?php echo __('customização e logotipo') ?>
+                            <?php echo s('Customization and logo') ?>
                         </li>
                     </ul>
                     <div class="clear"></div>

@@ -1,18 +1,18 @@
 <?php $this->layout = 'register' ?>
 <?php $this->showTitle = false ?>
-<?php $this->pageTitle = __('Crie seu Mobi') ?>
+<?php $this->pageTitle = s('Create your Mobi') ?>
 
 <div class="registration-finished">
     <?php echo $this->html->image('shared/register/finished.png', array(
-        'alt' => __('Registro completado com sucesso!')
+        'alt' => s('Settings completed successfully')
     )); ?>
-    <h2><?php echo __('Parabéns! Seu site <strong>mobi</strong> já pode ser acessado em %s', $this->html->link($site->link())) ?></h2>
+    <h2><?php echo s('Congratulations! your site <strong>mobi</strong> is ready at %s', $this->html->link($site->link())) ?></h2>
     <div class="next-steps">
-        <h3><?php echo __('Próximas etapas') ?></h3>
-        <p><?php echo __('Seu site mobi já está online, mas você ainda pode continuar a melhorá-lo.') ?></p>
+        <h3><?php echo s('Next steps') ?></h3>
+        <p><?php echo s('Your mobi site is live, you can continue to improve it.') ?></p>
         <ul>
-            <li><?php echo $this->html->link(s('sites/finished.categories'), '/categories') ?></li>
-            <li><?php echo $this->html->link(__('Forneça mais detalhes sobre sua empresa ›'), '/settings') ?></li>
+            <li><?php echo $this->html->link(s('Add categories to your business'), '/categories') ?></li>
+            <li><?php echo $this->html->link(s('Set more details about your business'), '/settings') ?></li>
         </ul>
         <div class="clear"></div>
     </div>

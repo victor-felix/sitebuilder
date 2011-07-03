@@ -24,26 +24,26 @@
                 <div class="navigation">
                     <p class="business-name"><?php echo e(Auth::user()->site()->title) ?></h1>
                     <div class="user">
-                        <p><?php echo __('Olá <strong>%s</strong>', e(Auth::user()->firstname())) ?></p>
-                        <?php echo $this->html->link(__('sair ›'), '/logout') ?>
+                        <p><?php echo s('Hi <strong>%s</strong>', e(Auth::user()->firstname())) ?></p>
+                        <?php echo $this->html->link(s('Log out >'), '/logout') ?>
                     </div>
                 </div>
                 <ul>
                     <li><?php echo $this->html->link(e(Auth::user()->site()->rootCategory()->title), '/categories') ?></li>
-                    <li><?php echo $this->html->link(__('Configurações'), '/settings') ?></li>
-                    <li><?php echo $this->html->link(__('Customização'), '/settings/customize') ?></li>
-                    <li><?php echo $this->html->link(__('Minha Conta'), '/settings/account') ?></li>
+                    <li><?php echo $this->html->link(s('Settings'), '/settings') ?></li>
+                    <li><?php echo $this->html->link(s('Customization'), '/settings/customize') ?></li>
+                    <li><?php echo $this->html->link(s('My Account'), '/settings/account') ?></li>
                 </ul>
             </div>
             <div class="clear"></div>
         </div>
     
         <?php if($success = Session::flash('success')): ?>
-            <a href="#" id="success-feedback"><?php echo __($success) ?></a>
+            <a href="#" id="success-feedback"><?php echo s($success) ?></a>
         <?php endif ?>
         
         <?php if($error = Session::flash('error')): ?>
-            <a href="#" id="error-feedback"><?php echo __($error) ?></a>
+            <a href="#" id="error-feedback"><?php echo s($error) ?></a>
         <?php endif ?>
 
         <div id="content">

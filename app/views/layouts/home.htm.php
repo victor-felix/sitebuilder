@@ -18,13 +18,13 @@
             </div>
 
             <p class="login">
-                <?php echo $this->html->link(__('Efetue login'), '/login') ?> <?php echo __('ou') ?> <?php echo $this->html->link(__('Cadastre-se'), '/register') ?>
+                <?php echo $this->html->link(s('Log in'), '/login') ?> <?php echo s('or') ?> <?php echo $this->html->link(s('Sign Up'), '/register') ?>
             </p>
 
             <div class="get-started">
                 <h2><?php echo s('home/index.title') ?></h2>
                 <p class="subtitle"><?php echo s('home/index.subtitle') ?></p>
-                <?php echo $this->html->link(s('home/index.getting_started'), '/register') ?>
+                <?php echo $this->html->link(s('create your mobi now!'), '/register') ?>
             </div>
 
             <div id="slideshow">
@@ -35,15 +35,15 @@
 
             <div class="clear"></div>
             <div id="login-window">
-                <p><?php echo $this->html->link(__('Efetue login'), '/login') ?></p>
+                <p><?php echo $this->html->link(s('Log in'), '/login') ?></p>
                 <?php echo $this->form->create('/users/login') ?>
                     <?php echo $this->form->input('email', array(
-                        'label' => __('E-Mail'),
+                        'label' => s('E-Mail'),
                         'class' => 'ui-text'
                     )) ?>
                     
                     <?php echo $this->form->input('password', array(
-                        'label' => __('Senha'),
+                        'label' => s('Password'),
                         'class' => 'ui-text'
                     )) ?>
                     
@@ -52,17 +52,17 @@
                         'type' => 'checkbox'
                     )) ?>
                     
-                    <label for="FormRemember" class="checkbox"><?php echo __('Manter conectado') ?></label>
+                    <label for="FormRemember" class="checkbox"><?php echo s('Remember me') ?></label>
                     
-                    <?php echo $this->html->link('Esqueceu sua senha?', '/users/forgot_password', array(
+                    <?php echo $this->html->link(s('Forgot password?'), '/users/forgot_password', array(
                         'class' => 'forgot-password'
                     )) ?>
                     
-                    <?php echo $this->form->submit(__('Login'), array(
+                    <?php echo $this->form->submit(s('Log in'), array(
                         'class' => 'ui-button red'
                     ))?>
                     
-                    <?php echo $this->html->link(__('cancelar'), '#', array(
+                    <?php echo $this->html->link(s('cancel'), '#', array(
                         'class' => 'cancel'
                     )) ?>
                 <?php echo $this->form->close() ?>

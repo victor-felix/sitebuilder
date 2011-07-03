@@ -13,29 +13,29 @@ class Sites extends AppModel {
         'slug' => array(
             array(
                 'rule' => array('unique', 'slug'),
-                'message' => 'O domínio já foi escolhido'
+                'message' => 'This domain is not available'
             ),
             array(
                 'rule' => 'asciiOnly',
-                'message' => 'O domínio só pode conter caracteres minúsculos, hifens e underscores'
+                'message' => 'The domain can only contains lowercase, dashes and underscores'
             ),
             array(
                 'rule' => 'blacklist',
-                'message' => 'O domínio escolhido não pode ser utilizado'
+                'message' => 'This domain is not available'
             )
         ),
         'title' => array(
             'rule' => 'notEmpty',
-            'message' => 'Você precisa definir um título'
+            'message' => 'A non empty title is required'
         ),
         'logo' => array(
             'rule' => array('fileUpload', 1, array('jpg', 'gif', 'png')),
-            'message' => 'Você precisa usar uma imagem válida',
+            'message' => 'Only valid gif, jpg or png are allowed',
         ),
         'description' => array(
             array(
                 'rule' => array('maxLength', 500),
-                'message' => 'A descrição do site não pode conter mais do que 500 caracteres'
+                'message' => 'The description of the site could contain 500 chars max.'
             )
         ),
     );
@@ -226,7 +226,7 @@ class Sites extends AppModel {
                 'site_id' => $this->id,
                 'parent_id' => $parent_id,
                 'type' => 'articles',
-                'title' => 'Últimas Notícias',
+                'title' => 'News',
                 'visibility' => -1,
                 'populate' => 'auto'
             ));

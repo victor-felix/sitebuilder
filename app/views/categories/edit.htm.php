@@ -1,8 +1,8 @@
 <div class="page-heading">
-    <div class="grid-4 first"><?php echo $this->html->link(__('‹ voltar'), '/categories', array( 'class' => 'ui-button large back pop-scene' )) ?>
+    <div class="grid-4 first"><?php echo $this->html->link(s('‹ back'), '/categories', array( 'class' => 'ui-button large back pop-scene' )) ?>
     </div>
     <div class="grid-8">
-        <h1><?php echo $this->pageTitle = __('Editar Categoria') ?></h1>
+        <h1><?php echo $this->pageTitle = s('Edit Category') ?></h1>
         <?php echo $this->element('common/breadcrumbs', array(
             'category' => $category
         )) ?>

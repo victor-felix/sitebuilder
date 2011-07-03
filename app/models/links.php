@@ -4,7 +4,7 @@ class Links extends BusinessItems {
     protected $typeName = 'Link';
     protected $fields = array(
         'title' => array(
-            'title' => 'Título',
+            'title' => 'Title',
             'type' => 'string'
         ),
         'url' => array(

@@ -7,41 +7,41 @@ class Users extends AppModel {
     protected $validates = array(
         'firstname' => array(
             'rule' => 'notEmpty',
-            'message' => 'Você precisa informar seu nome'
+            'message' => 'You must fill in all fields'
         ),
         'lastname' => array(
             'rule' => 'notEmpty',
-            'message' => 'Você precisa informar seu sobrenome'
+            'message' => 'You must fill in all fields'
         ),
         'email' => array(
             array(
                 'rule' => 'notEmpty',
-                'message' => 'Você precisa informar um e-mail válido'
+                'message' => 'You must fill in all fields'
             ),
             array(
                 'rule' => 'email',
-                'message' => 'Você precisa informar um e-mail válido'
+                'message' => 'Please enter a valid email address.'
             ),
             array(
                 'rule' => array('unique', 'email'),
-                'message' => 'Este e-mail já está cadastrado em nossa base de dados'
+                'message' => 'There is an existing account associated with this email address.'
             )
         ),
         'password' => array(
             array(
                 'rule' => array('minLength', 6),
-                'message' => 'A senha deve conter 6 ou mais caracteres',
+                'message' => 'The password should contain at least 6 characters.',
                 'allowEmpty' => true
             ),
             array(
                 'rule' => array('minLength', 6),
-                'message' => 'A senha deve conter 6 ou mais caracteres',
+                'message' => 'The password should contain at least 6 characters.',
                 'on' => 'create'
             )
         ),
         'confirm_password' => array(
             'rule' => array('confirmField', 'password'),
-            'message' => 'As senhas informadas não conferem'
+            'message' => 'Passwords do not match'
         )
     );
 
@@ -167,14 +167,14 @@ class Users extends AppModel {
                 'to' => array(
                     $this->email => $this->fullname()
                 ),
-                'subject' => __('[MeuMobi] Confirmação de Cadastro'),
+                'subject' => s('[MeuMobi] Account Confirmation'),
                 'views' => array(
                     'text/html' => 'users/confirm_mail.htm'
                 ),
                 'layout' => 'mail',
                 'data' => array(
                     'user' => $this,
-                    'title' => __('[MeuMobi] Confirmação de Cadastro')
+                    'title' => s('[MeuMobi] Account Confirmation')
                 )
             ));
             $mailer->send();
@@ -192,14 +192,14 @@ class Users extends AppModel {
                 'to' => array(
                     $this->email => $this->fullname()
                 ),
-                'subject' => __('[MeuMobi] Redefinição de Senha'),
+                'subject' => s('[MeuMobi] Reset Password Request'),
                 'views' => array(
                     'text/html' => 'users/forgot_password_mail.htm'
                 ),
                 'layout' => 'mail',
                 'data' => array(
                     'user' => $this,
-                    'title' => __('[MeuMobi] Redefinição de Senha')
+                    'title' => s('[MeuMobi] Reset Password Request')
                 )
             ));
             $mailer->send();
