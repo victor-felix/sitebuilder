@@ -1,5 +1,5 @@
 #views/business_items/add
-'< back': '‹ voltar'
+'‹ back': '‹ voltar'
 'Add %s': 'Adicionar %s'
 'Save': 'Salvar'
 #views/business_items/edit
@@ -136,6 +136,9 @@
 'The password should contain at least 6 characters.': 'A senha deve conter 6 ou mais caracteres.'
 'Confirm your password': 'Confirmação da senha'
 #views/home/index
+'Add your business content ›': 'Adicione conteúdo do seu negocio'
+'The easiest way to create and deploy your company’s mobile website': 'A versão mobile do seu portal pronta em instantes.'
+'News and corporate website and enterprise intranets.': 'Portais de notícias, portais corporativos e intranets de empresa.'
 'MeuMobi Corporate - Your company on the mobile web in a split second': 'MeuMobi Corporate - Sua empresa na Web móvel em 3 minutos!'
 'Why being <strong>mobi</strong>?': 'Por que ser <strong>mobi</strong>?'
 'Easy-to-edit control panel: ': 'Painel de controle fácil de editar: '
