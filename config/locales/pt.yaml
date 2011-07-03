@@ -153,7 +153,7 @@
 #views/users/forgot_password
 'Retrieve your Password': 'Recuperar sua senha do MeuMobi'
 #views/users/forgot_password_mail
-'Hi, <b>%s</b>. <br/><br/>You requested the reset of your MeuMobi password. In order to do that you should click on link below.': 'Olá, <b>%s</b>. <br/><br/>Você solicitou a redefinição de sua senha. Para isso, clique ou copie e cole o link abaixo e você poderá gerar uma nova senha.'
+'Hi, <b>%s</b>. <br/><br/>You have requested the reset of your MeuMobi password. In order to do that you should click on link below.': 'Olá, <b>%s</b>. <br/><br/>Você solicitou a redefinição de sua senha. Para isso, clique ou copie e cole o link abaixo e você poderá gerar uma nova senha.'
 #views/users/reset_password
 'Reset password': 'Redefinir sua senha'
 'New password': 'Nova Senha'

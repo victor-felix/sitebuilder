@@ -11,8 +11,8 @@
         <h3><?php echo s('Next steps') ?></h3>
         <p><?php echo s('Your mobi site is live, you can continue to improve it.') ?></p>
         <ul>
-            <li><?php echo $this->html->link(s('Add categories to your business'), '/categories') ?></li>
-            <li><?php echo $this->html->link(s('Set more details about your business'), '/settings') ?></li>
+            <li><?php echo $this->html->link(s('Add categories to your business ›'), '/categories') ?></li>
+            <li><?php echo $this->html->link(s('Set more details about your business ›'), '/settings') ?></li>
         </ul>
         <div class="clear"></div>
     </div>
