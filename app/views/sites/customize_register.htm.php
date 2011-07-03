@@ -1,6 +1,6 @@
 <?php $this->layout = 'register' ?>
 <?php $this->selectedTab = 2 ?>
-<?php $this->pageTitle = __('Crie seu Mobi') ?>
+<?php $this->pageTitle = s('Create your mobi') ?>
 
 <?php echo $this->form->create('/sites/customize_register', array(
     'id' => 'form-register-customize',
@@ -17,7 +17,7 @@
     )) ?>
 
 <fieldset class="actions">
-    <?php echo $this->form->submit(__('Finalizar ›'), array(
+    <?php echo $this->form->submit(s('Save ›'), array(
         'class' => 'ui-button red large'
     )) ?>
 </fieldset>

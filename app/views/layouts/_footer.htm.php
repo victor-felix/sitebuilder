@@ -19,8 +19,8 @@
         <ul>
             <li>powered by <a href="http://www.bkrender.com/">BkRender</a></li>
             <li>developed with <a href="http://www.spaghettiphp.org/">Spaghetti*</a></li>
-            <li><a href="http://meumobi.uservoice.com"><?php echo __('feedback') ?></a></li>
-            <li><?php echo __('&copy;2011 MeuMobi. Todos os direitos reservados.') ?></li>
+            <li><a href="http://meumobi.uservoice.com"><?php echo s('feedback') ?></a></li>
+            <li><?php echo s('&copy;2011 MeuMobi. All rights reserved') ?></li>
         </ul>
     <div>
     <div class="clear"></div>

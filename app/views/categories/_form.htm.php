@@ -4,39 +4,39 @@
 )) ?>
 
 <fieldset>
-    <h2><?php echo __('categoria') ?></h2>
+    <h2><?php echo s('category') ?></h2>
     <div class="field-group">
         <div class="form-grid-460 first">
             <?php echo $this->form->input('title', array(
-                'label' => __('Nome da categoria'),
+                'label' => s('Name of category'),
                 'class' => 'ui-text large'
             )) ?>
         </div>
 
         <?php if(!$category->id): ?>
             <div class="form-grid-460 populate-fields">
-                <label><?php echo __('Tipo de categoria') ?></label>
+                <label><?php echo s('Type of category') ?></label>
                 <?php echo $this->form->input('populate', array(
                     'type' => 'radio',
                     'options' => array(
-                        'auto' => 'Automática',
-                        'manual' => 'Manual'
+                        'auto' => s('Auto'),
+                        'manual' => s('Manual')
                     )
                 )) ?>
-                <small><?php echo __('Categorias automáticas permitem a importação automática de conteúdo a partir de feeds RSS.') ?></small>
-                <small><?php echo __('Categorias manuais permitem a edição manual de todos os itens associados.') ?></small>
+                <small><?php echo s('Auto Categories allow to import automatically content from RSS feed') ?></small>
+                <small><?php echo s('Manual Categories allow to manage manually any type of content') ?></small>
             </div>
         <?php endif ?>
 
         <?php if(!$category->id && $site->hasManyTypes()): ?>
             <div class="form-grid-460 first populate-based manual">
                 <?php echo $this->form->input('type', array(
-                    'label' => __('Tipo'),
+                    'label' => s('Type'),
                     'type' => 'select',
                     'class' => 'ui-select large',
                     'options' => Segments::listItemTypesFor($site->segment)
                 )) ?>
-                <small><?php echo __('O tipo de conteúdo determina quais itens você poderá cadastrar na categoria. Após escolher, não será possível alterar.') ?></small>
+                <small><?php echo s("The type of content defined which content could be inserted on category, it couldn't be updated after creation") ?></small>
             </div>
         <?php endif ?>
 
@@ -48,7 +48,7 @@
         ?>
         <div class="form-grid-460 first auto <?php echo $classname ?>">
             <?php echo $this->form->input('feed', array(
-                'label' => __('URL do Feed'),
+                'label' => s('Feed Url'),
                 'class' => 'ui-text large',
                 'value' => $feed
             )) ?>
@@ -57,10 +57,10 @@
         <div class="form-grid-460 first">
             <?php echo $this->form->input('visibility', array(
                 'type' => 'checkbox',
-                'label' => __('Visibilidade'),
+                'label' => s('Visibility'),
                 'value' => 1
             )) ?>
-            <label for="FormVisibility" class="checkbox"><?php echo __('Esta categoria está visível e disponível para os usuários do site mobile') ?></label>
+            <label for="FormVisibility" class="checkbox"><?php echo s('This category is visible for any user') ?></label>
         </div>
 
         <?php echo $this->form->input('parent_id', array(
@@ -71,11 +71,11 @@
 </fieldset>
 
 <fieldset class="actions">
-    <?php echo $this->form->submit(__('Salvar'), array(
+    <?php echo $this->form->submit(s('Save'), array(
         'class' => 'ui-button red larger'
     )) ?>
     <?php if($category->id): ?>
-        <?php echo $this->html->link($this->html->image('shared/categories/delete.gif') . __('Apagar categoria'), '/categories/delete/' . $category->id, array(
+        <?php echo $this->html->link($this->html->image('shared/categories/delete.gif') . s('Delete category'), '/categories/delete/' . $category->id, array(
             'class' => 'ui-button delete'
         )) ?>
     <?php endif ?>

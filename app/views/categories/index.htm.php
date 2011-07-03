@@ -14,8 +14,8 @@
 <div id="categories-list">
 <div class="grid-4 first">
     <div class="tip">
-        <h4><?php echo __('Dica') ?></h4>
-        <p><?php echo __('Utilize o gerenciador ao lado para gerenciar o seu cardápio. Você pode criar categorias (entradas, pratos, etc.), subcategorias (massas, saladas, carnes), ou qualquer estruturação que se adapte ao seu negócio. Em seguida, adicione pratos ou produtos às respectivas categorias usando o botão ‘Gerenciar produtos’ em cada categoria.') ?></p>
+        <h4><?php echo s('Tip') ?></h4>
+        <p><?php echo s('Use panel on right of screen to manage your items. You can create categories and subcategories to organize your items') ?></p>
     </div>
 </div>
 
@@ -69,7 +69,7 @@
         
     </ul>
 
-    <?php echo $this->html->link(__('Adicionar Categoria'), '/categories/add/' . $root->id, array(
+    <?php echo $this->html->link(s('Add Category'), '/categories/add/' . $root->id, array(
         'class' => 'ui-button large add push-scene',
         'style' => 'margin-bottom: 40px'
     )) ?>

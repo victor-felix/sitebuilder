@@ -24,15 +24,15 @@
                 <div class="navigation">
                     <p class="business-name"><?php echo e(Auth::user()->site()->title) ?></h1>
                     <div class="user">
-                        <p><?php echo __('Olá <strong>%s</strong>', e(Auth::user()->firstname())) ?></p>
-                        <?php echo $this->html->link(__('sair ›'), '/logout') ?>
+                        <p><?php echo s('Hi <strong>%s</strong>', e(Auth::user()->firstname())) ?></p>
+                        <?php echo $this->html->link(s('logout >'), '/logout') ?>
                     </div>
                 </div>
                 <ul>
                     <li><?php echo $this->html->link(e(Auth::user()->site()->rootCategory()->title), '/categories') ?></li>
-                    <li><?php echo $this->html->link(__('Configurações'), '/settings') ?></li>
-                    <li><?php echo $this->html->link(__('Customização'), '/settings/customize') ?></li>
-                    <li><?php echo $this->html->link(__('Minha Conta'), '/settings/account') ?></li>
+                    <li><?php echo $this->html->link(s('Settings'), '/settings') ?></li>
+                    <li><?php echo $this->html->link(s('Customization'), '/settings/customize') ?></li>
+                    <li><?php echo $this->html->link(s('My Account'), '/settings/account') ?></li>
                 </ul>
             </div>
             <div class="clear"></div>
