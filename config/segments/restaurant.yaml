@@ -1,16 +1,10 @@
 'home/index':
-    pagetitle: 'MeuMobi Restaurant - Seu restaurante na Web móvel em 3 minutos!'
-    title: 'Seu restaurante na palma da mão em menos de 3 minutos.'
-    subtitle: 'MeuMobi Restaurant coloca o seu negócio na Internet móvel em instantes.'
-    features1_title: 'Painel de controle fácil de editar:'
-    features2_title: 'Compatível com mais de 6 mil celulares:'
-    features3_title: 'Identidade visual do seu restaurante'
-    features4_title: 'Integração com mídias sociais:'
-    features1_description: 'Cardápio dividido em categorias, sub-categorias e pratos com descrição e fotos'
-    features2_description: 'Tecnologia de renderização que possibilita que seu mobi site seja visualizado perfeitamente em mais de 6 mil aparelhos'
-    features3_description: 'Seu mobi site terá a cara do seu restaurante com logomarca e cores customizadas!'
-    features4_description: 'Integre o Twitter e Facebook do seu restaurante ao seu mobi site.'
-    getting_started: 'crie seu mobi já!'
-    being_mobi: 'Por que ser <strong>mobi</strong>?'
+    pagetitle: 'MeuMobi Restaurants - Your company in the web movel in 3 minutes'
+    title: 'Your restaurant in the palm of your hand in less than 3 minutes.'
+    subtitle: 'MeuMobi Restaurant puts your business on the mobile internet in seconds.'
+
 'sites/finished':
-    categories: 'Adicione o cardápio de seu restaurante ›'
+    categories: 'Add the menu of your restaurant ›'
+        
+'Visual identity of your portal: ': 'Visual identity of your restaurant'
+'Creation of categories, subcategories and insert of articles, products, events and external links;': 'Add your menu, starters, main dishes, etc. with details and photos'

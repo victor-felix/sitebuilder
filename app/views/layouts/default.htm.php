@@ -25,7 +25,7 @@
                     <p class="business-name"><?php echo e(Auth::user()->site()->title) ?></h1>
                     <div class="user">
                         <p><?php echo s('Hi <strong>%s</strong>', e(Auth::user()->firstname())) ?></p>
-                        <?php echo $this->html->link(s('Log out >'), '/logout') ?>
+                        <?php echo $this->html->link(s('Log out ›'), '/logout') ?>
                     </div>
                 </div>
                 <ul>
