@@ -18,7 +18,7 @@
     <?php echo $this->element('business_items/form', compact('item')) ?>
 
     <fieldset class="actions">
-        <?php echo $this->html->link(s('< back'), '/categories/index/' . $parent->id, array('class' => 'ui-button large back pop-scene')) ?>
+        <?php echo $this->html->link(s('‹ back'), '/categories/index/' . $parent->id, array('class' => 'ui-button large back pop-scene')) ?>
         <?php echo $this->form->submit(s('Save'), array('class' => 'ui-button red larger')) ?>
     </fieldset>
 
