@@ -1,9 +1,12 @@
 <fieldset>
     <h2><?php echo s('Logo') ?></h2>
     <div class="field-group">
-        <?php if($site->logo()) echo $this->html->image($site->logo()->link('200x200'), array(
-            'class' => 'logo'
-        )) ?>
+        <?php if($site->logo()): ?>
+            <?php echo $this->html->image($site->logo()->link('200x200'), array(
+                'class' => 'logo'
+            )) ?>
+            <?php echo $this->html->link(s('delete logo'), '/images/delete/' . $site->logo()->id) ?>
+        <?php endif ?>
         <div class="form-grid-460 first">
             <span class="optional"><?php echo s('Optional') ?></span>
             <?php echo $this->form->input('logo', array(
