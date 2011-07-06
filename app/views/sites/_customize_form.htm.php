@@ -28,34 +28,19 @@
                     <?php foreach($themes as $slug => $theme): ?>
                         <li>
                             <a href="<?php echo '#' . $slug ?>">
-                                <?php echo $this->html->image('shared/themes/' . $slug . '.png') ?>
-                                <span><?php echo $theme ?></span>
+                                <?php echo $this->html->image($theme->thumbnails[0]) ?>
+                                <span><?php echo $slug ?></span>
                             </a>
                         </li>
                     <?php endforeach ?>
                 </ul>
                 <div class="clear"></div>
             </div>
-            <?php $keys = array_keys($themes) ?>
+
+            <?php $keys = array_keys(get_object_vars($themes)) ?>
             <?php echo $this->form->input('theme', array(
                 'type' => 'hidden',
                 'value' => $site->theme ? $site->theme : $keys[0]
-            )) ?>
-            
-            <div class="skin-picker">
-                <h3><?php echo s('Personalize the thema') ?></h3>
-                <ul>
-                    <?php foreach($skins as $skin): ?>
-                        <li>
-                            <a href="<?php echo '#' . $skin ?>" style="background-color:#<?php echo $skin ?>"></a>
-                        </li>
-                    <?php endforeach ?>
-                </ul>
-                <div class="clear"></div>
-            </div>
-            <?php echo $this->form->input('skin', array(
-                'type' => 'hidden',
-                'value' => $site->skin ? $site->skin : $skins[0]
             )) ?>
         </div>
     </div>

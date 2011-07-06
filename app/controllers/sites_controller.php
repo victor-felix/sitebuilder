@@ -69,8 +69,7 @@ class SitesController extends AppController {
 
         $this->set(array(
             'site' => $site,
-            'themes' => Model::load('Segments')->firstById($site->segment)->themes,
-            'skins' => Model::load('Segments')->firstById($site->segment)->skins
+            'themes' => Model::load('Themes')->all()
         ));
     }
 }

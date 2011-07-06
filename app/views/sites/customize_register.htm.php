@@ -12,7 +12,6 @@
     <?php echo $this->element('sites/customize_form', array(
         'action' => 'register',
         'themes' => $themes,
-        'skins' => $skins,
         'site' => $site
     )) ?>
 
