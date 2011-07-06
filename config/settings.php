@@ -8,8 +8,12 @@ Config::write('App.encoding', 'utf-8');
 Config::write('Security.salt', '0b693e040f5c7ffd13d62330d6c8f901');
 Config::write('Mailer.transport', 'mail');
 
-require 'config/environments/' . Config::read('App.environment') . '.php';
 require 'config/settings.app.php';
+require 'config/environments/' . Config::read('App.environment') . '.php';
 
-I18n::locale('en');
-YamlDictionary::path('config/segments');
+$dir = new DirectoryIterator(__DIR__ . '/initializers');
+foreach($dir as $file) {
+    if($file->isFile()) {
+        require $file->getPathname();
+    }
+}
