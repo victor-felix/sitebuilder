@@ -19,12 +19,12 @@
                 <?php echo $this->form->input('populate', array(
                     'type' => 'radio',
                     'options' => array(
-                        'auto' => s('Auto'),
-                        'manual' => s('Manual')
+                        'manual' => s('Manual'),
+                        'auto' => s('Auto')
                     )
                 )) ?>
-                <small><?php echo s('Auto Categories allow to import automatically content from RSS feed') ?></small>
                 <small><?php echo s('Manual Categories allow to manage manually any type of content') ?></small>
+                <small><?php echo s('Auto Categories allow to import automatically content from RSS feed') ?></small>
             </div>
         <?php endif ?>
 

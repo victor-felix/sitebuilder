@@ -1,5 +1,7 @@
 <?php
 
+require_once 'app/models/business_items.php';
+
 class Products extends BusinessItems {
     protected $typeName = 'Product';
     protected $fields = array(

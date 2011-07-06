@@ -27,6 +27,7 @@ class Categories extends AppModel {
 
         if(is_null($this->id) && !isset($this->data['visibility'])) {
             $this->data['visibility'] = true;
+            $this->data['populate'] = 'manual';
         }
     }
 

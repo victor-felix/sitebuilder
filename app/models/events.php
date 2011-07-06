@@ -1,5 +1,7 @@
 <?php
 
+require_once 'app/models/business_items.php';
+
 class Events extends BusinessItems {
     protected $typeName = 'Event';
     protected $fields = array(
