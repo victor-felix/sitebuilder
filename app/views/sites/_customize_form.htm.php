@@ -45,6 +45,23 @@
                 'type' => 'hidden',
                 'value' => $site->theme ? $site->theme : $keys[0]
             )) ?>
+
+            <div class="skin-picker">
+                <h3><?php echo s('Personalize the thema') ?></h3>
+                <ul>
+                    <?php foreach($themes->{$keys[0]}->colors as $skin => $props): ?>
+                        <li>
+                            <a href="<?php echo '#' . $skin ?>" style="background-color:#<?php echo $skin ?>"></a>
+                        </li>
+                    <?php endforeach ?>
+                </ul>
+                <div class="clear"></div>
+            </div>
+            <?php $k = array_keys(get_object_vars($themes->{$keys[0]}->colors)) ?>
+            <?php echo $this->form->input('skin', array(
+                'type' => 'hidden',
+                'value' => $site->skin ? $site->skin : reset($k)
+            )) ?>
         </div>
     </div>
 </fieldset>
