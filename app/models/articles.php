@@ -182,12 +182,7 @@ class Articles extends BusinessItems {
     }
 
     protected function filterGuid($guid) {
-        if(preg_match("%^http://www.rj.gov.br/web/guest/exibeconteudo;.*articleId=(\d+)%", $guid, $result)) {
-            $guid = "http://www.rj.gov.br/web/guest/exibeconteudo?articleId=" . $result[1];
-        }
-        else if(preg_match("%^http://www.rj.gov.br/web/seeduc/exibeconteudo;.*articleId=(\d+)%", $guid, $result)) {
-            $guid = "http://www.rj.gov.br/web/seeduc/exibeconteudo?articleId=" . $result[1];
-        }
+        $guid = preg_replace('%;jsessionid=[\w\d]+%', '', $guid);
 
         return $guid;
     }
