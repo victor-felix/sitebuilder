@@ -74,7 +74,7 @@ class Sites extends AppModel {
     }
 
     public function custom_domain() {
-        return !is_null($this->domain);
+        return strpos($this->domain, '.meumobi.com') === false;
     }
 
     public function photo() {
@@ -195,7 +195,7 @@ class Sites extends AppModel {
 
     protected function saveCustomDomain($data) {
         if(isset($data['custom_domain']) && (!$data['custom_domain'] || empty($data['domain']))) {
-            $data['domain'] = null;
+            $data['domain'] = $data['slug'] . '.meumobi.com';
         }
 
         return $data;
