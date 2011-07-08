@@ -119,6 +119,7 @@ class UsersController extends AppController {
             if($user->validate()) {
                 $user->save();
                 Session::writeFlash('success', s('Configuration successfully saved'));
+                Session::write('Users.registering', '/sites/register');
                 $this->redirect($redirect);
             }
         }

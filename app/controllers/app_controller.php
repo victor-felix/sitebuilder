@@ -5,6 +5,10 @@ require 'lib/utils/Auth.php';
 
 class AppController extends Controller {
     protected function beforeFilter() {
+        $registering = Session::read('Users.registering');
+        if($registering && $registering != $this->param('here')) {
+            $this->redirect($registering);
+        }
         if($this->isXhr()) {
             $this->autoLayout = false;
         }
