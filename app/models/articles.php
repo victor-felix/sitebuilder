@@ -135,7 +135,8 @@ class Articles extends BusinessItems {
         if(is_null($enclosures)) return $images;
 
         foreach($enclosures as $enclosure) {
-            if($enclosure->get_medium() == 'image') {
+            $medium = $enclosure->get_medium();
+            if(!$medium || $medium == 'image') {
                 $images []= $enclosure->get_link();
             }
         }
@@ -176,9 +177,7 @@ class Articles extends BusinessItems {
     protected function cleanupHtml($html) {
         $purifier = $this->getPurifier();
         $description = str_get_html($html);
-        // Remove first unecessary paragraph for PRODERJ purpose
-        $body = implode(array_slice($description->find('p'), 1));
-        return $purifier->purify($body);
+        return $purifier->purify($description);
     }
 
     protected function filterGuid($guid) {
