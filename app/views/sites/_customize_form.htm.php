@@ -1,9 +1,12 @@
 <fieldset>
     <h2><?php echo s('Logo') ?></h2>
     <div class="field-group">
-        <?php if($site->logo()) echo $this->html->image($site->logo()->link('200x200'), array(
-            'class' => 'logo'
-        )) ?>
+        <?php if($site->logo()): ?>
+            <?php echo $this->html->image($site->logo()->link('200x200'), array(
+                'class' => 'logo'
+            )) ?>
+            <?php echo $this->html->link(s('delete logo'), '/images/delete/' . $site->logo()->id) ?>
+        <?php endif ?>
         <div class="form-grid-460 first">
             <span class="optional"><?php echo s('Optional') ?></span>
             <?php echo $this->form->input('logo', array(
@@ -28,24 +31,25 @@
                     <?php foreach($themes as $slug => $theme): ?>
                         <li>
                             <a href="<?php echo '#' . $slug ?>">
-                                <?php echo $this->html->image('shared/themes/' . $slug . '.png') ?>
-                                <span><?php echo $theme ?></span>
+                                <?php echo $this->html->image($theme->thumbnails[0]) ?>
+                                <span><?php echo $slug ?></span>
                             </a>
                         </li>
                     <?php endforeach ?>
                 </ul>
                 <div class="clear"></div>
             </div>
-            <?php $keys = array_keys($themes) ?>
+
+            <?php $keys = array_keys(get_object_vars($themes)) ?>
             <?php echo $this->form->input('theme', array(
                 'type' => 'hidden',
                 'value' => $site->theme ? $site->theme : $keys[0]
             )) ?>
-            
+
             <div class="skin-picker">
                 <h3><?php echo s('Personalize the thema') ?></h3>
                 <ul>
-                    <?php foreach($skins as $skin): ?>
+                    <?php foreach($themes->{$keys[0]}->colors as $skin => $props): ?>
                         <li>
                             <a href="<?php echo '#' . $skin ?>" style="background-color:#<?php echo $skin ?>"></a>
                         </li>
@@ -53,9 +57,10 @@
                 </ul>
                 <div class="clear"></div>
             </div>
+            <?php $k = array_keys(get_object_vars($themes->{$keys[0]}->colors)) ?>
             <?php echo $this->form->input('skin', array(
                 'type' => 'hidden',
-                'value' => $site->skin ? $site->skin : $skins[0]
+                'value' => $site->skin ? $site->skin : reset($k)
             )) ?>
         </div>
     </div>

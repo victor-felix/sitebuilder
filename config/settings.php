@@ -6,16 +6,14 @@ if(!Config::read('App.environment')) {
 
 Config::write('App.encoding', 'utf-8');
 Config::write('Security.salt', '0b693e040f5c7ffd13d62330d6c8f901');
-
 Config::write('Mailer.transport', 'mail');
 
+require 'config/settings.app.php';
 require 'config/environments/' . Config::read('App.environment') . '.php';
 
-Config::write('Sites.blacklist', array('feedback', 'blog', 'restaurant', 'support', 'dropbox', 'analytics', 'wiki', 'events', 'corporate'));
-
-require 'config/app/segments.php';
-require 'config/app/resizes.php';
-require 'config/app/ui.php';
-
-I18n::locale('en');
-YamlDictionary::path('config/segments');
+$dir = new DirectoryIterator(__DIR__ . '/initializers');
+foreach($dir as $file) {
+    if($file->isFile()) {
+        require $file->getPathname();
+    }
+}

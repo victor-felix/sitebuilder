@@ -3,8 +3,8 @@
 require_once 'lib/geocoding/GoogleGeocoding.php';
 
 class Sites extends AppModel {
-    protected $getters = array('feed_url', 'feed_title');
-    protected $beforeSave = array('getLatLng');
+    protected $getters = array('feed_url', 'feed_title', 'custom_domain');
+    protected $beforeSave = array('getLatLng', 'saveCustomDomain');
     protected $afterSave = array('saveLogo', 'savePhoto', 'createRootCategory',
         'createNewsCategory', 'updateFeed');
     protected $beforeDelete = array('checkAndDeleteFeed', 'deleteImages', 'deleteCategories',
@@ -71,6 +71,10 @@ class Sites extends AppModel {
         if($category) {
             return $category->title;
         }
+    }
+
+    public function custom_domain() {
+        return strpos($this->domain, '.meumobi.com') === false;
     }
 
     public function photo() {
@@ -185,6 +189,14 @@ class Sites extends AppModel {
         }
 
         $data['description'] = nl2br($data['description']);
+
+        return $data;
+    }
+
+    protected function saveCustomDomain($data) {
+        if(isset($data['custom_domain']) && (!$data['custom_domain'] || empty($data['domain']))) {
+            $data['domain'] = $data['slug'] . '.meumobi.com';
+        }
 
         return $data;
     }

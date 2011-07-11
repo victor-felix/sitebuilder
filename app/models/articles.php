@@ -63,7 +63,7 @@ class Articles extends BusinessItems {
             'guid' => $this->filterGuid($item->get_id()),
             'link' => $item->get_link(),
             'title' => $item->get_title(),
-            'description' => $this->cleanupHtml($item->get_content()),
+            'description' => $this->cleanupHtml($item),
             'pubdate' => gmdate('Y-m-d H:i:s', $item->get_date('U')),
             'author' => $author ? $author->get_name() : '',
             'format' => 'html'
@@ -135,7 +135,8 @@ class Articles extends BusinessItems {
         if(is_null($enclosures)) return $images;
 
         foreach($enclosures as $enclosure) {
-            if($enclosure->get_medium() == 'image') {
+            $medium = $enclosure->get_medium();
+            if(!$medium || $medium == 'image') {
                 $images []= $enclosure->get_link();
             }
         }
@@ -173,21 +174,21 @@ class Articles extends BusinessItems {
         return new HTMLPurifier($config);
     }
 
-    protected function cleanupHtml($html) {
+    protected function cleanupHtml($item) {
+        $html = $item->get_content();
         $purifier = $this->getPurifier();
         $description = str_get_html($html);
-        // Remove first unecessary paragraph for PRODERJ purpose
-        $body = implode(array_slice($description->find('p'), 1));
-        return $purifier->purify($body);
+
+        // PRODERJ only
+        if(strpos($item->get_id(), 'www.rj.gov.br') !== false) {
+            $description = implode(array_slice($description->find('p'), 1));
+        }
+
+        return $purifier->purify($description);
     }
 
     protected function filterGuid($guid) {
-        if(preg_match("%^http://www.rj.gov.br/web/guest/exibeconteudo;.*articleId=(\d+)%", $guid, $result)) {
-            $guid = "http://www.rj.gov.br/web/guest/exibeconteudo?articleId=" . $result[1];
-        }
-        else if(preg_match("%^http://www.rj.gov.br/web/seeduc/exibeconteudo;.*articleId=(\d+)%", $guid, $result)) {
-            $guid = "http://www.rj.gov.br/web/seeduc/exibeconteudo?articleId=" . $result[1];
-        }
+        $guid = preg_replace('%;jsessionid=[\w\d]+%', '', $guid);
 
         return $guid;
     }

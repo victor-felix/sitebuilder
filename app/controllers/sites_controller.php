@@ -38,6 +38,9 @@ class SitesController extends AppController {
             if($site->validate()) {
                 $site->save();
                 Session::writeFlash('success', s('Configuration successfully saved.'));
+                if($redirect_to == '/sites/customize_register') {
+                    Session::write('Users.registering', '/sites/customize_register');
+                }
                 $this->redirect($redirect_to);
             }
         }
@@ -63,14 +66,16 @@ class SitesController extends AppController {
             if($site->validate()) {
                 $site->save();
                 Session::writeFlash('success', $message);
+                if($redirect_to == '/sites/finished') {
+                    Session::delete('Users.registering');
+                }
                 $this->redirect($redirect_to);
             }
         }
 
         $this->set(array(
             'site' => $site,
-            'themes' => Model::load('Segments')->firstById($site->segment)->themes,
-            'skins' => Model::load('Segments')->firstById($site->segment)->skins
+            'themes' => Model::load('Themes')->all()
         ));
     }
 }

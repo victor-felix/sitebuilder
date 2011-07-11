@@ -16,7 +16,6 @@
     <?php echo $this->element('sites/customize_form', array(
         'action' => 'edit',
         'themes' => $themes,
-        'skins' => $skins,
         'site' => $site
     )) ?>
 

@@ -22,26 +22,51 @@
 
         <div class="form-grid-460 first">
             <div class="site-mobile-url">
-            <div class="input text">
-                <label for="FormSlug"><?php echo s('url of mobile site') ?></label>
-                <p class="meumobi-url">
-                    <span>http://</span>
-                    <?php echo $this->form->input('slug', array(
-                        'label' => false,
-                        'div' => false,
-                        'type' => 'text',
-                        'class' => 'ui-text' . ($action == 'edit' ? ' disabled' : ''),
-                        'disabled' => $action == 'edit'
-                    )) ?><span>.meumobi.com</span>
-                </p>
-                <div class="clear"></div>
-            </div>
+                <div class="input text">
+                    <label for="FormSlug"><?php echo s('url of mobile site') ?></label>
+                    <p class="meumobi-url">
+                        <span>http://</span>
+                        <?php echo $this->form->input('slug', array(
+                            'label' => false,
+                            'div' => false,
+                            'type' => 'text',
+                            'class' => 'ui-text' . ($action == 'edit' ? ' disabled' : ''),
+                            'disabled' => $action == 'edit'
+                        )) ?><span>.meumobi.com</span>
+                    </p>
+                    <div class="clear"></div>
+                </div>
             </div>
             <?php if($action == 'register'): ?>
                 <small><?php echo s("Be careful, you couldn't change your url later") ?></small>
             <?php else: ?>
                 <small><?php echo s("You can't change the url of your mobile site") ?></small>
             <?php endif ?>
+
+            <div class="site-mobile-custom-domain">
+                <div class="input checkbox">
+                    <?php echo $this->form->input('custom_domain', array(
+                        'label' => false,
+                        'div' => false,
+                        'type' => 'checkbox',
+                        'class' => 'ui-checkbox'
+                    )) ?>
+                </div>
+                <label for="FormCustomDomain" class="checkbox"><?php echo s('use a custom domain name') ?></label>
+
+                <div class="input text">
+                    <p class="meumobi-url">
+                        <span>http://</span>
+                        <?php echo $this->form->input('domain', array(
+                            'label' => false,
+                            'div' => false,
+                            'type' => 'text',
+                            'class' => 'ui-text'
+                        )) ?>
+                    </p>
+                    <div class="clear"></div>
+                </div>
+            </div>
         </div>
     </div>
 </fieldset>
