@@ -190,6 +190,10 @@ class Articles extends BusinessItems {
     protected function filterGuid($guid) {
         $guid = preg_replace('%;jsessionid=[\w\d]+%', '', $guid);
 
+        if(preg_match('%rj\.gov\.br%', $guid)) {
+            $guid = preg_replace('%\.lportal.*articleId=%', 'articleId=', $guid);
+        }
+
         return $guid;
     }
 }
