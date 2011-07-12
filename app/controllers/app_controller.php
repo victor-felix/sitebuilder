@@ -4,9 +4,14 @@ require 'lib/core/security/Sanitize.php';
 require 'lib/utils/Auth.php';
 
 class AppController extends Controller {
+    protected $allowed = array('skins');
+
     protected function beforeFilter() {
         $registering = Session::read('Users.registering');
-        if($registering && $registering != $this->param('here')) {
+        if(
+            $registering &&
+            ($registering != $this->param('here') && !in_array($this->param('controller'), $this->allowed))
+        ) {
             $this->redirect($registering);
         }
         if($this->isXhr()) {
