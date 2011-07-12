@@ -7,4 +7,8 @@ class Themes {
 
         return $themes;
     }
+
+    public function firstByName($name) {
+        return $this->all()->{$name};
+    }
 }

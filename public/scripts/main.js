@@ -33,11 +33,11 @@ var Utils = {
             /ä|æ|Ä|ä/g, /Ö|ö/g, /ß/g, /[^\w\s]/g, /\s/g, /^-+|-+$/g, /-{2,}/g
         ];
         var replaces = ['a', 'e', 'i', 'o', 'u', 'c', 'n', 'ae', 'oe', 'ss', ' ', '', '', ''];
-        
+
         $.each(patterns, function(i, pattern) {
             string = string.replace(pattern, replaces[i]);
         });
-        
+
         return string.toLowerCase();
     }
 };
@@ -62,7 +62,7 @@ $.extend($.easing, {
     var content = $('#content'),
         slider = $('#slide-container'),
         slideSize = parseInt(content.css('width').replace('px',''),10);
-    
+
     // function to handle actual slide states
     // responsable for setting wrapper setting
     // and remove old sections when not needed anymore
@@ -84,7 +84,7 @@ $.extend($.easing, {
 
         $('.populate-fields input:checked').trigger('click');
     };
-    
+
     // Functions that handle the animation
     // Any link with the push-scene class will load in a new slide scene
     // Any link with the pop-scene class will have it's href ignored and goes back one step on the navigation
@@ -105,7 +105,7 @@ $.extend($.easing, {
             );
         });
     });
-    
+
     slider.delegate('.pop-scene', 'click', function(e){
         e.preventDefault();
         slider.animate(
@@ -113,7 +113,7 @@ $.extend($.easing, {
             {duration:800,easing:'easeInOutCubic',complete:function(){resetSlide(true);}}
         );
     });
-    
+
     // ajax error/success helper
     var globalCallback = function(data,status) {
         if(data && typeof data.refresh != 'undefined'){
@@ -158,7 +158,7 @@ $.extend($.easing, {
             func(data,status,xhr);
         };
     };
-    
+
     // Forms inside the slider wrapper will be serialized and posted.
     // All forms will trigger the pop-scene on success, and in case of error
     // will rewrite the current scene with the HTML returned from the app
@@ -182,11 +182,11 @@ $.extend($.easing, {
            error: handler
         });
     });
-    
+
     // Edit in place
     var inPlace,
         inPlaceValue = '';
-        
+
     slider.delegate('.edit-in-place','click',function(e){
         var t = $(e.target);
         if(!t.is('span')) {
@@ -198,7 +198,7 @@ $.extend($.easing, {
         inPlace.html(input);
         input.get(0).select();
     });
-    
+
     var resetEdit = function() {
         if(inPlace) {
             inPlace.html(inPlaceValue);
@@ -233,7 +233,7 @@ $.extend($.easing, {
         $('.populate-based:not(.'+me+'):visible').slideUp('slow');
         $('.populate-based.'+me).hide().removeClass('hidden').slideDown('slow');
     });
-    
+
     // Handles the delete confirmation dialog buttons.
     // When clicked cancel, closes the dialog. When clicked OK, makes the
     // request and triggers ajax:success event
@@ -272,7 +272,7 @@ $.extend($.easing, {
         e.preventDefault();
         $(this).parent().parent().find('.delete-confirm').fadeIn('fast');
     });
-    
+
     slider.delegate('li .delete-confirm', 'ajax:success', function(e) {
         var li = $(this).closest('li');
         var children = $('li[data-parentid=' + li.attr('data-catid') + ']');
@@ -303,7 +303,7 @@ $(function() {
             $('#FormSlug').val(slug);
         }
     };
-    
+
     $('#form-register-site-info #FormTitle').bind({
         keyup: updateSlug,
         blur: updateSlug
@@ -315,38 +315,49 @@ $(function() {
         $(this).next('fieldset').slideToggle();
         e.preventDefault();
     });
-    
-    // theme picker
-    $('.theme-picker a').click(function(e) {
-        var self = $(this),
-            href = self.attr('href'),
-            theme = href.substr(href.indexOf('#') + 1),
-            skin_picker = $('.skin-picker ul');
 
-        e.preventDefault();
-        $('.theme-picker li.selected').removeClass('selected');
-        self.parent().addClass('selected');
-        $('#FormTheme').val(theme);
-    });
-    if($('#FormTheme').val()) {
-        $('.theme-picker a[href*=' + $('#FormTheme').val() + ']').parent().addClass('selected');
+    if($('.theme-picker').length) {
+        $('.theme-picker a').click(function(e) {
+            var self = $(this),
+                href = self.attr('href'),
+                theme = href.substr(href.indexOf('#') + 1),
+                skin_picker = $('.skin-picker ul');
+
+            e.preventDefault();
+
+            $('.theme-picker li.selected').removeClass('selected');
+            self.parent().addClass('selected');
+            $('#FormTheme').val(theme);
+
+            skin_picker.html('');
+            $.get('/skins', {theme: theme}, function(response) {
+                skin_picker.html(response);
+
+                if($('#FormSkin').val()) {
+                    $('.skin-picker a[href*=' + $('#FormSkin').val() + ']').click();
+                }
+                else {
+                    $('.skin-picker a:first').click();
+                }
+            })
+        });
+
+        $('.theme-picker a[href*=' + $('#FormTheme').val() + ']').click();
+        $('.skin-picker').delegate('a', 'click', function(e) {
+            var self = $(this),
+                href = self.attr('href'),
+                skin = href.substr(href.indexOf('#') + 1);
+
+            $('.skin-picker li.selected').removeClass('selected');
+            self.parent().addClass('selected');
+            $('#FormSkin').val(skin);
+        });
     }
-    
-    // skin picker
-    $('.skin-picker a').live('click', function(e) {
-        e.preventDefault();
-        var self = $(this),
-            href = self.attr('href'),
-            skin = href.substr(href.indexOf('#') + 1);
 
-        $('.skin-picker li.selected').removeClass('selected');
-        self.parent().addClass('selected');
-        $('#FormSkin').val(skin);
-    });
     if($('#FormSkin').val()) {
         $('.skin-picker a[href*=' + $('#FormSkin').val() + ']').parent().addClass('selected');
     }
-    
+
     // flash messages
     $('#success-feedback, #error-feedback').click(function(e) {
         e.preventDefault();
