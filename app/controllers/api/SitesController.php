@@ -9,9 +9,16 @@ class SitesController extends \app\controllers\api\ApiController {
         ));
     }
 
-    public function view() {
+    public function view($slug = null) {
+        if($slug) {
+            $site = \Model::load('Sites')->firstBySlug($slug);
+        }
+        else {
+            $site = $this->site;
+        }
+
         return $this->toJSON(array(
-            'sites' => $this->site
+            'sites' => $site
         ));
     }
 }
