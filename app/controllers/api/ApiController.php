@@ -31,8 +31,10 @@ class ApiController extends \lithium\action\Controller {
 
             if(isset($this->request->params['args'])) {
                 foreach($this->request->params['args'] as $arg) {
-                    list($key, $value) = explode(':', $arg);
-                    $this->query[$key] = $value;
+                    if(strpos($arg, ':') !== false) {
+                        list($key, $value) = explode(':', $arg);
+                        $this->query[$key] = $value;
+                    }
                 }
             }
         }
