@@ -2,14 +2,14 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\data\entity;
 
-use \lithium\data\Connections;
-use \lithium\data\entity\Record;
+use lithium\data\Connections;
+use lithium\data\entity\Record;
 
 class RecordTest extends \lithium\test\Unit {
 
@@ -110,6 +110,7 @@ class RecordTest extends \lithium\test\Unit {
 		$this->assertFalse($this->record->data());
 		$expected = array('id' => 1, 'name' => 'Joe Bloggs', 'address' => 'The Park');
 		$this->record->set($expected);
+		$this->assertEqual($expected, $this->record->data());
 		$this->assertEqual($expected, $this->record->to('array'));
 		$this->assertEqual($expected['name'], $this->record->data('name'));
 	}
@@ -129,7 +130,7 @@ class RecordTest extends \lithium\test\Unit {
 		$this->assertEqual('create', $result['query']->type());
 		$this->assertEqual(array('title' => 'foo'), $result['query']->data());
 
-		$this->expectException("No model bound or unhandled method call 'invalid'.");
+		$this->expectException("No model bound or unhandled method call `invalid`.");
 		$this->assertNull($this->record->invalid());
 	}
 }

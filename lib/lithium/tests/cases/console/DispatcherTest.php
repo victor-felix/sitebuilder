@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -57,10 +57,7 @@ class DispatcherTest extends \lithium\test\Unit {
 
 	public function testRunWithPassed() {
 		$response = Dispatcher::run(new Request(array(
-			'args' => array(
-				'lithium\tests\mocks\console\MockDispatcherCommand',
-				'with param'
-			)
+			'args' => array('lithium\tests\mocks\console\MockDispatcherCommand', 'with param')
 		)));
 
 		$expected = 'run';
@@ -74,10 +71,7 @@ class DispatcherTest extends \lithium\test\Unit {
 
 	public function testRunWithAction() {
 		$response = Dispatcher::run(new Request(array(
-			'args' => array(
-				'lithium\tests\mocks\console\MockDispatcherCommand',
-				'testAction'
-			)
+			'args' => array('lithium\tests\mocks\console\MockDispatcherCommand', 'testAction')
 		)));
 		$expected = 'testAction';
 		$result = $response->testAction;
@@ -85,7 +79,7 @@ class DispatcherTest extends \lithium\test\Unit {
 	}
 
 	public function testInvalidCommand() {
-		$expected = (object) array('status' => "Command `\\this\\command\\is\\fake` not found\n");
+		$expected = (object) array('status' => "Command `\\this\\command\\is\\fake` not found.\n");
 		$result = Dispatcher::run(new Request(array(
 			'args' => array(
 				'\this\command\is\fake',
@@ -97,15 +91,15 @@ class DispatcherTest extends \lithium\test\Unit {
 	}
 
 	public function testRunWithCamelizingCommand() {
-		$expected = (object) array('status' => "Command `FooBar` not found\n");
+		$expected = (object) array('status' => "Command `FooBar` not found.\n");
 		$result = Dispatcher::run(new Request(array(
 			'args' => array(
-				'foo-bar',
+				'foo-bar'
 			)
 		)));
 		$this->assertEqual($expected, $result);
 
-		$expected = (object) array('status' => "Command `FooBar` not found\n");
+		$expected = (object) array('status' => "Command `FooBar` not found.\n");
 		$result = Dispatcher::run(new Request(array(
 			'args' => array('foo_bar')
 		)));

@@ -2,13 +2,12 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\data\source\http\adapter;
 
-use lithium\data\Model;
 use lithium\data\model\Query;
 use lithium\data\Connections;
 use lithium\data\entity\Document;
@@ -78,9 +77,9 @@ class CouchDbTest extends \lithium\test\Unit {
 		$this->assertTrue($result);
 	}
 
-	public function testEntities() {
+	public function testSources() {
 		$couchdb = new CouchDb($this->_testConfig);
-		$result = $couchdb->entities();
+		$result = $couchdb->sources();
 		$this->assertNull($result);
 	}
 
@@ -108,9 +107,9 @@ class CouchDbTest extends \lithium\test\Unit {
 	public function testCreateNoId() {
 		$couchdb = new CouchDb($this->_testConfig);
 		$this->query->data(array('name' => 'Acme Inc.'));
-		$expected = true;
+
 		$result = $couchdb->create($this->query);
-		$this->assertEqual($expected, $result);
+		$this->assertTrue($result);
 
 		$expected = '/lithium-test';
 		$result = $couchdb->last->request->path;
@@ -124,9 +123,9 @@ class CouchDbTest extends \lithium\test\Unit {
 	public function testCreateWithId() {
 		$couchdb = new CouchDb($this->_testConfig);
 		$this->query->data(array('id' => 12345, 'name' => 'Acme Inc.'));
-		$expected = true;
+
 		$result = $couchdb->create($this->query);
-		$this->assertEqual($expected, $result);
+		$this->assertTrue($result);
 
 		$expected = '/lithium-test/12345';
 		$result = $couchdb->last->request->path;
@@ -139,9 +138,9 @@ class CouchDbTest extends \lithium\test\Unit {
 
 	public function testReadNoConditions() {
 		$couchdb = new CouchDb($this->_testConfig);
-		$expected = true;
+
 		$result = $couchdb->read($this->query);
-		$this->assertEqual($expected, $result);
+		$this->assertTrue($result);
 		$this->assertEqual(array('total_rows' => null, 'offset' => null), $result->stats());
 
 		$expected = '/lithium-test/_all_docs';
@@ -155,10 +154,10 @@ class CouchDbTest extends \lithium\test\Unit {
 
 	public function testReadWithConditions() {
 		$couchdb = new CouchDb($this->_testConfig);
-		$expected = true;
+
 		$this->query->conditions(array('id' => 12345));
 		$result = $couchdb->read($this->query);
-		$this->assertEqual($expected, $result);
+		$this->assertTrue($result);
 		$this->assertEqual(array('total_rows' => null, 'offset' => null), $result->stats());
 
 		$expected = '/lithium-test/12345';
@@ -168,17 +167,21 @@ class CouchDbTest extends \lithium\test\Unit {
 		$expected = '';
 		$result = $couchdb->last->request->params;
 		$this->assertEqual($expected, $result);
+
+		$this->query->conditions(array('id' => 12345, 'path' => '/lithium-test/12345'));
+		$result = $couchdb->read($this->query);
+		$this->assertTrue($result);
 	}
 
 	public function testReadWithViewConditions() {
 		$couchdb = new CouchDb($this->_testConfig);
-		$expected = true;
+
 		$this->query->conditions(array(
 			'design' => 'latest', 'view' => 'all', 'limit' => 10, 'descending' => 'true'
 		));
 		$result = $couchdb->read($this->query);
 		$this->assertEqual(array('total_rows' => null, 'offset' => null), $result->stats());
-		$this->assertEqual($expected, $result);
+		$this->assertTrue($result);
 
 		$expected = '/lithium-test/_design/latest/_view/all/';
 		$result = $couchdb->last->request->path;
@@ -298,18 +301,16 @@ class CouchDbTest extends \lithium\test\Unit {
 	public function testResultClose() {
 		$couchdb = new CouchDb($this->_testConfig);
 
-		$expected = null;
 		$result = $couchdb->result('close', (object) array(), $this->query);
-		$this->assertEqual($expected, $result);
+		$this->assertNull($result);
 	}
 
 	public function testUpdate() {
 		$couchdb = new CouchDb($this->_testConfig);
 		$this->query->data(array('id' => 12345, 'rev' => '1-1', 'title' => 'One'));
 
-		$expected = true;
 		$result = $couchdb->update($this->query);
-		$this->assertEqual($expected, $result);
+		$this->assertTrue($result);
 
 		$expected = '/lithium-test/12345';
 		$result = $couchdb->last->request->path;
@@ -324,9 +325,8 @@ class CouchDbTest extends \lithium\test\Unit {
 		$couchdb = new CouchDb($this->_testConfig);
 		$this->query->data(array('id' => 12345, 'rev'=> '1-1', 'name' => 'Acme Inc'));
 
-		$expected = true;
 		$result = $couchdb->delete($this->query);
-		$this->assertEqual($expected, $result);
+		$this->assertTrue($result);
 
 		$expected = '/lithium-test/12345';
 		$result = $couchdb->last->request->path;
@@ -335,6 +335,15 @@ class CouchDbTest extends \lithium\test\Unit {
 		$expected = 'rev=1-1';
 		$result = $couchdb->last->request->params;
 		$this->assertEqual($expected, $result);
+	}
+
+	public function testEnabled() {
+		$this->assertEqual(CouchDb::enabled(), true);
+
+		$this->assertEqual(CouchDb::enabled('arrays'), true);
+		$this->assertEqual(CouchDb::enabled('transactions'), false);
+		$this->assertEqual(CouchDb::enabled('booleans'), true);
+		$this->assertEqual(CouchDb::enabled('relationships'), false);
 	}
 }
 

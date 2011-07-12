@@ -2,11 +2,14 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\net;
+
+use ReflectionClass;
+use ReflectionProperty;
 
 /**
  * Base message class for any URI based request/response.
@@ -79,7 +82,7 @@ class Message extends \lithium\core\Object {
 			'username' => null,
 			'password' => null,
 			'body' => null,
-			'message' => null,
+			'message' => null
 		);
 		$config += $defaults;
 
@@ -117,8 +120,9 @@ class Message extends \lithium\core\Object {
 		switch ($format) {
 			case 'array':
 				$array = array();
-				$r = new \ReflectionClass(get_class($this));
-				foreach ($r->getProperties(\ReflectionProperty::IS_PUBLIC) as $prop) {
+				$class = new ReflectionClass(get_class($this));
+
+				foreach ($class->getProperties(ReflectionProperty::IS_PUBLIC) as $prop) {
 					$array[$prop->getName()] = $prop->getValue($this);
 				}
 				return $array;

@@ -4,15 +4,14 @@ namespace lithium\tests\cases\console\command;
 
 use lithium\console\command\Help;
 use lithium\console\Request;
-use lithium\tests\mocks\console\command\MockCommandHelp;
 
 class HelpTest extends \lithium\test\Unit {
 
 	public $request;
 
-	protected $_backup = array();
+	public $classes = array();
 
-	protected $_testPath = null;
+	protected $_backup = array();
 
 	public function setUp() {
 		$this->classes = array('response' => 'lithium\tests\mocks\console\MockResponse');
@@ -30,117 +29,122 @@ class HelpTest extends \lithium\test\Unit {
 	}
 
 	public function testRun() {
-		$help = new Help(array(
-			'request' => $this->request, 'classes' => $this->classes
-		));
-		$expected = true;
-		$result = $help->run();
-		$this->assertEqual($expected, $result);
+		$command = new Help(array('request' => $this->request, 'classes' => $this->classes));
+		$this->assertTrue($command->run());
 
-		$expected = "COMMANDS\n";
+		$expected = "COMMANDS via lithium\n";
 		$expected = preg_quote($expected);
-		$result = $help->response->output;
+		$result = $command->response->output;
 		$this->assertPattern("/{$expected}/", $result);
 
 		$expected = preg_quote($expected);
-		$result = $help->response->output;
+		$result = $command->response->output;
 		$pattern = "/\s+test\s+Runs a given set of tests and outputs the results\./ms";
 		$this->assertPattern($pattern, $result);
-
 	}
 
 	public function testRunWithName() {
-		$help = new Help(array(
+		$command = new Help(array(
 			'request' => $this->request, 'classes' => $this->classes
 		));
-		$expected = true;
-		$result = $help->run('Test');
-		$this->assertEqual($expected, $result);
 
-		$expected = "li3 test --case=CASE --group=GROUP --filters=FILTERS [ARGS]";
+		$result = $command->run('Test');
+		$this->assertTrue($result);
+		$result = $command->run('test');
+		$this->assertTrue($result);
+
+		$expected = "li3 test [--filters=<string>] [--format=<string>] [<path>]";
 		$expected = preg_quote($expected);
-		$result = $help->response->output;
+		$result = $command->response->output;
 		$this->assertPattern("/{$expected}/", $result);
 
-		$expected = "OPTIONS\n    --case=CASE\n";
+		$expected = "OPTIONS\n    <path>\n";
 		$expected = preg_quote($expected);
-		$result = $help->response->output;
+		$result = $command->response->output;
 		$this->assertPattern("/{$expected}/", $result);
 
-		$expected = "missing\n";
+		$expected = "DESCRIPTION\n";
 		$expected = preg_quote($expected);
-		$result = $help->response->output;
+		$result = $command->response->output;
 		$this->assertPattern("/{$expected}/", $result);
 	}
 
 	public function testApiClass() {
-		$help = new Help(array(
+		$command = new Help(array(
 			'request' => $this->request, 'classes' => $this->classes
 		));
-		$expected = null;
-		$result = $help->api('lithium.util.Inflector');
-		$this->assertEqual($expected, $result);
+		$result = $command->api('lithium.util.Inflector');
+		$this->assertNull($result);
 
 		$expected = "Utility for modifying format of words";
 		$expected = preg_quote($expected);
-		$result = $help->response->output;
+		$result = $command->response->output;
 		$this->assertPattern("/{$expected}/", $result);
 	}
 
 	public function testApiMethod() {
-		$help = new Help(array(
+		$command = new Help(array(
 			'request' => $this->request, 'classes' => $this->classes
 		));
-		$expected = null;
-		$result = $help->api('lithium.util.Inflector', 'method');
-		$this->assertEqual($expected, $result);
+		$result = $command->api('lithium.util.Inflector', 'method');
+		$this->assertNull($result);
 
-		$expected = "rules [type] [config]";
+		$expected = "rules";
 		$expected = preg_quote($expected);
-		$result = $help->response->output;
+		$result = $command->response->output;
 		$this->assertPattern("/{$expected}/", $result);
 	}
 
 	public function testApiMethodWithName() {
-		$help = new Help(array(
+		$command = new Help(array(
 			'request' => $this->request, 'classes' => $this->classes
 		));
-		$expected = null;
-		$result = $help->api('lithium.util.Inflector', 'method', 'rules');
-		$this->assertEqual($expected, $result);
+		$result = $command->api('lithium.util.Inflector', 'method', 'rules');
+		$this->assertNull($result);
 
-		$expected = "rules [type] [config]";
+		$expected = "rules";
 		$expected = preg_quote($expected);
-		$result = $help->response->output;
+		$result = $command->response->output;
 		$this->assertPattern("/{$expected}/", $result);
 	}
 
 	public function testApiProperty() {
-		$help = new Help(array(
+		$command = new Help(array(
 			'request' => $this->request, 'classes' => $this->classes
 		));
-		$expected = null;
-		$result = $help->api('lithium.net.Message', 'property');
-		$this->assertEqual($expected, $result);
+		$result = $command->api('lithium.net.Message', 'property');
+		$this->assertNull($result);
 
-		$expected = "    --host=HOST\n        The hostname for this endpoint.";
+		$expected = "    --host=<string>\n        The hostname for this endpoint.";
 		$expected = preg_quote($expected);
-		$result = $help->response->output;
+		$result = $command->response->output;
 		$this->assertPattern("/{$expected}/", $result);
 	}
 
 	public function testApiPropertyWithName() {
+		$command = new Help(array(
+			'request' => $this->request, 'classes' => $this->classes
+		));
+		$result = $command->api('lithium.net.Message', 'property');
+		$this->assertNull($result);
+
+		$expected = "    --host=<string>\n        The hostname for this endpoint.";
+		$expected = preg_quote($expected);
+		$result = $command->response->output;
+		$this->assertPattern("/{$expected}/", $result);
+	}
+
+	public function testApiProperties() {
 		$help = new Help(array(
 			'request' => $this->request, 'classes' => $this->classes
 		));
 		$expected = null;
-		$result = $help->api('lithium.net.Message', 'property');
+		$result = $help->api('lithium.tests.mocks.console.command.MockCommandHelp', 'property');
 		$this->assertEqual($expected, $result);
 
-		$expected = "    --host=HOST\n        The hostname for this endpoint.";
-		$expected = preg_quote($expected);
+		$expected = "\-\-long=<string>.*\-\-blong.*\-s";
 		$result = $help->response->output;
-		$this->assertPattern("/{$expected}/", $result);
+		$this->assertPattern("/{$expected}/s", $result);
 	}
 }
 

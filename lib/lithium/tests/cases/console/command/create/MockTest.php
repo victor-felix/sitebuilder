@@ -2,13 +2,12 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\console\command\create;
 
-use lithium\console\command\Create;
 use lithium\console\command\create\Mock;
 use lithium\console\Request;
 use lithium\core\Libraries;
@@ -22,7 +21,7 @@ class MockTest extends \lithium\test\Unit {
 	protected $_testPath = null;
 
 	public function skip() {
-		$this->_testPath = LITHIUM_APP_PATH . '/resources/tmp/tests';
+		$this->_testPath = Libraries::get(true, 'resources') . '/tmp/tests';
 		$this->skipIf(!is_writable($this->_testPath), "{$this->_testPath} is not writable.");
 	}
 
@@ -46,14 +45,14 @@ class MockTest extends \lithium\test\Unit {
 	public function testMockModel() {
 		$this->request->params += array(
 			'command' => 'create', 'action' => 'mock',
-			'args' => array('model', 'Post')
+			'args' => array('model', 'Posts')
 		);
 		$mock = new Mock(array(
 			'request' => $this->request, 'classes' => $this->classes
 		));
 		$mock->path = $this->_testPath;
 		$mock->run('mock');
-		$expected = "MockPost created in create_test\\tests\\mocks\\models.\n";
+		$expected = "MockPosts created in create_test\\tests\\mocks\\models.\n";
 		$result = $mock->response->output;
 		$this->assertEqual($expected, $result);
 
@@ -62,7 +61,7 @@ class MockTest extends \lithium\test\Unit {
 
 namespace create_test\tests\mocks\models;
 
-class MockPost extends \create_test\models\Post {
+class MockPosts extends \create_test\models\Posts {
 
 
 }
@@ -71,7 +70,7 @@ class MockPost extends \create_test\models\Post {
 test;
 		$replace = array("<?php", "?>");
 		$result = str_replace($replace, '',
-			file_get_contents($this->_testPath . '/create_test/tests/mocks/models/MockPost.php')
+			file_get_contents($this->_testPath . '/create_test/tests/mocks/models/MockPosts.php')
 		);
 		$this->assertEqual($expected, $result);
 	}

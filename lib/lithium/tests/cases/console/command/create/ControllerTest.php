@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -21,7 +21,7 @@ class ControllerTest extends \lithium\test\Unit {
 	protected $_testPath = null;
 
 	public function skip() {
-		$this->_testPath = LITHIUM_APP_PATH . '/resources/tmp/tests';
+		$this->_testPath = Libraries::get(true, 'resources') . '/tmp/tests';
 		$this->skipIf(!is_writable($this->_testPath), "{$this->_testPath} is not writable.");
 	}
 
@@ -63,7 +63,7 @@ class ControllerTest extends \lithium\test\Unit {
 			'request' => $this->request, 'classes' => $this->classes
 		));
 
-		$expected = '\\create_test\\models\\Post';
+		$expected = 'create_test\\models\\Posts';
 		$result = $model->invokeMethod('_use', array($this->request));
 		$this->assertEqual($expected, $result);
 	}
@@ -87,22 +87,23 @@ class ControllerTest extends \lithium\test\Unit {
 
 namespace create_test\controllers;
 
-use \create_test\models\Post;
+use create_test\models\Posts;
+use lithium\action\DispatchException;
 
 class PostsController extends \lithium\action\Controller {
 
 	public function index() {
-		$posts = Post::all();
+		$posts = Posts::all();
 		return compact('posts');
 	}
 
 	public function view() {
-		$post = Post::first($this->request->id);
+		$post = Posts::first($this->request->id);
 		return compact('post');
 	}
 
 	public function add() {
-		$post = Post::create();
+		$post = Posts::create();
 
 		if (($this->request->data) && $post->save($this->request->data)) {
 			$this->redirect(array('Posts::view', 'args' => array($post->id)));
@@ -111,7 +112,7 @@ class PostsController extends \lithium\action\Controller {
 	}
 
 	public function edit() {
-		$post = Post::find($this->request->id);
+		$post = Posts::find($this->request->id);
 
 		if (!$post) {
 			$this->redirect('Posts::index');
@@ -120,6 +121,15 @@ class PostsController extends \lithium\action\Controller {
 			$this->redirect(array('Posts::view', 'args' => array($post->id)));
 		}
 		return compact('post');
+	}
+
+	public function delete() {
+		if (!$this->request->is('post') && !$this->request->is('delete')) {
+			$msg = "Posts::delete can only be called with http:post or http:delete.";
+			throw new DispatchException($msg);
+		}
+		Posts::find($this->request->id)->delete();
+		$this->redirect('Posts::index');
 	}
 }
 

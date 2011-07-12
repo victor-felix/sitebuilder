@@ -2,15 +2,15 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\mocks\data;
 
-use \lithium\data\model\Query;
-use \lithium\data\entity\Record;
-use \lithium\data\collection\RecordSet;
+use lithium\data\model\Query;
+use lithium\data\entity\Record;
+use lithium\data\collection\RecordSet;
 
 class MockComment extends \lithium\tests\mocks\data\MockBase {
 

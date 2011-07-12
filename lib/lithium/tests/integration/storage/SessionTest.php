@@ -2,13 +2,13 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\integration\storage;
 
-use \lithium\storage\Session;
+use lithium\storage\Session;
 
 class SessionTest extends \lithium\test\Unit {
 
@@ -28,6 +28,10 @@ class SessionTest extends \lithium\test\Unit {
 		foreach ($cookies as $cookie) {
 			setcookie($cookie, "", time()-1);
 		}
+	}
+
+	public function skip() {
+		$this->skipIf(PHP_SAPI == 'cli', 'No session support in cli SAPI');
 	}
 
 	public function testWriteAndRead() {

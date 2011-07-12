@@ -2,12 +2,13 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\template\view;
 
+use lithium\core\Libraries;
 use lithium\template\TemplateException;
 
 /**
@@ -27,12 +28,15 @@ class Compiler extends \lithium\core\StaticObject {
 	/**
 	 * The list of syntax replacements to apply to compiled templates.
 	 *
-	 * @var array Key/value pairs of regular expressions. The keys are the regexes,
-	 *      and the values are the resulting expressions along with any capture groups
-	 *      that may have been used in the corresponding regexes.
+	 * Key/value pairs of regular expressions. The keys are the regexes, and the values are the
+	 * resulting expressions along with any capture groups that may have been used in the
+	 * corresponding regexes.
+	 *
+	 * @var array
 	 */
 	protected static $_processors = array(
 		'/\<\?=\s*\$this->(.+?)\s*;?\s*\?>/msx' => '<?php echo $this->$1; ?>',
+		'/\<\?=\s*(\$h\(.+?)\s*;?\s*\?>/msx' => '<?php echo $1; ?>',
 		'/\<\?=\s*(.+?)\s*;?\s*\?>/msx' => '<?php echo $h($1); ?>'
 	);
 
@@ -40,7 +44,7 @@ class Compiler extends \lithium\core\StaticObject {
 	 * Compiles a template and writes it to a cache file, which is used for inclusion.
 	 *
 	 * @param string $file The full path to the template that will be compiled.
-	 * @param string $options Options for compilation include:
+	 * @param array $options Options for compilation include:
 	 *        - `path`: Path where the compiled template should be written.
 	 *        - `fallback`: Boolean indicating that if the compilation failed for some
 	 *                      reason (e.g. `path` is not writable), that the compiled template
@@ -48,7 +52,7 @@ class Compiler extends \lithium\core\StaticObject {
 	 * @return string The compiled template.
 	 */
 	public static function template($file, array $options = array()) {
-		$cachePath = LITHIUM_APP_PATH . '/resources/tmp/cache/templates';
+		$cachePath = Libraries::get(true, 'resources') . '/tmp/cache/templates';
 		$defaults = array('path' => $cachePath, 'fallback' => true);
 		$options += $defaults;
 
@@ -74,7 +78,7 @@ class Compiler extends \lithium\core\StaticObject {
 		if ($options['fallback']) {
 			return $file;
 		}
-		throw new TemplateException("Could not write compiled template {$template} to cache");
+		throw new TemplateException("Could not write compiled template `{$template}` to cache.");
 	}
 
 	/**

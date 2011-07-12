@@ -2,13 +2,13 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\storage\cache\adapter;
 
-use \lithium\storage\cache\adapter\XCache;
+use lithium\storage\cache\adapter\XCache;
 
 class XCacheTest extends \lithium\test\Unit {
 
@@ -241,7 +241,7 @@ class XCacheTest extends \lithium\test\Unit {
 	}
 
 	public function testDecrement() {
-		$time = strtotime('+1 minute');
+		$time = strtotime('+1 minute') - time();
 		$key = 'decrement';
 		$value = 10;
 
@@ -263,7 +263,7 @@ class XCacheTest extends \lithium\test\Unit {
 	}
 
 	public function testDecrementNonIntegerValue() {
-		$time = strtotime('+1 minute');
+		$time = strtotime('+1 minute') - time();
 		$key = 'non_integer';
 		$value = 'no';
 
@@ -293,7 +293,7 @@ class XCacheTest extends \lithium\test\Unit {
 	}
 
 	public function testIncrement() {
-		$time = strtotime('+1 minute');
+		$time = strtotime('+1 minute') - time();
 		$key = 'increment';
 		$value = 10;
 

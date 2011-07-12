@@ -2,14 +2,14 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\analysis;
 
-use \lithium\analysis\Docblock;
-use \lithium\analysis\Inspector;
+use lithium\analysis\Docblock;
+use lithium\analysis\Inspector;
 
 class DocblockTest extends \lithium\test\Unit {
 
@@ -108,7 +108,7 @@ class DocblockTest extends \lithium\test\Unit {
 	/**
 	 * This docblock has an extra * in the closing element.
 	 *
-	 **/
+	 */
 	public function testBadlyClosedDocblock() {
 		$info = Inspector::info(__METHOD__ . '()');
 		$description = 'This docblock has an extra * in the closing element.';

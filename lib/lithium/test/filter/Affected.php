@@ -2,15 +2,15 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\test\filter;
 
-use \lithium\test\Unit;
-use \lithium\core\Libraries;
-use \lithium\analysis\Inspector;
+use lithium\test\Unit;
+use lithium\core\Libraries;
+use lithium\analysis\Inspector;
 
 /**
  * The `Affected` test filter adds test cases to the tests that are about to be run.
@@ -20,7 +20,6 @@ use \lithium\analysis\Inspector;
  * 1. Looking at the subject of a test case.
  * 2. Searching the class tree for any classes that directly depend on that subject.
  * 3. Assigning test cases to those classes.
- *
  */
 class Affected extends \lithium\test\Filter {
 
@@ -33,7 +32,7 @@ class Affected extends \lithium\test\Filter {
 	 * @param object $report Instance of Report which is calling apply.
 	 * @param array $tests The test to apply this filter on
 	 * @param array $options Not used.
-	 * @return object|void Returns the instance of `$tests`.
+	 * @return object Returns the instance of `$tests`.
 	 */
 	public static function apply($report, $tests, array $options = array()) {
 		$affected = array();

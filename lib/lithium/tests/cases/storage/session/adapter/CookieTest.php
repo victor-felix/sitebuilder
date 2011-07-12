@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of Rad, Inc. (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of Rad, Inc. (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -31,7 +31,12 @@ class CookieTest extends \lithium\test\Unit {
 	}
 
 	public function tearDown() {
-		$this->_destroyCookie();
+		$this->_destroyCookie($this->name);
+		$cookies = array_keys($_COOKIE);
+
+		foreach ($cookies as $cookie) {
+			setcookie($cookie, "", time()-1);
+		}
 	}
 
 	protected function _destroyCookie($name = null) {
@@ -84,7 +89,11 @@ class CookieTest extends \lithium\test\Unit {
 
 	public function testWriteArrayData() {
 		$key = 'user';
-		$value = array('email' => 'test@localhost', 'name' => 'Testy McTesterson');
+		$value = array(
+			'email' => 'test@localhost',
+			'name' => 'Testy McTesterson',
+			'address' => array('country' => 'Iran', 'city' => 'Mashhad')
+		);
 		$expires = "+2 days";
 		$path = '/';
 
@@ -95,7 +104,11 @@ class CookieTest extends \lithium\test\Unit {
 
 		$expected = compact('expires');
 		$expected += array('key' => 'user.email', 'value' => 'test@localhost');
-		$this->assertCookie($expected, headers_list());
+		$this->assertCookie($expected);
+
+		$expected = compact('expires');
+		$expected += array('key' => 'user.address.country', 'value' => 'Iran');
+		$this->assertCookie($expected);
 	}
 
 	public function testReadDotSyntax() {
@@ -111,9 +124,9 @@ class CookieTest extends \lithium\test\Unit {
 		$this->assertEqual($value, $result);
 
 		$result = $closure($this->cookie, array('key' => null), null);
-		$this->assertEqual($_COOKIE, $result);
+		$this->assertEqual($_COOKIE[$this->name], $result);
 
-		$key = 'does_not_exist';
+		$key = 'does.not.exist';
 		$closure = $this->cookie->read($key);
 		$this->assertTrue(is_callable($closure));
 
@@ -152,7 +165,7 @@ class CookieTest extends \lithium\test\Unit {
 		$this->assertEqual($value, $result);
 
 		$result = $closure($this->cookie, array('key' => null), null);
-		$this->assertEqual($_COOKIE, $result);
+		$this->assertEqual($_COOKIE[$this->name], $result);
 
 		$key = 'does_not_exist';
 		$closure = $this->cookie->read($key);
@@ -184,6 +197,47 @@ class CookieTest extends \lithium\test\Unit {
 		$this->assertFalse($result);
 	}
 
+	public function testClearCookie() {
+		$key = 'clear_key';
+		$value = 'clear_value';
+		$_COOKIE[$this->name][$key] = $value;
+
+		$closure = $this->cookie->check($key);
+		$this->assertTrue(is_callable($closure));
+
+		$params = compact('key');
+		$result = $closure($this->cookie, $params, null);
+		$this->assertTrue($result);
+
+		$closure = $this->cookie->clear();
+		$this->assertTrue(is_callable($closure));
+
+		$params = array();
+		$result = $closure($this->cookie, $params, null);
+		$this->assertTrue($result);
+		$this->assertNoCookie(compact('key', 'value'));
+
+	}
+
+	public function testDeleteArrayData() {
+		$key = 'user';
+		$value = array('email' => 'user@localhost', 'name' => 'Ali');
+		$_COOKIE[$this->name][$key] = $value;
+
+		$closure = $this->cookie->delete($key);
+		$this->assertTrue(is_callable($closure));
+
+		$params = compact('key');
+		$result = $closure($this->cookie, $params, null);
+		$this->assertTrue($result);
+
+		$expected = array('key' => 'user.name', 'value' => 'deleted');
+		$this->assertCookie($expected);
+
+		$expected = array('key' => 'user.email', 'value' => 'deleted');
+		$this->assertCookie($expected);
+	}
+
 	public function testDeleteNonExistentValue() {
 		$key = 'delete';
 		$value = 'deleted';
@@ -194,7 +248,7 @@ class CookieTest extends \lithium\test\Unit {
 
 		$params = compact('key');
 		$result = $closure($this->cookie, $params, null);
-		$this->assertNull($result);
+		$this->assertTrue($result);
 		$this->assertCookie(compact('key', 'value', 'path'));
 	}
 

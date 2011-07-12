@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -21,14 +21,14 @@ class Response extends \lithium\core\Object {
 	 * Output stream, STDOUT
 	 *
 	 * @var stream
-	 **/
+	 */
 	public $output = null;
 
 	/**
 	 * Error stream, STDERR
 	 *
 	 * @var stream
-	 **/
+	 */
 	public $error = null;
 
 	/**
@@ -49,7 +49,6 @@ class Response extends \lithium\core\Object {
 	 *              - request object lithium\console\Request
 	 *              - output stream
 	 *              _ error stream
-	 * @return void
 	 */
 	public function __construct($config = array()) {
 		$defaults = array('output' => null, 'error' => null);
@@ -58,13 +57,13 @@ class Response extends \lithium\core\Object {
 		$this->output = $config['output'];
 
 		if (!is_resource($this->output)) {
-			$this->output = fopen('php://stdout', 'r');;
+			$this->output = fopen('php://stdout', 'r');
 		}
 
 		$this->error = $config['error'];
 
 		if (!is_resource($this->error)) {
-			$this->error = fopen('php://stderr', 'r');;
+			$this->error = fopen('php://stderr', 'r');
 		}
 		parent::__construct($config);
 	}
@@ -94,7 +93,7 @@ class Response extends \lithium\core\Object {
 	 *
 	 * @return void
 	 *
-	 **/
+	 */
 	public function __destruct() {
 		if ($this->output) {
 			fclose($this->output);
@@ -112,13 +111,11 @@ class Response extends \lithium\core\Object {
 	 */
 	public function styles($styles = array()) {
 		$defaults = array(
-			'heading1' => "\033[1;30;46m",
-			'heading2' => "\033[1;35m",
-			'heading3' => "\033[1;34m",
-			'option'   => "\033[40;37m",
-			'command'  => "\033[1;40;37m",
-			'error'    => "\033[0;31m",
-			'success'  => "\033[0;32m",
+			'heading' => "\033[1;36m",
+			'option'  => "\033[0;35m",
+			'command' => "\033[0;35m",
+			'error'   => "\033[0;31m",
+			'success' => "\033[0;32m",
 			'black'  => "\033[0;30m",
 			'red'    => "\033[0;31m",
 			'green'  => "\033[0;32m",
@@ -127,7 +124,7 @@ class Response extends \lithium\core\Object {
 			'purple' => "\033[0;35m",
 			'cyan'   => "\033[0;36m",
 			'white'  => "\033[0;37m",
-			'end'    => "\033[0m",
+			'end'    => "\033[0m"
 		);
 		if ($styles === false) {
 			return array_combine(array_keys($defaults), array_pad(array(), count($defaults), null));

@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -135,14 +135,15 @@ class Library extends \lithium\console\Command {
 	 *
 	 * @param string $key (server)
 	 * @param string $value value of key
-	 * @param string $options [optional]
-	 * @return void
+	 * @param boolean|string $options [optional]
+	 * @return mixed Returns all settings if `$key` and `$value` aren't set. The only option for
+	 * `$key` right now is 'server'. Returns the bytes written to the configuration file.
 	 */
 	public function config($key = null, $value = null, $options = true) {
 		if (empty($key) || empty($value)) {
 			return $this->_settings;
 		}
-		switch($key) {
+		switch ($key) {
 			case 'server':
 				$this->_settings['servers'][$value] = $options;
 			break;
@@ -176,7 +177,7 @@ class Library extends \lithium\console\Command {
 
 		if ($from[0] !== '/') {
 			$from = Libraries::locate('command.create.template', $from, array(
-				'filter' => false, 'type' => 'file', 'suffix' => '.phar.gz',
+				'filter' => false, 'type' => 'file', 'suffix' => '.phar.gz'
 			));
 			if (!$from || is_array($from)) {
 				return false;
@@ -191,11 +192,46 @@ class Library extends \lithium\console\Command {
 			}
 			if ($archive->extractTo($to)) {
 				$this->out(basename($to) . " created in " . dirname($to) . " from {$from}");
-				return true;
+				return $this->_replaceAfterExtract($to);
 			}
 		}
 		$this->error("Could not extract {$to} from {$from}");
 		return false;
+	}
+
+	/**
+	 * Helper method for `console\command\Library::extract()` to perform after-extract string
+	 * replacements.
+	 *
+	 * In the current implementation, it only sets the correct `LITHIUM_LIBRARY_PATH` when the
+	 * app.phar.gz archive was extracted. If you get any errors, please make sure that the console
+	 * script has read and write permissions to the extracted directory.
+	 *
+	 * @param string $extracted contains the path to the extracted archive.
+	 * @return boolean
+	 */
+	protected function _replaceAfterExtract($extracted) {
+		$replacements = array(
+			'config/bootstrap/libraries.php' => array(
+				'define(\'LITHIUM_LIBRARY_PATH\', dirname(LITHIUM_APP_PATH) . \'/libraries\');' =>
+					'define(\'LITHIUM_LIBRARY_PATH\', \'' . LITHIUM_LIBRARY_PATH . '\');'
+			)
+		);
+
+		foreach ($replacements as $filename => $definitions) {
+			$filepath = $extracted . '/' . $filename;
+			if (file_exists($filepath)) {
+				$content = file_get_contents($filepath);
+				foreach ($definitions as $original => $replacement) {
+					$content = str_replace($original, $replacement, $content);
+				}
+				if (!file_put_contents($filepath, $content)) {
+					$this->error("Could not replace content in {$filepath}");
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -214,7 +250,7 @@ class Library extends \lithium\console\Command {
 	 */
 	public function archive($name = null, $result = null) {
 		if (ini_get('phar.readonly') == '1') {
-			throw new RuntimeException('set phar.readonly = 0 in php.ini');
+			throw new RuntimeException('Set `phar.readonly` to `0` in `php.ini`.');
 		}
 		$from = $name;
 		$to = $name;
@@ -287,7 +323,7 @@ class Library extends \lithium\console\Command {
 				$out = array(
 					"{$data->summary}",
 					"Version: {$data->version}",
-					"Created: {$data->created}",
+					"Created: {$data->created}"
 				);
 				$this->header($header);
 				$this->out(array_filter($out));
@@ -395,7 +431,7 @@ class Library extends \lithium\console\Command {
 				)),
 				'sources' => array("http://{$this->server}/lab/download/{$name}.phar.gz"),
 				'commands' => array(
-					'install' => array(), 'update' => array(), 'remove' => array(),
+					'install' => array(), 'update' => array(), 'remove' => array()
 				),
 				'requires' => array()
 			);
@@ -485,8 +521,8 @@ class Library extends \lithium\console\Command {
 	/**
 	 * Update installed plugins. For plugins, runs update commands specified in Formula.
 	 *
-	 * @param string $name
-	 * @return boolean
+	 * @todo implement
+	 * @return void
 	 */
 	public function update() {
 		$this->error('Please implement me');

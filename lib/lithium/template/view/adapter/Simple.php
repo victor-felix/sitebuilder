@@ -2,16 +2,16 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\template\view\adapter;
 
-use \Closure;
-use \Exception;
-use \lithium\util\Set;
-use \lithium\util\String;
+use Closure;
+use Exception;
+use lithium\util\Set;
+use lithium\util\String;
 
 /**
  * This view adapter renders content using simple string substitution, and is only useful for very
@@ -50,7 +50,10 @@ class Simple extends \lithium\template\view\Renderer {
 	 * @return string
 	 */
 	public function template($type, $options) {
-		return isset($options[$type]) ? $options[$type] : '';
+		if (isset($options[$type])) {
+			return $options[$type];
+		}
+		return isset($options['template']) ? $options['template'] : '';
 	}
 
 	protected function _toString($data) {

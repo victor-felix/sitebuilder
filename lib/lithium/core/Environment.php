@@ -2,13 +2,13 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\core;
 
-use \lithium\util\Set;
+use lithium\util\Set;
 
 /**
  * The `Environment` class allows you to manage multiple configurations for your application,
@@ -181,14 +181,30 @@ class Environment {
 			return isset(static::$_configurations[$cur]) ? static::$_configurations[$cur] : null;
 		}
 		if (isset(static::$_configurations[$name])) {
-			return static::$_configurations[$name];
+			return static::_processDotPath($name, static::$_configurations);
 		}
-		if (!isset(static::$_configurations[static::$_current])) {
-			return null;
+		if (!isset(static::$_configurations[$cur])) {
+			return static::_processDotPath($name, static::$_configurations);
 		}
 
-		$config = static::$_configurations[static::$_current];
-		return isset($config[$name]) ? $config[$name] : null;
+		return static::_processDotPath($name, static::$_configurations[$cur]);
+	}
+
+	protected static function _processDotPath($path, &$arrayPointer) {
+		if (isset($arrayPointer[$path])) {
+			return $arrayPointer[$path];
+		}
+		if (strpos($path, '.') === false) {
+			return null;
+		}
+		$pathKeys = explode('.', $path);
+		foreach ($pathKeys as $pathKey) {
+			if (!isset($arrayPointer[$pathKey])) {
+				return false;
+			}
+			$arrayPointer = &$arrayPointer[$pathKey];
+		}
+		return $arrayPointer;
 	}
 
 	/**
@@ -230,7 +246,7 @@ class Environment {
 	 */
 	public static function set($env, $config = null) {
 		if (is_null($config)) {
-			switch(true) {
+			switch (true) {
 				case is_object($env) || is_array($env):
 					static::$_current = static::_detector()->__invoke($env);
 				break;

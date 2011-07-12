@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -40,11 +40,6 @@ class Dispatcher extends \lithium\core\StaticObject {
 	 * elements array elements of the flag which are present in the route will be modified using a
 	 * `lithium\util\String::insert()`-formatted string.
 	 *
-	 * For example, to implement action prefixes (i.e. `admin_index()`), set a rule named 'admin',
-	 * with a value array containing a modifier key for the `action` element of a route, i.e.:
-	 * `array('action' => 'admin_{:action}')`.  See `lithium\console\Dispatcher::config()` for
-	 * examples on setting rules.
-	 *
 	 * @see lithium\console\Dispatcher::config()
 	 * @see lithium\util\String::insert()
 	 */
@@ -57,7 +52,7 @@ class Dispatcher extends \lithium\core\StaticObject {
 	 * Used to set configuration parameters for the Dispatcher.
 	 *
 	 * @param array $config
-	 * @return array|void If no parameters are passed, returns an associative array with the
+	 * @return array If no parameters are passed, returns an associative array with the
 	 *         current configuration, otherwise returns null.
 	 */
 	public static function config($config = array()) {
@@ -76,11 +71,11 @@ class Dispatcher extends \lithium\core\StaticObject {
 	 *  If `$request` is `null`, a new request object is instantiated based on the value of the
 	 * `'request'` key in the `$_classes` array.
 	 *
-	 * @param object $request An instance of a request object with HTTP request information.  If
+	 * @param object $request An instance of a request object with console request information.  If
 	 *        `null`, an instance will be created.
 	 * @param array $options
 	 * @return object The command action result which is an instance of `lithium\console\Response`.
-	 * @todo Add exception-handling/error page rendering
+	 * @filter
 	 */
 	public static function run($request = null, $options = array()) {
 		$defaults = array('request' => array());
@@ -89,7 +84,7 @@ class Dispatcher extends \lithium\core\StaticObject {
 		$params = compact('request', 'options');
 		$method = __FUNCTION__;
 
-		return static::_filter($method, $params, function($self, $params, $chain) use ($classes) {
+		return static::_filter($method, $params, function($self, $params) use ($classes) {
 			$request = $params['request'];
 			$options = $params['options'];
 
@@ -115,10 +110,11 @@ class Dispatcher extends \lithium\core\StaticObject {
 	 * @param string $params
 	 * @param string $options
 	 * @return class lithium\console\Command
+	 * @filter
 	 */
 	protected static function _callable($request, $params, $options) {
 		$params = compact('request', 'params', 'options');
-		return static::_filter(__FUNCTION__, $params, function($self, $params, $chain) {
+		return static::_filter(__FUNCTION__, $params, function($self, $params) {
 			$request = $params['request'];
 			$params = $params['params'];
 			$name = $params['command'];
@@ -130,7 +126,7 @@ class Dispatcher extends \lithium\core\StaticObject {
 			if (class_exists($class = Libraries::locate('command', $name))) {
 				return new $class(compact('request'));
 			}
-			throw new UnexpectedValueException("Command `{$name}` not found");
+			throw new UnexpectedValueException("Command `{$name}` not found.");
 		});
 	}
 
@@ -170,10 +166,11 @@ class Dispatcher extends \lithium\core\StaticObject {
 	 * @param string $request
 	 * @param string $params
 	 * @return void
+	 * @filter
 	 */
 	protected static function _call($callable, $request, $params) {
 		$params = compact('callable', 'request', 'params');
-		return static::_filter(__FUNCTION__, $params, function($self, $params, $chain) {
+		return static::_filter(__FUNCTION__, $params, function($self, $params) {
 			if (is_callable($callable = $params['callable'])) {
 				$request = $params['request'];
 				$params = $params['params'];
@@ -191,7 +188,7 @@ class Dispatcher extends \lithium\core\StaticObject {
 				}
 				return $callable($params['action'], $params['args']);
 			}
-			throw new UnexpectedValueException("{$callable} not callable");
+			throw new UnexpectedValueException("Callable `{$callable}` is actually not callable.");
 		});
 	}
 }

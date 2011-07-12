@@ -2,13 +2,13 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\net\http;
 
-use \lithium\net\http\Message;
+use lithium\net\http\Message;
 
 class MessageTest extends \lithium\test\Unit {
 
@@ -20,7 +20,7 @@ class MessageTest extends \lithium\test\Unit {
 
 	public function testHeaderKey() {
 		$expected = array(
-			'Host: localhost:80',
+			'Host: localhost:80'
 		);
 		$result = $this->message->headers('Host: localhost:80');
 		$this->assertEqual($expected, $result);
@@ -29,14 +29,13 @@ class MessageTest extends \lithium\test\Unit {
 		$result = $this->message->headers('Host');
 		$this->assertEqual($expected, $result);
 
-		$expected = null;
 		$result = $this->message->headers('Host', false);
-		$this->assertEqual($expected, $result);
+		$this->assertFalse($result);
 	}
 
 	public function testHeaderKeyValue() {
 		$expected = array(
-			'Connection: Close',
+			'Connection: Close'
 		);
 		$result = $this->message->headers('Connection', 'Close');
 		$this->assertEqual($expected, $result);
@@ -57,8 +56,7 @@ class MessageTest extends \lithium\test\Unit {
 	}
 
 	public function testType() {
-		$result = $this->message->type("json");
-		$this->assertEqual('json', $result);
+		$this->assertEqual('json', $this->message->type("json"));
 		$this->assertEqual('json', $this->message->type());
 
 		$expected = 'json';

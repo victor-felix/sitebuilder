@@ -2,13 +2,14 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\core;
 
-use \lithium\util\collection\Filters;
+use lithium\core\Libraries;
+use lithium\util\collection\Filters;
 
 /**
  * Base class in Lithium's hierarchy, from which all concrete classes inherit. This class defines
@@ -83,7 +84,6 @@ class Object {
 	 *              - `'init'` _boolean_: Controls constructor behavior for calling the `_init()`
 	 *                method. If `false`, the method is not called, otherwise it is. Defaults to
 	 *                `true`.
-	 * @return void
 	 */
 	public function __construct(array $config = array()) {
 		$defaults = array('init' => true);
@@ -205,19 +205,14 @@ class Object {
 	 * in `_init` to create the dependencies used in the current class.
 	 *
 	 * @param string|object $name A `classes` key or fully-namespaced class name.
-	 * @param array $config The configuration passed to the constructor.
-	 * @return void
+	 * @param array $options The configuration passed to the constructor.
+	 * @return object
 	 */
-	protected function _instance($name, array $config = array()) {
-		if (is_object($name) || !$name) {
-			return $name;
-		}
-		$name = (string) $name;
-
-		if (isset($this->_classes[$name])) {
+	protected function _instance($name, array $options = array()) {
+		if (is_string($name) && isset($this->_classes[$name])) {
 			$name = $this->_classes[$name];
 		}
-		return (is_string($name) && class_exists($name)) ? new $name($config) : null;
+		return Libraries::instance(null, $name, $options);
 	}
 
 	/**

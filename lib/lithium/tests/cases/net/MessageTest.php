@@ -2,13 +2,13 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\net;
 
-use \lithium\net\Message;
+use lithium\net\Message;
 
 class MessageTest extends \lithium\test\Unit {
 
@@ -50,7 +50,7 @@ class MessageTest extends \lithium\test\Unit {
 			'path' => null,
 			'username' => null,
 			'password' => null,
-			'body' => array(),
+			'body' => array()
 		);
 		$result = $this->message->to('array');
 		$this->assertEqual($expected, $result);
@@ -86,7 +86,7 @@ class MessageTest extends \lithium\test\Unit {
 			'path' => null,
 			'username' => null,
 			'password' => null,
-			'body' => array(),
+			'body' => array()
 		);
 		$message = new Message($expected);
 		$result = $message->to('array');

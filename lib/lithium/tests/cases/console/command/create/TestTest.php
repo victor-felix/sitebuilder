@@ -2,13 +2,12 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\console\command\create;
 
-use lithium\console\command\Create;
 use lithium\console\command\create\Test;
 use lithium\console\Request;
 use lithium\core\Libraries;
@@ -22,7 +21,7 @@ class TestTest extends \lithium\test\Unit {
 	protected $_testPath = null;
 
 	public function skip() {
-		$this->_testPath = LITHIUM_APP_PATH . '/resources/tmp/tests';
+		$this->_testPath = Libraries::get(true, 'resources') . '/tmp/tests';
 		$this->skipIf(!is_writable($this->_testPath), "{$this->_testPath} is not writable.");
 	}
 
@@ -47,14 +46,14 @@ class TestTest extends \lithium\test\Unit {
 	public function testTestModel() {
 		$this->request->params += array(
 			'command' => 'create', 'action' => 'test',
-			'args' => array('model', 'Post')
+			'args' => array('model', 'Posts')
 		);
 		$test = new Test(array(
 			'request' => $this->request, 'classes' => $this->classes
 		));
 		$test->path = $this->_testPath;
 		$test->run('test');
-		$expected = "PostTest created in create_test\\tests\\cases\\models.\n";
+		$expected = "PostsTest created in create_test\\tests\\cases\\models.\n";
 		$result = $test->response->output;
 		$this->assertEqual($expected, $result);
 
@@ -63,9 +62,9 @@ class TestTest extends \lithium\test\Unit {
 
 namespace create_test\tests\cases\models;
 
-use \create_test\models\Post;
+use create_test\models\Posts;
 
-class PostTest extends \lithium\test\Unit {
+class PostsTest extends \lithium\test\Unit {
 
 	public function setUp() {}
 
@@ -78,7 +77,7 @@ class PostTest extends \lithium\test\Unit {
 test;
 		$replace = array("<?php", "?>");
 		$result = str_replace($replace, '',
-			file_get_contents($this->_testPath . '/create_test/tests/cases/models/PostTest.php')
+			file_get_contents($this->_testPath . '/create_test/tests/cases/models/PostsTest.php')
 		);
 		$this->assertEqual($expected, $result);
 	}
@@ -86,36 +85,35 @@ test;
 	public function testTestModelWithMethods() {
 		$this->_cleanUp();
 		mkdir($this->_testPath . '/create_test/models/', 0755, true);
-		file_put_contents($this->_testPath . '/create_test/models/Post.php',
+		$id = rand();
+		$path = "create_test/models/Post{$id}s.php";
+		file_put_contents("{$this->_testPath}/{$path}",
 "<?php
 namespace create_test\models;
 
-class Post {
+class Post{$id}s {
 	public function someMethod() {}
 }"
 );
 
-		$this->request->params += array(
-			'command' => 'create', 'action' => 'test',
-			'args' => array('model', 'Post')
-		);
-		$test = new Test(array(
-			'request' => $this->request, 'classes' => $this->classes
+		$this->request->params += array('command' => 'create', 'action' => 'test', 'args' => array(
+			'model', "Post{$id}s"
 		));
+		$test = new Test(array('request' => $this->request, 'classes' => $this->classes));
 		$test->path = $this->_testPath;
 		$test->run('test');
-		$expected = "PostTest created in create_test\\tests\\cases\\models.\n";
+		$expected = "Post{$id}sTest created in create_test\\tests\\cases\\models.\n";
 		$result = $test->response->output;
 		$this->assertEqual($expected, $result);
 
-		$expected = <<<'test'
+		$expected = <<<test
 
 
-namespace create_test\tests\cases\models;
+namespace create_test\\tests\\cases\\models;
 
-use \create_test\models\Post;
+use create_test\\models\\Post{$id}s;
 
-class PostTest extends \lithium\test\Unit {
+class Post{$id}sTest extends \\lithium\\test\\Unit {
 
 	public function setUp() {}
 
@@ -127,9 +125,8 @@ class PostTest extends \lithium\test\Unit {
 
 test;
 		$replace = array("<?php", "?>");
-		$result = str_replace($replace, '',
-			file_get_contents($this->_testPath . '/create_test/tests/cases/models/PostTest.php')
-		);
+		$path = "create_test/tests/cases/models/Post{$id}sTest.php";
+		$result = str_replace($replace, '', file_get_contents("{$this->_testPath}/{$path}"));
 		$this->assertEqual($expected, $result);
 	}
 }

@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -22,7 +22,7 @@ class LibraryTest extends \lithium\test\Unit {
 	protected $_testPath = null;
 
 	public function skip() {
-		$this->_testPath = LITHIUM_APP_PATH . '/resources/tmp/tests';
+		$this->_testPath = Libraries::get(true, 'resources') . '/tmp/tests';
 		$this->skipIf(!is_writable($this->_testPath), "{$this->_testPath} is not writable.");
 	}
 
@@ -63,9 +63,7 @@ class LibraryTest extends \lithium\test\Unit {
 		$result = $this->library->config('server', 'lab.lithify.me');
 		$this->assertTrue($result);
 
-		$expected = array('servers' => array(
-			'lab.lithify.me' => true
-		));
+		$expected = array('servers' => array('lab.lithify.me' => true));
 		$result = json_decode(file_get_contents($this->testConf), true);
 		$this->assertEqual($expected, $result);
 
@@ -86,30 +84,38 @@ class LibraryTest extends \lithium\test\Unit {
 		$this->skipIf(!extension_loaded('zlib'), 'The zlib extension is not loaded.');
 		$this->library->library = 'library_test';
 
-		$expected = true;
 		$result = $this->library->extract($this->_testPath . '/library_test');
-		$this->assertEqual($expected, $result);
+		$this->assertTrue($result);
 
+		$path = '/lithium/console/command/create/template/app.phar.gz';
 		$expected = "library_test created in {$this->_testPath} from ";
-		$expected .= realpath(LITHIUM_LIBRARY_PATH)
-			. "/lithium/console/command/create/template/app.phar.gz\n";
+		$expected .= realpath(LITHIUM_LIBRARY_PATH . $path) . "\n";
 		$result = $this->library->response->output;
 		$this->assertEqual($expected, $result);
 	}
 
+	/**
+	 * Tests the app extraction and replace functionality to ensure that all paths
+	 * are set correctly after the extraction. It re-uses the test extraction
+	 * generated in the last test (`LibraryTest::testExtract()`).
+	 */
+	public function testExtractAndReplace() {
+		$filepath = $this->_testPath . '/library_test/config/bootstrap/libraries.php';
+		$content = file_get_contents($filepath);
+		$lines = explode("\n", $content);
+		$expected = 'define(\'LITHIUM_LIBRARY_PATH\', \'' . realpath(LITHIUM_LIBRARY_PATH) . '\')';
+		$this->assertTrue(strpos($content, $expected));
+	}
+
 	public function testArchive() {
 		$this->skipIf(!extension_loaded('zlib'), 'The zlib extension is not loaded.');
-		$this->skipIf(
-			ini_get('phar.readonly') == '1',
-			'Skipped test {:class}::{:function}() - INI setting phar.readonly = On'
-		);
+		$this->skipIf(ini_get('phar.readonly') == '1', 'INI setting phar.readonly = On');
 
 		$this->library->library = 'library_test';
 
-		$expected = true;
 		$testPath = "{$this->_testPath}/library_test";
 		$result = $this->library->archive($testPath, $testPath);
-		$this->assertEqual($expected, $result);
+		$this->assertTrue($result);
 
 		$expected = "library_test.phar.gz created in {$this->_testPath} from ";
 		$expected .= "{$this->_testPath}/library_test\n";
@@ -122,15 +128,14 @@ class LibraryTest extends \lithium\test\Unit {
 	public function testExtractWithFullPaths() {
 		$this->skipIf(
 			!file_exists("{$this->_testPath}/library_test.phar.gz"),
-			'Skipped test {:class}::{:function}() - depends on {:class}::testArchive()'
+			'Depends on ' . __CLASS__  . '::testArchive()'
 		);
 		$this->library->library = 'library_test';
 
-		$expected = true;
 		$result = $this->library->extract(
 			$this->_testPath . '/library_test.phar.gz', $this->_testPath . '/new'
 		);
-		$this->assertEqual($expected, $result);
+		$this->assertTrue($result);
 
 		$this->assertTrue(file_exists($this->_testPath . '/new'));
 
@@ -152,26 +157,24 @@ class LibraryTest extends \lithium\test\Unit {
 		$this->skipIf(!extension_loaded('zlib'), 'The zlib extension is not loaded.');
 		$this->skipIf(
 			ini_get('phar.readonly') == '1',
-			'Skipped test {:class}::{:function}() - INI setting phar.readonly = On'
+			'INI setting phar.readonly = On'
 		);
 
 		chdir('new');
-		$app = new Library(array(
-			'request' => new Request(), 'classes' => $this->classes
-		));
+		$app = new Library(array('request' => new Request(), 'classes' => $this->classes));
 		$app->library = 'does_not_exist';
 
-		$expected = true;
 		$result = $app->archive();
-		$this->assertEqual($expected, $result);
+		$this->assertTrue($result);
 
-		$expected = "new.phar.gz created in {$this->_testPath} from ";
-		$expected .= "{$this->_testPath}/new\n";
+		$path = realpath($this->_testPath);
+		$expected = "new.phar.gz created in {$path} from {$path}/new\n";
 		$result = $app->response->output;
 		$this->assertEqual($expected, $result);
 
 		Phar::unlinkArchive($this->_testPath . '/new.phar');
 		Phar::unlinkArchive($this->_testPath . '/new.phar.gz');
+
 		$this->_cleanUp('tests/new');
 		rmdir($this->_testPath . '/new');
 	}
@@ -179,20 +182,17 @@ class LibraryTest extends \lithium\test\Unit {
 	public function testExtractWhenLibraryDoesNotExist() {
 		$this->skipIf(!extension_loaded('zlib'), 'The zlib extension is not loaded.');
 		chdir($this->_testPath);
-		$app = new Library(array(
-			'request' => new Request(), 'classes' => $this->classes
-		));
+		$app = new Library(array('request' => new Request(), 'classes' => $this->classes));
 		$app->library = 'does_not_exist';
 
-		$expected = true;
 		$result = $app->extract();
-		$this->assertEqual($expected, $result);
+		$this->assertTrue($result);
 
 		$this->assertTrue(file_exists($this->_testPath . '/new'));
 
-		$expected = "new created in {$this->_testPath} from ";
-		$expected .= realpath(LITHIUM_LIBRARY_PATH)
-			. "/lithium/console/command/create/template/app.phar.gz\n";
+		$path = realpath($this->_testPath);
+		$tplPath = realpath(LITHIUM_LIBRARY_PATH . '/lithium/console/command/create/template');
+		$expected = "new created in {$path} from {$tplPath}/app.phar.gz\n";
 		$result = $app->response->output;
 		$this->assertEqual($expected, $result);
 
@@ -204,12 +204,12 @@ class LibraryTest extends \lithium\test\Unit {
 		$this->library->library = 'library_plugin_test';
 		$path = $this->_testPath;
 
-		$expected = true;
 		$result = $this->library->extract('plugin', "{$path}/library_test_plugin");
-		$this->assertEqual($expected, $result);
+		$this->assertTrue($result);
 
-		$expected = "library_test_plugin created in {$path} from " . realpath(LITHIUM_LIBRARY_PATH);
-		$expected .= "/lithium/console/command/create/template/plugin.phar.gz\n";
+		$expected = "library_test_plugin created in {$path} from ";
+		$target = '/lithium/console/command/create/template/plugin.phar.gz';
+		$expected .= realpath(LITHIUM_LIBRARY_PATH . $target) . "\n";
 		$result = $this->library->response->output;
 		$this->assertEqual($expected, $result);
 
@@ -301,7 +301,7 @@ class LibraryTest extends \lithium\test\Unit {
 		$this->skipIf(!extension_loaded('zlib'), 'The zlib extension is not loaded.');
 		$this->skipIf(
 			ini_get('phar.readonly') == '1',
-			'Skipped test {:class}::{:function}() - INI setting phar.readonly = On'
+			'INI setting phar.readonly = On'
 		);
 
 		$result = file_put_contents(
@@ -351,7 +351,7 @@ class LibraryTest extends \lithium\test\Unit {
 		$this->skipIf(!extension_loaded('zlib'), 'The zlib extension is not loaded.');
 		$this->skipIf(
 			ini_get('phar.readonly') == '1',
-			'Skipped test {:class}::{:function}() - relies on {:class}::testPush()'
+			'Relies on ' . __CLASS__ . '::testPush()'
 		);
 		$this->library->path = $this->_testPath;
 		$result = $this->library->install('library_test_plugin');
@@ -391,7 +391,7 @@ class LibraryTest extends \lithium\test\Unit {
 		$this->skipIf(!extension_loaded('zlib'), 'The zlib extension is not loaded.');
 		$this->skipIf(
 			ini_get('phar.readonly') == '1',
-			'Skipped test {:class}::{:function}() - relies on {:class}::testPush()'
+			'Relies on ' . __CLASS__  . '::testPush()'
 		);
 		$this->library->path = $this->_testPath;
 		$result = $this->library->install('li3_lab');
@@ -407,9 +407,9 @@ class LibraryTest extends \lithium\test\Unit {
 
 	public function testInstallDocs() {
 		$this->skipIf(strpos(shell_exec('git --version'), 'git version') === false,
-			'The git is not installed.'
+			'Git is not installed.'
 		);
-		$this->skipIf(dns_check_record("google.com") === false, "No internet connection.");
+		$this->skipIf(dns_check_record("lithify.me", "ANY") === false, "No internet connection.");
 
 		$this->library->path = $this->_testPath;
 		$result = $this->library->install('li3_docs');
@@ -457,7 +457,7 @@ test;
 		$this->skipIf(!extension_loaded('zlib'), 'The zlib extension is not loaded.');
 		$this->skipIf(
 			ini_get('phar.readonly') == '1',
-			'Skipped test {:class}::{:function}() - INI setting phar.readonly = On'
+			'INI setting phar.readonly = On'
 		);
 		$result = $this->library->extract('plugin', $this->_testPath . '/library_test_plugin');
 		$this->assertTrue($result);
@@ -537,7 +537,7 @@ test;
 		$this->skipIf(!extension_loaded('zlib'), 'The zlib extension is not loaded.');
 		$this->skipIf(
 			ini_get('phar.readonly') == '1',
-			'Skipped test {:class}::{:function}() - INI setting phar.readonly = On'
+			'INI setting phar.readonly = On'
 		);
 		$result = $this->library->extract('plugin', $this->_testPath . '/library_test_plugin');
 		$this->assertTrue($result);
@@ -597,19 +597,17 @@ test;
 		$this->_cleanUp();
 	}
 
-
 	public function testPushNotValid() {
 		$this->skipIf(!extension_loaded('zlib'), 'The zlib extension is not loaded.');
 		$this->skipIf(
 			ini_get('phar.readonly') == '1',
-			'Skipped test {:class}::{:function}() - INI setting phar.readonly = On'
+			'INI setting phar.readonly = On'
 		);
 		$this->library->library = 'library_plugin_test';
 		$path = $this->_testPath;
 
-		$expected = true;
 		$result = $this->library->extract('plugin', "{$path}/library_test_plugin");
-		$this->assertEqual($expected, $result);
+		$this->assertTrue($result);
 		$this->library->response->output = null;
 
 		$file = $this->_testPath . '/library_test_plugin/config/library_test_plugin.json';
@@ -618,7 +616,7 @@ test;
 			json_encode(array(
 				'name' => 'library_test_plugin',
 				'version' => '1.0',
-				'summary' => 'something',
+				'summary' => 'something'
 			))
 		);
 		$this->assertTrue($result);
@@ -654,6 +652,10 @@ test;
 	}
 
 	public function testNoArchive() {
+		$this->skipIf(
+			ini_get('phar.readonly') == '1',
+			'INI setting phar.readonly = On'
+		);
 		$result = $this->library->archive(
 			$this->_testPath . '/library_test_plugin',
 			$this->_testPath . '/library_test_plugin'

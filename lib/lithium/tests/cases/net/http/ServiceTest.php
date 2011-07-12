@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -63,6 +63,17 @@ class ServiceTest extends \lithium\test\Unit {
 		$expected = '/base/path/somewhere';
 		$result = $http->last->request->path;
 		$this->assertEqual($expected, $result);
+	}
+
+	public function testHead() {
+		$http = new Service($this->_testConfig);
+		$this->assertEqual('', $http->head());
+		$this->assertEqual('HTTP/1.1', $http->last->response->protocol);
+		$this->assertEqual('200', $http->last->response->status['code']);
+		$this->assertEqual('OK', $http->last->response->status['message']);
+		$this->assertEqual('text/html', $http->last->response->type);
+		$this->assertEqual('UTF-8', $http->last->response->encoding);
+		$this->assertEqual('', $http->last->response->body());
 	}
 
 	public function testGet() {

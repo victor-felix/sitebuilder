@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -10,6 +10,7 @@ namespace lithium\template\view;
 
 use RuntimeException;
 use lithium\core\Libraries;
+use lithium\core\ClassNotFoundException;
 
 /**
  * The `Renderer` abstract class serves as a base for all concrete `Renderer` adapters.
@@ -33,7 +34,7 @@ abstract class Renderer extends \lithium\core\Object {
 	 * @var array
 	 */
 	protected $_autoConfig = array(
-		'request', 'context', 'strings', 'handlers', 'view', 'classes' => 'merge'
+		'request', 'response', 'context', 'strings', 'handlers', 'view', 'classes' => 'merge'
 	);
 
 	/**
@@ -52,7 +53,7 @@ abstract class Renderer extends \lithium\core\Object {
 	 * @var array
 	 */
 	protected $_context = array(
-		'content' => '', 'title' => '', 'scripts' => array(), 'styles' => array()
+		'content' => '', 'title' => '', 'scripts' => array(), 'styles' => array(), 'head' => array()
 	);
 
 	/**
@@ -92,6 +93,13 @@ abstract class Renderer extends \lithium\core\Object {
 	protected $_request = null;
 
 	/**
+	 * The `Response` object instance, if applicable.
+	 *
+	 * @var object The response object.
+	 */
+	protected $_response = null;
+
+	/**
 	 * Automatically matches up template strings by name to output handlers.  A handler can either
 	 * be a string, which represents a method name of the helper, or it can be a closure or callable
 	 * object.  A handler takes 3 parameters: the value to be filtered, the name of the helper
@@ -129,7 +137,7 @@ abstract class Renderer extends \lithium\core\Object {
 	 * Abstract. Must be added to subclasses.
 	 *
 	 * @param string $template
-	 * @param string $data
+	 * @param array|string $data
 	 * @param array $options
 	 * @return void
 	 */
@@ -144,11 +152,11 @@ abstract class Renderer extends \lithium\core\Object {
 	 * - `handlers`: An array of output handlers for string template inputs.
 	 * - `request`: The `Request` object associated with this renderer and passed to the
 	 *              defined handlers.
+	 * - `response`: The `Response` object associated with this renderer.
 	 * - `context`: An array of the current rendering context data, including `content`,
-	 *              `title`, `scripts` and `styles`.
+	 *              `title`, `scripts`, `head` and `styles`.
 	 *
 	 * @param array $config
-	 * @return void
 	 */
 	public function __construct(array $config = array()) {
 		$defaults = array(
@@ -156,8 +164,10 @@ abstract class Renderer extends \lithium\core\Object {
 			'strings' => array(),
 			'handlers' => array(),
 			'request' => null,
+			'response' => null,
 			'context' => array(
-				'content' => '', 'title' => '', 'scripts' => array(), 'styles' => array()
+				'content' => '', 'title' => '', 'scripts' => array(),
+				'styles' => array(), 'head' => array()
 			)
 		);
 		parent::__construct((array) $config + $defaults);
@@ -174,26 +184,34 @@ abstract class Renderer extends \lithium\core\Object {
 		$request =& $this->_request;
 		$context =& $this->_context;
 		$classes =& $this->_classes;
+		$h = $this->_view ? $this->_view->outputFilters['h'] : null;
 
 		$this->_handlers += array(
-			'url' => function($url, $ref, array $options = array()) use (&$classes, &$request) {
-				return $classes['router']::match($url ?: '', $request, $options);
+			'url' => function($url, $ref, array $options = array()) use (&$classes, &$request, $h) {
+				$url = $classes['router']::match($url ?: '', $request, $options);
+				return $h ? str_replace('&amp;', '&', $h($url)) : $url;
 			},
 			'path' => function($path, $ref, array $options = array()) use (&$classes, &$request) {
 				$defaults = array('base' => $request ? $request->env('base') : '');
-				list($helper, $methodRef) = $ref;
-				list($class, $method) = explode('::', $methodRef);
-				$type = $helper->contentMap[$method];
+				$type = 'generic';
+
+				if (is_array($ref) && $ref[0] && $ref[1]) {
+					list($helper, $methodRef) = $ref;
+					list($class, $method) = explode('::', $methodRef);
+					$type = $helper->contentMap[$method];
+				}
 				return $classes['media']::asset($path, $type, $options + $defaults);
 			},
 			'options' => '_attributes',
-			'content' => 'escape',
 			'title'   => 'escape',
 			'scripts' => function($scripts) use (&$context) {
 				return "\n\t" . join("\n\t", $context['scripts']) . "\n";
 			},
 			'styles' => function($styles) use (&$context) {
 				return "\n\t" . join("\n\t", $context['styles']) . "\n";
+			},
+			'head' => function($head) use (&$context) {
+				return "\n\t" . join("\n\t", $context['head']) . "\n";
 			}
 		);
 		unset($this->_config['view']);
@@ -212,6 +230,13 @@ abstract class Renderer extends \lithium\core\Object {
 		return isset($this->_context[$property]);
 	}
 
+	/**
+	 * Returns a helper object or context value by name.
+	 *
+	 * @param string $property The name of the helper or context value to return.
+	 * @return mixed
+	 * @filter
+	 */
 	public function __get($property) {
 		$context = $this->_context;
 		$helpers = $this->_helpers;
@@ -273,11 +298,16 @@ abstract class Renderer extends \lithium\core\Object {
 	 * @param array $config
 	 * @return object
 	 */
-	public function helper($name, $config = array()) {
-		if ($class = Libraries::locate('helper', ucfirst($name))) {
-			return $this->_helpers[$name] = new $class($config + array('context' => $this));
+	public function helper($name, array $config = array()) {
+		if (isset($this->_helpers[$name])) {
+			return $this->_helpers[$name];
 		}
-		throw new RuntimeException("Helper {$name} not found");
+		try {
+			$config += array('context' => $this);
+			return $this->_helpers[$name] = Libraries::instance('helper', ucfirst($name), $config);
+		} catch (ClassNotFoundException $e) {
+			throw new RuntimeException("Helper `{$name}` not found.");
+		}
 	}
 
 	/**
@@ -308,7 +338,7 @@ abstract class Renderer extends \lithium\core\Object {
 	 * @return mixed A string or array, depending on whether `$property` is specified.
 	 */
 	public function context($property = null) {
-		if (!empty($property)) {
+		if ($property) {
 			return isset($this->_context[$property]) ? $this->_context[$property] : null;
 		}
 		return $this->_context;
@@ -366,7 +396,10 @@ abstract class Renderer extends \lithium\core\Object {
 		if (!(isset($this->_handlers[$name]) && $handler = $this->_handlers[$name])) {
 			return $value;
 		}
+
 		switch (true) {
+			case is_string($handler) && !$helper:
+				$helper = $this->helper('html');
 			case is_string($handler) && is_object($helper):
 				return $helper->invokeMethod($handler, array($value, $method, $options));
 			case is_array($handler) && is_object($handler[0]):
@@ -387,6 +420,16 @@ abstract class Renderer extends \lithium\core\Object {
 	 */
 	public function request() {
 		return $this->_request;
+	}
+
+	/**
+	 * Returns the `Response` object associated with this rendering context.
+	 *
+	 * @return object Returns an instance of `lithium\action\Response`, which provides the i.e.
+	 *         the encoding for the document being the result of templates rendered by this context.
+	 */
+	public function response() {
+		return $this->_response;
 	}
 
 	/**
@@ -421,6 +464,30 @@ abstract class Renderer extends \lithium\core\Object {
 	public function set(array $data = array()) {
 		$this->_data = $data + $this->_data;
 		$this->_vars = $data + $this->_vars;
+	}
+
+	/**
+	 * Shortcut method used to render elements and other nested templates from inside the templating
+	 * layer.
+	 *
+	 * @see lithium\template\View::$_processes
+	 * @see lithium\template\View::render()
+	 * @param string $type The type of template to render, usually either `'element'` or
+	 *               `'template'`. Indicates the process used to render the content. See
+	 *               `lithium\template\View::$_processes` for more info.
+	 * @param string $template The template file name. For example, if `'header'` is passed, and
+	 *               `$type` is set to `'element'`, then the template rendered will be
+	 *               `views/elements/header.html.php` (assuming the default configuration).
+	 * @param array $data An array of any other local variables that should be injected into the
+	 *              template. By default, only the values used to render the current template will
+	 *              be sent. If `$data` is non-empty, both sets of variables will be merged.
+	 * @param array $options Any options accepted by `template\View::render()`.
+	 * @return string Returns a the rendered template content as a string.
+	 */
+	protected function _render($type, $template, array $data = array(), array $options = array()) {
+		$library = $this->_request->library;
+		$options += compact('library');
+		return $this->_view->render($type, $data + $this->_data, compact('template') + $options);
 	}
 }
 

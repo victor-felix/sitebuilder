@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -24,7 +24,7 @@ class MockDatabase extends \lithium\data\source\Database {
 		return true;
 	}
 
-	public function entities($class = null) {}
+	public function sources($class = null) {}
 
 	public function describe($entity, array $meta = array()) {}
 
@@ -41,7 +41,7 @@ class MockDatabase extends \lithium\data\source\Database {
 		return "'{$value}'";
 	}
 
-	public function cast($model, array $data, array $options = array()) {
+	public function cast($entity, array $data, array $options = array()) {
 		$defaults = array('first' => false);
 		$options += $defaults;
 		return $options['first'] ? reset($data) : $data;

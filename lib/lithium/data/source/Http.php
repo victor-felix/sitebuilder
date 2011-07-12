@@ -2,13 +2,12 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\data\source;
 
-use lithium\core\Libraries;
 use lithium\util\String;
 
 /**
@@ -64,7 +63,6 @@ class Http extends \lithium\data\Source {
 	 * Constructor
 	 *
 	 * @param array $config
-	 * @return void
 	 */
 	public function __construct(array $config = array()) {
 		$defaults = array(
@@ -78,7 +76,7 @@ class Http extends \lithium\data\Source {
 			'password'   => '',
 			'port'       => 80,
 			'timeout'    => 30,
-			'encoding'   => 'UTF-8',
+			'encoding'   => 'UTF-8'
 		);
 		$config = $config + $defaults;
 		$config['username'] = $config['login'];
@@ -108,6 +106,7 @@ class Http extends \lithium\data\Source {
 	 * @param string $method
 	 * @param array $params
 	 * @return mixed
+	 * @filter
 	 */
 	public function __call($method, $params) {
 		if (isset($this->_config['methods'][$method])) {
@@ -154,12 +153,12 @@ class Http extends \lithium\data\Source {
 	}
 
 	/**
-	 * entities
+	 * Returns available data sources (typically a list of REST resources collections).
 	 *
 	 * @param object $class
 	 * @return array
 	 */
-	public function entities($class = null) {
+	public function sources($class = null) {
 		return array();
 	}
 
@@ -167,8 +166,8 @@ class Http extends \lithium\data\Source {
 	 * Describe data source.
 	 *
 	 * @param string $entity
-	 * @param string $meta
-	 * @return void
+	 * @param array $meta
+	 * @return array - returns an empty array
 	 */
 	public function describe($entity, array $meta = array()) {
 		return array();
@@ -180,6 +179,7 @@ class Http extends \lithium\data\Source {
 	 * @param object $query
 	 * @param array $options
 	 * @return void
+	 * @filter
 	 */
 	public function create($query, array $options = array()) {
 		$params = compact('query', 'options');
@@ -212,6 +212,7 @@ class Http extends \lithium\data\Source {
 	 * @param object $query
 	 * @param array $options
 	 * @return string
+	 * @filter
 	 */
 	public function read($query, array $options = array()) {
 		$params = compact('query', 'options');
@@ -246,6 +247,7 @@ class Http extends \lithium\data\Source {
 	 * @param object $query
 	 * @param array $options
 	 * @return string
+	 * @filter
 	 */
 	public function update($query, array $options = array()) {
 		$params = compact('query', 'options');
@@ -278,6 +280,7 @@ class Http extends \lithium\data\Source {
 	 * @param object $query
 	 * @param array $options
 	 * @return string
+	 * @filter
 	 */
 	public function delete($query, array $options = array()) {
 		$params = compact('query', 'options');

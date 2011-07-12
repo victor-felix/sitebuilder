@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -13,19 +13,19 @@ use lithium\util\Inflector;
 /**
  * Generate a Mock that extends the name of the given class in the `--library` namespace.
  *
- * `li3 create mock model Post`
- * `li3 create --library=li3_plugin mock model Post`
+ * `li3 create mock model Posts`
+ * `li3 create --library=li3_plugin mock model Posts`
  *
  */
 class Mock extends \lithium\console\command\Create {
 
-    /**
-     * Get the namespace for the mock.
-     *
-     * @param string $request
-     * @param string $options
-     * @return string
-     */
+	/**
+	 * Get the namespace for the mock.
+	 *
+	 * @param string $request
+	 * @param array|string $options
+	 * @return string
+	 */
 	protected function _namespace($request, $options = array()) {
 		$request->params['command'] = $request->action;
 		return parent::_namespace($request, array('prepend' => 'tests.mocks.'));
@@ -39,7 +39,7 @@ class Mock extends \lithium\console\command\Create {
      */
 	protected function _parent($request) {
 		$namespace = parent::_namespace($request);
-		$class = $request->action;
+		$class = Inflector::pluralize($request->action);
 		return "\\{$namespace}\\{$class}";
 	}
 
@@ -57,7 +57,7 @@ class Mock extends \lithium\console\command\Create {
 			$request->params['action'] = $name;
 			$name = $command->invokeMethod('_class', array($request));
 		}
-		return  Inflector::classify("Mock{$name}");
+		return  Inflector::pluralize("Mock{$name}");
 	}
 
     /**

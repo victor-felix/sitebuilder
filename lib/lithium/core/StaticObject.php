@@ -2,13 +2,14 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\core;
 
-use \lithium\util\collection\Filters;
+use lithium\core\Libraries;
+use lithium\util\collection\Filters;
 
 /**
  * Provides a base class for all static classes in the Lithium framework. Similar to its
@@ -55,7 +56,7 @@ class StaticObject {
 
 	/**
 	 * Calls a method on this object with the given parameters. Provides an OO wrapper for
-	 * `call_user_func_array()`, and improves performance by using straight method calls in most
+	 * `forward_static_call_array()`, and improves performance by using straight method calls in most
 	 * cases.
 	 *
 	 * @param string $method Name of the method to call.
@@ -77,7 +78,7 @@ class StaticObject {
 			case 5:
 				return static::$method($params[0], $params[1], $params[2], $params[3], $params[4]);
 			default:
-				return call_user_func_array(array(get_called_class(), $method), $params);
+				return forward_static_call_array(array(get_called_class(), $method), $params);
 		}
 	}
 
@@ -87,17 +88,14 @@ class StaticObject {
 	 * in `_init` to create the dependencies used in the current class.
 	 *
 	 * @param string|object $name A `classes` key or fully-namespaced class name.
-	 * @param array $config The configuration passed to the constructor.
-	 * @return void
+	 * @param array $options The configuration passed to the constructor.
+	 * @return object
 	 */
-	protected static function _instance($name, array $config = array()) {
-		if (is_object($name) || !$name) {
-			return $name;
-		}
-		if (isset(static::$_classes[$name])) {
+	protected static function _instance($name, array $options = array()) {
+		if (is_string($name) && isset(static::$_classes[$name])) {
 			$name = static::$_classes[$name];
 		}
-		return new $name($config);
+		return Libraries::instance(null, $name, $options);
 	}
 
 	/**

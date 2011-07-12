@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -165,8 +165,7 @@ class RequestTest extends \lithium\test\Unit {
 			'protocol_version' => '1.1',
 			'ignore_errors' => true
 		));
-		$result = $request->to('context');
-		$this->assertEqual($expected, $result);
+		$this->assertEqual($expected, $request->to('context'));
 	}
 
 	public function testToStringWithBody() {
@@ -198,10 +197,10 @@ class RequestTest extends \lithium\test\Unit {
 			'body' => array(),
 			'scheme' => 'http',
 			'host' => 'localhost',
-			'port' => NULL,
+			'port' => null,
 			'path' => '/',
-			'username' => NULL,
-			'password' => NULL,
+			'username' => null,
+			'password' => null
 		);
 		$result = $this->request->to('array');
 		$this->assertEqual($expected, $result);

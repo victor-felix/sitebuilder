@@ -2,16 +2,15 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\storage;
 
-use \lithium\storage\Session;
-use \lithium\util\Collection;
-use \lithium\storage\session\adapter\Memory;
-use \lithium\tests\mocks\storage\session\adapter\SessionStorageConditional;
+use lithium\storage\Session;
+use lithium\storage\session\adapter\Memory;
+use lithium\tests\mocks\storage\session\adapter\SessionStorageConditional;
 
 
 /**
@@ -166,7 +165,7 @@ class SessionTest extends \lithium\test\Unit {
 
 	/**
 	 * Tests querying session keys from the primary adapter.
-	 * The memory adapter returns a UUID based on a server variable for portability.
+	 * The memory adapter returns a UUID.
 	 *
 	 * @return void
 	 */
@@ -189,7 +188,7 @@ class SessionTest extends \lithium\test\Unit {
 	public function testSessionState() {
 		$this->assertTrue(Session::isStarted());
 		$this->assertTrue(Session::isStarted('default'));
-		$this->expectException("Configuration 'invalid' has not been defined.");
+		$this->expectException("Configuration `invalid` has not been defined.");
 		$this->assertFalse(Session::isStarted('invalid'));
 	}
 
@@ -200,7 +199,7 @@ class SessionTest extends \lithium\test\Unit {
 
 	public function testSessionStateResetNamed() {
 		Session::reset();
-		$this->expectException("Configuration 'default' has not been defined.");
+		$this->expectException("Configuration `default` has not been defined.");
 		$this->assertFalse(Session::isStarted('default'));
 	}
 

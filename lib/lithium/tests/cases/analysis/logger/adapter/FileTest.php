@@ -2,21 +2,27 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\analysis\logger\adapter;
 
-use \lithium\util\collection\Filters;
-use \lithium\analysis\logger\adapter\File;
+use lithium\core\Libraries;
+use lithium\util\collection\Filters;
+use lithium\analysis\logger\adapter\File;
 
 class FileTest extends \lithium\test\Unit {
 
 	public $subject;
 
+	public function skip() {
+		$path = realpath(Libraries::get(true, 'resources') . '/tmp/logs');
+		$this->skipIf(!is_writable($path), "Path `{$path}` is not writable.");
+	}
+
 	public function setUp() {
-		$this->path = LITHIUM_APP_PATH . '/resources/tmp/logs';
+		$this->path = Libraries::get(true, 'resources') . '/tmp/logs';
 		$this->tearDown();
 	}
 
@@ -39,7 +45,9 @@ class FileTest extends \lithium\test\Unit {
 	}
 
 	public function testWithoutTimestamp() {
-		$this->subject = new File(array('path' => $this->path, 'timestamp' => false));
+		$this->subject = new File(array(
+			'path' => $this->path, 'timestamp' => false, 'format' => "{:message}\n"
+		));
 		$priority = 'debug';
 		$message = 'This is a debug message';
 		$function = $this->subject->write($priority, $message);

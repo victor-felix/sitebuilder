@@ -2,20 +2,20 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\test;
 
-use \Exception;
-use \lithium\util\String;
-use \lithium\core\Libraries;
-use \lithium\util\Validator;
-use \lithium\analysis\Debugger;
-use \lithium\analysis\Inspector;
-use \RecursiveDirectoryIterator;
-use \RecursiveIteratorIterator;
+use Exception;
+use lithium\util\String;
+use lithium\core\Libraries;
+use lithium\util\Validator;
+use lithium\analysis\Debugger;
+use lithium\analysis\Inspector;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
 /**
  * This is the base class for all test cases. Test are performed using an assertion method. If the
@@ -107,8 +107,7 @@ class Unit extends \lithium\core\Object {
 	 *
 	 * @return void
 	 */
-	public function skip() {
-	}
+	public function skip() {}
 
 	/**
 	 * Skips test(s) if the condition is met.
@@ -117,16 +116,15 @@ class Unit extends \lithium\core\Object {
 	 * otherwise processing continues as normal.
 	 * For other methods, only the remainder of the method is skipped, when the condition is met.
 	 *
+	 * @throws Exception
 	 * @param boolean $condition
-	 * @param string $message Message to pass if the condition is met.
+	 * @param string|boolean $message Message to pass if the condition is met.
 	 * @return mixed
 	 */
-	public function skipIf($condition, $message = 'Skipped test {:class}::{:function}()') {
-		if (!$condition) {
-			return;
+	public function skipIf($condition, $message = false) {
+		if ($condition) {
+			throw new Exception(is_string($message) ? $message : null);
 		}
-		$trace = Debugger::trace(array('start' => 2, 'depth' => 3, 'format' => 'array'));
-		throw new Exception(String::insert($message, $trace));
 	}
 
 	/**
@@ -197,9 +195,9 @@ class Unit extends \lithium\core\Object {
 	 * General assert method used by others for common output.
 	 *
 	 * @param boolean $expression
-	 * @param string $message The message to output. If the message is not a string, then it will be
-	 *        converted to '{:message}'. Use '{:message}' in the string and it will use the `$data`
-	 *        to format the message with `String::insert()`.
+	 * @param string|boolean $message The message to output. If the message is not a string,
+	 *        then it will be converted to '{:message}'. Use '{:message}' in the string and it
+	 *        will use the `$data` to format the message with `String::insert()`.
 	 * @param array $data
 	 * @return void
 	 */
@@ -212,7 +210,9 @@ class Unit extends \lithium\core\Object {
 			$params['message'] = $this->_message($params);
 			$message = String::insert($message, $params);
 		}
-		$trace = Debugger::trace(array('start' => 1, 'format' => 'array'));
+		$trace = Debugger::trace(array(
+			'start' => 1, 'depth' => 4, 'format' => 'array', 'closures' => !$expression
+		));
 		$methods = $this->methods();
 		$i = 1;
 
@@ -223,14 +223,14 @@ class Unit extends \lithium\core\Object {
 			$i++;
 		}
 		$class = isset($trace[$i - 1]['object']) ? get_class($trace[$i - 1]['object']) : null;
+		$method = isset($trace[$i]) ? $trace[$i]['function'] : $trace[$i - 1]['function'];
 
-		$result = compact('class', 'message', 'data') + array(
+		$result = compact('class', 'method', 'message', 'data') + array(
 			'file'      => $trace[$i - 1]['file'],
 			'line'      => $trace[$i - 1]['line'],
-			'method'    => $trace[$i]['function'],
-			'assertion' => $trace[$i - 1]['function'],
+			'assertion' => $trace[$i - 1]['function']
 		);
-		$this->_result(($expression ? 'pass' : 'fail'), $result);
+		$this->_result($expression ? 'pass' : 'fail', $result);
 		return $expression;
 	}
 
@@ -240,7 +240,7 @@ class Unit extends \lithium\core\Object {
 	 *
 	 * @param mixed $expected
 	 * @param mixed $result
-	 * @param string $message
+	 * @param string|boolean $message
 	 */
 	public function assertEqual($expected, $result, $message = false) {
 		$data = ($expected != $result) ? $this->_compare('equal', $expected, $result) : null;
@@ -252,7 +252,7 @@ class Unit extends \lithium\core\Object {
 	 *
 	 * @param mixed $expected
 	 * @param mixed $result
-	 * @param string $message
+	 * @param string|boolean $message
 	 */
 	public function assertNotEqual($expected, $result, $message = false) {
 		$this->assert($result != $expected, $message, compact('expected', 'result'));
@@ -263,7 +263,7 @@ class Unit extends \lithium\core\Object {
 	 *
 	 * @param mixed $expected
 	 * @param mixed $result
-	 * @param string $message
+	 * @param string|boolean $message
 	 */
 	public function assertIdentical($expected, $result, $message = false) {
 		$data = ($expected !== $result) ? $this->_compare('identical', $expected, $result) : null;
@@ -387,10 +387,10 @@ class Unit extends \lithium\core\Object {
 	 *
 	 * @param string $string An HTML/XHTML/XML string
 	 * @param array $expected An array, see above
-	 * @param boolean $fullDebug
+	 * @return boolean
 	 * @access public
 	 */
-	function assertTags($string, $expected, $fullDebug = false) {
+	function assertTags($string, $expected) {
 		$regex = array();
 		$normalized = array();
 
@@ -524,8 +524,52 @@ class Unit extends \lithium\core\Object {
 	 *
 	 * @param array $expected
 	 * @param array $headers When empty, value of `headers_list()` is used.
+	 * @return boolean
 	 */
 	public function assertCookie($expected, $headers = null) {
+		$matched = $this->_cookieMatch($expected, $headers);
+		if (!$matched['match']) {
+			$message = sprintf('%s - Cookie not found in headers.', $matched['pattern']);
+			$this->assert(false, $message, compact('expected', 'result'));
+			return false;
+		}
+		return $this->assert(true, '%s');
+	}
+
+	/**
+	 * Assert Cookie data is *not* set in headers.
+	 *
+	 * The value passed to `expected` is an array of the cookie data, with at least the key and
+	 * value expected, but can support any of the following keys:
+	 * 	- `key`: the expected key
+	 * 	- `value`: the expected value
+	 * 	- `path`: optionally specify a path
+	 * 	- `name`: optionally specify the cookie name
+	 * 	- `expires`: optionally assert a specific expire time
+	 *
+	 * @param array $expected
+	 * @param array $headers When empty, value of `headers_list()` is used.
+	 * @return boolean
+	 */
+	public function assertNoCookie($expected, $headers = null) {
+		$matched = $this->_cookieMatch($expected, $headers);
+		if ($matched['match']) {
+			$message = sprintf('%s - Cookie not found in headers.', $matched['pattern']);
+			$this->assert(false, $message, compact('expected', 'result'));
+			return false;
+		}
+		return $this->assert(true, '%s');
+	}
+
+	/**
+	 * Match an `$expected` cookie with the given headers. If no headers are provided, then
+	 * the value of `headers_list()` will be used.
+	 *
+	 * @param array $expected
+	 * @param array $headers When empty, value of `headers_list()` will be used.
+	 * @return boolean True if cookie is found, false otherwise.
+	 */
+	protected function _cookieMatch($expected, $headers) {
 		$defaults = array('path' => '/', 'name' => '[\w.-]+');
 		$expected += $defaults;
 
@@ -553,15 +597,7 @@ class Unit extends \lithium\core\Object {
 				continue;
 			}
 		}
-
-		if (!$match) {
-			$this->assert(false,
-				sprintf('{:message} - Cookie %s not found in headers.', $pattern),
-				compact('expected', 'result')
-			);
-			return false;
-		}
-		return $this->assert(true, '%s');
+		return compact('match', 'pattern');
 	}
 
 	/**
@@ -605,7 +641,8 @@ class Unit extends \lithium\core\Object {
 	 *
 	 * @param string $method The name of the test method to run.
 	 * @param array $options
-	 * @return void | false
+	 * @return mixed
+	 * @filter
 	 */
 	protected function _runTestMethod($method, $options) {
 		try {
@@ -705,7 +742,7 @@ class Unit extends \lithium\core\Object {
 				'scope'        => array_filter(array(
 					'functionRef' => __NAMESPACE__ . '\{closure}',
 					'line'        => $lineFlag
-				)),
+				))
 			));
 		}
 		$this->_result('exception', $exception + array(
@@ -726,18 +763,23 @@ class Unit extends \lithium\core\Object {
 	 * @return array Data with the keys `trace'`, `'expected'` and `'result'`.
 	 */
 	protected function _compare($type, $expected, $result = null, $trace = null) {
-		$types = array('expected' => gettype($expected), 'result' => gettype($result));
+		$compareTypes = function($expected, $result, $trace) {
+			$types = array('expected' => gettype($expected), 'result' => gettype($result));
 
-		if ($types['expected'] !== $types['result']) {
-			return array('trace' => $trace,
-				'expected' => trim("({$types['expected']}) " . print_r($expected, true)),
-				'result' => trim("({$types['result']}) " . print_r($result, true))
-			);
+			if ($types['expected'] !== $types['result']) {
+				$expected = trim("({$types['expected']}) " . print_r($expected, true));
+				$result = trim("({$types['result']}) " . print_r($result, true));
+				return compact('trace', 'expected', 'result');
+			}
+		};
+		if ($types = $compareTypes($expected, $result, $trace)) {
+			return $types;
 		}
 		$data = array();
 
 		if (!is_scalar($expected)) {
 			foreach ($expected as $key => $value) {
+				$newTrace = "{$trace}[{$key}]";
 				$isObject = false;
 
 				if (is_object($expected)) {
@@ -745,8 +787,13 @@ class Unit extends \lithium\core\Object {
 					$expected = (array) $expected;
 					$result = (array) $result;
 				}
-				$check = array_key_exists($key, $result) ? $result[$key] : array();
-				$newTrace = "{$trace}[{$key}]";
+				if (!array_key_exists($key, $result)) {
+					$trace = (!$key) ? null : $newTrace;
+					$expected = (!$key) ? $expected : $value;
+					$result = ($key) ? null : $result;
+					return compact('trace', 'expected', 'result');
+				}
+				$check = $result[$key];
 
 				if ($isObject) {
 					$newTrace = ($trace) ? "{$trace}->{$key}" : $key;
@@ -755,6 +802,9 @@ class Unit extends \lithium\core\Object {
 				}
 				if ($type === 'identical') {
 					if ($value === $check) {
+						if ($types = $compareTypes($value, $check, $trace)) {
+							return $types;
+						}
 						continue;
 					}
 					if ($check === array()) {
@@ -769,6 +819,9 @@ class Unit extends \lithium\core\Object {
 					}
 				} else {
 					if ($value == $check) {
+						if ($types = $compareTypes($value, $check, $trace)) {
+							return $types;
+						}
 						continue;
 					}
 					if (!is_array($value)) {
@@ -782,16 +835,25 @@ class Unit extends \lithium\core\Object {
 					$data[] = $compare;
 				}
 			}
-			return $data;
-		}
-
-		if ($type === 'identical') {
-			if ($expected === $result) {
-				return true;
+			if (!empty($data)) {
+				return $data;
 			}
-			return compact('trace', 'expected', 'result');
 		}
-		if ($expected == $result) {
+		if (!is_scalar($result)) {
+			$data = $this->_compare($type, $result, $expected);
+
+			if (!empty($data)) {
+				return array(
+					'trace' => $data['trace'],
+					'expected' => $data['result'],
+					'result' => $data['expected']
+				);
+			}
+		}
+		if ((($type === 'identical') ? $expected === $result : $expected == $result)) {
+			if ($types = $compareTypes($expected, $result, $trace)) {
+				return $types;
+			}
 			return true;
 		}
 		return compact('trace', 'expected', 'result');
@@ -873,13 +935,16 @@ class Unit extends \lithium\core\Object {
 	 * @return void
 	 */
 	protected function _cleanUp($path = null) {
-		$path = $path ?: LITHIUM_APP_PATH . '/resources/tmp/tests';
-		$path = $path[0] !== '/' ? LITHIUM_APP_PATH . '/resources/tmp/' . $path : $path;
+		$resources = Libraries::get(true, 'resources');
+		$path = $path ?: $resources . '/tmp/tests';
+		$path = preg_match('/^\w:|^\//', $path) ? $path : $resources . '/tmp/' . $path;
+
 		if (!is_dir($path)) {
 			return;
 		}
 		$dirs = new RecursiveDirectoryIterator($path);
 		$iterator = new RecursiveIteratorIterator($dirs, RecursiveIteratorIterator::CHILD_FIRST);
+
 		foreach ($iterator as $item) {
 			if ($item->getPathname() === "{$path}/empty" || $iterator->isDot()) {
 				continue;

@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -27,7 +27,7 @@ class MockPostsController extends \lithium\action\Controller {
 	}
 
 	public function send() {
-		$this->redirect('/posts');
+		$this->redirect('/posts', array('exit' => true));
 	}
 
 	public function type($raw = false) {

@@ -2,13 +2,13 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\analysis;
 
-use \UnexpectedValueException;
+use UnexpectedValueException;
 
 /**
  * The `Logger` class provides a consistent, application-wide interface for configuring and writing
@@ -18,7 +18,7 @@ use \UnexpectedValueException;
  *
  * When configuring adapters, you may specify one or more priorities for each, using the
  * `'priority'` key. This key can be a single priority level (string), or an array of multiple
- * levels. When a log message is written, all adpaters that are configured to accept the priority
+ * levels. When a log message is written, all adapters that are configured to accept the priority
  * level with which the message was written will receive the message.
  *
  * {{{
@@ -37,7 +37,7 @@ use \UnexpectedValueException;
  *
  * {{{ Logger::write('alert', 'This is an alert-level message that will be logged in 2 places'); }}}
  *
- * Messages can also be written using the log priorty as a method name:
+ * Messages can also be written using the log priority as a method name:
  *
  * {{{ Logger::alert('This is an alert-level message that will be logged in 2 places'); }}}
  *
@@ -65,6 +65,11 @@ class Logger extends \lithium\core\Adaptable {
 	 */
 	protected static $_adapters = 'adapter.analysis.logger';
 
+	/**
+	 * An array of valid message priorities.
+	 *
+	 * @var array
+	 */
 	protected static $_priorities = array(
 		'emergency' => 0,
 		'alert'     => 1,
@@ -91,6 +96,7 @@ class Logger extends \lithium\core\Adaptable {
 	 *         failed.
 	 * @throws UnexpectedValueException If the value of `$priority` is not a defined priority value,
 	 *         an `UnexpectedValueException` will be thrown.
+	 * @filter
 	 */
 	public static function write($priority, $message, array $options = array()) {
 		$defaults = array('name' => null);
@@ -100,7 +106,7 @@ class Logger extends \lithium\core\Adaptable {
 		if ($name = $options['name']) {
 			$methods = array($name => static::adapter($name)->write($priority, $message, $options));
 		} elseif (!isset(static::$_priorities[$priority])) {
-			$message = "Attempted to write log message with invalid priority '{$priority}'.";
+			$message = "Attempted to write log message with invalid priority `{$priority}`.";
 			throw new UnexpectedValueException($message);
 		} else {
 			$methods = static::_configsByPriority($priority, $message, $options);
@@ -109,7 +115,7 @@ class Logger extends \lithium\core\Adaptable {
 		foreach ($methods as $name => $method) {
 			$params = compact('priority', 'message', 'options');
 			$config = static::_config($name);
-			$result = $result && static::_filter(__METHOD__, $params, $method, $config['filters']);
+			$result &= static::_filter(__FUNCTION__, $params, $method, $config['filters']);
 		}
 		return $methods ? $result : false;
 	}

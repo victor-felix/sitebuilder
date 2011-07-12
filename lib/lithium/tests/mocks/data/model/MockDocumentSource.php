@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -10,7 +10,6 @@ namespace lithium\tests\mocks\data\model;
 
 use MongoId;
 use MongoDate;
-use lithium\data\model\Relationship;
 
 class MockDocumentSource extends \lithium\data\Source {
 
@@ -23,7 +22,7 @@ class MockDocumentSource extends \lithium\data\Source {
 
 	public function connect() {}
 	public function disconnect() {}
-	public function entities($class = null) {}
+	public function sources($class = null) {}
 	public function describe($entity, array $meta = array()) {}
 	public function create($query, array $options = array()) {}
 	public function update($query, array $options = array()) {}
@@ -45,54 +44,79 @@ class MockDocumentSource extends \lithium\data\Source {
 		return $this->result[$this->point++];
 	}
 
-	public function cast($model, array $data, array $options = array()) {
+	public function cast($entity, array $data, array $options = array()) {
 		$defaults = array('schema' => null, 'first' => false, 'pathKey' => null, 'arrays' => true);
 		$options += $defaults;
+		$model = null;
 
-		if ($model && !$options['schema']) {
-			$options['schema'] = $model::schema();
+		if (!$data) {
+			return $data;
 		}
+
+		if ($entity && !$options['schema']) {
+			$options['schema'] = $entity->schema() ?: array('_id' => array('type' => 'id'));
+		}
+		if ($entity) {
+			$model = $entity->model();
+		}
+		$schema = $options['schema'];
+		unset($options['schema']);
 
 		$handlers = array(
 			'id' => function($v) {
 				return is_string($v) && preg_match('/^[0-9a-f]{24}$/', $v) ? new MongoId($v) : $v;
 			},
 			'date' => function($v) {
-				return new MongoDate(is_numeric($v) ? intval($v) : strtotime($v));
+				$v = is_numeric($v) ? intval($v) : strtotime($v);
+				return (time() == $v) ? new MongoDate() : new MongoDate($v);
 			},
-			'regex' => function($v) {
-				return new MongoRegex($v);
-			}
+			'regex'   => function($v) { return new MongoRegex($v); },
+			'integer' => function($v) { return (integer) $v; },
+			'float'   => function($v) { return (float) $v; },
+			'boolean' => function($v) { return (boolean) $v; },
+			'code'    => function($v) { return new MongoCode($v); },
+			'binary'  => function($v) { return new MongoBinData($v); }
 		);
 
 		$typeMap = array(
-			'MongoId'   => 'id',
-			'MongoDate' => 'date',
-			'datetime'  => 'date',
-			'timestamp' => 'date',
+			'MongoId'      => 'id',
+			'MongoDate'    => 'date',
+			'MongoCode'    => 'code',
+			'MongoBinData' => 'binary',
+			'datetime'     => 'date',
+			'timestamp'    => 'date',
+			'int'          => 'integer'
 		);
 
 		foreach ($data as $key => $value) {
 			if (is_object($value)) {
 				continue;
 			}
-			$schema = isset($options['schema'][$key]) ? $options['schema'][$key] : array();
-			$schema += array('type' => null, 'array' => null);
-			$type = isset($typeMap[$schema['type']]) ? $typeMap[$schema['type']] : $schema['type'];
-			$isArray = (is_array($value) && $schema['array'] !== false);
+			$path = is_int($key) ? null : $key;
+			$path = $options['pathKey'] ? trim("{$options['pathKey']}.{$path}", '.') : $path;
+			$field = (isset($schema[$path]) ? $schema[$path] : array());
+			$field += array('type' => null, 'array' => null);
+			$type = isset($typeMap[$field['type']]) ? $typeMap[$field['type']] : $field['type'];
+			$isObject = ($type == 'object');
+			$isArray = (is_array($value) && $field['array'] !== false && !$isObject);
 
 			if (isset($handlers[$type])) {
 				$handler = $handlers[$type];
 				$value = $isArray ? array_map($handler, $value) : $handler($value);
 			}
-			if ($options['arrays']) {
-				if (is_array($value)) {
-					$arrayType = (array_keys($value) === range(0, count($value) - 1));
-					$options = $arrayType ? array('class' => 'array') + $options : $options;
-					$value = $this->item($model, $value, $options);
-				} elseif ($schema['array']) {
-					$value = $this->item($model, array($value), array('class' => 'array') + $options);
-				}
+			if (!$options['arrays']) {
+				$data[$key] = $value;
+				continue;
+			}
+			$pathKey = $path;
+
+			if (is_array($value)) {
+				$arrayType = !$isObject && (array_keys($value) === range(0, count($value) - 1));
+				$opts = $arrayType ? array('class' => 'array') + $options : $options;
+				$value = $this->item($model, $value, compact('pathKey') + $opts);
+			} elseif ($field['array']) {
+				$opts = array('class' => 'array') + $options;
+				$value = $this->item($model, array($value), compact('pathKey') + $opts);
 			}
 			$data[$key] = $value;
 		}

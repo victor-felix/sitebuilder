@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -22,18 +22,15 @@ class CreateTest extends \lithium\test\Unit {
 	protected $_testPath = null;
 
 	public function skip() {
-		$this->_testPath = LITHIUM_APP_PATH . '/resources/tmp/tests';
+		$this->_testPath = Libraries::get(true, 'resources') . '/tmp/tests';
 		$this->skipIf(!is_writable($this->_testPath), "{$this->_testPath} is not writable.");
 	}
 
 	public function setUp() {
 		$this->_backup['cwd'] = getcwd();
 		$this->_backup['_SERVER'] = $_SERVER;
-		$this->_backup['app'] = Libraries::get('app');
-
 		$_SERVER['argv'] = array();
 
-		Libraries::add('app', array('path' => $this->_testPath . '/new', 'bootstrap' => false));
 		Libraries::add('create_test', array('path' => $this->_testPath . '/create_test'));
 		$this->request = new Request(array('input' => fopen('php://temp', 'w+')));
 		$this->request->params = array('library' => 'create_test', 'action' => null);
@@ -47,7 +44,6 @@ class CreateTest extends \lithium\test\Unit {
 	public function tearDown() {
 		$_SERVER = $this->_backup['_SERVER'];
 		chdir($this->_backup['cwd']);
-		Libraries::add('app', $this->_backup['app']);
 		$this->_cleanUp();
 	}
 
@@ -63,9 +59,8 @@ class CreateTest extends \lithium\test\Unit {
 		$this->request->params['args'] = array('does_not_exist', 'anywhere');
 		$create = new MockCreate(array('request' => $this->request));
 
-		$expected = false;
 		$result = $create->run('does_not_exist');
-		$this->assertEqual($expected, $result);
+		$this->assertFalse($result);
 
 		$expected = "does_not_exist could not be created.\n";
 		$result = $create->response->error;
@@ -91,9 +86,9 @@ class CreateTest extends \lithium\test\Unit {
 		$create = new MockCreate(array('request' => $this->request));
 		$result = $create->save(array(
 			'namespace' => 'create_test\tests\cases\models',
-			'use' => 'create_test\models\Post',
+			'use' => 'create_test\models\Posts',
 			'class' => 'PostTest',
-			'methods' => "\tpublic function testCreate() {\n\n\t}\n",
+			'methods' => "\tpublic function testCreate() {\n\n\t}\n"
 		));
 		$this->assertTrue($result);
 
@@ -106,25 +101,22 @@ class CreateTest extends \lithium\test\Unit {
 	public function testRunWithoutCommand() {
 		$create = new MockCreate(array('request' => $this->request));
 
-		$expected = false;
 		$result = $create->run();
-		$this->assertEqual($expected, $result);
+		$this->assertFalse($result);
 
-		$expected = "What would you like to create? (model/view/controller/test/mock) \n > ";
 		$result = $create->response->output;
-		$this->assertEqual($expected, $result);
+		$this->assertFalse($result);
 	}
 
 	public function testRunNotSaved() {
 		$this->request->params = array(
 			'library' => 'not_here', 'command' => 'create', 'action' => 'model',
-			'args' => array('model', 'Post')
+			'args' => array('model', 'Posts')
 		);
 		$create = new MockCreate(array('request' => $this->request));
 
-		$expected = false;
 		$result = $create->run('model');
-		$this->assertEqual($expected, $result);
+		$this->assertFalse($result);
 
 		$expected = "model could not be created.\n";
 		$result = $create->response->error;
@@ -134,7 +126,7 @@ class CreateTest extends \lithium\test\Unit {
 	public function testRunWithModelCommand() {
 		$this->request->params = array(
 			'library' => 'create_test', 'command' => 'create', 'action' => 'model',
-			'args' => array('Post')
+			'args' => array('Posts')
 		);
 
 		$create = new MockCreate(array('request' => $this->request));
@@ -145,14 +137,14 @@ class CreateTest extends \lithium\test\Unit {
 		$result = $create->request->command;
 		$this->assertEqual($expected, $result);
 
-		$result = $this->_testPath . '/create_test/models/Post.php';
+		$result = $this->_testPath . '/create_test/models/Posts.php';
 		$this->assertTrue(file_exists($result));
 	}
 
 	public function testRunWithTestModelCommand() {
 		$this->request->params = array(
 			'library' => 'create_test', 'command' => 'create', 'action' => 'test',
-			'args' => array('model', 'Post'),
+			'args' => array('model', 'Posts')
 		);
 
 		$create = new MockCreate(array('request' => $this->request));
@@ -163,14 +155,14 @@ class CreateTest extends \lithium\test\Unit {
 		$result = $create->request->command;
 		$this->assertEqual($expected, $result);
 
-		$result = $this->_testPath . '/create_test/tests/cases/models/PostTest.php';
+		$result = $this->_testPath . '/create_test/tests/cases/models/PostsTest.php';
 		$this->assertTrue(file_exists($result));
 	}
 
 	public function testRunWithTestControllerCommand() {
 		$this->request->params = array(
 			'library' => 'create_test', 'command' => 'create', 'action' => 'test',
-			'args' => array('controller', 'Post'),
+			'args' => array('controller', 'Posts')
 		);
 
 		$create = new MockCreate(array('request' => $this->request));
@@ -188,7 +180,7 @@ class CreateTest extends \lithium\test\Unit {
 	public function testRunWithTestOtherCommand() {
 		$this->request->params = array(
 			'library' => 'create_test', 'command' => 'create', 'action' => 'test',
-			'args' => array('something', 'Post'),
+			'args' => array('something', 'Posts')
 		);
 
 		$create = new MockCreate(array('request' => $this->request));
@@ -198,26 +190,26 @@ class CreateTest extends \lithium\test\Unit {
 		$result = $create->request->command;
 		$this->assertEqual($expected, $result);
 
-		$result = $this->_testPath . '/create_test/tests/cases/something/PostTest.php';
+		$result = $this->_testPath . '/create_test/tests/cases/something/PostsTest.php';
 		$this->assertTrue(file_exists($result));
 	}
 
 	public function testRunAll() {
 		$this->request->params = array(
-			'library' => 'create_test', 'command' => 'create', 'action' => 'Post',
-			'args' => array(),
+			'library' => 'create_test', 'command' => 'create', 'action' => 'Posts',
+			'args' => array()
 		);
 
 		$create = new MockCreate(array('request' => $this->request));
-		$create->run('Post');
+		$create->run('Posts');
 
-		$result = $this->_testPath . '/create_test/models/Post.php';
+		$result = $this->_testPath . '/create_test/models/Posts.php';
 		$this->assertTrue(file_exists($result));
 
 		$result = $this->_testPath . '/create_test/controllers/PostsController.php';
 		$this->assertTrue(file_exists($result));
 
-		$result = $this->_testPath . '/create_test/tests/cases/models/PostTest.php';
+		$result = $this->_testPath . '/create_test/tests/cases/models/PostsTest.php';
 		$this->assertTrue(file_exists($result));
 
 		$result = $this->_testPath . '/create_test/tests/cases/controllers/PostsControllerTest.php';

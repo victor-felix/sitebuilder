@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -71,9 +71,9 @@ namespace lithium\util;
  * $result = $tasks->run('now');
  * }}}
  *
- * @link http://us.php.net/manual/en/class.arrayaccess.php
- * @link http://us.php.net/manual/en/class.iterator.php
- * @link http://us.php.net/manual/en/class.countable.php
+ * @link http://us.php.net/manual/en/class.arrayaccess.php PHP Manual: ArrayAccess Interface
+ * @link http://us.php.net/manual/en/class.iterator.php PHP Manual: Iterator Interface
+ * @link http://us.php.net/manual/en/class.countable.php PHP Manual: Countable Interface
  */
 class Collection extends \lithium\core\Object implements \ArrayAccess, \Iterator, \Countable {
 
@@ -134,7 +134,7 @@ class Collection extends \lithium\core\Object implements \ArrayAccess, \Iterator
 	 *
 	 * - A `to()` method, which handles the actual conversion.
 	 *
-	 * Once a class implements these methods, it may be registered per the followng:
+	 * Once a class implements these methods, it may be registered per the following:
 	 * {{{
 	 * Collection::formats('\lithium\net\http\Media');
 	 * }}}
@@ -236,7 +236,7 @@ class Collection extends \lithium\core\Object implements \ArrayAccess, \Iterator
 	 * @see lithium\util\Collection::$_formats
 	 * @param string $format By default the only supported value is `'array'`. However, additional
 	 *               format handlers can be registered using the `formats()` method.
-	 * @param $options Options for converting this collection:
+	 * @param array $options Options for converting this collection:
 	 *        - `'internal'` _boolean_: Indicates whether the current internal representation of the
 	 *          collection should be exported. Defaults to `false`, which uses the standard iterator
 	 *          interfaces. This is useful for exporting record sets, where records are lazy-loaded,
@@ -281,7 +281,8 @@ class Collection extends \lithium\core\Object implements \ArrayAccess, \Iterator
 	 * @param array $options The available options are:
 	 *              - `'collect'`: If `true`, the results will be returned wrapped
 	 *              in a new `Collection` object or subclass.
-	 * @return array|object The filtered items.
+	 * @return mixed The filtered items. Will be an array unless `'collect'` is defined in the
+	 * `$options` argument, then an instance of this class will be returned.
 	 */
 	public function find($filter, array $options = array()) {
 		$defaults = array('collect' => true);
@@ -337,7 +338,8 @@ class Collection extends \lithium\core\Object implements \ArrayAccess, \Iterator
 	 * @param array $options The available options are:
 	 *              - `'collect'`: If `true`, the results will be returned wrapped
 	 *              in a new `Collection` object or subclass.
-	 * @return array|object The filtered data.
+	 * @return mixed The filtered items. Will be an array unless `'collect'` is defined in the
+	 * `$options` argument, then an instance of this class will be returned.
 	 */
 	public function map($filter, array $options = array()) {
 		$defaults = array('collect' => true);
@@ -401,7 +403,7 @@ class Collection extends \lithium\core\Object implements \ArrayAccess, \Iterator
 	 * @return mixed The current item after rewinding.
 	 */
 	public function rewind() {
-		$this->_valid = (reset($this->_data) !== false);
+		$this->_valid = !(reset($this->_data) === false && key($this->_data) === null);
 		return current($this->_data);
 	}
 
@@ -411,7 +413,7 @@ class Collection extends \lithium\core\Object implements \ArrayAccess, \Iterator
 	 * @return mixed The current item after moving.
 	 */
 	public function end() {
-		$this->_valid = (end($this->_data) !== false);
+		$this->_valid = !(end($this->_data) === false && key($this->_data) === null);
 		return current($this->_data);
 	}
 
@@ -461,7 +463,7 @@ class Collection extends \lithium\core\Object implements \ArrayAccess, \Iterator
 	 * @return The current item after moving.
 	 */
 	public function next() {
-		$this->_valid = (next($this->_data) !== false);
+		$this->_valid = !(next($this->_data) === false && key($this->_data) === null);
 		return current($this->_data);
 	}
 
@@ -500,22 +502,34 @@ class Collection extends \lithium\core\Object implements \ArrayAccess, \Iterator
 	 *
 	 * @param mixed $data Either a `Collection` instance, or an array representing a `Collection`'s
 	 *              internal state.
+	 * @param array $options Options used when converting `$data` to an array:
+	 *              - `'handlers'` _array_: An array where the keys are fully-namespaced class
+	 *                names, and the values are closures that take an instance of the class as a
+	 *                parameter, and return an array or scalar value that the instance represents.
 	 * @return array Returns the value of `$data` as a pure PHP array, recursively converting all
 	 *         sub-objects and other values to their closest array or scalar equivalents.
 	 */
-	public static function toArray($data) {
+	public static function toArray($data, array $options = array()) {
+		$defaults = array('handlers' => array());
+		$options += $defaults;
 		$result = array();
 
 		foreach ($data as $key => $item) {
 			switch (true) {
+				case is_array($item):
+					$result[$key] = static::toArray($item, $options);
+				break;
 				case (!is_object($item)):
 					$result[$key] = $item;
+				break;
+				case (isset($options['handlers'][$class = get_class($item)])):
+					$result[$key] = $options['handlers'][$class]($item);
 				break;
 				case (method_exists($item, 'to')):
 					$result[$key] = $item->to('array');
 				break;
 				case ($vars = get_object_vars($item)):
-					$result[$key] = $vars;
+					$result[$key] = static::toArray($vars, $options);
 				break;
 				case (method_exists($item, '__toString')):
 					$result[$key] = (string) $item;

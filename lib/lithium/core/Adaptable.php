@@ -2,13 +2,12 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\core;
 
-use lithium\util\Collection;
 use lithium\core\Environment;
 use SplDoublyLinkedList;
 use lithium\core\ConfigException;
@@ -62,7 +61,7 @@ class Adaptable extends \lithium\core\StaticObject {
 	 * configuration settings.
 	 *
 	 * @param array $config Configurations, indexed by name.
-	 * @return object|void `Collection` of configurations or void if setting configurations.
+	 * @return object `Collection` of configurations or void if setting configurations.
 	 */
 	public static function config($config = null) {
 		if ($config && is_array($config)) {
@@ -101,7 +100,7 @@ class Adaptable extends \lithium\core\StaticObject {
 		$config = static::_config($name);
 
 		if ($config === null) {
-			throw new ConfigException("Configuration '{$name}' has not been defined.");
+			throw new ConfigException("Configuration `{$name}` has not been defined.");
 		}
 
 		if (isset($config['object'])) {
@@ -109,8 +108,7 @@ class Adaptable extends \lithium\core\StaticObject {
 		}
 		$class = static::_class($config, static::$_adapters);
 		$settings = static::$_configurations[$name];
-		$settings[0]['object'] = new $class($config);
-
+		$settings[0]['object'] = static::_initAdapter($class, $config);
 		static::$_configurations[$name] = $settings;
 		return static::$_configurations[$name][0]['object'];
 	}
@@ -126,7 +124,7 @@ class Adaptable extends \lithium\core\StaticObject {
 		$config = static::_config($name);
 
 		if ($config === null) {
-			throw new ConfigException("Configuration '{$name}' has not been defined.");
+			throw new ConfigException("Configuration `{$name}` has not been defined.");
 		}
 		if (!isset($config['strategies'])) {
 			return null;
@@ -191,7 +189,7 @@ class Adaptable extends \lithium\core\StaticObject {
 	 * & loaded, as well as having the memcache server up & available.
 	 *
 	 * @param string $name The named configuration whose adapter will be checked.
-	 * @return boolean|null  True if adapter is enabled, false if not. This method will
+	 * @return boolean  True if adapter is enabled, false if not. This method will
 	 *         return null if no configuration under the given $name exists.
 	 */
 	public static function enabled($name) {
@@ -200,6 +198,22 @@ class Adaptable extends \lithium\core\StaticObject {
 		}
 		$adapter = static::adapter($name);
 		return $adapter::enabled();
+	}
+
+	/**
+	 * Provides an extension point for modifying how adapters are instantiated.
+	 *
+	 * @see lithium\core\Object::__construct()
+	 * @param string $class The fully-namespaced class name of the adapter to instantiate.
+	 * @param array $config The configuration array to be passed to the adapter instance. See the
+	 *              `$config` parameter of `Object::__construct()`.
+	 * @return object The adapter's class.
+	 * @filter This method can be filtered.
+	 */
+	protected static function _initAdapter($class, array $config) {
+		return static::_filter(__FUNCTION__, compact('class', 'config'), function($self, $params) {
+			return new $params['class']($params['config']);
+		});
 	}
 
 	/**
@@ -213,11 +227,11 @@ class Adaptable extends \lithium\core\StaticObject {
 	protected static function _class($config, $paths = array()) {
 		if (!$name = $config['adapter']) {
 			$self = get_called_class();
-			throw new ConfigException("No adapter set for configuration in class {$self}.");
+			throw new ConfigException("No adapter set for configuration in class `{$self}`.");
 		}
 		if (!$class = static::_locate($paths, $name)) {
 			$self = get_called_class();
-			throw new ConfigException("Could not find adapter '{$name}' in class {$self}.");
+			throw new ConfigException("Could not find adapter `{$name}` in class `{$self}`.");
 		}
 		return $class;
 	}
@@ -233,11 +247,11 @@ class Adaptable extends \lithium\core\StaticObject {
 	protected static function _strategy($name, $paths = array()) {
 		if (!$name) {
 			$self = get_called_class();
-			throw new ConfigException("No strategy set for configuration in class {$self}.");
+			throw new ConfigException("No strategy set for configuration in class `{$self}`.");
 		}
 		if (!$class = static::_locate($paths, $name)) {
 			$self = get_called_class();
-			throw new ConfigException("Could not find strategy '{$name}' in class {$self}.");
+			throw new ConfigException("Could not find strategy `{$name}` in class `{$self}`.");
 		}
 		return $class;
 	}
@@ -247,7 +261,7 @@ class Adaptable extends \lithium\core\StaticObject {
 	 *
 	 * @param string|array $paths Paths that Libraries::locate() will utilize.
 	 * @param string $name The name of the class to be located.
-	 * @return null|string Fully-namespaced path to the class, or null if not found.
+	 * @return string Fully-namespaced path to the class, or null if not found.
 	 */
 	protected static function _locate($paths, $name) {
 		foreach ((array) $paths as $path) {
@@ -281,6 +295,10 @@ class Adaptable extends \lithium\core\StaticObject {
 		}
 		$env = Environment::get();
 		$config = isset($settings[$env]) ? $settings[$env] : $settings;
+
+		if (isset($settings[$env]) && isset($settings[true])) {
+			$config += $settings[true];
+		}
 		static::$_configurations[$name] += array(static::_initConfig($name, $config));
 		return static::$_configurations[$name][0];
 	}
@@ -294,7 +312,7 @@ class Adaptable extends \lithium\core\StaticObject {
 	 * @param string $name The name of the configuration which is being accessed. This is the key
 	 *               name containing the specific set of configuration passed into `config()`.
 	 * @param array $config Contains the configuration assigned to `$name`. If this configuration is
-	 *              segregated by environment, then this will contian the configuration for the
+	 *              segregated by environment, then this will contain the configuration for the
 	 *              current environment.
 	 * @return array Returns the final array of settings for the given named configuration.
 	 */

@@ -2,18 +2,16 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\data;
 
-use RuntimeException;
-
 /**
  * The `Collection` class extends the generic `lithium\util\Collection` class to provide
  * context-specific features for working with sets of data persisted by a backend data store. This
- * is a general abstraction that operates on abitrary sets of data from either relational or
+ * is a general abstraction that operates on arbitrary sets of data from either relational or
  * non-relational data stores.
  */
 abstract class Collection extends \lithium\util\Collection {
@@ -87,6 +85,8 @@ abstract class Collection extends \lithium\util\Collection {
 	 */
 	protected $_hasInitialized = false;
 
+	protected $_schema = array();
+
 	/**
 	 * Holds an array of values that should be processed on initialization.
 	 *
@@ -97,10 +97,9 @@ abstract class Collection extends \lithium\util\Collection {
 	);
 
 	/**
-	 * Class constructor
+	 * Class constructor.
 	 *
 	 * @param array $config
-	 * @return void
 	 */
 	public function __construct(array $config = array()) {
 		$defaults = array('data' => array(), 'model' => null);
@@ -114,8 +113,12 @@ abstract class Collection extends \lithium\util\Collection {
 			unset($this->_config[$key]);
 		}
 		if ($model = $this->_model) {
-			$pathKey = $this->_pathKey;
-			$this->_data = $model::connection()->cast($model, $this->_data, compact('pathKey'));
+			$options = array(
+				'pathKey' => $this->_pathKey,
+				'schema' => $model::schema(),
+				'exists' => isset($this->_config['exists']) ? $this->_config['exists'] : null
+			);
+			$this->_data = $model::connection()->cast($this, $this->_data, $options);
 		}
 	}
 
@@ -142,11 +145,28 @@ abstract class Collection extends \lithium\util\Collection {
 		return $this->_model;
 	}
 
+	public function schema($field = null) {
+		$schema = array();
+
+		switch (true) {
+			case ($this->_schema):
+				$schema = $this->_schema;
+			break;
+			case ($model = $this->_model):
+				$schema = $model::schema();
+			break;
+		}
+		if ($field) {
+			return isset($self->_schema[$field]) ? $self->_schema[$field] : null;
+		}
+		return $schema;
+	}
+
 	/**
-	 * Returns a boolean indicating whether an offset exists for the 
+	 * Returns a boolean indicating whether an offset exists for the
 	 * current `Collection`.
 	 *
-	 * @param string $offset String or integer indicating the offset or 
+	 * @param string $offset String or integer indicating the offset or
 	 *               index of an entity in the set.
 	 * @return boolean Result.
 	 */
@@ -193,7 +213,7 @@ abstract class Collection extends \lithium\util\Collection {
 	 */
 	public function each($filter) {
 		if (!$this->closed()) {
-			while($this->next()) {}
+			while ($this->next()) {}
 		}
 		return parent::each($filter);
 	}
@@ -207,14 +227,24 @@ abstract class Collection extends \lithium\util\Collection {
 	 * @param callback $filter The filter to apply.
 	 * @param array $options The available options are:
 	 *              - `'collect'`: If `true`, the results will be returned wrapped
-	 *              in a new Collection object or subclass.
-	 * @return array|object The filtered data.
+	 *              in a new `Collection` object or subclass.
+	 * @return object The filtered data.
 	 */
 	public function map($filter, array $options = array()) {
+		$defaults = array('collect' => true);
+		$options += $defaults;
+
 		if (!$this->closed()) {
-			while($this->next()) {}
+			while ($this->next()) {}
 		}
-		return parent::map($filter, $options);
+		$data = parent::map($filter, $options);
+
+		if ($options['collect']) {
+			foreach (array('_model', '_schema', '_pathKey') as $key) {
+				$data->{$key} = $this->{$key};
+			}
+		}
+		return $data;
 	}
 
 	/**
@@ -236,7 +266,7 @@ abstract class Collection extends \lithium\util\Collection {
 	 */
 	public function offsetSet($offset, $data) {
 		if (is_array($data) && ($model = $this->_model)) {
-			$data = $model::connection()->cast($model, $data);
+			$data = $model::connection()->cast($this, $data);
 		} elseif (is_object($data)) {
 			$data->assignTo($this);
 		}

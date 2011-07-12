@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -29,7 +29,7 @@ class Memory extends \lithium\g11n\catalog\Adapter {
 	 * @param string $category A category.
 	 * @param string $locale A locale identifier.
 	 * @param string $scope The scope for the current operation.
-	 * @return array|void
+	 * @return array
 	 */
 	public function read($category, $locale, $scope) {
 		$scope = $scope ?: 'default';

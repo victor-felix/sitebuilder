@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -45,7 +45,21 @@ class Result extends \lithium\core\Object implements \Iterator {
 		return $this->_iterator;
 	}
 
+	public function prev() {
+		if (!$this->_resource) {
+			return;
+		}
+		if ($this->_current == $this->_prev()) {
+			$this->_iterator--;
+			return $this->_current;
+		}
+	}
+
 	public function next() {
+		if (!$this->_resource) {
+			return;
+		}
+
 		if ($this->_resource->hasNext()) {
 			$result = $this->_resource->getNext();
 			$isFile = ($result instanceof MongoGridFSFile);

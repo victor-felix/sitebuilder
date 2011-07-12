@@ -2,16 +2,16 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\net\http;
 
-use \lithium\action\Request;
-use \lithium\net\http\Route;
-use \lithium\net\http\Router;
-use \lithium\action\Response;
+use lithium\action\Request;
+use lithium\net\http\Route;
+use lithium\net\http\Router;
+use lithium\action\Response;
 
 class RouterTest extends \lithium\test\Unit {
 
@@ -220,11 +220,13 @@ class RouterTest extends \lithium\test\Unit {
 		$result = Router::match(array("Sessions::destroy", 'id' => '03815'));
 		$this->assertEqual('/logout/03815', $result);
 
-		$result = Router::match(array("Sessions::create", 'id' => 'foo'));
-		$this->assertNull($result);
-
 		$result = Router::match("Posts::index");
 		$this->assertEqual('/posts', $result);
+
+		$ex = "No parameter match found for URL ";
+		$ex .= "`('controller' => 'sessions', 'action' => 'create', 'id' => 'foo')`.";
+		$this->expectException($ex);
+		$result = Router::match(array("Sessions::create", 'id' => 'foo'));
 	}
 
 	/**
@@ -242,11 +244,16 @@ class RouterTest extends \lithium\test\Unit {
 		$expected = '/posts/4bbf25bd8ead0e5180130000';
 		$this->assertEqual($expected, $result);
 
+		$ex = "No parameter match found for URL `(";
+		$ex .= "'controller' => 'posts', 'action' => 'view', 'id' => '4bbf25bd8ead0e5180130000')`.";
+		$this->expectException($ex);
+
 		$result = Router::match(array(
 			'controller' => 'posts', 'action' => 'view', 'id' => '4bbf25bd8ead0e5180130000'
 		));
-		$this->assertNull($result);
+	}
 
+	public function testShorthandParameterMatching() {
 		Router::reset();
 		Router::connect('/posts/{:page:[0-9]+}', array('Posts::index', 'page' => '1'));
 
@@ -283,33 +290,33 @@ class RouterTest extends \lithium\test\Unit {
 
 	/**
 	 * Tests matching routes where the route template is a static string with no insert parameters.
-	 *
-	 * @return void
 	 */
 	public function testRouteMatchingWithNoInserts() {
 		Router::connect('/login', array('controller' => 'sessions', 'action' => 'add'));
 		$result = Router::match(array('controller' => 'sessions', 'action' => 'add'));
 		$this->assertEqual('/login', $result);
-		$this->assertFalse(Router::match(array('controller' => 'sessions', 'action' => 'index')));
+
+		$this->expectException(
+			"No parameter match found for URL `('controller' => 'sessions', 'action' => 'index')`."
+		);
+		Router::match(array('controller' => 'sessions', 'action' => 'index'));
 	}
 
 	/**
 	 * Test matching routes with only insert parameters and no default values.
-	 *
-	 * @return void
 	 */
 	public function testRouteMatchingWithOnlyInserts() {
 		Router::connect('/{:controller}');
 		$this->assertEqual('/posts', Router::match(array('controller' => 'posts')));
 
-		$result = Router::match(array('controller' => 'posts', 'action' => 'view'));
-		$this->assertFalse($result);
+		$this->expectException(
+			"No parameter match found for URL `('controller' => 'posts', 'action' => 'view')`."
+		);
+		Router::match(array('controller' => 'posts', 'action' => 'view'));
 	}
 
 	/**
 	 * Test matching routes with insert parameters which have default values.
-	 *
-	 * @return void
 	 */
 	public function testRouteMatchingWithInsertsAndDefaults() {
 		Router::connect('/{:controller}/{:action}', array('action' => 'archive'));
@@ -327,14 +334,14 @@ class RouterTest extends \lithium\test\Unit {
 		$result = Router::match(array('controller' => 'posts', 'action' => 'view'));
 		$this->assertEqual('/posts/view', $result);
 
-		$result = Router::match(array('controller' => 'posts', 'action' => 'view', 'id' => '2'));
-		$this->assertFalse($result);
+		$ex = "No parameter match found for URL ";
+		$ex .= "`('controller' => 'posts', 'action' => 'view', 'id' => '2')`.";
+		$this->expectException($ex);
+		Router::match(array('controller' => 'posts', 'action' => 'view', 'id' => '2'));
 	}
 
 	/**
 	 * Tests matching routes and returning an absolute (protocol + hostname) URL.
-	 *
-	 * @return void
 	 */
 	public function testRouteMatchAbsoluteUrl() {
 		Router::connect('/login', array('controller' => 'sessions', 'action' => 'add'));
@@ -374,8 +381,6 @@ class RouterTest extends \lithium\test\Unit {
 	/**
 	 * Tests getting routes using `Router::get()`, and checking to see if the routes returned match
 	 * the routes connected.
-	 *
-	 * @return void
 	 */
 	public function testRouteRetrieval() {
 		$expected = Router::connect('/hello', array('controller' => 'posts', 'action' => 'index'));
@@ -402,6 +407,13 @@ class RouterTest extends \lithium\test\Unit {
 		$result = Router::match('/posts', $request);
 		$expected = '/my/web/path/posts';
 		$this->assertEqual($expected, $result);
+
+		$request = new Request(array('base' => '/my/web/path'));
+		$result = Router::match('/some/where', $request, array('absolute' => true));
+		$prefix  = $this->request->env('HTTPS') ? 'https://' : 'http://';
+		$prefix .= $this->request->env('HTTP_HOST');
+		$this->assertEqual($prefix . '/my/web/path/some/where', $result);
+
 
 		$result = Router::match('mailto:foo@localhost');
 		$expected = 'mailto:foo@localhost';
@@ -457,10 +469,28 @@ class RouterTest extends \lithium\test\Unit {
 	}
 
 	/**
+	 * Tests that the order of the parameters is respected so it can trim
+	 * the URL correctly.
+	 */
+	public function testParameterOrderIsRespected() {
+		Router::connect('/{:locale}/{:controller}/{:action}/{:args}');
+		Router::connect('/{:controller}/{:action}/{:args}');
+
+		$request = Router::process(new Request(array('url' => 'posts')));
+
+		$url = Router::match('Posts::index', $request);
+		$this->assertEqual($this->request->env('base') . '/posts', $url);
+
+		$request = Router::process(new Request(array('url' => 'fr/posts')));
+
+		$params = array('Posts::index', 'locale' => 'fr');
+		$url = Router::match($params, $request);
+		$this->assertEqual($this->request->env('base') . '/fr/posts', $url);
+	}
+
+	/**
 	 * Tests that a request context with persistent parameters generates URLs where those parameters
 	 * are properly taken into account.
-	 *
-	 * @return void
 	 */
 	public function testParameterPersistence() {
 		Router::connect('/{:controller}/{:action}/{:id:[0-9]+}', array(), array(
@@ -487,8 +517,6 @@ class RouterTest extends \lithium\test\Unit {
 
 	/**
 	 * Tests that persistent parameters can be overridden with nulled-out values.
-	 *
-	 * @return void
 	 */
 	public function testOverridingPersistentParameters() {
 		Router::connect(

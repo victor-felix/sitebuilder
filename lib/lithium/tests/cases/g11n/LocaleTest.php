@@ -2,15 +2,15 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\g11n;
 
-use \lithium\g11n\Locale;
-use \lithium\action\Request as ActionRequest;
-use \lithium\console\Request as ConsoleRequest;
+use lithium\g11n\Locale;
+use lithium\action\Request as ActionRequest;
+use lithium\console\Request as ConsoleRequest;
 
 class LocaleTest extends \lithium\test\Unit {
 
@@ -21,7 +21,7 @@ class LocaleTest extends \lithium\test\Unit {
 	 */
 	public function testCompose() {
 		$data = array(
-			'language' => 'en',
+			'language' => 'en'
 		);
 		$expected = 'en';
 
@@ -214,7 +214,7 @@ class LocaleTest extends \lithium\test\Unit {
 	 */
 	public function testComposeDecomposeCompose() {
 		$data = array(
-			'language' => 'en',
+			'language' => 'en'
 		);
 		$expected = 'en';
 

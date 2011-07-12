@@ -2,13 +2,14 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\data\model;
 
 use lithium\data\Source;
+use lithium\core\ConfigException;
 use lithium\data\model\QueryException;
 
 /**
@@ -77,13 +78,13 @@ class Query extends \lithium\core\Object {
 	 * if, for example, you wish to extend a core data source and implement custom fucntionality.
 	 *
 	 * @param array $config
-	 * @return void
 	 */
 	public function __construct(array $config = array()) {
 		$defaults = array(
 			'calculate'  => null,
 			'conditions' => array(),
 			'fields'     => array(),
+			'data'       => array(),
 			'model'      => null,
 			'alias'      => null,
 			'source'     => null,
@@ -97,6 +98,7 @@ class Query extends \lithium\core\Object {
 			'with'       => array(),
 			'map'        => array(),
 			'whitelist'  => array(),
+			'relationships' => array()
 		);
 		parent::__construct($config + $defaults);
 	}
@@ -117,6 +119,12 @@ class Query extends \lithium\core\Object {
 		if ($this->_config['with']) {
 			$this->_associate($this->_config['with']);
 		}
+		$joins = $this->_config['joins'];
+		$this->_config['joins'] = array();
+
+		foreach ($joins as $i => $join) {
+			$this->join($i, $join);
+		}
 		if ($this->_entity && !$this->_config['model']) {
 			$this->model($this->_entity->model());
 		}
@@ -136,6 +144,7 @@ class Query extends \lithium\core\Object {
 	 * Generates a schema map of the query's result set, where the keys are fully-namespaced model
 	 * class names, and the values are arrays of field names.
 	 *
+	 * @param array $map
 	 * @return array
 	 */
 	public function map($map = null) {
@@ -245,6 +254,10 @@ class Query extends \lithium\core\Object {
 			$this->_config['limit'] = intval($limit);
 			return $this;
 		}
+		if ($limit === false) {
+			$this->_config['limit'] = null;
+			return $this;
+		}
 		return $this->_config['limit'];
 	}
 
@@ -300,6 +313,10 @@ class Query extends \lithium\core\Object {
 	public function group($group = null) {
 		if ($group) {
 			$this->_config['group'] = $group;
+			return $this;
+		}
+		if ($group === false) {
+			$this->_config['group'] = null;
 			return $this;
 		}
 		return $this->_config['group'];
@@ -361,11 +378,15 @@ class Query extends \lithium\core\Object {
 	 * @return array of query objects
 	 */
 	public function join($name = null, $join = null) {
+		if (is_scalar($name) && !$join && isset($this->_config['joins'][$name])) {
+			return $this->_config['joins'][$name];
+		}
 		if ($name && !$join) {
 			$join = $name;
 			$name = null;
 		}
 		if ($join) {
+			$join = is_array($join) ? $this->_instance(get_class($this), $join) : $join;
 			$name ? $this->_config['joins'][$name] = $join : $this->_config['joins'][] = $join;
 			return $this;
 		}
@@ -375,17 +396,18 @@ class Query extends \lithium\core\Object {
 	/**
 	 * Convert the query's properties to the data sources' syntax and return it as an array.
 	 *
-	 * @param object $dataSource Instance of the data source to use for conversion.
+	 * @param \lithium\data\Source $dataSource Instance of the data source to use
+	 *                      for conversion.
 	 * @param array $options Options to use when exporting the data.
 	 * @return array Returns an array containing a data source-specific representation of a query.
 	 */
 	public function export(Source $dataSource, array $options = array()) {
-		$defaults = array('data' => array());
+		$defaults = array('keys' => array());
 		$options += $defaults;
 
-		$keys = array_keys($this->_config);
+		$keys = $options['keys'] ?: array_keys($this->_config);
 		$methods = $dataSource->methods();
-		$results = array();
+		$results = array('type' => $this->_type);
 
 		$apply = array_intersect($keys, $methods);
 		$copy = array_diff($keys, $apply);
@@ -394,21 +416,51 @@ class Query extends \lithium\core\Object {
 			$results[$item] = $dataSource->{$item}($this->{$item}(), $this);
 		}
 		foreach ($copy as $item) {
-			$results[$item] = $this->_config[$item];
+			if (in_array($item, $keys)) {
+				$results[$item] = $this->_config[$item];
+			}
 		}
-		$entity =& $this->_entity;
-		$data = $entity ? $entity->export($dataSource, $options['data']) : $this->_data;
-		$data = ($list = $this->_config['whitelist']) ? array_intersect_key($data, $list) : $data;
-		$results = compact('data') + $results;
-
-		$results['type'] = $this->_type;
-		$results['source'] = $dataSource->name($this->_config['source']);
+		if (in_array('data', $keys)) {
+			$results['data'] = $this->_exportData();
+		}
+		if (isset($results['source'])) {
+			$results['source'] = $dataSource->name($results['source']);
+		}
+		if (!isset($results['fields'])) {
+			return $results;
+		}
 		$created = array('fields', 'values');
 
 		if (is_array($results['fields']) && array_keys($results['fields']) == $created) {
 			$results = $results['fields'] + $results;
 		}
 		return $results;
+	}
+
+	/**
+	 * Helper method used by `export()` to extract the data either from a bound entity, or from
+	 * passed configuration, and filter it through a configured whitelist, if present.
+	 *
+	 * @return array
+	 */
+	protected function _exportData() {
+		$data = $this->_entity ? $this->_entity->export() : $this->_data;
+
+		if (!$list = $this->_config['whitelist']) {
+			return $data;
+		}
+		$list = array_combine($list, $list);
+
+		if (!$this->_entity) {
+			return array_intersect_key($data, $list);
+		}
+		foreach ($data as $type => $values) {
+			if (!is_array($values)) {
+				continue;
+			}
+			$data[$type] = array_intersect_key($values, $list);
+		}
+		return $data;
 	}
 
 	public function schema($field = null) {
@@ -443,13 +495,13 @@ class Query extends \lithium\core\Object {
 	}
 
 	/**
-	 * Gets a custom query field which does not have an accessor method.
+	 * Gets or sets a custom query field which does not have an accessor method.
 	 *
 	 * @param string $method Query part.
-	 * @param string $params Query parameters.
+	 * @param array $params Query parameters.
 	 * @return mixed Returns the value as set in the `Query` object's constructor.
 	 */
-	public function __call($method, $params = array()) {
+	public function __call($method, array $params = array()) {
 		if ($params) {
 			$this->_config[$method] = current($params);
 			return $this;
@@ -461,15 +513,22 @@ class Query extends \lithium\core\Object {
 	 * Will return a find first condition on the associated model if a record is connected.
 	 * Called by conditions when it is called as a get and no condition is set.
 	 *
-	 * @return array ([model's primary key'] => [that key set in the record]).
+	 * @return array Returns an array in the following format:
+	 *         `([model's primary key'] => [that key set in the record])`.
 	 */
 	protected function _entityConditions() {
 		if (!$this->_entity || !($model = $this->_config['model'])) {
 			return;
 		}
-		if (is_array($key = $model::key($this->_entity->data()))) {
+		$key = $model::key($this->_entity->data());
+
+		if (!$key && $this->_type != "create") {
+			throw new ConfigException('No matching primary key found.');
+		}
+		if (is_array($key)) {
 			return $key;
 		}
+
 		$key = $model::meta('key');
 		$val = $this->_entity->{$key};
 		return $val ? array($key => $val) : array();
@@ -479,18 +538,57 @@ class Query extends \lithium\core\Object {
 		if (!$model = $this->model()) {
 			return;
 		}
-		$queryClass = get_class($this);
+		$hasMany = false;
 
 		foreach ((array) $related as $name => $config) {
 			if (is_int($name)) {
 				$name = $config;
-				$config = array();
 			}
-			if (!$relation = $model::relations($name)) {
-				throw new QueryException("Related model not found");
+			if (!$relationship = $model::relations($name)) {
+				throw new QueryException("Model relationship `{$name}` not found.");
 			}
-			$config += $relation->data();
+			list($name, $query) = $this->_fromRelationship($relationship);
+			$this->join($name, $query);
+			$hasMany = $hasMany || $relationship->type() == 'hasMany';
 		}
+
+		if ($hasMany && $this->limit()) {
+			$model = $this->model();
+			$name = $model::meta('name');
+			$key = $model::key();
+
+			$query = $this->_instance(get_class($this), array(
+				'type' => 'read',
+				'model' => $model,
+				'group' => "{$name}.{$key}",
+				'fields' => array("{$name}.{$key}"),
+				'joins' => $this->joins(),
+				'conditions' => $this->conditions(),
+				'limit' => $this->limit(),
+				'page' => $this->page(),
+				'order' => $this->order()
+			));
+			$ids = $model::connection()->read($query);
+			$idData = $ids->data();
+			$ids = array_map(function($index) use ($key) { return $index[$key]; }, $idData);
+			$this->limit(false)->conditions(array("{$name}.{$key}" => $ids));
+		}
+	}
+
+	protected function _fromRelationship($rel) {
+		$model = $rel->to();
+		$name = $rel->name();
+		$type = $rel->type();
+		$fieldName = $rel->fieldName();
+		$this->_config['relationships'][$name] = compact('type', 'model', 'fieldName');
+
+		$constraint = $rel->constraints();
+		$class = get_class($this);
+
+		return array($name, $this->_instance($class, compact('constraint', 'model') + array(
+			'type' => 'LEFT',
+			'alias' => $rel->name()
+		)));
 	}
 }
 

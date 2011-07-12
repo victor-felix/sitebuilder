@@ -2,9 +2,10 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
+
 namespace lithium\net\http;
 
 use lithium\core\Libraries;
@@ -53,7 +54,7 @@ class Service extends \lithium\core\Object {
 	protected $_classes = array(
 		'media'    => 'lithium\net\http\Media',
 		'request'  => 'lithium\net\http\Request',
-		'response' => 'lithium\net\http\Response',
+		'response' => 'lithium\net\http\Response'
 	);
 
 	/**
@@ -61,7 +62,6 @@ class Service extends \lithium\core\Object {
 	 * transport- and format-handling classes.
 	 *
 	 * @param array $config
-	 * @return void
 	 */
 	public function __construct(array $config = array()) {
 		$defaults = array(
@@ -74,9 +74,19 @@ class Service extends \lithium\core\Object {
 			'username'   => null,
 			'password'   => null,
 			'encoding'   => 'UTF-8',
-			'socket'     => 'Context',
+			'socket'     => 'Context'
 		);
 		parent::__construct($config + $defaults);
+	}
+
+	/**
+	 * Send HEAD request.
+	 *
+	 * @param array $options
+	 * @return string
+	 */
+	public function head(array $options = array()) {
+		return $this->send(__FUNCTION__, null, array(), $options);
 	}
 
 	/**
@@ -167,7 +177,7 @@ class Service extends \lithium\core\Object {
 		$response = $conn->send($request, $options);
 		$conn->close();
 		$this->last = (object) compact('request', 'response');
-		return ($options['return'] == 'body') ? $response->body() : $response;
+		return ($options['return'] == 'body' && $response) ? $response->body() : $response;
 	}
 
 	/**
@@ -183,10 +193,10 @@ class Service extends \lithium\core\Object {
 	 *         string or POST/PUT data, and URL.
 	 */
 	protected function _request($method, $path, $data, $options) {
-		$defaults = array('type' => 'form', 'scheme' => $this->_config['scheme']);
-		$options += $defaults;
+		$defaults = array('type' => 'form');
+		$options += $defaults + $this->_config;
 
-		$request = $this->_instance('request', $this->_config + $options);
+		$request = $this->_instance('request', $options);
 		$request->path = str_replace('//', '/', "{$request->path}{$path}");
 		$request->method = $method = strtoupper($method);
 

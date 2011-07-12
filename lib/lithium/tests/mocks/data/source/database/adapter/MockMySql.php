@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD,http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD,http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -28,7 +28,7 @@ class MockMySql extends \lithium\data\source\database\adapter\MySql {
 		  'Null' => 'NO',
 		  'Key' => 'PRI',
 		  'Default' => null,
-		  'Extra' => 'auto_increment',
+		  'Extra' => 'auto_increment'
 		),
 		array(
 		  'Field' => 'name',
@@ -36,7 +36,7 @@ class MockMySql extends \lithium\data\source\database\adapter\MySql {
 		  'Null' => 'NO',
 		  'Key' => '',
 		  'Default' => null,
-		  'Extra' => '',
+		  'Extra' => ''
 		),
 		array(
 		  'Field' => 'priority',
@@ -44,7 +44,7 @@ class MockMySql extends \lithium\data\source\database\adapter\MySql {
 		  'Null' => 'NO',
 		  'Key' => '',
 		  'Default' => '-1',
-		  'Extra' => '',
+		  'Extra' => ''
 		),
 		array(
 		  'Field' => 'parent_id',
@@ -52,7 +52,7 @@ class MockMySql extends \lithium\data\source\database\adapter\MySql {
 		  'Null' => 'NO',
 		  'Key' => '',
 		  'Default' => '0',
-		  'Extra' => '',
+		  'Extra' => ''
 		),
 		array(
 		  'Field' => 'active',
@@ -60,7 +60,7 @@ class MockMySql extends \lithium\data\source\database\adapter\MySql {
 		  'Null' => 'NO',
 		  'Key' => '',
 		  'Default' => '1',
-		  'Extra' => '',
+		  'Extra' => ''
 		),
 		array(
 		  'Field' => 'created',
@@ -68,7 +68,7 @@ class MockMySql extends \lithium\data\source\database\adapter\MySql {
 		  'Null' => 'YES',
 		  'Key' => '',
 		  'Default' => null,
-		  'Extra' => '',
+		  'Extra' => ''
 		),
 		array(
 		  'Field' => 'updated',
@@ -76,7 +76,7 @@ class MockMySql extends \lithium\data\source\database\adapter\MySql {
 		  'Null' => 'YES',
 		  'Key' => '',
 		  'Default' => null,
-		  'Extra' => '',
+		  'Extra' => ''
 		),
 		array(
 		  'Field' => 'type',
@@ -84,7 +84,7 @@ class MockMySql extends \lithium\data\source\database\adapter\MySql {
 		  'Null' => 'NO',
 		  'Key' => '',
 		  'Default' => 'post',
-		  'Extra' => '',
+		  'Extra' => ''
 		),
 		array(
 		  'Field' => 'max',
@@ -92,7 +92,7 @@ class MockMySql extends \lithium\data\source\database\adapter\MySql {
 		  'Null' => 'NO',
 		  'Key' => '',
 		  'Default' => '0',
-		  'Extra' => '',
+		  'Extra' => ''
 		),
 		array(
 		  'Field' => 'timestamp',
@@ -100,7 +100,7 @@ class MockMySql extends \lithium\data\source\database\adapter\MySql {
 		  'Null' => 'NO',
 		  'Key' => '',
 		  'Default' => 'CURRENT_TIMESTAMP',
-		  'Extra' => 'on update CURRENT_TIMESTAMP',
+		  'Extra' => 'on update CURRENT_TIMESTAMP'
 		)
 	);
 }

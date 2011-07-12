@@ -2,18 +2,20 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\data;
+
+use lithium\core\NetworkException;
 
 /**
  * This is the base class for Lithium's data abstraction layer.
  *
  * In addition to utility methods and standardized properties, it defines the implementation tasks
  * for all Lithium classes that work with external data, such as connections to remote resources
- * (`connect()` and `disconnect()`), introspecting available data objects (`entities()` and
+ * (`connect()` and `disconnect()`), introspecting available data objects (`sources()` and
  * `describe()`), and a standard read/write interface (`create()`, `read()`, `update()` and
  * `delete()`).
  *
@@ -61,7 +63,7 @@ abstract class Source extends \lithium\core\Object {
 	 * Constructor. Sets defaults and returns object.
 	 *
 	 * Options defined:
-	 * - 'autoConnect' `boolean` If true, a connection is made on initialisation. Defaults to true.
+	 * - 'autoConnect' `boolean` If true, a connection is made on initialization. Defaults to true.
 	 *
 	 * @param array $config
 	 * @return Source object
@@ -107,7 +109,11 @@ abstract class Source extends \lithium\core\Object {
 		$options += $defaults;
 
 		if (!$this->_isConnected && $options['autoConnect']) {
-			$this->connect();
+			try {
+				$this->connect();
+			} catch (NetworkException $e) {
+				$this->_isConnected = false;
+			}
 		}
 		return $this->_isConnected;
 	}
@@ -133,13 +139,13 @@ abstract class Source extends \lithium\core\Object {
 	abstract public function disconnect();
 
 	/**
-	 * Returns a list of objects (entities) that models can bind to, i.e. a list of tables in the
+	 * Returns a list of objects (sources) that models can bind to, i.e. a list of tables in the
 	 * case of a database, or REST collections, in the case of a web service.
 	 *
-	 * @param string $model The fully-name-spaced class name of the object making the request.
+	 * @param string $class The fully-name-spaced class name of the object making the request.
 	 * @return array Returns an array of objects to which models can connect.
 	 */
-	abstract public function entities($class = null);
+	abstract public function sources($class = null);
 
 	/**
 	 * Gets the column schema for a given entity (such as a database table).
@@ -158,6 +164,10 @@ abstract class Source extends \lithium\core\Object {
 	/**
 	 * Defines or modifies the default settings of a relationship between two models.
 	 *
+	 * @param $class the primary model of the relationship
+	 * @param $type the type of the relationship (hasMany, hasOne, belongsTo)
+	 * @param $name the name of the relationship
+	 * @param array $options relationship options
 	 * @return array Returns an array containing the configuration for a model relationship.
 	 */
 	abstract public function relationship($class, $type, $name, array $options = array());
@@ -204,7 +214,8 @@ abstract class Source extends \lithium\core\Object {
 	/**
 	 * Casts data into proper format when added to a collection or entity object.
 	 *
-	 * @param string $model The name of the model class to which the entity or collection is bound.
+	 * @param mixed $entity The entity or collection for which data is being cast, or the name of
+	 *              the model class to which the entity/collection is bound.
 	 * @param array $data An array of data being assigned.
 	 * @param array $options Any associated options with, for example, instantiating new objects in
 	 *              which to wrap the data. Options implemented by `cast()` itself:
@@ -214,7 +225,7 @@ abstract class Source extends \lithium\core\Object {
 	 * @return mixed Returns the value of `$data`, cast to the proper format according to the schema
 	 *         definition of the model class specified by `$model`.
 	 */
-	public function cast($model, array $data, array $options = array()) {
+	public function cast($entity, array $data, array $options = array()) {
 		$defaults = array('first' => false);
 		$options += $defaults;
 		return $options['first'] ? reset($data) : $data;
@@ -244,7 +255,10 @@ abstract class Source extends \lithium\core\Object {
 	 *         dependencies.
 	 */
 	public function configureClass($class) {
-		return array();
+		return array('meta' => array(
+			'key' => 'id',
+			'locked' => true
+		));
 	}
 
 	/**
@@ -262,11 +276,9 @@ abstract class Source extends \lithium\core\Object {
 		$defaults = array('class' => 'entity');
 		$options += $defaults;
 
-		$type = $options['class'];
-		$class = isset($this->_classes[$type]) ? $this->_classes[$type] : $type;
+		$class = $options['class'];
 		unset($options['class']);
-
-		return new $class(compact('model', 'data') + $options);
+		return $this->_instance($class, compact('model', 'data') + $options);
 	}
 }
 

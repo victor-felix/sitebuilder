@@ -2,16 +2,16 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\data\source\database\adapter;
 
-use \lithium\data\Connections;
-use \lithium\data\model\Query;
-use \lithium\data\source\database\adapter\MySql;
-use \lithium\tests\mocks\data\source\database\adapter\MockMySql;
+use lithium\data\Connections;
+use lithium\data\model\Query;
+use lithium\data\source\database\adapter\MySql;
+use lithium\tests\mocks\data\source\database\adapter\MockMySql;
 
 class MySqlTest extends \lithium\test\Unit {
 
@@ -32,10 +32,13 @@ class MySqlTest extends \lithium\test\Unit {
 		$hasDb = (isset($this->_dbConfig['adapter']) && $this->_dbConfig['adapter'] == 'MySql');
 		$message = 'Test database is either unavailable, or not using a MySQL adapter';
 		$this->skipIf(!$hasDb, $message);
-	}
 
-	public function setUp() {
 		$this->db = new MySql($this->_dbConfig);
+
+		$lithium = LITHIUM_LIBRARY_PATH . '/lithium';
+		$sqlFile = $lithium . '/tests/mocks/data/source/database/adapter/mysql_companies.sql';
+		$sql = file_get_contents($sqlFile);
+		$this->db->read($sql, array('return' => 'resource'));
 	}
 
 	/**
@@ -47,7 +50,7 @@ class MySqlTest extends \lithium\test\Unit {
 		$db = new MockMySql(array('autoConnect' => false));
 		$result = $db->get('_config');
 		$expected = array(
-			'autoConnect' => false, 'encoding' => NULL,'persistent' => true,
+			'autoConnect' => false, 'encoding' => null,'persistent' => true,
 			'host' => 'localhost:3306', 'login' => 'root', 'password' => '',
 			'database' => null, 'init' => true
 		);
@@ -70,11 +73,12 @@ class MySqlTest extends \lithium\test\Unit {
 		$this->assertFalse($db->isConnected());
 
 		$db = new MySQL(array(
-			'autoConnect' => false, 'encoding' => NULL,'persistent' => false,
+			'autoConnect' => false, 'encoding' => null,'persistent' => false,
 			'host' => 'localhost:3306', 'login' => 'garbage', 'password' => '',
 			'database' => 'garbage', 'init' => true
 		) + $this->_dbConfig);
 
+		$this->expectException();
 		$this->assertFalse($db->connect());
 		$this->assertFalse($db->isConnected());
 
@@ -179,7 +183,7 @@ class MySqlTest extends \lithium\test\Unit {
 	}
 
 	public function testEntityQuerying() {
-		$sources = $this->db->entities();
+		$sources = $this->db->sources();
 		$this->assertTrue(is_array($sources));
 		$this->assertFalse(empty($sources));
 	}

@@ -2,14 +2,13 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\action;
 
 use lithium\action\Response;
-use lithium\tests\mocks\action\MockRequestType;
 use lithium\tests\mocks\action\MockResponse;
 
 class ResponseTest extends \lithium\test\Unit {
@@ -18,11 +17,6 @@ class ResponseTest extends \lithium\test\Unit {
 
 	public function setUp() {
 		$this->response = new MockResponse(array('init' => false));
-	}
-
-	public function testDefaultTypeInitialization() {
-		$response = new Response(array('request' => new MockRequestType()));
-		$this->assertEqual('foo', $response->type());
 	}
 
 	public function testTypeManipulation() {
@@ -58,6 +52,7 @@ class ResponseTest extends \lithium\test\Unit {
 			'HTTP/1.1 200 OK',
 			'Expires: ' . gmdate('D, d M Y H:i:s', $expires) . ' GMT',
 			'Cache-Control: max-age=' . ($expires - time()),
+			'Pragma: cache'
 		);
 		$this->assertEqual($headers, $this->response->testHeaders);
 
@@ -70,12 +65,13 @@ class ResponseTest extends \lithium\test\Unit {
 			'HTTP/1.1 200 OK',
 			'Expires: ' . gmdate('D, d M Y H:i:s', strtotime($expires)) . ' GMT',
 			'Cache-Control: max-age=' . (strtotime($expires) - time()),
+			'Pragma: cache'
 		);
 		$this->assertEqual($headers, $this->response->testHeaders);
 
 		$this->response->body = 'Created';
 		$this->response->status(201);
-		$this->response->disableCache();
+		$this->response->cache(false);
 
 		ob_start();
 		$this->response->render();
@@ -93,6 +89,9 @@ class ResponseTest extends \lithium\test\Unit {
 			'Pragma: no-cache'
 		);
 		$this->assertEqual($headers, $this->response->testHeaders);
+
+		$this->expectException('/^`Request::disableCache\(\)`.+`Request::cache\(false\)`/');
+		$this->response->disableCache();
 	}
 
 	/**
@@ -113,12 +112,12 @@ class ResponseTest extends \lithium\test\Unit {
 		$result = ob_get_clean();
 		$this->assertEqual(array('HTTP/1.1 303 See Other'), $this->response->testHeaders);
 
-		$this->expectException('/Invalid status code/');
 		$this->response->status('foobar');
 		ob_start();
 		$this->response->render();
 		$result = ob_get_clean();
-		$this->assertFalse($this->response->testHeaders);
+		$expected = array('HTTP/1.1 500 Internal Server Error');
+		$this->assertEqual($expected, $this->response->testHeaders);
 	}
 
 	/**
@@ -159,10 +158,17 @@ class ResponseTest extends \lithium\test\Unit {
 		$headers = array('HTTP/1.1 301 Moved Permanently', 'Location: /');
 		$this->assertEqual($headers, $this->response->testHeaders);
 
-		$this->response = new Response(array('location' => array(
-			'controller' => 'foo_bar', 'action' => 'index'
-		)));
+		$this->response = new Response(array(
+			'classes' => array('router' => __CLASS__),
+			'location' => array('controller' => 'foo_bar', 'action' => 'index')
+		));
 		$this->assertEqual(array('location: /foo_bar'), $this->response->headers());
+	}
+
+	public static function match($url) {
+		if ($url == array('controller' => 'foo_bar', 'action' => 'index')) {
+			return '/foo_bar';
+		}
 	}
 }
 

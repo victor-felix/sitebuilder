@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -11,12 +11,13 @@ namespace lithium\console\command\create;
 use lithium\core\Libraries;
 use lithium\util\Inflector;
 use lithium\analysis\Inspector;
+use lithium\core\ClassNotFoundException;
 
 /**
  * Generate a Test class in the `--library` namespace
  *
- * `li3 create test model Post`
- * `li3 create --library=li3_plugin test model Post`
+ * `li3 create test model Posts`
+ * `li3 create --library=li3_plugin test model Posts`
  *
  */
 class Test extends \lithium\console\command\Create {
@@ -40,9 +41,7 @@ class Test extends \lithium\console\command\Create {
      * @return string
      */
 	protected function _use($request) {
-		$namespace = parent::_namespace($request);
-		$name = $this->_name($request);
-		return "\\{$namespace}\\{$name}";
+		return parent::_namespace($request) . '\\' . $this->_name($request);
 	}
 
     /**
@@ -88,7 +87,13 @@ class Test extends \lithium\console\command\Create {
 		$type = $request->action;
 		$name = $request->args();
 
-		if ($command = $this->_instance($type)) {
+		try {
+			$command = $this->_instance($type);
+		} catch (ClassNotFoundException $e) {
+			$command = null;
+		}
+
+		if ($command) {
 			$request->params['action'] = $name;
 			$name = $command->invokeMethod('_class', array($request));
 		}

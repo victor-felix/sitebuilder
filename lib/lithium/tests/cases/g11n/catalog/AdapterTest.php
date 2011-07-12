@@ -2,14 +2,13 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\g11n\catalog;
 
-use \Exception;
-use \lithium\tests\mocks\g11n\catalog\MockAdapter;
+use lithium\tests\mocks\g11n\catalog\MockAdapter;
 
 class AdapterTest extends \lithium\test\Unit {
 

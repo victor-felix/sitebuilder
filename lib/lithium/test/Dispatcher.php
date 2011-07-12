@@ -2,16 +2,15 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\test;
 
-use \lithium\util\Set;
-use \lithium\util\Inflector;
-use \lithium\core\Libraries;
-use \lithium\core\Environment;
+use lithium\util\Set;
+use lithium\core\Libraries;
+use lithium\core\Environment;
 
 /**
  * The Lithium Test Dispatcher
@@ -44,12 +43,13 @@ class Dispatcher extends \lithium\core\StaticObject {
 	 * @return array A compact array of the title, an array of the results, as well
 	 *         as an additional array of the results after the $options['filters']
 	 *         have been applied.
+	 * @filter
 	 */
 	public static function run($group = null, array $options = array()) {
 		$defaults = array(
 			'title' => $group,
 			'filters' => array(),
-			'reporter' => 'text',
+			'reporter' => 'text'
 		);
 		$options += $defaults;
 		$isCase = is_string($group) && preg_match('/Test$/', $group);
@@ -59,7 +59,7 @@ class Dispatcher extends \lithium\core\StaticObject {
 		$group = static::_group($items);
 		$report = static::_report($group, $options);
 
-		return static::_filter(__METHOD__, compact('report'), function($self, $params, $chain) {
+		return static::_filter(__FUNCTION__, compact('report'), function($self, $params, $chain) {
 			$environment = Environment::get();
 			Environment::set('test');
 

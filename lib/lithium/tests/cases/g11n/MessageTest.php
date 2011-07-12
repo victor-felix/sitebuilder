@@ -2,16 +2,16 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\g11n;
 
-use \lithium\core\Environment;
-use \lithium\g11n\Message;
-use \lithium\g11n\Catalog;
-use \lithium\g11n\catalog\adapter\Memory;
+use lithium\core\Environment;
+use lithium\g11n\Message;
+use lithium\g11n\Catalog;
+use lithium\g11n\catalog\adapter\Memory;
 
 class MessageTest extends \lithium\test\Unit {
 
@@ -127,7 +127,7 @@ class MessageTest extends \lithium\test\Unit {
 		));
 
 		$data = array(
-			'catalog' => array('Katalog', 'Kataloge'),
+			'catalog' => array('Katalog', 'Kataloge')
 		);
 		Catalog::write('runtime', 'message', 'de', $data);
 
@@ -143,7 +143,7 @@ class MessageTest extends \lithium\test\Unit {
 
 	public function testTranslateScope() {
 		$data = array(
-			'catalog' => 'Katalog',
+			'catalog' => 'Katalog'
 		);
 		Catalog::write('runtime', 'message', 'de', $data, array('scope' => 'test'));
 
@@ -174,8 +174,9 @@ class MessageTest extends \lithium\test\Unit {
 	public function testTranslatePlaceholders() {
 		$data = array(
 			'green' => 'grün',
+			'No. {:id}' => 'Nr. {:id}',
 			'The fish is {:color}.' => 'Der Fisch ist {:color}.',
-			'{:count} bike' => array('{:count} Fahrrad', '{:count} Fahrräder'),
+			'{:count} bike' => array('{:count} Fahrrad', '{:count} Fahrräder')
 		);
 		Catalog::write('runtime', 'message', 'de', $data);
 
@@ -193,15 +194,19 @@ class MessageTest extends \lithium\test\Unit {
 		$expected = '7 Fahrräder';
 		$result = Message::translate('{:count} bike', array('locale' => 'de', 'count' => 7));
 		$this->assertEqual($expected, $result);
+
+		$expected = 'Nr. 8';
+		$result = Message::translate('No. {:id}', array('locale' => 'de', 'id' => 8));
+		$this->assertEqual($expected, $result);
 	}
 
 	public function testTranslateLocales() {
 		$data = array(
-			'catalog' => 'Katalog',
+			'catalog' => 'Katalog'
 		);
 		Catalog::write('runtime', 'message', 'de', $data);
 		$data = array(
-			'catalog' => 'catalogue',
+			'catalog' => 'catalogue'
 		);
 		Catalog::write('runtime', 'message', 'fr', $data);
 
@@ -216,7 +221,7 @@ class MessageTest extends \lithium\test\Unit {
 
 	public function testTranslateNoop() {
 		$data = array(
-			'catalog' => 'Katalog',
+			'catalog' => 'Katalog'
 		);
 		Catalog::write('runtime', 'message', 'de', $data);
 

@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -11,6 +11,7 @@ namespace lithium\storage\cache\adapter;
 use SplFileInfo;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
+use lithium\core\Libraries;
 
 /**
  * A minimal file-based cache.
@@ -28,7 +29,7 @@ use RecursiveDirectoryIterator;
  * This adapter does *not* allow multi-key operations for any methods.
  *
  * The path that the cached files will be written to defaults to
- * `LITHIUM_APP_PATH/resources/tmp/cache`, but is user-configurable on cache configuration.
+ * `<app>/resources/tmp/cache`, but is user-configurable on cache configuration.
  *
  * Note that the cache expiration time is stored within the first few bytes
  * of the cached data, and is transparently added and/or removed when values
@@ -45,16 +46,15 @@ class File extends \lithium\core\Object {
 	 * @param array $config Configuration parameters for this cache adapter. These settings are
 	 *        indexed by name and queryable through `Cache::config('name')`.
 	 *        The defaults are:
-	 *        - 'path' : Path where cached entries live `LITHIUM_APP_PATH . '/resources/tmp/cache'
+	 *        - 'path' : Path where cached entries live `LITHIUM_APP_PATH . '/resources/tmp/cache'`.
 	 *        - 'expiry' : Default expiry time used if none is explicitly set when calling
 	 *          `Cache::write()`.
-	 * @return void
 	 */
 	public function __construct(array $config = array()) {
 		$defaults = array(
-			'path' => LITHIUM_APP_PATH . '/resources/tmp/cache',
+			'path' => Libraries::get(true, 'resources') . '/tmp/cache',
 			'prefix' => '',
-			'expiry' => '+1 hour',
+			'expiry' => '+1 hour'
 		);
 		parent::__construct($config + $defaults);
 	}
@@ -66,32 +66,30 @@ class File extends \lithium\core\Object {
 	 * @param mixed $data The value to be cached.
 	 * @param null|string $expiry A strtotime() compatible cache time. If no expiry time is set,
 	 *        then the default cache expiration time set with the cache configuration will be used.
-	 * @return boolean True on successful write, false otherwise.
+	 * @return closure Function returning boolean `true` on successful write, `false` otherwise.
 	 */
 	public function write($key, $data, $expiry = null) {
 		$path = $this->_config['path'];
 		$expiry = ($expiry) ?: $this->_config['expiry'];
 
-		return function($self, $params, $chain) use (&$path, $expiry) {
+		return function($self, $params) use (&$path, $expiry) {
 			$expiry = strtotime($expiry);
 			$data = "{:expiry:{$expiry}}\n{$params['data']}";
 			$path = "{$path}/{$params['key']}";
-
 			return file_put_contents($path, $data);
 		};
-
 	}
 
 	/**
 	 * Read value(s) from the cache.
 	 *
 	 * @param string $key The key to uniquely identify the cached item.
-	 * @return mixed Cached value if successful, false otherwise.
+	 * @return closure Function returning cached value if successful, `false` otherwise.
 	 */
 	public function read($key) {
 		$path = $this->_config['path'];
 
-		return function($self, $params, $chain) use (&$path) {
+		return function($self, $params) use (&$path) {
 			extract($params);
 			$path = "$path/$key";
 			$file = new SplFileInfo($path);
@@ -109,21 +107,19 @@ class File extends \lithium\core\Object {
 				return false;
 			}
 			return preg_replace('/^\{\:expiry\:\d+\}\\n/', '', $data, 1);
-
 		};
-
 	}
 
 	/**
 	 * Delete an entry from the cache.
 	 *
 	 * @param string $key The key to uniquely identify the cached item.
-	 * @return mixed True on successful delete, false otherwise.
+	 * @return closure Function returning boolean `true` on successful delete, `false` otherwise.
 	 */
 	public function delete($key) {
 		$path = $this->_config['path'];
 
-		return function($self, $params, $chain) use (&$path) {
+		return function($self, $params) use (&$path) {
 			extract($params);
 			$path = "$path/$key";
 			$file = new SplFileInfo($path);
@@ -131,7 +127,6 @@ class File extends \lithium\core\Object {
 			if ($file->isFile() && $file->isReadable())  {
 				return unlink($path);
 			}
-
 			return false;
 		};
 	}
@@ -181,7 +176,6 @@ class File extends \lithium\core\Object {
 			}
 		}
 		return true;
-
 	}
 
 	/**

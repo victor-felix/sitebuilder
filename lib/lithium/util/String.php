@@ -2,82 +2,187 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
- *                Copyright 2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/mit-license.php The MIT License
  */
 
 namespace lithium\util;
 
-use \Closure;
-use \Exception;
+use COM;
+use Closure;
+use Exception;
 
 /**
- * String manipulation utility class. Includes functionality for hashing, UUID generation,
- * {:tag} and regex replacement, and tokenization.
- *
+ * String manipulation utility class. Includes functionality for generating UUIDs,
+ * {:tag} and regex replacement, and tokenization. Also includes a cryptographically-strong random
+ * number generator, and a base64 encoder for use with DES and XDES.
  */
 class String {
 
 	/**
-	 * Generates a random UUID.
-	 *
-	 * @param mixed $context Used to determine the values for `'SERVER_ADDR'`, `'HOST'`
-	 *        and `'HOSTNAME'`. Either a closure which is passed the requested context values, an
-	 *        object with properties for each value or an array keyed by requested context value.
-	 * @return string An RFC 4122-compliant UUID.
-	 * @link http://www.ietf.org/rfc/rfc4122.txt
+	 * UUID-related constant. Clears all bits of version byte (`00001111`).
 	 */
-	public static function uuid($context) {
-		$val = function($value) use ($context) {
-			switch (true) {
-				case is_object($context) && is_callable($context):
-					$result = $context($value);
-				break;
-				case is_object($context):
-					$result = isset($context->$value) ? $context->$value : null;
-				break;
-				case is_array($context):
-					$result = isset($context[$value]) ? $context[$value] : null;
-				break;
-			}
-			return $result;
-		};
+	const UUID_CLEAR_VER = 15;
 
-		$node = static::_hostname($val);
-		$pid = function_exists('zend_thread_id') ? zend_thread_id() : getmypid();
-		$pid = (!$pid || $pid > 65535) ? mt_rand(0, 0xfff) | 0x4000 : $pid;
-		list($timeMid, $timeLow) = explode(' ', microtime());
+	/**
+	 * UUID constant that sets the version bit for generated UUIDs (`01000000`).
+	 */
+	const UUID_VERSION_4 = 64;
 
-		return sprintf(
-			"%08x-%04x-%04x-%02x%02x-%04x%08x",
-			(integer) $timeLow, (integer) substr($timeMid, 2) & 0xffff, mt_rand(0, 0xfff) | 0x4000,
-			mt_rand(0, 0x3f) | 0x80, mt_rand(0, 0xff), $pid, $node
-		);
+	/**
+	 * Clears relevant bits of variant byte (`00111111`).
+	 */
+	const UUID_CLEAR_VAR = 63;
+
+	/**
+	 * The RFC 4122 variant (`10000000`).
+	 */
+	const UUID_VAR_RFC = 128;
+
+	/**
+	 * Option flag used in `String::random()`.
+	 */
+	const ENCODE_BASE_64 = 1;
+
+	/**
+	 * A closure which, given a number of bytes, returns that amount of
+	 * random bytes.
+	 *
+	 * @var Closure
+	 */
+	protected static $_source;
+
+	/**
+	 * Generates an RFC 4122-compliant version 4 UUID.
+	 *
+	 * @return string The string representation of an RFC 4122-compliant, version 4 UUID.
+	 * @link http://www.ietf.org/rfc/rfc4122.txt RFC 4122: UUID URN Namespace
+	 */
+	public static function uuid() {
+		$uuid = static::random(16);
+		$uuid[6] = chr(ord($uuid[6]) & static::UUID_CLEAR_VER | static::UUID_VERSION_4);
+		$uuid[8] = chr(ord($uuid[8]) & static::UUID_CLEAR_VAR | static::UUID_VAR_RFC);
+
+		return join('-', array(
+			bin2hex(substr($uuid, 0, 4)),
+			bin2hex(substr($uuid, 4, 2)),
+			bin2hex(substr($uuid, 6, 2)),
+			bin2hex(substr($uuid, 8, 2)),
+			bin2hex(substr($uuid, 10, 6))
+		));
 	}
 
 	/**
-	 * Create a hash from string using given method.  Fallback on next available method.
+	 * Generates random bytes for use in UUIDs and password salts, using
+	 * (when available) a cryptographically strong random number generator.
 	 *
-	 * @param string $string String to hash.
-	 * @param string $type Method to use (sha1/sha256/md5, or any method supported
-	 *        by the `hash()` function).
-	 * @param string $salt
-	 * @return string Hash.
+	 * {{{
+	 * $bits = String::random(8); // 64 bits
+	 * $hex = bin2hex($bits); // [0-9a-f]+
+	 * }}}
+	 *
+	 * Optionally base64-encodes the resulting random string per the following:
+	 *
+	 *  _The alphabet used by `base64_encode()` is different than the one we should be using. When
+	 * considering the meaty part of the resulting string, however, a bijection allows to go the
+	 * from one to another. Given that we're working on random bytes, we can use safely use
+	 * `base64_encode()` without losing any entropy._
+	 *
+	 * @param integer $bytes The number of random bytes to generate.
+	 * @param array $options The options used when generating random bytes:
+	 *              - `'encode'` _integer_: If specified, and set to `String::ENCODE_BASE_64`, the
+	 *                resulting value will be base64-encoded, per the notes above.
+	 * @return string Returns a string of random bytes.
 	 */
-	public static function hash($string, $type = 'sha1', $salt = null) {
-		$string = $salt . $string;
+	public static function random($bytes, array $options = array()) {
+		$defaults = array('encode' => null);
+		$options += $defaults;
 
-		switch (true) {
-			case ($type == 'sha1' && function_exists('sha1')):
-				return sha1($string);
-			case ($type == 'sha256' && function_exists('mhash')):
-				return bin2hex(mhash(MHASH_SHA256, $string));
-			case (function_exists('hash')):
-				return hash($type, $string);
-			default:
+		$source = static::$_source ?: static::_source();
+		$result = $source($bytes);
+
+		if ($options['encode'] != static::ENCODE_BASE_64) {
+			return $result;
 		}
-		return md5($string);
+		return strtr(rtrim(base64_encode($result), '='), '+', '.');
+	}
+
+	/**
+	 * Initializes `String::$_source` using the best available random number generator.
+	 *
+	 * When available, `/dev/urandom` and COM gets used on *nix and
+	 * [Windows systems](http://msdn.microsoft.com/en-us/library/aa388182%28VS.85%29.aspx?ppud=4),
+	 * respectively.
+	 *
+	 * If all else fails, a Mersenne Twister gets used. (Strictly
+	 * speaking, this fallback is inadequate, but good enough.)
+	 *
+	 * @see lithium\util\String::$_source
+	 * @return closure Returns a closure containing a random number generator.
+	 */
+	protected static function _source() {
+		switch (true) {
+			case isset(static::$_source):
+				return static::$_source;
+			case is_readable('/dev/urandom') && $fp = fopen('/dev/urandom', 'rb'):
+				return static::$_source = function($bytes) use (&$fp) {
+					return fread($fp, $bytes);
+				};
+			case class_exists('COM', false):
+				try {
+					$com = new COM('CAPICOM.Utilities.1');
+					return static::$_source = function($bytes) use ($com) {
+						return base64_decode($com->GetRandom($bytes, 0));
+					};
+				} catch (Exception $e) {
+				}
+			default:
+				return static::$_source = function($bytes) {
+					$rand = '';
+
+					for ($i = 0; $i < $bytes; $i++) {
+						$rand .= chr(mt_rand(0, 255));
+					}
+					return $rand;
+				};
+		}
+	}
+
+	/**
+	 * Uses PHP's hashing functions to create a hash of the string provided, using the options
+	 * specified. The default hash algorithm is SHA-512.
+	 *
+	 * @link http://php.net/manual/en/function.hash.php PHP Manual: `hash()`
+	 * @link http://php.net/manual/en/function.hash-hmac.php PHP Manual: `hash_hmac()`
+	 * @link http://php.net/manual/en/function.hash-algos.php PHP Manual: `hash_algos()`
+	 * @param string $string The string to hash.
+	 * @param array $options Supported options:
+	 *        - `'type'` _string_: Any valid hashing algorithm. See the `hash_algos()` function to
+	 *          determine which are available on your system.
+	 *        - `'salt'` _string_: A _salt_ value which, if specified, will be prepended to the
+	 *          string.
+	 *        - `'key'` _string_: If specified `hash_hmac()` will be used to hash the string,
+	 *          instead of `hash()`, with `'key'` being used as the message key.
+	 *        - `'raw'` _boolean_: If `true`, outputs the raw binary result of the hash operation.
+	 *          Defaults to `false`.
+	 * @return string Returns a hashed string.
+	 */
+	public static function hash($string, array $options = array()) {
+		$defaults = array(
+			'type' => 'sha512',
+			'salt' => false,
+			'key' => false,
+			'raw' => false
+		);
+		$options += $defaults;
+
+		if ($options['salt']) {
+			$string = $options['salt'] . $string;
+		}
+		if ($options['key']) {
+			return hash_hmac($options['type'], $string, $options['key'], $options['raw']);
+		}
+		return hash($options['type'], $string, $options['raw']);
 	}
 
 	/**
@@ -93,9 +198,9 @@ class String {
 	 * }}}
 	 *
 	 * @param string $str A string containing variable place-holders.
-	 * @param string $data A key, value array where each key stands for a place-holder variable
+	 * @param array $data A key, value array where each key stands for a place-holder variable
 	 *                     name to be replaced with value.
-	 * @param string $options Available options are:
+	 * @param array $options Available options are:
 	 *        - `'after'`: The character or string after the name of the variable place-holder
 	 *          (defaults to `null`).
 	 *        - `'before'`: The character or string in front of the name of the variable
@@ -115,13 +220,13 @@ class String {
 			'after' => '}',
 			'escape' => null,
 			'format' => null,
-			'clean' => false,
+			'clean' => false
 		);
 		$options += $defaults;
 		$format = $options['format'];
 		reset($data);
 
-		if ($format == 'regex' || (empty($format) && !empty($options['escape']))) {
+		if ($format == 'regex' || (!$format && $options['escape'])) {
 			$format = sprintf(
 				'/(?<!%s)%s%%s%s/',
 				preg_quote($options['escape'], '/'),
@@ -130,7 +235,7 @@ class String {
 			);
 		}
 
-		if (empty($format) && key($data) !== 0) {
+		if (!$format && key($data) !== 0) {
 			$replace = array();
 
 			foreach ($data as $key => $value) {
@@ -183,7 +288,7 @@ class String {
 	 * and unneeded mark-up around place-holders that did not get replaced by `Set::insert()`.
 	 *
 	 * @param string $str The string to clean.
-	 * @param string $options Available options are:
+	 * @param array $options Available options are:
 	 *        - `'after'`: characters marking the end of targeted substring.
 	 *        - `'andText'`: (defaults to `true`).
 	 *        - `'before'`: characters marking the start of targeted substring.
@@ -253,8 +358,8 @@ class String {
 	}
 
 	/**
-	 * Tokenizes a string using `$options['separator']`, ignoring any instance of
-	 * `$options['separator']` that appears between `$options['leftBound']` and
+	 * Tokenizes a string using `$options['separator']`, ignoring any instances of
+	 * `$options['separator']` that appear between `$options['leftBound']` and
 	 * `$options['rightBound']`.
 	 *
 	 * @param string $data The data to tokenize.
@@ -268,7 +373,7 @@ class String {
 		$defaults = array('separator' => ',', 'leftBound' => '(', 'rightBound' => ')');
 		extract($options + $defaults);
 
-		if (empty($data) || is_array($data)) {
+		if (!$data || is_array($data)) {
 			return $data;
 		}
 
@@ -286,88 +391,49 @@ class String {
 				strpos($data, $leftBound, $offset),
 				strpos($data, $rightBound, $offset)
 			);
+
 			for ($i = 0; $i < 3; $i++) {
 				if ($offsets[$i] !== false && ($offsets[$i] < $tmpOffset || $tmpOffset == -1)) {
 					$tmpOffset = $offsets[$i];
 				}
 			}
-			if ($tmpOffset !== -1) {
-				$buffer .= substr($data, $offset, ($tmpOffset - $offset));
-				if ($data{$tmpOffset} == $separator && $depth == 0) {
-					$results[] = $buffer;
-					$buffer = '';
-				} else {
-					$buffer .= $data{$tmpOffset};
-				}
-				if ($leftBound != $rightBound) {
-					if ($data{$tmpOffset} == $leftBound) {
-						$depth++;
-					}
-					if ($data{$tmpOffset} == $rightBound) {
-						$depth--;
-					}
-				} else {
-					if ($data{$tmpOffset} == $leftBound) {
-						if (!$open) {
-							$depth++;
-							$open = true;
-						} else {
-							$depth--;
-							$open = false;
-						}
-					}
-				}
-				$offset = ++$tmpOffset;
-			} else {
+
+			if ($tmpOffset === -1) {
 				$results[] = $buffer . substr($data, $offset);
 				$offset = $length + 1;
+				continue;
 			}
+			$buffer .= substr($data, $offset, ($tmpOffset - $offset));
+
+			if ($data{$tmpOffset} == $separator && $depth == 0) {
+				$results[] = $buffer;
+				$buffer = '';
+			} else {
+				$buffer .= $data{$tmpOffset};
+			}
+
+			if ($leftBound != $rightBound) {
+				if ($data{$tmpOffset} == $leftBound) {
+					$depth++;
+				}
+				if ($data{$tmpOffset} == $rightBound) {
+					$depth--;
+				}
+				$offset = ++$tmpOffset;
+				continue;
+			}
+
+			if ($data{$tmpOffset} == $leftBound) {
+				($open) ? $depth-- : $depth++;
+				$open = !$open;
+			}
+			$offset = ++$tmpOffset;
 		}
 
-		if (empty($results) && !empty($buffer)) {
+		if (!$results && $buffer) {
 			$results[] = $buffer;
 		}
-		return empty($results) ? array() : array_map('trim', $results);
-	}
-
-	/**
-	 * Used by `String::uuid()` to get the hostname from request context data. Uses fallbacks to get
-	 * the current host name or IP, depending on what values are available.
-	 *
-	 * @param mixed $context An array (i.e. `$_SERVER`), `Request` object, or anonymous function
-	 *              containing host data.
-	 * @return string Returns the host name or IP for use in generating a UUID.
-	 */
-	protected static function _hostname($context) {
-		$node = $context('SERVER_ADDR');
-
-		if (strpos($node, ':') !== false) {
-			if (substr_count($node, '::')) {
-				$pad = str_repeat(':0000', 8 - substr_count($node, ':'));
-				$node = str_replace('::', $pad . ':', $node);
-			}
-			$node = explode(':', $node);
-			$ipv6 = '';
-
-			foreach ($node as $id) {
-				$ipv6 .= str_pad(base_convert($id, 16, 2), 16, 0, STR_PAD_LEFT);
-			}
-			$node = base_convert($ipv6, 2, 10);
-			$node = (strlen($node) < 38) ? null : crc32($node);
-		} elseif (empty($node)) {
-			$host = $context('HOSTNAME');
-			$host = $host ?: $context('HOST');
-
-			if (!empty($host)) {
-				$ip = gethostbyname($host);
-				$node = ($ip === $host) ? crc32($host) : $node = ip2long($ip);
-			}
-		} elseif ($node !== '127.0.0.1') {
-			$node = ip2long($node);
-		} else {
-			$node = crc32(rand());
-		}
-		return $node;
+		return $results ? array_map('trim', $results) : array();
 	}
 }
 

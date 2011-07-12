@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -10,29 +10,17 @@ namespace lithium\tests\integration\data;
 
 use Exception;
 use lithium\data\Connections;
-
-class Company extends \lithium\data\Model {
-
-	public $hasMany = array('Employees');
-
-	protected $_meta = array('connection' => 'test');
-}
-
-class Employee extends \lithium\data\Model {
-
-	public $belongsTo = array('Company');
-
-	protected $_meta = array('connection' => 'test');
-
-	public function lastName($entity) {
-		$name = explode(' ', $entity->name);
-		return $name[1];
-	}
-}
+use lithium\tests\mocks\data\Company;
+use lithium\tests\mocks\data\Employee;
 
 class SourceTest extends \lithium\test\Unit {
 
 	protected $_connection = null;
+
+	protected $_classes = array(
+		'employee' => 'lithium\tests\mocks\data\Employee',
+		'company' => 'lithium\tests\mocks\data\Company'
+	);
 
 	public $companyData = array(
 		array('name' => 'StuffMart', 'active' => true),
@@ -266,7 +254,7 @@ class SourceTest extends \lithium\test\Unit {
 		$result = Company::relations('Employees');
 
 		$this->assertEqual('hasMany', $result->data('type'));
-		$this->assertEqual(__NAMESPACE__ . '\Employee', $result->data('to'));
+		$this->assertEqual($this->_classes['employee'], $result->data('to'));
 	}
 
 	public function testRelationshipQuerying() {
@@ -280,8 +268,8 @@ class SourceTest extends \lithium\test\Unit {
 		$stuffMart = Company::findFirstByName('StuffMart');
 		$maAndPas = Company::findFirstByName('Ma \'n Pa\'s Data Warehousing & Bait Shop');
 
-		$this->assertEqual(__NAMESPACE__ . '\Employee', $stuffMart->employees->model());
-		$this->assertEqual(__NAMESPACE__ . '\Employee', $maAndPas->employees->model());
+		$this->assertEqual($this->_classes['employee'], $stuffMart->employees->model());
+		$this->assertEqual($this->_classes['employee'], $maAndPas->employees->model());
 
 		foreach (array('Mr. Smith', 'Mr. Jones', 'Mr. Brown') as $name) {
 			$stuffMart->employees[] = Employee::create(compact('name'));

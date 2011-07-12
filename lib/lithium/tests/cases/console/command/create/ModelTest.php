@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -21,7 +21,7 @@ class ModelTest extends \lithium\test\Unit {
 	protected $_testPath = null;
 
 	public function skip() {
-		$this->_testPath = LITHIUM_APP_PATH . '/resources/tmp/tests';
+		$this->_testPath = Libraries::get(true, 'resources') . '/tmp/tests';
 		$this->skipIf(!is_writable($this->_testPath), "{$this->_testPath} is not readable.");
 	}
 
@@ -44,13 +44,13 @@ class ModelTest extends \lithium\test\Unit {
 
 	public function testClass() {
 		$this->request->params = array(
-			'command' => 'model', 'action' => 'Post'
+			'command' => 'model', 'action' => 'Posts'
 		);
 		$model = new Model(array(
 			'request' => $this->request, 'classes' => $this->classes
 		));
 
-		$expected = 'Post';
+		$expected = 'Posts';
 		$result = $model->invokeMethod('_class', array($this->request));
 		$this->assertEqual($expected, $result);
 	}

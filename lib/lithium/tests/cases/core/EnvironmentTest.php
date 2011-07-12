@@ -2,14 +2,14 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\core;
 
-use \lithium\core\Environment;
-use \lithium\tests\mocks\core\MockRequest;
+use lithium\core\Environment;
+use lithium\tests\mocks\core\MockRequest;
 
 class EnvironmentTest extends \lithium\test\Unit {
 
@@ -143,6 +143,24 @@ class EnvironmentTest extends \lithium\test\Unit {
 		$request = new MockRequest(array('HTTP_HOST' => 'test.local'));
 		Environment::set($request);
 		$this->assertTrue(Environment::is('production'));
+	}
+
+	public function testDotPath() {
+		$data = array(
+			'foo' => array(
+				'bar' => array(
+					'baz' => 123
+				)
+			),
+			'some' => array(
+				'path' => true
+			)
+		);
+		Environment::set('dotPathIndex', $data);
+
+		$this->assertEqual(123, Environment::get('dotPathIndex.foo.bar.baz'));
+		$this->assertEqual($data['foo'], Environment::get('dotPathIndex.foo'));
+		$this->assertTrue(Environment::get('dotPathIndex.some.path'));
 	}
 
 	/**

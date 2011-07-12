@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -12,7 +12,7 @@ use lithium\util\Set;
 use InvalidArgumentException;
 
 /**
- * The `Validator` class provies static access to commonly used data validation logic. These common
+ * The `Validator` class provides static access to commonly used data validation logic. These common
  * routines cover HTML form input data such as phone and credit card numbers, dates and postal
  * codes, but also include general checks for regular expressions and booleans and numericality.
  *
@@ -30,7 +30,7 @@ use InvalidArgumentException;
  *
  * Data can also be validated against multiple rules, each having their own associated error
  * message. The rule structure is array-based and hierarchical based on rule names and
- * messages. Resposes match the keys present in the `$data` parameter of `check()` up with an array
+ * messages. Responses match the keys present in the `$data` parameter of `check()` up with an array
  * of rules which they violate.
  *
  * {{{ embed:lithium\tests\cases\util\ValidatorTest::testCheckMultipleHasFirstError(1-15) }}}
@@ -120,7 +120,7 @@ use InvalidArgumentException;
  * - `inList`: Checks that a value is in a pre-defined list of values. This validator accepts one
  *   option, `'list'`, which is an array containing acceptable values.
  *
- * - `regex`: Checks that a value appears to be a /-delimited regular expression, possibly
+ * - `regex`: Checks that a value appears to be a valid regular expression, possibly
  *   containing PCRE-compatible options flags.
  *
  * - `uuid`: Checks that a value is a valid UUID.
@@ -182,7 +182,7 @@ class Validator extends \lithium\core\StaticObject {
 				'visa'     => '/^4\\d{12}(\\d{3})?$/',
 				'voyager'  => '/^8699[0-9]{11}$/',
 				'fast'     => '/^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6011[0-9]{12}|3' .
-				              '(?:0[0-5]|[68][0-9])[0-9]{11}|3[47][0-9]{13})$/',
+				              '(?:0[0-5]|[68][0-9])[0-9]{11}|3[47][0-9]{13})$/'
 			),
 			'date'         => array(
 				'dmy'      => '%^(?:(?:31(\\/|-|\\.|\\x20)(?:0?[13578]|1[02]))\\1|(?:(?:29|30)' .
@@ -230,15 +230,16 @@ class Validator extends \lithium\core\StaticObject {
 				'right'    => '/^(?!0,?\d)(?:\d{1,3}(?:([, .])\d{3})?(?:\1\d{3})*|(?:\d+))' .
 				              '((?!\1)[,.]\d{2})?(?<!\x{00a2})\p{Sc}?$/u',
 				'left'     => '/^(?!\x{00a2})\p{Sc}?(?!0,?\d)(?:\d{1,3}(?:([, .])\d{3})?' .
-				              '(?:\1\d{3})*|(?:\d+))((?!\1)[,.]\d{2})?$/u',
+				              '(?:\1\d{3})*|(?:\d+))((?!\1)[,.]\d{2})?$/u'
 			),
 			'notEmpty'     => '/[^\s]+/m',
 			'phone'        => '/^\+?[0-9\(\)\-]{10,20}$/',
 			'postalCode'   => '/(^|\A\b)[A-Z0-9\s\-]{5,}($|\b\z)/i',
-			'regex'        => '/^\/(.+)\/[gimsxu]*$/',
+			'regex'        => '/^(?:([^[:alpha:]\\\\{<\[\(])(.+)(?:\1))|(?:{(.+)})|(?:<(.+)>)|' .
+			                  '(?:\[(.+)\])|(?:\((.+)\))[gimsxu]*$/',
 			'time'         => '%^((0?[1-9]|1[012])(:[0-5]\d){0,2}([AP]M|[ap]m))$|^([01]\d|2[0-3])' .
 			                  '(:[0-5]\d){0,2}$%',
-			'boolean' => function($value) {
+			'boolean'      => function($value) {
 				$bool = is_bool($value);
 				$filter = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
 				return ($bool || $filter !== null);
@@ -298,7 +299,7 @@ class Validator extends \lithium\core\StaticObject {
 				}
 				return is_finite($value);
 			},
-			'uuid' => "/{$alnum}{8}-{$alnum}{4}-{$alnum}{4}-{$alnum}{4}-{$alnum}{12}/",
+			'uuid' => "/^{$alnum}{8}-{$alnum}{4}-{$alnum}{4}-{$alnum}{4}-{$alnum}{12}$/",
 			'email' => function($value) {
 				return filter_var($value, FILTER_VALIDATE_EMAIL);
 			},
@@ -429,19 +430,25 @@ class Validator extends \lithium\core\StaticObject {
 			'required' => true,
 			'skipEmpty' => false,
 			'format' => 'any',
+			'on' => null
 		);
 		$errors = array();
+		$events = (array) (isset($options['events']) ? $options['events'] : null);
+		$values = Set::flatten($values);
 
 		foreach ($rules as $field => $rules) {
 			$rules = is_string($rules) ? array('message' => $rules) : $rules;
 			$rules = is_array(current($rules)) ? $rules : array($rules);
 			$errors[$field] = array();
-
 			$options['field'] = $field;
+
 			foreach ($rules as $key => $rule) {
 				$rule += $defaults + compact('values');
 				list($name) = $rule;
 
+				if ($events && $rule['on'] && !array_intersect($events, (array) $rule['on'])) {
+					continue;
+				}
 				if (!isset($values[$field])) {
 					if ($rule['required']) {
 						$errors[$field][] = $rule['message'] ?: $key;
@@ -535,13 +542,14 @@ class Validator extends \lithium\core\StaticObject {
 	 * @param string $rule
 	 * @param mixed $value
 	 * @param string $format
-	 * @param string $options
+	 * @param array $options
 	 * @return boolean Returns `true` or `false` indicating whether the validation rule check
 	 *         succeeded or failed.
+	 * @filter
 	 */
 	public static function rule($rule, $value, $format = 'any', array $options = array()) {
 		if (!isset(static::$_rules[$rule])) {
-			throw new InvalidArgumentException("Rule '{$rule}' is not a validation rule");
+			throw new InvalidArgumentException("Rule `{$rule}` is not a validation rule.");
 		}
 		$defaults = isset(static::$_options[$rule]) ? static::$_options[$rule] : array();
 		$options = (array) $options + $defaults + static::$_options['defaults'];
@@ -581,13 +589,7 @@ class Validator extends \lithium\core\StaticObject {
 	 * and an array specifying which formats within the rule to use.
 	 *
 	 * @param array $rules All available rules.
-	 * @param array $formats The list of rules to check against.
-	 * @param mixed $value The value to perform validation on.
-	 * @param array $options Validation options to be passed to rules defined as closures.
-	 *              - `'all'` _boolean_: Whether all rule formats should be validated against. If
-	 *                `true`, only return successfully if _all_ formats validate, otherwise, returns
-	 *                `true` if _any_ validates.
-	 * @return boolean Returns true if the rule validation succeeded, otherwise false.
+	 * @return closure Function returning boolean `true` if validation succeeded, `false` otherwise.
 	 */
 	protected static function _checkFormats($rules) {
 		return function($self, $params, $chain) use ($rules) {
@@ -596,21 +598,19 @@ class Validator extends \lithium\core\StaticObject {
 			$options += $defaults;
 
 			$formats = (array) $format;
-			$success = false;
 
-			if (in_array($format, array(null, 'all', 'any'))) {
-				$formats = array_keys($rules);
-				$options['all'] = ($format == 'all');
-			}
+			$ruleIndexes = array_keys($rules);
+			$options['all'] = ($format == 'all');
 
-			foreach ($formats as $name) {
-				if (!isset($rules[$name])) {
+			foreach ($ruleIndexes as $index) {
+				if (!isset($rules[$index])) {
 					continue;
 				}
-				$check = $rules[$name];
+				$check = $rules[$index];
+				$format = isset($formats[$index]) ? $formats[$index] : null;
 
 				$regexPassed = (is_string($check) && preg_match($check, $value));
-				$closurePassed = (is_object($check) && $check($value, $name, $options));
+				$closurePassed = (is_object($check) && $check($value, $format, $options));
 
 				if (!$options['all'] && ($regexPassed || $closurePassed)) {
 					return true;

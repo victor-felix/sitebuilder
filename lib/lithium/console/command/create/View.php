@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -24,6 +24,7 @@ class View extends \lithium\console\command\Create {
      * Override the save method to handle view specific params.
      *
      * @param array $params
+     * @return mixed
      */
 	protected function _save(array $params = array()) {
 		$params['path'] = Inflector::underscore($this->request->action);

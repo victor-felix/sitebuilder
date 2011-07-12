@@ -2,12 +2,13 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  *                Copyright 2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @license       http://opensource.org/licenses/mit-license.php The MIT License
  */
 
 namespace lithium\util;
+
 
 /**
  * Utility for modifying format of words. Change singular to plural and vice versa.
@@ -196,7 +197,7 @@ class Inflector {
 	protected static $_underscored = array();
 
 	/**
-	 * Contains a cache map of previously humanize words.
+	 * Contains a cache map of previously humanized words.
 	 *
 	 * @var array
 	 */
@@ -207,7 +208,7 @@ class Inflector {
 	 *
 	 * @param string $type Either `'transliteration'`, `'uninflected'`, `'singular'` or `'plural'`.
 	 * @param array $config
-	 * @return array|void If `$config` is empty, returns the rules list specified
+	 * @return mixed If `$config` is empty, returns the rules list specified
 	 *         by `$type`, otherwise returns `null`.
 	 */
 	public static function rules($type, $config = array()) {
@@ -338,6 +339,8 @@ class Inflector {
 	public static function reset() {
 		static::$_singularized = static::$_pluralized = array();
 		static::$_camelized = static::$_underscored = array();
+		static::$_humanized = array();
+
 		static::$_plural['regexUninflected'] = static::$_singular['regexUninflected'] = null;
 		static::$_plural['regexIrregular'] = static::$_singular['regexIrregular'] = null;
 		static::$_transliteration = array(
@@ -359,15 +362,17 @@ class Inflector {
 	 * @return string CamelCased version of the word (i.e. `'RedBike'`).
 	 */
 	public static function camelize($word, $cased = true) {
-		if (isset(static::$_camelized[$word]) && $cased) {
-			return static::$_camelized[$word];
+		$_word = $word;
+
+		if (isset(static::$_camelized[$_word]) && $cased) {
+			return static::$_camelized[$_word];
 		}
 		$word = str_replace(" ", "", ucwords(str_replace(array("_", '-'), " ", $word)));
 
 		if (!$cased) {
 			return lcfirst($word);
 		}
-		return static::$_camelized[$word] = $word;
+		return static::$_camelized[$_word] = $word;
 	}
 
 	/**
@@ -397,7 +402,7 @@ class Inflector {
 		$map = static::$_transliteration + array(
 			'/[^\w\s]/' => ' ', '/\\s+/' => $replacement,
 			'/(?<=[a-z])([A-Z])/' => $replacement . '\\1',
-			str_replace(':rep', preg_quote($replacement, '/'), '/^[:rep]+|[:rep]+$/') => '',
+			str_replace(':rep', preg_quote($replacement, '/'), '/^[:rep]+|[:rep]+$/') => ''
 		);
 		return preg_replace(array_keys($map), array_values($map), $string);
 	}

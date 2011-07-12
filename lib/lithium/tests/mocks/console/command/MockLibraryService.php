@@ -2,12 +2,13 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\mocks\console\command;
 
+use lithium\core\Libraries;
 use lithium\net\http\Response;
 
 class MockLibraryService extends \lithium\net\http\Service {
@@ -58,6 +59,8 @@ class MockLibraryService extends \lithium\net\http\Service {
 	}
 
 	private function __data($type, $key = null) {
+		$resources = Libraries::get(true, 'resources');
+
 		$plugins = array(
 			array(
 				'name' => 'li3_lab', 'version' => '1.0',
@@ -89,7 +92,7 @@ class MockLibraryService extends \lithium\net\http\Service {
 				'created' => '2009-11-30', 'updated' => '2009-11-30',
 				'rating' => '9.9', 'downloads' => '1000',
 				'sources' => array(
-					'phar' =>  LITHIUM_APP_PATH . '/resources/tmp/tests/library_test_plugin.phar.gz'
+					'phar' =>  "{$resources}/tmp/tests/library_test_plugin.phar.gz"
 				),
 				'requires' => array(
 					'li3_lab' => array('version' => '<=1.0')
@@ -111,7 +114,7 @@ class MockLibraryService extends \lithium\net\http\Service {
 					'phar' => 'http://downloads.rad-dev.org/li3_docs.phar.gz'
 				),
 				'requires' => array()
-			),
+			)
 		);
 
 		$extensions = array(
@@ -125,7 +128,7 @@ class MockLibraryService extends \lithium\net\http\Service {
 					)
 				),
 				'created' => '2009-11-30', 'updated' => '2009-11-30',
-				'rating' => '9.9', 'downloads' => '1000',
+				'rating' => '9.9', 'downloads' => '1000'
 			),
 			array(
 				'class' => 'Paginator', 'namespace' => 'app\extensions\helpes',
@@ -137,8 +140,8 @@ class MockLibraryService extends \lithium\net\http\Service {
 					)
 				),
 				'created' => '2009-11-30', 'updated' => '2009-11-30',
-				'rating' => '9.9', 'downloads' => '1000',
-			),
+				'rating' => '9.9', 'downloads' => '1000'
+			)
 		);
 		$data = compact('plugins', 'extensions');
 

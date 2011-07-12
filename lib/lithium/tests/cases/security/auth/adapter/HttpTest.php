@@ -2,14 +2,14 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\security\auth\adapter;
 
-use \lithium\tests\mocks\security\auth\adapter\MockHttp;
-use \lithium\action\Request;
+use lithium\tests\mocks\security\auth\adapter\MockHttp;
+use lithium\action\Request;
 
 class HttpTest extends \lithium\test\Unit {
 
@@ -48,7 +48,8 @@ class HttpTest extends \lithium\test\Unit {
 		$this->assertFalse($result);
 
 		$this->assertPattern('/Digest/', $http->headers[0]);
-		$this->assertPattern('/qop="auth"/', $http->headers[0]);
+		$this->assertPattern('/realm="app",/', $http->headers[0]);
+		$this->assertPattern('/qop="auth",/', $http->headers[0]);
 		$this->assertPattern('/nonce=/', $http->headers[0]);
 	}
 

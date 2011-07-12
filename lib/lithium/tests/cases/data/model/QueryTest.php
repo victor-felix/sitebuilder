@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -115,6 +115,9 @@ class QueryTest extends \lithium\test\Unit {
 		$expected = 5;
 		$result = $query->limit();
 		$this->assertEqual($expected, $result);
+
+		$query->limit(false);
+		$this->assertNull($query->limit());
 	}
 
 	public function testPage() {
@@ -224,7 +227,7 @@ class QueryTest extends \lithium\test\Unit {
 		$entity = new Record();
 		$entity->id = 12;
 		$query = new Query(compact('entity') + array(
-			'model' => $this->_model,
+			'model' => $this->_model
 		));
 
 		$expected = array('id' => 12);
@@ -244,6 +247,7 @@ class QueryTest extends \lithium\test\Unit {
 	}
 
 	public function testExport() {
+		MockQueryPost::meta('source', 'foo');
 		$query = new Query($this->_queryArr);
 		$ds = new MockDatabase();
 		$export = $query->export($ds);
@@ -269,7 +273,8 @@ class QueryTest extends \lithium\test\Unit {
 			'page',
 			'source',
 			'type',
-			'whitelist'
+			'whitelist',
+			'relationships'
 		);
 		$result = array_keys($export);
 
@@ -277,13 +282,32 @@ class QueryTest extends \lithium\test\Unit {
 		sort($result);
 		$this->assertEqual($expected, $result);
 
-		$expected = 'id, author_id, title';
+		$expected = 'MockQueryPost.id, MockQueryPost.author_id, MockQueryPost.title';
 		$result = $export['fields'];
 		$this->assertEqual($expected, $result);
 
-		$expected = MockQueryPost::meta('source');
 		$result = $export['source'];
-		$this->assertEqual("{{$expected}}", $result);
+		$this->assertEqual("{foo}", $result);
+	}
+
+	public function testRestrictedKeyExport() {
+		$options = array(
+			'type' => 'update',
+			'data' => array('title' => 'Bar'),
+			'conditions' => array('title' => 'Foo'),
+			'model' => $this->_model
+		);
+		$query = new Query($options);
+
+		$result = $query->export(Connections::get('mock-database-connection'), array(
+			'keys' => array('data', 'conditions')
+		));
+		$expected = array(
+			'type' => 'update',
+			'data' => array('title' => 'Bar'),
+			'conditions' => "WHERE {title} = 'Foo'"
+		);
+		$this->assertEqual($expected, $result);
 	}
 
 	public function testPagination() {
@@ -301,15 +325,58 @@ class QueryTest extends \lithium\test\Unit {
 		$query = new Query(array('joins' => array(array('foo' => 'bar'))));
 		$query->join(array('bar' => 'baz'));
 		$expected = array(array('foo' => 'bar'), array('bar' => 'baz'));
-		$this->assertEqual($expected, $query->join());
+		$joins = $query->join();
+
+		$this->assertEqual('bar', $joins[0]->foo());
+		$this->assertNull($joins[0]->bar());
+
+		$this->assertEqual('baz', $joins[1]->bar());
+		$this->assertNull($joins[1]->foo());
 
 		$query->join('zim', array('dib' => 'gir'));
+		$this->assertEqual(3, count($query->join()));
+
 		$expected = array(
 			array('foo' => 'bar'),
 			array('bar' => 'baz'),
 			'zim' => array('dib' => 'gir')
 		);
-		$this->assertEqual($expected, $query->join());
+		$this->assertEqual(3, count($query->join()));
+		$this->assertEqual('gir', $query->join('zim')->dib());
+	}
+
+	public function testWithAssociation() {
+		$model = $this->_model;
+		$model::bind('hasMany', 'MockQueryComment', array(
+			'class' => 'lithium\tests\mocks\data\model\MockQueryComment'
+		));
+
+		$query = new Query(compact('model') + array('with' => 'MockQueryComment'));
+		$export = $query->export(new MockDatabase());
+		$expected = array(
+			'MockQueryComment' => array(
+				'type' => 'hasMany',
+				'model' => 'lithium\tests\mocks\data\model\MockQueryComment',
+				'fieldName' => 'mock_query_comments'
+			)
+		);
+		$keyExists = isset($export['relationships']);
+		$this->assertTrue($keyExists);
+		$this->skipIf(!$keyExists);
+		$this->assertEqual($expected, $export['relationships']);
+
+		$query = new Query(array(
+				'model' => $this->_model,
+				'with' => 'MockQueryComment',
+				'limit' => 3,
+				'order' => 'author_id ASC',
+				'group' => 'author_id'
+			));
+		$expected = 'SELECT MockQueryPost.id FROM {foo} AS {MockQueryPost} LEFT JOIN AS ';
+		$expected .= '{MockQueryComment} ON {MockQueryPost}.{id} = {MockQueryComment}';
+		$expected .= '.{mock_query_post_id} GROUP BY MockQueryPost.id ORDER BY author_id ASC ';
+		$expected .= 'LIMIT 3;';
+		$this->assertEqual($expected, $this->db->sql);
 	}
 
 	/**
@@ -348,6 +415,9 @@ class QueryTest extends \lithium\test\Unit {
 		$query = new Query(compact('calculate', 'group'));
 		$this->assertEqual($group, $query->group());
 		$this->assertEqual($calculate, $query->calculate());
+
+		$query->group(false);
+		$this->assertNull($query->group());
 	}
 
 	public function testInstantiationWithConditionsAndData() {
@@ -361,7 +431,7 @@ class QueryTest extends \lithium\test\Unit {
 		$result = $query->export(Connections::get('mock-database-connection'));
 
 		$this->assertEqual(array('title' => '..'), $result['data']);
-		$this->assertEqual("WHERE title = 'FML'", $result['conditions']);
+		$this->assertEqual("WHERE {title} = 'FML'", $result['conditions']);
 	}
 
 	public function testEntityConditions() {
@@ -369,6 +439,14 @@ class QueryTest extends \lithium\test\Unit {
 		$entity->id = 13;
 		$query = new Query(compact('entity'));
 		$this->assertEqual(array('id' => 13), $query->conditions());
+	}
+
+	public function testInvalidEntityCondition() {
+		$entity = new Record(array('model' => $this->_model, 'exists' => true));
+		$entity->_id = 13;
+		$query = new Query(compact('entity'));
+		$this->expectException('/No matching primary key found/');
+		$query->conditions();
 	}
 
 	public function testAutomaticAliasing() {
@@ -387,6 +465,28 @@ class QueryTest extends \lithium\test\Unit {
 		$this->assertEqual($conditions, $query->conditions());
 		$this->assertEqual($fields, $query->fields());
 		$this->assertEqual($order, $query->order());
+	}
+
+	public function testRenderArrayJoin() {
+		$model = 'lithium\tests\mocks\data\model\MockQueryComment';
+
+		$query = new Query(compact('model') + array(
+			'type' => 'read',
+			'source' => 'comments',
+			'alias' => 'Comment',
+			'conditions' => array('Comment.id' => 1),
+			'joins' => array(array(
+				'type' => 'INNER',
+				'source' => 'posts',
+				'alias' => 'Post',
+				'constraint' => array('Comment.post_id' => 'Post.id')
+			))
+		));
+
+		$expected = "SELECT * FROM AS {Comment} INNER JOIN {posts} AS {Post} ON ";
+		$expected .= "{Comment}.{post_id} = {Post}.{id} WHERE Comment.id = 1;";
+		$result = Connections::get('mock-database-connection')->renderCommand($query);
+		$this->assertEqual($expected, $result);
 	}
 }
 

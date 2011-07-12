@@ -2,14 +2,14 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\net\http;
 
 use lithium\util\Inflector;
-use lithium\util\Collection;
+use lithium\net\http\RoutingException;
 
 /**
  * The two primary responsibilities of the `Router` class are to generate URLs from parameter lists,
@@ -150,7 +150,7 @@ class Router extends \lithium\core\StaticObject {
 	 * Alternatively to using a full array, you can specify routes using a more compact syntax. The
 	 * above example can be written as:
 	 *
-	 * {{{ $url = Router::match('User::login'); // still returns /login }}}
+	 * {{{ $url = Router::match('Users::login'); // still returns /login }}}
 	 *
 	 * You can combine this with more complicated routes; for example:
 	 * {{{
@@ -188,12 +188,12 @@ class Router extends \lithium\core\StaticObject {
 	 *         prefixed with the base URL of the application.
 	 */
 	public static function match($url = array(), $context = null, array $options = array()) {
-		if (is_string($path = $url)) {
-			if (strpos($path, '#') === 0 || strpos($path, 'mailto') === 0 || strpos($path, '://')) {
-				return $path;
+		if (is_string($url)) {
+			if (strpos($url, '#') === 0 || strpos($url, 'mailto') === 0 || strpos($url, '://')) {
+				return $url;
 			}
 			if (is_string($url = static::_parseString($url, $context))) {
-				return $url;
+				return static::_prefix($url, $context, $options);
 			}
 		}
 		if (isset($url[0]) && is_array($params = static::_parseString($url[0], $context))) {
@@ -216,6 +216,10 @@ class Router extends \lithium\core\StaticObject {
 			$path = ($options) ? static::_prefix($path, $context, $options) : $path;
 			return $path ?: '/';
 		}
+		$match = array("\n", 'array (', ',)', '=> NULL', '(  \'', ',  ');
+		$replace = array('', '(', ')', '=> null', '(\'', ', ');
+		$url = str_replace($match, $replace, var_export($url, true));
+		throw new RoutingException("No parameter match found for URL `{$url}`.");
 	}
 
 	/**

@@ -2,18 +2,17 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\storage;
 
 use lithium\core\Libraries;
-use lithium\util\Collection;
 
 /**
  * The `Session` static class provides a consistent interface to configure and utilize the
- * different persistent storage adatpers included with Lithium, as well as your own adapters.
+ * different persistent storage adapters included with Lithium, as well as your own adapters.
  *
  * The Session layer of Lithium inherits from the common `Adaptable` class, which provides
  * the generic configuration setting & retrieval logic, as well as the logic required to
@@ -22,8 +21,8 @@ use lithium\util\Collection;
  * In most cases, you will configure various named session configurations in your bootstrap
  * process, which will then be available to you in all other parts of your application.
  *
- * Each adapter provides a consistent interface for the basic cache operations of `write`, `read`
- * and `delete`, which can be used interchangably between all adapters.
+ * Each adapter provides a consistent interface for the basic session operations like `read`,
+ * `write`, `delete` and `check`, which can be used interchangeably between all adapters.
  *
  * For more information on `Session` methods and specific adapters, please see their relevant
  * documentation.
@@ -34,31 +33,33 @@ use lithium\util\Collection;
 class Session extends \lithium\core\Adaptable {
 
 	/**
-	 * Stores configurations for cache adapters
+	 * Stores configurations arrays for session adapters, keyed by configuration name.
 	 *
-	 * @var object Collection of cache configurations
+	 * @var array
 	 */
 	protected static $_configurations = array();
 
 	/**
-	 * Libraries::locate() compatible path to adapters for this class.
+	 * A dot-separated path for use by `Libraries::locate()`. Used to look up the correct type of
+	 * adapters for this class.
 	 *
-	 * @var string Dot-delimited path.
+	 * @var string
 	 */
 	protected static $_adapters = 'adapter.storage.session';
 
 	/**
-	 * Libraries::locate() compatible path to strategies for this class.
+	 * `Libraries::locate()` compatible path to strategies for this class.
 	 *
-	 * @var string Dot-delimited path.
+	 * @var string
 	 */
 	protected static $_strategies = 'strategy.storage.session';
 
 	/**
-	 * Returns key used to identify the session.
+	 * Returns the key used to identify the session.
 	 *
-	 * @param mixed $name Named session configuration.
-	 * @return null|string Value of key, or `null` if no named configuration exists.
+	 * @param mixed $name Optional named session configuration.
+	 * @return string Returns the value of the session identifier key, or `null` if no named
+	 *         configuration exists, or no session has been started.
 	 */
 	public static function key($name = null) {
 		return is_object($adapter = static::adapter($name)) ? $adapter->key() : null;
@@ -68,8 +69,8 @@ class Session extends \lithium\core\Adaptable {
 	 * Indicates whether the the current request includes information on a previously started
 	 * session.
 	 *
-	 * @param string $name Named session configuration.
-	 * @return boolean Returns true if a the request includes a key from a previously created
+	 * @param string $name Optional named session configuration.
+	 * @return boolean Returns `true` if a the request includes a key from a previously created
 	 *         session.
 	 */
 	public static function isStarted($name = null) {
@@ -77,24 +78,15 @@ class Session extends \lithium\core\Adaptable {
 	}
 
 	/**
-	 * Checks the validity of a previously-started session by running several checks, including
-	 * comparing the session start time to the expiration time set in the configuration, and any
-	 * security settings.
-	 *
-	 * @todo Implement
-	 * @param string $name Named session configuration.
-	 * @return boolean Returns true if the current session is active and valid.
-	 */
-	public static function isValid($name = null) {
-
-	}
-
-	/**
 	 * Reads a value from a persistent session store.
 	 *
-	 * @param string $key Key to be read
-	 * @param array $options Optional parameters that this method accepts.
-	 * @return mixed Read result on successful session read, null otherwise.
+	 * @param string $key Key to be read.
+	 * @param array $options Optional parameters that this method accepts:
+	 *              - `'name'` _string_: To force the read from a specific adapter, specify the name
+	 *                of the configuration (i.e. `'default'`) here.
+	 *              - `'strategies'` _boolean_: Indicates whether or not a configuration's applied
+	 *                strategy classes should be enabled for this operation. Defaults to `true`.
+	 * @return mixed Read result on successful session read, `null` otherwise.
 	 * @filter This method may be filtered.
 	 */
 	public static function read($key = null, array $options = array()) {
@@ -126,10 +118,14 @@ class Session extends \lithium\core\Adaptable {
 	/**
 	 * Writes a persistent value to one or more session stores.
 	 *
-	 * @param string $key Key to be read
-	 * @param mixed $value Data to be stored
-	 * @param array $options Optional parameters that this method accepts.
-	 * @return boolean True on successful write, false otherwise.
+	 * @param string $key Key to be written.
+	 * @param mixed $value Data to be stored.
+	 * @param array $options Optional parameters that this method accepts:
+	 *              - `'name'` _string_: To force the write to a specific adapter, specify the name
+	 *                of the configuration (i.e. `'default'`) here.
+	 *              - `'strategies'` _boolean_: Indicates whether or not a configuration's applied
+	 *                strategy classes should be enabled for this operation. Defaults to `true`.
+	 * @return boolean Returns `true` on successful write, `false` otherwise.
 	 * @filter This method may be filtered.
 	 */
 	public static function write($key, $value = null, array $options = array()) {
@@ -161,7 +157,7 @@ class Session extends \lithium\core\Adaptable {
 
 		foreach ($methods as $name => $method) {
 			$filters = $settings['filters'];
-			$result = $result || static::_filter(__FUNCTION__, $params, $method, $filters);
+			$result = static::_filter(__FUNCTION__, $params, $method, $filters) || $result;
 		}
 		return $result;
 	}
@@ -171,8 +167,12 @@ class Session extends \lithium\core\Adaptable {
 	 * session adapters.
 	 *
 	 * @param string $key The name of the session key to delete.
-	 * @param array $options Optional parameters that this method accepts.
-	 * @return void
+	 * @param array $options Optional parameters that this method accepts:
+	 *              - `'name'` _string_: To force the delete to a specific adapter, specify the name
+	 *                of the configuration (i.e. `'default'`) here.
+	 *              - `'strategies'` _boolean_: Indicates whether or not a configuration's applied
+	 *                strategy classes should be enabled for this operation. Defaults to `true`.
+	 * @return boolean Returns `true` on sucessful delete, or `false` on failure.
 	 * @filter This method may be filtered.
 	 */
 	public static function delete($key, array $options = array()) {
@@ -198,10 +198,11 @@ class Session extends \lithium\core\Adaptable {
 			$key = static::applyStrategies(__FUNCTION__, $name, $key, $options);
 		}
 		$params = compact('key', 'options');
+
 		foreach ($methods as $name => $method) {
 			$settings = static::_config($name);
 			$filters = $settings['filters'];
-			$result = $result || static::_filter(__FUNCTION__, $params, $method, $filters);
+			$result = static::_filter(__FUNCTION__, $params, $method, $filters) || $result;
 		}
 		return $result;
 	}
@@ -210,7 +211,12 @@ class Session extends \lithium\core\Adaptable {
 	 * Clears all keys from a single adapter (if a `'name'` options is specified) or all
 	 * session adapters.
 	 *
-	 * @param array $options Optional parameters that this method accepts.
+	 * @param array $options Optional parameters that this method accepts:
+	 *              - `'name'` _string_: To force the write to a specific adapter, specify the name
+	 *                of the configuration (i.e. `'default'`) here.
+	 *              - `'strategies'` _boolean_: Indicates whether or not a configuration's applied
+	 *                strategy classes should be enabled for this operation. Defaults to `true`.
+	 * @filter
 	 */
 	public static function clear(array $options = array()) {
 		$defaults = array('name' => null, 'strategies' => true);
@@ -232,7 +238,7 @@ class Session extends \lithium\core\Adaptable {
 		foreach ($methods as $name => $method) {
 			$settings = static::_config($name);
 			$filters = $settings['filters'];
-			$result = $result || static::_filter(__FUNCTION__, $params, $method, $filters);
+			$result = static::_filter(__FUNCTION__, $params, $method, $filters) || $result;
 		}
 		if ($options['strategies']) {
 			$options += array('mode' => 'LIFO', 'class' => __CLASS__);
@@ -270,7 +276,7 @@ class Session extends \lithium\core\Adaptable {
 		foreach ($methods as $name => $method) {
 			$settings = static::_config($name);
 			$filters = $settings['filters'];
-			$result = $result || static::_filter(__FUNCTION__, $params, $method, $filters);
+			$result = static::_filter(__FUNCTION__, $params, $method, $filters) || $result;
 		}
 		if ($options['strategies']) {
 			$options += array('key' => $key, 'mode' => 'LIFO', 'class' => __CLASS__);
@@ -282,12 +288,12 @@ class Session extends \lithium\core\Adaptable {
 	/**
 	 * Returns the adapter object instance of the named configuration.
 	 *
-	 * @param null|string $name Named configuration. If not set, the last configured
+	 * @param string $name Named configuration. If not set, the last configured
 	 *        adapter object instance will be returned.
 	 * @return object Adapter instance.
 	 */
 	public static function adapter($name = null) {
-		if (empty($name)) {
+		if (!$name) {
 			if (!$names = array_keys(static::$_configurations)) {
 				return;
 			}

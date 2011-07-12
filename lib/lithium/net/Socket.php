@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -28,6 +28,7 @@ abstract class Socket extends \lithium\core\Object {
 	 * @var array
 	 */
 	protected $_classes = array(
+		'request' => 'lithium\net\Message',
 		'response' => 'lithium\net\Message'
 	);
 
@@ -48,7 +49,6 @@ abstract class Socket extends \lithium\core\Object {
 	 *              - `'password'`: Password for a login (defaults to `''`).
 	 *              - `'port'`: Host port (defaults to `80`).
 	 *              - `'timeout'`: Seconds after opening the socket times out (defaults to `30`).
-	 * @return void
 	 */
 	public function __construct(array $config = array()) {
 		$defaults = array(
@@ -64,7 +64,7 @@ abstract class Socket extends \lithium\core\Object {
 	/**
 	 * Opens the socket and sets `Socket::$_resource`.
 	 *
-	 * @return booelan|resource The open resource on success, `false` otherwise.
+	 * @return mixed The open resource on success, `false` otherwise.
 	 */
 	abstract public function open();
 
@@ -93,27 +93,15 @@ abstract class Socket extends \lithium\core\Object {
 	 * Writes data to the socket.
 	 *
 	 * @param mixed $data
-	 * @return boolean `true` if data has been succesfully written, `false` otherwise.
+	 * @return boolean `true` if data has been successfully written, `false` otherwise.
 	 */
 	abstract public function write($data);
-
-	/**
-	 * Aggregates read and write methods into a coherent request response
-	 *
-	 * @param mixed $request array or object like `\lithium\net\http\Request`
-	 * @params array $options
-	 *                - path: path for the current request
-	 *                - classes: array of classes to use
-	 *                    - response: a class to use for the response
-	 * @return array headers, body, message
-	 */
-	abstract public function send($message, array $options = array());
 
 	/**
 	 * Sets the timeout on the socket *connection*.
 	 *
 	 * @param integer $time Seconds after the connection times out.
-	 * @return booelan `true` if timeout has been set, `false` otherwise.
+	 * @return Boolean `true` if timeout has been set, `false` otherwise.
 	 */
 	abstract public function timeout($time);
 
@@ -124,6 +112,36 @@ abstract class Socket extends \lithium\core\Object {
 	 * @return boolean `true` if encoding has been set, `false` otherwise.
 	 */
 	abstract public function encoding($charset);
+
+	/**
+	 * Sets the options to be used in subsequent requests.
+	 *
+	 * @param array $flags If $values is an array, $flags will be used as the
+	 *        keys to an associative array of curl options. If $values is not set,
+	 *        then $flags will be used as the associative array.
+	 * @param array $value If set, this array becomes the values for the
+	 *        associative array of curl options.
+	 * @return void
+	 */
+	public function set($flags, $value = null) {}
+
+	/**
+	 * Aggregates read and write methods into a coherent request response
+	 *
+	 * @param mixed $message a request object based on `\lithium\net\Message`
+	 * @param array $options
+	 *              - '`response`': a fully-namespaced string for the response object
+	 * @return object a response object based on `\lithium\net\Message`
+	 */
+	public function send($message = null, array $options = array()) {
+		$defaults = array('response' => $this->_classes['response']);
+		$options += $defaults;
+
+		if ($this->write($message)) {
+			$config = array('message' => $this->read()) + $this->_config;
+			return $this->_instance($options['response'], $config);
+		}
+	}
 
 	/**
 	 * Destructor.
@@ -137,7 +155,7 @@ abstract class Socket extends \lithium\core\Object {
 	/**
 	 * Returns the resource.
 	 *
-	 * @return resource|void
+	 * @return resource
 	 */
 	public function resource() {
 		return $this->_resource;

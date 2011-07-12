@@ -2,13 +2,13 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\analysis\logger\adapter;
 
-use \lithium\util\String;
+use lithium\util\String;
 
 /**
  * The `Cache` logger allows log messages to be written to cache configurations set up in
@@ -16,7 +16,7 @@ use \lithium\util\String;
  * for it to write to, as follows:
  *
  * {{{ lithium\storage\Cache::config(array(
- * 	'storage' => array('adapter' => 'Redis', 'server' => '127.0.0.1:6379')
+ * 	'storage' => array('adapter' => 'Redis', 'host' => '127.0.0.1:6379')
  * ));}}}
  *
  * Then, you can configure the `Cache` logger with the `'storage'` config:
@@ -44,10 +44,9 @@ class Cache extends \lithium\core\Object {
 	);
 
 	/**
-	 * Class constructor
+	 * Class constructor.
 	 *
 	 * @param array $config
-	 * @return void
 	 */
 	public function __construct(array $config = array()) {
 		$defaults = array(
@@ -59,22 +58,22 @@ class Cache extends \lithium\core\Object {
 	}
 
 	/**
-	 * Appends `$data` to file `$type`.
+	 * Writes the message to the configured cache adapter.
 	 *
 	 * @param string $type
 	 * @param string $message
-	 * @return boolean True on successful write, false otherwise.
+	 * @return closure Function returning boolean `true` on successful write, `false` otherwise.
 	 */
 	public function write($type, $message) {
-		$config = $this->_config;
+		$config = $this->_config + $this->_classes;
 
-		return function($self, $params, $chain) use ($config) {
+		return function($self, $params) use ($config) {
 			$params += array('timestamp' => strtotime('now'));
 			$key = $config['key'];
 			$key = is_callable($key) ? $key($params) : String::insert($key, $params);
 
-			$cache = $this->_classes['cache'];
-			$cache::write($config['config'], $key, $params['message'], $config['expiry']);
+			$cache = $config['cache'];
+			return $cache::write($config['config'], $key, $params['message'], $config['expiry']);
 		};
 	}
 }

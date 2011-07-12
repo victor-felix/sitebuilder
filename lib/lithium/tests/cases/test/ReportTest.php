@@ -2,14 +2,14 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\test;
 
-use \lithium\test\Report;
-use \lithium\test\Group;
+use lithium\test\Report;
+use lithium\test\Group;
 
 class ReportTest extends \lithium\test\Unit {
 
@@ -75,7 +75,7 @@ class ReportTest extends \lithium\test\Unit {
 		$report->run();
 
 		$result = $report->render("stats");
-		$this->assertPattern("/1 \/ 1 passes, 0  fails	and 0  exceptions/", $result);
+		$this->assertPattern("#1.*1.*passes,.*0.*fails.*0.*exceptions#s", $result);
 	}
 
 	public function testSingleFilter() {

@@ -2,14 +2,13 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\integration\g11n;
 
-use \lithium\g11n\Catalog;
-use \lithium\util\Validator;
+use lithium\g11n\Catalog;
 
 /**
  * Test for integration of g11n resources. Numbers of rules refer to those documented in
@@ -28,7 +27,8 @@ class ResourcesMessageTest extends \lithium\test\Unit {
 			'lithium' => array(
 				'adapter' => 'Php',
 				'path' => LITHIUM_LIBRARY_PATH . '/lithium/g11n/resources/php'
-		)));
+			)
+		));
 	}
 
 	public function tearDown() {
@@ -46,13 +46,11 @@ class ResourcesMessageTest extends \lithium\test\Unit {
 	 * @return void
 	 */
 	public function testPlurals1() {
-		$locales = array(
-			'en'
-		);
+		$locales = array('en');
+
 		foreach ($locales as $locale) {
-			$expected = 2;
 			$result = Catalog::read('lithium', 'message.pluralForms', $locale);
-			$this->assertEqual($expected, $result, "Locale: `{$locale}`\n{:message}");
+			$this->assertEqual(2, $result, "Locale: `{$locale}`\n{:message}");
 
 			$rule = Catalog::read('lithium', 'message.pluralRule', $locale);
 

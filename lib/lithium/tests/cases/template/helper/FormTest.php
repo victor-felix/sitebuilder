@@ -2,16 +2,17 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\template\helper;
 
-use stdClass;
+use Exception;
 use lithium\action\Request;
 use lithium\net\http\Router;
 use lithium\data\entity\Record;
+use lithium\data\entity\Document;
 use lithium\template\helper\Form;
 use lithium\tests\mocks\template\helper\MockFormPost;
 use lithium\tests\mocks\template\helper\MockFormRenderer;
@@ -40,8 +41,6 @@ class FormTest extends \lithium\test\Unit {
 
 	/**
 	 * Initialize test by creating a new object instance with a default context.
-	 *
-	 * @return void
 	 */
 	public function setUp() {
 		$this->_routes = Router::get();
@@ -83,7 +82,7 @@ class FormTest extends \lithium\test\Unit {
 		$this->assertTags($result, array('form' => array(
 			'action' => "{$this->base}posts",
 			'enctype' => 'multipart/form-data',
-			'method' => 'post',
+			'method' => 'post'
 		)));
 
 		$result = $this->form->create(null, array('method' => 'get', 'type' => 'file'));
@@ -95,21 +94,23 @@ class FormTest extends \lithium\test\Unit {
 
 		$result = $this->form->create(null, array('id' => 'Registration'));
 		$this->assertTags($result, array(
-			'form' => array('action' => "{$this->base}posts", 'method' => 'post', 'id' => 'Registration')
+			'form' => array(
+				'action' => "{$this->base}posts",
+				'method' => 'post',
+				'id' => 'Registration'
+			)
 		));
 	}
 
 	/**
 	 * Tests creating forms with non-browser compatible HTTP methods, required for REST interfaces.
-	 *
-	 * @return void
 	 */
 	public function testRestFormCreation() {
 		$result = $this->form->create(null, array('action' => 'delete', 'method' => 'delete'));
 
 		$this->assertTags($result, array(
 			'form' => array(
-				'action' => "{$this->base}posts/delete", 'method' => 'post',
+				'action' => "{$this->base}posts/delete", 'method' => 'post'
 			),
 			'input' => array('type' => "hidden", 'name' => '_method', 'value' => 'DELETE')
 		));
@@ -146,9 +147,29 @@ class FormTest extends \lithium\test\Unit {
 		));
 	}
 
+	/**
+	 * Ensures that password fields aren't rendered with pre-populated values from bound record or
+	 * document objects.
+	 */
+	public function testPasswordWithBindingValue() {
+		$this->form->create(new Record(array(
+			'model' => $this->_model, 'data' => array('pass' => 'foobar')
+		)));
+		$result = $this->form->password('pass');
+
+		$this->assertTags($result, array(
+			'input' => array('type' => 'password', 'name' => 'pass', 'id' => 'MockFormPostPass')
+		));
+	}
+
 	public function testFormDataBinding() {
 		$this->expectException('The data connection default is not configured');
-		MockFormPost::config(array('connection' => false));
+
+		try {
+			MockFormPost::config(array('connection' => false));
+		} catch (Exception $e) {
+			MockFormPost::config(array('connection' => false));
+		}
 
 		$record = new Record(array('model' => $this->_model, 'data' => array(
 			'id' => '5',
@@ -215,9 +236,11 @@ class FormTest extends \lithium\test\Unit {
 			'base' => array('class' => 'editable', 'maxlength' => 255),
 			'text' => array('class' => 'locked'),
 			'textarea' => array(),
-			'templates' => array('create' => 'form', 'end' => 'form-end')
+			'templates' => array('create' => 'form', 'end' => 'form-end'),
+			'attributes' => array('id' => $result['attributes']['id'])
 		);
 		$this->assertEqual($expected, $result);
+		$this->assertTrue(is_callable($result['attributes']['id']));
 	}
 
 	public function testFormElementWithDefaultValue() {
@@ -244,6 +267,13 @@ class FormTest extends \lithium\test\Unit {
 		$result = $this->form->file('upload');
 		$this->assertTags($result, array('input' => array(
 			'type' => 'file', 'name' => 'upload', 'id' => 'Upload'
+		)));
+	}
+
+	public function testHiddenFieldWithId() {
+		$result = $this->form->hidden('my_field');
+		$this->assertTags($result, array('input' => array(
+			'type' => 'hidden', 'name' => 'my_field', 'id' => 'MyField'
 		)));
 	}
 
@@ -583,7 +613,7 @@ class FormTest extends \lithium\test\Unit {
 		$result = $form->create();
 		$this->assertTags($result, array('form' => array(
 			'action' => "{$this->base}mock/test/1",
-			'method' => 'post',
+			'method' => 'post'
 		)));
 	}
 
@@ -597,7 +627,7 @@ class FormTest extends \lithium\test\Unit {
 		$result = $form->create(null, array('action' => 'radness'));
 		$this->assertTags($result, array('form' => array(
 			'action' => "{$this->base}mock/radness",
-			'method' => 'post',
+			'method' => 'post'
 		)));
 	}
 
@@ -628,6 +658,18 @@ class FormTest extends \lithium\test\Unit {
 		$this->assertEqual(join('', $expected), $result);
 	}
 
+	/**
+	 * Verifies that calls to `field()` with `'type' => 'hidden'` do not produce `<label />`s.
+	 */
+	public function testHiddenFieldWithNoLabel() {
+		$result = $this->form->field('foo', array('type' => 'hidden'));
+		$this->assertTags($result, array(
+			'div' => array(),
+			'input' => array('type' => 'hidden', 'name' => 'foo', 'id' => 'Foo'),
+			'/div'
+		));
+	}
+
 	public function testFormFieldWithCustomTemplate() {
 		$result = $this->form->field('name', array(
 			'template' => '<div{:wrap}>{:label}: {:input}{:error}</div>'
@@ -635,7 +677,7 @@ class FormTest extends \lithium\test\Unit {
 		$this->assertTags($result, array(
 			'div' => array(),
 			'label' => array('for' => 'Name'), 'Name', '/label', ':',
-			'input' => array('type' => 'text', 'name' => 'name', 'id' => 'Name'),
+			'input' => array('type' => 'text', 'name' => 'name', 'id' => 'Name')
 		));
 	}
 
@@ -644,7 +686,34 @@ class FormTest extends \lithium\test\Unit {
 		$this->assertTags($result, array(
 			'div' => array(),
 			'label' => array('for' => 'Name'), 'Enter a name', '/label',
-			'input' => array('type' => 'text', 'name' => 'name', 'id' => 'Name'),
+			'input' => array('type' => 'text', 'name' => 'name', 'id' => 'Name')
+		));
+	}
+
+	/**
+	 * Demonstrates that the options for a `<label />` element can be passed through the `field()`
+	 * method, using the label text as a key.
+	 */
+	public function testFieldLabelWithOptions() {
+		$result = $this->form->field('name', array(
+			'label' => array('Item Name' => array('class' => 'required'))
+		));
+		$this->assertTags($result, array(
+			'div' => array(),
+			'label' => array('for' => 'Name', 'class' => 'required'), 'Item Name', '/label',
+			'input' => array('type' => 'text', 'name' => 'name', 'id' => 'Name')
+		));
+
+		$result = $this->form->field('video_preview', array(
+			'label' => array('<a href="http://www.youtube.com/">Youtube</a>' => array(
+				'escape' => false
+			))
+		));
+		$this->assertTags($result, array(
+			'div' => array(),
+			'label' => array('for' => 'VideoPreview'),
+			'a' => array('href' => 'http://www.youtube.com/'), 'Youtube', '/a', '/label',
+			'input' => array('type' => 'text', 'name' => 'video_preview', 'id' => 'VideoPreview')
 		));
 	}
 
@@ -719,7 +788,7 @@ class FormTest extends \lithium\test\Unit {
 			array('option' => array('value' => '1')),
 			'RI',
 			'/option',
-			'/select',
+			'/select'
 		));
 	}
 
@@ -814,8 +883,6 @@ class FormTest extends \lithium\test\Unit {
 
 	/**
 	 * Tests that the string template form `Form::field()` can be overridden.
-	 *
-	 * @return void
 	 */
 	public function testFieldTemplateOverride() {
 		$this->form->config(array('templates' => array('field' => '{:label}{:input}{:error}')));
@@ -826,11 +893,14 @@ class FormTest extends \lithium\test\Unit {
 		));
 	}
 
+	/**
+	 * Tests that the `field()` method properly renders a `<select />` element if the `'list'`
+	 * option is passed.
+	 */
 	public function testFieldAssumeSelectIfList() {
-		$result = $this->form->field(
-			'colors',
-			array('list' => array('r' => 'red', 'g' => 'green', 'b' => 'blue'))
-		);
+		$result = $this->form->field('colors', array(
+			'list' => array('r' => 'red', 'g' => 'green', 'b' => 'blue')
+		));
 		$expected = array(
 			'<div',
 				array('label' => array('for' => 'Colors')),
@@ -859,11 +929,63 @@ class FormTest extends \lithium\test\Unit {
 		$this->assertTags($result, array(
 			'div' => array(),
 			'label' => array('for' => 'Name'), 'Name', '/label',
-			'input' => array('type' => 'text', 'name' => 'name', 'id' => 'Name'),
+			'input' => array('type' => 'text', 'name' => 'name', 'id' => 'Name')
 		));
-
 	}
 
+	/**
+	 * Tests that inputs for nested objects can be assigned using dot syntax.
+	 */
+	public function testNestedFieldAccess() {
+		$doc = new Document(array('data' => array('foo' => array('bar' => 'value'))));
+		$this->form->create($doc);
+
+		$result = $this->form->text('foo.bar');
+		$this->assertTags($result, array('input' => array(
+			'type' => 'text', 'name' => 'foo[bar]', 'id' => 'FooBar', 'value' => 'value'
+		)));
+
+		$result = $this->form->field('foo.bar');
+		$this->assertTags($result, array(
+			'div' => array(),
+			'label' => array('for' => 'FooBar'), 'Foo Bar', '/label',
+			'input' => array(
+				'type' => 'text', 'name' => 'foo[bar]', 'id' => 'FooBar', 'value' => 'value'
+			)
+		));
+	}
+
+	/**
+	 * Tests rendering errors for nested fields.
+	 */
+	public function testNestedFieldError() {
+		$doc = new Document(array('data' => array('foo' => array('bar' => 'value'))));
+		$doc->errors(array('foo.bar' => 'Something bad happened.'));
+
+		$this->form->create($doc);
+		$result = $this->form->field('foo.bar');
+
+		$this->assertTags($result, array(
+			array('div' => array()),
+			'label' => array('for' => 'FooBar'), 'Foo Bar', '/label',
+			'input' => array(
+				'type' => 'text', 'name' => 'foo[bar]', 'id' => 'FooBar', 'value' => 'value'
+			),
+			'div' => array('class' => 'error'), 'Something bad happened.', '/div',
+			array('/div' => array())
+		));
+	}
+
+	public function testFormCreationWithNoContext() {
+		$this->form = new Form(array('context' => new MockFormRenderer(array(
+			'request' => new Request(array('base' => '/bbq'))
+		))));
+		$result = $this->form->create(null, array('url' => '/foo'));
+
+		$this->assertTags($result, array('form' => array(
+			'action' => "/bbq/foo", 'method'=> "post"
+		)));
+	}
 }
 
 ?>

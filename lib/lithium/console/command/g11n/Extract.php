@@ -2,15 +2,15 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\console\command\g11n;
 
-use DateTime;
 use Exception;
 use lithium\g11n\Catalog;
+use lithium\core\Libraries;
 
 /**
  * The `Extract` class is a command for extracting messages from files.
@@ -26,7 +26,7 @@ class Extract extends \lithium\console\Command {
 	public function _init() {
 		parent::_init();
 		$this->source = $this->source ?: LITHIUM_APP_PATH;
-		$this->destination = $this->destination ?: LITHIUM_APP_PATH . '/resources/g11n';
+		$this->destination = $this->destination ?: Libraries::get(true, 'resources') . '/g11n';
 	}
 
 	/**
@@ -59,8 +59,7 @@ class Extract extends \lithium\console\Command {
 	/**
 	 * Extracts translatable strings from multiple files.
 	 *
-	 * @param array $files Absolute paths to files.
-	 * @return array
+	 * @return array Returns the catalog specified. Returns boolean `false` when an error occurs.
 	 */
 	protected function _extract() {
 		$message[] = 'A `Catalog` class configuration with an adapter that is capable of';
@@ -93,7 +92,7 @@ class Extract extends \lithium\console\Command {
 		try {
 			return Catalog::read($name, 'messageTemplate', 'root', array(
 				'scope' => $configs[$name]['scope'],
-				'lossy' => false,
+				'lossy' => false
 			));
 		} catch (Exception $e) {
 			return false;

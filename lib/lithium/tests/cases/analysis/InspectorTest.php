@@ -2,16 +2,14 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\analysis;
 
-use \ReflectionClass;
-use \ReflectionMethod;
-use \lithium\core\Libraries;
-use \lithium\analysis\Inspector;
+use ReflectionMethod;
+use lithium\analysis\Inspector;
 
 class InspectorTest extends \lithium\test\Unit {
 
@@ -39,7 +37,10 @@ class InspectorTest extends \lithium\test\Unit {
 		)));
 		$this->assertEqual($expected, $result);
 
-		$result = Inspector::methods($class, 'ranges');
+		$this->assertNull(Inspector::methods('\lithium\core\Foo'));
+
+		$result = Inspector::methods('stdClass', 'extents');
+		$this->assertEqual(array(), $result);
 	}
 
 	public function testMethodInspection() {
@@ -92,8 +93,8 @@ class InspectorTest extends \lithium\test\Unit {
 		$expected = array(__LINE__ - 2 => "\tpublic function testLineIntrospection() {");
 		$this->assertEqual($expected, $result);
 
-		$result = Inspector::lines(__CLASS__, array(16));
-		$expected = array(16 => 'class InspectorTest extends \lithium\test\Unit {');
+		$result = Inspector::lines(__CLASS__, array(14));
+		$expected = array(14 => 'class InspectorTest extends \lithium\test\Unit {');
 		$this->assertEqual($expected, $result);
 
 		$this->expectException('/Missing argument 2/');
@@ -161,13 +162,11 @@ class InspectorTest extends \lithium\test\Unit {
 
 		$this->assertNull(Inspector::info('\lithium\util'));
 
-		$result = Inspector::info('\lithium\analysis\Inspector');
-		$this->assertTrue(strpos(
-			str_replace('\\', '/', $result['file']),
-			'lithium/analysis/Inspector.php'
-		));
-		$this->assertEqual('lithium\analysis', $result['namespace']);
-		$this->assertEqual('Inspector', $result['shortName']);
+		$info = Inspector::info('\lithium\analysis\Inspector');
+		$result = str_replace('\\', '/', $info['file']);
+		$this->assertTrue(strpos($result, '/analysis/Inspector.php'));
+		$this->assertEqual('lithium\analysis', $info['namespace']);
+		$this->assertEqual('Inspector', $info['shortName']);
 
 		$result = Inspector::info('\lithium\analysis\Inspector::$_methodMap');
 		$this->assertEqual('_methodMap', $result['name']);
@@ -182,11 +181,14 @@ class InspectorTest extends \lithium\test\Unit {
 		$this->assertEqual(array('modifiers', 'namespace'), array_keys($result));
 
 		$this->assertNull(Inspector::info('\lithium\analysis\Inspector::$foo'));
+
+		$this->assertNull(Inspector::info('\lithium\core\Foo::$foo'));
 	}
 
 	public function testClassDependencies() {
 		$expected = array(
-			'Exception', 'ReflectionClass', 'ReflectionException', 'lithium\\core\\Libraries'
+			'Exception', 'ReflectionClass', 'ReflectionProperty', 'ReflectionException',
+			'lithium\\core\\Libraries'
 		);
 
 		$result = Inspector::dependencies($this->subject(), array('type' => 'static'));
@@ -249,6 +251,26 @@ class InspectorTest extends \lithium\test\Unit {
 			)
 		);
 		$this->assertEqual($expected, $result);
+
+		$result = array_map(
+			function($property) { return $property['name']; },
+			Inspector::properties('lithium\action\Controller')
+		);
+		$this->assertTrue(in_array('request', $result));
+		$this->assertTrue(in_array('response', $result));
+		$this->assertFalse(in_array('_render', $result));
+		$this->assertFalse(in_array('_classes', $result));
+
+		$result = array_map(
+			function($property) { return $property['name']; },
+			Inspector::properties('lithium\action\Controller', array('public' => false))
+		);
+		$this->assertTrue(in_array('request', $result));
+		$this->assertTrue(in_array('response', $result));
+		$this->assertTrue(in_array('_render', $result));
+		$this->assertTrue(in_array('_classes', $result));
+
+		$this->assertNull(Inspector::properties('\lithium\core\Foo'));
 	}
 }
 

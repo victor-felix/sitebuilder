@@ -2,13 +2,15 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\mocks\template\helper;
 
 class MockFormPost extends \lithium\data\Model {
+
+	public $hasMany = array('MockQueryComment');
 
 	protected $_schema = array(
 		'id' => array('type' => 'integer'),

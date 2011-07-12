@@ -2,14 +2,14 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\g11n;
 
-use \BadMethodCallException;
-use \InvalidArgumentException;
+use BadMethodCallException;
+use InvalidArgumentException;
 
 /**
  * The `Locale` class provides methods to deal with locale identifiers.  The locale
@@ -64,13 +64,13 @@ class Locale extends \lithium\core\StaticObject {
 	 *
 	 * @param string $method
 	 * @param array $params
-	 * @return string|void
+	 * @return mixed
 	 */
 	public static function __callStatic($method, $params = array()) {
 		$tags = static::invokeMethod('decompose', $params);
 
 		if (!isset(static::$_tags[$method])) {
-			throw new BadMethodCallException("Invalid locale tag `{$method}`");
+			throw new BadMethodCallException("Invalid locale tag `{$method}`.");
 		}
 		return isset($tags[$method]) ? $tags[$method] : null;
 	}
@@ -79,7 +79,7 @@ class Locale extends \lithium\core\StaticObject {
 	 * Composes a locale from locale tags.  This is the pendant to `Locale::decompose()`.
 	 *
 	 * @param array $tags An array as obtained from `Locale::decompose()`.
-	 * @return string|void A locale with tags separated by underscores or `null`
+	 * @return string A locale with tags separated by underscores or `null`
 	 *         if none of the passed tags could be used to compose a locale.
 	 */
 	public static function compose($tags) {
@@ -109,7 +109,7 @@ class Locale extends \lithium\core\StaticObject {
 		$regex .= '(?:[_-](?P<variant>[a-z]{5,}))?';
 
 		if (!preg_match("/^{$regex}$/i", $locale, $matches)) {
-			throw new InvalidArgumentException("Locale `{$locale}` could not be parsed");
+			throw new InvalidArgumentException("Locale `{$locale}` could not be parsed.");
 		}
 		return array_filter(array_intersect_key($matches, static::$_tags));
 	}
@@ -118,7 +118,7 @@ class Locale extends \lithium\core\StaticObject {
 	 * Returns a locale in its canonical form with tags formatted properly.
 	 *
 	 * @param string $locale A locale in an arbitrary form (i.e. `'ZH-HANS-HK_REVISED'`).
-	 * @return string A locale in it's canoncial form (i.e. `'zh_Hans_HK_REVISED'`).
+	 * @return string A locale in it's canonical form (i.e. `'zh_Hans_HK_REVISED'`).
 	 */
 	public static function canonicalize($locale) {
 		$tags = static::decompose($locale);
@@ -180,8 +180,8 @@ class Locale extends \lithium\core\StaticObject {
 	 *
 	 * @link http://www.ietf.org/rfc/rfc4647.txt
 	 * @param array $locales Locales to match against `$locale`.
-	 * @param string $locale A locale in it's canoncial form (i.e. `'zh_Hans_HK_REVISED'`).
-	 * @return string|void The matched locale.
+	 * @param string $locale A locale in it's canonical form (i.e. `'zh_Hans_HK_REVISED'`).
+	 * @return string The matched locale.
 	 */
 	public static function lookup($locales, $locale) {
 		$tags = static::decompose($locale);
@@ -203,7 +203,7 @@ class Locale extends \lithium\core\StaticObject {
 	 * @see lithium\g11n\Locale::lookup()
 	 * @param object|array $request An action or console request object or an array of locales.
 	 * @param array $available A list of locales to negotiate the preferred locale with.
-	 * @return string|void The preferred locale in it's canoncial form (i.e. `'fr_CA'`).
+	 * @return string The preferred locale in it's canonical form (i.e. `'fr_CA'`).
 	 */
 	public static function preferred($request, $available = null) {
 		if (is_array($request)) {
@@ -231,7 +231,7 @@ class Locale extends \lithium\core\StaticObject {
 	 *
 	 * @link http://www.ietf.org/rfc/rfc2616.txt
 	 * @param object $request An instance of `lithium\action\Request`.
-	 * @return array Preferred locales in their canoncial form (i.e. `'fr_CA'`).
+	 * @return array Preferred locales in their canonical form (i.e. `'fr_CA'`).
 	 */
 	protected static function _preferredAction($request) {
 		$regex  = '(?P<locale>[\w\-]+)+(?:;q=(?P<quality>[0-9]+\.[0-9]+))?';
@@ -252,16 +252,16 @@ class Locale extends \lithium\core\StaticObject {
 	 * Detects preferred locales from a console request by looking at certain
 	 * environment variables. The environment variables may be present or not
 	 * depending on your system. If multiple variables are present the following
-	 * hierachy is used: `'LANGUAGE'`,  `'LC_ALL'`, `'LANG'`.
+	 * hierarchy is used: `'LANGUAGE'`,  `'LC_ALL'`, `'LANG'`.
 	 *
 	 * The locales of the `'LC_ALL'` and the `'LANG'` are formatted according
 	 * to the posix standard: `language(_territory)(.encoding)(@modifier)`.
-	 * Locales having such a format are automatically canoncialized and transformed
+	 * Locales having such a format are automatically canonicalized and transformed
 	 * into the `Locale` class' format.
 	 *
 	 * @link http://www.linux.com/archive/feature/53781
 	 * @param object $request An instance of `lithium\console\Request`.
-	 * @return array Preferred locales in their canoncial form (i.e. `'fr_CA'`).
+	 * @return array Preferred locales in their canonical form (i.e. `'fr_CA'`).
 	 */
 	protected static function _preferredConsole($request) {
 		$regex = '(?P<locale>[\w\_]+)(\.|@|$)+';

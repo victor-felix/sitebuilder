@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -20,7 +20,10 @@ class MockDocumentPost extends \lithium\data\Model {
 	public static function __init() {}
 
 	public static function schema($field = null) {
-		return array('_id' => array('type' => 'id'));
+		return array(
+			'_id' => array('type' => 'id'),
+			'foo.bar' => array('type' => 'int')
+		);
 	}
 
 	public function ret($record, $param1 = null, $param2 = null) {

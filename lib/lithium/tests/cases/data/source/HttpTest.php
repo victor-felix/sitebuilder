@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -41,7 +41,7 @@ class HttpTest extends \lithium\test\Unit {
 				'type' => 'Http',
 				'methods' => array(
 					'something' => array('method' => 'get'),
-					'do' => array('method' => 'post'),
+					'do' => array('method' => 'post')
 				)
 			)
 		));
@@ -77,9 +77,9 @@ class HttpTest extends \lithium\test\Unit {
 		$this->assertTrue($result);
 	}
 
-	public function testEntities() {
+	public function testSources() {
 		$http = new Http($this->_testConfig);
-		$result = $http->entities();
+		$result = $http->sources();
 	}
 
 	public function testDescribe() {
@@ -216,13 +216,12 @@ class HttpTest extends \lithium\test\Unit {
 	}
 
 	public function testCreateWithModel() {
+		$model = $this->_model;
+		$model::config(array('key' => 'id'));
 		$http = new Http($this->_testConfig);
-		$query = new Query(array(
-			'model' => $this->_model,
-			'data' => array('title' => 'Test Title')
-		));
-
+		$query = new Query(compact('model') + array('data' => array('title' => 'Test Title')));
 		$result = $http->create($query);
+
 		$expected = join("\r\n", array(
 			'POST /posts HTTP/1.1',
 			'Host: localhost:80',

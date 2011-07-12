@@ -2,14 +2,15 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\g11n\catalog\adapter;
 
-use \Exception;
-use \lithium\g11n\catalog\adapter\Code;
+use Exception;
+use lithium\core\Libraries;
+use lithium\g11n\catalog\adapter\Code;
 
 class CodeTest extends \lithium\test\Unit {
 
@@ -18,7 +19,7 @@ class CodeTest extends \lithium\test\Unit {
 	protected $_path;
 
 	public function setUp() {
-		$this->_path = $path = LITHIUM_APP_PATH . '/resources/tmp/tests';
+		$this->_path = $path = Libraries::get(true, 'resources') . '/tmp/tests';
 		$this->skipIf(!is_writable($this->_path), "{$this->_path} is not writable.");
 
 		$this->adapter = new Code(compact('path'));
@@ -72,7 +73,7 @@ EOD;
 	}
 
 	public function testPathMustExist() {
-		$path = LITHIUM_APP_PATH . '/resources/tmp/tests';
+		$path = Libraries::get(true, 'resources') . '/tmp/tests';
 
 		try {
 			new Code(array('path' => $this->_path));

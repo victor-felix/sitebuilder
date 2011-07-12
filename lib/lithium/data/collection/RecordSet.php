@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -101,7 +101,9 @@ class RecordSet extends \lithium\data\Collection {
 		$model = $this->_model;
 
 		while ($record = $this->_populate(null, $offset)) {
-			if (!is_null($offset) && $offset == $model::key($record)) {
+			$key = $model::key($record);
+			$keySet = $offset == $key || (!$key && in_array($offset, $this->_index));
+			if (!is_null($offset) && $keySet) {
 				return $record;
 			}
 		}
@@ -149,7 +151,7 @@ class RecordSet extends \lithium\data\Collection {
 	/**
 	 * Returns the currently pointed to record in the set.
 	 *
-	 * @return `Record`
+	 * @return object `Record`
 	 */
 	public function current() {
 		return $this->_data[$this->_pointer];
@@ -190,6 +192,24 @@ class RecordSet extends \lithium\data\Collection {
 	}
 
 	/**
+	 * Returns the previous record in the set, and moves the internal pointer back. A previously
+	 * fetched record is returned. If bounds are reached, returns `null`.
+	 *
+	 * @return object Returns the previous record in the set, or `null`, if bounds are reached.
+	 */
+	public function prev() {
+		$this->_valid = (prev($this->_data) !== false && prev($this->_index) !== false);
+
+		$return = null;
+
+		if ($this->_valid) {
+			$this->_pointer--;
+			$return = $this->current();
+		}
+		return $return;
+	}
+
+	/**
 	 * Converts the data in the record set to a different format, i.e. an array.
 	 *
 	 * @param string $format
@@ -206,13 +226,12 @@ class RecordSet extends \lithium\data\Collection {
 		switch ($format) {
 			case 'array':
 				$result = array_map(function($r) { return $r->to('array'); }, $this->_data);
-				if (is_scalar(current($this->_index)) && $options['indexed']) {
-					if (!empty($this->_index) && !empty($result)) {
-						$result = array_combine($this->_index, $result);
-					} else {
-						$result = array();
-					}
+
+				if (!(is_scalar(current($this->_index)) && $options['indexed'])) {
+					break;
 				}
+				$indexAndResult = ($this->_index && $result);
+				$result =  $indexAndResult ? array_combine($this->_index, $result) : array();
 			break;
 			default:
 				$result = parent::to($format, $options);
@@ -244,7 +263,7 @@ class RecordSet extends \lithium\data\Collection {
 	 * @param array $options The available options are:
 	 *              - `'collect'`: If `true`, the results will be returned wrapped
 	 *              in a new `Collection` object or subclass.
-	 * @return array|object The filtered data.
+	 * @return object The filtered data.
 	 */
 	public function map($filter, array $options = array()) {
 		$this->offsetGet(null);
@@ -263,29 +282,16 @@ class RecordSet extends \lithium\data\Collection {
 		if ($this->closed() && !$data || !($model = $this->_model)) {
 			return;
 		}
-		$conn = $model::connection();
 
 		if (!($data = $data ?: $this->_result->next())) {
 			return $this->close();
 		}
-		$key = null;
-		$offset = 0;
-		$recordMap = is_object($data) ? array($model => $data) : array();
+		$record = is_object($data) ? $data : $this->_mapRecord($data);
+		$key = $model::key($record);
 
-		if (!$recordMap) {
-			foreach ($this->_columns as $model => $fields) {
-				$record = array_combine($fields, array_slice($data, $offset, count($fields)));
-
-				if ($model == $this->_model) {
-					$key = $key = $model::key($record);
-				}
-				$recordMap[$model] = $conn->item($model, $record, array('exists' => true));
-			}
-		} else {
-			$key = $model::key(reset($recordMap));
+		if (!$key) {
+			$key = count($this->_data);
 		}
-		$record = reset($recordMap);
-		unset($recordMap[key($recordMap)]);
 
 		if (is_array($key)) {
 			$key = count($key) === 1 ? reset($key) : $key;
@@ -300,14 +306,86 @@ class RecordSet extends \lithium\data\Collection {
 		return $record;
 	}
 
+	protected function _mapRecord($data) {
+		$options = array('exists' => true);
+		$relationships = array();
+		$primary = $this->_model;
+		$conn = $primary::connection();
+
+		if (!$this->_query) {
+			return $conn->item($primary, $data, $options + compact('relationships'));
+		}
+
+		$dataMap = array();
+		$relMap = $this->_query->relationships();
+		$main = null;
+
+		do {
+			$offset = 0;
+
+			foreach ($this->_columns as $name => $fields) {
+				$fieldCount = count($fields);
+				$record = array_combine($fields, array_slice($data, $offset, $fieldCount));
+				$offset += $fieldCount;
+
+				if ($name === 0) {
+					if ($main && $main != $record) {
+						$this->_result->prev();
+						break 2;
+					}
+					$main = $record;
+					continue;
+				}
+
+				if ($relMap[$name]['type'] != 'hasMany') {
+					$dataMap[$name] = $record;
+					continue;
+				}
+				$dataMap[$name][] = $record;
+			}
+		} while ($data = $this->_result->next());
+
+		foreach ($dataMap as $name => $rel) {
+			$field = $relMap[$name]['fieldName'];
+			$relModel = $relMap[$name]['model'];
+
+			if ($relMap[$name]['type'] == 'hasMany') {
+				foreach ($rel as &$data) {
+					$data = $conn->item($relModel, $data, $options);
+				}
+				$opts = array('class' => 'set');
+				$relationships[$field] = $conn->item($relModel, $rel, $options + $opts);
+				continue;
+			}
+			$relationships[$field] = $conn->item($relModel, $rel, $options);
+		}
+		return $conn->item($primary, $main, $options + compact('relationships'));
+	}
+
 	protected function _columnMap() {
 		if ($this->_query && $map = $this->_query->map()) {
+			if (isset($map[$this->_query->alias()])) {
+				$map = array($map[$this->_query->alias()]) + $map;
+				unset($map[$this->_query->alias()]);
+			} else {
+				$map = array(array_shift($map)) + $map;
+			}
 			return $map;
 		}
 		if (!($model = $this->_model)) {
 			return array();
 		}
-		return $model::connection()->schema($this->_query, $this->_result, $this);
+		if (!is_object($this->_query) || !$this->_query->join()) {
+			$map = $model::connection()->schema($this->_query, $this->_result, $this);
+			return array_values($map);
+		}
+
+		$model = $this->_model;
+		$map = $model::connection()->schema($this->_query, $this->_result, $this);
+		$map = array($map[$this->_query->alias()]) + $map;
+		unset($map[$this->_query->alias()]);
+
+		return $map;
 	}
 }
 

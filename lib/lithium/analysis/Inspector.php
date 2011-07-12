@@ -2,16 +2,17 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\analysis;
 
-use \Exception;
-use \ReflectionClass;
-use \ReflectionException;
-use \lithium\core\Libraries;
+use Exception;
+use ReflectionClass;
+use ReflectionProperty;
+use ReflectionException;
+use lithium\core\Libraries;
 
 /**
  * General source code inspector.
@@ -189,6 +190,7 @@ class Inspector extends \lithium\core\StaticObject {
 				"({$pattern})",
 				"\\$(.+)\($",
 				"\s*['\"]\w+['\"]\s*=>\s*.+[\{\(]$",
+				"\s*['\"]\w+['\"]\s*=>\s*['\"]*.+['\"]*\s*"
 			));
 			$options['pattern'] = "/^({$pattern})/";
 		}
@@ -196,9 +198,8 @@ class Inspector extends \lithium\core\StaticObject {
 		if (!$class instanceof ReflectionClass) {
 			$class = new ReflectionClass(is_object($class) ? get_class($class) : $class);
 		}
-		$result = array_filter(static::methods($class, 'ranges', $options + array(
-			'group' => false
-		)));
+		$options += array('group' => false);
+		$result = array_filter(static::methods($class, 'ranges', $options));
 
 		if ($options['filter'] && $class->getFileName()) {
 			$file = explode("\n", "\n" . file_get_contents($class->getFileName()));
@@ -224,6 +225,7 @@ class Inspector extends \lithium\core\StaticObject {
 	 *        - `'ranges'`: Returns a two-dimensional array where each key is a method name,
 	 *         and each value is an array of line numbers which are contained in the method.
 	 * @param array $options
+	 * @return array
 	 */
 	public static function methods($class, $format = null, array $options = array()) {
 		$defaults = array('methods' => array(), 'group' => true, 'self' => true);
@@ -281,6 +283,7 @@ class Inspector extends \lithium\core\StaticObject {
 	 * @param array $options Set of options:
 	 *        -'self': If true (default), only returns properties defined in `$class`,
 	 *         excluding properties from inherited classes.
+	 * @return array
 	 */
 	public static function properties($class, array $options = array()) {
 		$defaults = array('properties' => array(), 'self' => true);
@@ -295,28 +298,25 @@ class Inspector extends \lithium\core\StaticObject {
 		}
 		$options += array('names' => $options['properties']);
 
-		return static::_items($class, 'getProperties', $options)->map(
-			function($item) {
-				$class = __CLASS__;
-				$modifiers = array_values($class::invokeMethod('_modifiers', array($item)));
-				$setAccess = (
-					array_intersect($modifiers, array('private', 'protected')) != array()
-				);
-				if ($setAccess) {
-					$item->setAccessible(true);
-				}
-				$result = compact('modifiers') + array(
-					'docComment' => $item->getDocComment(),
-					'name' => $item->getName(),
-					'value' => $item->getValue($item->getDeclaringClass())
-				);
-				if ($setAccess) {
-					$item->setAccessible(false);
-				}
-				return $result;
-			},
-			array('collect' => false)
-		);
+		return static::_items($class, 'getProperties', $options)->map(function($item) {
+			$class = __CLASS__;
+			$modifiers = array_values($class::invokeMethod('_modifiers', array($item)));
+			$setAccess = (
+				array_intersect($modifiers, array('private', 'protected')) != array()
+			);
+			if ($setAccess) {
+				$item->setAccessible(true);
+			}
+			$result = compact('modifiers') + array(
+				'docComment' => $item->getDocComment(),
+				'name' => $item->getName(),
+				'value' => $item->getValue($item->getDeclaringClass())
+			);
+			if ($setAccess) {
+				$item->setAccessible(false);
+			}
+			return $result;
+		}, array('collect' => false));
 	}
 
 	/**
@@ -335,16 +335,16 @@ class Inspector extends \lithium\core\StaticObject {
 	 * @todo Add an $options parameter with a 'context' flag, to pull in n lines of context.
 	 */
 	public static function lines($data, $lines) {
-		if (!strpos($data, "\n")) {
+		if (!strpos($data, PHP_EOL)) {
 			if (!file_exists($data)) {
 				$data = Libraries::path($data);
 				if (!file_exists($data)) {
 					return null;
 				}
 			}
-			$data = "\n" . file_get_contents($data);
+			$data = PHP_EOL . file_get_contents($data);
 		}
-		$c = explode("\n", $data);
+		$c = explode(PHP_EOL, $data);
 
 		if (!count($c) || !count($lines)) {
 			return null;
@@ -357,10 +357,11 @@ class Inspector extends \lithium\core\StaticObject {
 	 *
 	 * @param string $class Class whose inheritance chain will be returned
 	 * @param array $options Option consists of:
-	 *        -'autoLoad': Whether or not to call __autoload by default. Defaults to true.
+	 *        - `'autoLoad'` _boolean_: Whether or not to call `__autoload` by default. Defaults
+	 *          to `true`.
 	 * @return array An array of the name of the parent classes of the passed `$class` parameter,
-	 *         or false on error.
-	 * @link http://php.net/manual/en/function.class-parents.php
+	 *         or `false` on error.
+	 * @link http://php.net/manual/en/function.class-parents.php PHP Manual: `class_parents()`.
 	 */
 	public static function parents($class, array $options = array()) {
 		$defaults = array('autoLoad' => false);
@@ -386,18 +387,22 @@ class Inspector extends \lithium\core\StaticObject {
 		$options += $defaults;
 
 		$list = get_declared_classes();
+		$files = get_included_files();
 		$classes = array();
 
-		if (!empty($options['file'])) {
+		if ($file = $options['file']) {
 			$loaded = static::_instance('collection', array('data' => array_map(
 				function($class) { return new ReflectionClass($class); }, $list
 			)));
+			$classFiles = $loaded->getFileName();
 
-			if (!in_array($options['file'], $loaded->getFileName())) {
-				include $options['file'];
+			if (in_array($file, $files) && !in_array($file, $classFiles)) {
+				return array();
+			}
+			if (!in_array($file, $classFiles)) {
+				include $file;
 				$list = array_diff(get_declared_classes(), $list);
 			} else {
-				$file = $options['file'];
 				$filter = function($class) use ($file) { return $class->getFileName() == $file; };
 				$list = $loaded->find($filter)->getName();
 			}
@@ -471,7 +476,7 @@ class Inspector extends \lithium\core\StaticObject {
 	 */
 	protected static function _class($class) {
 		if (!class_exists($class)) {
-			throw new RuntimeException(sprintf('Class "%s" could not be found.', $class));
+			throw new RuntimeException(sprintf('Class `%s` could not be found.', $class));
 		}
 		return unserialize(sprintf('O:%d:"%s":0:{}', strlen($class), $class));
 	}
@@ -491,7 +496,13 @@ class Inspector extends \lithium\core\StaticObject {
 	protected static function _items($class, $method, $options) {
 		$defaults = array('names' => array(), 'self' => true, 'public' => true);
 		$options += $defaults;
-		$data = $class->{$method}();
+
+		$params = array(
+			'getProperties' => ReflectionProperty::IS_PUBLIC | (
+				$options['public'] ? 0 : ReflectionProperty::IS_PROTECTED
+			)
+		);
+		$data = isset($params[$method]) ? $class->{$method}($params[$method]) : $class->{$method}();
 
 		if (!empty($options['names'])) {
 			$data = array_filter($data, function($item) use ($options) {
@@ -515,7 +526,7 @@ class Inspector extends \lithium\core\StaticObject {
 	 * Helper method to determine if a class applies to a list of modifiers.
 	 *
 	 * @param string $inspector ReflectionClass instance.
-	 * @param string $list List of modifiers to test.
+	 * @param array|string $list List of modifiers to test.
 	 * @return boolean Test result.
 	 */
 	protected static function _modifiers($inspector, $list = array()) {

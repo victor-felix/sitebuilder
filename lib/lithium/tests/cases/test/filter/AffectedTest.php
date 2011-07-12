@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -10,7 +10,6 @@ namespace lithium\tests\cases\test\filter;
 
 use lithium\test\filter\Affected;
 use lithium\test\Group;
-use lithium\tests\cases\g11n\CatalogTest;
 use lithium\test\Report;
 
 class AffectedTest extends \lithium\test\Unit {
@@ -76,6 +75,23 @@ class AffectedTest extends \lithium\test\Unit {
 		);
 		$result = $tests->map('get_class', array('collect' => false));
 		$this->assertEqual($expected, $result);
+	}
+
+	public function testAnalyze() {
+		$ns = 'lithium\tests\cases';
+
+		$expected = array(
+			'lithium\g11n\Message' => "{$ns}\g11n\MessageTest",
+			'lithium\console\command\g11n\Extract' => "{$ns}\console\command\g11n\ExtractTest"
+		);
+
+		$group = new Group();
+		$group->add('lithium\tests\cases\g11n\CatalogTest');
+		$this->report->group = $group;
+		$tests = Affected::apply($this->report, $group->tests());
+		$results = Affected::analyze($this->report);
+
+		$this->assertEqual($results, $expected);
 	}
 }
 

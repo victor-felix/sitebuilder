@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -171,7 +171,7 @@ class Route extends \lithium\core\Object {
 			'defaults' => array(),
 			'keys'     => array(),
 			'persist'  => array(),
-			'handler'  => null,
+			'handler'  => null
 		);
 		parent::__construct($config + $defaults);
 	}
@@ -232,7 +232,7 @@ class Route extends \lithium\core\Object {
 	 * Matches a set of parameters against the route, and returns a URL string if the route matches
 	 * the parameters, or false if it does not match.
 	 *
-	 * @param string $options
+	 * @param array $options
 	 * @param string $context
 	 * @return mixed
 	 */
@@ -299,8 +299,10 @@ class Route extends \lithium\core\Object {
 		if (isset($options['args']) && is_array($options['args'])) {
 			$options['args'] = join('/', $options['args']);
 		}
+		$options += array('args' => '');
 
-		foreach (array_reverse($options + array('args' => ''), true) as $key => $value) {
+		foreach (array_reverse($this->_keys, true) as $key) {
+			$value =& $options[$key];
 			$pattern = isset($this->_subPatterns[$key]) ? ":{$this->_subPatterns[$key]}" : '';
 			$rpl = "{:{$key}{$pattern}}";
 			$len = strlen($rpl) * -1;
@@ -315,8 +317,10 @@ class Route extends \lithium\core\Object {
 				$template = str_replace("/{$rpl}", '', $template);
 				continue;
 			}
+			if ($key !== 'args') {
+				$trimmed = false;
+			}
 			$template = str_replace($rpl, $value, $template);
-			$trimmed = ($key == 'args') ? $trimmed : false;
 		}
 		return $template;
 	}
@@ -341,7 +345,6 @@ class Route extends \lithium\core\Object {
 	 * Compiles URL templates into regular expression patterns for matching against request URLs,
 	 * and extracts template parameters into match-parameter arrays.
 	 *
-	 * @param array $options
 	 * @return void
 	 */
 	public function compile() {

@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -53,7 +53,7 @@ class MockSocket extends \lithium\net\Socket {
 		return true;
 	}
 
-	public function send($message, array $options = array()) {
+	public function send($message = null, array $options = array()) {
 		$message = $this->read();
 		return new $options['classes']['response'](compact('message'));
 	}

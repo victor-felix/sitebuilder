@@ -2,14 +2,15 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of Rad, Inc. (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of Rad, Inc. (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\storage\session\adapter;
 
-use \lithium\storage\session\adapter\Php;
-use \lithium\tests\mocks\storage\session\adapter\MockPhp;
+use lithium\core\Libraries;
+use lithium\storage\session\adapter\Php;
+use lithium\tests\mocks\storage\session\adapter\MockPhp;
 
 class PhpTest extends \lithium\test\Unit {
 
@@ -64,13 +65,16 @@ class PhpTest extends \lithium\test\Unit {
 
 		$result = ini_get('session.cookie_lifetime');
 		$this->assertEqual(0, (integer) $result);
+
+		$result = ini_get('session.cookie_httponly');
+		$this->assertTrue(1, (integer) $result);
 	}
 
 	public function testCustomConfiguration() {
 		$config = array(
 			'session.name' => 'awesome_name', 'session.cookie_lifetime' => 1200,
 			'session.cookie_domain' => 'awesome.domain',
-			'session.save_path' => LITHIUM_APP_PATH . '/resources/tmp/',
+			'session.save_path' => Libraries::get(true, 'resources') . '/tmp/',
 			'somebad.configuration' => 'whoops'
 		);
 
@@ -89,7 +93,7 @@ class PhpTest extends \lithium\test\Unit {
 		$this->assertFalse($result);
 
 		$result = ini_get('session.cookie_httponly');
-		$this->assertFalse($result);
+		$this->assertTrue($result);
 
 		$result = ini_get('session.save_path');
 		$this->assertEqual($config['session.save_path'], $result);
@@ -224,6 +228,18 @@ class PhpTest extends \lithium\test\Unit {
 		$params = compact('key');
 		$result = $closure($this->Php, $params, null);
 		$this->assertTrue($result);
+	}
+
+	/**
+	 * Checks if erasing the whole session array works as expected.
+	 */
+	public function testClear() {
+		$_SESSION['foo'] = 'bar';
+		$this->assertFalse(empty($_SESSION));
+		$closure = $this->Php->clear();
+		$this->assertTrue(is_callable($closure));
+		$result = $closure($this->Php, array(), null);
+		$this->assertTrue(empty($_SESSION));
 	}
 
 	public function testCheckThrowException() {

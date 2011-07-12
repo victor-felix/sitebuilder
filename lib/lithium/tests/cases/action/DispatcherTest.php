@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -45,6 +45,55 @@ class DispatcherTest extends \lithium\test\Unit {
 		MockDispatcher::run(new Request(array('url' => '/')));
 	}
 
+	public function testApplyRulesControllerCasing() {
+		$params = array('controller' => 'test', 'action' => 'test');
+		$expected = array('controller' => 'Test', 'action' => 'test');
+		$this->assertEqual($expected, Dispatcher::applyRules($params));
+
+		$params = array('controller' => 'Test', 'action' => 'test');
+		$this->assertEqual($params, Dispatcher::applyRules($params));
+
+		$params = array('controller' => 'test_one', 'action' => 'test');
+		$expected = array('controller' => 'TestOne', 'action' => 'test');
+		$this->assertEqual($expected, Dispatcher::applyRules($params));
+	}
+
+	public function testApplyRulesWithNamespacedController() {
+		$params = array('controller' => 'li3_test\\Test', 'action' => 'test');
+		$expected = array('controller' => 'li3_test\\Test', 'action' => 'test');
+		$this->assertEqual($expected, Dispatcher::applyRules($params));
+	}
+
+	public function testApplyRulesDotNamespacing() {
+		$params = array('controller' => 'li3_test.test', 'action' => 'test');
+		$expected = array(
+			'library' => 'li3_test', 'controller' => 'li3_test.Test', 'action' => 'test'
+		);
+		$this->assertEqual($expected, Dispatcher::applyRules($params));
+	}
+
+	public function testApplyRulesLibraryKeyNamespacing() {
+		$params = array('library' => 'li3_test', 'controller' => 'test', 'action' => 'test');
+		$expected = array(
+			'library' => 'li3_test', 'controller' => 'li3_test.Test', 'action' => 'test'
+		);
+		$this->assertEqual($expected, Dispatcher::applyRules($params));
+	}
+
+	public function testApplyRulesNamespacingCollision() {
+		$params = array('library' => 'li3_one', 'controller' => 'li3_two.test', 'action' => 'test');
+		$expected = array(
+			'library' => 'li3_one', 'controller' => 'li3_two.Test', 'action' => 'test'
+		);
+		$this->assertEqual($expected, Dispatcher::applyRules($params));
+
+		$params = array('library' => 'li3_one', 'controller' => 'li3_two\Test', 'action' => 'test');
+		$expected = array(
+			'library' => 'li3_one', 'controller' => 'li3_two\Test', 'action' => 'test'
+		);
+		$this->assertEqual($expected, Dispatcher::applyRules($params));
+	}
+
 	public function testConfigManipulation() {
 		$config = MockDispatcher::config();
 		$expected = array('rules' => array());
@@ -65,14 +114,14 @@ class DispatcherTest extends \lithium\test\Unit {
 	public function testControllerLookupFail() {
 		Dispatcher::config(array('classes' => array('router' => __CLASS__)));
 
-		$this->expectException("/Controller 'SomeNonExistentController' not found/");
+		$this->expectException("/Controller `SomeNonExistentController` not found/");
 		Dispatcher::run(new Request(array('url' => '/')));
 	}
 
 	public function testPluginControllerLookupFail() {
 		Dispatcher::config(array('classes' => array('router' => __CLASS__)));
 
-		$this->expectException("/Controller 'some_invalid_plugin.Controller' not found/");
+		$this->expectException("/Controller `some_invalid_plugin.Controller` not found/");
 		Dispatcher::run(new Request(array('url' => '/plugin')));
 	}
 

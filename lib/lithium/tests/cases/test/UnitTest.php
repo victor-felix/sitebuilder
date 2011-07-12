@@ -2,16 +2,17 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\test;
 
+use Exception;
+use lithium\core\Libraries;
 use lithium\tests\mocks\test\MockUnitTest;
 use lithium\tests\mocks\test\cases\MockSkipThrowsException;
 use lithium\tests\mocks\test\cases\MockTestErrorHandling;
-use \Exception;
 
 class UnitTest extends \lithium\test\Unit {
 
@@ -29,15 +30,13 @@ class UnitTest extends \lithium\test\Unit {
 	}
 
 	public function testCompareIsEqual() {
-		$expected = true;
 		$result = $this->compare('equal', 'string', 'string');
-		$this->assertEqual($expected, $result);
+		$this->assertTrue($result);
 	}
 
 	public function testCompareIsIdentical() {
-		$expected = true;
 		$result = $this->compare('identical', 'string', 'string');
-		$this->assertEqual($expected, $result);
+		$this->assertTrue($result);
 	}
 
 	public function testCompareTypes() {
@@ -65,19 +64,12 @@ class UnitTest extends \lithium\test\Unit {
 			'result' => 'fail', 'file' => __FILE__, 'line' => __LINE__ - 3,
 			'method' => 'testAssertEqualNumericFail', 'assertion' => 'assertEqual',
 			'class' => __CLASS__, 'message' =>
-				"trace: [2]\nexpected: array (\n  0 => 1,\n  1 => 2,\n  2 => 3,\n)\n"
-				. "result: array (\n  0 => 1,\n  1 => 2,\n)\n",
+				"trace: [2]\nexpected: 3\n"
+				. "result: NULL\n",
 			'data' => array(
 				'trace' => '[2]',
-				'expected' => array(
-				  0 => 1,
-				  1 => 2,
-				  2 => 3,
-				),
-				'result' => array(
-				  0 => 1,
-				  1 => 2,
-				)
+				'expected' => 3,
+				'result' => null
 			)
 		);
 		$result = array_pop($this->_results);
@@ -111,32 +103,22 @@ class UnitTest extends \lithium\test\Unit {
 			'result' => 'fail', 'file' => __FILE__, 'line' => __LINE__ - 3,
 			'method' => 'testAssertEqualThreeDFail', 'assertion' => 'assertEqual',
 			'class' => __CLASS__, 'message' =>
-				"trace: [0][1][1]\nexpected: array (\n  0 => 1,\n  1 => 2,\n)\n"
-				. "result: array (\n  0 => 1,\n)\n"
-				. "trace: [1][1][1]\nexpected: array (\n  0 => 1,\n  1 => 2,\n)\n"
-				. "result: array (\n  0 => 1,\n)\n",
+				"trace: [0][1][1]\nexpected: 2\n"
+				. "result: NULL\n"
+				. "trace: [1][1][1]\nexpected: 2\n"
+				. "result: NULL\n",
 			'data' => array(
 				array(
 					array(
 						'trace' => '[0][1][1]',
-						'expected' => array(
-						  0 => 1,
-						  1 => 2,
-						),
-						'result' => array(
-						  0 => 1,
-						)
-					),
+						'expected' => 2,
+						'result' => null
+					)
 				),
 				array(
 					array('trace' => '[1][1][1]',
-						'expected' => array(
-						  0 => 1,
-						  1 => 2,
-						),
-						'result' => array(
-						  0 => 1,
-						)
+						'expected' => 2,
+						'result' => null
 					)
 				)
 			)
@@ -163,10 +145,11 @@ class UnitTest extends \lithium\test\Unit {
 	}
 
 	public function testRun() {
+		$file = realpath(LITHIUM_LIBRARY_PATH) . '/lithium/tests/mocks/test/MockUnitTest.php';
 		$test = new MockUnitTest();
 		$expected = array(
 			'result' => 'pass',
-			'file' => realpath(LITHIUM_LIBRARY_PATH) . '/lithium/tests/mocks/test/MockUnitTest.php',
+			'file' => realpath($file),
 			'line' => 14,
 			'method' => 'testNothing',
 			'assertion' => 'assertTrue',
@@ -381,7 +364,7 @@ class UnitTest extends \lithium\test\Unit {
 	}
 
 	public function testCleanUp() {
-		$base = LITHIUM_APP_PATH . '/resources/tmp/tests';
+		$base = Libraries::get(true, 'resources') . '/tmp/tests';
 		$this->skipIf(!is_writable($base), "{$base} is not writable.");
 
 		$this->assertTrue(mkdir("{$base}/cleanup_test"));
@@ -393,7 +376,7 @@ class UnitTest extends \lithium\test\Unit {
 	}
 
 	public function testCleanUpWithFullPath() {
-		$base = LITHIUM_APP_PATH . '/resources/tmp/tests';
+		$base = Libraries::get(true, 'resources') . '/tmp/tests';
 		$this->skipIf(!is_writable($base), "{$base} is not writable.");
 
 		$this->assertTrue(mkdir("{$base}/cleanup_test"));
@@ -409,7 +392,7 @@ class UnitTest extends \lithium\test\Unit {
 	}
 
 	public function testCleanUpWithRelativePath() {
-		$base = LITHIUM_APP_PATH . '/resources/tmp/tests';
+		$base = Libraries::get(true, 'resources') . '/tmp/tests';
 		$this->skipIf(!is_writable($base), "{$base} is not writable.");
 
 		$this->assertTrue(mkdir("{$base}/cleanup_test"));
@@ -427,7 +410,7 @@ class UnitTest extends \lithium\test\Unit {
 	public function testSkipIf() {
 		try {
 			$this->skipIf(true, 'skip me');
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			$result = $e->getMessage();
 		}
 		$expected = 'skip me';
@@ -493,11 +476,11 @@ class UnitTest extends \lithium\test\Unit {
 
 	public function testCompareWithEmptyResult() {
 		$result = $this->compare('equal', array('key' => array('val1', 'val2')), array());
-		$expected = array(array(
-			'trace' => '[key][0]',
+		$expected = array(
+			'trace' => '[key]',
 			'expected' => array('val1', 'val2'),
 			'result' => array()
-		));
+		);
 		$this->assertEqual($expected, $result);
 	}
 
@@ -540,12 +523,38 @@ class UnitTest extends \lithium\test\Unit {
 		$this->assertEqual($expected, $result['data']['trace']);
 	}
 
+	public function testCompareIdenticalArray() {
+		$expected = array(
+			'trace' => null,
+			'expected' => array(),
+			'result' => array('two', 'values')
+		);
+		$result = $this->compare('identical', array(), array('two', 'values'));
+		$this->assertEqual($expected, $result);
+	}
+
+	public function imethods() {
+		return array('testCompareIdenticalArray');
+	}
+
+	public function testCompareEqualNullArray() {
+		$expected = array('trace' =>  null, 'expected' => array(), 'result' => array(null));
+		$result = $this->compare('equal', array(), array(null));
+		$this->assertEqual($expected, $result);
+	}
+
+	public function testCompareIdenticalNullArray() {
+		$expected = array('trace' => null, 'expected' => array(), 'result' => array(null));
+		$result = $this->compare('identical', array(), array(null));
+		$this->assertEqual($expected, $result);
+	}
+
 	/**
 	 * Always keep second to last.
 	 *
 	 */
 	public function testResults() {
-		$expected = 86;
+		$expected = 89;
 		$result = count($this->results());
 		$this->assertEqual($expected, $result);
 	}
@@ -570,7 +579,8 @@ class UnitTest extends \lithium\test\Unit {
 			'testGetTest', 'testAssertCookie', 'testAssertCookieWithHeaders',
 			'testCompareWithEmptyResult',
 			'testExceptionCatching', 'testErrorHandling', 'testAssertObjects',
-			'testAssertArrayIdentical',
+			'testAssertArrayIdentical', 'testCompareIdenticalArray',
+			'testCompareEqualNullArray', 'testCompareIdenticalNullArray',
 			'testResults', 'testTestMethods'
 		);
 		$this->assertIdentical($expected, $this->methods());

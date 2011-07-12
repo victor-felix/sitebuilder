@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -22,21 +22,23 @@ use lithium\core\ConfigException;
  * templates are being named.
  *
  * {{{
- * | - `<locale>`
- * | | - `LC_MESSAGES`
- * |   | - `default.po`
- * |   | - `default.mo`
- * |   | - `<scope>.po`
- * |   | - `<scope>.mo`
- * | | - `LC_VALIDATION`
- * |   | - ...
- * | - ...
- * | - `message_default.pot`
- * | - `message_<scope>.pot`
- * | - `validation_default.pot`
- * | - `validation_<scope>.pot`
- * | - ...
- * - ...
+ * resources/g11n/po
+ * ├── <locale>
+ * |   ├── LC_MESSAGES
+ * |   |   ├── default.po
+ * |   |   ├── default.mo
+ * |   |   ├── <scope>.po
+ * |   |   └── <scope>.mo
+ * |   ├── LC_VALIDATION
+ * |   |   └── ...
+ * |   └── ...
+ * ├── <locale>
+ * |   └── ...
+ * ├── message_default.pot
+ * ├── message_<scope>.pot
+ * ├── validation_default.pot
+ * ├── validation_<scope>.pot
+ * └── ...
  * }}}
  *
  * @see lithium\g11n\Locale
@@ -76,7 +78,6 @@ class Gettext extends \lithium\g11n\catalog\Adapter {
 	 *
 	 * @param array $config Available configuration options are:
 	 *        - `'path'`: The path to the directory holding the data.
-	 * @return void
 	 */
 	public function __construct(array $config = array()) {
 		$defaults = array('path' => null);
@@ -92,7 +93,8 @@ class Gettext extends \lithium\g11n\catalog\Adapter {
 	protected function _init() {
 		parent::_init();
 		if (!is_dir($this->_config['path'])) {
-			throw new ConfigException("Gettext directory does not exist at `{$this->_config['path']}`");
+			$message = "Gettext directory does not exist at path `{$this->_config['path']}`.";
+			throw new ConfigException($message);
 		}
 	}
 
@@ -102,7 +104,7 @@ class Gettext extends \lithium\g11n\catalog\Adapter {
 	 * @param string $category A category.
 	 * @param string $locale A locale identifier.
 	 * @param string $scope The scope for the current operation.
-	 * @return array|void
+	 * @return array
 	 */
 	public function read($category, $locale, $scope) {
 		$files = $this->_files($category, $locale, $scope);
@@ -265,7 +267,7 @@ class Gettext extends \lithium\g11n\catalog\Adapter {
 		$stat = fstat($stream);
 
 		if ($stat['size'] < self::MO_HEADER_SIZE) {
-			throw new RangeException("MO stream caontent has an invalid format");
+			throw new RangeException("MO stream content has an invalid format.");
 		}
 		$magic = unpack('V1', fread($stream, 4));
 		$magic = hexdec(substr(dechex(current($magic)), -8));
@@ -275,7 +277,7 @@ class Gettext extends \lithium\g11n\catalog\Adapter {
 		} elseif ($magic == self::MO_BIG_ENDIAN_MAGIC) {
 			$isBigEndian = true;
 		} else {
-			throw new RangeException("MO stream content has an invalid format");
+			throw new RangeException("MO stream content has an invalid format.");
 		}
 
 		$header = array(
@@ -284,7 +286,7 @@ class Gettext extends \lithium\g11n\catalog\Adapter {
 			'offsetId' => null,
 			'offsetTranslated' => null,
 			'sizeHashes' => null,
-			'offsetHashes' => null,
+			'offsetHashes' => null
 		);
 		foreach ($header as &$value) {
 			$value = $this->_readLong($stream, $isBigEndian);
@@ -414,7 +416,6 @@ class Gettext extends \lithium\g11n\catalog\Adapter {
 	 *
 	 * @param resource $stream
 	 * @param array $data
-	 * @param array $meta
 	 * @return boolean Success.
 	 */
 	protected function _compilePot($stream, array $data) {

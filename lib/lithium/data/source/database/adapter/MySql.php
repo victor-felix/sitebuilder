@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -80,7 +80,6 @@ class MySql extends \lithium\data\source\Database {
 	 *
 	 * Typically, these parameters are set in `Connections::add()`, when adding the adapter to the
 	 * list of active connections.
-	 * @return The adapter instance.
 	 */
 	public function __construct(array $config = array()) {
 		$defaults = array('host' => 'localhost:3306', 'encoding' => null);
@@ -103,7 +102,7 @@ class MySql extends \lithium\data\source\Database {
 			'arrays' => false,
 			'transactions' => false,
 			'booleans' => true,
-			'relationships' => true,
+			'relationships' => true
 		);
 		return isset($features[$feature]) ? $features[$feature] : null;
 	}
@@ -128,7 +127,7 @@ class MySql extends \lithium\data\source\Database {
 		} else {
 			$this->connection = mysql_pconnect($host, $config['login'], $config['password']);
 		}
-		
+
 		if (!$this->connection) {
 			return false;
 		}
@@ -138,7 +137,7 @@ class MySql extends \lithium\data\source\Database {
 		} else {
 			return false;
 		}
-		
+
 		if ($config['encoding']) {
 			$this->encoding($config['encoding']);
 		}
@@ -165,10 +164,10 @@ class MySql extends \lithium\data\source\Database {
 	 * Returns the list of tables in the currently-connected database.
 	 *
 	 * @param string $model The fully-name-spaced class name of the model object making the request.
-	 * @return array Returns an array of objects to which models can connect.
+	 * @return array Returns an array of sources to which models can connect.
 	 * @filter This method can be filtered.
 	 */
-	public function entities($model = null) {
+	public function sources($model = null) {
 		$_config = $this->_config;
 		$params = compact('model');
 
@@ -178,12 +177,12 @@ class MySql extends \lithium\data\source\Database {
 			if (!$result = $self->invokeMethod('_execute', array("SHOW TABLES FROM {$name};"))) {
 				return null;
 			}
-			$entities = array();
+			$sources = array();
 
 			while ($data = $result->next()) {
-				list($entities[]) = $data;
+				list($sources[]) = $data;
 			}
-			return $entities;
+			return $sources;
 		});
 	}
 
@@ -202,7 +201,7 @@ class MySql extends \lithium\data\source\Database {
 	 */
 	public function describe($entity, array $meta = array()) {
 		$params = compact('entity', 'meta');
-		return $this->_filter(__METHOD__, $params, function($self, $params, $chain) {
+		return $this->_filter(__METHOD__, $params, function($self, $params) {
 			extract($params);
 
 			$name = $self->invokeMethod('_entityName', array($entity));
@@ -216,7 +215,7 @@ class MySql extends \lithium\data\source\Database {
 
 				$fields[$column['field']] = $match + array(
 					'null'     => ($column['null'] == 'YES' ? true : false),
-					'default'  => $column['default'],
+					'default'  => $column['default']
 				);
 			}
 			return $fields;
@@ -227,7 +226,7 @@ class MySql extends \lithium\data\source\Database {
 	 * Gets or sets the encoding for the connection.
 	 *
 	 * @param $encoding
-	 * @return boolean|string If setting the encoding; returns true on success, else false.
+	 * @return mixed If setting the encoding; returns true on success, else false.
 	 *         When getting, returns the encoding.
 	 */
 	public function encoding($encoding = null) {
@@ -271,10 +270,10 @@ class MySql extends \lithium\data\source\Database {
 		}
 
 		$result = array();
-		$count = mysql_num_fields($resource);
+		$count = mysql_num_fields($resource->resource());
 
 		for ($i = 0; $i < $count; $i++) {
-			$result[] = mysql_field_name($resource, $i);
+			$result[] = mysql_field_name($resource->resource(), $i);
 		}
 		return $result;
 	}
@@ -301,9 +300,9 @@ class MySql extends \lithium\data\source\Database {
 	/**
 	 * @todo Eventually, this will need to rewrite aliases for DELETE and UPDATE queries, same with
 	 *       order().
-	 * @param string $conditions 
-	 * @param string $context 
-	 * @param array $options 
+	 * @param string $conditions
+	 * @param string $context
+	 * @param array $options
 	 * @return void
 	 */
 	public function conditions($conditions, $context, array $options = array()) {
@@ -320,10 +319,12 @@ class MySql extends \lithium\data\source\Database {
 	 *          sends the SQL query query to MySQL without automatically fetching and buffering the
 	 *          result rows as `mysql_query()` does (for less memory usage).
 	 * @return resource Returns the result resource handle if the query is successful.
+	 * @filter
 	 */
 	protected function _execute($sql, array $options = array()) {
 		$defaults = array('buffered' => true);
 		$options += $defaults;
+		mysql_select_db($this->_config['database'], $this->connection);
 
 		return $this->_filter(__METHOD__, compact('sql', 'options'), function($self, $params) {
 			$sql = $params['sql'];

@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -10,20 +10,20 @@ namespace lithium\storage\session\strategy;
 
 use RuntimeException;
 use lithium\core\ConfigException;
+use lithium\storage\session\strategy\MissingSignatureException;
 
 /**
- * This strategy allows you to sign your `Session` and/or `Cookie` data with a passphrase
+ * This strategy allows you to sign your `Session` and / or `Cookie` data with a passphrase
  * to ensure that it has not been tampered with.
  *
  * Example configuration:
  *
  * {{{
- * Session::config(array(
- *     'default' => array(
- *	       'adapter' => 'Cookie',
- *	       'strategies' => array('Hmac' => array('secret' => 'foobar'))
- *     )
- * ));
+ * Session::config(array('default' => array(
+ *	'adapter' => 'Cookie',
+ *	'strategies' => array('Hmac' => array('secret' => 'foobar'))
+ * )));
+ * }}}
  *
  * This will configure the `HMAC` strategy to be used for all `Session` operations with the
  * `default` named configuration. A hash-based message authentication code (HMAC) will be
@@ -52,7 +52,6 @@ class Hmac extends \lithium\core\Object {
 	 *
 	 * @param array $config Configuration array. Will throw an exception if the 'secret'
 	 *        configuration key is not set.
-	 * @return void
 	 */
 	public function __construct(array $config = array()) {
 		if (!isset($config['secret'])) {
@@ -91,6 +90,11 @@ class Hmac extends \lithium\core\Object {
 	 * Validates the HMAC signature of the stored data. If the signatures match, then
 	 * the data is safe, and the 'valid' key in the returned data will be
 	 *
+	 * If the store being read does not contain a `__signature` field, a `MissingSignatureException`
+	 * is thrown. When catching this exception, you may choose to handle it by either writing
+	 * out a signature (e.g. in cases where you know that no pre-existing signature may exist), or
+	 * you can blackhole it as a possible tampering attempt.
+	 *
 	 * @param array $data the Data being read.
 	 * @param array $options Options for this method.
 	 * @return array validated data
@@ -98,20 +102,16 @@ class Hmac extends \lithium\core\Object {
 	public function read($data, array $options = array()) {
 		$class = $options['class'];
 
-		$futureData = $class::read(null, array('strategies' => false));
-		unset($futureData['__signature']);
+		$currentData = $class::read(null, array('strategies' => false));
 
-		if (!isset($futureData['__signature'])) {
-			$signature = hash_hmac('sha1', serialize($futureData), static::$_secret);
-			$class::write('__signature', $signature, array('strategies' => false) + $options);
-			return $data;
+		if (!isset($currentData['__signature'])) {
+			throw new MissingSignatureException('HMAC signature not found.');
 		}
-
-		$currentSignature = $futureData['__signature'];
-		$signature = static::_signature($futureData);
+		$currentSignature = $currentData['__signature'];
+		$signature = static::_signature($currentData);
 
 		if ($signature !== $currentSignature) {
-			$message = "Possible data tampering - HMAC signature does not match data.";
+			$message = "Possible data tampering: HMAC signature does not match data.";
 			throw new RuntimeException($message);
 		}
 		return $data;
@@ -131,7 +131,7 @@ class Hmac extends \lithium\core\Object {
 		$class = $options['class'];
 
 		$futureData = $class::read(null, array('strategies' => false));
-		unset($futureData[$options['key']], $futureData['__signature']);
+		unset($futureData[$options['key']]);
 
 		$signature = static::_signature($futureData);
 		$class::write('__signature', $signature, array('strategies' => false) + $options);
@@ -146,6 +146,7 @@ class Hmac extends \lithium\core\Object {
 	 * @return string HMAC signature.
 	 */
 	protected static function _signature($data, $secret = null) {
+		unset($data['__signature']);
 		$secret = ($secret) ?: static::$_secret;
 		return hash_hmac('sha1', serialize($data), $secret);
 	}

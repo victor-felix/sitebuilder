@@ -2,14 +2,14 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\test;
 
-use \lithium\test\Dispatcher;
-use \lithium\util\Collection;
+use lithium\test\Dispatcher;
+use lithium\util\Collection;
 
 class DispatcherTest extends \lithium\test\Unit {
 

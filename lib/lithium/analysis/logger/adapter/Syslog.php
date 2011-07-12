@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -53,7 +53,6 @@ class Syslog extends \lithium\core\Object {
 	 *              - `'facility'` _integer_: A flag specifying the program to use to log the
 	 *                messages. See the `openlog()` documentation for more information. Defaults to
 	 *                `LOG_USER`.
-	 * @return void
 	 */
 	public function __construct(array $config = array()) {
 		$defaults = array('identity' => false, 'options'  => LOG_ODELAY, 'facility' => LOG_USER);
@@ -65,7 +64,7 @@ class Syslog extends \lithium\core\Object {
 	 *
 	 * @param string $priority The message priority string. Maps to a `syslogd` priority constant.
 	 * @param string $message The message to write.
-	 * @return boolean Returns `true` on successful write, `false` otherwise.
+	 * @return closure Function returning boolean `true` on successful write, `false` otherwise.
 	 */
 	public function write($priority, $message) {
 		$config = $this->_config;
@@ -77,7 +76,7 @@ class Syslog extends \lithium\core\Object {
 			$this->_isConnected = true;
 		}
 
-		return function($self, $params, $chain) use ($_priorities) {
+		return function($self, $params) use ($_priorities) {
 			$priority = $_priorities[$params['priority']];
 			return syslog($priority, $params['message']);
 		};

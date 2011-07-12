@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -10,6 +10,7 @@ namespace lithium\data\model;
 
 use lithium\core\Libraries;
 use lithium\util\Inflector;
+use lithium\core\ClassNotFoundException;
 
 /**
  * The `Relationship` class encapsulates the data and functionality necessary to link two model
@@ -47,6 +48,49 @@ class Relationship extends \lithium\core\Object {
 	 */
 	const LINK_REF = 'ref';
 
+	/**
+	 * Constructs an object that represents a relationship between two model classes.
+	 *
+	 * @param array $config The relationship's configuration, which defines how the two models in
+	 *              question are bound. The available options are:
+	 *
+	 *             - `'name'` _string_: The name of the relationship in the context of the
+	 *               originating model. For example, a `Posts` model might define a relationship to
+	 *               a `Users` model like so:
+	 * {{{ public $hasMany = array('Author' => array('to' => 'Users')); }}}
+	 * In this case, the relationship is bound to the `Users` model, but `'Author'` would be the
+	 * relationship name. This is the name with which the relationship is referenced in the
+	 * originating model.
+	 *             - `'keys'` _array_: An array of fields that define the relationship, where the
+	 *               keys are fields in the originating model, and the values are fields in the
+	 *               target model. If the relationship is not deined by keys, this array should be
+	 *               empty.
+	 *             - `'type'` _string_: The type of relationship. Should be one of `'belongsTo'`,
+	 *               `'hasOne'` or `'hasMany'`.
+	 *             - `'from'` _string_: The fully namespaced class name of the model where this
+	 *                relationship originates.
+	 *             - `'to'` _string_: The fully namespaced class name of the model that this
+	 *               relationship targets.
+	 *             - `'link'` _string_: A constant specifying how the object bound to the
+	 *               originating model is linked to the object bound to the target model. For
+	 *               relational databases, the only valid value is `LINK_KEY`, which means a foreign
+	 *               key in one object matches another key (usually the primary key) in the other.
+	 *               For document-oriented and other non-relational databases, different types of
+	 *               linking, including key lists, database reference objects (such as MongoDB's
+	 *               `MongoDBRef`), or even embedding.
+	 *             - `'fields'` _mixed_: An array of the subset of fields that should be selected
+	 *               from the related object(s) by default. If set to `true` (the default), all
+	 *               fields are selected.
+	 *             - `'fieldName'` _string_: The name of the field used when accessing the related
+	 *               data in a result set. For example, in the case of `Posts hasMany Comments`, the
+	 *               field name defaults to `'comments'`, so comment data is accessed (assuming
+	 *               `$post = Posts::first()`) as `$post->comments`.
+	 *             - `'constraint'` _mixed_: A string or array containing additional constraints
+	 *               on the relationship query. If a string, can contain a literal SQL fragment or
+	 *               other database-native value. If an array, maps fields from the related object
+	 *               either to fields elsewhere, or to arbitrary expressions. In either case, _the
+	 *               values specified here will be literally interpreted by the database_.
+	 */
 	public function __construct(array $config = array()) {
 		$defaults = array(
 			'name' => null,
@@ -54,31 +98,30 @@ class Relationship extends \lithium\core\Object {
 			'type' => null,
 			'to'   => null,
 			'from' => null,
-			'link' => self::LINK_KEY,
+			'link' => static::LINK_KEY,
 			'fields' => true,
 			'fieldName' => null,
-			'conditions' => null,
+			'constraint' => array()
 		);
 		parent::__construct($config + $defaults);
 	}
 
 	protected function _init() {
 		parent::_init();
-		$config = $this->_config;
-		$singularName = $config['name'];
+		$config =& $this->_config;
+		$type = $config['type'];
+		$name = ($type == 'hasOne') ? Inflector::pluralize($config['name']) : $config['name'];
 
-		if ($config['type'] == 'hasMany') {
-			$singularName = Inflector::singularize($config['name']);
-		}
 		if (!$config['to']) {
-			$assoc = preg_replace("/\\w+$/", "", $config['from']) . $singularName;
-			$config['to'] = class_exists($assoc) ? $assoc : Libraries::locate('models', $assoc);
+			$assoc = preg_replace("/\\w+$/", "", $config['from']) . $name;
+			$config['to'] = Libraries::locate('models', $assoc);
 		}
 		if (!$config['fieldName']) {
-			$config['fieldName'] = lcfirst($config['name']);
+			$config['fieldName'] = lcfirst($name);
 		}
-		$config['keys'] = $this->_keys($config['keys'], $config);
-		$this->_config = $config;
+		if (!$config['keys'] || !is_array($config['keys'])) {
+			$config['keys'] = $this->_keys($config['keys']);
+		}
 	}
 
 	public function data($key = null) {
@@ -88,15 +131,32 @@ class Relationship extends \lithium\core\Object {
 		return isset($this->_config[$key]) ? $this->_config[$key] : null;
 	}
 
-	public function __get($name) {
+	public function constraints() {
+		$constraints = array();
+		$config  = $this->_config;
+		$relFrom = $config['from']::meta('name');
+		$relTo   = $config['name'];
+
+		foreach ($this->_config['keys'] as $from => $to) {
+			$constraints["{$relFrom}.{$from}"] = "{$relTo}.{$to}";
+		}
+		return $constraints + (array) $this->_config['constraint'];
+	}
+
+	public function __call($name, $args = array()) {
 		return $this->data($name);
 	}
 
-	protected function _keys($keys, $config) {
+	protected function _keys($keys) {
+		$config = $this->_config;
+
 		if (!($related = ($config['type'] == 'belongsTo') ? $config['to'] : $config['from'])) {
 			return array();
 		}
-		return array_combine((array) $keys, (array) $related::key());
+		if (class_exists($related)) {
+			return array_combine((array) $keys, (array) $related::key());
+		}
+		throw new ClassNotFoundException("Related model class '{$related}' not found.");
 	}
 }
 

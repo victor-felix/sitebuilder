@@ -2,15 +2,14 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\analysis;
 
-use \ReflectionClass;
-use \lithium\util\Set;
-use \lithium\util\Collection;
+use lithium\util\Set;
+use lithium\util\Collection;
 
 /**
  * The parser class uses PHP's tokenizer to provide methods and tools for performing static analysis
@@ -23,7 +22,7 @@ class Parser extends \lithium\core\StaticObject {
 	 * present in the string, only the first is returned.
 	 *
 	 * @param string $string String of PHP code to get the token name of, i.e. `'=>'` or `'static'`.
-	 * @param string $options
+	 * @param array $options
 	 * @return mixed
 	 */
 	public static function token($string, array $options = array()) {

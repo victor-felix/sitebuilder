@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -79,7 +79,7 @@ class Profiler extends \lithium\test\Filter {
 	 *              - `'method'`
 	 *              - `'run'`
 	 *              - `'checks'`
-	 * @return object|void Returns the instance of `$tests`.
+	 * @return object Returns the instance of `$tests`.
 	 */
 	public static function apply($report, $tests, array $options = array()) {
 		$defaults = array('method' => 'run', 'checks' => static::$_metrics);
@@ -128,7 +128,7 @@ class Profiler extends \lithium\test\Filter {
 	 *
 	 * @param object $report The report instance running this filter and aggregating results
 	 * @param array $options Not used.
-	 * @return array|void The results of the analysis.
+	 * @return array The results of the analysis.
 	 */
 	public static function analyze($report, array $options = array()) {
 		$results = $report->results['group'];
@@ -164,7 +164,7 @@ class Profiler extends \lithium\test\Filter {
 		$totals = array();
 		foreach ($metrics as $class => $data) {
 			foreach ($data as $title => $value) {
-				if(isset(static::$_metrics[$title])) {
+				if (isset(static::$_metrics[$title])) {
 					if (isset($totals[$title]['value'])) {
 						$totals[$title]['value'] += $value;
 					} else {

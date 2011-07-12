@@ -2,16 +2,14 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\test\filter;
 
-use \lithium\core\Libraries;
-use \lithium\util\String;
-use \lithium\util\Collection;
-use \lithium\analysis\Inspector;
+use lithium\core\Libraries;
+use lithium\analysis\Inspector;
 
 /**
  * Runs code coverage analysis for the executed tests.
@@ -30,7 +28,7 @@ class Coverage extends \lithium\test\Filter {
 	 *              the documentation for `collect()` for further options.  Options affecting this
 	 *              method are:
 	 *              -'method': The name of method to attach to, defaults to 'run'.
-	 * @return object|void Returns the instance of `$tests` with code coverage analysis
+	 * @return object Returns the instance of `$tests` with code coverage analysis
 	 *                     triggers applied.
 	 */
 	public static function apply($report, $tests, array $options = array()) {
@@ -54,7 +52,7 @@ class Coverage extends \lithium\test\Filter {
 	 * @param object $report The report instance running this filter and aggregating results
 	 * @param array $classes A list of classes to analyze coverage on. By default, gets all
 	 *              defined subclasses of lithium\test\Unit which are currently in memory.
-	 * @return array|void Returns an array indexed by file and line, showing the number of
+	 * @return array Returns an array indexed by file and line, showing the number of
 	 *                    instances each line was called.
 	 */
 	public static function analyze($report, array $classes = array()) {
@@ -72,7 +70,7 @@ class Coverage extends \lithium\test\Filter {
 		}
 		$executableLines = array();
 
-		if (!empty($classes)) {
+		if ($classes) {
 			$executableLines = array_combine($classes, array_map(
 				function($cls) { return Inspector::executable($cls, array('public' => false)); },
 				$classes
@@ -83,7 +81,11 @@ class Coverage extends \lithium\test\Filter {
 			$executable = $executableLines[$class];
 			$covered = array_intersect(array_keys($density), $executable);
 			$uncovered = array_diff($executable, $covered);
-			$percentage = round(count($covered) / (count($executable) ?: 1), 4) * 100;
+			if (count($executable)) {
+				$percentage = round(count($covered) / (count($executable) ?: 1), 4) * 100;
+			} else {
+				$percentage = 100;
+			}
 			$result[$class] = compact('class', 'executable', 'covered', 'uncovered', 'percentage');
 		}
 
@@ -204,9 +206,7 @@ class Coverage extends \lithium\test\Filter {
 
 		foreach ($runs as $run) {
 			foreach ($run as $file => $coverage) {
-				$file = str_replace('\\', '/', $file);
-
-				if (!empty($classMap)) {
+				if ($classMap) {
 					if (!$class = array_search($file, $classMap)) {
 						continue;
 					}

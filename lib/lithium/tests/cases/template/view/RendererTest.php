@@ -2,19 +2,20 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\template\view;
 
-use lithium\template\View;
+use stdClass;
 use lithium\action\Request;
+use lithium\action\Response;
 use lithium\template\Helper;
 use lithium\template\helper\Html;
 use lithium\template\view\adapter\Simple;
 use lithium\net\http\Router;
-use stdClass;
+use lithium\template\View;
 
 class RendererTest extends \lithium\test\Unit {
 
@@ -22,31 +23,36 @@ class RendererTest extends \lithium\test\Unit {
 		$this->_routes = Router::get();
 		Router::reset();
 		Router::connect('/{:controller}/{:action}');
-		$this->subject = new Simple(array('request' => new Request(array(
-			'base' => '', 'env' => array('HTTP_HOST' => 'foo.local')
-		))));
+		$this->subject = new Simple(array(
+			'request' => new Request(array(
+				'base' => '', 'env' => array('HTTP_HOST' => 'foo.local')
+			)),
+			'response' => new Response()
+		));
 	}
 
 	public function tearDown() {
 		Router::reset();
+
 		foreach ($this->_routes as $route) {
 			Router::connect($route);
 		}
 	}
 
 	public function testInitialization() {
-		$expected = array('url', 'path', 'options', 'content', 'title', 'scripts', 'styles');
+		$expected = array('url', 'path', 'options', 'title', 'scripts', 'styles', 'head');
 		$result = array_keys($this->subject->handlers());
 		$this->assertEqual($expected, $result);
 
-		$expected = array('content', 'title', 'scripts', 'styles');
+		$expected = array('content', 'title', 'scripts', 'styles', 'head');
 		$result = array_keys($this->subject->context());
 		$this->assertEqual($expected, $result);
 	}
 
 	public function testContextQuerying() {
 		$expected = array(
-			'content' => '', 'title' => '', 'scripts' => array(), 'styles' => array()
+			'content' => '', 'title' => '', 'scripts' => array(),
+			'styles' => array(), 'head' => array()
 		);
 		$this->assertEqual($expected, $this->subject->context());
 		$this->assertEqual('', $this->subject->context('title'));
@@ -55,19 +61,48 @@ class RendererTest extends \lithium\test\Unit {
 		$this->assertNull($this->subject->foo());
 		$this->assertFalse(isset($this->subject->foo));
 
+		$result = $this->subject->title("<script>alert('XSS');</script>");
+		$this->assertEqual('&lt;script&gt;alert(&#039;XSS&#039;);&lt;/script&gt;', $result);
+
+		$result = $this->subject->title();
+		$this->assertEqual('&lt;script&gt;alert(&#039;XSS&#039;);&lt;/script&gt;', $result);
+
 		$this->subject = new Simple(array('context' => array(
 			'content' => '', 'title' => '', 'scripts' => array(), 'styles' => array(), 'foo' => '!'
 		)));
-		$result = $this->subject->foo();
-		$this->assertEqual('!', $result);
+		$this->assertEqual('!', $this->subject->foo());
 		$this->assertTrue(isset($this->subject->foo));
+	}
+
+	/**
+	 * Tests that URLs are properly escaped by the URL handler.
+	 */
+	public function testUrlAutoEscaping() {
+		Router::connect('/{:controller}/{:action}/{:id}');
+
+		$this->assertEqual('/<foo>/<bar>', $this->subject->url('/<foo>/<bar>'));
+		$result = $this->subject->url(array('Controller::action', 'id' => '<script />'));
+		$this->assertEqual('/controller/action/<script />', $result);
+
+		$this->subject = new Simple(array(
+			'response' => new Response(), 'view' => new View(), 'request' => new Request(array(
+				'base' => '', 'env' => array('HTTP_HOST' => 'foo.local')
+			))
+		));
+
+		$this->assertEqual('/&lt;foo&gt;/&lt;bar&gt;', $this->subject->url('/<foo>/<bar>'));
+		$result = $this->subject->url(array('Controller::action', 'id' => '<script />'));
+		$this->assertEqual('/controller/action/&lt;script /&gt;', $result);
+
+		$result = $this->subject->url(array('Posts::index', '?' => array(
+			'foo' => 'bar', 'baz' => 'dib'
+		)));
+		$this->assertEqual('/posts?foo=bar&baz=dib', $result);
 	}
 
 	/**
 	 * Tests built-in content handlers for generating URLs, paths to static assets, and handling
 	 * output of elements written to the request context.
-	 *
-	 * @return void
 	 */
 	public function testCoreHandlers() {
 		$url = $this->subject->applyHandler(null, null, 'url', array(
@@ -79,6 +114,7 @@ class RendererTest extends \lithium\test\Unit {
 		$class = get_class($helper);
 		$path = $this->subject->applyHandler($helper, "{$class}::script", 'path', 'foo/file');
 		$this->assertEqual('/js/foo/file.js', $path);
+		$this->assertEqual('/some/generic/path', $this->subject->path('some/generic/path'));
 	}
 
 	public function testHandlerInsertion() {
@@ -88,9 +124,7 @@ class RendererTest extends \lithium\test\Unit {
 
 		$foo = function($value) { return "Foo: {$value}"; };
 
-		$expected = array(
-			'url', 'path', 'options', 'content', 'title', 'scripts', 'styles', 'foo'
-		);
+		$expected = array('url', 'path', 'options', 'title', 'scripts', 'styles', 'head', 'foo');
 		$result = array_keys($this->subject->handlers(compact('foo')));
 		$this->assertEqual($expected, $result);
 
@@ -177,8 +211,10 @@ class RendererTest extends \lithium\test\Unit {
 
 	public function testGetters() {
 		$this->assertTrue($this->subject->request() instanceof Request);
+		$this->assertTrue($this->subject->response() instanceof Response);
 		$this->subject = new Simple();
 		$this->assertNull($this->subject->request());
+		$this->assertNull($this->subject->response());
 	}
 
 	public function testSetAndData() {
@@ -189,11 +225,11 @@ class RendererTest extends \lithium\test\Unit {
 		$result = $this->subject->data();
 		$this->assertEqual($data, $result);
 
-		$result = $this->subject->set(array('more' => new StdClass()));
+		$result = $this->subject->set(array('more' => new stdClass()));
 		$this->assertNull($result);
 
 		$result = $this->subject->data();
-		$this->assertEqual($data + array('more' => new StdClass()), $result);
+		$this->assertEqual($data + array('more' => new stdClass()), $result);
 	}
 
 	/**
@@ -223,6 +259,11 @@ class RendererTest extends \lithium\test\Unit {
 		$this->assertEqual('Foo', $this->subject->title('Foo'));
 		$this->assertEqual('Bar', $this->subject->title('Bar'));
 		$this->assertEqual('Bar', $this->subject->title());
+
+		$this->assertFalse(trim($this->subject->head()));
+		$this->assertEqual('foo', trim($this->subject->head('foo')));
+		$this->assertEqual("foo\n\tbar", trim($this->subject->head('bar')));
+		$this->assertEqual("foo\n\tbar", trim($this->subject->head()));
 	}
 }
 

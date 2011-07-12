@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -12,7 +12,7 @@ use lithium\core\ConfigException;
 
 /**
  * The `Auth` class provides a common interface to authenticate user credentials from different
- * sources against different storage backends in a common way. As with most other adapter-driven
+ * sources against different storage backends in a uniform way. As with most other adapter-driven
  * classes in the framework, `Auth` allows you to specify one or more named configurations,
  * including an adapter, which can be referenced by name in your application.
  *
@@ -51,7 +51,7 @@ class Auth extends \lithium\core\Adaptable {
 	 * @var array Associative array of class names & their namespaces.
 	 */
 	protected static $_classes = array(
-		'session' => '\lithium\storage\Session'
+		'session' => 'lithium\storage\Session'
 	);
 
 	/**
@@ -102,6 +102,7 @@ class Auth extends \lithium\core\Adaptable {
 	 * @return array After a successful credential check against the adapter (or a successful
 	 *         lookup against the current session), returns an array of user information from the
 	 *         storage backend used by the configured adapter.
+	 * @filter
 	 */
 	public static function check($name, $credentials = null, array $options = array()) {
 		$defaults = array('checkSession' => true, 'writeSession' => true);
@@ -113,7 +114,7 @@ class Auth extends \lithium\core\Adaptable {
 			$config = $self::invokeMethod('_config', array($name));
 
 			if ($config === null) {
-				throw new ConfigException("Configuration '{$name}' has not been defined.");
+				throw new ConfigException("Configuration `{$name}` has not been defined.");
 			}
 			$session = $config['session'];
 
@@ -145,6 +146,7 @@ class Auth extends \lithium\core\Adaptable {
 	 *              set by the default session configuration for `$name`.
 	 * @return array Returns the array of data written to the session, or `false` if the adapter
 	 *         rejects the data.
+	 * @filter
 	 */
 	public static function set($name, $data, array $options = array()) {
 		$params = compact('name', 'data', 'options');
@@ -174,6 +176,7 @@ class Auth extends \lithium\core\Adaptable {
 	 *              - `'clearSession'` _boolean_: If `true` (the default), session data for the
 	 *                specified configuration is removed, otherwise it is retained.
 	 * @return void
+	 * @filter
 	 */
 	public static function clear($name, array $options = array()) {
 		$defaults = array('clearSession' => true);

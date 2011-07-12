@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -112,7 +112,7 @@ class Report extends \lithium\core\Object {
 			'group' => null,
 			'filters' => array(),
 			'format' => 'txt',
-			'reporter' => 'console',
+			'reporter' => 'console'
 		);
 		parent::__construct($config + $defaults);
 	}
@@ -211,17 +211,18 @@ class Report extends \lithium\core\Object {
 	 * Renders the test output (e.g. layouts and filter templates)
 	 *
 	 * @param string $template name of the template (eg: layout)
-	 * @param string $data array from `_data()` method
-	 * @param array $options Array of options (e.g. rendering type)
+	 * @param string|array $data array from `_data()` method
 	 * @return string
+	 * @filter
 	 */
 	public function render($template, $data = array()) {
 		$config = $this->_config;
-		if ($template == "stats") {
+
+		if ($template == "stats" && !$data) {
 			$data = $this->stats();
 		}
 		$template = Libraries::locate("test.templates.{$config['reporter']}", $template, array(
-			'filter' => false, 'type' => 'file', 'suffix' => ".{$config['format']}.php",
+			'filter' => false, 'type' => 'file', 'suffix' => ".{$config['format']}.php"
 		));
 		$params = compact('template', 'data', 'config');
 
@@ -234,14 +235,15 @@ class Report extends \lithium\core\Object {
 	}
 
 	public function filters(array $filters = array()) {
-		if (!empty($this->_filters) && empty($filters)) {
+		if ($this->_filters && !$filters) {
 			return $this->_filters;
 		}
 		$filters += (array) $this->_config['filters'];
 		$results = array();
+
 		foreach ($filters as $filter => $options) {
 			if (!$class = Libraries::locate('test.filter', $filter)) {
-				throw new ClassNotFoundException("{$class} is not a valid test filter.");
+				throw new ClassNotFoundException("`{$class}` is not a valid test filter.");
 			}
 			$options['name'] = strtolower(join('', array_slice(explode("\\", $class), -1)));
 			$results[$class] = $options + array('apply' => array(), 'analyze' => array());

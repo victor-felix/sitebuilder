@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -25,10 +25,10 @@ class Php extends \lithium\core\Object {
 	/**
 	 * Default ini settings for this session adapter.
 	 *
-	 * @var array Keys are session ini settings, but without the `session.` namespace.
+	 * @var array Keys are session ini settings, with the `session.` namespace.
 	 */
 	protected $_defaults = array(
-		'session.cookie_lifetime' => '0',
+		'session.cookie_lifetime' => '0', 'session.cookie_httponly' => true
 	);
 
 	/**
@@ -38,7 +38,6 @@ class Php extends \lithium\core\Object {
 	 *
 	 * @param array $config Unified constructor configuration parameters. You can set
 	 *        the `session.*` PHP ini settings here as key/value pairs.
-	 * @return void
 	 */
 	public function __construct(array $config = array()) {
 		parent::__construct($config + $this->_defaults);
@@ -94,11 +93,15 @@ class Php extends \lithium\core\Object {
 	}
 
 	/**
-	 * Obtain the session id.
+	 * Sets or obtains the session ID.
 	 *
-	 * @return mixed Session id, or null if the session has not been started.
+	 * @param string $key Optional. If specified, sets the session ID to the value of `$key`.
+	 * @return mixed Session ID, or `null` if the session has not been started.
 	 */
-	public static function key() {
+	public static function key($key = null) {
+		if ($key) {
+			return session_id($key);
+		}
 		return session_id() ?: null;
 	}
 
@@ -107,13 +110,13 @@ class Php extends \lithium\core\Object {
 	 *
 	 * @param string $key Key of the entry to be checked.
 	 * @param array $options Options array. Not used for this adapter method.
-	 * @return boolean True if the key exists, false otherwise.
+	 * @return closure Function returning boolean `true` if the key exists, `false` otherwise.
 	 */
 	public static function check($key, array $options = array()) {
 		if (!static::isStarted() && !static::_start()) {
 			throw new RuntimeException("Could not start session.");
 		}
-		return function($self, $params, $chain) {
+		return function($self, $params) {
 			return Set::check($_SESSION, $params['key']);
 		};
 	}
@@ -124,13 +127,13 @@ class Php extends \lithium\core\Object {
 	 * @param null|string $key Key of the entry to be read. If no key is passed, all
 	 *        current session data is returned.
 	 * @param array $options Options array. Not used for this adapter method.
-	 * @return mixed Data in the session if successful, false otherwise.
+	 * @return closure Function returning data in the session if successful, `false` otherwise.
 	 */
 	public static function read($key = null, array $options = array()) {
 		if (!static::isStarted() && !static::_start()) {
 			throw new RuntimeException("Could not start session.");
 		}
-		return function($self, $params, $chain) {
+		return function($self, $params) {
 			$key = $params['key'];
 
 			if (!$key) {
@@ -155,7 +158,7 @@ class Php extends \lithium\core\Object {
 	 * @param string $key Key of the item to be stored.
 	 * @param mixed $value The value to be stored.
 	 * @param array $options Options array. Not used for this adapter method.
-	 * @return boolean True on successful write, false otherwise
+	 * @return closure Function returning boolean `true` on successful write, `false` otherwise.
 	 */
 	public static function write($key, $value, array $options = array()) {
 		if (!static::isStarted() && !static::_start()) {
@@ -163,7 +166,7 @@ class Php extends \lithium\core\Object {
 		}
 		$class = __CLASS__;
 
-		return function($self, $params, $chain) use ($class) {
+		return function($self, $params) use ($class) {
 			return $class::overwrite(
 				$_SESSION, Set::insert($_SESSION, $params['key'], $params['value'])
 			);
@@ -175,7 +178,8 @@ class Php extends \lithium\core\Object {
 	 *
 	 * @param string $key The key to be deleted
 	 * @param array $options Options array. Not used for this adapter method.
-	 * @return boolean True if the key no longer exists in the session, false otherwise
+	 * @return closure Function returning boolean `true` if the key no longer exists
+	 *         in the session, `false` otherwise
 	 */
 	public static function delete($key, array $options = array()) {
 		if (!static::isStarted() && !static::_start()) {
@@ -183,7 +187,7 @@ class Php extends \lithium\core\Object {
 		}
 		$class = __CLASS__;
 
-		return function($self, $params, $chain) use ($class) {
+		return function($self, $params) use ($class) {
 			$key = $params['key'];
 			$class::overwrite($_SESSION, Set::remove($_SESSION, $key));
 			return !Set::check($_SESSION, $key);
@@ -194,14 +198,14 @@ class Php extends \lithium\core\Object {
 	 * Clears all keys from the session.
 	 *
 	 * @param array $options Options array. Not used fro this adapter method.
-	 * @return boolean True on successful clear, false otherwise.
+	 * @return closure Function returning boolean `true` on successful clear, `false` otherwise.
 	 */
 	public function clear(array $options = array()) {
 		if (!static::isStarted() && !static::_start()) {
 			throw new RuntimeException("Could not start session.");
 		}
 
-		return function($self, $params, $chain) {
+		return function($self, $params) {
 			return session_destroy();
 		};
 	}
@@ -221,7 +225,7 @@ class Php extends \lithium\core\Object {
 	 * @param array $old Reference to the array that needs to be overwritten. Will usually
 	 *        be `$_SESSION`.
 	 * @param array $new The data that should overwrite the keys/values in `$old`.
-	 * @return true Success
+	 * @return boolean Always `true`
 	 */
 	public static function overwrite(&$old, $new) {
 		if (!empty($old)) {

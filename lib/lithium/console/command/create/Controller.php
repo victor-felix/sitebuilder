@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -27,7 +27,7 @@ class Controller extends \lithium\console\command\Create {
      */
 	protected function _use($request) {
 		$request->params['command'] = 'model';
-		return '\\' . $this->_namespace($request) . '\\' . $this->_model($request);
+		return $this->_namespace($request) . '\\' . $this->_model($request);
 	}
 
     /**
@@ -67,7 +67,7 @@ class Controller extends \lithium\console\command\Create {
      * @return string
      */
 	protected function _model($request) {
-		return Inflector::classify($request->action);
+		return Inflector::camelize(Inflector::pluralize($request->action));
 	}
 
     /**

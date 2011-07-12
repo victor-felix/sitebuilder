@@ -2,14 +2,14 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\template\view\adapter;
 
-use \lithium\template\view\adapter\Simple;
-use \lithium\tests\mocks\util\MockStringObject;
+use lithium\template\view\adapter\Simple;
+use lithium\tests\mocks\util\MockStringObject;
 
 class SimpleTest extends \lithium\test\Unit {
 

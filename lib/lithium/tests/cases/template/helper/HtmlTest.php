@@ -2,15 +2,17 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\template\helper;
 
-use \lithium\net\http\Router;
-use \lithium\template\helper\Html;
-use \lithium\tests\mocks\template\helper\MockHtmlRenderer;
+use lithium\net\http\Router;
+use lithium\template\helper\Html;
+use lithium\action\Request;
+use lithium\action\Response;
+use lithium\tests\mocks\template\helper\MockHtmlRenderer;
 
 class HtmlTest extends \lithium\test\Unit {
 
@@ -34,7 +36,12 @@ class HtmlTest extends \lithium\test\Unit {
 		Router::connect('/{:controller}/{:action}/{:id}.{:type}');
 		Router::connect('/{:controller}/{:action}.{:type}');
 
-		$this->context = new MockHtmlRenderer();
+		$this->context = new MockHtmlRenderer(array(
+			'request' => new Request(array(
+				'base' => '', 'env' => array('HTTP_HOST' => 'foo.local')
+			)),
+			'response' => new Response()
+		));
 		$this->html = new Html(array('context' => &$this->context));
 	}
 
@@ -53,21 +60,25 @@ class HtmlTest extends \lithium\test\Unit {
 	}
 
 	/**
-	 * Tests that character set declarations render the correct character set and meta tag.
+	 * Tests that character set declarations render the
+	 * correct character set and short meta tag.
 	 *
 	 * @return void
 	 */
 	public function testCharset() {
 		$result = $this->html->charset();
-
 		$this->assertTags($result, array('meta' => array(
-			'http-equiv' => 'Content-Type', 'content' => 'text/html; charset=utf-8'
+			'charset' => 'UTF-8'
+		)));
+
+		$result = $this->html->charset('utf-8');
+		$this->assertTags($result, array('meta' => array(
+			'charset' => 'utf-8'
 		)));
 
 		$result = $this->html->charset('UTF-7');
-
 		$this->assertTags($result, array('meta' => array(
-			'http-equiv' => 'Content-Type', 'content' => 'text/html; charset=UTF-7'
+			'charset' => 'UTF-7'
 		)));
 	}
 
@@ -102,7 +113,7 @@ class HtmlTest extends \lithium\test\Unit {
 		$result = $this->html->link('No-existy', '/posts.xmp', array('type' => 'rong'));
 		$this->assertTags($result, array('link' => array(
 			'href' => 'regex:/.*\/posts\.xmp/',
-			'title' => 'No-existy',
+			'title' => 'No-existy'
 		)));
 
 		$result = $this->html->link('No-existy', '/posts.xpp', array('type' => 'atom'));
@@ -280,6 +291,18 @@ class HtmlTest extends \lithium\test\Unit {
 			'<\/script>\s*$/',
 			$result
 		);
+
+		$result = $this->html->script("foo", array(
+			'async' => true, 'defer' => true, 'onload' => 'init()'
+		));
+
+		$this->assertTags($result, array('script' => array(
+			'type' => 'text/javascript',
+			'src' => '/js/foo.js',
+			'async' => 'async',
+			'defer' => 'defer',
+			'onload' => 'init()'
+		)));
 	}
 
 	/**
@@ -291,9 +314,9 @@ class HtmlTest extends \lithium\test\Unit {
 		$result = $this->html->image('test.gif');
 		$this->assertTags($result, array('img' => array('src' => '/img/test.gif', 'alt' => '')));
 
-		$result = $this->html->image('http://google.com/logo.gif');
+		$result = $this->html->image('http://example.com/logo.gif');
 		$this->assertTags($result, array('img' => array(
-			'src' => 'http://google.com/logo.gif', 'alt' => ''
+			'src' => 'http://example.com/logo.gif', 'alt' => ''
 		)));
 
 		$result = $this->html->image(array(
@@ -327,6 +350,21 @@ class HtmlTest extends \lithium\test\Unit {
 		$result = $this->html->style('http://whatever.com/screen.css?1234');
 		$expected['link']['href'] = 'regex:/http:\/\/.*\/screen\.css\?1234/';
 		$this->assertTags($result, $expected);
+	}
+	/**
+	 * Tests generating random tags for the <head> section
+	 *
+	 * @return void
+	 */
+	public function testHead() {
+		$result = $this->html->head('meta', array('options' => array('author' => 'foo')));
+		$expected = array('meta' => array('author' => 'foo'));
+		$this->assertTags($result, $expected);
+
+		$result = $this->html->head('unexisting-name', array(
+			'options' => array('author' => 'foo')
+		));
+		$this->assertNull($result);
 	}
 
 	/**

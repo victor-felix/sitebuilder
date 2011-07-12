@@ -2,16 +2,15 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\g11n;
 
-use \lithium\core\Environment;
-use \lithium\util\String;
-use \lithium\g11n\Locale;
-use \lithium\g11n\Catalog;
+use lithium\core\Environment;
+use lithium\util\String;
+use lithium\g11n\Catalog;
 
 /**
  * The `Message` class is concerned with an aspect of globalizing static message strings
@@ -92,7 +91,7 @@ class Message extends \lithium\core\StaticObject {
 	 *              - `'default'`: Is used as a fall back if `_translated()` returns
 	 *                             without a result.
 	 *              - `'noop'`: If `true` no whatsoever lookup takes place.
-	 * @return string|void The translation or the value of the `'default'` option if none
+	 * @return string The translation or the value of the `'default'` option if none
 	 *                     could be found.
 	 */
 	public static function translate($id, array $options = array()) {
@@ -101,18 +100,20 @@ class Message extends \lithium\core\StaticObject {
 			'locale' => Environment::get('locale'),
 			'scope' => null,
 			'default' => null,
-			'noop' => false,
+			'noop' => false
 		);
-		extract($options + $defaults);
+		$options += $defaults;
 
-		if ($noop) {
+		if ($options['noop']) {
 			$result = null;
 		} else {
-			$result = static::_translated($id, abs($count), $locale, compact('scope'));
+			$result = static::_translated($id, abs($options['count']), $options['locale'], array(
+				'scope' => $options['scope']
+			));
 		}
 
-		if ($result || $default) {
-			return String::insert($result ?: $default, $options);
+		if ($result || $options['default']) {
+			return String::insert($result ?: $options['default'], $options);
 		}
 	}
 
@@ -179,7 +180,7 @@ class Message extends \lithium\core\StaticObject {
 	 * @param string $locale The target locale.
 	 * @param array $options Passed through to `Catalog::read()`. Valid options are:
 	 *              - `'scope'`: The scope of the message.
-	 * @return string|void The translation or `null` if none could be found or the plural
+	 * @return string The translation or `null` if none could be found or the plural
 	 *         form could not be determined.
 	 * @filter
 	 */
@@ -187,7 +188,7 @@ class Message extends \lithium\core\StaticObject {
 		$params = compact('id', 'count', 'locale', 'options');
 
 		$cache =& static::$_cachedPages;
-		return static::_filter(__METHOD__, $params, function($self, $params, $chain) use (&$cache) {
+		return static::_filter(__FUNCTION__, $params, function($self, $params) use (&$cache) {
 			extract($params);
 
 			if (!isset($cache[$options['scope']][$locale])) {

@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -25,13 +25,13 @@ namespace lithium\storage;
  *     'local' => array('adapter' => 'Apc'),
  *     'distributed' => array(
  *         'adapter' => 'Memcached',
- *         'servers' => array('127.0.0.1', 11211),
+ *         'host' => '127.0.0.1:11211',
  *     ),
  *     'default' => array('adapter' => 'File')
  * ));}}}
  *
  * Each adapter provides a consistent interface for the basic cache operations of `write`, `read`,
- * `delete` and `clear`, which can be used interchangably between all adapters. Some adapters
+ * `delete` and `clear`, which can be used interchangeably between all adapters. Some adapters
  * may provide additional methods that are not consistently available across other adapters.
  * To make use of these, it is always possible to call:
  *
@@ -39,9 +39,10 @@ namespace lithium\storage;
  *
  * This allows a very wide range of flexibility, at the cost of portability.
  *
- * Some cache adapters (e.g. File) do *not* provide the functionality for increment/decrement.
- * Additionally, some cache adapters support multi-key operations for `write`, `read` and `delete`-
- * Please see the individual documentation for cache adapters and the operations that they support.
+ * Some cache adapters (e.g. `File`) do _not_ provide the functionality for increment/decrement.
+ * Additionally, some cache adapters support multi-key operations for `write`, `read` and `delete`
+ * &mdash; please see the individual documentation for cache adapters and the operations that
+ * they support.
  *
  * @see lithium\core\Adaptable
  * @see lithium\storage\cache\adapter
@@ -51,9 +52,9 @@ class Cache extends \lithium\core\Adaptable {
 	/**
 	 * Stores configurations for cache adapters
 	 *
-	 * @var object Collection of cache configurations
+	 * @var array
 	 */
-	protected static $_configurations = null;
+	protected static $_configurations = array();
 
 	/**
 	 * Libraries::locate() compatible path to adapters for this class.
@@ -205,7 +206,7 @@ class Cache extends \lithium\core\Adaptable {
 	 * @param string $key Key of numeric cache item to increment
 	 * @param integer $offset Offset to increment - defaults to 1.
 	 * @param mixed $options Options for this method.
-	 * @return integer|boolean Item's new value on successful increment, false otherwise
+	 * @return mixed Item's new value on successful increment, false otherwise.
 	 * @filter This method may be filtered.
 	 */
 	public static function increment($name, $key, $offset = 1, array $options = array()) {
@@ -234,10 +235,10 @@ class Cache extends \lithium\core\Adaptable {
 	 * from the given cache configuration.
 	 *
 	 * @param string $name
-	 * @param string $key Key of numeric cache item to dercrement
+	 * @param string $key Key of numeric cache item to decrement
 	 * @param integer $offset Offset to decrement - defaults to 1.
 	 * @param mixed $options Options for this method.
-	 * @return integer|boolean Item's new value on successful decrement, false otherwise
+	 * @return mixed Item's new value on successful decrement, false otherwise.
 	 * @filter This method may be filtered.
 	 */
 	public static function decrement($name, $key, $offset = 1, array $options = array()) {

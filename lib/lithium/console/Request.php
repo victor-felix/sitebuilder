@@ -2,14 +2,14 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\console;
 
 /**
- * The `Request` class reprents a console request and holds information about it's
+ * The `Request` class represents a console request and holds information about it's
  * environment as well as passed arguments.
  *
  * @see lithium\console\Dispatcher
@@ -44,8 +44,15 @@ class Request extends \lithium\core\Object {
 	 * Enviroment variables.
 	 *
 	 * @var array
-	 **/
+	 */
 	protected $_env = array();
+
+	/**
+	 * Holds the value of the current locale, set through the `locale()` method.
+	 *
+	 * @var string
+	 */
+	protected $_locale = null;
 
 	/**
 	 * Auto configuration
@@ -98,7 +105,7 @@ class Request extends \lithium\core\Object {
 		}
 	}
 
-	public function __isSet($name) {
+	public function __isset($name) {
 		return isset($this->params[$name]);
 	}
 
@@ -119,7 +126,9 @@ class Request extends \lithium\core\Object {
 	 * Get environment variables.
 	 *
 	 * @param string $key
-	 * @return string|void
+	 * @return mixed Returns the environment key related to the `$key` argument. If `$key` is equal
+	 * to null the result will be the entire environment array. If `$key` is set but not
+	 * available, `null` will be returned.
 	 */
 	public function env($key = null) {
 		if (!empty($this->_env[$key])) {
@@ -155,6 +164,21 @@ class Request extends \lithium\core\Object {
 	 */
 	public function input() {
 		return fgets($this->input);
+	}
+
+	/**
+	 * Sets or returns the current locale string. For more information, see
+	 * "[Globalization](http://lithify.me/docs/manual/07_globalization)" in the manual.
+	 *
+	 * @param string $locale An optional locale string like `'en'`, `'en_US'` or `'de_DE'`. If
+	 *               specified, will overwrite the existing locale.
+	 * @return Returns the currently set locale string.
+	 */
+	public function locale($locale = null) {
+		if ($locale) {
+			$this->_locale = $locale;
+		}
+		return $this->_locale;
 	}
 
 	/**

@@ -2,23 +2,31 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\net\socket;
 
-use \lithium\net\socket\Stream;
+use lithium\net\http\Request;
+use lithium\net\http\Response;
+use lithium\net\socket\Stream;
 
 class StreamTest extends \lithium\test\Unit {
 
 	protected $_testConfig = array(
 		'persistent' => false,
-		'scheme' => 'tcp',
-		'host' => 'localhost',
+		'scheme' => 'http',
+		'host' => 'lithify.me',
 		'port' => 80,
-		'timeout' => 2
+		'timeout' => 2,
+		'classes' => array('request' => 'lithium\net\http\Request')
 	);
+
+	public function skip() {
+		$host = $this->_testConfig['host'];
+		$this->skipIf(dns_check_record($host, "ANY") === false, "No internet connection.");
+	}
 
 	public function testAllMethodsNoConnection() {
 		$stream = new Stream(array('scheme' => null));
@@ -29,7 +37,7 @@ class StreamTest extends \lithium\test\Unit {
 		$this->assertFalse($stream->write(null));
 		$this->assertFalse($stream->read());
 		$this->assertTrue($stream->eof());
-		$this->assertNull($stream->send(''));
+		$this->assertNull($stream->send(new Request()));
 	}
 
 	public function testOpen() {
@@ -76,30 +84,47 @@ class StreamTest extends \lithium\test\Unit {
 
 	public function testWriteAndRead() {
 		$stream = new Stream($this->_testConfig);
-		$result = $stream->open();
-		$data = "GET / HTTP/1.1\r\n";
-		$data .= "Host: localhost\r\n";
-		$data .= "Connection: Close\r\n\r\n";
-		$this->assertTrue($stream->write($data));
+		$this->assertTrue(is_resource($stream->open()));
+		$this->assertTrue(is_resource($stream->resource()));
 
-		$result = $stream->eof();
-		$this->assertFalse($result);
-
-		$result = $stream->read();
-		$this->assertPattern("/^HTTP/", $result);
+		$result = $stream->write();
+		$this->assertEqual(83, $result);
+		$this->assertPattern("/^HTTP/", (string) $stream->read());
 	}
 
-	public function testSend() {
+	public function testSendWithNull() {
 		$stream = new Stream($this->_testConfig);
-		$result = $stream->open();
-		$data = "GET / HTTP/1.1\r\n";
-		$data .= "Host: localhost\r\n";
-		$data .= "Connection: Close\r\n\r\n";
+		$this->assertTrue(is_resource($stream->open()));
+		$result = $stream->send(
+			new Request($this->_testConfig),
+			array('response' => 'lithium\net\http\Response')
+		);
+		$this->assertTrue($result instanceof Response);
+		$this->assertPattern("/^HTTP/", (string) $result);
+		$this->assertTrue($stream->eof());
+	}
 
-		$result = $stream->send($data, array('classes' => array(
-			'response' => '\lithium\net\http\Response'
-		)));
-		$this->assertNotEqual(null, $result);
+	public function testSendWithArray() {
+		$stream = new Stream($this->_testConfig);
+		$this->assertTrue(is_resource($stream->open()));
+		$result = $stream->send($this->_testConfig,
+			array('response' => 'lithium\net\http\Response')
+		);
+		$this->assertTrue($result instanceof Response);
+		$this->assertPattern("/^HTTP/", (string) $result);
+		$this->assertTrue($stream->eof());
+	}
+
+	public function testSendWithObject() {
+		$stream = new Stream($this->_testConfig);
+		$this->assertTrue(is_resource($stream->open()));
+		$result = $stream->send(
+			new Request($this->_testConfig),
+			array('response' => 'lithium\net\http\Response')
+		);
+		$this->assertTrue($result instanceof Response);
+		$this->assertPattern("/^HTTP/", (string) $result);
+		$this->assertTrue($stream->eof());
 	}
 }
 

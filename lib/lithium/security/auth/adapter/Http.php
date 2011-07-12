@@ -2,13 +2,11 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\security\auth\adapter;
-
-use \lithium\core\Libraries;
 
 /**
  * The `Http` adapter provides basic and digest authentication based on the HTTP protocol.
@@ -133,7 +131,7 @@ class Http extends \lithium\core\Object {
 			$nonce = uniqid();
 			$opaque = md5($realm);
 
-			$message = "WWW-Authenticate: Digest realm=\"{$realm}\" qop=\"auth\",";
+			$message = "WWW-Authenticate: Digest realm=\"{$realm}\",qop=\"auth\",";
 			$message .= "nonce=\"{$nonce}\",opaque=\"{$opaque}\"";
 			$this->_writeHeader($message);
 			return;

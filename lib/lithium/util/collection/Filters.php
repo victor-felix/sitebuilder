@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -44,7 +44,7 @@ namespace lithium\util\collection;
  * Within the framework, you can call `applyFilter()` on any object (static or instantiated) and
  * pass the name of the method you would like to filter, along with the filter itself. For example:
  *
- * {{{use \lithium\action\Dispatcher;
+ * {{{use lithium\action\Dispatcher;
  *
  * Dispatcher::applyFilter('run', function($self, $params, $chain) {
  * 	// Custom pre-dispatch logic goes here
@@ -138,6 +138,7 @@ class Filters extends \lithium\util\Collection {
 	 * @see lithium\util\collection\Filters::apply()
 	 * @param string $class Fully-namespaced class name.
 	 * @param string $method Method name.
+	 * @return boolean
 	 */
 	public static function hasApplied($class, $method) {
 		return isset(static::$_lazyFilters[$class][$method]);

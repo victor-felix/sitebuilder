@@ -2,15 +2,68 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\data\collection;
 
-use lithium\data\Source;
+use lithium\util\Collection;
 
 class DocumentArray extends \lithium\data\Collection {
+
+	/**
+	 * Indicates whether this array was part of a document loaded from a data source, or is part of
+	 * a new document, or is in newly-added field of an existing document.
+	 *
+	 * @var boolean
+	 */
+	protected $_exists = false;
+
+	/**
+	 * Contains an array that is matched against .
+	 *
+	 * @var array
+	 */
+	protected $_updated = array();
+
+	/**
+	 * Holds an array of values that should be processed on initialization.
+	 *
+	 * @var array
+	 */
+	protected $_autoConfig = array(
+		'data', 'model', 'result', 'query', 'parent', 'stats', 'pathKey', 'exists'
+	);
+
+	public function exists() {
+		return $this->_exists;
+	}
+
+	public function update($id = null, array $data = array()) {
+		$this->_exists = true;
+		$this->_data = $data ?: $this->_data;
+	}
+
+	/**
+	 * Adds conversions checks to ensure certain class types and embedded values are properly cast.
+	 *
+	 * @param string $format Currently only `array` is supported.
+	 * @param array $options
+	 * @return mixed
+	 */
+	public function to($format, array $options = array()) {
+		$defaults = array('handlers' => array(
+			'MongoId' => function($value) { return (string) $value; },
+			'MongoDate' => function($value) { return $value->sec; }
+		));
+
+		if ($format == 'array') {
+			$options += $defaults;
+			return Collection::toArray($this->_data, $options);
+		}
+		return parent::to($format, $options);
+	}
 
 	/**
 	 * PHP magic method used to check the presence of a field as document properties, i.e.
@@ -51,9 +104,8 @@ class DocumentArray extends \lithium\data\Collection {
 
 	public function offsetSet($offset, $data) {
 		if ($model = $this->_model) {
-			$data = $model::connection()->cast($model, array($this->_pathKey => $data), array(
-				'first' => true
-			));
+			$options = array('first' => true, 'schema' => $model::schema());
+			$data = $model::connection()->cast($this, array($this->_pathKey => $data), $options);
 		}
 		if ($offset) {
 			return $this->_data[$offset] = $data;
@@ -81,7 +133,7 @@ class DocumentArray extends \lithium\data\Collection {
 	 * of the set is reached, a new document will be fetched from the data source connection handle
 	 * (`$_handle`). If no more documents can be fetched, returns `null`.
 	 *
-	 * @return object|null Returns the next document in the set, or `null`, if no more documents are
+	 * @return object Returns the next document in the set, or `null`, if no more documents are
 	 *         available.
 	 */
 	public function next() {
@@ -95,17 +147,12 @@ class DocumentArray extends \lithium\data\Collection {
 		return $this->_valid ? $this->offsetGet(key($this->_data)) : null;
 	}
 
-	public function export(Source $dataSource, array $options = array()) {
-		$result = array();
-
-		foreach ($this->_data as $key => $doc) {
-			if (is_object($doc) && method_exists($doc, 'export')) {
-				$result[$key] = $doc->export($dataSource, $options);
-				continue;
-			}
-			$result[$key] = $doc;
-		}
-		return $result;
+	public function export() {
+		return array(
+			'exists' => $this->_exists,
+			'key'  => $this->_pathKey,
+			'data' => $this->_data
+		);
 	}
 
 	protected function _populate($data = null, $key = null) {}

@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -32,7 +32,6 @@ class Code extends \lithium\g11n\catalog\Adapter {
 	 * @param array $config Available configuration options are:
 	 *        - `'path'`: The path to the directory holding the data.
 	 *        - `'scope'`: Scope to use.
-	 * @return object
 	 */
 	public function __construct(array $config = array()) {
 		$defaults = array('path' => null, 'scope' => null);
@@ -48,9 +47,8 @@ class Code extends \lithium\g11n\catalog\Adapter {
 	protected function _init() {
 		parent::_init();
 		if (!is_dir($this->_config['path'])) {
-			throw new ConfigException(
-				"Code directory does not exist at `{$this->_config['path']}`"
-			);
+			$message = "Code directory does not exist at path `{$this->_config['path']}`.";
+			throw new ConfigException($message);
 		}
 	}
 
@@ -60,14 +58,14 @@ class Code extends \lithium\g11n\catalog\Adapter {
 	 * @param string $category A category. `'messageTemplate'` is the only category supported.
 	 * @param string $locale A locale identifier.
 	 * @param string $scope The scope for the current operation.
-	 * @return array|void
+	 * @return array Returns the message template. If the scope is not equal to the current scope
+	 * or `$category` is not `'messageTemplate'` null is returned.
 	 */
 	public function read($category, $locale, $scope) {
 		if ($scope != $this->_config['scope']) {
 			return null;
 		}
 		$path = $this->_config['path'];
-		$data = array();
 
 		switch ($category) {
 			case 'messageTemplate':
@@ -140,7 +138,7 @@ class Code extends \lithium\g11n\catalog\Adapter {
 					$data = $this->_merge($data, array(
 						'id' => $ids['singular'],
 						'ids' => $ids,
-						'occurrences' => array($occurrence),
+						'occurrences' => array($occurrence)
 					));
 					extract($defaults, EXTR_OVERWRITE);
 				} elseif ($token[0] === T_CONSTANT_ENCAPSED_STRING) {

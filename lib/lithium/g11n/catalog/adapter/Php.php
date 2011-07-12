@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -31,19 +31,21 @@ use lithium\core\ConfigException;
  * the one used by the the `Gettext` adapter.
  *
  * {{{
- * | - `<locale>`
- * | | - `message`
- * |   | - `default.php`
- * |   | - `<scope>.php`
- * | | - `validation`
- * |   | - ...
- * | - ...
- * | - `message_default.php`
- * | - `message_<scope>.php`
- * | - `validation_default.php`
- * | - `validation_<scope>.php`
- * | - ...
- * - ...
+ * resources/g11n/php
+ * ├── <locale>
+ * |   ├── message
+ * |   |   ├── default.php
+ * |   |   └── <scope>.php
+ * |   ├── validation
+ * |   |   └── ...
+ * |   └── ...
+ * ├── <locale>
+ * |   └── ...
+ * ├── message_default.php
+ * ├── message_<scope>.php
+ * ├── validation_default.php
+ * ├── validation_<scope>.php
+ * └── ...
  * }}}
  *
  * @see lithium\g11n\catalog\adapter\Gettext
@@ -55,7 +57,6 @@ class Php extends \lithium\g11n\catalog\Adapter {
 	 *
 	 * @param array $config Available configuration options are:
 	 *        - `'path'`: The path to the directory holding the data.
-	 * @return object
 	 */
 	public function __construct(array $config = array()) {
 		$defaults = array('path' => null);
@@ -71,7 +72,8 @@ class Php extends \lithium\g11n\catalog\Adapter {
 	protected function _init() {
 		parent::_init();
 		if (!is_dir($this->_config['path'])) {
-			throw new ConfigException("Php directory does not exist at `{$this->_config['path']}`");
+			$message = "Php directory does not exist at path `{$this->_config['path']}`.";
+			throw new ConfigException($message);
 		}
 	}
 
@@ -81,7 +83,7 @@ class Php extends \lithium\g11n\catalog\Adapter {
 	 * @param string $category A category.
 	 * @param string $locale A locale identifier.
 	 * @param string $scope The scope for the current operation.
-	 * @return array|void
+	 * @return array
 	 */
 	public function read($category, $locale, $scope) {
 		$path = $this->_config['path'];

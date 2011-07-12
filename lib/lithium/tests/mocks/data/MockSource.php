@@ -2,38 +2,38 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\mocks\data;
 
-use \lithium\util\Inflector;
+use lithium\util\Inflector;
 
 class MockSource extends \lithium\data\Source {
 
 	protected $_classes = array(
-		'entity' => '\lithium\data\entity\Record',
-		'set' => '\lithium\data\collection\RecordSet',
-		'relationship' => '\lithium\data\model\Relationship'
+		'entity' => 'lithium\data\entity\Record',
+		'set' => 'lithium\data\collection\RecordSet',
+		'relationship' => 'lithium\data\model\Relationship'
 	);
 
 	private $_mockPosts = array(
-		'id' => array('type' => 'int', 'length' => '10', 'null' => false, 'default' => NULL),
+		'id' => array('type' => 'int', 'length' => '10', 'null' => false, 'default' => null),
 		'user_id' => array(
-			'type' => 'int', 'length' => '10', 'null' => true, 'default' => NULL
+			'type' => 'int', 'length' => '10', 'null' => true, 'default' => null
 		),
 		'title' => array(
-			'type' => 'varchar', 'length' => '255', 'null' => true, 'default' => NULL
+			'type' => 'varchar', 'length' => '255', 'null' => true, 'default' => null
 		),
 		'body' => array(
-			'type' => 'text', 'length' => NULL, 'null' => true, 'default' => NULL
+			'type' => 'text', 'length' => null, 'null' => true, 'default' => null
 		),
 		'created' => array(
-			'type' => 'datetime', 'length' => NULL, 'null' => true, 'default' => NULL
+			'type' => 'datetime', 'length' => null, 'null' => true, 'default' => null
 		),
 		'modified' => array(
-			'type' => 'datetime', 'length' => NULL, 'null' => true, 'default' => NULL
+			'type' => 'datetime', 'length' => null, 'null' => true, 'default' => null
 		),
 		'status' => array(
 			'type' => 'tinyint', 'length' => '1', 'null' => false, 'default' => '0'
@@ -42,47 +42,47 @@ class MockSource extends \lithium\data\Source {
 
 	private $_mockComments = array(
 		'id' => array(
-			'type' => 'int', 'length' => '10', 'null' => false, 'default' => NULL,
+			'type' => 'int', 'length' => '10', 'null' => false, 'default' => null
 		),
 		'comment_type_id' => array(
-			'type' => 'int', 'length' => '10', 'null' => false, 'default' => NULL,
+			'type' => 'int', 'length' => '10', 'null' => false, 'default' => null
 		),
 		'article_id' => array(
-			'type' => 'int', 'length' => '10', 'null' => false, 'default' => NULL,
+			'type' => 'int', 'length' => '10', 'null' => false, 'default' => null
 		),
 		'comment_id' => array(
-			'type' => 'int', 'length' => '10', 'null' => false, 'default' => NULL,
+			'type' => 'int', 'length' => '10', 'null' => false, 'default' => null
 		),
 		'user_id' => array(
-			'type' => 'int', 'length' => '10', 'null' => false, 'default' => NULL,
+			'type' => 'int', 'length' => '10', 'null' => false, 'default' => null
 		),
 		'created' => array(
-			'type' => 'datetime', 'length' => NULL, 'null' => false, 'default' => NULL,
+			'type' => 'datetime', 'length' => null, 'null' => false, 'default' => null
 		),
 		'body' => array(
-			'type' => 'text', 'length' => NULL, 'null' => false, 'default' => NULL,
+			'type' => 'text', 'length' => null, 'null' => false, 'default' => null
 		),
 		'subscribed' => array(
-			'type' => 'tinyint', 'length' => '1', 'null' => false, 'default' => NULL,
+			'type' => 'tinyint', 'length' => '1', 'null' => false, 'default' => null
 		),
 		'published' => array(
-			'type' => 'tinyint', 'length' => '1', 'null' => false, 'default' => NULL,
-		),
+			'type' => 'tinyint', 'length' => '1', 'null' => false, 'default' => null
+		)
 	);
 
 	private $_mockTags = array(
 		'id' => array(
-			'type' => 'int', 'length' => '10', 'null' => false, 'default' => NULL,
+			'type' => 'int', 'length' => '10', 'null' => false, 'default' => null
 		),
 		'linked' => array(
-			'type' => 'int', 'length' => '10', 'null' => true, 'default' => NULL,
+			'type' => 'int', 'length' => '10', 'null' => true, 'default' => null
 		),
 		'name' => array(
-			'type' => 'varchar', 'length' => '20', 'null' => true, 'default' => NULL,
+			'type' => 'varchar', 'length' => '20', 'null' => true, 'default' => null
 		),
 		'keyname' => array(
-			'type' => 'varchar', 'length' => '20', 'null' => true, 'default' => NULL,
-		),
+			'type' => 'varchar', 'length' => '20', 'null' => true, 'default' => null
+		)
 	);
 
 	public function connect() {
@@ -93,7 +93,7 @@ class MockSource extends \lithium\data\Source {
 		return !($this->_isConnected = false);
 	}
 
-	public function entities($class = null) {
+	public function sources($class = null) {
 		return array('mock_posts', 'mock_comments', 'mock_tags', 'posts_tags');
 	}
 
@@ -129,20 +129,31 @@ class MockSource extends \lithium\data\Source {
 
 	}
 
-	public function cast($model, array $data = array(), array $options = array()) {
+	public function cast($entity, array $data = array(), array $options = array()) {
 		$defaults = array('first' => false);
 		$options += $defaults;
 		return $options['first'] ? reset($data) : $data;
 	}
 
-	public function relationship($class, $type, $name, array $options = array()) {
-		$keys = Inflector::underscore($type == 'belongsTo' ? $name : $class::meta('name')) . '_id';
+	public function relationship($class, $type, $name, array $config = array()) {
+		$field = Inflector::underscore(Inflector::singularize($name));//($type == 'hasMany') ?  : ;
+		$keys = "{$field}_id";
+		$primary = $class::meta('key');
 
-		$options += compact('name', 'type', 'keys');
-		$options['from'] = $class;
+		if (is_array($primary)) {
+			$keys = array_combine($primary, $primary);
+		} elseif ($type == 'hasMany' || $type == 'hasOne') {
+			if ($type == 'hasMany') {
+				$field = Inflector::pluralize($field);
+			}
+			$secondary = Inflector::underscore(Inflector::singularize($class::meta('name')));
+			$keys = array($primary => "{$secondary}_id");
+		}
 
-		$relationship = $this->_classes['relationship'];
-		return new $relationship($options);
+		$from = $class;
+		$fieldName = $field;
+		$config += compact('type', 'name', 'keys', 'from', 'fieldName');
+		return $this->_instance('relationship', $config);
 	}
 
 	public function calculation($type, $query, array $options = array()) {

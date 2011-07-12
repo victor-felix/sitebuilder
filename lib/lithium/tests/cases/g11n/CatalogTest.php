@@ -2,14 +2,14 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\g11n;
 
-use \lithium\g11n\Catalog;
-use \lithium\g11n\catalog\adapter\Memory;
+use lithium\g11n\Catalog;
+use lithium\g11n\catalog\adapter\Memory;
 
 class CatalogTest extends \lithium\test\Unit {
 
@@ -117,7 +117,7 @@ class CatalogTest extends \lithium\test\Unit {
 		);
 		Catalog::write('runtime', 'currency', 'de', $data);
 		$data = array(
-			'GRD' => 'Griechische Drachme',
+			'GRD' => 'Griechische Drachme'
 		);
 		Catalog::write('runtime', 'currency', 'de_CH', $data);
 		$result = Catalog::read('runtime', 'currency', 'de_CH');
@@ -136,7 +136,7 @@ class CatalogTest extends \lithium\test\Unit {
 		);
 		Catalog::write('runtime', 'currency', 'de', $data);
 		$data = array(
-			'GRD' => 'de_CH Griechische Drachme',
+			'GRD' => 'de_CH Griechische Drachme'
 		);
 		Catalog::write('runtime', 'currency', 'de_CH', $data);
 		$result = Catalog::read('runtime', 'currency', 'de_CH');
@@ -271,7 +271,7 @@ class CatalogTest extends \lithium\test\Unit {
 		$result = Catalog::read(array('runtime0', 'runtime2'), 'validation', 'en');
 		$expected = array(
 			'postalCode' => '/postalCode en0/',
-			'ssn' => '/ssn en2/',
+			'ssn' => '/ssn en2/'
 		);
 		$this->assertEqual($expected, $result);
 
@@ -306,78 +306,70 @@ class CatalogTest extends \lithium\test\Unit {
 		$data = array('house' => 'Haus');
 		Catalog::write('runtime', 'message', 'de', $data);
 		$result = Catalog::read('runtime', 'message', 'de', array('lossy' => false));
-		$expected = array(
-			'house' => array(
-				'id' => 'house',
-				'ids' => array(),
-				'translated' => 'Haus',
-				'flags' => array(),
-				'comments' => array(),
-				'occurrences' => array()
+		$expected = array('house' => array(
+			'id' => 'house',
+			'ids' => array(),
+			'translated' => 'Haus',
+			'flags' => array(),
+			'comments' => array(),
+			'occurrences' => array()
 		));
 		$this->assertEqual($expected, $result);
 
-		$data = array(
-			'house' => array(
-				'id' => 'house',
-				'ids' => array(),
-				'translated' => 'Haus',
-				'flags' => array(),
-				'comments' => array(),
-				'occurrences' => array()
+		$data = array('house' => array(
+			'id' => 'house',
+			'ids' => array(),
+			'translated' => 'Haus',
+			'flags' => array(),
+			'comments' => array(),
+			'occurrences' => array()
 		));
 		Catalog::write('runtime', 'message', 'de', $data);
 		$result = Catalog::read('runtime', 'message', 'de', array('lossy' => false));
-		$expected = array(
-			'house' => array(
-				'id' => 'house',
-				'ids' => array(),
-				'translated' => 'Haus',
-				'flags' => array(),
-				'comments' => array(),
-				'occurrences' => array()
+		$expected = array('house' => array(
+			'id' => 'house',
+			'ids' => array(),
+			'translated' => 'Haus',
+			'flags' => array(),
+			'comments' => array(),
+			'occurrences' => array()
 		));
 		$this->assertEqual($expected, $result);
 	}
 
 	public function testOutputLossyFormat() {
-		$data = array(
-			'house' => array(
-				'id' => 'house',
-				'ids' => array('singular' => 'house'),
-				'translated' => 'Haus',
-				'flags' => array(),
-				'comments' => array(),
-				'occurrences' => array()
+		$data = array('house' => array(
+			'id' => 'house',
+			'ids' => array('singular' => 'house'),
+			'translated' => 'Haus',
+			'flags' => array(),
+			'comments' => array(),
+			'occurrences' => array()
 		));
 		Catalog::write('runtime', 'message', 'de', $data);
 		$result = Catalog::read('runtime', 'message', 'de');
-		$expected = array(
-			'house' => 'Haus'
-		);
+		$expected = array('house' => 'Haus');
 		$this->assertEqual($expected, $result);
 	}
 
 	public function testOutputLosslessFormat() {
-		$data = array(
-			'house' => array(
-				'id' => 'house',
-				'ids' => array('singular' => 'house'),
-				'translated' => 'Haus',
-				'flags' => array(),
-				'comments' => array(),
-				'occurrences' => array()
+		$data = array('house' => array(
+			'id' => 'house',
+			'ids' => array('singular' => 'house'),
+			'translated' => 'Haus',
+			'flags' => array(),
+			'comments' => array(),
+			'occurrences' => array()
 		));
 		Catalog::write('runtime', 'message', 'de', $data);
 		$result = Catalog::read('runtime', 'message', 'de', array('lossy' => false));
-		$expected = array(
-			'house' => array(
-				'id' => 'house',
-				'ids' => array('singular' => 'house'),
-				'translated' => 'Haus',
-				'flags' => array(),
-				'comments' => array(),
-				'occurrences' => array()
+		$expected = array('house' => array(
+			'id' => 'house',
+			'ids' => array('singular' => 'house'),
+			'translated' => 'Haus',
+			'flags' => array(),
+			'comments' => array(),
+			'occurrences' => array()
 		));
 		$this->assertEqual($expected, $result);
 	}
@@ -385,7 +377,7 @@ class CatalogTest extends \lithium\test\Unit {
 	public function testInvalidWrite() {
 		Catalog::reset();
 		$data = array('house'	=> array('id' => 'house'));
-		$this->expectException("Configuration 'runtime' has not been defined.");
+		$this->expectException("Configuration `runtime` has not been defined.");
 		$this->assertFalse(Catalog::write('runtime', 'message', 'de', $data));
 	}
 }

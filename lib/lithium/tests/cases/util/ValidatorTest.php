@@ -2,13 +2,13 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\util;
 
-use \lithium\util\Validator;
+use lithium\util\Validator;
 
 class ValidatorTest extends \lithium\test\Unit {
 
@@ -26,8 +26,7 @@ class ValidatorTest extends \lithium\test\Unit {
 		$this->assertTrue(Validator::isRegex('/^abc$/'));
 		$this->assertTrue(Validator::isPhone('800-999-5555'));
 
-		$this->assertTrue(Validator::isUrl('http://google.com'));
-		$this->assertTrue(Validator::isUrl('google.com', 'loose'));
+		$this->assertTrue(Validator::isUrl('http://example.com'));
 	}
 
 	public function testFieldOption() {
@@ -42,7 +41,7 @@ class ValidatorTest extends \lithium\test\Unit {
 
 		$fieldValidationRules = array(
 			'number' => array('rule' => array('isInArray')),
-			'name' => array('rule' => array('isInArray')),
+			'name' => array('rule' => array('isInArray'))
 		);
 
 		$result = Validator::check(
@@ -78,7 +77,7 @@ class ValidatorTest extends \lithium\test\Unit {
 		$this->assertTrue(in_array('foo', Validator::rules()));
 		$this->assertEqual('/^foo$/', Validator::rules('foo'));
 
-		$this->expectException("Rule 'bar' is not a validation rule");
+		$this->expectException("Rule `bar` is not a validation rule.");
 		$this->assertNull(Validator::isBar('foo'));
 	}
 
@@ -107,6 +106,26 @@ class ValidatorTest extends \lithium\test\Unit {
 		$this->assertTrue(Validator::isUuid('1c0a5831-6025-11de-8a39-0800200c9a66'));
 		$this->assertTrue(Validator::isUuid('1c0a5832-6025-11de-8a39-0800200c9a66'));
 		$this->assertFalse(Validator::isUuid('zc0a5832-6025-11de-8a39-0800200c9a66'));
+		$this->assertFalse(Validator::isUuid('1-1c0a5832-6025-11de-8a39-0800200c9a66'));
+	}
+
+	public function testCustomWithFormat() {
+		$rFormat = null;
+		$function = function(&$value, $format = null, array $options = array()) use (&$rFormat) {
+			$rFormat = $format;
+			if ($format == 'string') {
+				return true;
+			}
+		};
+		Validator::add('test', $function);
+		$validations = array(
+			'inputName' => array( array( 'test', 'message' => 'foobar', 'format' => 'string' ) )
+		);
+		$values = array(
+			'inputName' => 'blah'
+		);
+		$this->assertFalse((boolean) Validator::check($values, $validations));
+		$this->assertEqual($rFormat, 'string');
 	}
 
 	/**
@@ -141,6 +160,35 @@ class ValidatorTest extends \lithium\test\Unit {
 		Validator::add('foo', 'foo', array('contains' => false));
 		$this->assertFalse(Validator::isFoo('foobar'));
 		$this->assertTrue(Validator::isFoo('foo'));
+	}
+
+	/**
+	 * Tests the regular expression validation for various regex delimiters
+	 *
+	 * @link http://www.php.net/manual/en/regexp.reference.delimiters.php Regex Delimiters
+	 */
+	public function testIsRegex() {
+		$this->assertTrue(Validator::isRegex('/^123$/'));
+		$this->assertTrue(Validator::isRegex('/^abc$/'));
+		$this->assertTrue(Validator::isRegex('/^abc123$/'));
+		$this->assertTrue(Validator::isRegex('@^abc$@'));
+		$this->assertTrue(Validator::isRegex('#^abc$#'));
+		$this->assertFalse(Validator::isRegex('d^abc$d'));
+
+		$this->assertTrue(Validator::isRegex('(^abc$)'));
+		$this->assertTrue(Validator::isRegex('{^abc$}'));
+		$this->assertTrue(Validator::isRegex('[^abc$]'));
+		$this->assertTrue(Validator::isRegex('<^abc$>'));
+		$this->assertTrue(Validator::isRegex(')^abc$)'));
+		$this->assertTrue(Validator::isRegex('}^abc$}'));
+		$this->assertTrue(Validator::isRegex(']^abc$]'));
+		$this->assertTrue(Validator::isRegex('>^abc$>'));
+
+		$this->assertFalse(Validator::isRegex('\\^abc$\\'));
+		$this->assertFalse(Validator::isRegex('(^abc$('));
+		$this->assertFalse(Validator::isRegex('{^abc${'));
+		$this->assertFalse(Validator::isRegex('[^abc$['));
+		$this->assertFalse(Validator::isRegex('<^abc$<'));
 	}
 
 	public function testPrefilterMethodAccess() {
@@ -364,7 +412,7 @@ class ValidatorTest extends \lithium\test\Unit {
 	 * @return void
 	 */
 	public function testEmailDomainCheck() {
-		$this->skipIf(dns_check_record("google.com") === false, "No internet connection.");
+		$this->skipIf(dns_check_record("lithify.me", "ANY") === false, "No internet connection.");
 
 		$this->assertTrue(Validator::isEmail('abc.efg@rad-dev.org', null, array('deep' => true)));
 		$this->assertFalse(Validator::isEmail('abc.efg@invalidfoo.com', null, array(
@@ -939,7 +987,7 @@ class ValidatorTest extends \lithium\test\Unit {
 			'title' => 'please enter a title',
 			'email' => array(
 				array('notEmpty', 'message' => 'email is empty'),
-				array('email', 'message' => 'email is not valid'),
+				array('email', 'message' => 'email is not valid')
 			)
 		);
 		$data = array('email' => 'something');
@@ -959,7 +1007,7 @@ class ValidatorTest extends \lithium\test\Unit {
 			'title' => 'please enter a title',
 			'email' => array(
 				array('notEmpty', 'message' => 'email is empty'),
-				array('email', 'message' => 'email is not valid'),
+				array('email', 'message' => 'email is not valid')
 			)
 		);
 		$data = array('title' => 'new title', 'email' => 'something');
@@ -975,7 +1023,7 @@ class ValidatorTest extends \lithium\test\Unit {
 			'title' => 'please enter a title',
 			'email' => array(
 				array('notEmpty', 'message' => 'email is empty'),
-				array('email', 'message' => 'email is not valid'),
+				array('email', 'message' => 'email is not valid')
 			)
 		);
 		$data = array('title' => 'new title', 'email' => 'something@test.com');
@@ -1032,6 +1080,61 @@ class ValidatorTest extends \lithium\test\Unit {
 			array('title' => array('someModelRule'))
 		);
 		$this->assertIdentical(array('title' => array(0)), $result);
+	}
+
+	/**
+	 * Tests that event flags applied to rules only trigger when the corresponding event is passed
+	 * in the `$options` parameter of `check()`.
+	 */
+	public function testEvents() {
+		$rules = array('number' => array('numeric', 'message' => 'Badness!'));
+		$expected = array('number' => array('Badness!'));
+
+		$result = Validator::check(array('number' => 'o'), $rules);
+		$this->assertEqual($expected, $result);
+
+		$rules['number']['on'] = 'foo';
+		$result = Validator::check(array('number' => 'o'), $rules, array('events' => 'foo'));
+		$this->assertEqual($expected, $result);
+
+		$result = Validator::check(array('number' => 'o'), $rules, array('events' => 'bar'));
+		$this->assertEqual(array(), $result);
+
+		$result = Validator::check(array('number' => 'o'), $rules, array(
+			'events' => array('foo', 'bar')
+		));
+		$this->assertEqual($expected, $result);
+
+		$result = Validator::check(array('number' => 'o'), $rules, array(
+			'events' => array('bar', 'baz')
+		));
+		$this->assertEqual(array(), $result);
+
+		unset($rules['number']['on']);
+		$result = Validator::check(array('number' => 'o'), $rules, array('events' => 'foo'));
+		$this->assertEqual($expected, $result);
+	}
+
+	/**
+	 * Tests validating nested fields using dot-separated paths.
+	 */
+	public function testNestedFields() {
+		$rules = array(
+			'id' => array('numeric', 'message' => 'Bad ID'),
+			'profile.name' => "Can't be empty",
+			'profile.email' => array('email', 'message' => 'Must be a valid email')
+		);
+		$data = array('id' => 1, 'profile' => array('email' => 'foo'));
+		$result = Validator::check($data, $rules);
+		$expected = array(
+			'profile.name' => array("Can't be empty"),
+			'profile.email' => array('Must be a valid email')
+		);
+		$this->assertEqual($expected, $result);
+
+		$data = array('id' => '.', 'profile' => array('email' => 'foo@bar.com', 'name' => 'Bob'));
+		$result = Validator::check($data, $rules);
+		$this->assertEqual(array('id' => array('Bad ID')), $result);
 	}
 }
 

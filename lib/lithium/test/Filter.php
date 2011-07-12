@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -20,7 +20,7 @@ abstract class Filter extends \lithium\core\StaticObject {
 	 * @param object $report Instance of Report which is calling apply.
 	 * @param array $tests The test to apply this filter on
 	 * @param array $options Options for how this filter should be applied.
-	 * @return object|void Returns the instance of `$tests`.
+	 * @return object Returns the instance of `$tests`.
 	 */
 	public static function apply($report, $tests, array $options = array()) {}
 
@@ -40,7 +40,7 @@ abstract class Filter extends \lithium\core\StaticObject {
 	 *
 	 * @param string $format I.e. `'html'` or `'text'`.
 	 * @param array $analysis The results of the analysis.
-	 * @return string|void
+	 * @return string
 	 */
 	public static function output($format, $analysis) {}
 }

@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -99,83 +99,57 @@ class RequestTest extends \lithium\test\Unit {
 	}
 
 	public function testScriptName() {
-		$_SERVER['SCRIPT_NAME'] = 'index.php';
-		$request = new Request();
-
-		$expected = 'index.php';
-		$result = $request->env('SCRIPT_NAME');
-		$this->assertEqual($expected, $result);
+		$request = new Request(array(
+			'env' => array('HTTPS' => true, 'SCRIPT_NAME' => 'index.php')
+		));
+		$this->assertEqual('index.php', $request->env('SCRIPT_NAME'));
 	}
 
 	public function testHttps() {
-		$_SERVER['HTTPS'] = true;
-		$request = new Request();
-
-		$expected = true;
-		$result = $request->env('HTTPS');
-		$this->assertEqual($expected, $result);
+		$request = new Request(array('env' => array('HTTPS' => true)));
+		$this->assertTrue($request->env('HTTPS'));
 	}
 
 	public function testHttpsFromScriptUri() {
-		$_SERVER['SCRIPT_URI'] = 'https://lithium.com';
-		unset($_SERVER['HTTPS']);
-		$request = new Request();
-
-		$expected = true;
-		$result = $request->env('HTTPS');
-		$this->assertEqual($expected, $result);
+		$request = new Request(array('env' => array(
+			'SCRIPT_URI' => 'https://lithium.com',
+			'HTTPS' => null
+		)));
+		$this->assertTrue($request->env('HTTPS'));
 	}
 
 	public function testRemoteAddr() {
-		$_SERVER['REMOTE_ADDR'] = '123.456.789.000';
-		$request = new Request();
-
-		$expected = '123.456.789.000';
-		$result = $request->env('REMOTE_ADDR');
-		$this->assertEqual($expected, $result);
+		$request = new Request(array('env' => array('REMOTE_ADDR' => '123.456.789.000')));
+		$this->assertEqual('123.456.789.000', $request->env('REMOTE_ADDR'));
 	}
 
 	public function testRemoteAddrFromHttpPcRemoteAddr() {
 		$request = new MockIisRequest();
-
-		$expected = '123.456.789.000';
-		$result = $request->env('REMOTE_ADDR');
-		$this->assertEqual($expected, $result);
+		$this->assertEqual('123.456.789.000', $request->env('REMOTE_ADDR'));
 	}
 
 	public function testBase() {
-		$_SERVER['PHP_SELF'] = '/index.php';
-		$request = new Request();
-
-		$expected = null;
-		$result = $request->env('base');
-		$this->assertEqual($expected, $result);
+		$request = new Request(array('env' => array('PHP_SELF' => '/index.php')));
+		$this->assertFalse($request->env('base'));
 	}
 
 	public function testBaseWithDirectory() {
-		$_SERVER['PHP_SELF'] = '/lithium.com/app/webroot/index.php';
-		$request = new Request();
-
-		$expected = '/lithium.com';
-		$result = $request->env('base');
-		$this->assertEqual($expected, $result);
+		$request = new Request(array('env' => array(
+			'PHP_SELF' => '/lithium.com/app/webroot/index.php'
+		)));
+		$this->assertEqual('/lithium.com', $request->env('base'));
 	}
 
 	public function testBaseWithAppAndOtherDirectory() {
-		$_SERVER['PHP_SELF'] = '/lithium.com/app/other/webroot/index.php';
-		$request = new Request();
-
-		$expected = '/lithium.com/app/other';
-		$result = $request->env('base');
-		$this->assertEqual($expected, $result);
+		$request = new Request(array('env' => array(
+			'PHP_SELF' => '/lithium.com/app/other/webroot/index.php'
+		)));
+		$this->assertEqual('/lithium.com/app/other', $request->env('base'));
 	}
 
 	public function testPhpSelfTranslatedForIIS() {
 		$request = new MockIisRequest();
-
-		$expected = '/index.php';
-		$result = $request->env('PHP_SELF');
-		$this->assertEqual($expected, $result);
+		$this->assertEqual('/index.php', $request->env('PHP_SELF'));
 	}
 
 	public function testServerHttpBase() {
@@ -190,9 +164,8 @@ class RequestTest extends \lithium\test\Unit {
 	public function testCgiPlatform() {
 		$request = new MockCgiRequest();
 
-		$expected = true;
 		$result = $request->env('CGI_MODE');
-		$this->assertEqual($expected, $result);
+		$this->assertTrue($result);
 	}
 
 	public function testCgiScriptUrl() {
@@ -215,9 +188,8 @@ class RequestTest extends \lithium\test\Unit {
 		$result = $request->get('data:Article');
 		$this->assertEqual($expected, $result);
 
-		$expected = null;
 		$result = $request->get('not:Post');
-		$this->assertEqual($expected, $result);
+		$this->assertNull($result);
 
 		$expected = '/lithium.com';
 		$result = $request->get('env:base');
@@ -234,6 +206,14 @@ class RequestTest extends \lithium\test\Unit {
 
 		$this->assertTrue($request->is('cool'));
 		$this->assertFalse($request->is('foo'));
+
+		$request = new Request(array('env' => array(
+			'HTTP_USER_AGENT' => 'Mozilla/5.0 (iPhone; U; XXXXX like Mac OS X; en) AppleWebKit/420+'
+		)));
+
+		$request->detect('iPhone', array('HTTP_USER_AGENT', '/iPhone/'));
+		$isiPhone = $request->is('iPhone'); // returns true if 'iPhone' appears anywhere in the UA
+		$this->assertTrue($isiPhone);
 	}
 
 	public function testDetectWithClosure() {
@@ -251,18 +231,27 @@ class RequestTest extends \lithium\test\Unit {
 			return true;
 		}));
 
-		$expected = true;
 		$result = $request->is('cool');
-		$this->assertEqual($expected, $result);
+		$this->assertTrue($result);
 	}
 
 	public function testDetectWithArrayRegex() {
 		$request = new Request(array('env' => array('SOME_COOL_DETECTION' => 'this is cool')));
 		$request->detect('cool', array('SOME_COOL_DETECTION', '/cool/'));
 
-		$expected = true;
 		$result = $request->is('cool');
-		$this->assertEqual($expected, $result);
+		$this->assertTrue($result);
+	}
+
+	public function testDetectSsl() {
+		$request = new Request(array('env' => array('SCRIPT_URI' => null, 'HTTPS' => 'off')));
+		$this->assertFalse($request->env('HTTPS'));
+
+		$request = new Request(array('env' => array('SCRIPT_URI' => null, 'HTTPS' => 'on')));
+		$this->assertTrue($request->env('HTTPS'));
+
+		$request = new Request(array('env' => array('SCRIPT_URI' => null, 'HTTPS' => null)));
+		$this->assertFalse($request->env('HTTPS'));
 	}
 
 	public function testContentTypeDetection() {
@@ -340,10 +329,11 @@ class RequestTest extends \lithium\test\Unit {
 	public function testMagicParamsAccess() {
 		$this->assertNull($this->request->action);
 		$this->assertFalse(isset($this->request->params['action']));
+		$this->assertFalse(isset($this->request->action));
 
 		$expected = $this->request->params['action'] = 'index';
-		$result = $this->request->action;
-		$this->assertEqual($expected, $result);
+		$this->assertEqual($expected, $this->request->action);
+		$this->assertTrue(isset($this->request->action));
 	}
 
 	public function testSingleFileNormalization() {
@@ -353,7 +343,7 @@ class RequestTest extends \lithium\test\Unit {
 				'type' => 'image/jpeg',
 				'tmp_name' => '/private/var/tmp/phpows38J',
 				'error' => 0,
-				'size' => 418,
+				'size' => 418
 		  	)
 		);
 		$request = new Request();
@@ -363,7 +353,7 @@ class RequestTest extends \lithium\test\Unit {
 			'type' => 'image/jpeg',
 			'tmp_name' => '/private/var/tmp/phpows38J',
 			'error' => 0,
-			'size' => 418,
+			'size' => 418
 		));
 		$result = $request->data;
 		$this->assertEqual($expected, $result);
@@ -377,27 +367,27 @@ class RequestTest extends \lithium\test\Unit {
 				'name' => array(
 			  		0 => 'file 2.jpg',
 			  		1 => 'file 3.jpg',
-			  		2 => 'file 4.jpg',
+			  		2 => 'file 4.jpg'
 				),
 				'type' => array(
 			  		0 => 'image/jpeg',
 			  		1 => 'image/jpeg',
-			  		2 => 'image/jpeg',
+			  		2 => 'image/jpeg'
 				),
 				'tmp_name' => array(
 			  		0 => '/private/var/tmp/phpF5vsky',
 			  		1 => '/private/var/tmp/phphRJ2zW',
-			  		2 => '/private/var/tmp/phprI92L1',
+			  		2 => '/private/var/tmp/phprI92L1'
 				),
 				'error' => array(
 			  		0 => 0,
 			  		1 => 0,
-			  		2 => 0,
+			  		2 => 0
 				),
 				'size' => array(
 			  		0 => 418,
 			  		1 => 418,
-			  		2 => 418,
+			  		2 => 418
 				)
 			)
 		);
@@ -409,22 +399,22 @@ class RequestTest extends \lithium\test\Unit {
 				'type' => 'image/jpeg',
 				'tmp_name' => '/private/var/tmp/phpF5vsky',
 				'error' => 0,
-				'size' => 418,
+				'size' => 418
 			),
 			1 => array(
 				'name' => 'file 3.jpg',
 				'type' => 'image/jpeg',
 				'tmp_name' => '/private/var/tmp/phphRJ2zW',
 				'error' => 0,
-				'size' => 418,
+				'size' => 418
 			),
 			2 => array(
 				'name' => 'file 4.jpg',
 				'type' => 'image/jpeg',
 				'tmp_name' => '/private/var/tmp/phprI92L1',
 				'error' => 0,
-				'size' => 418,
-			),
+				'size' => 418
+			)
 		));
 		$result = $request->data;
 		$this->assertEqual($expected, $result);
@@ -435,20 +425,20 @@ class RequestTest extends \lithium\test\Unit {
 	public function testNestedFilesNormalization() {
 		$_FILES = array('Image' => array(
 			'name' => array(
-		  		'file' => 'file 5.jpg',
+		  		'file' => 'file 5.jpg'
 			),
 			'type' => array(
-		  		'file' => 'image/jpeg',
+		  		'file' => 'image/jpeg'
 			),
 			'tmp_name' => array(
-		  		'file' => '/private/var/tmp/phpAmSDL4',
+		  		'file' => '/private/var/tmp/phpAmSDL4'
 			),
 			'error' => array(
-		  		'file' => 0,
+		  		'file' => 0
 			),
 			'size' => array(
-		  		'file' => 418,
-			),
+		  		'file' => 418
+			)
 	  	));
 		$request = new Request();
 
@@ -458,7 +448,7 @@ class RequestTest extends \lithium\test\Unit {
 				'type' => 'image/jpeg',
 				'tmp_name' => '/private/var/tmp/phpAmSDL4',
 				'error' => 0,
-				'size' => 418,
+				'size' => 418
 		  	)
 		));
 
@@ -474,35 +464,35 @@ class RequestTest extends \lithium\test\Unit {
 		  		'files' => array(
 					0 => 'file 6.jpg',
 					1 => 'file 7.jpg',
-					2 => 'file 8.jpg',
-		  		),
+					2 => 'file 8.jpg'
+		  		)
 			),
 			'type' => array(
 		  		'files' => array(
 					0 => 'image/jpeg',
 					1 => 'image/jpeg',
-					2 => 'image/jpeg',
-		  		),
+					2 => 'image/jpeg'
+		  		)
 			),
 			'tmp_name' => array(
 		  		'files' => array(
 					0 => '/private/var/tmp/php2eViak',
 					1 => '/private/var/tmp/phpMsC5Pp',
-					2 => '/private/var/tmp/phpm2nm98',
-		  		),
+					2 => '/private/var/tmp/phpm2nm98'
+		  		)
 			),
 			'error' => array(
 				'files' => array(
 					0 => 0,
 					1 => 0,
-					2 => 0,
-		  		),
+					2 => 0
+		  		)
 			),
 			'size' => array(
 		  		'files' => array(
 					0 => 418,
 					1 => 418,
-					2 => 418,
+					2 => 418
 		  		)
 			)
 		));
@@ -515,22 +505,22 @@ class RequestTest extends \lithium\test\Unit {
 					'type' => 'image/jpeg',
 					'tmp_name' => '/private/var/tmp/php2eViak',
 					'error' => 0,
-					'size' => 418,
+					'size' => 418
 				),
 				1 => array(
 					'name' => 'file 7.jpg',
 					'type' => 'image/jpeg',
 					'tmp_name' => '/private/var/tmp/phpMsC5Pp',
 					'error' => 0,
-					'size' => 418,
+					'size' => 418
 				),
 				2 => array(
 					'name' => 'file 8.jpg',
 					'type' => 'image/jpeg',
 					'tmp_name' => '/private/var/tmp/phpm2nm98',
 					'error' => 0,
-					'size' => 418,
-				),
+					'size' => 418
+				)
 		  	)
 		));
 		$result = $request->data;
@@ -546,89 +536,89 @@ class RequestTest extends \lithium\test\Unit {
 				'type' => 'image/jpeg',
 				'tmp_name' => '/private/var/tmp/phpows38J',
 				'error' => 0,
-				'size' => 418,
+				'size' => 418
 		  	),
 		  	'files' =>  array(
 				'name' => array(
 			  		0 => 'file 2.jpg',
 			  		1 => 'file 3.jpg',
-			  		2 => 'file 4.jpg',
+			  		2 => 'file 4.jpg'
 				),
 				'type' => array(
 			  		0 => 'image/jpeg',
 			  		1 => 'image/jpeg',
-			  		2 => 'image/jpeg',
+			  		2 => 'image/jpeg'
 				),
 				'tmp_name' => array(
 			  		0 => '/private/var/tmp/phpF5vsky',
 			  		1 => '/private/var/tmp/phphRJ2zW',
-			  		2 => '/private/var/tmp/phprI92L1',
+			  		2 => '/private/var/tmp/phprI92L1'
 				),
 				'error' => array(
 			  		0 => 0,
 			  		1 => 0,
-			  		2 => 0,
+			  		2 => 0
 				),
 				'size' => array(
 			  		0 => 418,
 			  		1 => 418,
-			  		2 => 418,
-				),
+			  		2 => 418
+				)
 		  	),
 		  	'Image' => array(
 				'name' => array(
-			  		'file' => 'file 5.jpg',
+			  		'file' => 'file 5.jpg'
 				),
 				'type' => array(
-			  		'file' => 'image/jpeg',
+			  		'file' => 'image/jpeg'
 				),
 				'tmp_name' => array(
-			  		'file' => '/private/var/tmp/phpAmSDL4',
+			  		'file' => '/private/var/tmp/phpAmSDL4'
 				),
 				'error' => array(
-			  		'file' => 0,
+			  		'file' => 0
 				),
 				'size' => array(
-			  		'file' => 418,
-				),
+			  		'file' => 418
+				)
 		  	),
 		  	'Photo' => array(
 				'name' => array(
 			  		'files' => array(
 						0 => 'file 6.jpg',
 						1 => 'file 7.jpg',
-						2 => 'file 8.jpg',
-			  		),
+						2 => 'file 8.jpg'
+			  		)
 				),
 				'type' => array(
 			  		'files' => array(
 						0 => 'image/jpeg',
 						1 => 'image/jpeg',
-						2 => 'image/jpeg',
-			  		),
+						2 => 'image/jpeg'
+			  		)
 				),
 				'tmp_name' => array(
 			  		'files' => array(
 						0 => '/private/var/tmp/php2eViak',
 						1 => '/private/var/tmp/phpMsC5Pp',
-						2 => '/private/var/tmp/phpm2nm98',
-			  		),
+						2 => '/private/var/tmp/phpm2nm98'
+			  		)
 				),
 				'error' => array(
 					'files' => array(
 						0 => 0,
 						1 => 0,
-						2 => 0,
-			  		),
+						2 => 0
+			  		)
 				),
 				'size' => array(
 			  		'files' => array(
 						0 => 418,
 						1 => 418,
-						2 => 418,
-			  		),
-				),
-		  	),
+						2 => 418
+			  		)
+				)
+		  	)
 		);
 		$expected = array(
 			'file' => array(
@@ -636,7 +626,7 @@ class RequestTest extends \lithium\test\Unit {
 				'type' => 'image/jpeg',
 				'tmp_name' => '/private/var/tmp/phpows38J',
 				'error' => 0,
-				'size' => 418,
+				'size' => 418
 		  	),
 			'files' => array(
 				0 => array(
@@ -644,22 +634,22 @@ class RequestTest extends \lithium\test\Unit {
 					'type' => 'image/jpeg',
 					'tmp_name' => '/private/var/tmp/phpF5vsky',
 					'error' => 0,
-					'size' => 418,
+					'size' => 418
 				),
 				1 => array(
 					'name' => 'file 3.jpg',
 					'type' => 'image/jpeg',
 					'tmp_name' => '/private/var/tmp/phphRJ2zW',
 					'error' => 0,
-					'size' => 418,
+					'size' => 418
 				),
 				2 => array(
 					'name' => 'file 4.jpg',
 					'type' => 'image/jpeg',
 					'tmp_name' => '/private/var/tmp/phprI92L1',
 					'error' => 0,
-					'size' => 418,
-				),
+					'size' => 418
+				)
 			),
 			'Image' => array(
 				'file' => array(
@@ -667,7 +657,7 @@ class RequestTest extends \lithium\test\Unit {
 					'type' => 'image/jpeg',
 					'tmp_name' => '/private/var/tmp/phpAmSDL4',
 					'error' => 0,
-					'size' => 418,
+					'size' => 418
 			  	)
 			),
 			'Photo' => array(
@@ -677,22 +667,22 @@ class RequestTest extends \lithium\test\Unit {
 						'type' => 'image/jpeg',
 						'tmp_name' => '/private/var/tmp/php2eViak',
 						'error' => 0,
-						'size' => 418,
+						'size' => 418
 					),
 					1 => array(
 						'name' => 'file 7.jpg',
 						'type' => 'image/jpeg',
 						'tmp_name' => '/private/var/tmp/phpMsC5Pp',
 						'error' => 0,
-						'size' => 418,
+						'size' => 418
 					),
 					2 => array(
 						'name' => 'file 8.jpg',
 						'type' => 'image/jpeg',
 						'tmp_name' => '/private/var/tmp/phpm2nm98',
 						'error' => 0,
-						'size' => 418,
-					),
+						'size' => 418
+					)
 			  	)
 			)
 		);
@@ -849,6 +839,25 @@ class RequestTest extends \lithium\test\Unit {
 		$this->assertEqual('html', $request->accepts());
 	}
 
+	/**
+	 * Tests that accepted content-types without a `q` value are sorted in the order they appear in
+	 * the `HTTP_ACCEPT` header.
+	 */
+	public function testAcceptTypeOrder() {
+		$request = new Request(array('env' => array(
+			'HTTP_ACCEPT' => 'application/xhtml+xml,text/html'
+		)));
+		$expected = array('application/xhtml+xml', 'text/html');
+		$this->assertEqual($expected, $request->accepts(true));
+
+		$request = new Request(array('env' => array(
+			'HTTP_USER_AGENT' => 'Safari',
+			'HTTP_ACCEPT' => 'application/xhtml+xml,text/html,text/plain;q=0.9'
+		)));
+		$expected = array('application/xhtml+xml', 'text/html', 'text/plain');
+		$this->assertEqual($expected, $request->accepts(true));
+	}
+
 	public function testParsingAcceptHeader() {
 		$chrome = array(
 			'application/xml',
@@ -882,6 +891,15 @@ class RequestTest extends \lithium\test\Unit {
 			'image/x-xbitmap',
 			'*/*;q=0.1'
 		);
+		$android = array(
+			'application/xml',
+			'application/xhtml+xml',
+			'text/html;q=0.9',
+			'text/plain;q=0.8',
+			'image/png',
+			'*/*;q=0.5',
+			'application/youtube-client'
+		);
 		$request = new Request(array('env' => array('HTTP_ACCEPT' => join(',', $chrome))));
 		$this->assertEqual('html', $request->accepts());
 		$this->assertTrue(array_search('text/plain', $request->accepts(true)), 4);
@@ -900,6 +918,53 @@ class RequestTest extends \lithium\test\Unit {
 
 		$result = $request->accepts(true);
 		$this->assertEqual('text/plain', $result[0]);
+
+		$request = new Request(array('env' => array('HTTP_ACCEPT' => join(',', $android))));
+		$this->assertEqual('html', $request->accepts());
+	}
+
+	/**
+	 * Tests that `Accept` headers with only one listed content type are parsed property, and tests
+	 * that `'* /*'` is still parsed as `'text/html'`.
+	 */
+	public function testAcceptSingleContentType() {
+		$request = new Request(array('env' => array('HTTP_ACCEPT' => 'application/json,text/xml')));
+		$this->assertEqual(array('application/json', 'text/xml'), $request->accepts(true));
+		$this->assertEqual('json', $request->accepts());
+
+		$request = new Request(array('env' => array('HTTP_ACCEPT' => 'application/json')));
+		$this->assertEqual(array('application/json'), $request->accepts(true));
+		$this->assertEqual('json', $request->accepts());
+
+		$request = new Request(array('env' => array('HTTP_ACCEPT' => '*/*')));
+		$this->assertEqual(array('text/html'), $request->accepts(true));
+		$this->assertEqual('html', $request->accepts());
+	}
+
+	public function testLocaleDetection() {
+		$request = new Request();
+		$this->assertNull($request->locale());
+
+		$request->params['locale'] = 'fr';
+		$this->assertEqual('fr', $request->locale());
+
+		$request->locale('de');
+		$this->assertEqual('de', $request->locale());
+	}
+
+	/**
+	 * Tests that `action\Request` correctly inherits the functionality of the `to()` method
+	 * inherited from `lithium\net\http\Request`.
+	 */
+	public function testConvertToUrl() {
+		$request = new Request(array(
+			'env' => array('HTTP_HOST' => 'foo.com', 'HTTPS' => 'on'),
+			'base' => '/the/base/path',
+			'url' => '/the/url',
+			'query' => array('some' => 'query', 'parameter' => 'values')
+		));
+		$expected = 'https://foo.com/the/base/path/the/url?some=query&parameter=values';
+		$this->assertEqual($expected, $request->to('url'));
 	}
 }
 

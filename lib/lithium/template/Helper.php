@@ -2,13 +2,13 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\template;
 
-use \lithium\util\String;
+use lithium\util\String;
 
 /**
  * Abstract class for template helpers to extend.
@@ -42,6 +42,13 @@ abstract class Helper extends \lithium\core\Object {
 	protected $_context = null;
 
 	/**
+	 * This property can be overwritten with any class dependencies a helper subclass has.
+	 *
+	 * @var array
+	 */
+	protected $_classes = array();
+
+	/**
 	 * Auto configuration properties.
 	 *
 	 * @var array
@@ -55,7 +62,7 @@ abstract class Helper extends \lithium\core\Object {
 	 */
 	protected $_minimized = array(
 		'compact', 'checked', 'declare', 'readonly', 'disabled', 'selected', 'defer', 'ismap',
-		'nohref', 'noshade', 'nowrap', 'multiple', 'noresize'
+		'nohref', 'noshade', 'nowrap', 'multiple', 'noresize', 'async'
 	);
 
 	public function __construct(array $config = array()) {
@@ -124,7 +131,7 @@ abstract class Helper extends \lithium\core\Object {
 	 *
 	 * @param string $method name of method that is calling the render (for context filters)
 	 * @param string $string template key (in Helper::_strings) to render
-	 * @param array $params associatied array of template inserts {:key} will be replaced by value
+	 * @param array $params associated array of template inserts {:key} will be replaced by value
 	 * @param array $options
 	 * @return string Rendered HTML
 	 */
@@ -133,7 +140,9 @@ abstract class Helper extends \lithium\core\Object {
 
 		if ($this->_context) {
 			foreach ($params as $key => $value) {
-				$params[$key] = $this->_context->applyHandler($this, $method, $key, $value, $options);
+				$params[$key] = $this->_context->applyHandler(
+					$this, $method, $key, $value, $options
+				);
 			}
 			$strings = $this->_context->strings();
 		}

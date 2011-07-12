@@ -2,14 +2,14 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\data;
 
-use \lithium\data\Entity;
-use \lithium\tests\mocks\data\MockSource;
+use lithium\data\Entity;
+use lithium\tests\mocks\data\MockSource;
 
 class SourceTest extends \lithium\test\Unit {
 
@@ -17,7 +17,7 @@ class SourceTest extends \lithium\test\Unit {
 		$source = new MockSource(array('autoConnect' => false));
 		$methods = $source->methods();
 		$expected = array(
-			'connect', 'disconnect', 'entities', 'describe', 'create', 'read', 'update', 'delete',
+			'connect', 'disconnect', 'sources', 'describe', 'create', 'read', 'update', 'delete',
 			'schema', 'result', 'cast', 'relationship', 'calculation', '__construct', '__destruct',
 			'_init', 'isConnected', 'name', 'methods', 'configureClass', 'item', 'applyFilter',
 			'invokeMethod', '__set_state', '_instance', '_filter', '_parents', '_stop'
@@ -29,7 +29,9 @@ class SourceTest extends \lithium\test\Unit {
 		$source = new MockSource(array('autoConnect' => true));
 		$name = '{(\'Li\':"∆")}';
 		$this->assertEqual($name, $source->name($name));
-		$this->assertFalse($source->configureClass('Foo'));
+
+		$expected = array('meta' => array('locked' => true, 'key' => 'id'));
+		$this->assertEqual($expected, $source->configureClass('Foo'));
 	}
 
 	public function testConnection() {

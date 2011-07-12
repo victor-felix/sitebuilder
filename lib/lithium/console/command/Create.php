@@ -2,34 +2,26 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2010, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\console\command;
 
+use lithium\util\String;
 use lithium\core\Libraries;
 use lithium\util\Inflector;
-use lithium\util\String;
+use lithium\core\ClassNotFoundException;
 
 /**
  * The `create` command allows you to rapidly develop your models, views, controllers, and tests
  * by generating the minimum code necessary to test and run your application.
  *
  * `li3 create --template=controller Posts`
- * `li3 create --template=model Post`
+ * `li3 create --template=model Posts`
  *
  */
 class Create extends \lithium\console\Command {
-
-	/**
-	 * Controls the interactive nature of the command.
-	 * When true, the command will ask questions and expect answers to generate the result.
-	 * When false, the command will do its best to determine the result to generate.
-	 *
-	 * @var boolean
-	 */
-	public $i = false;
 
 	/**
 	 * Name of library to use
@@ -80,11 +72,6 @@ class Create extends \lithium\console\Command {
 		$this->template = $this->template ?: $command;
 
 		if (!$command) {
-			$command = $this->in('What would you like to create?', array(
-				'choices' => array('model', 'view', 'controller', 'test', 'mock')
-			));
-		}
-		if (!$command) {
 			return false;
 		}
 		if ($this->_execute($command)) {
@@ -95,24 +82,17 @@ class Create extends \lithium\console\Command {
 	}
 
 	/**
-	 * [-i] Ask questions and use answers to create.
-	 *
-	 * @return boolean
-	 */
-	public function interactive() {
-		$this->i = true;
-		return $this->run();
-	}
-
-	/**
 	 * Execute the given sub-command for the current request.
 	 *
 	 * @param string $command The sub-command name. example: Model, Controller, Test
-	 * @param string $params
-	 * @return void
+	 * @return boolean
 	 */
 	protected function _execute($command) {
-		if (!$class = $this->_instance($command)) {
+		try {
+			if (!$class = $this->_instance($command)) {
+				return false;
+			}
+		} catch (ClassNotFoundException $e) {
 			return false;
 		}
 		$data = array();
@@ -137,9 +117,9 @@ class Create extends \lithium\console\Command {
 	 */
 	protected function _default($name) {
 		$commands = array(
-			array('model', Inflector::classify($name)),
+			array('model', Inflector::pluralize($name)),
 			array('controller', Inflector::pluralize($name)),
-			array('test', 'model', Inflector::classify($name)),
+			array('test', 'model', Inflector::pluralize($name)),
 			array('test', 'controller', Inflector::pluralize($name))
 		);
 		foreach ($commands as $args) {
@@ -208,7 +188,7 @@ class Create extends \lithium\console\Command {
 	 */
 	protected function _template() {
 		$file = Libraries::locate('command.create.template', $this->template, array(
-			'filter' => false, 'type' => 'file', 'suffix' => '.txt.php',
+			'filter' => false, 'type' => 'file', 'suffix' => '.txt.php'
 		));
 		if (!$file || is_array($file)) {
 			return false;
@@ -225,12 +205,11 @@ class Create extends \lithium\console\Command {
 	 */
 	protected function _instance($name, array $config = array()) {
 		if ($class = Libraries::locate('command.create', Inflector::camelize($name))) {
-			$this->request->params['i'] = $this->i;
 			$this->request->params['template'] = $this->template;
 
 			return new $class(array(
 				'request' => $this->request,
-				'classes'=> $this->_classes,
+				'classes'=> $this->_classes
 			));
 		}
 		return parent::_instance($name, $config);
@@ -240,8 +219,9 @@ class Create extends \lithium\console\Command {
 	/**
 	 * Save a template with the current params. Writes file to `Create::$path`.
 	 *
-	 * @param string $params
-	 * @return boolean
+	 * @param array $params
+	 * @return string A result string on success of writing the file. If any errors occur along
+	 * the way such as missing information boolean false is returned.
 	 */
 	protected function _save(array $params = array()) {
 		$defaults = array('namespace' => null, 'class' => null);
