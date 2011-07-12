@@ -6,7 +6,7 @@ class ApiController extends \lithium\action\Controller {
     protected $site;
     protected $query;
 
-    protected function site($site) {
+    public function site($site) {
         if(!$this->site) {
             $this->site = $site;
         }
