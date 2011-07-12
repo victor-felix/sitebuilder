@@ -9,10 +9,6 @@ try {
     require 'config/connections.php';
     require 'config/routes.php';
 
-    if(isset($segment)) {
-        MeuMobi::segment($segment);
-    }
-
     echo \lithium\action\Dispatcher::run(new \lithium\action\Request(array(
         'url' => Mapper::here()
     )));

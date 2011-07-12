@@ -9,7 +9,6 @@ Config::write('Security.salt', '0b693e040f5c7ffd13d62330d6c8f901');
 Config::write('Mailer.transport', 'mail');
 
 require 'config/settings.app.php';
-require 'config/environments/' . Config::read('App.environment') . '.php';
 
 $dir = new DirectoryIterator(__DIR__ . '/initializers');
 foreach($dir as $file) {
@@ -18,8 +17,4 @@ foreach($dir as $file) {
     }
 }
 
-\lithium\storage\Session::config(array(
-    'default' => array(
-        'adapter' => 'Php'
-    )
-));
+require 'config/environments/' . Config::read('App.environment') . '.php';
