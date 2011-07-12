@@ -4,7 +4,7 @@ require 'lib/core/security/Sanitize.php';
 require 'lib/utils/Auth.php';
 
 class AppController extends Controller {
-    protected $allowed = array('skins');
+    protected $allowed = array('skins', 'users');
 
     protected function beforeFilter() {
         $registering = Session::read('Users.registering');
