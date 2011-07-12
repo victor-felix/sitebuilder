@@ -169,7 +169,7 @@ class Sites extends AppModel {
         }
 
         if($photo = $this->photo()) {
-            $data['photos'] []= $photo;
+            $data['photos'] []= $photo->toJSON();
         }
 
         if($this->country_id) {
