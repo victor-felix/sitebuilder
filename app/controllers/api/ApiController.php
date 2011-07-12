@@ -6,7 +6,7 @@ class ApiController extends \lithium\action\Controller {
     protected $site;
     protected $query;
 
-    public function site($site) {
+    protected function site($site) {
         if(!$this->site) {
             $this->site = $site;
         }
@@ -28,9 +28,12 @@ class ApiController extends \lithium\action\Controller {
     protected function param($param, $default = null) {
         if(!$this->query) {
             $this->query = array();
-            foreach($this->request->params['args'] as $arg) {
-                list($key, $value) = explode(':', $arg);
-                $this->query[$key] = $value;
+
+            if(isset($this->request->params['args'])) {
+                foreach($this->request->params['args'] as $arg) {
+                    list($key, $value) = explode(':', $arg);
+                    $this->query[$key] = $value;
+                }
             }
         }
 

@@ -18,9 +18,10 @@ class NewsController extends \app\controllers\api\ApiController {
         ));
     }
 
-    public function api_category($slug = null) {
+    public function category($slug = null) {
         $news_category = $this->site->newsCategory();
-        $this->respondToJSON(array(
+
+        return $this->toJSON(array(
             'categories' => $news_category
         ));
     }
