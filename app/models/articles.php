@@ -184,6 +184,11 @@ class Articles extends BusinessItems {
             $description = implode(array_slice($description->find('p'), 1));
         }
 
+        $paragraphs = $description->find('p');
+        if(empty($paragraphs) && !empty($description)) {
+            $description = '<p>' . $description . '</p>';
+        }
+
         return $purifier->purify($description);
     }
 
