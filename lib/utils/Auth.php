@@ -1,18 +1,18 @@
 <?php
 
 require_once 'lib/core/security/Security.php';
-require_once 'lib/core/storage/Session.php';
+
+use \lithium\storage\Session;
 
 class Auth {
     const SESSION_KEY = 'Auth.user';
     
     public static function login($user) {
-        Session::regenerate();
         Session::write(self::SESSION_KEY, serialize($user));
     }
     
     public static function logout() {
-        Session::destroy();
+        Session::clear();
     }
     
     public static function identify($data) {
@@ -25,7 +25,7 @@ class Auth {
     }
     
     public static function loggedIn() {
-        return !is_null(Session::read(self::SESSION_KEY));
+        return (bool) Session::read(self::SESSION_KEY);
     }
     
     public static function user() {

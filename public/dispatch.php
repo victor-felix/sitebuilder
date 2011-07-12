@@ -2,15 +2,16 @@
 
 try {
     require dirname(__DIR__) . '/config/bootstrap.php';
+
+    Config::write('App.environment', trim(Filesystem::read('config/ENVIRONMENT')));
+
     require 'config/settings.php';
     require 'config/connections.php';
     require 'config/routes.php';
 
-    if(isset($segment)) {
-        MeuMobi::segment($segment);
-    }
-
-    echo Dispatcher::dispatch();
+    echo \lithium\action\Dispatcher::run(new \lithium\action\Request(array(
+        'url' => Mapper::here()
+    )));
 }
 catch(Exception $e) {
     Debug::log((string) $e);
