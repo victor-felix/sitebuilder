@@ -4,9 +4,15 @@ namespace app\controllers\api;
 
 class SitesController extends \app\controllers\api\ApiController {
     public function index() {
-        return $this->toJSON(array(
-            'sites' => \Model::load('Sites')->all()
-        ));
+        $sites = \Model::load('Sites')->all();
+        $etag = $this->etag($sites);
+        $self = $this;
+
+        $this->whenStale($etag, function() use($sites, $self) {
+            return $self->toJSON(array(
+                'sites' => $sites
+            ));
+        });
     }
 
     public function view($slug = null) {
@@ -17,8 +23,13 @@ class SitesController extends \app\controllers\api\ApiController {
             $site = $this->site;
         }
 
-        return $this->toJSON(array(
-            'sites' => $site
-        ));
+        $etag = $this->etag($site);
+        $self = $this;
+
+        $this->whenStale($etag, function() use($site, $self) {
+            return $self->toJSON(array(
+                'sites' => $site
+            ));
+        });
     }
 }

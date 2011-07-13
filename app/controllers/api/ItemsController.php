@@ -20,6 +20,7 @@ class ItemsController extends \app\controllers\api\ApiController {
         $items = $this->site->businessItems($type, $conditions, $params);
         $etag = $this->etag($items);
         $self = $this;
+
         return $this->whenStale($etag, function() use($type, $items, $self) {
             return $self->toJSON(array(
                 $type => $items
@@ -34,6 +35,7 @@ class ItemsController extends \app\controllers\api\ApiController {
 
         $etag = $this->etag($bi);
         $self = $this;
+
         return $this->whenStale($etag, function() use($bi, $self) {
             return $self->toJSON(array(
                 $bi->type => $bi
@@ -53,6 +55,7 @@ class ItemsController extends \app\controllers\api\ApiController {
         }
 
         $self = $this;
+
         return $this->whenStale($etag, function() use($items, $self) {
             return $self->toJSON($items);
         });
