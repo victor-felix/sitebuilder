@@ -8,7 +8,7 @@ class CategoriesController extends \app\controllers\api\ApiController {
         $etag = $this->etag($categories);
         $self = $this;
 
-        $this->whenStale($etag, function() use($categories, $self) {
+        return $this->whenStale($etag, function() use($categories, $self) {
             return $self->toJSON(array(
                 'categories' => $categories
             ));
@@ -24,7 +24,7 @@ class CategoriesController extends \app\controllers\api\ApiController {
         $etag = $this->etag($categories);
         $self = $this;
 
-        $this->whenStale($etag, function() use($categories, $self) {
+        return $this->whenStale($etag, function() use($categories, $self) {
             return $self->toJSON(array(
                 'categories' => $categories
             ));
@@ -36,7 +36,7 @@ class CategoriesController extends \app\controllers\api\ApiController {
         $etag = $this->etag($category);
         $self = $this;
 
-        $this->whenStale($etag, function() {
+        return $this->whenStale($etag, function() {
             return $self->toJSON(array(
                 'categories' => $category
             ));

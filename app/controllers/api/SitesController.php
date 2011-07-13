@@ -8,7 +8,7 @@ class SitesController extends \app\controllers\api\ApiController {
         $etag = $this->etag($sites);
         $self = $this;
 
-        $this->whenStale($etag, function() use($sites, $self) {
+        return $this->whenStale($etag, function() use($sites, $self) {
             return $self->toJSON(array(
                 'sites' => $sites
             ));
@@ -26,7 +26,7 @@ class SitesController extends \app\controllers\api\ApiController {
         $etag = $this->etag($site);
         $self = $this;
 
-        $this->whenStale($etag, function() use($site, $self) {
+        return $this->whenStale($etag, function() use($site, $self) {
             return $self->toJSON(array(
                 'sites' => $site
             ));
