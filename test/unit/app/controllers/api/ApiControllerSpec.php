@@ -63,4 +63,19 @@ describe('\app\controllers\api\ApiController', function() use($etag) {
         $controller->isStale($etag);
         assert_equal($etag, $controller->response->headers('ETag'));
     });
+
+    it('should return value when stale', function() use($etag) {
+        $controller = build_controller();
+        assert_equal(true, $controller->whenStale($etag, function() {
+            return true;
+        }));
+    });
+
+    it('should send 304 Not Modified when fresh', function() use($etag) {
+        $controller = build_controller($etag);
+        assert_null($controller->whenStale($etag, function() {
+            return true;
+        }));
+        assert_equal('HTTP/1.1 304 Not Modified', $controller->response->status());
+    });
 });

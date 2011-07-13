@@ -3,6 +3,7 @@
 namespace app\controllers\api;
 
 use lithium\action\Dispatcher;
+use DateTime;
 
 class ApiController extends \lithium\action\Controller {
     protected $site;
@@ -24,12 +25,16 @@ class ApiController extends \lithium\action\Controller {
         return $this->request->env('HTTP_IF_NONE_MATCH') == $etag;
     }
 
-    protected function getSite() {
-        $slug = $this->request->params['slug'];
-        $this->site = \Model::load('Sites')->firstBySlug($slug);
+    public function whenStale($etag, $callback) {
+        if($this->isStale($etag)) {
+            return $callback();
+        }
+        else {
+            $this->response->status(304);
+        }
     }
 
-    protected function toJSON($record) {
+    public function toJSON($record) {
         if(is_array($record)) {
             foreach($record as $k => $v) {
                 $record[$k] = $this->toJSON($v);
@@ -40,6 +45,11 @@ class ApiController extends \lithium\action\Controller {
         }
 
         return $record;
+    }
+
+    protected function getSite() {
+        $slug = $this->request->params['slug'];
+        $this->site = \Model::load('Sites')->firstBySlug($slug);
     }
 
     protected function param($param, $default = null) {
@@ -61,6 +71,20 @@ class ApiController extends \lithium\action\Controller {
         }
         else {
             return $default;
+        }
+    }
+
+    protected function etag($object) {
+        if(is_array($object)) {
+            $sum = array_reduce($object, function($value, $current) {
+                $modified = new DateTime($current->modified);
+                return $value + $modified->getTimestamp();
+            }, 0);
+
+            return md5($sum);
+        }
+        else {
+            return md5($object->modified);
         }
     }
 }
