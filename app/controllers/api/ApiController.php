@@ -2,14 +2,30 @@
 
 namespace app\controllers\api;
 
+use lithium\action\Dispatcher;
+
 class ApiController extends \lithium\action\Controller {
     protected $site;
     protected $query;
+    protected $beforeFilter = array('getSite');
 
-    public function site($site) {
-        if(!$this->site) {
-            $this->site = $site;
+    public function beforeFilter() {
+        foreach($this->beforeFilter as $filter) {
+            $this->{$filter}();
         }
+    }
+
+    public function isStale($etag) {
+        return $this->request->env('HTTP_IF_NONE_MATCH') != $etag;
+    }
+
+    public function isFresh($etag) {
+        return $this->request->env('HTTP_IF_NONE_MATCH') == $etag;
+    }
+
+    protected function getSite() {
+        $slug = $this->request->params['slug'];
+        $this->site = \Model::load('Sites')->firstBySlug($slug);
     }
 
     protected function toJSON($record) {

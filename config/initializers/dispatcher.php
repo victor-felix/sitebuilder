@@ -28,8 +28,7 @@ Dispatcher::applyFilter('run', function($self, $params, $chain) {
 Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
     $controller = $chain->next($self, $params, $chain);
 
-    $slug = $params['request']->params['slug'];
-    $controller->site(Model::load('Sites')->firstBySlug($slug));
+    $controller->beforeFilter();
 
     return $controller;
 });
