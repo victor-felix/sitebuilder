@@ -16,10 +16,11 @@ class ApiController extends \lithium\action\Controller {
     }
 
     public function isStale($etag) {
-        return $this->request->env('HTTP_IF_NONE_MATCH') != $etag;
+        return !$this->isFresh($etag);
     }
 
     public function isFresh($etag) {
+        $this->response->headers('ETag', $etag);
         return $this->request->env('HTTP_IF_NONE_MATCH') == $etag;
     }
 
