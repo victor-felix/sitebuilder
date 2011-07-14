@@ -74,7 +74,7 @@ class Sites extends AppModel {
     }
 
     public function custom_domain() {
-        return strpos($this->domain, '.meumobi.com') === false;
+        return !empty($this->domain) && strpos($this->domain, '.meumobi.com') === false;
     }
 
     public function photos() {
