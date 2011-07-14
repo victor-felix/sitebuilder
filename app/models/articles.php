@@ -15,7 +15,11 @@ class Articles extends BusinessItems {
         ),
         'title' => array(
             'title' => 'Title',
-            'type' => 'string'
+            'type' => 'string',
+            'validates' => array(
+                'rule' => 'notEmpty',
+                'message' => 'A non empty title is required'
+            )
         ),
         'description' => array(
             'title' => 'Description',
