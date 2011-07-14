@@ -2,7 +2,8 @@
 
 class Themes {
     public function all() {
-        $themes = file_get_contents(Config::read('Themes.url'));
+        $url = sprintf('%s?segment=%s', Config::read('Themes.url'), MeuMobi::segment());
+        $themes = file_get_contents($url);
         $themes = json_decode($themes);
 
         return $themes;
