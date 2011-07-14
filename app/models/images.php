@@ -36,7 +36,15 @@ class Images extends AppModel {
             'path' => dirname($this->path),
             'size' => $size ? $size . '_' : ''
         ));
-        return Mapper::url($path, true);
+        return $path;
+    }
+
+    public function toJSON() {
+        $data = $this->data;
+
+        $data['path'] = '/' . $data['path'];
+
+        return $data;
     }
 
     protected function saveImage($method, $model, $image, $attr) {
