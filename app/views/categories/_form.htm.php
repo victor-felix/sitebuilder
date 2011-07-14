@@ -61,10 +61,12 @@
             <label for="FormVisibility" class="checkbox"><?php echo s('This category is visible for any user') ?></label>
         </div>
 
-        <?php echo $this->form->input('parent_id', array(
-            'type' => 'hidden',
-            'value' => $parent->id
-        )) ?>
+        <?php if($parent): ?>
+            <?php echo $this->form->input('parent_id', array(
+                'type' => 'hidden',
+                'value' => $parent->id
+            )) ?>
+        <?php endif ?>
     </div>
 </fieldset>
 
@@ -72,7 +74,7 @@
     <?php echo $this->form->submit(s('Save'), array(
         'class' => 'ui-button red larger'
     )) ?>
-    <?php if($category->id): ?>
+    <?php if($category->id && $category->parent_id > 0): ?>
         <?php echo $this->html->link($this->html->image('shared/categories/delete.gif') . s('Delete category'), '/categories/delete/' . $category->id, array(
             'class' => 'ui-button delete'
         )) ?>
