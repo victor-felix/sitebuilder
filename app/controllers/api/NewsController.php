@@ -29,7 +29,7 @@ class NewsController extends \app\controllers\api\ApiController {
         
         return $this->whenStale($etag, function() use($category, $self) {
             return $self->toJSON(array(
-                'categories' => $news_category
+                'categories' => $category
             ));
         });
     }
