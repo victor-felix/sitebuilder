@@ -28,7 +28,7 @@ class NewsController extends \app\controllers\api\ApiController {
         $self = $this;
         
         return $this->whenStale($etag, function() use($category, $self) {
-            return $this->toJSON(array(
+            return $self->toJSON(array(
                 'categories' => $news_category
             ));
         });
