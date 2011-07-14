@@ -3,7 +3,7 @@
 use lithium\action\Dispatcher;
 use lithium\net\http\Router;
 
-Router::connect('/api/{:slug:\w+}/{:controller}/{:action}/{:args}', array(
+Router::connect('/api/{:slug:[^\/]+}/{:controller}/{:action}/{:args}', array(
     'type' => 'json',
     'api' => true
 ));
