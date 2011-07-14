@@ -31,7 +31,7 @@ class FileUpload {
 
     public static function validateSize($file, $size) {
         if($size) {
-            return $size && filesize($file['tmp_name']) > $size * 1024 * 1024;
+            return $size && filesize($file['tmp_name']) < $size * 1024 * 1024;
         }
         else {
             return true;

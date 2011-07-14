@@ -274,9 +274,6 @@ class BusinessItems extends AppModel {
 
     protected function saveImages() {
         if(array_key_exists('image', $this->data) && $this->data['image']['error'] == 0) {
-            if($image = $this->image()) {
-                Model::load('Images')->delete($image->id);
-            }
             Model::load('Images')->upload($this, $this->data['image']);
         }
     }

@@ -77,6 +77,10 @@ class Sites extends AppModel {
         return strpos($this->domain, '.meumobi.com') === false;
     }
 
+    public function photos() {
+        return Model::load('Images')->allByRecord('SitePhotos', $this->id);
+    }
+
     public function photo() {
         return Model::load('Images')->firstByRecord('SitePhotos', $this->id);
     }
@@ -284,10 +288,6 @@ class Sites extends AppModel {
 
     protected function savePhoto() {
         if(array_key_exists('photo', $this->data) && $this->data['photo']['error'] == 0) {
-            if($photo = $this->photo()) {
-                Model::load('Images')->delete($photo->id);
-            }
-
             Model::load('Images')->upload(new SitePhotos($this->id), $this->data['photo']);
         }
     }
