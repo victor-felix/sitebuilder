@@ -9,7 +9,19 @@ class Links extends BusinessItems {
         ),
         'url' => array(
             'title' => 'Link',
-            'type' => 'string'
+            'type' => 'string',
+            'validates' => array(
+                'rule' => array('urlWithProtocol', 'url'),
+                'message' => 'You should provide a valid link'
+            )
         )
     );
+
+    public function urlWithProtocol($value, $field) {
+        if(!preg_match('%^https?://%', $value)) {
+            $this->data[$field] = $value = 'http://' . $value;
+        }
+
+        return Validation::url($value);
+    }
 }
