@@ -46,7 +46,9 @@ class SitesController extends AppController {
         }
 
         if($site->state_id) {
-            $states = Model::load('States')->toListByCountryId($site->country_id);
+            $states = Model::load('States')->toListByCountryId($site->country_id, array(
+                'order' => 'name ASC'
+            ));
         }
         else {
             $states = array();
@@ -54,7 +56,9 @@ class SitesController extends AppController {
 
         $this->set(array(
             'site' => $site,
-            'countries' => Model::load('Countries')->toList(),
+            'countries' => Model::load('Countries')->toList(array(
+                'order' => 'name ASC'
+            )),
             'states' => $states
         ));
     }
