@@ -36,7 +36,7 @@ class CategoriesController extends \app\controllers\api\ApiController {
         $etag = $this->etag($category);
         $self = $this;
 
-        return $this->whenStale($etag, function() {
+        return $this->whenStale($etag, function() use($category, $self) {
             return $self->toJSON(array(
                 'categories' => $category
             ));
