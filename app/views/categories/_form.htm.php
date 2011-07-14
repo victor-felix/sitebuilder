@@ -13,22 +13,20 @@
             )) ?>
         </div>
 
-        <?php if(!$category->id): ?>
-            <div class="form-grid-460 populate-fields">
-                <label><?php echo s('Type of category') ?></label>
-                <?php echo $this->form->input('populate', array(
-                    'type' => 'radio',
-                    'options' => array(
-                        'manual' => s('Manual'),
-                        'auto' => s('Auto')
-                    )
-                )) ?>
-                <small><?php echo s('Manual Categories allow to manage manually any type of content') ?></small>
-                <small><?php echo s('Auto Categories allow to import automatically content from RSS feed') ?></small>
-            </div>
-        <?php endif ?>
+        <div class="form-grid-460 populate-fields">
+            <label><?php echo s('Type of category') ?></label>
+            <?php echo $this->form->input('populate', array(
+                'type' => 'radio',
+                'options' => array(
+                    'manual' => s('Manual'),
+                    'auto' => s('Auto')
+                )
+            )) ?>
+            <small><?php echo s('Manual Categories allow to manage manually any type of content') ?></small>
+            <small><?php echo s('Auto Categories allow to import automatically content from RSS feed') ?></small>
+        </div>
 
-        <?php if(!$category->id && $site->hasManyTypes()): ?>
+        <?php if($site->hasManyTypes()): ?>
             <div class="form-grid-460 first populate-based manual">
                 <?php echo $this->form->input('type', array(
                     'label' => s('Type'),

@@ -3,7 +3,7 @@
 require_once 'lib/simplepie/SimplePie.php';
 
 class Categories extends AppModel {
-    protected $beforeSave = array('getOrder', 'getItemType');
+    protected $beforeSave = array('getOrder', 'getItemType', 'checkItems');
     protected $afterSave = array('updateFeed');
     protected $beforeDelete = array('deleteChildren');
     protected $defaultScope = array(
@@ -229,6 +229,22 @@ class Categories extends AppModel {
 
             if(!array_key_exists('type', $data) || !in_array($data['type'], $items)) {
                 $data['type'] = $items[0];
+            }
+        }
+
+        return $data;
+    }
+
+    protected function checkItems($data) {
+        if(!is_null($this->id)) {
+            $original = $this->firstById($this->id);
+            if(
+                $original->populate != $data['populate'] ||
+                $original->type != $data['type']
+            ) {
+                $model = Model::load($original->type);
+                $children = $this->childrenItems();
+                $this->deleteSet($model, $children);
             }
         }
 

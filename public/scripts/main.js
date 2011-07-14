@@ -267,18 +267,6 @@ $.extend($.easing, {
         $('.slide-elem:last .ui-button.back').click();
     });
 
-    // Handles the categories's deletion in categories/index
-    slider.delegate('.categories-list .controls .delete', 'click', function(e) {
-        e.preventDefault();
-        $(this).parent().parent().find('.delete-confirm').fadeIn('fast');
-    });
-
-    slider.delegate('li .delete-confirm', 'ajax:success', function(e) {
-        var li = $(this).closest('li');
-        var children = $('li[data-parentid=' + li.attr('data-catid') + ']');
-        children.add(li).slideUp();
-    });
-
     var site_edit = $('#form-edit-site-info, #form-register-site-info');
     site_edit.delegate('#FormCountryId', 'change', function() {
         var data = {
