@@ -7,6 +7,12 @@ class BusinessItems extends AppModel {
     protected $beforeSave = array('setSiteValues', 'getOrder');
     protected $afterSave = array('saveItemValues', 'saveImages');
     protected $beforeDelete = array('deleteValues', 'deleteImages');
+    protected $validates = array(
+        'image' => array(
+            'rule' => array('fileUpload', 1, array('jpg', 'gif', 'png')),
+            'message' => 'Only valid gif, jpg or png are allowed',
+        )
+    );
 
     protected $fields = array();
     protected $scope = array();
@@ -161,7 +167,20 @@ class BusinessItems extends AppModel {
     }
 
     public function validate($data = array()) {
-        return true; // temporary, mind you
+        $fields_validates = array_filter(array_map(function($field) {
+            if(isset($field['validates'])) {
+                return $field['validates'];
+            }
+        }, $this->fields));
+
+        $validates = $this->validates;
+        $this->validates = array_merge($fields_validates, $validates);
+
+        $valid = parent::validate($data);
+
+        $this->validates = $validates;
+
+        return $valid;
     }
 
     public function description() {
@@ -255,9 +274,6 @@ class BusinessItems extends AppModel {
 
     protected function saveImages() {
         if(array_key_exists('image', $this->data) && $this->data['image']['error'] == 0) {
-            if($image = $this->image()) {
-                Model::load('Images')->delete($image->id);
-            }
             Model::load('Images')->upload($this, $this->data['image']);
         }
     }

@@ -13,22 +13,20 @@
             )) ?>
         </div>
 
-        <?php if(!$category->id): ?>
-            <div class="form-grid-460 populate-fields">
-                <label><?php echo s('Type of category') ?></label>
-                <?php echo $this->form->input('populate', array(
-                    'type' => 'radio',
-                    'options' => array(
-                        'manual' => s('Manual'),
-                        'auto' => s('Auto')
-                    )
-                )) ?>
-                <small><?php echo s('Manual Categories allow to manage manually any type of content') ?></small>
-                <small><?php echo s('Auto Categories allow to import automatically content from RSS feed') ?></small>
-            </div>
-        <?php endif ?>
+        <div class="form-grid-460 populate-fields">
+            <label><?php echo s('Type of category') ?></label>
+            <?php echo $this->form->input('populate', array(
+                'type' => 'radio',
+                'options' => array(
+                    'manual' => s('Manual'),
+                    'auto' => s('Auto')
+                )
+            )) ?>
+            <small><?php echo s('Manual Categories allow to manage manually any type of content') ?></small>
+            <small><?php echo s('Auto Categories allow to import automatically content from RSS feed') ?></small>
+        </div>
 
-        <?php if(!$category->id && $site->hasManyTypes()): ?>
+        <?php if($site->hasManyTypes()): ?>
             <div class="form-grid-460 first populate-based manual">
                 <?php echo $this->form->input('type', array(
                     'label' => s('Type'),
@@ -63,10 +61,12 @@
             <label for="FormVisibility" class="checkbox"><?php echo s('This category is visible for any user') ?></label>
         </div>
 
-        <?php echo $this->form->input('parent_id', array(
-            'type' => 'hidden',
-            'value' => $parent->id
-        )) ?>
+        <?php if($parent): ?>
+            <?php echo $this->form->input('parent_id', array(
+                'type' => 'hidden',
+                'value' => $parent->id
+            )) ?>
+        <?php endif ?>
     </div>
 </fieldset>
 
@@ -74,7 +74,7 @@
     <?php echo $this->form->submit(s('Save'), array(
         'class' => 'ui-button red larger'
     )) ?>
-    <?php if($category->id): ?>
+    <?php if($category->id && $category->parent_id > 0): ?>
         <?php echo $this->html->link($this->html->image('shared/categories/delete.gif') . s('Delete category'), '/categories/delete/' . $category->id, array(
             'class' => 'ui-button delete'
         )) ?>

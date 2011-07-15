@@ -22,11 +22,9 @@
             <em><?php echo s('auto category')?></em>
         <?php endif ?>
 
-        <?php if($level >= 1): ?>
-            <?php echo $this->html->link(s('options'), '/categories/edit/' . $category->id, array(
-                'class' => 'ui-button manage push-scene'
-            )) ?>
-        <?php endif ?>
+        <?php echo $this->html->link(s('options'), '/categories/edit/' . $category->id, array(
+            'class' => 'ui-button manage push-scene'
+        )) ?>
     </div>
 
     <div class="children-count"><?php echo $category->childrenCount() ?></div>

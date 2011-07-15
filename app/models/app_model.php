@@ -53,7 +53,7 @@ class AppModel extends Model {
     protected function fileUpload($value, $size = null, $types = null) {
         require_once 'lib/utils/FileUpload.php';
 
-        list($valid, $errors) = FileUpload::validate($value);
+        list($valid, $errors) = FileUpload::validate($value, $size, $types);
 
         return $valid;
     }

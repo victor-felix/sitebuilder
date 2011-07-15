@@ -287,9 +287,11 @@
             )) ?>
         </div>
 
-        <?php if($site->id && $image = $site->photo()): ?>
+        <?php if($site->id && $images = $site->photos()): ?>
+            <?php foreach($images as $image): ?>
             <?php echo $this->html->link(s('Delete image'), '/images/delete/' . $image->id) ?>
             <?php echo $this->html->image($image->link('80x80')) ?>
+            <?php endforeach ?>
         <?php endif ?>
     </div>
 </fieldset>

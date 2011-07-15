@@ -31,7 +31,7 @@
                     <?php foreach($themes as $slug => $theme): ?>
                         <li>
                             <a href="<?php echo '#' . $slug ?>">
-                                <?php echo $this->html->image($theme->thumbnails[0]) ?>
+                                <?php echo $this->html->image('http://meu-template-engine.int-meumobi.com/' . $theme->thumbnails[0]) ?>
                                 <span><?php echo $slug ?></span>
                             </a>
                         </li>

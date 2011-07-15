@@ -15,9 +15,11 @@
             )) ?>
         </div>
 
-        <?php if($item->id && $image = $item->image()): ?>
-            <?php echo $this->html->link(s('Delete image'), '/images/delete/' . $image->id) ?>
-            <?php echo $this->html->image($image->link('80x80')) ?>
+        <?php if($item->id && $images = $item->images()): ?>
+            <?php foreach($images as $image): ?>
+                <?php echo $this->html->link(s('Delete image'), '/images/delete/' . $image->id) ?>
+                <?php echo $this->html->image($image->link('80x80')) ?>
+            <?php endforeach ?>
         <?php endif ?>
     </div>
 </fieldset>

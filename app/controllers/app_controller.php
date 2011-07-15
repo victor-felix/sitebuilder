@@ -5,7 +5,7 @@ require 'lib/core/storage/Session.php';
 require 'lib/utils/Auth.php';
 
 class AppController extends Controller {
-    protected $allowed = array('skins', 'users');
+    protected $allowed = array('skins', 'users', 'states');
 
     protected function beforeFilter() {
         $registering = Session::read('Users.registering');

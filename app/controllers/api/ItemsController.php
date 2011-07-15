@@ -17,9 +17,15 @@ class ItemsController extends \app\controllers\api\ApiController {
             $type = $this->param('type');
         }
 
-        return $this->toJSON(array(
-            $type => $this->site->businessItems($type, $conditions, $params)
-        ));
+        $items = $this->site->businessItems($type, $conditions, $params);
+        $etag = $this->etag($items);
+        $self = $this;
+
+        return $this->whenStale($etag, function() use($type, $items, $self) {
+            return $self->toJSON(array(
+                $type => $items
+            ));
+        });
     }
 
     public function view($item_id = null) {
@@ -27,19 +33,31 @@ class ItemsController extends \app\controllers\api\ApiController {
         $type = \Inflector::camelize($bi->type);
         $bi = \Model::load($type)->firstById($item_id);
 
-        return $this->toJSON(array(
-            $bi->type => $bi
-        ));
+        $etag = $this->etag($bi);
+        $self = $this;
+
+        return $this->whenStale($etag, function() use($bi, $self) {
+            return $self->toJSON(array(
+                $bi->type => $bi
+            ));
+        });
     }
 
     public function by_category() {
         $categories = \Model::load('Categories')->allBySiteIdAndVisibility($this->site->id, 1);
         $items = array();
 
+        $etag = '';
         foreach($categories as $category) {
-            $items[$category->id] = $category->childrenItems($this->param('limit', 10));
+            $current_items = $category->childrenItems($this->param('limit', 10));
+            $items[$category->id] = $current_items;
+            $etag .= $this->etag($current_items);
         }
 
-        return $this->toJSON($items);
+        $self = $this;
+
+        return $this->whenStale($etag, function() use($items, $self) {
+            return $self->toJSON($items);
+        });
     }
 }
