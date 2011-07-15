@@ -183,16 +183,16 @@ class Articles extends BusinessItems {
         $purifier = $this->getPurifier();
         $html = $purifier->purify($html);
 
-        // PRODERJ only
-        if(strpos($item->get_id(), 'www.rj.gov.br') !== false) {
-            $html = str_get_html($html);
-            $html = implode(array_slice($html->find('p'), 1));
-        }
-
         $doc = new DOMDocument();
         $doc->loadHTML($html);
         $body = $doc->getElementsByTagName('body')->item(0);
         $results = '';
+
+        // PRODERJ only
+        if(strpos($item->get_id(), 'www.rj.gov.br') !== false) {
+            $body->removeChild($body->getElementsByTagName('p')->item(0));
+        }
+
         foreach($body->childNodes as $node) {
             if($node->nodeType == XML_TEXT_NODE) {
                 $content = trim($node->textContent);
