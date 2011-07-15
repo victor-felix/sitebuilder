@@ -182,6 +182,7 @@ class Articles extends BusinessItems {
         $html = $item->get_content();
         $purifier = $this->getPurifier();
         $html = $purifier->purify($html);
+        $html = mb_convert_encoding($html, 'ISO-8859-1', mb_detect_encoding($html));
 
         $doc = new DOMDocument();
         $doc->loadHTML($html);

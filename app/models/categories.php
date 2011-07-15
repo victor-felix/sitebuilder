@@ -193,7 +193,6 @@ class Categories extends AppModel {
         $feed = new SimplePie();
         $feed->enable_cache(false);
         $feed->set_feed_url($this->feed_url);
-        $feed->set_output_encoding('UTF-8');
         $feed->init();
 
         return $feed;
