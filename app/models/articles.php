@@ -181,19 +181,33 @@ class Articles extends BusinessItems {
     protected function cleanupHtml($item) {
         $html = $item->get_content();
         $purifier = $this->getPurifier();
-        $description = str_get_html($html);
+        $html = $purifier->purify($html);
 
         // PRODERJ only
         if(strpos($item->get_id(), 'www.rj.gov.br') !== false) {
-            $description = implode(array_slice($description->find('p'), 1));
+            $html = str_get_html($html);
+            $html = implode(array_slice($html->find('p'), 1));
         }
 
-        $paragraphs = $description->find('p');
-        if(empty($paragraphs) && !empty($description)) {
-            $description = '<p>' . $description . '</p>';
+        $doc = new DOMDocument();
+        $doc->loadHTML($html);
+        $body = $doc->getElementsByTagName('body')->item(0);
+        $results = '';
+        foreach($body->childNodes as $node) {
+            if($node->nodeType == XML_TEXT_NODE) {
+                $content = trim($node->textContent);
+                if($content) {
+                    $new_node = $doc->createElement('p', $content);
+                    $body->replaceChild($new_node, $node);
+                    $node = $new_node;
+                }
+            }
+            if($node->nodeType == XML_ELEMENT_NODE) {
+                $results .= $doc->saveXML($node) . PHP_EOL;
+            }
         }
 
-        return $purifier->purify($description);
+        return $results;
     }
 
     protected function filterGuid($guid) {
