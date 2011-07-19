@@ -34,7 +34,7 @@ class SitesController extends AppController {
     protected function editRecord($redirect_to) {
         $site = $this->getCurrentSite();
         if(!empty($this->data)) {
-            $site->updateAttributes($this->data);
+            $site->updateAttributes($this->request->data);
             if($site->validate()) {
                 $site->save();
                 Session::writeFlash('success', s('Configuration successfully saved.'));

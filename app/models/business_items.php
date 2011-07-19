@@ -9,7 +9,7 @@ class BusinessItems extends AppModel {
     protected $beforeDelete = array('deleteValues', 'deleteImages');
     protected $validates = array(
         'image' => array(
-            'rule' => array('fileUpload', 1, array('jpg', 'gif', 'png')),
+            'rule' => array('multipleFileUpload', 1, array('jpg', 'gif', 'png')),
             'message' => 'Only valid gif, jpg or png are allowed',
         )
     );
@@ -273,8 +273,12 @@ class BusinessItems extends AppModel {
     }
 
     protected function saveImages() {
-        if(array_key_exists('image', $this->data) && $this->data['image']['error'] == 0) {
-            Model::load('Images')->upload($this, $this->data['image']);
+        if(array_key_exists('image', $this->data)) {
+            foreach($this->data['image'] as $photo) {
+                if($photo['error'] == 0) {
+                    Model::load('Images')->upload($this, $photo);
+                }
+            }
         }
     }
 

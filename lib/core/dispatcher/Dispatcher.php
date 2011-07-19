@@ -1,19 +1,14 @@
 <?php
 
 class Dispatcher {
-    public static function dispatch($request = null) {
+    public static function dispatch($request = null, $r = null) {
         $request = self::normalize($request);
         
         try {
             $class = Inflector::camelize($request['controller']) . 'Controller';
-            
-            if(empty($request['prefix'])) {
-                $controller = Controller::load($class, true);
-            }
-            else {
-                AppController::load($request['prefix'] . '/' . $class);
-                $controller = new $class;
-            }
+            $controller = Controller::load($class, true);
+            $controller->request = $r;
+
             return $controller->callAction($request);
         }
         catch(MissingControllerException $e) {

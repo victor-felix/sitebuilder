@@ -12,7 +12,7 @@ class BusinessItemsController extends AppController {
     public function add($parent_id = null) {
         $site = $this->getCurrentSite();
         $parent = Model::load('Categories')->firstById($parent_id);
-        $item = $this->modelInstance($parent, $this->data);
+        $item = $this->modelInstance($parent, $this->request->data);
 
         if(!empty($this->data)) {
             $item->site = $site;
@@ -42,7 +42,7 @@ class BusinessItemsController extends AppController {
         $item = $this->model($bi->parent())->firstById($id);
 
         if(!empty($this->data)) {
-            $item->updateAttributes($this->data);
+            $item->updateAttributes($this->request->data);
             $item->site = $site;
 
             if($item->validate()) {
