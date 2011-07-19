@@ -280,12 +280,13 @@
     <div class="field-group">
         <div class="form-grid-460 first">
             <span class="optional"><?php echo s('Optional') ?></span>
-            <?php echo $this->form->input('photo', array(
+            <?php echo $this->form->input('photo[]', array(
                 'label' => s('Image'),
                 'type' => 'file',
                 'class' => 'ui-text large'
             )) ?>
         </div>
+        <a href="#" class="duplicate-previous">more</a>
 
         <?php if($site->id && $images = $site->photos()): ?>
             <?php foreach($images as $image): ?>

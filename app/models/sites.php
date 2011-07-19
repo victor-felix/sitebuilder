@@ -287,8 +287,12 @@ class Sites extends AppModel {
     }
 
     protected function savePhoto() {
-        if(array_key_exists('photo', $this->data) && $this->data['photo']['error'] == 0) {
-            Model::load('Images')->upload(new SitePhotos($this->id), $this->data['photo']);
+        if(array_key_exists('photo', $this->data)) {
+            foreach($this->data['photo'] as $photo) {
+                if($photo['error'] == 0) {
+                    Model::load('Images')->upload(new SitePhotos($this->id), $photo);
+                }
+            }
         }
     }
 

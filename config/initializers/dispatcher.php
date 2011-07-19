@@ -21,7 +21,7 @@ Dispatcher::applyFilter('run', function($self, $params, $chain) {
         return $chain->next($self, $params, $chain);
     }
     else {
-        echo \Dispatcher::dispatch();
+        echo \Dispatcher::dispatch(null, $params['request']);
     }
 });
 

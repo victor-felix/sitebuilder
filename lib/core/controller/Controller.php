@@ -12,6 +12,7 @@ class Controller {
     protected $uses = null;
     protected $view = array();
     protected $models = array();
+    public $request;
 
     public function __construct() {
         if(is_null($this->name)) {

@@ -8,12 +8,13 @@
         <?php endforeach ?>
 
         <div class="form-grid-460 first">
-            <?php echo $this->form->input('image', array(
+            <?php echo $this->form->input('image[]', array(
                 'label' => s('Image'),
                 'type' => 'file',
                 'class' => 'large ui-text'
             )) ?>
         </div>
+        <a href="#" class="duplicate-previous">more</a>
 
         <?php if($item->id && $images = $item->images()): ?>
             <?php foreach($images as $image): ?>

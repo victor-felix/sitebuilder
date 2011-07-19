@@ -50,12 +50,24 @@ class AppModel extends Model {
         return preg_match('/^[\w._-]+$/', $value);
     }
 
-    protected function fileUpload($value, $size = null, $types = null) {
+    public function fileUpload($value, $size = null, $types = null) {
         require_once 'lib/utils/FileUpload.php';
 
         list($valid, $errors) = FileUpload::validate($value, $size, $types);
 
         return $valid;
+    }
+
+    protected function multipleFileUpload($value, $size = null, $types = null) {
+        require_once 'lib/utils/FileUpload.php';
+
+        return array_reduce(array_map(function($file) use($size, $types) {
+            return FileUpload::validate($file, $size, $types);
+        }, $value), function($prev, $next) {
+            $prev[0] = $prev[0] && $next[0];
+            $prev[1] += $next[1];
+            return $prev;
+        }, array(true, array()));
     }
 
     protected function deleteImages($id) {
