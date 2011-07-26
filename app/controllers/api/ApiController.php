@@ -49,7 +49,7 @@ class ApiController extends \lithium\action\Controller {
 
     protected function getSite() {
         $slug = $this->request->params['slug'];
-        $this->site = \Model::load('Sites')->firstBySlug($slug);
+        $this->site = \Model::load('Sites')->firstByDomain($slug);
     }
 
     protected function param($param, $default = null) {
