@@ -7,4 +7,9 @@ class ImagesController extends AppController {
         $this->Images->delete($id);
         $this->redirect($_SERVER['HTTP_REFERER']);
     }
+
+	public function add(){
+		$this->layout = false;
+		$this->set('timestamp', $this->data['timestamp']);
+	}
 }

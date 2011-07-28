@@ -111,6 +111,8 @@
 'Url of your current website': 'Endereço do website atual'
 'Ex: http://www.yourwebsite.com/': 'Ex: http://www.seusite.com.br/'
 'Photos of Business': 'fotos da empresa'
+'add photos': 'adicionar fotos'
+'uploading photo...': 'enviando foto...'
 'Your links on web': 'links na web'
 #views/sites/customize_register
 'Save >': 'Finalizar ›'

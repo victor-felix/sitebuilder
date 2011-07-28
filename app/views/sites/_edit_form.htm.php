@@ -278,12 +278,16 @@
 <fieldset style="display:none">
     <h2><?php echo s('Photos of Business') ?></h2>
     <div class="field-group">
-        <div class="form-grid-460 first">
-            <span class="optional"><?php echo s('Optional') ?></span>
+        <div class="first picture-upload-container" data-url="/images/add.htm">
+			<input type="hidden" name="foreign_key" value="" />
+			<input type="hidden" name="model" value="SitePhotos" />
+			<a class="close"></a>
+			<div class="default"><?php echo s('add photo'); ?></div>
+			<div class="wait"><?php echo s('uploading photo...'); ?></div>
             <?php echo $this->form->input('photo[]', array(
-                'label' => s('Image'),
+                'label' => s(''),
                 'type' => 'file',
-                'class' => 'ui-text large'
+                'class' => 'ui-text large picture-upload'
             )) ?>
         </div>
         <a href="#" class="duplicate-previous">more</a>
@@ -296,3 +300,4 @@
         <?php endif ?>
     </div>
 </fieldset>
+<?php $this->html->script('shared/async_upload', false); ?>
