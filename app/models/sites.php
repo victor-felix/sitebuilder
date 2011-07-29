@@ -5,7 +5,7 @@ require_once 'lib/geocoding/GoogleGeocoding.php';
 class Sites extends AppModel {
     protected $getters = array('feed_url', 'feed_title', 'custom_domain');
     protected $beforeSave = array('getLatLng', 'saveCustomDomain');
-    protected $afterSave = array('saveLogo', 'savePhoto', 'createRootCategory',
+    protected $afterSave = array('saveLogo', 'createRootCategory',
         'createNewsCategory', 'updateFeed');
     protected $beforeDelete = array('checkAndDeleteFeed', 'deleteImages', 'deleteCategories',
         'deleteLogo');
