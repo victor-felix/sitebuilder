@@ -348,4 +348,8 @@ class SitePhotos {
     public function imageModel() {
         return 'SitePhotos';
     }
+
+    public function firstById($id) {
+        return new self($id);
+    }
 }

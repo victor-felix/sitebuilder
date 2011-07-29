@@ -278,26 +278,30 @@
 <fieldset style="display:none">
     <h2><?php echo s('Photos of Business') ?></h2>
     <div class="field-group">
-        <div class="first picture-upload-container" data-url="/images/add.htm">
-			<input type="hidden" name="foreign_key" value="" />
-			<input type="hidden" name="model" value="SitePhotos" />
-			<a class="close"></a>
-			<div class="default"><?php echo s('add photo'); ?></div>
-			<div class="wait"><?php echo s('uploading photo...'); ?></div>
-            <?php echo $this->form->input('photo[]', array(
-                'label' => s(''),
+        <?php if($site->id && $images = $site->photos()): ?>
+            <?php foreach($images as $i => $image): $class = $i % 3 ? '' : 'first' ?>
+                <div class="<?php echo $class ?> picture-upload-container done" style="background-image: url(<?php echo $image->link('139x139') ?>)">
+                    <?php echo $this->html->link('', '/images/delete/' . $image->id, array(
+                        'class' => 'close'
+                    )) ?>
+                </div>
+            <?php endforeach ?>
+        <?php endif ?>
+
+        <?php $class = (isset($i) ? $i + 1 : 0) % 3 ? '' : 'first' ?>
+        <div class="<?php echo $class ?> picture-upload-container" data-url="/images/add.htm">
+            <input type="hidden" name="foreign_key" value="<?php echo $site->id ?>" />
+            <input type="hidden" name="model" value="SitePhotos" />
+            <a class="close"></a>
+            <div class="default"><?php echo s('add photo'); ?></div>
+            <div class="wait"><?php echo s('uploading photo...'); ?></div>
+            <?php echo $this->form->input('photo', array(
+                'label' => false,
                 'type' => 'file',
                 'class' => 'ui-text large picture-upload'
             )) ?>
         </div>
-        <a href="#" class="duplicate-previous">more</a>
 
-        <?php if($site->id && $images = $site->photos()): ?>
-            <?php foreach($images as $image): ?>
-            <?php echo $this->html->link(s('Delete image'), '/images/delete/' . $image->id) ?>
-            <?php echo $this->html->image($image->link('80x80')) ?>
-            <?php endforeach ?>
-        <?php endif ?>
+        <a href="#" class="duplicate-previous">more</a>
     </div>
 </fieldset>
-<?php $this->html->script('shared/async_upload', false); ?>

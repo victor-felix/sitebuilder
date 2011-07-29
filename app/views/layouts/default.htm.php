@@ -52,7 +52,7 @@
         
         <?php echo $this->element('layouts/footer') ?>
         
-        <?php echo $this->html->script('shared/jquery', 'shared/main', 'shared/markitup') ?>
+        <?php echo $this->html->script('shared/jquery', 'shared/main', 'shared/markitup', 'shared/async_upload') ?>
         <?php echo $this->html->scriptsForLayout ?>
     </body>
 </html>
