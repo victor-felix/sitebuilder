@@ -5,7 +5,14 @@ jQuery(".picture-upload-container .close").live("click", function(e){
 		type: "GET",
 		dataType: "json",
 		beforeSend: function(attribute){
-			$(e.target).closest(".picture-upload-container").fadeOut();
+			var container = $(e.target).closest(".picture-upload-container");
+			if(container.prevAll().length % 3 == 0) {
+				container.next().addClass('first');
+			}
+			else {
+				container.next().removeClass('first');
+			}
+			container.fadeOut();
 		},
 		success: function(){
 			$(e.target).closest(".picture-upload-container").remove();
