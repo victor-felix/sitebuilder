@@ -28,7 +28,7 @@ jQuery(".picture-upload-container input[type='file']").live("change", function()
 	var timestamp = new Date().getTime(),
 		container = $(this).closest(".picture-upload-container"),
 		iframe_id = "iframe_"+timestamp,
-		iframe = $('<iframe id="'+iframe_id+'"></iframe>'),
+		iframe = $("iframe", container).attr("id", iframe_id).attr("name", iframe_id),
 		form = $('<form id="form_'+timestamp+'" target="'+iframe_id+'" action="'+container.data('url')+'" method="post" enctype="multipart/form-data"></form>');
 
 	container.next('.duplicate-previous').click();
@@ -43,7 +43,7 @@ jQuery(".picture-upload-container input[type='file']").live("change", function()
 	});
 	$(this).appendTo(form);
 	form.append("<input type='hidden' name='timestamp' value='"+timestamp+"' />");
-	$("#container_"+timestamp).append(form).append(iframe);
+	$("#container_"+timestamp).append(form);
 	form.submit();
 	
 });
