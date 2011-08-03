@@ -31,9 +31,15 @@
                     <?php foreach($themes as $slug => $theme): ?>
                         <li>
                             <a href="<?php echo '#' . $slug ?>">
-                                <?php echo $this->html->image('http://meu-template-engine.int-meumobi.com/' . $theme->thumbnails[0]) ?>
+                                <span class="thumbs">
+                                <?php foreach ($theme->thumbnails as $thumbnail): ?>
+                                    <?php echo $this->html->image('http://meu-template-engine.int-meumobi.com/' . $thumbnail) ?>
+                                <?php endforeach ?>
+                                </span>
                                 <span><?php echo $slug ?></span>
                             </a>
+                            <span class="arrow left"></span>
+                            <span class="arrow right"></span>
                         </li>
                     <?php endforeach ?>
                 </ul>
@@ -60,3 +66,4 @@
         </div>
     </div>
 </fieldset>
+<?php $this->html->script('shared/theme_carroussel', false); ?>

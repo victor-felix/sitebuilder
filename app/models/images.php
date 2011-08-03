@@ -57,23 +57,23 @@ class Images extends AppModel {
         }
 
         try {
-            $this->id = null;
+            $self = new Images();
 
             $defaults = array(
                 'model' => $model->imageModel(),
                 'foreign_key' => $model->id
             );
-            $this->save(array_merge($defaults, $attr));
+            $self->save(array_merge($defaults, $attr));
 
             $path = $this->getPath($model);
             $filename = $this->{$method}($model, $image);
 
             $info = $this->getImageInfo($path, $filename);
-            $filename = $this->renameTempImage($info);
+            $filename = $self->renameTempImage($info);
 
             $info['path'] = $path . '/' . $filename;
-            $this->updateAttributes($info);
-            $this->save();
+            $self->updateAttributes($info);
+            $self->save();
 
             $this->resizeImage($model, $path, $filename);
 
@@ -81,14 +81,14 @@ class Images extends AppModel {
                 $this->commit();
             }
 
-            return $path . '/' . $filename;
+            return $self;
         }
         catch(Exception $e) {
             if($transaction) {
                 $this->rollback();
             }
             else {
-                $this->delete($this->id);
+                $this->delete($self->id);
             }
         }
     }

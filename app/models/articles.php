@@ -191,6 +191,7 @@ class Articles extends BusinessItems {
 
         // PRODERJ only
         if(strpos($item->get_id(), 'www.rj.gov.br') !== false) {
+            $body->removeChild($body->getElementsByTagName('p')->item(1));
             $body->removeChild($body->getElementsByTagName('p')->item(0));
         }
 
