@@ -22,6 +22,7 @@
             <input type="hidden" name="foreign_key" value="<?php echo $item->id ?>" />
             <input type="hidden" name="model" value="BusinessItems" />
             <a class="close"></a>
+						<iframe src="about:blank" id="iframe_<?php echo time(); ?>"></iframe>
             <div class="default"><?php echo s('add photo'); ?></div>
             <div class="wait"><?php echo s('uploading photo...'); ?></div>
             <?php echo $this->form->input('photo', array(
