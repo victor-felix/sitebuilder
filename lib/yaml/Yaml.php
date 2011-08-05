@@ -38,7 +38,7 @@ class Yaml {
     }
 
     protected function load($filename) {
-        if($this->isCacheEnabled() && $this->isCacheUpToDate()) {
+        if($this->isCacheEnabled() && $this->isCacheUpToDate($filename)) {
             return $this->loadFromCache($filename);
         }
         else {
