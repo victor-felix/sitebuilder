@@ -210,7 +210,7 @@ class Images extends AppModel {
         ));
     }
 
-    public function toString() {
+    public function __toString() {
         return $this->path;
     }
 }
