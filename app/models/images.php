@@ -209,6 +209,10 @@ class Images extends AppModel {
             'model' => Inflector::underscore($model)
         ));
     }
+
+    public function toString() {
+        return $this->path;
+    }
 }
 
 class ImageNotFoundException extends Exception {}
