@@ -6,7 +6,7 @@ require 'config/connections.php';
 
 $categories = Model::load('Categories')->all(array(
     'conditions' => array(
-        'feed_url IS NOT NULL OR feed_url != ""'
+        'feed_url IS NOT NULL AND feed_url != ""'
     )
 ));
 
