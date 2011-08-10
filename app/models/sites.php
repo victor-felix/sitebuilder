@@ -74,7 +74,7 @@ class Sites extends AppModel {
     }
 
     public function custom_domain() {
-        return !empty($this->domain) && strpos($this->domain, '.meumobi.com') === false;
+        return !empty($this->domain) && strpos($this->domain, '.' . MeuMobi::domain()) === false;
     }
 
     public function photos() {
@@ -199,7 +199,7 @@ class Sites extends AppModel {
 
     protected function saveCustomDomain($data) {
         if(isset($data['custom_domain']) && (!$data['custom_domain'] || empty($data['domain']))) {
-            $data['domain'] = $data['slug'] . '.meumobi.com';
+            $data['domain'] = $data['slug'] . '.' . MeuMobi::domain();
         }
 
         return $data;
