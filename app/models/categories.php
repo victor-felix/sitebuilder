@@ -171,7 +171,7 @@ class Categories extends AppModel {
     public function cleanup() {
         $conditions = array(
             'site_id' => $this->site_id,
-            'parent_id' => $this->parent_id
+            'parent_id' => $this->id
         );
         $count = Model::load('Articles')->count(array(
             'conditions' => $conditions
