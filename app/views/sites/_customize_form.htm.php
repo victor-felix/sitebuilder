@@ -46,10 +46,9 @@
                 <div class="clear"></div>
             </div>
 
-            <?php $keys = array_keys($themes) ?>
             <?php echo $this->form->input('theme', array(
                 'type' => 'hidden',
-                'value' => $site->theme ? $site->theme : $keys[0]
+                'value' => $site->theme ? $site->theme : $themes[0]->_id
             )) ?>
 
             <div class="skin-picker">
