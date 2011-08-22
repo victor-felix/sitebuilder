@@ -5,7 +5,7 @@ class SkinsController extends AppController {
 
     public function index() {
         $this->set(array(
-            'skins' => $this->Themes->firstByName($this->param('theme'))->colors
+            'skins' => $this->Themes->firstById($this->param('theme'))->colors
         ));
     }
 }

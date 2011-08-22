@@ -30,13 +30,13 @@
                 <ul>
                     <?php foreach($themes as $slug => $theme): ?>
                         <li>
-                            <a href="<?php echo '#' . $slug ?>">
+                            <a href="<?php echo '#' . $theme->_id ?>">
                                 <span class="thumbs">
                                 <?php foreach ($theme->thumbnails as $thumbnail): ?>
-                                    <?php echo $this->html->image('http://meu-template-engine.int-meumobi.com/' . $thumbnail) ?>
+                                    <?php echo $this->html->image('http://meu-template-engine.int-meumobi.com' . $thumbnail) ?>
                                 <?php endforeach ?>
                                 </span>
-                                <span><?php echo $slug ?></span>
+                                <span><?php echo $theme->name ?></span>
                             </a>
                             <span class="arrow left"></span>
                             <span class="arrow right"></span>
@@ -46,10 +46,9 @@
                 <div class="clear"></div>
             </div>
 
-            <?php $keys = array_keys(get_object_vars($themes)) ?>
             <?php echo $this->form->input('theme', array(
                 'type' => 'hidden',
-                'value' => $site->theme ? $site->theme : $keys[0]
+                'value' => $site->theme ? $site->theme : $themes[0]->_id
             )) ?>
 
             <div class="skin-picker">
@@ -58,7 +57,6 @@
                 </ul>
                 <div class="clear"></div>
             </div>
-            <?php $k = array_keys(get_object_vars($themes->{$keys[0]}->colors)) ?>
             <?php echo $this->form->input('skin', array(
                 'type' => 'hidden',
                 'value' => $site->skin

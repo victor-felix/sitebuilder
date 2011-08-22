@@ -70,6 +70,15 @@ class AppModel extends Model {
         }, array(true, array()));
     }
 
+    protected function validImage($value) {
+        if(is_array($value) && $value['error'] == '0') {
+            $image = new Imagick($value['tmp_name']);
+            return in_array($image->getImageMimeType(), array('image/jpeg', 'image/png', 'image/gif'));
+        }
+
+        return true;
+    }
+
     protected function deleteImages($id) {
         $model = Model::load('Images');
         $images = $model->allByRecord($this->imageModel(), $id);

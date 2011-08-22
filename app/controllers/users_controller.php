@@ -7,7 +7,12 @@ class UsersController extends AppController {
     protected function beforeFilter() {
         if(Auth::loggedIn()) {
             if(in_array($this->param('action'), $this->redirectIf)) {
-                $this->redirect('/categories');
+                if(Auth::user()->site()->hide_categories) {
+                    $this->redirect('/sites/edit');
+                }
+                else {
+                    $this->redirect('/categories');
+                }
             }
         }
 
@@ -31,7 +36,12 @@ class UsersController extends AppController {
                 Auth::login($user);
             }
             Session::writeFlash('success', s('Account successfully created'));
-            $this->redirect('/categories');
+            if(Auth::user()->site()->hide_categories) {
+                $this->redirect('/sites/edit');
+            }
+            else {
+                $this->redirect('/categories');
+            }
         }
     }
 
@@ -42,7 +52,12 @@ class UsersController extends AppController {
                 Auth::login($user);
 
                 if(!($location = Session::flash('Auth.redirect'))) {
-                    $location = '/categories';
+                    if(Auth::user()->site()->hide_categories) {
+                        $location = '/sites/edit';
+                    }
+                    else {
+                        $location = '/categories';
+                    }
                 }
                 $this->redirect($location);
             }
