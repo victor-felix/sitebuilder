@@ -71,8 +71,12 @@ class AppModel extends Model {
     }
 
     protected function validImage($value) {
-        $image = new Imagick($value['tmp_name']);
-        return in_array($image->getImageMimeType(), array('image/jpeg', 'image/png', 'image/gif'));
+        if(is_array($value) && $value['error'] == '0') {
+            $image = new Imagick($value['tmp_name']);
+            return in_array($image->getImageMimeType(), array('image/jpeg', 'image/png', 'image/gif'));
+        }
+
+        return true;
     }
 
     protected function deleteImages($id) {
