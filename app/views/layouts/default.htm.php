@@ -29,9 +29,11 @@
                     </div>
                 </div>
                 <ul>
-                    <?php if(!Auth::user()->site()->hide_categories): ?>
-                        <li><?php echo $this->html->link(e(Auth::user()->site()->rootCategory()->title), '/categories') ?></li>
-                    <?php endif ?>
+                    <li>
+                        <?php if(!Auth::user()->site()->hide_categories): ?>
+                            <?php echo $this->html->link(e(Auth::user()->site()->rootCategory()->title), '/categories') ?>
+                        <?php endif ?>
+                    </li>
                     <li><?php echo $this->html->link(s('Settings'), '/settings') ?></li>
                     <li><?php echo $this->html->link(s('Customization'), '/settings/customize') ?></li>
                     <li><?php echo $this->html->link(s('My Account'), '/settings/account') ?></li>
