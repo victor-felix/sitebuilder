@@ -26,6 +26,9 @@ class UpdateThemeIds {
                     'values' => array(
                         'theme' => $themes[$site['theme']]->_id,
                         'skin' => $skin
+                    ),
+                    'conditions' => array(
+                        'id' => $site['id']
                     )
                 ));
             }
