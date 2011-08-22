@@ -29,8 +29,14 @@ class Sites extends AppModel {
             'message' => 'A non empty title is required'
         ),
         'logo' => array(
-            'rule' => array('fileUpload', 1, array('jpg', 'gif', 'png')),
-            'message' => 'Only valid gif, jpg or png are allowed',
+            array(
+                'rule' => array('fileUpload', 1, array('jpg', 'gif', 'png')),
+                'message' => 'Only valid gif, jpg or png are allowed',
+            ),
+            array(
+                'rule' => array('validImage'),
+                'message' => 'Only valid gif, jpg or png are allowed',
+            )
         ),
         'description' => array(
             array(
