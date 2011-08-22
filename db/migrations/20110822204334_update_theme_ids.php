@@ -14,7 +14,21 @@ class UpdateThemeIds {
         ));
 
         while($site = $sites->fetch()) {
-            echo $site['theme'] . ',' . $themes[$site['theme']]->_id;
+            if(isset($themes[$site['theme']])) {
+                if(isset($themes[$site['theme']]->colors->{$site['skin']})) {
+                    $skin = $site['skin'];
+                }
+                else {
+                    $skin = reset(get_object_vars($themes[$site['theme']]->colors));
+                }
+                $connection->update(array(
+                    'table' => 'sites',
+                    'values' => array(
+                        'theme' => $themes[$site['theme']]->_id,
+                        'skin' => $skin
+                    )
+                ));
+            }
         }
     }
 }
