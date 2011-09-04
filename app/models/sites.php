@@ -178,7 +178,8 @@ class Sites extends AppModel {
             $data['logo'] = $logo->link();
         }
 
-        if($photo = $this->photo()) {
+        $photos = $this->photos();
+        foreach($photos as $photo) {
             $data['photos'] []= $photo->toJSON();
         }
 
