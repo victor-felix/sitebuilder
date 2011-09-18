@@ -326,8 +326,11 @@ $(function() {
             $.get('/skins', {theme: theme}, function(response) {
                 skin_picker.html(response);
 
-                if($('#FormSkin').val()) {
-                    $('.skin-picker a[href*=' + $('#FormSkin').val() + ']').click();
+                var current_skin = $('#FormSkin').val();
+                var skin_selector = '.skin-picker a[href*=' + $('#FormSkin').val() + ']';
+
+                if(current_skin && $(skin_selector).length) {
+                    $(skin_selector).click();
                 }
                 else {
                     $('.skin-picker a:first').click();
