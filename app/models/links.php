@@ -1,5 +1,7 @@
 <?php
 
+require_once 'app/models/business_items.php';
+
 class Links extends BusinessItems {
     protected $typeName = 'Link';
     protected $fields = array(
