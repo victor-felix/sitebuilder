@@ -49,11 +49,11 @@ class UsersController extends AppController {
         if(!empty($this->data)) {
             $user = Auth::identify($this->data);
             if($user && $user->hasSiteInSegment(MeuMobi::segment())) {
-                Auth::login($user);
+                Auth::login($user, (bool) $this->data['remember']);
 
                 if(!($location = Session::flash('Auth.redirect'))) {
                     if(Auth::user()->site()->hide_categories) {
-                        $location = '/sites/edit';
+                        $location = '/settings/customize';
                     }
                     else {
                         $location = '/categories';

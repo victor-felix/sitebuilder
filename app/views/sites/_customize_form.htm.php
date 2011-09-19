@@ -24,7 +24,7 @@
     <div class="field-group">
         <div class="form-grid-460 first">
             <small style="margin: 0 0 15px 0"><?php echo s('You can customize the appearence of your mobi site to fit the ergonomy to fit your business colors. Select a theme below and apply one of provided skins') ?></small>
-            
+
             <div class="theme-picker">
                 <h3><?php echo s('Select a thema <em>(more themas very soon)</em>') ?></h3>
                 <ul>
