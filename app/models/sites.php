@@ -80,7 +80,7 @@ class Sites extends AppModel {
     }
 
     public function custom_domain() {
-        return !empty($this->domain) && strpos($this->domain, '.' . MeuMobi::domain()) === false;
+        return !empty($this->data['domain']) && strpos($this->domain, '.' . MeuMobi::domain()) === false;
     }
 
     public function photos() {
