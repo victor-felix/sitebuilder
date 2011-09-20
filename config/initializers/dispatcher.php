@@ -1,20 +1,68 @@
 <?php
 
 use lithium\action\Dispatcher;
-use lithium\net\http\Router;
-
-Router::connect('/api/{:slug:[^\/]+}/{:controller}/{:action}/{:args}', array(
-    'type' => 'json',
-    'api' => true
-));
+use jazz\net\http\Router;
+use jazz\net\http\Route;
 
 Dispatcher::config(array(
     'rules' => array(
         'api' => array(
             'controller' => '\app\controllers\api\{:controller}Controller'
         )
+    ),
+    'classes' => array(
+        'router' => 'jazz\net\http\Router'
     )
 ));
+
+$defaults = array(
+    'scope' => '/api/{:slug}',
+    'params' => array(
+        'api' => true,
+        'type' => 'json'
+    )
+);
+
+Router::connect(new Route(array(
+    'method' => 'GET',
+    'template' => '/api/{:slug}/items/by_category',
+    'params' => array(
+        'action' => 'by_category',
+        'controller' => 'items'
+    ) + $defaults['params']
+)));
+
+Router::connect(new Route(array(
+    'method' => 'GET',
+    'template' => '/api/{:slug}/news/category',
+    'params' => array(
+        'action' => 'category',
+        'controller' => 'news'
+    ) + $defaults['params']
+)));
+
+Router::connect(new Route(array(
+    'method' => 'GET',
+    'template' => '/api/{:slug}/categories/{:id}/children',
+    'params' => array(
+        'action' => 'children',
+        'controller' => 'categories'
+    ) + $defaults['params']
+)));
+
+Router::connect(new Route(array(
+    'method' => 'GET',
+    'template' => '/api/{:slug}',
+    'params' => array(
+        'action' => 'show',
+        'controller' => 'sites'
+    ) + $defaults['params']
+)));
+
+Router::resources('categories', $defaults);
+Router::resources('items', $defaults);
+Router::resources('news', array('only' => 'index') + $defaults);
+Router::resources('sites', $defaults);
 
 Dispatcher::applyFilter('run', function($self, $params, $chain) {
     if($route = Router::parse($params['request'])) {

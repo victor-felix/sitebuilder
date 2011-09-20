@@ -28,10 +28,10 @@ class ItemsController extends \app\controllers\api\ApiController {
         });
     }
 
-    public function view($item_id = null) {
-        $bi = \Model::load('BusinessItems')->firstById($item_id);
+    public function show() {
+        $bi = \Model::load('BusinessItems')->firstById($this->param('id'));
         $type = \Inflector::camelize($bi->type);
-        $bi = \Model::load($type)->firstById($item_id);
+        $bi = \Model::load($type)->firstById($this->param('id'));
 
         $etag = $this->etag($bi);
         $self = $this;

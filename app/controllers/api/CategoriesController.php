@@ -15,7 +15,21 @@ class CategoriesController extends \app\controllers\api\ApiController {
         });
     }
 
-    public function children($category_id = null) {
+    public function show() {
+        $category = \Model::load('Categories')->firstById($this->param('id'));
+        $etag = $this->etag($category);
+        $self = $this;
+
+        return $this->whenStale($etag, function() use($category, $self) {
+            return $self->toJSON(array(
+                'categories' => $category
+            ));
+        });
+    }
+
+    public function children() {
+        $category_id = $this->param('id');
+
         if(!$category_id) {
             $category_id = $this->site->rootCategory()->id;
         }
@@ -27,18 +41,6 @@ class CategoriesController extends \app\controllers\api\ApiController {
         return $this->whenStale($etag, function() use($categories, $self) {
             return $self->toJSON(array(
                 'categories' => $categories
-            ));
-        });
-    }
-
-    public function view($category_id = null) {
-        $category = \Model::load('Categories')->firstById($category_id);
-        $etag = $this->etag($category);
-        $self = $this;
-
-        return $this->whenStale($etag, function() use($category, $self) {
-            return $self->toJSON(array(
-                'categories' => $category
             ));
         });
     }

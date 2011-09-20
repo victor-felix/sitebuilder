@@ -6,9 +6,9 @@ use lithium\action\Dispatcher;
 use DateTime;
 
 class ApiController extends \lithium\action\Controller {
-    protected $site;
-    protected $query;
     protected $beforeFilter = array('getSite');
+    protected $site;
+    protected $params;
 
     public function beforeFilter() {
         foreach($this->beforeFilter as $filter) {
@@ -53,21 +53,12 @@ class ApiController extends \lithium\action\Controller {
     }
 
     protected function param($param, $default = null) {
-        if(!$this->query) {
-            $this->query = array();
-
-            if(isset($this->request->params['args'])) {
-                foreach($this->request->params['args'] as $arg) {
-                    if(strpos($arg, ':') !== false) {
-                        list($key, $value) = explode(':', $arg);
-                        $this->query[$key] = $value;
-                    }
-                }
-            }
+        if(!$this->params) {
+            $this->params = $this->request->query + $this->request->params;
         }
 
-        if(isset($this->query[$param])) {
-            return $this->query[$param];
+        if(isset($this->params[$param])) {
+            return $this->params[$param];
         }
         else {
             return $default;
