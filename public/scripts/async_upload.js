@@ -34,7 +34,7 @@ jQuery(".picture-upload-container input[type='file']").live("change", function()
 	container.next('.duplicate-previous').click();
 	container.addClass("wait").attr('id', 'upload_'+timestamp);
 
-	$("body").append("<div class='hidden' id='container_"+timestamp+"'></div>");
+	$("body").append("<div style='display: none' class='hidden' id='container_"+timestamp+"'></div>");
 
 	
 	container.find(":input:not(:file)").each(function(){
