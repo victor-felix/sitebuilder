@@ -15,7 +15,10 @@ jQuery(".picture-upload-container .close").live("click", function(e){
 			container.fadeOut();
 		},
 		success: function(){
+			var container = $(e.target).closest("div.field-group");
 			$(e.target).closest(".picture-upload-container").remove();
+			console.info(container);
+			fixClasses(container);
 		},
 		error: function(){
 			$(e.target).closest(".picture-upload-container").show();
@@ -49,9 +52,13 @@ jQuery(".picture-upload-container input[type='file']").live("change", function()
 });
 
 $(".picture-upload-container + .duplicate-previous").live('click', function(){
-	var container = $(this).closest("div.field-group");
+	fixClasses(this);
+})
+
+fixClasses = function(target){
+	var context = $(target).closest("div.field-group");
 	$('.picture-upload-container', context).removeClass("first");
 	$(".picture-upload-container:eq(0)", context).addClass("first");
 	$('.picture-upload-container:nth-child(4n)', context).addClass("first");
 	
-})
+}
