@@ -49,9 +49,9 @@ jQuery(".picture-upload-container input[type='file']").live("change", function()
 });
 
 $(".picture-upload-container + .duplicate-previous").live('click', function(){
-	if ($(this).prev('.picture-upload-container').prevAll('.picture-upload-container').length % 3 === 0) {
-		$(this).prev('.picture-upload-container').addClass("first");
-	}else {
-		$(this).prev('.picture-upload-container').removeClass("first");
-	}
+	var container = $(this).closest("div.field-group");
+	$('.picture-upload-container', context).removeClass("first");
+	$(".picture-upload-container:eq(0)", context).addClass("first");
+	$('.picture-upload-container:nth-child(4n)', context).addClass("first");
+	
 })

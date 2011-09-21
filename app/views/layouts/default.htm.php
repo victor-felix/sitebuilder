@@ -24,11 +24,11 @@
                 <div class="navigation" id="navbar">
                     <div class="sites">
                         <p class="business-name"><?php echo e(Auth::user()->site()->title) ?></p>
-                        <!-- <p class="share">
+                        <p class="share">
                             <a href="<?php echo e(Auth::user()->site()->domain) ?>">http://<?php echo e(Auth::user()->site()->domain) ?></a>
-                            *
-                            <a id="share_site" href="<?php echo e(Auth::user()->site()->domain) ?>"><?php echo s('share url') ?></a>
-                        </p> -->
+                            <!-- *
+                            <a id="share_site" href="<?php echo e(Auth::user()->site()->domain) ?>"><?php echo s('share url') ?></a> -->
+                        </p>
                         <div class="site-switcher">
                             <p>Meus sites mobi</p>
                             <ul>
@@ -47,6 +47,7 @@
                                     </span>
                                     <span class="status edit">editar site ›</span>
                                 </a></li>
+                                <li class="new"><a href="#new">Criar novo site meu mobi</a></li>
 
                             </ul>
                         </div>

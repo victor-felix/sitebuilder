@@ -47,7 +47,7 @@ a img {
 	border-bottom: 1px solid #D3D3D3;
 	float: left;
 	height: 50px;
-	padding-top: 60px;
+	padding-top: 79px;
 	width: 300px;
 }
 
@@ -58,7 +58,7 @@ a img {
 
 #header .menu .navigation {
 	border-bottom: 1px solid #D3D3D3;
-	height: 25px;
+	height: 45px;
 	padding-top: 35px;
 	padding-bottom: 10px;
 }
@@ -188,6 +188,7 @@ a img {
 	margin-left: 20px;
 	position: relative;
 	height: 37px;
+	margin-top: 19px;
 }
 
 #header .navigation .user p {
