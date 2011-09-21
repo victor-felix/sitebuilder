@@ -149,6 +149,13 @@ a img {
 	margin-left: -8px;
 }
 
+#header .navigation .sites .site-switcher li.new { 
+	padding: 7px 8px 3px;
+}
+#header .navigation .sites .site-switcher li.new a { 
+	font-weight: bold;
+	color: #2F3E6E;
+}
 #header .navigation .sites .site-switcher small {
 	display: block;
 	font-style: italic;
@@ -173,6 +180,8 @@ a img {
 	font-weight: normal;
 	color: #676767;
 	font-style: italic;
+	padding-right: 20px;
+	background: url("/images/shared/markitup/tick_gray.png") no-repeat right center;
 }
 
 #header .navigation .sites .site-switcher .site-name span {

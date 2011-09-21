@@ -47,7 +47,7 @@
                                     </span>
                                     <span class="status edit">editar site ›</span>
                                 </a></li>
-                                <li class="new"><a href="#new">Criar novo site meu mobi</a></li>
+                                <li class="new"><a href="#new">Criar novo site meu mobi ›</a></li>
 
                             </ul>
                         </div>
