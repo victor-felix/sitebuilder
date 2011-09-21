@@ -23,7 +23,7 @@
             <div class="menu">
                 <div class="navigation" id="navbar">
                     <div class="sites">
-                        <p class="business-name"><?php echo e(Auth::user()->site()->title) ?></p>
+                        <p class="business-name"><span><?php echo e(Auth::user()->site()->title) ?></span></p>
                         <p class="share">
                             http://<?php echo e(Auth::user()->site()->domain) ?>
                             <!-- *
