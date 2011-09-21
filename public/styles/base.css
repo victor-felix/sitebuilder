@@ -162,6 +162,11 @@ a img {
 	font-size: 12px;
 	margin-right: 10px;
 }
+#header .navigation .sites .site-switcher .current {
+	font-weight: normal;
+	color: #676767;
+	font-style: italic;
+}
 
 #header .navigation .sites .site-switcher .site-name span {
 	font-size: 14px;
