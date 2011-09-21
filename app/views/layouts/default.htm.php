@@ -25,7 +25,7 @@
                     <div class="sites">
                         <p class="business-name"><?php echo e(Auth::user()->site()->title) ?></p>
                         <p class="share">
-                            <a href="<?php echo e(Auth::user()->site()->domain) ?>">http://<?php echo e(Auth::user()->site()->domain) ?></a>
+                            http://<?php echo e(Auth::user()->site()->domain) ?>
                             <!-- *
                             <a id="share_site" href="<?php echo e(Auth::user()->site()->domain) ?>"><?php echo s('share url') ?></a> -->
                         </p>
@@ -55,7 +55,7 @@
                     <div class="user">
                         <p><?php echo s('Hi <strong>%s</strong>', e(Auth::user()->firstname())) ?></p>
                         <ul>
-                            <li><a href="#minhaconta"><?php echo s("my account") ?></a></li>
+                            <li><?php echo $this->html->link(s('My Account'), '/settings/account') ?></li>
                             <li><?php echo $this->html->link(s('Log out ›'), '/logout') ?></li>
                         </ul>
                         <!-- <?php echo $this->html->link(s('Log out ›'), '/logout') ?> -->
@@ -67,7 +67,7 @@
                     <?php endif ?>
                     <li><?php echo $this->html->link(s('Settings'), '/settings') ?></li>
                     <li><?php echo $this->html->link(s('Customization'), '/settings/customize') ?></li>
-                    <li><?php echo $this->html->link(s('My Account'), '/settings/account') ?></li>
+                    <!-- <li><?php echo $this->html->link(s('My Account'), '/settings/account') ?></li> -->
                 </ul>
             </div>
             <div class="clear"></div>
