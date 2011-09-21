@@ -80,3 +80,12 @@ Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
 
     return $controller;
 });
+
+\lithium\net\http\Media::type('form', 'application/x-www-form-urlencoded', array(
+    'cast' => true,
+    'encode' => 'http_build_query',
+    'decode' => function($content) {
+        parse_str($content, $output);
+        return $output;
+    }
+));
