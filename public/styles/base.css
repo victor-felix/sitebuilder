@@ -67,10 +67,11 @@ a img {
 	float: left;
 	width: 460px;
 	color: #707070;
-	margin-top: -17px;
+/*	margin-top: -17px;*/
 	position: relative;
 }
 #header .navigation .sites .business-name {
+	cursor: pointer;
 	font-size: 30px;
 	font-weight: lighter;
 	letter-spacing: -1px;
@@ -108,13 +109,13 @@ a img {
 	border: 1px solid #ddd;
 	border-width: 0px 1px 1px;
 	background: #FFF;
-	top: 38px;
+	top: 36px;
 	z-index: 9999;
 	display: none;
 }
 #header .navigation .sites .site-switcher > p {
 	text-transform: uppercase;
-	padding: 10px 7px;
+	padding: 11px 7px;
 	font-size: 10px;
 }
 #header .navigation .sites .site-switcher ul a{
@@ -178,15 +179,20 @@ a img {
 
 #header .navigation .user p {
 /*	float: left;*/
-	padding: 15px 0 0 10px;
+	padding: 15px 0 0px 10px;
 	overflow: hidden;
-	height: 20px;
-	
+	height: 21px;
+	top: 1px;
 /*	width: 90px;*/
 /*	margin-right: 8px;*/
 	position: relative;
-	top: 1px;
+	cursor: pointer;
+
+}
+
+#header .navigation .user.open p {
 	background: #FFF;
+	cursor: pointer;
 }
 #header .navigation .user a {
 	color: #707070;
@@ -199,12 +205,16 @@ a img {
 	margin-top: 6px;
 }
 
+#header .navigation .user.open ul {
+	display: block;
+}
 #header .navigation .user ul {
 	position: absolute;
 	width: 200px;
 	right: 0;
 	margin-top: 1px;
 	background: #FFF;
+	display: none;
 }
 #header .navigation .user li {
 	width: 100%;
@@ -216,7 +226,7 @@ a img {
 	display: block;
 	width: 100%;
 	text-align: left; 
-	padding: 10px 0 ;
+	padding: 10px 0 9px ;
 	margin: 0;
 	text-indent: 10px;
 }

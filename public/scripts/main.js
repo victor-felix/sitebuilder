@@ -364,4 +364,18 @@ $(function() {
     if($('.markitup').length) {
         $('.markitup').markItUp(mySettings);
     }
+	$('body').click(function(e){
+		$("#navbar .open").removeClass("open");
+	})
+	$("#navbar")
+		.delegate(".business-name", 'click', function(e){
+			e.stopPropagation();
+			$(this).closest(".sites").toggleClass("open");
+			$("#navbar .user.open").removeClass("open")
+		})
+		.delegate(".user p", 'click', function(e){
+			e.stopPropagation();
+			$(this).closest(".user").toggleClass("open");
+			$("#navbar .sites.open").removeClass("open")
+		})
 });
