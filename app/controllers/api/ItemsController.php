@@ -28,10 +28,10 @@ class ItemsController extends \app\controllers\api\ApiController {
         });
     }
 
-    public function view($item_id = null) {
-        $bi = \Model::load('BusinessItems')->firstById($item_id);
+    public function show() {
+        $bi = \Model::load('BusinessItems')->firstById($this->param('id'));
         $type = \Inflector::camelize($bi->type);
-        $bi = \Model::load($type)->firstById($item_id);
+        $bi = \Model::load($type)->firstById($this->param('id'));
 
         $etag = $this->etag($bi);
         $self = $this;
@@ -59,5 +59,61 @@ class ItemsController extends \app\controllers\api\ApiController {
         return $this->whenStale($etag, function() use($items, $self) {
             return $self->toJSON($items);
         });
+    }
+
+    public function create() {
+        $parent = \Model::load('Categories')->firstById($this->request->data['parent_id']);
+        $item = $this->modelInstance($parent, $this->request->data);
+        $item->site_id = $this->site->id;
+
+        if($item->validate()) {
+            $item->save();
+            $this->response->status(201);
+            return $this->toJSON(array(
+                $item->type => $item
+            ));
+        }
+        else {
+            $this->response->status(422);
+        }
+    }
+
+    public function update() {
+        $bi = \Model::load('BusinessItems')->firstById($this->param('id'));
+        $item = $this->model($bi->parent())->firstById($this->param('id'));
+        $item->updateAttributes($this->request->data);
+
+        if($item->validate()) {
+            $item->save();
+            $this->response->status(200);
+            return $this->toJSON(array(
+                $item->type => $item
+            ));
+        }
+        else {
+            $this->response->status(422);
+        }
+    }
+
+    public function destroy() {
+        \Model::load('BusinessItems')->delete($this->param('id'));
+        $this->response->status(200);
+    }
+
+    protected function modelName($category) {
+        return \Inflector::camelize($category->type);
+    }
+
+    protected function model($category) {
+        return \Model::load($this->modelName($category));
+    }
+
+    protected function modelInstance($category, $data) {
+        $model = $this->modelName($category);
+        \Model::load($model);
+        $model = "\\$model";
+        $instance = new $model($data);
+        $instance->parent_id = $category->id;
+        return $instance;
     }
 }

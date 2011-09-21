@@ -6,13 +6,15 @@ use lithium\action\Dispatcher;
 use DateTime;
 
 class ApiController extends \lithium\action\Controller {
+    protected $beforeFilter = array('getSite', 'checkToken');
     protected $site;
-    protected $query;
-    protected $beforeFilter = array('getSite');
+    protected $params;
 
     public function beforeFilter() {
         foreach($this->beforeFilter as $filter) {
-            $this->{$filter}();
+            if($this->{$filter}() === false) {
+                return false;
+            }
         }
     }
 
@@ -52,22 +54,22 @@ class ApiController extends \lithium\action\Controller {
         $this->site = \Model::load('Sites')->firstByDomain($slug);
     }
 
-    protected function param($param, $default = null) {
-        if(!$this->query) {
-            $this->query = array();
+    protected function checkToken() {
+        $token = $this->request->env('HTTP_X_AUTHENTICATION_TOKEN');
 
-            if(isset($this->request->params['args'])) {
-                foreach($this->request->params['args'] as $arg) {
-                    if(strpos($arg, ':') !== false) {
-                        list($key, $value) = explode(':', $arg);
-                        $this->query[$key] = $value;
-                    }
-                }
-            }
+        if($token != 'c8e75b59161a5922c04ede9a533867e371fa2933') {
+            $this->response->status(403);
+            return false;
+        }
+    }
+
+    protected function param($param, $default = null) {
+        if(!$this->params) {
+            $this->params = $this->request->query + $this->request->params;
         }
 
-        if(isset($this->query[$param])) {
-            return $this->query[$param];
+        if(isset($this->params[$param])) {
+            return $this->params[$param];
         }
         else {
             return $default;

@@ -15,7 +15,9 @@ class SitesController extends \app\controllers\api\ApiController {
         });
     }
 
-    public function view($slug = null) {
+    public function show() {
+        $slug = $this->param('slug', $this->param('id'));
+        $site = \Model::load('Sites')->firstByDomain($slug);
         if($slug) {
             $site = \Model::load('Sites')->firstByDomain($slug);
         }
