@@ -45,7 +45,7 @@
                                         <span>Governo do Rio de Janeiro</span>
                                         <small>http://m.rj.gov.br</small>
                                     </span>
-                                    <span class="status edit">editar site &gt;</span>
+                                    <span class="status edit">editar site ›</span>
                                 </a></li>
 
                             </ul>
@@ -53,6 +53,10 @@
                     </div>
                     <div class="user">
                         <p><?php echo s('Hi <strong>%s</strong>', e(Auth::user()->firstname())) ?></p>
+                        <ul>
+                            <li><a href="#minhaconta"><?php echo s("my account") ?></a></li>
+                            <li><?php echo $this->html->link(s('Log out ›'), '/logout') ?></li>
+                        </ul>
                         <!-- <?php echo $this->html->link(s('Log out ›'), '/logout') ?> -->
                     </div>
                 </div>

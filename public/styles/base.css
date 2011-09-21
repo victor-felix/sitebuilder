@@ -173,15 +173,20 @@ a img {
 	font-size: 11px;
 	width: 140px;
 	margin-left: 20px;
+	position: relative;
 }
 
 #header .navigation .user p {
-	float: left;
-	padding: 15px 0 0 0;
+/*	float: left;*/
+	padding: 15px 0 0 10px;
 	overflow: hidden;
 	height: 20px;
-	width: 90px;
-	margin-right: 8px;
+	
+/*	width: 90px;*/
+/*	margin-right: 8px;*/
+	position: relative;
+	top: 1px;
+	background: #FFF;
 }
 #header .navigation .user a {
 	color: #707070;
@@ -194,6 +199,27 @@ a img {
 	margin-top: 6px;
 }
 
+#header .navigation .user ul {
+	position: absolute;
+	width: 200px;
+	right: 0;
+	margin-top: 1px;
+	background: #FFF;
+}
+#header .navigation .user li {
+	width: 100%;
+
+	margin-left: 0;
+	
+}
+#header .navigation .user li a {
+	display: block;
+	width: 100%;
+	text-align: left; 
+	padding: 10px 0 ;
+	margin: 0;
+	text-indent: 10px;
+}
 #header .navigation .user a:hover {
 	background: #C02926;
 	color: #FFF;
