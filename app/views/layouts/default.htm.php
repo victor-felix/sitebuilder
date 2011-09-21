@@ -40,14 +40,14 @@
                                     <span class="status current">site atual</span>
                                 </a></li>
 
-                                <li><a href="#">
+                                <!--li><a href="#">
                                     <span class="site-name">
                                         <span>Governo do Rio de Janeiro</span>
                                         <small>http://m.rj.gov.br</small>
                                     </span>
                                     <span class="status edit">editar site ›</span>
                                 </a></li>
-                                <li class="new"><a href="#new">Criar novo site meu mobi ›</a></li>
+                                <li class="new"><a href="#new">Criar novo site meu mobi ›</a></li-->
 
                             </ul>
                         </div>
