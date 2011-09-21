@@ -63,13 +63,109 @@ a img {
 	padding-bottom: 10px;
 }
 
-#header .navigation p.business-name {
-	color: #707070;
+#header .navigation .sites {
 	float: left;
+	width: 460px;
+	color: #707070;
+	margin-top: -17px;
+	position: relative;
+}
+#header .navigation .sites .business-name {
 	font-size: 30px;
 	font-weight: lighter;
 	letter-spacing: -1px;
-	width: 460px;
+	display: inline;
+}
+
+#header .navigation .sites.open .business-name {
+	background: #FFF;
+	padding: 5px 8px ;
+	position: relative;
+	left: -9px;
+	border-left: 1px solid #ccc;
+	
+}
+#header .navigation .sites.open .site-switcher {
+	display: block;
+}
+#header .navigation .sites .share {
+	font-size: 11px;
+	margin: 0;
+}
+#header .navigation .sites .share a {
+	text-decoration: none;
+	color: #707070;
+}
+#header .navigation .sites .share a:hover {
+	text-decoration: underline;
+}
+
+#header .navigation .sites .site-switcher {
+	position: absolute;
+	padding: 5px 8px;
+	left: -9px;
+	width: 100%;
+	border: 1px solid #ddd;
+	border-width: 0px 1px 1px;
+	background: #FFF;
+	top: 38px;
+	z-index: 9999;
+	display: none;
+}
+#header .navigation .sites .site-switcher > p {
+	text-transform: uppercase;
+	padding: 10px 7px;
+	font-size: 10px;
+}
+#header .navigation .sites .site-switcher ul a{
+	border: none;
+	margin: 0;
+	padding: 0;
+	display: block;
+	overflow: hidden;
+}
+#header .navigation .sites .site-switcher ul a:hover{
+	text-shadow: none;
+	background: none;
+}
+#header .navigation .sites .site-switcher li {
+	display: block; 
+	float: none;
+	clear: both;
+	margin: 0;
+	padding: 10px 8px;
+	overflow: hidden;
+	text-indent: 9px;
+	border-top: 1px solid #ddd;
+	width: 100%;
+	margin-left: -8px;
+}
+
+#header .navigation .sites .site-switcher small {
+	display: block;
+	font-style: italic;
+	font-size: 11px;
+	color: #999;
+	margin: 3px 0;
+}
+
+#header .navigation .sites .site-switcher .site-name {
+	float: left;
+}
+#header .navigation .sites .site-switcher .status {
+	float: right;
+	position: relative;
+	top: 10px;
+	font-weight: bold;
+	color: #3b4d89;
+	font-size: 12px;
+	margin-right: 10px;
+}
+
+#header .navigation .sites .site-switcher .site-name span {
+	font-size: 14px;
+	font-weight: bold;
+	color: #444;
 }
 
 #header .navigation .user {

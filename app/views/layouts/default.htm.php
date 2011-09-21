@@ -22,10 +22,38 @@
             </div>
             <div class="menu">
                 <div class="navigation">
-                    <p class="business-name"><?php echo e(Auth::user()->site()->title) ?></h1>
+                    <div class="sites">
+                        <p class="business-name"><?php echo e(Auth::user()->site()->title) ?></p>
+                        <p class="share">
+                            <a href="<?php echo e(Auth::user()->site()->domain) ?>">http://<?php echo e(Auth::user()->site()->domain) ?></a>
+                            *
+                            <a id="share_site" href="<?php echo e(Auth::user()->site()->domain) ?>"><?php echo s('share url') ?></a>
+                        </p>
+                        <div class="site-switcher">
+                            <p>Meus sites mobi</p>
+                            <ul>
+                                <li><a href="#">
+                                    <span class="site-name">
+                                        <span><?php echo e(Auth::user()->site()->title) ?></span>
+                                        <small>http://<?php echo e(Auth::user()->site()->domain) ?></small>
+                                    </span>
+                                    <span class="status current">site atual</span>
+                                </a></li>
+
+                                <li><a href="#">
+                                    <span class="site-name">
+                                        <span>Governo do Rio de Janeiro</span>
+                                        <small>http://m.rj.gov.br</small>
+                                    </span>
+                                    <span class="status edit">editar site &gt;</span>
+                                </a></li>
+
+                            </ul>
+                        </div>
+                    </div>
                     <div class="user">
                         <p><?php echo s('Hi <strong>%s</strong>', e(Auth::user()->firstname())) ?></p>
-                        <?php echo $this->html->link(s('Log out ›'), '/logout') ?>
+                        <!-- <?php echo $this->html->link(s('Log out ›'), '/logout') ?> -->
                     </div>
                 </div>
                 <ul>
