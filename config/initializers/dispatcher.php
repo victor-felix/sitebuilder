@@ -76,7 +76,10 @@ Dispatcher::applyFilter('run', function($self, $params, $chain) {
 Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
     $controller = $chain->next($self, $params, $chain);
 
-    $controller->beforeFilter();
+    if($controller->beforeFilter() === false) {
+        echo $controller->response;
+        die();
+    };
 
     return $controller;
 });

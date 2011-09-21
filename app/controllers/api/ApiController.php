@@ -6,13 +6,15 @@ use lithium\action\Dispatcher;
 use DateTime;
 
 class ApiController extends \lithium\action\Controller {
-    protected $beforeFilter = array('getSite');
+    protected $beforeFilter = array('getSite', 'checkToken');
     protected $site;
     protected $params;
 
     public function beforeFilter() {
         foreach($this->beforeFilter as $filter) {
-            $this->{$filter}();
+            if($this->{$filter}() === false) {
+                return false;
+            }
         }
     }
 
@@ -50,6 +52,15 @@ class ApiController extends \lithium\action\Controller {
     protected function getSite() {
         $slug = $this->request->params['slug'];
         $this->site = \Model::load('Sites')->firstByDomain($slug);
+    }
+
+    protected function checkToken() {
+        $token = $this->request->env('HTTP_X_AUTHENTICATION_TOKEN');
+
+        if($token != 'c8e75b59161a5922c04ede9a533867e371fa2933') {
+            $this->response->status(403);
+            return false;
+        }
     }
 
     protected function param($param, $default = null) {
