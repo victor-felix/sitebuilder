@@ -508,7 +508,7 @@ a img {
 	#error-feedback:hover {
 		background-color: #be0a0a;
 	}
-.picture-upload-container { border-radius: 4px;position: relative; float: left; height: 138px; margin: 0 0 20px 20px; width: 138px; background: #FFF; border: 1px solid #CCC; font-size: 15px; color: #707070}
+.picture-upload-container { border-radius: 4px;position: relative; float: left; height: 138px; margin: 0 0 20px 20px; width: 138px; background-color: #FFF; border: 1px solid #CCC; font-size: 15px; color: #707070; background-position: center center; background-repeat: no-repeat}
 .picture-upload-container.first { margin-left: 0}
 .picture-upload-container input[type="file"] { position: absolute; width: 100%; height: 100%; top: 0; left: 0; opacity: 0;}
 .picture-upload-container iframe { display: none}

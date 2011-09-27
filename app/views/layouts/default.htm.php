@@ -21,11 +21,44 @@
                 )) ?>
             </div>
             <div class="menu">
-                <div class="navigation">
-                    <p class="business-name"><?php echo e(Auth::user()->site()->title) ?></h1>
+                <div class="navigation" id="navbar">
+                    <div class="sites">
+                        <p class="business-name"><span><?php echo e(Auth::user()->site()->title) ?></span></p>
+                        <p class="share">
+                            http://<?php echo e(Auth::user()->site()->domain) ?>
+                            <!-- *
+                            <a id="share_site" href="<?php echo e(Auth::user()->site()->domain) ?>"><?php echo s('share url') ?></a> -->
+                        </p>
+                        <div class="site-switcher">
+                            <p>Meus sites mobi</p>
+                            <ul>
+                                <li><a href="#">
+                                    <span class="site-name">
+                                        <span><?php echo e(Auth::user()->site()->title) ?></span>
+                                        <small>http://<?php echo e(Auth::user()->site()->domain) ?></small>
+                                    </span>
+                                    <span class="status current">site atual</span>
+                                </a></li>
+
+                                <!--li><a href="#">
+                                    <span class="site-name">
+                                        <span>Governo do Rio de Janeiro</span>
+                                        <small>http://m.rj.gov.br</small>
+                                    </span>
+                                    <span class="status edit">editar site ›</span>
+                                </a></li>
+                                <li class="new"><a href="#new">Criar novo site meu mobi ›</a></li-->
+
+                            </ul>
+                        </div>
+                    </div>
                     <div class="user">
                         <p><?php echo s('Hi <strong>%s</strong>', e(Auth::user()->firstname())) ?></p>
-                        <?php echo $this->html->link(s('Log out ›'), '/logout') ?>
+                        <ul>
+                            <li><?php echo $this->html->link(s('My Account'), '/settings/account') ?></li>
+                            <li><?php echo $this->html->link(s('Log out ›'), '/logout') ?></li>
+                        </ul>
+                        <!-- <?php echo $this->html->link(s('Log out ›'), '/logout') ?> -->
                     </div>
                 </div>
                 <ul>
@@ -34,7 +67,7 @@
                     <?php endif ?>
                     <li><?php echo $this->html->link(s('Settings'), '/settings') ?></li>
                     <li><?php echo $this->html->link(s('Customization'), '/settings/customize') ?></li>
-                    <li><?php echo $this->html->link(s('My Account'), '/settings/account') ?></li>
+                    <!-- <li><?php echo $this->html->link(s('My Account'), '/settings/account') ?></li> -->
                 </ul>
             </div>
             <div class="clear"></div>

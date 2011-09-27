@@ -15,7 +15,10 @@ jQuery(".picture-upload-container .close").live("click", function(e){
 			container.fadeOut();
 		},
 		success: function(){
+			var container = $(e.target).closest("div.field-group");
 			$(e.target).closest(".picture-upload-container").remove();
+			console.info(container);
+			fixClasses(container);
 		},
 		error: function(){
 			$(e.target).closest(".picture-upload-container").show();
@@ -34,7 +37,7 @@ jQuery(".picture-upload-container input[type='file']").live("change", function()
 	container.next('.duplicate-previous').click();
 	container.addClass("wait").attr('id', 'upload_'+timestamp);
 
-	$("body").append("<div class='hidden' id='container_"+timestamp+"'></div>");
+	$("body").append("<div style='display: none' class='hidden' id='container_"+timestamp+"'></div>");
 
 	
 	container.find(":input:not(:file)").each(function(){
@@ -49,9 +52,13 @@ jQuery(".picture-upload-container input[type='file']").live("change", function()
 });
 
 $(".picture-upload-container + .duplicate-previous").live('click', function(){
-	if ($(this).prev('.picture-upload-container').prevAll('.picture-upload-container').length % 3 === 0) {
-		$(this).prev('.picture-upload-container').addClass("first");
-	}else {
-		$(this).prev('.picture-upload-container').removeClass("first");
-	}
+	fixClasses(this);
 })
+
+fixClasses = function(target){
+	var context = $(target).closest("div.field-group");
+	$('.picture-upload-container', context).removeClass("first");
+	$(".picture-upload-container:eq(0)", context).addClass("first");
+	$('.picture-upload-container:nth-child(4n)', context).addClass("first");
+	
+}

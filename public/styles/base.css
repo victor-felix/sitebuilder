@@ -47,7 +47,7 @@ a img {
 	border-bottom: 1px solid #D3D3D3;
 	float: left;
 	height: 50px;
-	padding-top: 60px;
+	padding-top: 79px;
 	width: 300px;
 }
 
@@ -58,18 +58,139 @@ a img {
 
 #header .menu .navigation {
 	border-bottom: 1px solid #D3D3D3;
-	height: 25px;
+	height: 45px;
 	padding-top: 35px;
 	padding-bottom: 10px;
 }
 
-#header .navigation p.business-name {
-	color: #707070;
+#header .navigation .sites {
 	float: left;
+	width: 460px;
+	color: #707070;
+/*	margin-top: -17px;*/
+	position: relative;
+}
+#header .navigation .sites .business-name span,
+#header .navigation .user p {
+	background-image: url("/images/shared/markitup/menu.png");
+	background-position: right center;
+	background-repeat: no-repeat;
+}
+#header .navigation .sites .business-name span{
+	padding-right: 20px;
+}
+#header .navigation .sites .business-name {
+	cursor: pointer;
 	font-size: 30px;
 	font-weight: lighter;
 	letter-spacing: -1px;
-	width: 460px;
+	display: inline;
+	padding-right: 8px;
+}
+
+#header .navigation .sites.open .business-name {
+	background-color: #FFF;
+	padding: 5px 8px 5px 8px ;
+	position: relative;
+	left: -9px;
+	border-left: 1px solid #ccc;
+	
+}
+#header .navigation .sites.open .site-switcher {
+	display: block;
+}
+#header .navigation .sites .share {
+	font-size: 11px;
+	margin: 0;
+}
+#header .navigation .sites .share a {
+	text-decoration: none;
+	color: #707070;
+}
+#header .navigation .sites .share a:hover {
+	text-decoration: underline;
+}
+
+#header .navigation .sites .site-switcher {
+	position: absolute;
+	padding: 5px 8px;
+	left: -9px;
+	width: 100%;
+	border: 1px solid #ddd;
+	border-width: 0px 1px 1px;
+	background-color: #FFF;
+	top: 36px;
+	z-index: 9999;
+	display: none;
+}
+#header .navigation .sites .site-switcher > p {
+	text-transform: uppercase;
+	padding: 11px 7px;
+	font-size: 10px;
+}
+#header .navigation .sites .site-switcher ul a{
+	border: none;
+	margin: 0;
+	padding: 0;
+	display: block;
+	overflow: hidden;
+}
+#header .navigation .sites .site-switcher ul a:hover{
+	text-shadow: none;
+	background: none;
+}
+#header .navigation .sites .site-switcher li {
+	display: block; 
+	float: none;
+	clear: both;
+	margin: 0;
+	padding: 10px 8px;
+	overflow: hidden;
+	text-indent: 9px;
+	border-top: 1px solid #ddd;
+	width: 100%;
+	margin-left: -8px;
+}
+
+#header .navigation .sites .site-switcher li.new { 
+	padding: 7px 8px 3px;
+}
+#header .navigation .sites .site-switcher li.new a { 
+	font-weight: bold;
+	color: #2F3E6E;
+}
+#header .navigation .sites .site-switcher small {
+	display: block;
+	font-style: italic;
+	font-size: 11px;
+	color: #999;
+	margin: 3px 0;
+}
+
+#header .navigation .sites .site-switcher .site-name {
+	float: left;
+}
+#header .navigation .sites .site-switcher .status {
+	float: right;
+	position: relative;
+	top: 10px;
+	font-weight: bold;
+	color: #3b4d89;
+	font-size: 12px;
+	margin-right: 10px;
+}
+#header .navigation .sites .site-switcher .current {
+	font-weight: normal;
+	color: #676767;
+	font-style: italic;
+	padding-right: 20px;
+	background: url("/images/shared/markitup/tick_gray.png") no-repeat right center;
+}
+
+#header .navigation .sites .site-switcher .site-name span {
+	font-size: 14px;
+	font-weight: bold;
+	color: #444;
 }
 
 #header .navigation .user {
@@ -77,18 +198,30 @@ a img {
 	font-size: 11px;
 	width: 140px;
 	margin-left: 20px;
+	position: relative;
+	height: 37px;
+	margin-top: 19px;
 }
 
 #header .navigation .user p {
-	float: left;
-	padding: 15px 0 0 0;
+/*	float: left;*/
+	padding: 15px 0 0px 10px;
 	overflow: hidden;
-	height: 20px;
-	width: 90px;
+	height: 21px;
+	top: 1px;
+/*	width: 90px;*/
 	margin-right: 8px;
+	position: relative;
+	cursor: pointer;
+
+}
+
+#header .navigation .user.open {
+	background-color: #FFF;
+	cursor: pointer;
 }
 #header .navigation .user a {
-	color: #707070;
+	color: #2F3E6E;
 	display: block;
 	float: left;
 	font-weight: bold;
@@ -98,6 +231,31 @@ a img {
 	margin-top: 6px;
 }
 
+#header .navigation .user.open ul {
+	display: block;
+}
+#header .navigation .user ul {
+	position: absolute;
+	width: 200px;
+	right: 0;
+	margin-top: 1px;
+	background: #FFF;
+	display: none;
+}
+#header .navigation .user li {
+	width: 100%;
+
+	margin-left: 0;
+	
+}
+#header .navigation .user li a {
+	display: block;
+	width: 100%;
+	text-align: left; 
+	padding: 10px 0 ;
+	margin: 0;
+	text-indent: 10px;
+}
 #header .navigation .user a:hover {
 	background: #C02926;
 	color: #FFF;
