@@ -7,7 +7,7 @@ class HomeController extends AppController {
     public function index() {
         if(Auth::loggedIn()) {
             if(Auth::user()->site()->hide_categories) {
-                $this->redirect('/settings/customize');
+                $this->redirect('/settings');
             }
             else {
                 $this->redirect('/categories');

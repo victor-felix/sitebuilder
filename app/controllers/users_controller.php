@@ -53,7 +53,7 @@ class UsersController extends AppController {
 
                 if(!($location = Session::flash('Auth.redirect'))) {
                     if(Auth::user()->site()->hide_categories) {
-                        $location = '/settings/customize';
+                        $location = '/settings';
                     }
                     else {
                         $location = '/categories';
