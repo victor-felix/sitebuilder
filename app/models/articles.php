@@ -56,7 +56,7 @@ class Articles extends BusinessItems {
     }
 
     public function addToFeed($feed, $item) {
-        $log = KLogger::instance(Filesystem::path('log'));
+        //$log = KLogger::instance(Filesystem::path('log'));
 
         $this->id = null;
 
@@ -85,16 +85,16 @@ class Articles extends BusinessItems {
                 ));
 
                 if($result) {
-                    $log->logInfo('Downloaded image "%s" to "%s"', $image, $result);
+                    //$log->logInfo('Downloaded image "%s" to "%s"', $image, $result);
                 }
                 else {
-                    $log->logInfo('Image "%s" could not be found', $image, $result);
+                    //$log->logInfo('Image "%s" could not be found', $image, $result);
                 }
             }
 
             $this->commit();
 
-            $log->logInfo('Imported article "%s"', $article['guid']);
+            //$log->logInfo('Imported article "%s"', $article['guid']);
         }
         catch(Exception $e) {
             $this->rollback();

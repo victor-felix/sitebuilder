@@ -142,21 +142,21 @@ class Categories extends AppModel {
     }
 
     public function updateArticles() {
-        $log = KLogger::instance(Filesystem::path('log'));
+        //$log = KLogger::instance(Filesystem::path('log'));
 
         $articles = Model::load('Articles');
         $feed = $this->getFeed();
         $items = $feed->get_items();
 
-        $log->logInfo('Importing feed "%s"', $this->feed_url);
-        $log->logInfo('%d articles found', count($items));
+        //$log->logInfo('Importing feed "%s"', $this->feed_url);
+        //$log->logInfo('%d articles found', count($items));
 
         foreach($items as $item) {
             if(!$articles->articleExists($this->id, $item->get_id())) {
                 $articles->addToFeed($this, $item);
             }
             else {
-                $log->logInfo('Article "%s" already exists. Skipping', $item->get_id());
+                //$log->logInfo('Article "%s" already exists. Skipping', $item->get_id());
             }
         }
 
