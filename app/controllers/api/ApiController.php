@@ -6,7 +6,7 @@ use lithium\action\Dispatcher;
 use DateTime;
 
 class ApiController extends \lithium\action\Controller {
-    protected $beforeFilter = array('getSite', 'checkToken');
+    protected $beforeFilter = array('log', 'getSite', 'checkToken');
     protected $site;
     protected $params;
 
@@ -61,6 +61,12 @@ class ApiController extends \lithium\action\Controller {
             $this->response->status(403);
             return false;
         }
+    }
+
+    protected function log() {
+        $log = \KLogger::instance(\Filesystem::path('log'));
+        $log->logInfo('%s %s', $this->request->env('REQUEST_METHOD'), $this->request->url);
+        $log->logInfo('Request Data:\n%s', print_r($this->request->data, true));
     }
 
     protected function param($param, $default = null) {
