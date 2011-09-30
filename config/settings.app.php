@@ -20,7 +20,7 @@ Config::write('Segments', array(
     ),
     'corporate' => array(
         'title' => 'Corporate',
-        'items' => array('articles', 'events', 'products', 'links'),
+        'items' => array('articles', 'events', 'products', 'links', 'business', 'restaurants', 'stores'),
         'root' => 'Index'
     )
 ));
