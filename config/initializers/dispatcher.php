@@ -33,6 +33,15 @@ Router::connect(new Route(array(
 )));
 
 Router::connect(new Route(array(
+    'method' => 'POST',
+    'template' => '/api/{:slug}/items/{:item_id}/images',
+    'params' => array(
+        'action' => 'create',
+        'controller' => 'images'
+    ) + $defaults['params']
+)));
+
+Router::connect(new Route(array(
     'method' => 'GET',
     'template' => '/api/{:slug}/news/category',
     'params' => array(
