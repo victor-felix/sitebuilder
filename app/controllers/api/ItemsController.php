@@ -82,8 +82,10 @@ class ItemsController extends \app\controllers\api\ApiController {
         $bi = \Model::load('BusinessItems')->firstById($this->param('id'));
         $item = $this->model($bi->parent())->firstById($this->param('id'));
         $item->updateAttributes($this->request->data);
-
-        if($item->validate()) {
+				
+				$log = \Klogger::instance(\Filesystem::path('log')); $log->logInfo(var_export($this->request->data, true));
+				
+				if($item->validate()) {
             $item->save();
             $this->response->status(200);
             return $this->toJSON(array(
