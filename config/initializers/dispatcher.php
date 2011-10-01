@@ -71,6 +71,7 @@ Router::connect(new Route(array(
 Router::resources('categories', $defaults);
 Router::resources('items', $defaults);
 Router::resources('news', array('only' => 'index') + $defaults);
+Router::resources('images', array('only' => 'update') + $defaults);
 Router::resources('sites', $defaults);
 
 Dispatcher::applyFilter('run', function($self, $params, $chain) {
