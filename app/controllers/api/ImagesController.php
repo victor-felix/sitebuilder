@@ -21,6 +21,12 @@ class ImagesController extends \app\controllers\api\ApiController {
     }
 
     public function update() {
-        
+        $image = \Model::load('Images')->firstById($this->param('id'));
+        $image->updateAttributes($this->request->data);
+        $image->save();
+        $this->response->status(200);
+        return $this->toJSON(array(
+            'images' => $image
+        ));
     }
 }
