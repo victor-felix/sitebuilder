@@ -55,6 +55,8 @@ class ApiController extends \lithium\action\Controller {
     }
 
     protected function checkToken() {
+        if(\Config::read('Api.ignoreAuth')) return;
+
         $token = $this->request->env('HTTP_X_AUTHENTICATION_TOKEN');
 
         if($token != 'c8e75b59161a5922c04ede9a533867e371fa2933') {

@@ -38,6 +38,28 @@ class Events extends BusinessItems {
         return array('title', 'description', 'address', 'contact', 'date', 'hour');
     }
 
+    public function nearest($category_id, $lat, $lng) {
+        $items = $this->allByParentId($category_id);
+        $nearest = array();
+
+        foreach($items as $item) {
+            $distance = $this->distance($item, $lat, $lng);
+            if($distance < 0.5) {
+                $nearest []= $item;
+            }
+        }
+
+        return $nearest;
+    }
+
+    public function distance($item, $lat, $lng) {
+        $values = $item->values();
+        if(!empty($values->lat) && !empty($values->lng)) {
+            $distance = sqrt(pow($lat - $values->lat, 2) + pow($lng - $values->lng, 2));
+            return $distance;
+        }
+    }
+
     protected function getLatLng($data) {
         if(!empty($data['address'])) {
             try {

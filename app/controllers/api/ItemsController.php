@@ -82,10 +82,8 @@ class ItemsController extends \app\controllers\api\ApiController {
         $bi = \Model::load('BusinessItems')->firstById($this->param('id'));
         $item = $this->model($bi->parent())->firstById($this->param('id'));
         $item->updateAttributes($this->request->data);
-				
-				$log = \Klogger::instance(\Filesystem::path('log')); $log->logInfo(var_export($this->request->data, true));
-				
-				if($item->validate()) {
+
+        if($item->validate()) {
             $item->save();
             $this->response->status(200);
             return $this->toJSON(array(
@@ -100,6 +98,15 @@ class ItemsController extends \app\controllers\api\ApiController {
     public function destroy() {
         \Model::load('BusinessItems')->delete($this->param('id'));
         $this->response->status(200);
+    }
+
+    public function nearest() {
+        $parent = \Model::load('Categories')->firstById($this->param('category_id'));
+        $items = $this->model($parent)->nearest($this->param('category_id'), $this->param('lat'), $this->param('lng'));
+
+        return $this->toJSON(array(
+            'items' => $items
+        ));
     }
 
     protected function modelName($category) {
