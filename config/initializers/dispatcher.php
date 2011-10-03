@@ -34,10 +34,19 @@ Router::connect(new Route(array(
 
 Router::connect(new Route(array(
     'method' => 'GET',
-    'template' => '/api/{:slug}/categories/{:category_id}/nearest',
+    'template' => '/api/{:slug}/categories/{:category_id}/geo/nearest',
     'params' => array(
         'action' => 'nearest',
-        'controller' => 'items'
+        'controller' => 'geo'
+    ) + $defaults['params']
+)));
+
+Router::connect(new Route(array(
+    'method' => 'GET',
+    'template' => '/api/{:slug}/categories/{:category_id}/geo/inside',
+    'params' => array(
+        'action' => 'inside',
+        'controller' => 'geo'
     ) + $defaults['params']
 )));
 

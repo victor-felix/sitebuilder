@@ -100,15 +100,6 @@ class ItemsController extends \app\controllers\api\ApiController {
         $this->response->status(200);
     }
 
-    public function nearest() {
-        $parent = \Model::load('Categories')->firstById($this->param('category_id'));
-        $items = $this->model($parent)->nearest($this->param('category_id'), $this->param('lat'), $this->param('lng'));
-
-        return $this->toJSON(array(
-            'items' => $items
-        ));
-    }
-
     protected function modelName($category) {
         return \Inflector::camelize($category->type);
     }
