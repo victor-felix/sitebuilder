@@ -13,8 +13,8 @@ class Business extends BusinessItems {
             'type' => 'string'
         ),
         'description' => array(
-            'title' => 'Description',
-            'type' => 'richtext'
+            'title' => 'Activity',
+            'type' => 'text'
         ),
         'address' => array(
             'title' => 'Location',
