@@ -13,14 +13,18 @@ class Business extends BusinessItems {
             'type' => 'string'
         ),
         'description' => array(
-            'title' => 'Activity',
+            'title' => 'Description',
             'type' => 'text'
         ),
         'address' => array(
             'title' => 'Location',
             'type' => 'text'
         ),
-        'phone' => array(
+        'activity' => array(
+            'title' => 'Activity',
+            'type' => 'text'
+				),
+				'phone' => array(
             'title' => 'Phone',
             'type' => 'string'
         ),
@@ -35,6 +39,6 @@ class Business extends BusinessItems {
     );
 		
 		public function fields() {
-        return array('title', 'description', 'address', 'phone', 'web', 'mail');
+        return array('title', 'description', 'activity', 'address', 'phone', 'web', 'mail');
 		}
 }
