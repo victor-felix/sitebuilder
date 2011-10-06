@@ -28,6 +28,31 @@ class ItemsController extends \app\controllers\api\ApiController {
         });
     }
 
+    public function search() {
+        $conditions = array();
+        $params = array();
+
+        $category = $this->param('category_id');
+        if($category) {
+            $conditions['parent_id'] = $category;
+            $category = \Model::load('Categories')->firstById($category);
+            $type = $category->type;
+        }
+        else {
+            $type = $this->param('type');
+        }
+
+        $items = $this->site->businessItems($type, $conditions, $params);
+        $etag = $this->etag($items);
+        $self = $this;
+
+        return $this->whenStale($etag, function() use($type, $items, $self) {
+            return $self->toJSON(array(
+                $type => $items
+            ));
+        });
+    }
+
     public function show() {
         $bi = \Model::load('BusinessItems')->firstById($this->param('id'));
         $type = \Inflector::camelize($bi->type);
