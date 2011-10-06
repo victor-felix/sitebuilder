@@ -3,17 +3,21 @@
 require_once 'app/models/business_items.php';
 
 class Restaurants extends BusinessItems {
-    protected $typeName = 'Restaurant';
+    protected $geocoding = true;
+		protected $typeName = 'Restaurant';
     protected $fields = array(
-        'title' => array(
+        'lat' => array(),
+				'lng' => array(),
+				'title' => array(
             'title' => 'Name',
             'type' => 'string'
         ),
-        'description' => array(
+/*        'description' => array(
             'title' => 'Description',
             'type' => 'richtext'
         ),
-        'address' => array(
+*/
+				'address' => array(
             'title' => 'Location',
             'type' => 'text'
         ),
@@ -26,4 +30,8 @@ class Restaurants extends BusinessItems {
             'type' => 'string'
         ),
     );
+		
+		public function fields() {
+        return array('title', 'address', 'phone', 'price');
+		}
 }

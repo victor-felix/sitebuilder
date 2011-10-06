@@ -3,9 +3,12 @@
 require_once 'app/models/business_items.php';
 
 class Stores extends BusinessItems {
-    protected $typeName = 'Store';
+    protected $geocoding = true;
+		protected $typeName = 'Store';
     protected $fields = array(
-        'title' => array(
+        'lat' => array(),
+        'lng' => array(),
+				'title' => array(
             'title' => 'Name',
             'type' => 'string'
         ),
@@ -38,4 +41,8 @@ class Stores extends BusinessItems {
             'type' => 'boolean'
         )
     );
+		
+		public function fields() {
+        return array('title', 'description', 'address', 'phone', 'web', 'mail', 'hours', 'featured');
+		}
 }
