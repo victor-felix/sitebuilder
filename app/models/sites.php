@@ -113,14 +113,6 @@ class Sites extends AppModel {
         ));
     }
 
-    public function businessItems($type, $conditions, $params) {
-        return Model::load($type)->allOrdered(array(
-            'conditions' => array(
-                'site_id' => $this->id
-            ) + $conditions
-        ) + $params);
-    }
-
     public function itemTypes() {
         return Model::load('Segments')->firstById($this->segment)->items;
     }

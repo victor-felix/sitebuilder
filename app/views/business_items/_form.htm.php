@@ -7,7 +7,7 @@
             </div>
         <?php endforeach ?>
 
-        <?php if($item->id): ?>
+        <?php if($item->id()): ?>
             <?php if($images = $item->images()): ?>
                 <?php foreach($images as $i => $image): $class = $i % 3 ? '' : 'first' ?>
                     <div class="<?php echo $class ?> picture-upload-container done" style="background-image: url(<?php echo $image->link('139x139') ?>)">
@@ -20,8 +20,8 @@
 
             <?php $class = (isset($i) ? $i + 1 : 0) % 3 ? '' : 'first' ?>
             <div class="<?php echo $class ?> picture-upload-container" data-url="/images/add.htm">
-                <input type="hidden" name="foreign_key" value="<?php echo $item->id ?>" />
-                <input type="hidden" name="model" value="BusinessItems" />
+                <input type="hidden" name="foreign_key" value="<?php echo $item->id() ?>" />
+                <input type="hidden" name="model" value="Items" />
                 <a class="close"></a>
                 <iframe src="about:blank" id="iframe_<?php echo time(); ?>"></iframe>
                 <div class="default"><?php echo s('add photo'); ?></div>

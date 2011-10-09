@@ -1,25 +1,32 @@
 <?php
 
+use app\models\Items;
+
 class BusinessItemsController extends AppController {
-    protected $uses = array('BusinessItems', 'BusinessItemsValues', 'Categories');
-    
+    protected $uses = array('Categories');
+
     public function index($parent_id = null) {
         $category = $this->Categories->firstById($parent_id);
-        $business_items = $this->model($category)->allByParentId($category->id);
+
+        $classname = '\app\models\items\\' . Inflector::camelize($category->type);
+        $business_items = $classname::find('all', array('conditions' => array(
+            'parent_id' => $category->id
+        )));
+
         $this->set(compact('category', 'business_items'));
     }
 
     public function add($parent_id = null) {
         $site = $this->getCurrentSite();
         $parent = Model::load('Categories')->firstById($parent_id);
-        $item = $this->modelInstance($parent, $this->request->data);
+        $classname = '\app\models\items\\' . Inflector::camelize($parent->type);
+        $item = $classname::create($this->data);
+        $item->parent_id = $parent->id;
+        $item->site_id = $site->id;
 
         if(!empty($this->data)) {
-            $item->site = $site;
-
-            if($item->validate()) {
-                $item->save();
-
+            dump($item->save());
+            if($item->save()) {
                 if($this->isXhr()) {
                     return $this->setAction('index', $item->parent_id);
                 }
@@ -27,6 +34,10 @@ class BusinessItemsController extends AppController {
                     Session::writeFlash('success', s('Item successfully added.'));
                     $this->redirect('/business_items/index/' . $item->parent_id);
                 }
+            }
+            else {
+                pr($item->errors());
+                die();
             }
         }
 
@@ -38,16 +49,15 @@ class BusinessItemsController extends AppController {
 
     public function edit($id = null) {
         $site = $this->getCurrentSite();
-        $bi = $this->BusinessItems->firstById($id);
-        $item = $this->model($bi->parent())->firstById($id);
+        $item = Items::find('type', array('conditions' => array(
+            '_id' => $id 
+        )));
 
         if(!empty($this->data)) {
-            $item->updateAttributes($this->request->data);
-            $item->site = $site;
+            $item->set($this->request->data);
+            $item->site_id = $site->id;
 
-            if($item->validate()) {
-                $item->save();
-
+            if($item->save()) {
                 if($this->isXhr()) {
                     $this->setAction('index', $item->parent_id);
                 }
@@ -65,41 +75,28 @@ class BusinessItemsController extends AppController {
     }
 
     public function delete($id = null) {
-        $business_item = $this->BusinessItems->firstById($id);
-        $parent_id = $business_item->parent_id;
+        $item = Items::find('first', array('conditions' => array(
+            '_id' => $id 
+        )));
+        $parent_id = $item->parent_id;
+        Items::remove(array('_id' => $id));
         $message = s('Item successfully deleted.');
-        $this->BusinessItems->delete($id);
+
         if($this->isXhr()) {
             $json = array(
                 'success'=>$message,
                 'go_back'=>true,
-                'refresh'=>'/business_items/index/' . $parent_id);
+                'refresh'=>'/business_items/index/' . $parent_id
+            );
             $this->respondToJSON($json);
-            // $this->setAction('index', $business_item->parent_id);
         }
         else {
             Session::writeFlash('success', $message);
-            $this->redirect('/business_items/index/' . $business_item->parent_id);
+            $this->redirect('/business_items/index/' . $item->parent_id);
         }
     }
-    
+
     public function reorder() {
         $this->autoRender = false;
-    }
-
-    protected function modelName($category) {
-        return Inflector::camelize($category->type);
-    }
-
-    protected function model($category) {
-        return Model::load($this->modelName($category));
-    }
-
-    protected function modelInstance($category, $data) {
-        $model = $this->modelName($category);
-        Model::load($model);
-        $instance = new $model($data);
-        $instance->parent_id = $category->id;
-        return $instance;
     }
 }

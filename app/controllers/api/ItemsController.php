@@ -84,7 +84,9 @@ class ItemsController extends ApiController {
     }
 
     public function create() {
-        $classname = '\app\models\items\\' . Inflector::camelize($this->request->data['type']);
+        $category_id = $this->request->data['parent_id'];
+        $category = Model::load('Categories')->firstById($category_id);
+        $classname = '\app\models\items\\' . Inflector::camelize($category->type);
         $item = $classname::create($this->request->data);
         $item->site_id = $this->site()->id;
 

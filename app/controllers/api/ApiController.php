@@ -51,6 +51,9 @@ class ApiController extends \lithium\action\Controller {
 
     protected function getSite() {
         $this->site = $this->site();
+        if(!$this->site) {
+            return false;
+        }
     }
 
     protected function site() {

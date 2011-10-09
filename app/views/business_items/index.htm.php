@@ -6,7 +6,7 @@
         <?php echo $this->element('common/breadcrumbs', array(
             'category' => $category->parent()
         )) ?>
-        
+
         <?php echo $this->html->link(s('add item'), '/business_items/add/' . $category->id, array('class' => 'ui-button highlight large add-business-item push-scene')) ?>
     </div>
     <div class="clear"></div>
@@ -17,17 +17,17 @@
         <?php foreach($business_items as $bi): ?>
         <li>
             <?php if($image = $bi->image()): ?>
-                <?php echo $this->html->imagelink($image->link('80x80'), '/business_items/edit/' . $bi->id, array(), array(
+                <?php echo $this->html->imagelink($image->link('80x80'), '/business_items/edit/' . $bi->id(), array(), array(
                     'class' => 'photo push-scene'
                 )) ?>
             <?php else: ?>
-                <?php echo $this->html->link('', '/business_items/edit/' . $bi->id, array(
+                <?php echo $this->html->link('', '/business_items/edit/' . $bi->id(), array(
                     'class' => 'photo push-scene'
                 )) ?>
             <?php endif ?>
             <div class="info">
-                <?php echo $this->html->link(e($bi->values()->title), '/business_items/edit/' . $bi->id, array('class' => 'push-scene')) ?>
-                <p><?php echo $bi->description() ?></p>
+                <?php echo $this->html->link(e($bi->title), '/business_items/edit/' . $bi->id(), array('class' => 'push-scene')) ?>
+                <p><?php echo $bi->description ?></p>
             </div>
         </li>
         <?php endforeach ?>

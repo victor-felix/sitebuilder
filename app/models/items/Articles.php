@@ -3,6 +3,8 @@
 namespace app\models\items;
 
 class Articles extends \app\models\Items {
+    protected $type = 'Article';
+
     public static function __init() {
         parent::__init();
 
@@ -18,6 +20,10 @@ class Articles extends \app\models\Items {
             'author'  => array('type' => 'string', 'default' => ''),
         );
     }
+
+    public function fields($entity) {
+        return array_merge(parent::fields($entity), array('description', 'author'));
+    }
 }
 
 Articles::applyFilter('save', function($self, $params, $chain) {
@@ -29,5 +35,8 @@ Articles::applyFilter('save', function($self, $params, $chain) {
 
     $item->modified = date('Y-m-d H:i:s');
 
-    return $chain->next($self, $params, $chain);
+    //$images = $item->image;
+    //$item->image = null;
+
+    $chain->next($self, $params, $chain);
 });
