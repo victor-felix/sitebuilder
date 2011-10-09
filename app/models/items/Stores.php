@@ -55,11 +55,6 @@ class Stores extends \app\models\Items {
             'featured'  => array('type' => 'boolean', 'default' => false),
         );
     }
-
-    public function fields($entity) {
-        return array_merge(parent::fields($entity), array('address', 'phone',
-            'web', 'mail', 'hours', 'featured'));
-    }
 }
 
 Stores::applyFilter('save', function($self, $params, $chain) {

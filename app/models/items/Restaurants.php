@@ -40,11 +40,6 @@ class Restaurants extends \app\models\Items {
             'price'  => array('type' => 'string', 'default' => '')
         );
     }
-
-    public function fields($entity) {
-        return array_merge(parent::fields($entity), array('address', 'phone', 
-            'price'));
-    }
 }
 
 Restaurants::applyFilter('save', function($self, $params, $chain) {
