@@ -2,56 +2,50 @@
 
 namespace app\controllers\api;
 
-class GeoController extends \app\controllers\api\ApiController {
-    public function nearest() {
-        $parent = \Model::load('Categories')->firstById($this->param('category_id'));
-        $items = $this->model($parent)->nearest($this->param('category_id'), $this->param('lat'), $this->param('lng'));
+use Model;
+use Inflector;
+use app\models\Items;
 
-        $type = $parent->type;
+class GeoController extends ApiController {
+    public function nearest() {
+        $category = Model::load('Categories')->firstById($this->request->params['category_id']);
+
+        $classname = '\app\models\items\\' . Inflector::camelize($category->type);
+        $items = $classname::find('nearest', array('conditions' => array(
+            'site_id' => $this->site()->id,
+            'parent_id' => $category->id,
+            'lat' => $this->request->query['lat'],
+            'lng' => $this->request->query['lng']
+        )));
+
+        $type = $category->type;
         $etag = $this->etag($items);
         $self = $this;
 
         return $this->whenStale($etag, function() use($type, $items, $self) {
-            return $self->toJSON(array(
-                $type => $items
-            ));
+            return array($type => $items);
         });
     }
 
     public function inside() {
-        $parent = \Model::load('Categories')->firstById($this->param('category_id'));
-        $category_id = $parent->id;
-        $ne_lat = $this->param('ne_lat');
-        $ne_lng = $this->param('ne_lng');
-        $sw_lat = $this->param('sw_lat');
-        $sw_lng = $this->param('sw_lng');
-        $items = $this->model($parent)->area($category_id, $ne_lat, $ne_lng, $sw_lat, $sw_lng);
+        $category = Model::load('Categories')->firstById($this->request->params['category_id']);
 
-        $type = $parent->type;
+        $classname = '\app\models\items\\' . Inflector::camelize($category->type);
+        $items = $classname::find('within', array('conditions' => array(
+            'site_id' => $this->site()->id,
+            'parent_id' => $category->id,
+            'ne_lat' => $this->request->query['ne_lat'],
+            'ne_lng' => $this->request->query['ne_lng'],
+            'sw_lat' => $this->request->query['sw_lat'],
+            'sw_lng' => $this->request->query['sw_lng']
+        )));
+
+        $type = $category->type;
         $etag = $this->etag($items);
         $self = $this;
 
         return $this->whenStale($etag, function() use($type, $items, $self) {
-            return $self->toJSON(array(
-                $type => $items
-            ));
+            return array($type => $items);
         });
-    }
-
-    protected function modelName($category) {
-        return \Inflector::camelize($category->type);
-    }
-
-    protected function model($category) {
-        return \Model::load($this->modelName($category));
-    }
-
-    protected function modelInstance($category, $data) {
-        $model = $this->modelName($category);
-        \Model::load($model);
-        $model = "\\$model";
-        $instance = new $model($data);
-        $instance->parent_id = $category->id;
-        return $instance;
     }
 }

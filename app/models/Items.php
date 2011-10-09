@@ -63,6 +63,6 @@ Items::applyFilter('save', function($self, $params, $chain) {
 Items::finder('type', function($self, $params, $chain) {
     $result = $chain->next($self, $params, $chain)->rewind();
     $classname = '\app\models\items\\' . Inflector::camelize($result->type);
+
     return $classname::find('first', $params['options']);
-    return $result;
 });

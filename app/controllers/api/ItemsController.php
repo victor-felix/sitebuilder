@@ -35,16 +35,18 @@ class ItemsController extends ApiController {
     public function search() {
         $category_id = $this->request->params['category_id'];
         $category = Model::load('Categories')->firstById($category_id);
-        $keyword = "/{$this->request->query['keyword']}/u";
+        $keyword = "/{$this->request->query['keyword']}/iu";
         $conditions = array(
             'site_id' => $this->site()->id,
+            'parent_id' => $category->id,
             'or' => array(
                 array('title' => array('like' => $keyword)),
                 array('description' => array('like' => $keyword))
             )
         );
 
-        $items = Items::find('all', array('conditions' => $conditions));
+        $classname = '\app\models\items\\' . Inflector::camelize($category->type);
+        $items = $classname::find('all', array('conditions' => $conditions));
 
         return array('items' => $items);
     }
