@@ -19,7 +19,7 @@ class AppController extends Controller {
             $this->autoLayout = false;
         }
     }
-    
+
     public static function load($name, $instance = false) {
         $filename = 'app/controllers/' . Inflector::underscore($name) . '.php';
         $name = basename($name);
@@ -40,7 +40,7 @@ class AppController extends Controller {
             ));
         }
     }
-    
+
     protected function getCurrentSite() {
         if(Auth::loggedIn()) {
             return Auth::user()->site();

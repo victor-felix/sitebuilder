@@ -2,6 +2,8 @@
 
 require_once 'app/models/sites.php';
 
+use app\models\Items;
+
 class ImagesController extends AppController {
     public function delete($id = null) {
         $this->Images->delete($id);
@@ -18,7 +20,16 @@ class ImagesController extends AppController {
 
         if(!empty($this->data)) {
             $fk = $this->data['foreign_key'];
-            $record = Model::load($this->data['model'])->firstById($fk);
+
+            if($this->data['model'] == 'Items') {
+                $record = Items::find('first', array('conditions' => array(
+                    '_id' => $fk
+                )));
+            }
+            else {
+                $record = Model::load($this->data['model'])->firstById($fk);
+            }
+
             $image = $this->Images->upload($record, $this->data['photo']);
             $this->set(array(
                 'timestamp' => $this->data['timestamp'],
