@@ -23,7 +23,7 @@ class BusinessItemsController extends AppController {
         $item = $classname::create();
 
         if(!empty($this->data)) {
-            $images = array_unset($this->request->data, 'image');
+            $images = array_unset($this->data, 'image');
             $item->set($this->data);
             $item->parent_id = $parent->id;
             $item->site_id = $site->id;
@@ -56,8 +56,8 @@ class BusinessItemsController extends AppController {
         )));
 
         if(!empty($this->data)) {
-            $images = array_unset($this->request->data, 'image');
-            $item->set($this->request->data);
+            $images = array_unset($this->data, 'image');
+            $item->set($this->data);
             $item->site_id = $site->id;
 
             if($item->save()) {

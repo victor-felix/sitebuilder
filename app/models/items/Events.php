@@ -50,11 +50,6 @@ class Events extends \app\models\Items {
             'hour'  => array('type' => 'string', 'default' => '')
         );
     }
-
-    public function fields($entity) {
-        return array_merge(parent::fields($entity), array('description',
-            'address', 'contact', 'date', 'hour'));
-    }
 }
 
 Events::applyFilter('save', function($self, $params, $chain) {
