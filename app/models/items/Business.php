@@ -6,6 +6,39 @@ require_once 'lib/geocoding/GoogleGeocoding.php';
 use GoogleGeocoding;
 
 class Business extends \app\models\Items {
+    protected $type = 'Business';
+
+    protected $fields = array(
+        'title' => array(
+            'title' => 'Title',
+            'type' => 'string'
+        ),
+        'description' => array(
+            'title' => 'Description',
+            'type' => 'richtext'
+        ),
+        'address' => array(
+            'title' => 'Address',
+            'type' => 'string'
+        ),
+        'phone' => array(
+            'title' => 'Phone',
+            'type' => 'string'
+        ),
+        'activity' => array(
+            'title' => 'Activity',
+            'type' => 'string'
+        ),
+        'web' => array(
+            'title' => 'Web',
+            'type' => 'string'
+        ),
+        'mail' => array(
+            'title' => 'Mail',
+            'type' => 'string'
+        )
+    );
+
     public static function __init() {
         parent::__init();
 
@@ -39,11 +72,11 @@ Business::applyFilter('save', function($self, $params, $chain) {
             $item->geo = array($location->lng, $location->lat);
         }
         catch(Exception $e) {
-            $item->geo = array();
+            $item->geo = array(0, 0);
         }
     }
     else {
-        $item->geo = array();
+        $item->geo = array(0, 0);
     }
 
     return $chain->next($self, $params, $chain);

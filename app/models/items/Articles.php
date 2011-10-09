@@ -5,6 +5,21 @@ namespace app\models\items;
 class Articles extends \app\models\Items {
     protected $type = 'Article';
 
+    protected $fields = array(
+        'title' => array(
+            'title' => 'Title',
+            'type' => 'string'
+        ),
+        'description' => array(
+            'title' => 'Description',
+            'type' => 'richtext'
+        ),
+        'author' => array(
+            'title' => 'Author',
+            'type' => 'string'
+        )
+    );
+
     public static function __init() {
         parent::__init();
 
@@ -19,10 +34,6 @@ class Articles extends \app\models\Items {
             'description'  => array('type' => 'string', 'default' => ''),
             'author'  => array('type' => 'string', 'default' => ''),
         );
-    }
-
-    public function fields($entity) {
-        return array_merge(parent::fields($entity), array('description', 'author'));
     }
 }
 

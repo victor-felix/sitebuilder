@@ -70,12 +70,12 @@ class Items extends \lithium\data\Model {
     }
 
     public function fields($entity) {
-        return array('title');
+        return array_keys($this->fields);
     }
 
     public function field($entity, $field) {
-        if(array_key_exists($field, $this->_schema)) {
-            return (object) $this->_schema[$field];
+        if(array_key_exists($field, $this->fields)) {
+            return (object) $this->fields[$field];
         }
         else {
             return null;

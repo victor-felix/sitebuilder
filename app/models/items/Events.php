@@ -8,6 +8,33 @@ use GoogleGeocoding;
 class Events extends \app\models\Items {
     protected $type = 'Event';
 
+    protected $fields = array(
+        'title' => array(
+            'title' => 'Title',
+            'type' => 'string'
+        ),
+        'description' => array(
+            'title' => 'Description',
+            'type' => 'richtext'
+        ),
+        'address' => array(
+            'title' => 'Address',
+            'type' => 'string'
+        ),
+        'date' => array(
+            'title' => 'Date',
+            'type' => 'string'
+        ),
+        'hour' => array(
+            'title' => 'Hour',
+            'type' => 'string'
+        ),
+        'contact' => array(
+            'title' => 'Contact',
+            'type' => 'string'
+        )
+    );
+
     public static function __init() {
         parent::__init();
 
@@ -22,6 +49,11 @@ class Events extends \app\models\Items {
             'date'  => array('type' => 'string', 'default' => ''),
             'hour'  => array('type' => 'string', 'default' => '')
         );
+    }
+
+    public function fields($entity) {
+        return array_merge(parent::fields($entity), array('description',
+            'address', 'contact', 'date', 'hour'));
     }
 }
 
@@ -40,11 +72,11 @@ Events::applyFilter('save', function($self, $params, $chain) {
             $item->geo = array($location->lng, $location->lat);
         }
         catch(Exception $e) {
-            $item->geo = array();
+            $item->geo = array(0, 0);
         }
     }
     else {
-        $item->geo = array();
+        $item->geo = array(0, 0);
     }
 
     return $chain->next($self, $params, $chain);

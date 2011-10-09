@@ -6,6 +6,27 @@ require_once 'lib/geocoding/GoogleGeocoding.php';
 use GoogleGeocoding;
 
 class Restaurants extends \app\models\Items {
+    protected $type = 'Restaurant';
+
+    protected $fields = array(
+        'title' => array(
+            'title' => 'Title',
+            'type' => 'string'
+        ),
+        'address' => array(
+            'title' => 'Address',
+            'type' => 'string'
+        ),
+        'phone' => array(
+            'title' => 'Phone',
+            'type' => 'string'
+        ),
+        'price' => array(
+            'title' => 'Price',
+            'type' => 'string'
+        )
+    );
+
     public static function __init() {
         parent::__init();
 
@@ -18,6 +39,11 @@ class Restaurants extends \app\models\Items {
             'phone'  => array('type' => 'string', 'default' => ''),
             'price'  => array('type' => 'string', 'default' => '')
         );
+    }
+
+    public function fields($entity) {
+        return array_merge(parent::fields($entity), array('address', 'phone', 
+            'price'));
     }
 }
 
@@ -36,11 +62,11 @@ Restaurants::applyFilter('save', function($self, $params, $chain) {
             $item->geo = array($location->lng, $location->lat);
         }
         catch(Exception $e) {
-            $item->geo = array();
+            $item->geo = array(0, 0);
         }
     }
     else {
-        $item->geo = array();
+        $item->geo = array(0, 0);
     }
 
     return $chain->next($self, $params, $chain);

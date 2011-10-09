@@ -6,6 +6,39 @@ require_once 'lib/geocoding/GoogleGeocoding.php';
 use GoogleGeocoding;
 
 class Stores extends \app\models\Items {
+    protected $type = 'Restaurant';
+
+    protected $fields = array(
+        'title' => array(
+            'title' => 'Title',
+            'type' => 'string'
+        ),
+        'address' => array(
+            'title' => 'Address',
+            'type' => 'string'
+        ),
+        'phone' => array(
+            'title' => 'Phone',
+            'type' => 'string'
+        ),
+        'web' => array(
+            'title' => 'Web',
+            'type' => 'string'
+        ),
+        'mail' => array(
+            'title' => 'Mail',
+            'type' => 'string'
+        ),
+        'hours' => array(
+            'title' => 'Hours',
+            'type' => 'string'
+        ),
+        'featured' => array(
+            'title' => 'Featured?',
+            'type' => 'boolean'
+        )
+    );
+
     public static function __init() {
         parent::__init();
 
@@ -21,6 +54,11 @@ class Stores extends \app\models\Items {
             'hours'  => array('type' => 'string', 'default' => ''),
             'featured'  => array('type' => 'boolean', 'default' => false),
         );
+    }
+
+    public function fields($entity) {
+        return array_merge(parent::fields($entity), array('address', 'phone',
+            'web', 'mail', 'hours', 'featured'));
     }
 }
 
@@ -39,11 +77,11 @@ Stores::applyFilter('save', function($self, $params, $chain) {
             $item->geo = array($location->lng, $location->lat);
         }
         catch(Exception $e) {
-            $item->geo = array();
+            $item->geo = array(0, 0);
         }
     }
     else {
-        $item->geo = array();
+        $item->geo = array(0, 0);
     }
 
     return $chain->next($self, $params, $chain);
