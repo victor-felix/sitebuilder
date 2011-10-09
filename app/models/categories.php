@@ -3,6 +3,7 @@
 require_once 'lib/simplepie/SimplePie.php';
 
 use app\models\Items;
+use app\models\items\Articles;
 
 class Categories extends AppModel {
     protected $beforeSave = array('getOrder', 'getItemType', 'checkItems');
@@ -128,7 +129,6 @@ class Categories extends AppModel {
     public function updateArticles() {
         //$log = KLogger::instance(Filesystem::path('log'));
 
-        //$articles = Model::load('Articles');
         $feed = $this->getFeed();
         $items = $feed->get_items();
 
@@ -136,11 +136,15 @@ class Categories extends AppModel {
         //$log->logInfo('%d articles found', count($items));
 
         foreach($items as $item) {
-            //if(!$articles->articleExists($this->id, $item->get_id())) {
-                //$articles->addToFeed($this, $item);
-            //}
+            $count = Articles::find('count', array('conditions' => array(
+                'category_id' => $this->id,
+                'guid' => $item->get_id()
+            )));
+            if(!$count) {
+                Articles::addToFeed($this, $item);
+            }
             //else {
-                ////$log->logInfo('Article "%s" already exists. Skipping', $item->get_id());
+                //$log->logInfo('Article "%s" already exists. Skipping', $item->get_id());
             //}
         }
 
@@ -157,20 +161,20 @@ class Categories extends AppModel {
             'site_id' => $this->site_id,
             'parent_id' => $this->id
         );
-        //$count = Model::load('Articles')->count(array(
-            //'conditions' => $conditions
-        //));
 
-        //if($count > 50) {
-            //$articles = Model::load('Articles')->allOrdered(array(
-                //'conditions' => $conditions,
-                //'limit' => $count - 50,
-                //'order' => 'pubdate ASC'
-            //));
-            //foreach($articles as $article) {
-                //Model::load('Articles')->delete($article->id);
-            //}
-        //}
+        $count = Articles::find('count', array('conditions' => $conditions));
+
+        if($count > 50) {
+            $count = Articles::find('all', array(
+                'conditions' => $conditions,
+                'limit' => $count - 50,
+                'order' => array('pubdate' => 'ASC')
+            ));
+
+            foreach($articles as $article) {
+                Items::remove(array('_id' => $article->id()));
+            }
+        }
     }
 
     protected function getFeed() {
@@ -249,7 +253,7 @@ class Categories extends AppModel {
 
             if($is_empty or $is_set && $this->data['feed'] != $this->data['feed_url']) {
                 $items = Items::find('all', array('conditions' => array(
-                    'parent_id' => $id
+                    'parent_id' => $this->id
                 )));
 
                 foreach($items as $item) {
