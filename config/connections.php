@@ -1,14 +1,6 @@
 <?php
 
 Connection::add(array(
-    'backelite' => array(
-        'driver' => 'MySql',
-        'host' => '127.0.0.1',
-        'user' => 'bkuser',
-        'password' => 'bkuser',
-        'database' => 'meu-site-builder',
-        'prefix' => ''
-		),
 		'development' => array(
         'driver' => 'MySql',
         'host' => '127.0.0.1',
