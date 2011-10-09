@@ -16,7 +16,7 @@ class Segments {
         $type_list = array();
 
         foreach($types as $type) {
-            $title = Model::load(Inflector::camelize($type))->typeName();
+            $title = Inflector::humanize($type);
             $type_list[$type] = $title;
         }
 

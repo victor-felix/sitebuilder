@@ -219,24 +219,28 @@ class Categories extends AppModel {
         return $data;
     }
 
-    //protected function checkItems($data) {
-        //if(!is_null($this->id)) {
-            //$original = $this->firstById($this->id);
-            //if(
-                //$original->populate != $data['populate'] ||
-                //$original->type != $data['type']
-            //) {
-                //$model = Model::load($original->type);
-                //$children = $this->childrenItems();
-                //$this->deleteSet($model, $children);
-            //}
-        //}
+    protected function checkItems($data) {
+        if(!is_null($this->id)) {
+            $original = $this->firstById($this->id);
+            if(
+                $original->populate != $data['populate'] ||
+                $original->type != $data['type']
+            ) {
+                $items = Items::find('all', array('conditions' => array(
+                    'parent_id' => $id
+                )));
 
-        //return $data;
-    //}
+                foreach($items as $item) {
+                    Items::remove(array('_id' => $item->id()));
+                }
+            }
+        }
 
-    //protected function updateFeed($created) {
-        //if(isset($this->data['populate']) && $this->data['populate'] == 'auto') {
+        return $data;
+    }
+
+    protected function updateFeed($created) {
+        if(isset($this->data['populate']) && $this->data['populate'] == 'auto') {
             //if(!isset($this->data['feed_url'])) {
                 //$this->data['feed_url'] = '';
             //}
@@ -263,8 +267,8 @@ class Categories extends AppModel {
 
                 //$this->updateArticles();
             //}
-        //}
-    //}
+        }
+    }
 
     protected function deleteChildren($id, $force = false) {
         $self = $this->firstById($id);
