@@ -35,8 +35,5 @@ Articles::applyFilter('save', function($self, $params, $chain) {
 
     $item->modified = date('Y-m-d H:i:s');
 
-    //$images = $item->image;
-    //$item->image = null;
-
-    $chain->next($self, $params, $chain);
+    return $chain->next($self, $params, $chain);
 });

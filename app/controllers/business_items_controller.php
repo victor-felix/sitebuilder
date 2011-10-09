@@ -20,13 +20,19 @@ class BusinessItemsController extends AppController {
         $site = $this->getCurrentSite();
         $parent = Model::load('Categories')->firstById($parent_id);
         $classname = '\app\models\items\\' . Inflector::camelize($parent->type);
-        $item = $classname::create($this->data);
-        $item->parent_id = $parent->id;
-        $item->site_id = $site->id;
+        $item = $classname::create();
 
         if(!empty($this->data)) {
-            dump($item->save());
+            $images = array_unset($this->request->data, 'image');
+            $item->set($this->data);
+            $item->parent_id = $parent->id;
+            $item->site_id = $site->id;
+            $item->type = $parent->type;
+
             if($item->save()) {
+                foreach($images as $image) {
+                    Model::load('Images')->upload($item, $image);
+                }
                 if($this->isXhr()) {
                     return $this->setAction('index', $item->parent_id);
                 }
@@ -34,10 +40,6 @@ class BusinessItemsController extends AppController {
                     Session::writeFlash('success', s('Item successfully added.'));
                     $this->redirect('/business_items/index/' . $item->parent_id);
                 }
-            }
-            else {
-                pr($item->errors());
-                die();
             }
         }
 
@@ -54,6 +56,7 @@ class BusinessItemsController extends AppController {
         )));
 
         if(!empty($this->data)) {
+            $images = array_unset($this->request->data, 'image');
             $item->set($this->request->data);
             $item->site_id = $site->id;
 
