@@ -65,23 +65,23 @@ class ItemsController extends ApiController {
         });
     }
 
-    //public function by_category() {
-        //$categories = \Model::load('Categories')->allBySiteIdAndVisibility($this->site->id, 1);
-        //$items = array();
+    public function by_category() {
+        $categories = Model::load('Categories')->allBySiteIdAndVisibility($this->site()->id, 1);
+        $items = array();
 
-        //$etag = '';
-        //foreach($categories as $category) {
-            //$current_items = $category->childrenItems($this->param('limit', 10));
-            //$items[$category->id] = $current_items;
-            //$etag .= $this->etag($current_items);
-        //}
+        $etag = '';
+        foreach($categories as $category) {
+            $current_items = $category->childrenItems($this->param('limit', 10));
+            $items[$category->id] = $current_items->to('array');
+            $etag .= $this->etag($current_items);
+        }
 
-        //$self = $this;
+        $self = $this;
 
-        //return $this->whenStale($etag, function() use($items, $self) {
-            //return $self->toJSON($items);
-        //});
-    //}
+        return $this->whenStale($etag, function() use($items, $self) {
+            return $items;
+        });
+    }
 
     public function create() {
         $classname = '\app\models\items\\' . Inflector::camelize($this->request->data['type']);

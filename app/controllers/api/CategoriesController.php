@@ -4,9 +4,12 @@ namespace app\controllers\api;
 
 require_once 'app/models/categories.php';
 
-class CategoriesController extends \app\controllers\api\ApiController {
+use Model;
+use Categories;
+
+class CategoriesController extends ApiController {
     public function index() {
-        $categories = \Model::load('Categories')->allBySiteIdAndVisibility($this->site->id, 1);
+        $categories = Model::load('Categories')->allBySiteIdAndVisibility($this->site()->id, 1);
         $etag = $this->etag($categories);
         $self = $this;
 
@@ -18,7 +21,7 @@ class CategoriesController extends \app\controllers\api\ApiController {
     }
 
     public function show() {
-        $category = \Model::load('Categories')->firstById($this->param('id'));
+        $category = Model::load('Categories')->firstBySiteIdAndId($this->site()->id, $this->param('id'));
         $etag = $this->etag($category);
         $self = $this;
 
@@ -33,10 +36,10 @@ class CategoriesController extends \app\controllers\api\ApiController {
         $category_id = $this->param('id');
 
         if(!$category_id) {
-            $category_id = $this->site->rootCategory()->id;
+            $category_id = $this->site()->rootCategory()->id;
         }
 
-        $categories = \Model::load('Categories')->recursiveByParentId($category_id, $this->param('depth', 0));
+        $categories = Model::load('Categories')->recursiveByParentId($category_id, $this->param('depth', 0));
         $etag = $this->etag($categories);
         $self = $this;
 
@@ -48,7 +51,7 @@ class CategoriesController extends \app\controllers\api\ApiController {
     }
 
     public function create() {
-        $category = new \Categories($this->request->data);
+        $category = new Categories($this->request->data);
         $category->site_id = $this->site->id;
 
         if($category->validate()) {
@@ -64,8 +67,10 @@ class CategoriesController extends \app\controllers\api\ApiController {
     }
 
     public function update() {
-        $category = \Model::load('Categories')->firstById($this->param('id'));
-        $category->updateAttributes($this->request->data);
+        $category = Model::load('Categories')->firstBySiteIdAndId($this->site()->id, $this->param('id'));
+        $category->updateAttributes(array(
+            'site_id' => $this->site()->id
+        ) + $this->request->data);
 
         if($category->validate()) {
             $category->save();
@@ -80,7 +85,7 @@ class CategoriesController extends \app\controllers\api\ApiController {
     }
 
     public function destroy() {
-        \Model::load('Categories')->delete($this->param('id'));
+        Model::load('Categories')->delete($this->param('id'));
         $this->response->status(200);
     }
 }

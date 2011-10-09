@@ -2,9 +2,11 @@
 
 namespace app\controllers\api;
 
-class SitesController extends \app\controllers\api\ApiController {
+use Model;
+
+class SitesController extends ApiController {
     public function index() {
-        $sites = \Model::load('Sites')->all();
+        $sites = Model::load('Sites')->all();
         $etag = $this->etag($sites);
         $self = $this;
 
@@ -17,9 +19,9 @@ class SitesController extends \app\controllers\api\ApiController {
 
     public function show() {
         $slug = $this->param('slug', $this->param('id'));
-        $site = \Model::load('Sites')->firstByDomain($slug);
+        $site = Model::load('Sites')->firstByDomain($slug);
         if($slug) {
-            $site = \Model::load('Sites')->firstByDomain($slug);
+            $site = Model::load('Sites')->firstByDomain($slug);
         }
         else {
             $site = $this->site;

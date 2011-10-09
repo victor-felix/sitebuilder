@@ -2,6 +2,8 @@
 
 require_once 'lib/simplepie/SimplePie.php';
 
+use app\models\Items;
+
 class Categories extends AppModel {
     protected $beforeSave = array('getOrder', 'getItemType', 'checkItems');
     protected $afterSave = array('updateFeed');
@@ -45,29 +47,13 @@ class Categories extends AppModel {
         return $this->firstBySiteIdAndParentId($site_id, 0);
     }
 
-    public function children($id = null) {
-        if(is_null($id)) {
-            $id = $this->id;
-        }
-
-        $result = array(
-            'categories' => Model::load('Categories')->allByParentId($id)
-        );
-
-        $types = Model::load('BusinessItems')->typesForParent($id);
-        foreach($types as $type) {
-            $result[$type->type] = Model::load('BusinessItems')->allByParentIdAndType($id, $type->type);
-        }
-
-        return $result;
-    }
-
     public function childrenItems($limit = null) {
         $type = Inflector::underscore($this->type);
-        $model = Model::load($type);
-        return $model->allByParentId($this->id, array(
-            'limit' => $limit
-        ));
+        $classname = '\app\models\items\\' . Inflector::camelize($type);
+
+        return $classname::find('all', array('conditions' => array(
+            'parent_id' => $this->id
+        ), 'limit' => $limit));
     }
 
     public function hasFeed() {
@@ -76,11 +62,9 @@ class Categories extends AppModel {
     }
 
     public function childrenCount() {
-        return Model::load('BusinessItems')->count(array(
-            'conditions' => array(
-                'parent_id' => $this->id
-            )
-        ));
+        return Items::find('count', array('conditions' => array(
+            'parent_id' => $this->id
+        )));
     }
 
     public function breadcrumbs() {
@@ -141,53 +125,53 @@ class Categories extends AppModel {
         ));
     }
 
-    public function updateArticles() {
-        //$log = KLogger::instance(Filesystem::path('log'));
+    //public function updateArticles() {
+        ////$log = KLogger::instance(Filesystem::path('log'));
 
-        $articles = Model::load('Articles');
-        $feed = $this->getFeed();
-        $items = $feed->get_items();
+        //$articles = Model::load('Articles');
+        //$feed = $this->getFeed();
+        //$items = $feed->get_items();
 
-        //$log->logInfo('Importing feed "%s"', $this->feed_url);
-        //$log->logInfo('%d articles found', count($items));
+        ////$log->logInfo('Importing feed "%s"', $this->feed_url);
+        ////$log->logInfo('%d articles found', count($items));
 
-        foreach($items as $item) {
-            if(!$articles->articleExists($this->id, $item->get_id())) {
-                $articles->addToFeed($this, $item);
-            }
-            else {
-                //$log->logInfo('Article "%s" already exists. Skipping', $item->get_id());
-            }
-        }
+        //foreach($items as $item) {
+            //if(!$articles->articleExists($this->id, $item->get_id())) {
+                //$articles->addToFeed($this, $item);
+            //}
+            //else {
+                ////$log->logInfo('Article "%s" already exists. Skipping', $item->get_id());
+            //}
+        //}
 
-        $this->cleanup();
+        //$this->cleanup();
 
-        $this->updateAttributes(array(
-            'updated' => date('Y-m-d H:i:s')
-        ));
-        $this->save();
-    }
+        //$this->updateAttributes(array(
+            //'updated' => date('Y-m-d H:i:s')
+        //));
+        //$this->save();
+    //}
 
-    public function cleanup() {
-        $conditions = array(
-            'site_id' => $this->site_id,
-            'parent_id' => $this->id
-        );
-        $count = Model::load('Articles')->count(array(
-            'conditions' => $conditions
-        ));
+    //public function cleanup() {
+        //$conditions = array(
+            //'site_id' => $this->site_id,
+            //'parent_id' => $this->id
+        //);
+        //$count = Model::load('Articles')->count(array(
+            //'conditions' => $conditions
+        //));
 
-        if($count > 50) {
-            $articles = Model::load('Articles')->allOrdered(array(
-                'conditions' => $conditions,
-                'limit' => $count - 50,
-                'order' => 'pubdate ASC'
-            ));
-            foreach($articles as $article) {
-                Model::load('Articles')->delete($article->id);
-            }
-        }
-    }
+        //if($count > 50) {
+            //$articles = Model::load('Articles')->allOrdered(array(
+                //'conditions' => $conditions,
+                //'limit' => $count - 50,
+                //'order' => 'pubdate ASC'
+            //));
+            //foreach($articles as $article) {
+                //Model::load('Articles')->delete($article->id);
+            //}
+        //}
+    //}
 
     protected function getFeed() {
         $feed = new SimplePie();
@@ -235,52 +219,52 @@ class Categories extends AppModel {
         return $data;
     }
 
-    protected function checkItems($data) {
-        if(!is_null($this->id)) {
-            $original = $this->firstById($this->id);
-            if(
-                $original->populate != $data['populate'] ||
-                $original->type != $data['type']
-            ) {
-                $model = Model::load($original->type);
-                $children = $this->childrenItems();
-                $this->deleteSet($model, $children);
-            }
-        }
+    //protected function checkItems($data) {
+        //if(!is_null($this->id)) {
+            //$original = $this->firstById($this->id);
+            //if(
+                //$original->populate != $data['populate'] ||
+                //$original->type != $data['type']
+            //) {
+                //$model = Model::load($original->type);
+                //$children = $this->childrenItems();
+                //$this->deleteSet($model, $children);
+            //}
+        //}
 
-        return $data;
-    }
+        //return $data;
+    //}
 
-    protected function updateFeed($created) {
-        if(isset($this->data['populate']) && $this->data['populate'] == 'auto') {
-            if(!isset($this->data['feed_url'])) {
-                $this->data['feed_url'] = '';
-            }
-            $is_set = isset($this->data['feed']);
-            $is_empty = $is_set && empty($this->data['feed']);
+    //protected function updateFeed($created) {
+        //if(isset($this->data['populate']) && $this->data['populate'] == 'auto') {
+            //if(!isset($this->data['feed_url'])) {
+                //$this->data['feed_url'] = '';
+            //}
+            //$is_set = isset($this->data['feed']);
+            //$is_empty = $is_set && empty($this->data['feed']);
 
-            if($is_empty or $is_set && $this->data['feed'] != $this->data['feed_url']) {
-                $children = $this->childrenItems();
-                $this->deleteSet(Model::load('BusinessItems'), $children);
-                $this->update(array(
-                    'conditions' => array('id' => $this->id)
-                ), array(
-                    'feed_url' => ''
-                ));
-            }
+            //if($is_empty or $is_set && $this->data['feed'] != $this->data['feed_url']) {
+                //$children = $this->childrenItems();
+                //$this->deleteSet(Model::load('BusinessItems'), $children);
+                //$this->update(array(
+                    //'conditions' => array('id' => $this->id)
+                //), array(
+                    //'feed_url' => ''
+                //));
+            //}
 
-            if($is_set && !$is_empty && $this->data['feed'] != $this->data['feed_url']) {
-                $this->feed_url = $this->data['feed'];
-                $this->update(array(
-                    'conditions' => array('id' => $this->id)
-                ), array(
-                    'feed_url' => $this->feed_url
-                ));
+            //if($is_set && !$is_empty && $this->data['feed'] != $this->data['feed_url']) {
+                //$this->feed_url = $this->data['feed'];
+                //$this->update(array(
+                    //'conditions' => array('id' => $this->id)
+                //), array(
+                    //'feed_url' => $this->feed_url
+                //));
 
-                $this->updateArticles();
-            }
-        }
-    }
+                //$this->updateArticles();
+            //}
+        //}
+    //}
 
     protected function deleteChildren($id, $force = false) {
         $self = $this->firstById($id);
@@ -288,10 +272,15 @@ class Categories extends AppModel {
             return false;
         }
 
-        $types = $self->children();
-        foreach($types as $type => $children) {
-            $model = Model::load(Inflector::camelize($type));
-            $this->deleteSet($model, $children);
+        $categories = $this->allByParentId($id);
+        $this->deleteSet('Categories', $categories);
+
+        $items = Items::find('all', array('conditions' => array(
+            'parent_id' => $id
+        )));
+
+        foreach($items as $item) {
+            Items::remove(array('_id' => $item->id()));
         }
 
         return $id;

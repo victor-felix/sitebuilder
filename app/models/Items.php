@@ -24,6 +24,7 @@ class Items extends \lithium\data\Model {
         '_id'  => array('type' => 'id'),
         'site_id' => array('type' => 'integer', 'null' => false),
         'parent_id' => array('type' => 'integer', 'null' => false),
+        'order' => array('type' => 'integer', 'default' => 0),
         'created'  => array('type' => 'date', 'default' => 0),
         'modified'  => array('type' => 'date', 'default' => 0),
         'type'  => array('type' => 'string', 'null' => false),

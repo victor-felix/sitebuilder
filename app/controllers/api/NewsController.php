@@ -2,22 +2,22 @@
 
 namespace app\controllers\api;
 
-class NewsController extends \app\controllers\api\ApiController {
+use app\models\items\Articles;
+
+class NewsController extends ApiController {
     public function index() {
-        $news_category = $this->site->newsCategory();
-        $news = \Model::load('Articles')->allOrdered(array(
-            'conditions' => array(
-                'site_id' => $this->site->id,
-                'parent_id' => $news_category->id
-            ),
-            'limit' => $this->param('limit', 10)
-        ));
-        $etag = $this->etag($news);
+        $category = $this->site()->newsCategory();
+
+        $items = Articles::find('all', array('conditions' => array(
+            'site_id' => $this->site()->id,
+            'parent_id' => $category->id
+        ), 'limit' => 10));
+        $etag = $this->etag($items);
         $self = $this;
 
-        return $this->whenStale($etag, function() use($news, $self) {
+        return $this->whenStale($etag, function() use($items, $self) {
             return $self->toJSON(array(
-                'articles' => $news
+                'articles' => $items
             ));
         });
     }
