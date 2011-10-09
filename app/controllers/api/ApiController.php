@@ -96,8 +96,12 @@ class ApiController extends \lithium\action\Controller {
         if(is_array($object)) {
             $sum = array_reduce($object, function($value, $current) {
                 $current = (object) $current;
-                $modified = new DateTime($current->modified);
-                return $value + $modified->getTimestamp();
+                $modified = $current->modified;
+                if(!is_numeric($modified)) {
+                    $modified = new DateTime($modified);
+                    $modified = $modified->getTimestamp();
+                }
+                return $value + $modified;
             }, 0);
 
             return md5($sum);

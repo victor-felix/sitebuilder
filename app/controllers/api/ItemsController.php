@@ -2,8 +2,9 @@
 
 namespace app\controllers\api;
 
-use \app\models\Items;
-use \Model;
+use app\models\Items;
+use Model;
+use Inflector;
 
 class ItemsController extends ApiController {
     public function index() {
@@ -15,13 +16,14 @@ class ItemsController extends ApiController {
             $type = $conditions['type'] = $this->request->query['type'];
         }
         else if(isset($this->request->query['category'])) {
-            $conditions['parent_id'] = $this->request->query['category'];
             $category_id = $this->request->query['category'];
             $category = Model::load('Categories')->firstById($category_id);
-            $type = $category->type;
+            $conditions['parent_id'] = $category->id;
+            $type = $conditions['type'] = $category->type;
         }
 
-        $items = Items::find('all', array('conditions' => $conditions));
+        $classname = '\app\models\items\\' . Inflector::camelize($type);
+        $items = $classname::find('all', array('conditions' => $conditions));
         $etag = $this->etag($items);
         $self = $this;
 
@@ -48,7 +50,7 @@ class ItemsController extends ApiController {
     }
 
     public function show() {
-        $item = Items::find('first', array('conditions' => array(
+        $item = Items::find('type', array('conditions' => array(
             '_id' => $this->request->params['id'],
             'site_id' => $this->site()->id
         )));
@@ -80,7 +82,8 @@ class ItemsController extends ApiController {
     //}
 
     public function create() {
-        $item = Items::create($this->request->data);
+        $classname = '\app\models\items\\' . Inflector::camelize($this->request->data['type']);
+        $item = $classname::create($this->request->data);
         $item->site_id = $this->site()->id;
 
         if($item->save()) {
@@ -98,9 +101,11 @@ class ItemsController extends ApiController {
             'site_id' => $this->site()->id
         )));
 
-        $this->request->data['site_id'] = $this->site()->id;
+        $item->set(array(
+            'site_id' => $this->site()->id
+        ) + $this->request->data);
 
-        if($item->save($this->request->data)) {
+        if($item->save()) {
             $this->response->status(200);
             return array($item->type => $item);
         }
@@ -112,22 +117,5 @@ class ItemsController extends ApiController {
     public function destroy() {
         Items::remove(array('_id' => $this->request->params['id']));
         $this->response->status(200);
-    }
-
-    protected function modelName($category) {
-        return \Inflector::camelize($category->type);
-    }
-
-    protected function model($category) {
-        return \Model::load($this->modelName($category));
-    }
-
-    protected function modelInstance($category, $data) {
-        $model = $this->modelName($category);
-        \Model::load($model);
-        $model = "\\$model";
-        $instance = new $model($data);
-        $instance->parent_id = $category->id;
-        return $instance;
     }
 }
