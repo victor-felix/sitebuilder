@@ -92,7 +92,7 @@ class ApiController extends \lithium\action\Controller {
     }
 
     protected function etag($object) {
-        if(get_class($object) == 'lithium\data\collection\DocumentSet') {
+        if(is_object($object) && get_class($object) == 'lithium\data\collection\DocumentSet') {
             $object = $object->to('array');
         }
 

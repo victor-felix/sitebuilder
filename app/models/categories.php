@@ -125,38 +125,38 @@ class Categories extends AppModel {
         ));
     }
 
-    //public function updateArticles() {
-        ////$log = KLogger::instance(Filesystem::path('log'));
+    public function updateArticles() {
+        //$log = KLogger::instance(Filesystem::path('log'));
 
         //$articles = Model::load('Articles');
-        //$feed = $this->getFeed();
-        //$items = $feed->get_items();
+        $feed = $this->getFeed();
+        $items = $feed->get_items();
 
-        ////$log->logInfo('Importing feed "%s"', $this->feed_url);
-        ////$log->logInfo('%d articles found', count($items));
+        //$log->logInfo('Importing feed "%s"', $this->feed_url);
+        //$log->logInfo('%d articles found', count($items));
 
-        //foreach($items as $item) {
+        foreach($items as $item) {
             //if(!$articles->articleExists($this->id, $item->get_id())) {
                 //$articles->addToFeed($this, $item);
             //}
             //else {
                 ////$log->logInfo('Article "%s" already exists. Skipping', $item->get_id());
             //}
-        //}
+        }
 
-        //$this->cleanup();
+        $this->cleanup();
 
-        //$this->updateAttributes(array(
-            //'updated' => date('Y-m-d H:i:s')
-        //));
-        //$this->save();
-    //}
+        $this->updateAttributes(array(
+            'updated' => date('Y-m-d H:i:s')
+        ));
+        $this->save();
+    }
 
-    //public function cleanup() {
-        //$conditions = array(
-            //'site_id' => $this->site_id,
-            //'parent_id' => $this->id
-        //);
+    public function cleanup() {
+        $conditions = array(
+            'site_id' => $this->site_id,
+            'parent_id' => $this->id
+        );
         //$count = Model::load('Articles')->count(array(
             //'conditions' => $conditions
         //));
@@ -171,7 +171,7 @@ class Categories extends AppModel {
                 //Model::load('Articles')->delete($article->id);
             //}
         //}
-    //}
+    }
 
     protected function getFeed() {
         $feed = new SimplePie();
@@ -241,32 +241,38 @@ class Categories extends AppModel {
 
     protected function updateFeed($created) {
         if(isset($this->data['populate']) && $this->data['populate'] == 'auto') {
-            //if(!isset($this->data['feed_url'])) {
-                //$this->data['feed_url'] = '';
-            //}
-            //$is_set = isset($this->data['feed']);
-            //$is_empty = $is_set && empty($this->data['feed']);
+            if(!isset($this->data['feed_url'])) {
+                $this->data['feed_url'] = '';
+            }
+            $is_set = isset($this->data['feed']);
+            $is_empty = $is_set && empty($this->data['feed']);
 
-            //if($is_empty or $is_set && $this->data['feed'] != $this->data['feed_url']) {
-                //$children = $this->childrenItems();
-                //$this->deleteSet(Model::load('BusinessItems'), $children);
-                //$this->update(array(
-                    //'conditions' => array('id' => $this->id)
-                //), array(
-                    //'feed_url' => ''
-                //));
-            //}
+            if($is_empty or $is_set && $this->data['feed'] != $this->data['feed_url']) {
+                $items = Items::find('all', array('conditions' => array(
+                    'parent_id' => $id
+                )));
 
-            //if($is_set && !$is_empty && $this->data['feed'] != $this->data['feed_url']) {
-                //$this->feed_url = $this->data['feed'];
-                //$this->update(array(
-                    //'conditions' => array('id' => $this->id)
-                //), array(
-                    //'feed_url' => $this->feed_url
-                //));
+                foreach($items as $item) {
+                    Items::remove(array('_id' => $item->id()));
+                }
 
-                //$this->updateArticles();
-            //}
+                $this->update(array(
+                    'conditions' => array('id' => $this->id)
+                ), array(
+                    'feed_url' => ''
+                ));
+            }
+
+            if($is_set && !$is_empty && $this->data['feed'] != $this->data['feed_url']) {
+                $this->feed_url = $this->data['feed'];
+                $this->update(array(
+                    'conditions' => array('id' => $this->id)
+                ), array(
+                    'feed_url' => $this->feed_url
+                ));
+
+                $this->updateArticles();
+            }
         }
     }
 
