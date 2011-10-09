@@ -1,6 +1,7 @@
 public/images/site_logos
 public/images/site_photos
 public/images/business_items
+public/images/items
 tmp/cache/html_purifier/*
 tmp/cache/simplepie/*
 tmp/cache/yaml/*

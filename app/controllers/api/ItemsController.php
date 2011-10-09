@@ -2,101 +2,90 @@
 
 namespace app\controllers\api;
 
-class ItemsController extends \app\controllers\api\ApiController {
-    public function index() {
-        $conditions = array();
-        $params = array();
+use \app\models\Items;
+use \Model;
 
-        $category = $this->param('category');
-        if($category) {
-            $conditions['parent_id'] = $category;
-            $category = \Model::load('Categories')->firstById($category);
+class ItemsController extends ApiController {
+    public function index() {
+        $conditions = array(
+            'site_id' => $this->site()->id
+        );
+
+        if(isset($this->request->query['type'])) {
+            $type = $conditions['type'] = $this->request->query['type'];
+        }
+        else if(isset($this->request->query['category'])) {
+            $conditions['parent_id'] = $this->request->query['category'];
+            $category_id = $this->request->query['category'];
+            $category = Model::load('Categories')->firstById($category_id);
             $type = $category->type;
         }
-        else {
-            $type = $this->param('type');
-        }
 
-        $items = $this->site->businessItems($type, $conditions, $params);
+        $items = Items::find('all', array('conditions' => $conditions));
         $etag = $this->etag($items);
         $self = $this;
 
         return $this->whenStale($etag, function() use($type, $items, $self) {
-            return $self->toJSON(array(
-                $type => $items
-            ));
+            return array($type => $items);
         });
     }
 
     public function search() {
-        $conditions = array();
-        $params = array();
+        $category_id = $this->request->params['category_id'];
+        $category = Model::load('Categories')->firstById($category_id);
+        $keyword = "/{$this->request->query['keyword']}/u";
+        $conditions = array(
+            'site_id' => $this->site()->id,
+            'or' => array(
+                array('title' => array('like' => $keyword)),
+                array('description' => array('like' => $keyword))
+            )
+        );
 
-        $category = $this->param('category_id');
-        if($category) {
-            $conditions['parent_id'] = $category;
-            $category = \Model::load('Categories')->firstById($category);
-            $type = $category->type;
-        }
-        else {
-            $type = $this->param('type');
-        }
+        $items = Items::find('all', array('conditions' => $conditions));
 
-        $items = $this->site->businessItems($type, $conditions, $params);
-        $etag = $this->etag($items);
-        $self = $this;
-
-        return $this->whenStale($etag, function() use($type, $items, $self) {
-            return $self->toJSON(array(
-                $type => $items
-            ));
-        });
+        return array('items' => $items);
     }
 
     public function show() {
-        $bi = \Model::load('BusinessItems')->firstById($this->param('id'));
-        $type = \Inflector::camelize($bi->type);
-        $bi = \Model::load($type)->firstById($this->param('id'));
+        $item = Items::find('first', array('conditions' => array(
+            '_id' => $this->request->params['id'],
+            'site_id' => $this->site()->id
+        )));
 
-        $etag = $this->etag($bi);
+        $etag = $this->etag($item);
         $self = $this;
 
-        return $this->whenStale($etag, function() use($bi, $self) {
-            return $self->toJSON(array(
-                $bi->type => $bi
-            ));
+        return $this->whenStale($etag, function() use($item, $self) {
+            return array($item->type => $item);
         });
     }
 
-    public function by_category() {
-        $categories = \Model::load('Categories')->allBySiteIdAndVisibility($this->site->id, 1);
-        $items = array();
+    //public function by_category() {
+        //$categories = \Model::load('Categories')->allBySiteIdAndVisibility($this->site->id, 1);
+        //$items = array();
 
-        $etag = '';
-        foreach($categories as $category) {
-            $current_items = $category->childrenItems($this->param('limit', 10));
-            $items[$category->id] = $current_items;
-            $etag .= $this->etag($current_items);
-        }
+        //$etag = '';
+        //foreach($categories as $category) {
+            //$current_items = $category->childrenItems($this->param('limit', 10));
+            //$items[$category->id] = $current_items;
+            //$etag .= $this->etag($current_items);
+        //}
 
-        $self = $this;
+        //$self = $this;
 
-        return $this->whenStale($etag, function() use($items, $self) {
-            return $self->toJSON($items);
-        });
-    }
+        //return $this->whenStale($etag, function() use($items, $self) {
+            //return $self->toJSON($items);
+        //});
+    //}
 
     public function create() {
-        $parent = \Model::load('Categories')->firstById($this->request->data['parent_id']);
-        $item = $this->modelInstance($parent, $this->request->data);
-        $item->site_id = $this->site->id;
+        $item = Items::create($this->request->data);
+        $item->site_id = $this->site()->id;
 
-        if($item->validate()) {
-            $item->save();
+        if($item->save()) {
             $this->response->status(201);
-            return $this->toJSON(array(
-                $item->type => $item
-            ));
+            return array($item->type => $item);
         }
         else {
             $this->response->status(422);
@@ -104,16 +93,16 @@ class ItemsController extends \app\controllers\api\ApiController {
     }
 
     public function update() {
-        $bi = \Model::load('BusinessItems')->firstById($this->param('id'));
-        $item = $this->model($bi->parent())->firstById($this->param('id'));
-        $item->updateAttributes($this->request->data);
+        $item = Items::find('first', array('conditions' => array(
+            '_id' => $this->request->params['id'],
+            'site_id' => $this->site()->id
+        )));
 
-        if($item->validate()) {
-            $item->save();
+        $this->request->data['site_id'] = $this->site()->id;
+
+        if($item->save($this->request->data)) {
             $this->response->status(200);
-            return $this->toJSON(array(
-                $item->type => $item
-            ));
+            return array($item->type => $item);
         }
         else {
             $this->response->status(422);
@@ -121,7 +110,7 @@ class ItemsController extends \app\controllers\api\ApiController {
     }
 
     public function destroy() {
-        \Model::load('BusinessItems')->delete($this->param('id'));
+        Items::remove(array('_id' => $this->request->params['id']));
         $this->response->status(200);
     }
 

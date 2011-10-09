@@ -96,4 +96,8 @@ class AppModel extends Model {
     public function imageModel() {
         return get_class($this);
     }
+
+    public function id() {
+        return $this->id;
+    }
 }

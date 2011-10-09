@@ -50,8 +50,12 @@ class ApiController extends \lithium\action\Controller {
     }
 
     protected function getSite() {
+        $this->site = $this->site();
+    }
+
+    protected function site() {
         $slug = $this->request->params['slug'];
-        $this->site = \Model::load('Sites')->firstByDomain($slug);
+        return \Model::load('Sites')->firstByDomain($slug);
     }
 
     protected function checkToken() {
@@ -85,8 +89,13 @@ class ApiController extends \lithium\action\Controller {
     }
 
     protected function etag($object) {
+        if(get_class($object) == 'lithium\data\collection\DocumentSet') {
+            $object = $object->to('array');
+        }
+
         if(is_array($object)) {
             $sum = array_reduce($object, function($value, $current) {
+                $current = (object) $current;
                 $modified = new DateTime($current->modified);
                 return $value + $modified->getTimestamp();
             }, 0);

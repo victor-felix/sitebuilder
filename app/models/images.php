@@ -62,7 +62,7 @@ class Images extends AppModel {
 
             $defaults = array(
                 'model' => $model->imageModel(),
-                'foreign_key' => $model->id
+                'foreign_key' => $model->id()
             );
             $self->save(array_merge($defaults, $attr));
 

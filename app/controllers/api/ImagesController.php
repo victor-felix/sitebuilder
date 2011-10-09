@@ -2,12 +2,20 @@
 
 namespace app\controllers\api;
 
-class ImagesController extends \app\controllers\api\ApiController {
+use app\models\Items;
+use Model;
+
+class ImagesController extends ApiController {
     public function create() {
-        $parent = \Model::load('BusinessItems')->firstById($this->param('item_id'));
-        $image = \Model::load('Images')->upload($parent, $this->request->data['image'], array(
-            'visible' => 0
-        ));
+        $item = Items::find('first', array('conditions' => array(
+            'site_id' => $this->site()->id,
+            '_id' => $this->request->params['item_id']
+        )));
+
+        $data = $this->request->data['image'];
+        $visible = isset($this->request->data['visible']) ? $this->request->data['visible'] : 0;
+        $params = compact('visible');
+        $image = Model::load('Images')->upload($item, $data, $params);
 
         if($image) {
             $this->response->status(201);
@@ -21,7 +29,7 @@ class ImagesController extends \app\controllers\api\ApiController {
     }
 
     public function update() {
-        $image = \Model::load('Images')->firstById($this->param('id'));
+        $image = Model::load('Images')->firstById($this->request->params['id']);
         $image->updateAttributes($this->request->data);
         $image->save();
         $this->response->status(200);
