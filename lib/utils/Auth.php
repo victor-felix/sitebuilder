@@ -7,7 +7,7 @@ use \lithium\storage\Session;
 class Auth {
     const SESSION_KEY = 'Auth.user';
 
-    public static function login($user, $remember) {
+    public static function login($user, $remember = false) {
         if($remember) {
             $lifetime = 30 * 86400;
             session_set_cookie_params($lifetime);
