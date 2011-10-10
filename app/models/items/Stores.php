@@ -89,8 +89,9 @@ Stores::finder('nearest', function($self, $params, $chain) {
     $lat = (float) array_unset($params['options']['conditions'], 'lat');
     $lng = (float) array_unset($params['options']['conditions'], 'lng');
     $geo = array(
-        '$nearSphere' => array($lng, $lat),
-        '$maxDistance' => $DISTANCE / $EARTH
+        '$near' => array($lng, $lat),
+        //'$nearSphere' => array($lng, $lat),
+        //'$maxDistance' => $DISTANCE / $EARTH
     );
 
     $params['options']['conditions']['geo'] = $geo;
