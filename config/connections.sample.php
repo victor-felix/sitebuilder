@@ -61,5 +61,6 @@ $mongodb = array(
 );
 
 $env = Config::read('App.environment');
+Connection::add($mysql);
 Connection::add('default', $mysql[$env]);
 Connections::add('default', $mongodb[$env]);
