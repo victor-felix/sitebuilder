@@ -39,10 +39,7 @@ class ItemsController extends ApiController {
         $conditions = array(
             'site_id' => $this->site()->id,
             'parent_id' => $category->id,
-            'or' => array(
-                array('title' => array('like' => $keyword)),
-                array('description' => array('like' => $keyword))
-            )
+            'title' => array('like' => $keyword)
         );
 
         $classname = '\app\models\items\\' . Inflector::camelize($category->type);
