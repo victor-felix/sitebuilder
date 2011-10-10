@@ -89,6 +89,7 @@ class ItemsController extends ApiController {
         $classname = '\app\models\items\\' . Inflector::camelize($category->type);
         $item = $classname::create($this->request->data);
         $item->site_id = $this->site()->id;
+        $item->type = $category->type;
 
         if($item->save()) {
             $this->response->status(201);
