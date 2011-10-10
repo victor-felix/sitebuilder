@@ -63,7 +63,8 @@ class Articles extends \app\models\Items {
             'description' => static::cleanupHtml($item),
             'pubdate' => gmdate('Y-m-d H:i:s', $item->get_date('U')),
             'author' => $author ? $author->get_name() : '',
-            'format' => 'html'
+            'format' => 'html',
+            'type' => 'articles'
         );
 
         $article = static::create($article);

@@ -37,16 +37,18 @@ class ApiController extends \lithium\action\Controller {
     }
 
     public function toJSON($record) {
-        if(is_array($record)) {
-            foreach($record as $k => $v) {
-                $record[$k] = $this->toJSON($v);
-            }
-        }
-        else if($record instanceof \Model) {
-            $record = $record->toJSON();
-        }
+        if($record instanceof \lithium\data\collection\DocumentSet || is_array($record)) {
+            $collection = array();
 
-        return $record;
+            foreach($record as $k => $v) {
+                $collection []= $this->toJSON($v);
+            }
+
+            return $collection;
+        }
+        else {
+            return $record->toJSON();
+        }
     }
 
     protected function getSite() {

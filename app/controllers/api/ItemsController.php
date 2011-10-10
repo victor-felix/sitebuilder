@@ -28,7 +28,7 @@ class ItemsController extends ApiController {
         $self = $this;
 
         return $this->whenStale($etag, function() use($type, $items, $self) {
-            return array($type => $items);
+            return array($type => $self->toJSON($items));
         });
     }
 
@@ -48,7 +48,7 @@ class ItemsController extends ApiController {
         $classname = '\app\models\items\\' . Inflector::camelize($category->type);
         $items = $classname::find('all', array('conditions' => $conditions));
 
-        return array('items' => $items);
+        return array($category->type => $this->toJSON($items));
     }
 
     public function show() {
@@ -61,7 +61,7 @@ class ItemsController extends ApiController {
         $self = $this;
 
         return $this->whenStale($etag, function() use($item, $self) {
-            return array($item->type => $item);
+            return array($item->type => $item->toJSON());
         });
     }
 
@@ -93,7 +93,7 @@ class ItemsController extends ApiController {
 
         if($item->save()) {
             $this->response->status(201);
-            return array($item->type => $item);
+            return array($item->type => $item->toJSON());
         }
         else {
             $this->response->status(422);
@@ -112,7 +112,7 @@ class ItemsController extends ApiController {
 
         if($item->save()) {
             $this->response->status(200);
-            return array($item->type => $item);
+            return array($item->type => $item->toJSON());
         }
         else {
             $this->response->status(422);

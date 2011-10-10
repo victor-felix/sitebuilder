@@ -97,6 +97,18 @@ class Items extends \lithium\data\Model {
     public function hasSetter($entity, $attr) {
         return in_array($attr, $this->setters);
     }
+
+    public function toJSON($entity) {
+        $self = $entity->to('array');
+
+        $self['images'] = array();
+        $images = $this->images($entity);
+        foreach($images as $image) {
+            $self['images'] []= $image->toJSON();
+        }
+
+        return $self;
+    }
 }
 
 Items::applyFilter('save', function($self, $params, $chain) {
