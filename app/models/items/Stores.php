@@ -6,7 +6,7 @@ require_once 'lib/geocoding/GoogleGeocoding.php';
 use GoogleGeocoding;
 
 class Stores extends \app\models\Items {
-    protected $type = 'Restaurant';
+    protected $type = 'Store';
 
     protected $fields = array(
         'title' => array(

@@ -21,6 +21,7 @@ class BusinessItemsController extends AppController {
         $parent = Model::load('Categories')->firstById($parent_id);
         $classname = '\app\models\items\\' . Inflector::camelize($parent->type);
         $item = $classname::create();
+        $item->type = $parent->type;
 
         if(!empty($this->data)) {
             $images = array_unset($this->data, 'image');

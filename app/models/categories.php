@@ -231,7 +231,7 @@ class Categories extends AppModel {
                 $original->type != $data['type']
             ) {
                 $items = Items::find('all', array('conditions' => array(
-                    'parent_id' => $id
+                    'parent_id' => $this->id
                 )));
 
                 foreach($items as $item) {
