@@ -1,7 +1,7 @@
 <?php
 
 try {
-    require dirname(__DIR__) . '/config/bootstrap.php';
+    require __DIR__ . '/config/bootstrap.php';
 
     Config::write('App.environment', trim(Filesystem::read('config/ENVIRONMENT')));
 
