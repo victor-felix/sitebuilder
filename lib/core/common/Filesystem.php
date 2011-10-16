@@ -32,15 +32,15 @@ class Filesystem {
             if(self::isDir($destination)):
                 $destination = $destination . '/' . basename($source);
             endif;
-            
+
             return copy(self::path($source), self::path($destination));
         endif;
-        
+
         return false;
     }
     public static function delete($file, $force = true) {
         $file = self::path($file);
-        
+
         if(self::isDir($file)):
             return self::deleteDir($file, $force);
         elseif(self::exists($file)):
@@ -57,7 +57,7 @@ class Filesystem {
     public static function move($source, $destination) {
         $source = self::path($source);
         $destination = self::path($destination);
-        
+
         if(self::exists($source)):
             return rename($source, $destination);
         endif;
@@ -94,7 +94,7 @@ class Filesystem {
     public static function deleteDir($dir, $force = true) {
         $dir = self::path($dir);
         $files = self::getFiles($dir);
-    
+
         if(count($files)):
             if($force):
                 foreach($files as $file):
@@ -109,7 +109,7 @@ class Filesystem {
     }
     public static function createDir($dir, $mode = 0644) {
         $dir = self::path($dir);
-        
+
         if(!self::exists($dir)) {
             return mkdir($dir, $mode, true);
         }
@@ -117,21 +117,21 @@ class Filesystem {
             throw new Exception('path exists and is not a directory');
         }
     }
-    
+
     public static function isUploadedFile($file) {
         return is_uploaded_file(self::path($file));
     }
-    
+
     public static function moveUploadedFile($name, $destination) {
         $destination = self::path($destination);
 
         return move_uploaded_file($name, $destination);
     }
-    
+
     public static function exists($path) {
         return file_exists(self::path($path));
     }
-    
+
     public static function hasPermission($path, $permission = 'rwx') {
         $path = self::path($path);
         $functions = array(
@@ -140,7 +140,7 @@ class Filesystem {
             'w' => 'is_writeable'
         );
         $permissions = str_split($permission);
-        
+
         foreach($permissions as $permission) {
             if(!$functions[$permission]($path)) {
                 return false;
@@ -149,26 +149,26 @@ class Filesystem {
 
         return true;
     }
-    
+
     public static function extension($file) {
         $extension = pathinfo(strtolower($file), PATHINFO_EXTENSION);
         if($extension) {
             return $extension;
         }
     }
-    
+
     public static function filename($file) {
         return strtolower(pathinfo($file, PATHINFO_FILENAME));
     }
-    
+
     public static function path($path, $absolute = true) {
-         if(strpos($path, SPAGHETTI_ROOT) === false && !preg_match('(^[a-z]+:)i', $path, $out)) {
+         if(strpos($path, '/') !== 0 && !preg_match('(^[a-z]+:)i', $path, $out)) {
             if($absolute) {
                 $path = SPAGHETTI_ROOT . '/' . $path;
             }
         }
 
-        $pattern = '(([^:])[/\\\]+|\\\)'; // v.4.3    
+        $pattern = '(([^:])[/\\\]+|\\\)'; // v.4.3
         return preg_replace($pattern, '$1/', $path);
     }
 }

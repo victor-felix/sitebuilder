@@ -3,7 +3,7 @@
 class Dispatcher {
     public static function dispatch($request = null, $r = null) {
         $request = self::normalize($request);
-        
+
         try {
             $class = Inflector::camelize($request['controller']) . 'Controller';
             $controller = Controller::load($class, true);
@@ -21,7 +21,7 @@ class Dispatcher {
             }
         }
     }
-    
+
     protected static function normalize($request) {
         if(is_null($request)) {
             $request = Mapper::parse();
@@ -29,7 +29,7 @@ class Dispatcher {
 
         $request['controller'] = Inflector::hyphenToUnderscore($request['controller']);
         $request['action'] = Inflector::hyphenToUnderscore($request['action']);
-        
+
         return $request;
     }
 }
