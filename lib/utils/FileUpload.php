@@ -74,7 +74,6 @@ class FileUpload {
             $path = $this->path;
         }
 
-        $path = 'public/' . $path;
         Filesystem::createDir($path, 0755);
 
         if(Filesystem::hasPermission($path, 'w')) {

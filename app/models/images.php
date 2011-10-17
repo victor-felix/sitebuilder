@@ -98,7 +98,7 @@ class Images extends AppModel {
         require_once 'lib/utils/FileUpload.php';
 
         $uploader = new FileUpload();
-        $uploader->path = APP_ROOT . '/public/uploads/' . $this->getPath($model);
+        $uploader->path = APP_ROOT . '/public/' . $this->getPath($model);
 
         return $uploader->upload($image, ':original_name');
     }
@@ -107,7 +107,7 @@ class Images extends AppModel {
         require_once 'lib/utils/FileDownload.php';
 
         $downloader = new FileDownload();
-        $downloader->path = APP_ROOT . '/public/uploads/' . $this->getPath($model);
+        $downloader->path = APP_ROOT . '/public/' . $this->getPath($model);
 
         return $downloader->download($image, ':original_name');
     }
