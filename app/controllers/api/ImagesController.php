@@ -6,6 +6,16 @@ use app\models\Items;
 use Model;
 
 class ImagesController extends ApiController {
+    public function index() {
+        $images = Model::load('Images')->allByForeignKeyAndVisible($this->request->params['item_id'], 1);
+        $etag = $this->etag($images);
+        $self = $this;
+
+        return $this->whenStale($etag, function() use($images, $self) {
+            return $self->toJSON($images);
+        });
+    }
+
     public function create() {
         $item = Items::find('first', array('conditions' => array(
             'site_id' => $this->site()->id,
