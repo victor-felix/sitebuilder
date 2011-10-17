@@ -122,14 +122,14 @@ class Images extends AppModel {
             'id' => $this->id,
             'ext' => $types[$info['type']]
         ));
-        Filesystem::rename('public/' . $info['path'], $destination);
+        Filesystem::rename(APP_ROOT . '/public/' . $info['path'], $destination);
 
         return $destination;
     }
 
     protected function resizeImage($model, $path, $filename) {
         require_once 'lib/phpthumb/ThumbLib.inc.php';
-        $fullpath = Filesystem::path('public/' . $path . '/' . $filename);
+        $fullpath = Filesystem::path(APP_ROOT . '/public/' . $path . '/' . $filename);
         $resizes = $model->resizes();
         $modes = array(
             '' => 'resize',
@@ -145,7 +145,7 @@ class Images extends AppModel {
             $image->{$method}($w, $h);
 
             $image->save(String::insert(':path/:wx:h_:filename', array(
-                'path' => Filesystem::path('public/' . $path),
+                'path' => Filesystem::path(APP_ROOT . '/public/' . $path),
                 'filename' => $filename,
                 'w' => $w,
                 'h' => $h
@@ -157,7 +157,7 @@ class Images extends AppModel {
         $self = $this->firstById($id);
 
         if(!is_null($self->path)) {
-            Filesystem::delete(String::insert('public/:filename', array(
+            Filesystem::delete(String::insert(APP_ROOT . '/public/:filename', array(
                 'filename' => $self->path
             )));
 
@@ -174,7 +174,7 @@ class Images extends AppModel {
         foreach($resizes as $resize) {
             $values = $this->parseResizeValue($resize);
             Filesystem::delete(String::insert(':path/:wx:h_:filename', array(
-                'path' => Filesystem::path('public/' . dirname($filename)),
+                'path' => Filesystem::path(APP_ROOT . '/public/' . dirname($filename)),
                 'filename' => basename($filename),
                 'w' => $values['w'],
                 'h' => $values['h']
@@ -189,7 +189,7 @@ class Images extends AppModel {
     }
 
     protected function getImageInfo($path, $filename) {
-        $filepath = Filesystem::path('public/' . $path . '/' . $filename);
+        $filepath = Filesystem::path(APP_ROOT . '/public/' . $path . '/' . $filename);
         $image = new Imagick($filepath);
         $size = $image->getImageLength();
 
