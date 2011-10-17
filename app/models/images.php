@@ -206,7 +206,7 @@ class Images extends AppModel {
             $model = $model->imageModel();
         }
 
-        return String::insert('images/:model', array(
+        return String::insert('uploads/:model', array(
             'model' => Inflector::underscore($model)
         ));
     }
