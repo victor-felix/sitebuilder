@@ -14,7 +14,7 @@ class ImagesController extends ApiController {
 
         $data = $this->request->data['image'];
         $visible = isset($this->request->data['visible']) ? $this->request->data['visible'] : 0;
-        $params = compact('visible');
+        $params = array_merge($this->request->data, compact('visible'));
         $image = Model::load('Images')->upload($item, $data, $params);
 
         if($image) {
@@ -36,5 +36,22 @@ class ImagesController extends ApiController {
         return $this->toJSON(array(
             'images' => $image
         ));
+    }
+
+    public function show() {
+        $image = Model::load('Images')->firstBySiteIdAndId($this->site()->id, $this->param('id'));
+        $etag = $this->etag($image);
+        $self = $this;
+
+        return $this->whenStale($etag, function() use($image, $self) {
+            return $self->toJSON(array(
+                'images' => $image
+            ));
+        });
+    }
+
+    public function destroy() {
+        Model::load('Images')->delete($this->param('id'));
+        $this->response->status(200);
     }
 }
