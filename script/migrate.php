@@ -1,6 +1,6 @@
 <?php
 
-require dirname(dirname(__DIR__)_ . '/config/bootstrap.php';
+require dirname(dirname(__DIR__)) . '/config/bootstrap.php';
 require 'config/settings.php';
 require 'config/connections.php';
 
