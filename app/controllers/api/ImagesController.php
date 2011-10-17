@@ -50,7 +50,7 @@ class ImagesController extends ApiController {
         $self = $this;
 
         return $this->whenStale($etag, function() use($image, $self) {
-            return $this->toJSON($image);
+            return $self->toJSON($image);
         });
     }
 
