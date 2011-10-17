@@ -32,7 +32,7 @@
                             'type' => 'text',
                             'class' => 'ui-text' . ($action == 'edit' ? ' disabled' : ''),
                             'disabled' => $action == 'edit'
-                        )) ?><span>.meumobi.com</span>
+                        )) ?><span>.<?php echo MeuMobi::domain() ?></span>
                     </p>
                     <div class="clear"></div>
                 </div>
