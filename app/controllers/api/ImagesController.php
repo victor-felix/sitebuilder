@@ -45,7 +45,7 @@ class ImagesController extends ApiController {
     }
 
     public function show() {
-        $image = Model::load('Images')->firstBySiteIdAndId($this->site()->id, $this->param('id'));
+        $image = Model::load('Images')->firstById($this->request->params['id']);
         $etag = $this->etag($image);
         $self = $this;
 
