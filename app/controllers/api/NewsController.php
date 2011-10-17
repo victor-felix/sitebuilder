@@ -16,9 +16,7 @@ class NewsController extends ApiController {
         $self = $this;
 
         return $this->whenStale($etag, function() use($items, $self) {
-            return $self->toJSON(array(
-                'articles' => $items
-            ));
+            return $self->toJSON($items);
         });
     }
 
@@ -28,9 +26,7 @@ class NewsController extends ApiController {
         $self = $this;
         
         return $this->whenStale($etag, function() use($category, $self) {
-            return $self->toJSON(array(
-                'categories' => $category
-            ));
+            return $self->toJSON($category);
         });
     }
 }

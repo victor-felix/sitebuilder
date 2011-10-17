@@ -19,9 +19,7 @@ class ImagesController extends ApiController {
 
         if($image) {
             $this->response->status(201);
-            return $this->toJSON(array(
-                'images' => $image
-            ));
+            return $this->toJSON($image);
         }
         else {
             $this->response->status(422);
@@ -33,9 +31,7 @@ class ImagesController extends ApiController {
         $image->updateAttributes($this->request->data);
         $image->save();
         $this->response->status(200);
-        return $this->toJSON(array(
-            'images' => $image
-        ));
+        return $this->toJSON($image);
     }
 
     public function show() {
@@ -44,9 +40,7 @@ class ImagesController extends ApiController {
         $self = $this;
 
         return $this->whenStale($etag, function() use($image, $self) {
-            return $self->toJSON(array(
-                'images' => $image
-            ));
+            return $this->toJSON($image);
         });
     }
 

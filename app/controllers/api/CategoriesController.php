@@ -14,9 +14,7 @@ class CategoriesController extends ApiController {
         $self = $this;
 
         return $this->whenStale($etag, function() use($categories, $self) {
-            return $self->toJSON(array(
-                'categories' => $categories
-            ));
+            return $self->toJSON($categories);
         });
     }
 
@@ -26,9 +24,7 @@ class CategoriesController extends ApiController {
         $self = $this;
 
         return $this->whenStale($etag, function() use($category, $self) {
-            return $self->toJSON(array(
-                'categories' => $category
-            ));
+            return $self->toJSON($category);
         });
     }
 
@@ -44,9 +40,7 @@ class CategoriesController extends ApiController {
         $self = $this;
 
         return $this->whenStale($etag, function() use($categories, $self) {
-            return $self->toJSON(array(
-                'categories' => $categories
-            ));
+            return $self->toJSON($categories);
         });
     }
 
@@ -57,9 +51,7 @@ class CategoriesController extends ApiController {
         if($category->validate()) {
             $category->save();
             $this->response->status(201);
-            return $this->toJSON(array(
-                'categories' => $category
-            ));
+            return $this->toJSON($category);
         }
         else {
             $this->response->status(422);
@@ -75,9 +67,7 @@ class CategoriesController extends ApiController {
         if($category->validate()) {
             $category->save();
             $this->response->status(200);
-            return $this->toJSON(array(
-                'categories' => $category
-            ));
+            return $this->toJSON($category);
         }
         else {
             $this->response->status(422);
