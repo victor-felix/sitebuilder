@@ -32,6 +32,30 @@ class ItemsController extends ApiController {
         });
     }
 
+    public function related() {
+        $item = Items::find('first', array('conditions' => array(
+            '_id' => $this->request->params['id'],
+            'site_id' => $this->site()->id
+        )));
+
+        $related = array();
+
+        foreach($item->related as $item) {
+            $classname = '\app\models\items\\' . Inflector::camelize($item->type);
+            $related []= $classname::find('all', array('conditions' => array(
+                '_id' => $item,
+                'site_id' => $this->site()->id
+            )));
+        }
+
+        $etag = $this->etag($related);
+        $self = $this;
+
+        return $this->whenStale($etag, function() use($related, $self) {
+            return $self->toJSON($related);
+        });
+    }
+
     public function search() {
         $category_id = $this->request->params['category_id'];
         $category = Model::load('Categories')->firstById($category_id);
