@@ -38,15 +38,11 @@ class ItemsController extends ApiController {
             'site_id' => $this->site()->id
         )));
 
-        $related = array();
-
-        foreach($item->related as $item) {
-            $classname = '\app\models\items\\' . Inflector::camelize($item->type);
-            $related []= $classname::find('all', array('conditions' => array(
-                '_id' => $item,
-                'site_id' => $this->site()->id
-            )));
-        }
+        $classname = '\app\models\items\\' . Inflector::camelize($item->type);
+        $related = $classname::find('all', array('conditions' => array(
+            '_id' => $item->related,
+            'site_id' => $this->site()->id
+        )));
 
         $etag = $this->etag($related);
         $self = $this;
