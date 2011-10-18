@@ -40,7 +40,7 @@ class ItemsController extends ApiController {
 
         $classname = '\app\models\items\\' . Inflector::camelize($item->type);
         $related = $classname::find('all', array('conditions' => array(
-            '_id' => $item->related,
+            '_id' => $item->related->to('array'),
             'site_id' => $this->site()->id
         )));
 
