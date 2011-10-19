@@ -6,7 +6,7 @@ use lithium\action\Dispatcher;
 use DateTime;
 
 class ApiController extends \lithium\action\Controller {
-    protected $beforeFilter = array('log', 'getSite', 'checkToken');
+    protected $beforeFilter = array('log', 'checkToken', 'checkSite');
     protected $site;
     protected $params;
 
@@ -51,10 +51,10 @@ class ApiController extends \lithium\action\Controller {
         }
     }
 
-    protected function getSite() {
+    protected function checkSite() {
         $this->site = $this->site();
         if(!$this->site) {
-            return false;
+            throw new \app\models\sites\MissingSiteException();
         }
     }
 
