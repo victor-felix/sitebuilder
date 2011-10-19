@@ -168,8 +168,14 @@ class Images extends AppModel {
     }
 
     protected function deleteResizedFiles($model, $filename) {
-        $model = Model::load($model);
-        $resizes = $model->resizes();
+        if($model == 'Items') {
+            $model = new \app\models\Items;
+            $resizes = $model->resizes();
+        }
+        else {
+            $model = Model::load($model);
+            $resizes = $model->resizes();
+        }
 
         foreach($resizes as $resize) {
             $values = $this->parseResizeValue($resize);
