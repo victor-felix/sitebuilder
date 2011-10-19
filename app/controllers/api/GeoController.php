@@ -23,7 +23,7 @@ class GeoController extends ApiController {
         $self = $this;
 
         return $this->whenStale($etag, function() use($type, $items, $self) {
-            return $this->toJSON($items);
+            return $self->toJSON($items);
         });
     }
 
@@ -45,7 +45,7 @@ class GeoController extends ApiController {
         $self = $this;
 
         return $this->whenStale($etag, function() use($type, $items, $self) {
-            return $this->toJSON($items);
+            return $self->toJSON($items);
         });
     }
 }
