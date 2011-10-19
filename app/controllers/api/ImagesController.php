@@ -22,7 +22,7 @@ class ImagesController extends ApiController {
             '_id' => $this->request->params['item_id']
         )));
 
-        $data = $this->request->data['image'];
+        $data = array_unset($this->request->data, 'image');
         $visible = isset($this->request->data['visible']) ? $this->request->data['visible'] : 0;
         $params = array_merge($this->request->data, compact('visible'));
         $image = Model::load('Images')->upload($item, $data, $params);
