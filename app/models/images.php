@@ -26,7 +26,8 @@ class Images extends AppModel {
         return $this->first(array(
             'conditions' => array(
                 'model' => $model,
-                'foreign_key' => $fk
+                'foreign_key' => $fk,
+                'visible' => 1
             )
         ));
     }
