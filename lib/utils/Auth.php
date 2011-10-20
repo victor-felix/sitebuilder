@@ -1,6 +1,7 @@
 <?php
 
 require_once 'lib/core/security/Security.php';
+require_once 'lib/utils/Date.php';
 
 use \lithium\storage\Session;
 
