@@ -20,6 +20,7 @@ catch(Exception $e) {
         echo '<pre>', $e, '</pre>';
     }
     else {
-        // @todo do something to prevent white screen of death
+        $view = new View();
+        echo $view->render('layouts/error', array('exception' => $e), 'error');
     }
 }
