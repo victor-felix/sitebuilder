@@ -1,7 +1,7 @@
 <?php
 
 class Images extends AppModel {
-    protected $beforeSave = array('fillFields');
+    protected $afterSave = array('fillFields');
     protected $beforeDelete = array('deleteFile');
 
     public function upload($model, $image, $attr = array()) {
@@ -219,16 +219,14 @@ class Images extends AppModel {
         ));
     }
 
-    protected function fillFields($data) {
+    protected function fillFields() {
         $schema = array_keys($this->schema());
-        $self = array_keys($data);
+        $self = array_keys($this->data);
         $diff = array_diff($schema, $self);
 
         foreach($diff as $i) {
-            $data[$i] = null;
+            $this->data[$i] = null;
         }
-
-        return $data;
     }
 
     public function __toString() {
