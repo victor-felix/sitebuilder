@@ -1,0 +1,3 @@
+[submodule "meu-site-builder"]
+	path = meu-site-builder
+	url = git@repos.ipanemax.com:meu-site-builder.git
