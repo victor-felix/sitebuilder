@@ -1,6 +1,7 @@
 <?php
 
 class Images extends AppModel {
+    protected $afterSave = array('fillFields');
     protected $beforeDelete = array('deleteFile');
 
     public function upload($model, $image, $attr = array()) {
@@ -25,7 +26,8 @@ class Images extends AppModel {
         return $this->first(array(
             'conditions' => array(
                 'model' => $model,
-                'foreign_key' => $fk
+                'foreign_key' => $fk,
+                'visible' => 1
             )
         ));
     }
@@ -98,7 +100,7 @@ class Images extends AppModel {
         require_once 'lib/utils/FileUpload.php';
 
         $uploader = new FileUpload();
-        $uploader->path = $this->getPath($model);
+        $uploader->path = APP_ROOT . '/public/' . $this->getPath($model);
 
         return $uploader->upload($image, ':original_name');
     }
@@ -107,7 +109,7 @@ class Images extends AppModel {
         require_once 'lib/utils/FileDownload.php';
 
         $downloader = new FileDownload();
-        $downloader->path = $this->getPath($model);
+        $downloader->path = APP_ROOT . '/public/' . $this->getPath($model);
 
         return $downloader->download($image, ':original_name');
     }
@@ -122,14 +124,14 @@ class Images extends AppModel {
             'id' => $this->id,
             'ext' => $types[$info['type']]
         ));
-        Filesystem::rename('public/' . $info['path'], $destination);
+        Filesystem::rename(APP_ROOT . '/public/' . $info['path'], $destination);
 
         return $destination;
     }
 
     protected function resizeImage($model, $path, $filename) {
         require_once 'lib/phpthumb/ThumbLib.inc.php';
-        $fullpath = Filesystem::path('public/' . $path . '/' . $filename);
+        $fullpath = Filesystem::path(APP_ROOT . '/public/' . $path . '/' . $filename);
         $resizes = $model->resizes();
         $modes = array(
             '' => 'resize',
@@ -145,7 +147,7 @@ class Images extends AppModel {
             $image->{$method}($w, $h);
 
             $image->save(String::insert(':path/:wx:h_:filename', array(
-                'path' => Filesystem::path('public/' . $path),
+                'path' => Filesystem::path(APP_ROOT . '/public/' . $path),
                 'filename' => $filename,
                 'w' => $w,
                 'h' => $h
@@ -157,7 +159,7 @@ class Images extends AppModel {
         $self = $this->firstById($id);
 
         if(!is_null($self->path)) {
-            Filesystem::delete(String::insert('public/:filename', array(
+            Filesystem::delete(String::insert(APP_ROOT . '/public/:filename', array(
                 'filename' => $self->path
             )));
 
@@ -168,13 +170,19 @@ class Images extends AppModel {
     }
 
     protected function deleteResizedFiles($model, $filename) {
-        $model = Model::load($model);
-        $resizes = $model->resizes();
+        if($model == 'Items') {
+            $model = new \app\models\Items;
+            $resizes = $model->resizes();
+        }
+        else {
+            $model = Model::load($model);
+            $resizes = $model->resizes();
+        }
 
         foreach($resizes as $resize) {
             $values = $this->parseResizeValue($resize);
             Filesystem::delete(String::insert(':path/:wx:h_:filename', array(
-                'path' => Filesystem::path('public/' . dirname($filename)),
+                'path' => Filesystem::path(APP_ROOT . '/public/' . dirname($filename)),
                 'filename' => basename($filename),
                 'w' => $values['w'],
                 'h' => $values['h']
@@ -189,7 +197,7 @@ class Images extends AppModel {
     }
 
     protected function getImageInfo($path, $filename) {
-        $filepath = Filesystem::path('public/' . $path . '/' . $filename);
+        $filepath = Filesystem::path(APP_ROOT . '/public/' . $path . '/' . $filename);
         $image = new Imagick($filepath);
         $size = $image->getImageLength();
 
@@ -206,9 +214,19 @@ class Images extends AppModel {
             $model = $model->imageModel();
         }
 
-        return String::insert('images/:model', array(
+        return String::insert('uploads/:model', array(
             'model' => Inflector::underscore($model)
         ));
+    }
+
+    protected function fillFields() {
+        $schema = array_keys($this->schema());
+        $self = array_keys($this->data);
+        $diff = array_diff($schema, $self);
+
+        foreach($diff as $i) {
+            $this->data[$i] = null;
+        }
     }
 
     public function __toString() {

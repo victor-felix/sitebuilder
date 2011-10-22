@@ -11,9 +11,7 @@ class SitesController extends ApiController {
         $self = $this;
 
         return $this->whenStale($etag, function() use($sites, $self) {
-            return $self->toJSON(array(
-                'sites' => $sites
-            ));
+            return $self->toJSON($sites);
         });
     }
 
@@ -31,9 +29,7 @@ class SitesController extends ApiController {
         $self = $this;
 
         return $this->whenStale($etag, function() use($site, $self) {
-            return $self->toJSON(array(
-                'sites' => $site
-            ));
+            return $self->toJSON($site);
         });
     }
 }

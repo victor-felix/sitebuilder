@@ -5,3 +5,4 @@ public/images/items
 tmp/cache/html_purifier/*
 tmp/cache/simplepie/*
 tmp/cache/yaml/*
+log/*

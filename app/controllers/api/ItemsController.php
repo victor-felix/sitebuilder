@@ -28,7 +28,27 @@ class ItemsController extends ApiController {
         $self = $this;
 
         return $this->whenStale($etag, function() use($type, $items, $self) {
-            return array($type => $self->toJSON($items));
+            return $self->toJSON($items);
+        });
+    }
+
+    public function related() {
+        $item = Items::find('first', array('conditions' => array(
+            '_id' => $this->request->params['id'],
+            'site_id' => $this->site()->id
+        )));
+
+        $classname = '\app\models\items\\' . Inflector::camelize($item->type);
+        $related = $classname::find('all', array('conditions' => array(
+            '_id' => $item->related->to('array'),
+            'site_id' => $this->site()->id
+        )));
+
+        $etag = $this->etag($related);
+        $self = $this;
+
+        return $this->whenStale($etag, function() use($related, $self) {
+            return $self->toJSON($related);
         });
     }
 
@@ -45,7 +65,7 @@ class ItemsController extends ApiController {
         $classname = '\app\models\items\\' . Inflector::camelize($category->type);
         $items = $classname::find('all', array('conditions' => $conditions));
 
-        return array($category->type => $this->toJSON($items));
+        return $this->toJSON($items);
     }
 
     public function show() {
@@ -58,7 +78,7 @@ class ItemsController extends ApiController {
         $self = $this;
 
         return $this->whenStale($etag, function() use($item, $self) {
-            return array($item->type => $item->toJSON());
+            return $item->toJSON();
         });
     }
 
@@ -90,7 +110,7 @@ class ItemsController extends ApiController {
 
         if($item->save()) {
             $this->response->status(201);
-            return array($item->type => $item->toJSON());
+            return $item->toJSON();
         }
         else {
             $this->response->status(422);
@@ -109,7 +129,7 @@ class ItemsController extends ApiController {
 
         if($item->save()) {
             $this->response->status(200);
-            return array($item->type => $item->toJSON());
+            return $item->toJSON();
         }
         else {
             $this->response->status(422);

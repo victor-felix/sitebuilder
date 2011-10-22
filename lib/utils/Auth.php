@@ -1,6 +1,7 @@
 <?php
 
 require_once 'lib/core/security/Security.php';
+require_once 'lib/utils/Date.php';
 
 use \lithium\storage\Session;
 
@@ -9,11 +10,15 @@ class Auth {
 
     public static function login($user, $remember = false) {
         if($remember) {
-            $lifetime = 30 * 86400;
+            $lifetime = Date::$convert['months'] * 3;
             session_set_cookie_params($lifetime);
+        }
+        else {
+            $lifetime = 0;
         }
 
         session_regenerate_id();
+        setcookie(session_name(), session_id(), time() + $lifetime);
         Session::write(self::SESSION_KEY, serialize($user));
     }
 

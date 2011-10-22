@@ -96,8 +96,7 @@ class Sites extends AppModel {
     }
 
     public function link() {
-        $domain = MeuMobi::domain();
-        return 'http://' . $this->slug . '.' . $domain;
+        return 'http://' . $this->domain;
     }
 
     public function rootCategory() {
@@ -326,6 +325,10 @@ class SiteLogos {
     public function imageModel() {
         return 'SiteLogos';
     }
+
+    public function id() {
+        return $this->id;
+    }
 }
 
 class SitePhotos {
@@ -350,5 +353,9 @@ class SitePhotos {
 
     public function firstById($id) {
         return new self($id);
+    }
+
+    public function id() {
+        return $this->id;
     }
 }

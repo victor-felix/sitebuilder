@@ -31,6 +31,7 @@ class Items extends \lithium\data\Model {
         'created'  => array('type' => 'date', 'default' => 0),
         'modified'  => array('type' => 'date', 'default' => 0),
         'type'  => array('type' => 'string', 'null' => false),
+        'related'  => array('type' => 'array', 'default' => array()),
         'title'  => array('type' => 'string', 'null' => false)
     );
 

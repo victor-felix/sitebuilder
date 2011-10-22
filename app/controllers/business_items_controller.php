@@ -26,6 +26,7 @@ class BusinessItemsController extends AppController {
         if(!empty($this->data)) {
             $images = array_unset($this->data, 'photo');
             $images = array_unset($this->data, 'image');
+            $images = $this->request->data['image'];
             $item->set($this->data);
             $item->parent_id = $parent->id;
             $item->site_id = $site->id;
