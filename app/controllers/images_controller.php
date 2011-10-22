@@ -30,7 +30,9 @@ class ImagesController extends AppController {
                 $record = Model::load($this->data['model'])->firstById($fk);
             }
 
-            $image = $this->Images->upload($record, $this->data['photo']);
+            $image = $this->Images->upload($record, $this->data['photo'], array(
+                'visible' => 1
+            ));
             $this->set(array(
                 'timestamp' => $this->data['timestamp'],
                 'image' => $image
