@@ -159,11 +159,10 @@ class Users extends AppModel {
     protected function sendConfirmationMail($created) {
         if($created && !Config::read('Mail.preventSending')) {
             require_once 'lib/mailer/Mailer.php';
+            $segment = Segments::firstById(MeuMobi::segment());
 
             $mailer = new Mailer(array(
-                'from' => array(
-                    'no-reply@meumobi.com' => 'MeuMobi'
-                ),
+                'from' => $segment->email,
                 'to' => array(
                     $this->email => $this->fullname()
                 ),
@@ -186,9 +185,7 @@ class Users extends AppModel {
             require_once 'lib/mailer/Mailer.php';
 
             $mailer = new Mailer(array(
-                'from' => array(
-                    'no-reply@meumobi.com' => 'MeuMobi'
-                ),
+                'from' => $segment->email,
                 'to' => array(
                     $this->email => $this->fullname()
                 ),
