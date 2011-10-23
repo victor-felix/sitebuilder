@@ -159,7 +159,7 @@ class Users extends AppModel {
     protected function sendConfirmationMail($created) {
         if($created && !Config::read('Mail.preventSending')) {
             require_once 'lib/mailer/Mailer.php';
-            $segment = Segments::firstById(MeuMobi::segment());
+            $segment = Model::load('Segments')->firstById(MeuMobi::segment());
 
             $mailer = new Mailer(array(
                 'from' => $segment->email,
@@ -183,6 +183,7 @@ class Users extends AppModel {
     protected function sendForgottenPasswordMail() {
         if(!Config::read('Mail.preventSending')) {
             require_once 'lib/mailer/Mailer.php';
+            $segment = Model::load('Segments')->firstById(MeuMobi::segment());
 
             $mailer = new Mailer(array(
                 'from' => $segment->email,
