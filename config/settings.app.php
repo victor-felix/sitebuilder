@@ -10,7 +10,9 @@ Config::write('Segments', array(
     'example' => array(
         'title' => 'Example Segment',
         'items' => array('articles', 'events', 'products', 'links', 'business', 'restaurants', 'stores'),
-        'root' => 'Index'
+        'root' => 'Index',
+        'email' => array('no-reply@example.com' => 'Example'),
+        'hideCategories' => 1
     )
 ));
 
