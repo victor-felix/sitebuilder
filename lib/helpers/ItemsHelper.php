@@ -21,6 +21,30 @@ class ItemsHelper extends Helper {
     );
     protected $item;
 
+    public function __construct($view) {
+        parent::__construct($view);
+        $this->types['related'] = function($type) use ($view) {
+            $classname = '\app\models\items\\' . $type[1];
+            $conditions = array(
+                'type' => Inflector::underscore($type[1]),
+                'site_id' => $view->controller->getCurrentSite()->id
+            );
+            $items = $classname::find('all', array('conditions' => $conditions));
+            $options = array();
+
+            foreach($items as $item) {
+                $options[$item->id()] = $item->title;
+            }
+
+            return array(
+                'type' => 'select',
+                'multiple' => true,
+                'options' => $options,
+                'class' => 'chosen'
+            );
+        };
+    }
+
     public function form($url, $item, $attr) {
         $this->item = $item;
 
@@ -42,9 +66,17 @@ class ItemsHelper extends Helper {
         $defaults = array(
             'label' => $field->title
         );
+        $type = (array) $field->type;
+        $type = $type[0];
 
-        $attr = array_merge($defaults, $this->types['default'],
-            $this->types[$field->type]);
+        if(is_array($this->types[$type])) {
+            $type_attr = $this->types[$type];
+        }
+        else {
+            $type_attr = $this->types[$type]($field->type);
+        }
+
+        $attr = array_merge($defaults, $this->types['default'], $type_attr);
         $attr['class'] .= ' large';
 
         return $this->form->input($name, $attr);

@@ -6,12 +6,12 @@
         <link rel="shortcut icon" href="<?php echo Mapper::url('/images/layout/favicon.png') ?>" type="image/png" />
         <?php echo $this->html->stylesheet('shared/base', 'shared/uikit', 'shared/categories',
             'shared/edit-forms', 'shared/businessitems', 'segment', 'shared/markitup.simple',
-            'shared/markitup.xbbcode') ?>
+            'shared/markitup.xbbcode', 'shared/chosen') ?>
         <?php echo $this->html->stylesForLayout ?>
     </head>
-    
+
     <body>
-    
+
         <div id="header">
             <div class="logo">
                 <?php echo $this->html->imagelink('layout/logo.png', '/', array(
@@ -72,11 +72,11 @@
             </div>
             <div class="clear"></div>
         </div>
-    
+
         <?php if($success = Session::flash('success')): ?>
             <a href="#" id="success-feedback"><?php echo s($success) ?></a>
         <?php endif ?>
-        
+
         <?php if($error = Session::flash('error')): ?>
             <a href="#" id="error-feedback"><?php echo s($error) ?></a>
         <?php endif ?>
@@ -84,10 +84,10 @@
         <div id="content">
             <?php echo $this->contentForLayout ?>
         </div>
-        
+
         <?php echo $this->element('layouts/footer') ?>
-        
-        <?php echo $this->html->script('shared/jquery', 'shared/main', 'shared/markitup', 'shared/async_upload') ?>
+
+        <?php echo $this->html->script('shared/jquery', 'shared/main', 'shared/markitup', 'shared/async_upload', 'shared/jquery.chosen') ?>
         <?php echo $this->html->scriptsForLayout ?>
     </body>
 </html>

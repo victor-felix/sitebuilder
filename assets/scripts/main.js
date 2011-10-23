@@ -101,6 +101,9 @@ $.extend($.easing, {
                     if($('.markitup').length) {
                         $('.markitup').markItUp(mySettings);
                     }
+                    if($('.chosen').length) {
+                        $('.chosen').chosen();
+                    }
                 }}
             );
         });
@@ -363,6 +366,9 @@ $(function() {
 
     if($('.markitup').length) {
         $('.markitup').markItUp(mySettings);
+    }
+    if($('.chosen').length) {
+        $('.chosen').chosen();
     }
 	$('body').click(function(e){
 		$("#navbar .open").removeClass("open");
