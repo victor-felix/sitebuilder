@@ -24,10 +24,6 @@ class Restaurants extends \app\models\Items {
         'price' => array(
             'title' => 'Price',
             'type' => 'string'
-        ),
-        'related' => array(
-            'title' => 'Related',
-            'type' => array('related', 'Products')
         )
     );
 
