@@ -84,6 +84,8 @@ class FormHelper extends Helper {
 										$option['selected'] = true;
 								}
 						}
+						else if($select_value instanceof \lithium\data\entity\Document) {
+						}
 						else {
 								if((string) $key === (string) $select_value):
 										$option['selected'] = true;
