@@ -4,7 +4,7 @@ require_once 'lib/geocoding/GoogleGeocoding.php';
 
 class Sites extends AppModel {
     protected $getters = array('feed_url', 'feed_title', 'custom_domain');
-    protected $beforeSave = array('getLatLng', 'saveCustomDomain');
+    protected $beforeSave = array('setHideCategories', 'getLatLng', 'saveCustomDomain');
     protected $afterSave = array('saveLogo', 'createRootCategory',
         'createNewsCategory', 'updateFeed');
     protected $beforeDelete = array('checkAndDeleteFeed', 'deleteImages', 'deleteCategories',
@@ -200,6 +200,12 @@ class Sites extends AppModel {
             $data['domain'] = $data['slug'] . '.' . MeuMobi::domain();
         }
 
+        return $data;
+    }
+
+    protected function hideCategories($data) {
+        $segment = Model::load('Segments')->firstById(MeuMobi::segment());
+        $data['hide_categories'] = $segment->hideCategories;
         return $data;
     }
 

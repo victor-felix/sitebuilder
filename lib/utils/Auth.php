@@ -11,7 +11,7 @@ class Auth {
     public static function login($user, $remember = false) {
         if($remember) {
             $lifetime = Date::$convert['months'] * 3;
-            //session_set_cookie_params($lifetime);
+            session_set_cookie_params($lifetime);
         }
         else {
             $lifetime = 0;

@@ -41,7 +41,7 @@ class AppController extends Controller {
         }
     }
 
-    protected function getCurrentSite() {
+    public function getCurrentSite() {
         if(Auth::loggedIn()) {
             return Auth::user()->site();
         }

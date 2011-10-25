@@ -34,7 +34,7 @@ class BusinessItemsController extends AppController {
 
             if($item->save()) {
                 foreach($images as $image) {
-                    Model::load('Images')->upload($item, $image);
+                    Model::load('Images')->upload($item, $image, array('visible' => 1));
                 }
                 if($this->isXhr()) {
                     return $this->setAction('index', $item->parent_id);
