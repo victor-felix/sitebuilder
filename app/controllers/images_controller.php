@@ -19,6 +19,7 @@ class ImagesController extends AppController {
         $this->layout = false;
 
         if(!empty($this->data)) {
+            $this->data = $this->data['image'];
             $fk = $this->data['foreign_key'];
 
             if($this->data['model'] == 'Items') {
