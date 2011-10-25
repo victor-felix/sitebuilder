@@ -35,6 +35,7 @@ class Restaurants extends \app\models\Items {
 
         $self->_schema = $parent->_schema + array(
             'geo'  => array('type' => 'array', 'default' => array()),
+            'ratings'  => array('type' => 'array', 'default' => array()),
             'address'  => array('type' => 'string', 'default' => ''),
             'phone'  => array('type' => 'string', 'default' => ''),
             'price'  => array('type' => 'string', 'default' => '')
