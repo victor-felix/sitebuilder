@@ -341,5 +341,4 @@
 
 .picture-upload-container.done .wait, .picture-upload-container.done .default { display: none}
 .picture-upload-container.done .close { display: block}
-.picture-upload-container + .duplicate-previous { display: none}
-
+.picture-upload-container + .duplicate-previous { display: none;}
