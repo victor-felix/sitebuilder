@@ -45,7 +45,7 @@ jQuery(".picture-upload-container input[type='file']").live("change", function()
 		c.appendTo(form);
 	});
 	$(this).appendTo(form);
-	form.append("<input type='hidden' name='timestamp' value='"+timestamp+"' />");
+	form.append("<input type='hidden' name='image[timestamp]' value='"+timestamp+"' />");
 	$("#container_"+timestamp).append(form);
 	form.submit();
 	
