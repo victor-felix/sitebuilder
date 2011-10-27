@@ -28,8 +28,10 @@
 
         <?php if($site->hasManyTypes()): ?>
             <div class="form-grid-460 first populate-based manual">
-                <?php echo $this->form->input('type', array(
+                <?php echo $this->form->input('type[]', array(
                     'label' => s('Type'),
+                    'id' => "FormType",
+                    'multiple' => 'true',
                     'type' => 'select',
                     'class' => 'ui-select large',
                     'options' => Segments::listItemTypesFor($site->segment)
@@ -80,5 +82,7 @@
         )) ?>
     <?php endif ?>
 </fieldset>
-
+<script type="text/javascript" charset="utf-8">
+	$("select[name='type[]']").chosen();
+</script>
 <?php echo $this->form->close() ?>

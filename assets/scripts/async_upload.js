@@ -1,3 +1,8 @@
+jQuery(".picture-upload-container").live("click", function(e){
+	console.info(e.target);
+	if ($(e.target).is("input, .close")) { return;};
+	$(this).find("input[type=file]").trigger('click');
+})
 jQuery(".picture-upload-container .close").live("click", function(e){
 	e.preventDefault();
 	$.ajax({
@@ -17,7 +22,6 @@ jQuery(".picture-upload-container .close").live("click", function(e){
 		success: function(){
 			var container = $(e.target).closest("div.field-group");
 			$(e.target).closest(".picture-upload-container").remove();
-			console.info(container);
 			fixClasses(container);
 		},
 		error: function(){
@@ -35,6 +39,7 @@ jQuery(".picture-upload-container input[type='file']").live("change", function()
 		form = $('<form id="form_'+timestamp+'" target="'+iframe_id+'" action="'+container.data('url')+'" method="post" enctype="multipart/form-data"></form>');
 
 	container.next('.duplicate-previous').click();
+	container.next(".picture-upload-container").find("input[type=text]").val("");
 	container.addClass("wait").attr('id', 'upload_'+timestamp);
 
 	$("body").append("<div style='display: none' class='hidden' id='container_"+timestamp+"'></div>");

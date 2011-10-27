@@ -203,7 +203,7 @@ class Sites extends AppModel {
         return $data;
     }
 
-    protected function hideCategories($data) {
+    protected function setHideCategories($data) {
         $segment = Model::load('Segments')->firstById(MeuMobi::segment());
         $data['hide_categories'] = $segment->hideCategories;
         return $data;
