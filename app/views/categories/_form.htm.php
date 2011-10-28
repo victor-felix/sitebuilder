@@ -30,6 +30,7 @@
             <div class="form-grid-460 first populate-based manual">
                 <?php echo $this->form->input('type', array(
                     'label' => s('Type'),
+                    'multiple' => 'true',
                     'type' => 'select',
                     'class' => 'ui-select large',
                     'options' => Segments::listItemTypesFor($site->segment)
@@ -80,5 +81,4 @@
         )) ?>
     <?php endif ?>
 </fieldset>
-
 <?php echo $this->form->close() ?>

@@ -22,19 +22,19 @@ class Router extends \lithium\net\http\Router {
         ),
         'show' => array(
             'method' => 'GET',
-            'path' => '/{:controller}/{:id}'
+            'path' => '/{:controller}/{:id:\d+|[0-9a-f]{24}}'
         ),
         'edit' => array(
             'method' => 'GET',
-            'path' => '/{:controller}/{:id}/edit'
+            'path' => '/{:controller}/{:id:\d+|[0-9a-f]{24}}/edit'
         ),
         'update' => array(
             'method' => 'PUT',
-            'path' => '/{:controller}/{:id}'
+            'path' => '/{:controller}/{:id:\d+|[0-9a-f]{24}}'
         ),
         'destroy' => array(
             'method' => 'DELETE',
-            'path' => '/{:controller}/{:id}'
+            'path' => '/{:controller}/{:id:\d+|[0-9a-f]{24}}'
         ),
     );
 
@@ -52,7 +52,7 @@ class Router extends \lithium\net\http\Router {
             $params['params']['controller'] = $name;
 
             $params['template'] = \lithium\util\String::insert(
-                $params['scope'] . $params['path'],
+                $params['scope'] . $params['path'] . '(.{:type})?',
                 array(
                     'controller' => $name
                 )
