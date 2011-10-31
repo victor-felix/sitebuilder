@@ -284,6 +284,10 @@
                     <?php echo $this->html->link('', '/images/delete/' . $image->id, array(
                         'class' => 'close'
                     )) ?>
+										<?php echo $this->form->input('image[title]', array(
+		                    'label' => false,
+		                    'class' => 'ui-text large'
+		                )) ?>
                 </div>
             <?php endforeach ?>
         <?php endif ?>
