@@ -37,6 +37,7 @@ class ItemsHelper extends Helper {
             }
 
             return array(
+                'name' => 'related[]',
                 'type' => 'select',
                 'multiple' => true,
                 'options' => $options,
