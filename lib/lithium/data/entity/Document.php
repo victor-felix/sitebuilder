@@ -115,9 +115,6 @@ class Document extends \lithium\data\Entity implements \Iterator, \ArrayAccess {
 	 *         types in sub-`Document` objects.
 	 */
 	public function &__get($name) {
-		if (strpos($name, '.')) {
-			return $this->_getNested($name);
-		}
 		if (isset($this->_removed[$name])) {
 			$null = null;
 			return $null;
