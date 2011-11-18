@@ -14,9 +14,10 @@
                         <?php echo $this->html->link('', '/images/delete/' . $image->id, array(
                             'class' => 'close'
                         )) ?>
-												<?php echo $this->form->input('image[title]', array(
+										<?php echo $this->form->input('image['.$image->id.'][title]', array(
 				                    'label' => false,
-				                    'class' => 'ui-text large'
+				                    'class' => 'ui-text large',
+														'value' => $image->title
 				                )) ?>
                     </div>
                 <?php endforeach ?>
@@ -35,7 +36,7 @@
                     'type' => 'file',
                     'class' => 'ui-text large picture-upload'
                 )) ?>
-                <?php echo $this->form->input('image[title]', array(
+                <?php echo $this->form->input('image[ID][title]', array(
                     'label' => false,
                     'class' => 'ui-text large'
                 )) ?>

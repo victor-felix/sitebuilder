@@ -221,6 +221,10 @@ class Document extends \lithium\data\Entity implements \Iterator, \ArrayAccess {
 		$data = is_array($name) ? $name : array($name => $value);
 
 		foreach ($data as $key => $val) {
+			if (strpos($key, '.')) {
+				$this->_setNested($key, $val);
+				unset($data[$key]);
+			}
 			unset($this->_increment[$key], $this->_removed[$key]);
 		}
 
