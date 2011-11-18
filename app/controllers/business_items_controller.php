@@ -54,7 +54,7 @@ class BusinessItemsController extends AppController {
     public function edit($id = null) {
         $site = $this->getCurrentSite();
         $item = Items::find('type', array('conditions' => array(
-            '_id' => $id 
+            '_id' => $id
         )));
 
         if(!empty($this->data)) {
@@ -63,6 +63,13 @@ class BusinessItemsController extends AppController {
             $item->site_id = $site->id;
 
             if($item->save()) {
+                foreach($images as $id => $image) {
+                    if(is_numeric($id)) {
+                        $record = Model::load('Images')->firstById($id);
+                        $record->title = $image['title'];
+                        $record->save();
+                    }
+                }
                 if($this->isXhr()) {
                     $this->setAction('index', $item->parent_id);
                 }
@@ -81,7 +88,7 @@ class BusinessItemsController extends AppController {
 
     public function delete($id = null) {
         $item = Items::find('first', array('conditions' => array(
-            '_id' => $id 
+            '_id' => $id
         )));
         $parent_id = $item->parent_id;
         Items::remove(array('_id' => $id));
