@@ -14,22 +14,31 @@
                         <?php echo $this->html->link('', '/images/delete/' . $image->id, array(
                             'class' => 'close'
                         )) ?>
+                        <?php echo $this->form->input('image['.$image->id.'][title]', array(
+                            'label' => false,
+                            'class' => 'ui-text large',
+                            'value' => $image->title
+                        )) ?>
                     </div>
                 <?php endforeach ?>
             <?php endif ?>
 
             <?php $class = (isset($i) ? $i + 1 : 0) % 3 ? '' : 'first' ?>
             <div class="<?php echo $class ?> picture-upload-container" data-url="/images/add.htm">
-                <input type="hidden" name="foreign_key" value="<?php echo $item->id() ?>" />
-                <input type="hidden" name="model" value="Items" />
+                <input type="hidden" name="image[foreign_key]" value="<?php echo $item->id() ?>" />
+                <input type="hidden" name="image[model]" value="Items" />
                 <a class="close"></a>
                 <iframe src="about:blank" id="iframe_<?php echo time(); ?>"></iframe>
                 <div class="default"><?php echo s('add photo'); ?></div>
                 <div class="wait"><?php echo s('uploading photo...'); ?></div>
-                <?php echo $this->form->input('photo', array(
+                <?php echo $this->form->input('image[photo]', array(
                     'label' => false,
                     'type' => 'file',
                     'class' => 'ui-text large picture-upload'
+                )) ?>
+                <?php echo $this->form->input('image[ID][title]', array(
+                    'label' => false,
+                    'class' => 'ui-text large'
                 )) ?>
             </div>
 

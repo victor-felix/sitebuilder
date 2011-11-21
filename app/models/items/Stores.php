@@ -33,6 +33,10 @@ class Stores extends \app\models\Items {
             'title' => 'Hours',
             'type' => 'string'
         ),
+        'related' => array(
+            'title' => 'Related',
+            'type' => array('related', 'Products')
+        ),
         'featured' => array(
             'title' => 'Featured?',
             'type' => 'boolean'
@@ -46,6 +50,7 @@ class Stores extends \app\models\Items {
         $parent = parent::_object();
 
         $self->_schema = $parent->_schema + array(
+            'related'  => array('type' => 'array', 'default' => array()),
             'geo'  => array('type' => 'array', 'default' => array()),
             'address'  => array('type' => 'string', 'default' => ''),
             'phone'  => array('type' => 'string', 'default' => ''),

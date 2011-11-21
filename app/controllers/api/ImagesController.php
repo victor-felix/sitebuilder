@@ -17,10 +17,15 @@ class ImagesController extends ApiController {
     }
 
     public function create() {
-        $item = Items::find('first', array('conditions' => array(
-            'site_id' => $this->site()->id,
-            '_id' => $this->request->params['item_id']
-        )));
+        if(isset($this->request->params['item_id'])) {
+            $item = Items::find('first', array('conditions' => array(
+                'site_id' => $this->site()->id,
+                '_id' => $this->request->params['item_id']
+            )));
+        }
+        else {
+            $item = Items::create();
+        }
 
         $data = array_unset($this->request->data, 'image');
         $visible = isset($this->request->data['visible']) ? $this->request->data['visible'] : 0;

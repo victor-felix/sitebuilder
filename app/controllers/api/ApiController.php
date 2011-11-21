@@ -3,6 +3,7 @@
 namespace app\controllers\api;
 
 use lithium\action\Dispatcher;
+use lithium\util\Inflector;
 use DateTime;
 
 class ApiController extends \lithium\action\Controller {
@@ -114,5 +115,43 @@ class ApiController extends \lithium\action\Controller {
         else {
             return md5($object->modified);
         }
+    }
+
+    // fuck you lithium
+    public function render(array $options = array()) {
+        $media = $this->_classes['media'];
+        $class = get_class($this);
+        $name = preg_replace('/Controller$/', '', substr($class, strrpos($class, '\\') + 1));
+        $key = key($options);
+
+        if (isset($options['data'])) {
+            $this->set($options['data']);
+            unset($options['data']);
+        }
+        $defaults = array(
+            'status'     => null,
+            'location'   => false,
+            'data'       => null,
+            'head'       => false,
+            'controller' => Inflector::underscore($name)
+        );
+        $options += $this->_render + $defaults;
+
+        if ($key && $media::type($key)) {
+            $options['type'] = $key;
+            $this->set($options[$key]);
+            unset($options[$key]);
+        }
+
+        $this->_render['hasRendered'] = true;
+        $this->response->type($options['type']);
+        $this->response->status($options['status']);
+        $this->response->headers('Location', $options['location']);
+
+        if ($options['head']) {
+            return;
+        }
+        $data = $this->_render['data'];
+        $media::render($this->response, $data, $options + array('request' => $this->request));
     }
 }

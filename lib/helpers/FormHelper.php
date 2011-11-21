@@ -77,9 +77,20 @@ class FormHelper extends Helper {
         $content = '';
         foreach($select_options as $key => $value):
             $option = array('value' => $key);
-            if((string) $key === (string) $select_value):
-                $option['selected'] = true;
-            endif;
+						if($select_value instanceof \lithium\data\collection\DocumentArray) {
+								if($select_value->first(function($i) use ($key) {
+									return $i == $key;
+								})) {
+										$option['selected'] = true;
+								}
+						}
+						else if($select_value instanceof \lithium\data\entity\Document) {
+						}
+						else {
+								if((string) $key === (string) $select_value):
+										$option['selected'] = true;
+								endif;
+						}
             $content .= $this->html->tag('option', $value, $option);
         endforeach;
 

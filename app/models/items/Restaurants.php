@@ -24,10 +24,6 @@ class Restaurants extends \app\models\Items {
         'price' => array(
             'title' => 'Price',
             'type' => 'string'
-        ),
-        'related' => array(
-            'title' => 'Related',
-            'type' => array('related', 'Products')
         )
     );
 
@@ -40,6 +36,7 @@ class Restaurants extends \app\models\Items {
         $self->_schema = $parent->_schema + array(
             'related'  => array('type' => 'array', 'default' => array()),
             'geo'  => array('type' => 'array', 'default' => array()),
+            'ratings'  => array('type' => 'hash', 'default' => array()),
             'address'  => array('type' => 'string', 'default' => ''),
             'phone'  => array('type' => 'string', 'default' => ''),
             'price'  => array('type' => 'string', 'default' => '')
@@ -61,7 +58,7 @@ Restaurants::applyFilter('save', function($self, $params, $chain) {
             $location = $geocode->results[0]->geometry->location;
             $item->geo = array($location->lng, $location->lat);
         }
-        catch(Exception $e) {
+        catch(\Exception $e) {
             $item->geo = array(0, 0);
         }
     }
