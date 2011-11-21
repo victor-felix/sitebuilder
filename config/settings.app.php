@@ -13,6 +13,13 @@ Config::write('Segments', array(
         'root' => 'Index',
         'email' => array('no-reply@example.com' => 'Example'),
         'hideCategories' => 1
+    ),
+    '1440group' => array(
+        'title' => '1440group',
+        'items' => array('articles', 'links'),
+        'root' => 'Index',
+        'email' => array('no-reply@1440group.com' => '1440group'),
+        'hideCategories' => 1
     )
 ));
 
