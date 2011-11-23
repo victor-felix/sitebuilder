@@ -19,7 +19,7 @@ Config::write('Segments', array(
         'items' => array('articles', 'links'),
         'root' => 'Index',
         'email' => array('no-reply@1440group.com' => '1440group'),
-        'hideCategories' => 1
+        'hideCategories' => 0
     )
 ));
 

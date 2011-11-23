@@ -1,11 +1,9 @@
 'home/index':
-    pagetitle: 'MeuMobi Events - Your company in the web movel in 3 minutes'
+    pagetitle: 'MeuMobi Events - Mobile site for your event'
     title: 'Your event has a new location: the mobile phones of millions of people!'
-    subtitle: 'Concerts, parties, movies, sporting events [and more] in the mobile internet in seconds.'
+    subtitle: 'Concerts, parties, movies, sporting events and more. It's simple and free!'
 
 'sites/finished':
     categories: 'Add next events to your new mobi site ›'
 
-'Visual identity of your portal: ': 'Visual identity of your restaurant'
-'Creation of categories, subcategories and insert of articles, products, events and external links;': 'Creating events with descriptions, program, location, date, time and other information;'
 

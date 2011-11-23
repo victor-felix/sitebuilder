@@ -72,7 +72,7 @@
 'Optional': 'Opcional'
 'Logo': 'Logotipo'
 'To improve appearence of logo on your mobi site, we recommend to use an image on GIF or PNG with transparent background. Max size 50kb': 'Para melhor aparência do logotipo no seu site mobi, recomendamos utilizar uma imagem com fundo transparente, no formato GIF ou PNG. Tamanho máximo 50kb.'
-'themas': 'temas'
+'themes': 'temas'
 'You can customize the appearence of your mobi site to fit the ergonomy to fit your business colors. Select a theme below and apply one of provided skins': 'Você pode customizar a aparência de seu site mobi para deixá-lo com a cara de sua empresa. Escolha um dos temas abaixo e depois personalize-o com as cores da sua empresa.'
 'Select a thema <em>(more themas very soon)</em>': 'Escolha um tema <em>(mais temas em breve)</em>'
 'Personalize the thema': 'Personalize o tema'
@@ -111,8 +111,6 @@
 'Url of your current website': 'Endereço do website atual'
 'Ex: http://www.yourwebsite.com/': 'Ex: http://www.seusite.com.br/'
 'Photos of Business': 'fotos da empresa'
-'add photos': 'adicionar fotos'
-'uploading photo...': 'enviando foto...'
 'Your links on web': 'links na web'
 #views/sites/customize_register
 'Save >': 'Finalizar ›'
@@ -137,20 +135,39 @@
 'Password': 'Senha'
 'The password should contain at least 6 characters.': 'A senha deve conter 6 ou mais caracteres.'
 'Confirm your password': 'Confirmação da senha'
+
+
 #views/home/index
-'Add your business content ›': 'Adicione conteúdo do seu negocio'
-'The easiest way to create and deploy your company’s mobile website': 'A versão mobile do seu portal pronta em instantes.'
-'News and corporate website and enterprise intranets.': 'Portais de notícias, portais corporativos e intranets de empresa.'
-'MeuMobi Corporate - Your company on the mobile web in a split second': 'MeuMobi Corporate - Sua empresa na Web móvel em 3 minutos!'
+'Add your business content ›': 'Adicione o conteúdo do seu negocio'
+
+'MeuMobi - Mobile site for your business': 'MeuMobi - Mobile site para o seu negócio'
+'The easiest way to create your company's mobile site': 'A maneira mais fácil de criar um site mobile para o seu negócio'
+'It's simple and free!': 'Simples e grátis!'
+
+'MeuMobi Restaurants - Mobile site for your restaurant': 'MeuMobi Restaurants - Mobile site para o seu restaurante'
+'The easiest way to create your restaurant's mobile site.': 'A maneira mais fácil de criar um site mobile para o seu restaurante'
+'It's simple and free!': 'Simples e grátis!'
+
+'MeuMobi Events - Mobile site for your event': 'MeuMobi Events - Mobile site para o seu evento'
+'Your event has a new location: the mobile phones of millions of people!': 'Seu evento tem um novo local: os celulres de milhões de pessoas!'
+'Concerts, parties, movies, sporting events and more. It's simple and free!': 'Shows, festas, filmes, eventos esportivos e muito mais. Simples e grátis!'
+
+
 'Why being <strong>mobi</strong>?': 'Por que ser <strong>mobi</strong>?'
-'Easy-to-edit control panel: ': 'Painel de controle fácil de editar: '
-'Content auto import: ': 'Atualização automática de conteúdo:'
-'Compatible with more than 6 thousand mobile devices: ': 'Compatível com mais de 6 mil celulares: '
-'Visual identity of your portal: ': 'Identidade visual do seu Portal: '
-'Creation of categories, subcategories and insert of articles, products, events and external links;': 'Criação de categorias, subcategorias e inserção de artigos e links externos;'
-'All portal sections are updated automatically via RSS;': 'Todas as sessões do seu portal são atualizadas via RSS automaticamente;'
-'Rendering technology that enables your mobile site to be viewed clearly in more than 6 thousand mobile devices;': 'Tecnologia de renderização que possibilita que seu mobi site seja visualizado perfeitamente em mais de 6 mil aparelhos;'
-'Integration with Twitter, Facebook and Google Maps;': 'Integração com Twitter, Facebook e Google Maps;'
+
+'Easy-to-edit control panel:': 'Painel de controle fácil de editar:'
+'Creation of categories, subcategories and insert of articles, products, events and external links;': 'Adicione a descrição do seu negócio, endereço com mapa, contatos com click-to-call, fotos e links para Facebook e Twitter.'
+
+'Content auto import:': 'Conecte ao seu blog e website:'
+'All portal sections are updated automatically via RSS;': 'MeuMobi sincroniza os posts e notícias do seu blog ou website automaticamente via RSS'
+
+'Compatible with more than 6 thousand mobile devices:': 'Compatível com mais de 6 mil celulares:'
+'Rendering technology that enables your mobile site to be viewed clearly in more than 6 thousand mobile devices;': 'Tecnologia de renderização que possibilita que seu mobile site seja visualizado perfeitamente em mais de 6 mil aparelhos.'
+
+'Visual identity of your restaurant: ': 'Uma melhor experiencia mobile para o seu cliente:'
+'Integration with Twitter, Facebook and Google Maps;': 'Selecione entre diferentes temas mobile criados para levar as informações do seu negócio da melhor forma para seus clientes.'
+
+
 #views/users/confirm_mail
 "Hi, <b>%s</b>. <br/><br/>You've received this mail to confirm your MeuMobi Sign-up. Please click on link below to confirm your mail adress.": 'Olá, <b>%s</b>. <br/><br/>Estamos enviando esse e-mail para confirmar seu cadastro no MeuMobi. Para isso, clique ou copie e cole o link abaixo e seu cadastro será ativado automaticamente.'
 #views/users/edit
