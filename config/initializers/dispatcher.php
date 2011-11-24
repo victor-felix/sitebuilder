@@ -25,7 +25,7 @@ $defaults = array(
 
 Router::connect(new Route(array(
     'method' => 'GET',
-    'template' => '/api/{:slug}/items/{:id}/related',
+    'template' => '/api/{:slug}/items/{:id}/related(.{:type})?',
     'params' => array(
         'action' => 'related',
         'controller' => 'items'
@@ -34,7 +34,7 @@ Router::connect(new Route(array(
 
 Router::connect(new Route(array(
     'method' => 'GET',
-    'template' => '/api/{:slug}/items/by_category',
+    'template' => '/api/{:slug}/items/by_category(.{:type})?',
     'params' => array(
         'action' => 'by_category',
         'controller' => 'items'
@@ -43,7 +43,7 @@ Router::connect(new Route(array(
 
 Router::connect(new Route(array(
     'method' => 'GET',
-    'template' => '/api/{:slug}/categories/{:category_id}/geo/nearest',
+    'template' => '/api/{:slug}/categories/{:category_id}/geo/nearest(.{:type})?',
     'params' => array(
         'action' => 'nearest',
         'controller' => 'geo'
@@ -52,7 +52,7 @@ Router::connect(new Route(array(
 
 Router::connect(new Route(array(
     'method' => 'GET',
-    'template' => '/api/{:slug}/categories/{:category_id}/geo/inside',
+    'template' => '/api/{:slug}/categories/{:category_id}/geo/inside(.{:type})?',
     'params' => array(
         'action' => 'inside',
         'controller' => 'geo'
@@ -61,7 +61,7 @@ Router::connect(new Route(array(
 
 Router::connect(new Route(array(
     'method' => 'POST',
-    'template' => '/api/{:slug}/items/{:item_id}/images',
+    'template' => '/api/{:slug}/items/{:item_id}/images(.{:type})?',
     'params' => array(
         'action' => 'create',
         'controller' => 'images'
@@ -70,7 +70,7 @@ Router::connect(new Route(array(
 
 Router::connect(new Route(array(
     'method' => 'GET',
-    'template' => '/api/{:slug}/items/{:item_id}/images',
+    'template' => '/api/{:slug}/items/{:item_id}/images(.{:type})?',
     'params' => array(
         'action' => 'index',
         'controller' => 'images'
@@ -79,7 +79,7 @@ Router::connect(new Route(array(
 
 Router::connect(new Route(array(
     'method' => 'GET',
-    'template' => '/api/{:slug}/news/category',
+    'template' => '/api/{:slug}/news/category(.{:type})?',
     'params' => array(
         'action' => 'category',
         'controller' => 'news'
@@ -88,7 +88,7 @@ Router::connect(new Route(array(
 
 Router::connect(new Route(array(
     'method' => 'GET',
-    'template' => '/api/{:slug}/categories/{:id}/children',
+    'template' => '/api/{:slug}/categories/{:id}/children(.{:type})?',
     'params' => array(
         'action' => 'children',
         'controller' => 'categories'
@@ -97,7 +97,7 @@ Router::connect(new Route(array(
 
 Router::connect(new Route(array(
     'method' => 'GET',
-    'template' => '/api/{:slug}/categories/{:category_id}/search',
+    'template' => '/api/{:slug}/categories/{:category_id}/search(.{:type})?',
     'params' => array(
         'action' => 'search',
         'controller' => 'items'
@@ -106,7 +106,7 @@ Router::connect(new Route(array(
 
 Router::connect(new Route(array(
     'method' => 'GET',
-    'template' => '/api/{:slug}',
+    'template' => '/api/{:slug}(.{:type})?',
     'params' => array(
         'action' => 'show',
         'controller' => 'sites'
@@ -145,5 +145,42 @@ Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
     'decode' => function($content) {
         parse_str($content, $output);
         return $output;
+    }
+));
+
+\lithium\net\http\Media::type('csv', null, array(
+    'cast' => true,
+    'encode' => function($data) {
+        if(is_hash($data)) {
+            $header = array();
+            $row = array();
+            foreach($data as $column => $value) {
+                if(!is_array($value)) {
+                    $header []= $column;
+                    $row []= $value;
+                }
+            }
+            $row = '"' . join('","', $row) . '"';
+            $header = '"' . join('","', $header) . '"';
+            return join(PHP_EOL, array($header, $row));
+        }
+        else {
+            $result = array();
+            $header = array_keys($data[0]);
+            $result []= '"' . join('","', $header) . '"';
+            foreach($data as $row) {
+                $r = array();
+                foreach($header as $column) {
+                    if(!is_array($row[$column])) {
+                        $r []= $row[$column];
+                    }
+                    else {
+                        $r []= '';
+                    }
+                }
+                $result []= '"' . join('","', $r) . '"';
+            }
+            return join(PHP_EOL, $result);
+        }
     }
 ));
