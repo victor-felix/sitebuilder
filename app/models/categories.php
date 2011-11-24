@@ -1,13 +1,14 @@
 <?php
 
 require_once 'lib/simplepie/SimplePie.php';
+require_once 'lib/csv/CSVHandler.php';
 
 use app\models\Items;
 use app\models\items\Articles;
 
 class Categories extends AppModel {
     protected $beforeSave = array('getOrder', 'getItemType', 'checkItems');
-    protected $afterSave = array('updateFeed');
+    protected $afterSave = array('importItems', 'updateFeed');
     protected $beforeDelete = array('deleteChildren');
     protected $defaultScope = array(
         'order' => '`order` ASC'
@@ -227,8 +228,10 @@ class Categories extends AppModel {
         if(!is_null($this->id)) {
             $original = $this->firstById($this->id);
             if(
+                $original->populate != 'import' &&
+                $data['populate'] != 'import' && (
                 $original->populate != $data['populate'] ||
-                $original->type != $data['type']
+                $original->type != $data['type'])
             ) {
                 $items = Items::find('all', array('conditions' => array(
                     'parent_id' => $this->id
@@ -241,6 +244,31 @@ class Categories extends AppModel {
         }
 
         return $data;
+    }
+
+    protected function importItems($created) {
+        if($this->data['populate'] == 'import') {
+            $this->data['populate'] = 'manual';
+
+            $csv = new CSVHandler($this->data['import']['tmp_name'], ',');
+            $csv = $csv->ReadCSV();
+            $classname = '\app\models\items\\' . Inflector::camelize($this->data['type']);
+            foreach($csv as $row) {
+                $record = $classname::create();
+                $record->parent_id = $this->data['id'];
+                $record->site_id = $this->data['site_id'];
+                $record->type = $this->data['type'];
+                $fields = $record->fields();
+                foreach($fields as $field) {
+                    if(isset($row[$field])) {
+                        $record->set(array($field => $row[$field]));
+                    }
+                }
+                $record->save();
+            }
+
+            $this->save();
+        }
     }
 
     protected function updateFeed($created) {

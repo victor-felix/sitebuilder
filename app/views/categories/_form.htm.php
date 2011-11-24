@@ -1,6 +1,7 @@
 <?php echo $this->form->create($action, array(
-    'class' => 'form-edit',
-    'object' => $category
+    'class' => 'form-edit skip-slide',
+    'object' => $category,
+    'method' => 'file'
 )) ?>
 
 <fieldset>
@@ -19,18 +20,19 @@
                 'type' => 'radio',
                 'options' => array(
                     'manual' => s('Manual'),
-                    'auto' => s('Auto')
+                    'auto' => s('Auto'),
+                    'import' => s('Import')
                 )
             )) ?>
             <small><?php echo s('Manual Categories allow to manage manually any type of content') ?></small>
             <small><?php echo s('Auto Categories allow to import automatically content from RSS feed') ?></small>
+            <small><?php echo s('Import items from CSV') ?></small>
         </div>
 
         <?php if($site->hasManyTypes()): ?>
-            <div class="form-grid-460 first populate-based manual">
+            <div class="form-grid-460 first populate-based manual import">
                 <?php echo $this->form->input('type', array(
                     'label' => s('Type'),
-                    'multiple' => 'true',
                     'type' => 'select',
                     'class' => 'ui-select large',
                     'options' => Segments::listItemTypesFor($site->segment)
@@ -38,6 +40,14 @@
                 <small><?php echo s("The type of content defined which content could be inserted on category, it couldn't be updated after creation") ?></small>
             </div>
         <?php endif ?>
+
+        <div class="form-grid-460 first populate-based import">
+            <?php echo $this->form->input('import', array(
+                'label' => s('CSV File'),
+                'type' => 'file',
+                'class' => 'ui-select large'
+            )) ?>
+        </div>
 
         <?php
             $classname = '';
