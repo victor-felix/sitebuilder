@@ -25,6 +25,16 @@ $defaults = array(
 
 Router::connect(new Route(array(
     'method' => 'GET',
+    'template' => '/api/{:slug}/export/{:category_id}',
+    'params' => array(
+        'action' => 'export',
+        'controller' => 'export',
+        'type' => 'csv'
+    ) + $defaults['params']
+)));
+
+Router::connect(new Route(array(
+    'method' => 'GET',
     'template' => '/api/{:slug}/items/{:id}/related(.{:type})?',
     'params' => array(
         'action' => 'related',
@@ -148,7 +158,7 @@ Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
     }
 ));
 
-\lithium\net\http\Media::type('csv', null, array(
+\lithium\net\http\Media::type('csv', 'text/csv', array(
     'cast' => true,
     'encode' => function($data) {
         if(is_hash($data)) {
