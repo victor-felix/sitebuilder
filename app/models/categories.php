@@ -265,6 +265,7 @@ class Categories extends AppModel {
                     }
                 }
                 $record->save();
+                $record = null;
             }
 
             $this->save();

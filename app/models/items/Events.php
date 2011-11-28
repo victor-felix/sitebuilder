@@ -66,7 +66,7 @@ Events::applyFilter('save', function($self, $params, $chain) {
             $location = $geocode->results[0]->geometry->location;
             $item->geo = array($location->lng, $location->lat);
         }
-        catch(Exception $e) {
+        catch(\Exception $e) {
             $item->geo = array(0, 0);
         }
     }
