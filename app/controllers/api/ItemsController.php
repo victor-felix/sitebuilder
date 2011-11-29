@@ -23,7 +23,11 @@ class ItemsController extends ApiController {
         }
 
         $classname = '\app\models\items\\' . Inflector::camelize($type);
-        $items = $classname::find('all', array('conditions' => $conditions));
+        $items = $classname::find('all', array(
+            'conditions' => $conditions,
+            'limit' => $this->param('limit', 20),
+            'page' => $this->param('page', 1)
+        ));
         $etag = $this->etag($items);
         $self = $this;
 
@@ -39,10 +43,14 @@ class ItemsController extends ApiController {
         )));
 
         $classname = '\app\models\items\\' . Inflector::camelize($item->type);
-        $related = $classname::find('all', array('conditions' => array(
-            '_id' => $item->related->to('array'),
-            'site_id' => $this->site()->id
-        )));
+        $related = $classname::find('all', array(
+            'conditions' => array(
+                '_id' => $item->related->to('array'),
+                'site_id' => $this->site()->id
+            ),
+            'limit' => $this->param('limit', 20),
+            'page' => $this->param('page', 1)
+        ));
 
         $etag = $this->etag($related);
         $self = $this;
@@ -63,7 +71,11 @@ class ItemsController extends ApiController {
         );
 
         $classname = '\app\models\items\\' . Inflector::camelize($category->type);
-        $items = $classname::find('all', array('conditions' => $conditions));
+        $items = $classname::find('all', array(
+            'conditions' => $conditions,
+            'limit' => $this->param('limit', 20),
+            'page' => $this->param('page', 1)
+        ));
 
         return $this->toJSON($items);
     }
@@ -88,7 +100,7 @@ class ItemsController extends ApiController {
 
         $etag = '';
         foreach($categories as $category) {
-            $current_items = $category->childrenItems($this->param('limit', 10));
+            $current_items = $category->childrenItems($this->param('limit', 20));
             $items[$category->id] = $current_items->to('array');
             $etag .= $this->etag($current_items);
         }
