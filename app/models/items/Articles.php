@@ -12,6 +12,8 @@ use HTMLPurifier;
 use HTMLPurifier_Config;
 use Filesystem;
 
+use app\models\Items;
+
 class Articles extends \app\models\Items {
     protected $type = 'Article';
 

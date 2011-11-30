@@ -2,6 +2,8 @@
 
 namespace app\models\items;
 
+use app\models\Items;
+
 class Links extends \app\models\Items {
     protected $type = 'Link';
 
