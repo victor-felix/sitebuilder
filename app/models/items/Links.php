@@ -29,13 +29,5 @@ class Links extends \app\models\Items {
 }
 
 Articles::applyFilter('save', function($self, $params, $chain) {
-    $item = $params['entity'];
-
-    if(!$item->id) {
-        $item->created = date('Y-m-d H:i:s');
-    }
-
-    $item->modified = date('Y-m-d H:i:s');
-
-    return $chain->next($self, $params, $chain);
+    return Items::addTimestamps($self, $params, $chain);
 });
