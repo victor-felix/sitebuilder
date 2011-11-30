@@ -45,6 +45,10 @@ $checks = array(
         $result = function_exists('curl_init');
         return array($result, 'true', $result ? 'true' : 'false');
     },
+    'max_execution_time' => function() {
+        $result = ini_get('max_execution_time');
+        return array($result == '0', '0', $result);
+    }
 );
 
 $errors = array();
