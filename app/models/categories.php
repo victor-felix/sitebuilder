@@ -228,8 +228,7 @@ class Categories extends AppModel {
         if(!is_null($this->id)) {
             $original = $this->firstById($this->id);
             if(
-                $original->populate != 'import' &&
-                $data['populate'] != 'import' && (
+                $original->populate != 'import' && (
                 $original->populate != $data['populate'] ||
                 $original->type != $data['type'])
             ) {
