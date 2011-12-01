@@ -5,6 +5,8 @@ namespace app\models\items;
 require_once 'lib/geocoding/GoogleGeocoding.php';
 use GoogleGeocoding;
 
+use app\models\Items;
+
 class Events extends \app\models\Items {
     protected $type = 'Event';
 
