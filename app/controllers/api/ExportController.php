@@ -27,7 +27,9 @@ class ExportController extends ApiController {
         $results = array();
 
         foreach($items as $item) {
-            $fields = $item->fields();
+            $fields = array_filter($item->fields(), function($field) {
+                return !is_array($field['type']);
+            });
             $result = array(
                 'id' => $item->id(),
                 'type' => $item->type
