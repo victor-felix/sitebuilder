@@ -6,10 +6,10 @@ class GoogleGeocoding {
     const LANGUAGE = 'pt-BR';
     const SENSOR = 'false';
 
-    public static function geocode($address) {
+    public static function geocode($address,$region = self::REGION) {
         $query = http_build_query(array(
-            'region' => self::REGION,
-            'language' => self::LANGUAGE,
+            'region' => $region,
+            //'language' => self::LANGUAGE,
             'sensor' => self::SENSOR,
             'address' => $address
         ));

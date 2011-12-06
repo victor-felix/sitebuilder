@@ -98,7 +98,36 @@ class Sites extends AppModel {
     public function link() {
         return 'http://' . $this->domain;
     }
-
+    
+    /**
+     * Get country name or code by country_id
+     *
+     * @param int $id The country id, optional.
+     * @param bollean $code if true return country code instead
+     * @return string
+     */
+    public function country($id = false, $code = false){
+    	$id = $id?$id:$this->country_id;
+    	
+    	if( !$country = Model::load('Countries')->firstById( (int)$id ) ) return '';
+    	
+    	return $code ? $country->tld : $country->name;
+    } 
+    
+    /**
+     * Get state name by state_id
+     *
+     * @param int $id The state id, optional
+     * @return string
+     */
+    public function state($id = false){
+    	$id = $id?$id:$this->state_id;
+    
+    	if( !$state = Model::load('States')->firstById( (int)$id ) ) return '';
+    	
+    	return $state->name;
+    }
+    
     public function rootCategory() {
         return Model::load('Categories')->getRoot($this->id);
     }
@@ -220,10 +249,13 @@ class Sites extends AppModel {
                         'street' => $data['street'],
                         'number' => $data['number'],
                         'city' => $data['city'],
-                        'state' => $data['state'],
-                        'country' => $data['country']
+                        'state' => $this->state($data['state_id']),
+                        'country' => $this->country($data['country_id'])
                     ));
-                    $geocode = GoogleGeocoding::geocode($address);
+					
+                    $region = $this->country($data['country_id'],true);
+					
+                    $geocode = GoogleGeocoding::geocode($address, $region);
                     $location = $geocode->results[0]->geometry->location;
                     $data['latitude'] = $location->lat;
                     $data['longitude'] = $location->lng;
