@@ -188,6 +188,22 @@ class Items extends \lithium\data\Model {
     }
 }
 
+Items::applyFilter('remove', function($self, $params, $chain) {
+    if(isset($params['conditions']['_id'])) {
+        $id = $params['conditions']['_id'];
+        $items = Items::find('all', array(
+            'conditions' => array('related' => $id)
+        ));
+        foreach($items as $item) {
+            $index = array_search($id, $item->related->to('array'));
+            unset($item->related[$index]);
+            $item->related = $item->related->to('array');
+            $item->save();
+        }
+    }
+    return $chain->next($self, $params, $chain);
+});
+
 Items::applyFilter('save', function($self, $params, $chain) {
     return Items::addTimestamps($self, $params, $chain);
 });

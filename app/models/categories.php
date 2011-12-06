@@ -228,7 +228,8 @@ class Categories extends AppModel {
         if(!is_null($this->id)) {
             $original = $this->firstById($this->id);
             if(
-                $original->populate != 'import' && (
+                $original->populate != 'import' &&
+                $data['populate'] != 'import' && (
                 $original->populate != $data['populate'] ||
                 $original->type != $data['type'])
             ) {
@@ -253,7 +254,14 @@ class Categories extends AppModel {
             $csv = $csv->ReadCSV();
             $classname = '\app\models\items\\' . Inflector::camelize($this->data['type']);
             foreach($csv as $row) {
-                $record = $classname::create();
+                if(isset($row['id'])) {
+                    $record = $classname::find('first', array('conditions' => array(
+                        '_id' => $row['id']
+                    )));
+                }
+                else {
+                    $record = $classname::create();
+                }
                 $record->parent_id = $this->data['id'];
                 $record->site_id = $this->data['site_id'];
                 $record->type = $this->data['type'];
