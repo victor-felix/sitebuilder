@@ -7,7 +7,6 @@
             </div>
         <?php endforeach ?>
 
-        <?php if($item->id()): ?>
             <?php if($images = $item->images()): ?>
                 <?php foreach($images as $i => $image): $class = $i % 3 ? '' : 'first' ?>
                     <div class="<?php echo $class ?> picture-upload-container done" style="background-image: url(<?php echo $image->link('139x139') ?>)">
@@ -43,14 +42,6 @@
             </div>
 
             <a href="#" class="duplicate-previous">more</a>
-        <?php else: ?>
-            <div class="form-grid-460 first">
-                <?php echo $this->form->input('image[]', array(
-                    'label' => s('Image'),
-                    'class' => 'large ui-text',
-                    'type' => 'file'
-                )) ?>
-            </div>
-        <?php endif ?>
+ 
     </div>
 </fieldset>

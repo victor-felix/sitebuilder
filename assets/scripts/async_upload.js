@@ -41,7 +41,7 @@ jQuery(".picture-upload-container input[type='file']").live("change", function()
 	container.next('.duplicate-previous').click();
 	container.next(".picture-upload-container").find("input[type=text]").val("");
 	container.addClass("wait").attr('id', 'upload_'+timestamp);
-
+	console.log($(form).attr('action'))
 	$("body").append("<div style='display: none' class='hidden' id='container_"+timestamp+"'></div>");
 
 	
@@ -52,6 +52,7 @@ jQuery(".picture-upload-container input[type='file']").live("change", function()
 	$(this).appendTo(form);
 	form.append("<input type='hidden' name='image[timestamp]' value='"+timestamp+"' />");
 	$("#container_"+timestamp).append(form);
+	console.log(form)
 	form.submit();
 	
 });

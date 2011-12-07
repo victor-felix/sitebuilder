@@ -53,11 +53,13 @@
 	
 	.ui-button.delete {
 		border-color: #b22623;
+		color: #B22623;
 	}
 	
 	.ui-button.delete:hover,
 	.ui-button.delete:active {
 		border-color: #871d1b;
+		color: #871d1b;
 	}
 	
 	.ui-button.red {

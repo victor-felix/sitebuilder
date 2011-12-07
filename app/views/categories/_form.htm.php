@@ -18,15 +18,11 @@
             <label><?php echo s('Type of category') ?></label>
             <?php echo $this->form->input('populate', array(
                 'type' => 'radio',
-                'options' => array(
-                    'manual' => s('Manual'),
-                    'auto' => s('Auto'),
-                    'import' => s('Import')
-                )
+                'options' => getDataPopulateFields($category)
             )) ?>
             <small><?php echo s('Manual Categories allow to manage manually any type of content') ?></small>
             <small><?php echo s('Auto Categories allow to import automatically content from RSS feed') ?></small>
-            <small><?php echo s('Import items from CSV') ?></small>
+            <small><?php if(!$category->id) echo s('Import items from CSV'); ?></small>
         </div>
 
         <?php if($site->hasManyTypes()): ?>
@@ -41,7 +37,7 @@
             </div>
         <?php endif ?>
 
-        <div class="form-grid-460 first populate-based import">
+        <div class="form-grid-460 first populate-based import <?php if($category->id) echo 'manual'; ?>">
             <?php echo $this->form->input('import', array(
                 'label' => s('CSV File'),
                 'type' => 'file',
@@ -55,7 +51,7 @@
             else $classname .= 'populate-based';
             $feed = $category->id ? $category->feed_url : '';
         ?>
-        <div class="form-grid-460 first auto <?php echo $classname ?>">
+        <div class="form-grid-460 first auto populate-based <?php echo $classname ?>">
             <?php echo $this->form->input('feed', array(
                 'label' => s('Feed Url'),
                 'class' => 'ui-text large',
@@ -71,10 +67,6 @@
             )) ?>
             <label for="FormVisibility" class="checkbox"><?php echo s('This category is visible for any user') ?></label>
         </div>
-
-        <?php if(!is_null($category->id)): ?>
-            <?php echo $this->html->link(s('Export as CSV'), '/api/' . $site->domain . '/export/' . $category->id) ?>
-        <?php endif ?>
 
         <?php if($parent): ?>
             <?php echo $this->form->input('parent_id', array(
@@ -96,3 +88,18 @@
     <?php endif ?>
 </fieldset>
 <?php echo $this->form->close() ?>
+
+
+<?php
+	// some function for not confund with code HTML
+	function getDataPopulateFields($category){
+		return ($category->id)?
+			array(
+                    'manual' => s('Manual'),
+                    'auto' => s('Auto')):
+			array(
+                    'manual' => s('Manual'),
+                    'auto' => s('Auto'),
+                    'import' => s('Import'));	
+	}
+?>

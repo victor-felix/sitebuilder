@@ -116,7 +116,6 @@ $.extend($.easing, {
             {duration:800,easing:'easeInOutCubic',complete:function(){resetSlide(true);}}
         );
     });
-
     // ajax error/success helper
     var globalCallback = function(data,status) {
         if(data && typeof data.refresh != 'undefined'){
@@ -161,7 +160,7 @@ $.extend($.easing, {
             func(data,status,xhr);
         };
     };
-
+    
     // Forms inside the slider wrapper will be serialized and posted.
     // All forms will trigger the pop-scene on success, and in case of error
     // will rewrite the current scene with the HTML returned from the app
@@ -245,7 +244,7 @@ $.extend($.easing, {
         var self = $(this);
         if(self.hasClass('delete')) {
             var handler = dataWithCode(function(data,status) {
-                self.trigger('ajax:success', [data]);
+                //self.trigger('ajax:success', [data]);
             });
             $.ajax({
                url: this.href,
