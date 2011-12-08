@@ -24,6 +24,7 @@ class BusinessItemsController extends AppController {
         $item->type = $parent->type;
 
         if(!empty($this->data)) {
+        	
             $images = array_unset($this->data, 'image');
             $images = $this->request->data['image'];
             $item->set($this->data);
@@ -32,8 +33,14 @@ class BusinessItemsController extends AppController {
             $item->type = $parent->type;
 
             if($item->save()) {
-                foreach($images as $image) {
-                    Model::load('Images')->upload($item, $image, array('visible' => 1));
+                foreach($images as  $id => $image) {
+                	if(is_numeric($id)) {
+                        $record = Model::load('Images')->firstById($id);
+                        if(!$record)continue;
+                        $record->title 			= $image['title'];
+                        $record->foreign_key	= $item->id();
+                        $record->save();
+                    }
                 }
                 if($this->isXhr()) {
                     return $this->setAction('index', $item->parent_id);

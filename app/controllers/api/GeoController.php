@@ -7,7 +7,7 @@ use Inflector;
 use app\models\Items;
 
 class GeoController extends ApiController {
-    public function nearest() {
+   /*public function nearest() {
         $category = Model::load('Categories')->firstById($this->request->params['category_id']);
 
         $classname = '\app\models\items\\' . Inflector::camelize($category->type);
@@ -34,8 +34,55 @@ class GeoController extends ApiController {
         return $this->whenStale($etag, function() use($items) {
             return $items;
         });
-    }
-
+    }*/
+	
+	
+	protected function _addNotGeocoded($classname, $collection, $conditions = array(), $limit = 20 ){
+		$itemsLost = $classname::find('all', array(
+				'conditions' => $conditions + array('geo'=>0),
+				'limit' => $this->param('limit', $limit),
+				'page' => $this->param('page', 1)
+		));
+	
+		$count = $collection->count();
+		while ($count <= $limit && $item = $itemsLost->next() ){
+			$collection->append($item);
+			$count++;
+		}
+		return $collection;
+	}
+	
+	public function nearest() {
+		$category = Model::load('Categories')->firstById($this->request->params['category_id']);
+		$classname = '\app\models\items\\' . Inflector::camelize($category->type);
+		$conditions = array('site_id' => $this->site()->id, 'parent_id' => $category->id,);
+	
+		$items = $classname::find('nearest', array(
+				'conditions' => $conditions + array(
+						'lat' => $this->request->query['lat'],
+						'lng' => $this->request->query['lng']
+				),
+				'limit' => $this->param('limit', 20),
+				'page' => $this->param('page', 1)
+		));
+	
+		$items = $this->_addNotGeocoded($classname, $items, $conditions);
+	
+		$type = $category->type;
+		$etag = $this->etag($items);
+		$self = $this;
+	
+		$items = $this->toJSON($items);
+		if(is_hash($items)) {
+			$items = array($items);
+		}
+	
+		return $this->whenStale($etag, function() use($items) {
+			return $items;
+		});
+	}
+	
+	
     public function inside() {
         $category = Model::load('Categories')->firstById($this->request->params['category_id']);
 

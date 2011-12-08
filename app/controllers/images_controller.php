@@ -23,9 +23,12 @@ class ImagesController extends AppController {
             $fk = $this->data['foreign_key'];
 
             if($this->data['model'] == 'Items') {
-                $record = Items::find('first', array('conditions' => array(
-                    '_id' => $fk
-                )));
+            	if($fk)
+	                $record = Items::find('first', array('conditions' => array(
+	                    '_id' => $fk
+	                )));
+            	else 
+            		$record = Items::create();
             }
             else {
                 $record = Model::load($this->data['model'])->firstById($fk);
