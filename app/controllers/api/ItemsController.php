@@ -2,6 +2,8 @@
 
 namespace app\controllers\api;
 
+use lithium\core\Object;
+
 use app\models\Items;
 use Model;
 use Inflector;
@@ -35,7 +37,79 @@ class ItemsController extends ApiController {
             return $self->toJSON($items);
         });
     }
-
+	
+    protected function _prepareAdd($data) {
+    	$need 		= array('type','parent_id');
+    	$discard	= array('created','updated','geo');
+    	
+    	foreach ($discard as $field){
+    		if(array_key_exists($field, $data))
+    			unset($data[$field]);
+    	}
+    	foreach ($need as $field){
+    		if(!array_key_exists($field,$data))
+    			throw new \Exception('need more params: '.$field);
+    	}
+    	return $data;
+    }
+    
+    /**
+     * Add new item related to another item
+     * @return array|multitype:NULL
+     */
+    
+    public function add() {    	
+    	try{
+	    	$data = $this->_prepareAdd( $this->request->data );
+	    		    	
+	    	$images = isset($data['images']) ? $data['images']: false;
+	    	
+	    	$item = Items::find('first', array('conditions' => array(
+	    			'_id' => $this->request->params['id'],
+	    			'site_id' => $this->site()->id
+	    	)));
+	    	
+	    	if(!$item) throw new \Exception('invalid item');
+    	
+	    	$classname = '\app\models\items\\' . Inflector::camelize($data['type']);
+	    	
+	    	$newItem = $classname::create();
+	    	$newItem->set($data);
+	    	$newItem->site_id = $this->site()->id;
+	    	
+	    	/** if not saved stop right here */
+	    	if(!$newItem->save()){ $this->response->status(422); return;}
+	    	
+    		/** add to related and save */
+	    	if($item->related instanceof \lithium\core\Object){ 
+	    		$related = $item->related->to('array');
+	    		$related[] =  $newItem->id();
+	    		
+	    	} else 
+	    		$related[] = $newItem->id();
+	    	
+	    	$item->related = $related;
+    		$item->save();
+    		
+    		/** if images, update and save*/
+    		if($images){
+	    		foreach($images as  $id => $image) {
+	    			if(!is_numeric($id)) continue;
+    				$record = Model::load('Images')->firstById($id);
+    				if(!$record)continue;
+    				$record->title 			= $image['title'];
+    				$record->foreign_key	= $newItem->id();
+    				$record->save();
+	    		}
+    		}
+    		$this->response->status(201);
+    		return $this->toJSON($newItem);
+	    
+    	} catch (\Exception $e){
+    		$this->response->status(422);
+    	}
+    }
+    
     public function related() {
         $item = Items::find('first', array('conditions' => array(
             '_id' => $this->request->params['id'],
