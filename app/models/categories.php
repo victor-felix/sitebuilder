@@ -271,8 +271,11 @@ class Categories extends AppModel {
                         $record->set(array($field => $row[$field]));
                     }
                 }
-                $record->save();
-                $record = null;
+                try {
+                    $record->save();
+                }
+                catch(\MongoException $e) {
+                }
             }
 
             $this->save();
