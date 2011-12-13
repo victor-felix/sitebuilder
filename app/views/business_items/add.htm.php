@@ -1,5 +1,5 @@
 <div class="page-heading">
-    <div class="grid-4 first"><?php echo $this->html->link(s('< back'), '/categories/index/' . $parent->id, array('class' => 'ui-button large back pop-scene')) ?>
+    <div class="grid-4 first"><?php echo $this->html->link(s('‹ back'), '/categories/index/' . $parent->id, array('class' => 'ui-button large back pop-scene')) ?>
     </div>
     <div class="grid-8">
         <h1><?php echo $this->pageTitle =  s('Add %s', $item->type()) ?></h1>

@@ -23,12 +23,15 @@
             <?php endif ?>
 
             <?php $class = (isset($i) ? $i + 1 : 0) % 3 ? '' : 'first' ?>
-            <div class="<?php echo $class ?> picture-upload-container" data-url="<?php echo Mapper::url('/images/add.htm') ?>">
+            <div class="<?php echo $class ?> picture-upload-container" data-url="/images/add.htm">
                 <input type="hidden" name="image[foreign_key]" value="<?php echo $item->id() ?>" />
                 <input type="hidden" name="image[model]" value="Items" />
                 <a class="close"></a>
                 <iframe src="about:blank" id="iframe_<?php echo time(); ?>"></iframe>
-                <div class="default"><?php echo s('add photo'); ?></div>
+                <div class="default">
+			<div class="icon_upload"></div>
+			<?php echo s('add photo'); ?>
+		</div>
                 <div class="wait"><?php echo s('uploading photo...'); ?></div>
                 <?php echo $this->form->input('image[photo]', array(
                     'label' => false,

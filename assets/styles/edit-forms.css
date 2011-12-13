@@ -333,8 +333,9 @@
 .picture-upload-container .text:hover { cursor: text}
 .picture-upload-container .text { cursor: text}
 .picture-upload-container iframe { display: none}
-.picture-upload-container .default, .picture-upload-container .wait  { display: block; position: absolute;top: 50%; padding-top: 48px; margin-top: -32px; text-align: center; background-position: center top; background-repeat: no-repeat; width: 100%;}
-.picture-upload-container .default { display: block; background-image: url('/images/register/bt_upload_picture.png'); }
+.picture-upload-container .default, .picture-upload-container .wait  { display: block; position: absolute;top: 50%; padding-top: 0px; margin-top: -32px; text-align: center; background-position: center top; background-repeat: no-repeat; width: 100%;}
+.picture-upload-container .default { display: block;}
+.picture-upload-container .default .icon_upload{width: 54px; height: 38px; background: url('/images/shared/register/bt_upload_picture.png'); margin: auto auto 5px auto;}
 .picture-upload-container .wait { display: none}
 .picture-upload-container .close { display: none; cursor: pointer; position: absolute; right: -9px; top: -9px; width: 19px; height: 19px; background: url('/images/shared/register/close_upload.png') no-repeat 0 0}
 
