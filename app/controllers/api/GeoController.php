@@ -36,38 +36,26 @@ class GeoController extends ApiController {
         });
     }*/
 	
-	
-	protected function _addNotGeocoded($classname, $collection, $conditions = array(), $limit = 20 ){
-		$itemsLost = $classname::find('all', array(
-				'conditions' => $conditions + array('geo'=>0),
-				'limit' => $this->param('limit', $limit),
-				'page' => $this->param('page', 1)
-		));
-	
-		$count = $collection->count();
-		while ($count <= $limit && $item = $itemsLost->next() ){
-			$collection->append($item);
-			$count++;
-		}
-		return $collection;
-	}
-	
 	public function nearest() {
 		$category = Model::load('Categories')->firstById($this->request->params['category_id']);
 		$classname = '\app\models\items\\' . Inflector::camelize($category->type);
 		$conditions = array('site_id' => $this->site()->id, 'parent_id' => $category->id,);
-	
+		
+		$limit 	= $this->param('limit', 20);
+		$page 	=  $this->param('page', 1);
+		
 		$items = $classname::find('nearest', array(
 				'conditions' => $conditions + array(
 						'lat' => $this->request->query['lat'],
 						'lng' => $this->request->query['lng']
 				),
-				'limit' => $this->param('limit', 20),
-				'page' => $this->param('page', 1)
+				'limit' => $limit,
+				'page' => $page,
 		));
-	
-		$items = $this->_addNotGeocoded($classname, $items, $conditions);
-	
+		
+		if($items->count() < $limit)
+			$items = $classname::getNotGeocoded($classname, $items, $conditions, $limit, $page);
+		
 		$type = $category->type;
 		$etag = $this->etag($items);
 		$self = $this;
@@ -81,7 +69,6 @@ class GeoController extends ApiController {
 			return $items;
 		});
 	}
-	
 	
     public function inside() {
         $category = Model::load('Categories')->firstById($this->request->params['category_id']);

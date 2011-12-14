@@ -124,7 +124,49 @@ class Items extends \lithium\data\Model {
 
         return $chain->next($self, $params, $chain);
     }
-
+	
+    public static function getNotGeocoded($classname, $collection, $conditions = array(), $limit = 20, $page = 1 ){
+    
+    	/** total of items successfully geocoded */
+    	$count = $classname::find('count', array(
+    			'conditions' => $conditions + array('geo'=> array('$ne' => 0))
+    	)
+    	);
+    
+    	/** calculate last page with geocoded items and prevent division by 0 */
+    	if($count && $count > $limit)
+    		$lastPg = (int)($count/$limit) + 1;
+    	else
+    		$lastPg = 1;
+    
+    
+    	/** current page of not geocoded items */
+    	$currPg 	= $page - $lastPg;
+    	$rest 		= ($limit * $lastPg) - $count;
+    
+    	if($currPg)
+    		$offset	= ($limit * ($currPg - 1)) + $rest;
+    	else{
+    		$offset = 0;
+    		$limit	= $rest;
+    	}
+    
+    	$itemsLost = $classname::find('all', array(
+    			'conditions' 	=> $conditions + array('geo'=>0),
+    			'limit' 		=> $limit,
+    			'offset'		=> $offset
+    	));
+    
+    	if(!$collection->count())
+    		return $itemsLost;
+    	
+    	/** add items to existing collection */
+    	while ( $item = $itemsLost->next() )
+    		$collection->append($item);
+    	
+    	return $collection;
+    }
+    
     public static function addGeocode($self, $params, $chain) {
         $item = $params['entity'];
 
