@@ -289,7 +289,6 @@
 
 .populate-fields  {
 	overflow:hidden;
-	width: 650px !important;
 }
 	.populate-fields fieldset {
 		border-bottom:none;
@@ -302,7 +301,12 @@
 		width:128px;
 		margin-left:25px;
 	}
-
+        .populate-fields small.two_column {
+            width:190px;
+        }
+        .populate-fields small.three_column{
+            width:128px;
+        }
 	.populate-fields fieldset label {
 		font-size:15px;
 	}
