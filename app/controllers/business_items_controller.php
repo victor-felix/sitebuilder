@@ -22,9 +22,8 @@ class BusinessItemsController extends AppController {
         $classname = '\app\models\items\\' . Inflector::camelize($parent->type);
         $item = $classname::create();
         $item->type = $parent->type;
-
+	
         if(!empty($this->data)) {
-        	
             $images = array_unset($this->data, 'image');
             $images = $this->request->data['image'];
             $item->set($this->data);
@@ -42,11 +41,19 @@ class BusinessItemsController extends AppController {
                         $record->save();
                     }
                 }
+		$message = s('Item successfully added.');
                 if($this->isXhr()) {
-                    return $this->setAction('index', $item->parent_id);
+			$json = array(
+				'success'=>$message,
+				'go_back'=>true,
+				'refresh'=>'/business_items/index/' . $parent_id
+			);
+			$this->respondToJSON($json);	
+                    //return $this->setAction('index', $item->parent_id);
                 }
                 else {
-                    Session::writeFlash('success', s('Item successfully added.'));
+			echo 'false';
+                    Session::writeFlash('success', $message);
                     $this->redirect('/business_items/index/' . $item->parent_id);
                 }
             }
@@ -77,8 +84,15 @@ class BusinessItemsController extends AppController {
                         $record->save();
                     }
                 }
+		$message = s('Item successfully updated.');
                 if($this->isXhr()) {
-                    $this->setAction('index', $item->parent_id);
+			$json = array(
+				'success'=>$message,
+				'go_back'=>true,
+				'refresh'=>'/business_items/index/' . $item->parent_id
+			);
+			$this->respondToJSON($json);			
+                    //$this->setAction('index', $item->parent_id);
                 }
                 else {
                     Session::writeFlash('success', s('Item successfully updated.'));

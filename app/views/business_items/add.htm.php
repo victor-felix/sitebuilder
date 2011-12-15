@@ -11,7 +11,7 @@
 </div>
 
 <?php echo $this->items->form(null, $item, array(
-    'class' => 'form-edit skip-slide',
+    'class' => 'form-edit',
     'id' => 'form-add-businessitem'
 )) ?>
 

@@ -13,11 +13,11 @@ var mySettings = {
         keepDefault: false,
         openWith: '    '},
     markupSet: [
-        { name: 'Bold', key: 'B', openWith:'[b]', closeWith: '[/b]' },
-        { name: 'Italic', key: 'I', openWith: '[i]', closeWith: '[/i]' },
-        { name: 'Link', key: 'L', openWith: '[url=[![Link:!:http://]!]]', closeWith: '[/url]', placeHolder: 'Your text to link...' },
-        { name: 'Big', openWith: '[big]', closeWith: '[/big]' },
-        { name: 'Small', openWith: '[small]', closeWith: '[/small]' }
+        {name: 'Bold', key: 'B', openWith:'[b]', closeWith: '[/b]'},
+        {name: 'Italic', key: 'I', openWith: '[i]', closeWith: '[/i]'},
+        {name: 'Link', key: 'L', openWith: '[url=[![Link:!:http://]!]]', closeWith: '[/url]', placeHolder: 'Your text to link...'},
+        {name: 'Big', openWith: '[big]', closeWith: '[/big]'},
+        {name: 'Small', openWith: '[small]', closeWith: '[/small]'}
     ]
 };
 
@@ -84,6 +84,23 @@ $.extend($.easing, {
 
         $('.populate-fields input:checked').trigger('click');
     };
+    
+	var addSliderItens = function(urlRequest){
+		if(urlRequest.indexOf("/business_items/add/")!= -1){
+			if(!($('.slide-elem[rel*="index"]').is("*"))){
+				var urlRequestItens = urlRequest.replace("add", "index");
+				$.ajax({
+					url: urlRequestItens,
+					type: 'GET',
+					success: function(dataIndex){
+						$(slider).width($(slider).width()+slideSize);
+						$(slider).css('marginLeft', (parseInt(slider.css('marginLeft'),10)-slideSize)+'px');
+						$('.slide-elem:last').before('<div class="slide-elem" rel="'+urlRequestItens+'">'+dataIndex+'</div>');						
+					}
+				});	
+			}	
+		}	    
+	}
 
     // Functions that handle the animation
     // Any link with the push-scene class will load in a new slide scene
@@ -92,20 +109,20 @@ $.extend($.easing, {
         e.preventDefault();
         var urlRequest = $(this).attr('href');
         $.get(urlRequest, function(data){
-            slider.append('<div class="slide-elem" rel="'+urlRequest+'">'+data+'</div>');
-            resetSlide();
-
-            slider.animate(
-                {marginLeft:(parseInt(slider.css('marginLeft'),10)-slideSize)+'px'},
-                {duration:800,easing:'easeInOutCubic',complete:function() {
-                    if($('.markitup').length) {
-                        $('.markitup').markItUp(mySettings);
-                    }
-                    if($('.chosen').length) {
-                        $('.chosen').chosen();
-                    }
-                }}
-            );
+		slider.append('<div class="slide-elem" rel="'+urlRequest+'">'+data+'</div>');
+		resetSlide();		
+		slider.animate(
+			{marginLeft:(parseInt(slider.css('marginLeft'),10)-slideSize)+'px'},
+			{duration:800,easing:'easeInOutCubic',complete:function() {
+			    if($('.markitup').length) {
+			        $('.markitup').markItUp(mySettings);
+			    }
+			    if($('.chosen').length) {
+			        $('.chosen').chosen();
+			    }
+			    addSliderItens(urlRequest);			
+			}}
+		);
         });
     });
 
@@ -124,6 +141,7 @@ $.extend($.easing, {
                 type: 'GET',
                 success: function(dataHTML){
                     var target = $('.slide-elem[rel='+data.refresh+']');
+		    console.log(target);
                     target.html(dataHTML);
                 }
             });
@@ -157,7 +175,7 @@ $.extend($.easing, {
             status = parseInt(xhr.status,10);
             try{console.log('returned status ' + status);}catch(e){}
             globalCallback(data,status,xhr);
-            func(data,status,xhr);
+            //func(data,status,xhr);
         };
     };
     
