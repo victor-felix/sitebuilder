@@ -94,7 +94,7 @@ class Remenber extends \lithium\data\Model  {
 	public static function add($user, $id = false){
 		$data = array();
 		$lifetime = time() + Date::$convert['months'] * 3;
-		setcookie(session_name(), session_id(),  $lifetime, '/',$_SERVER['HTTP_HOST'], false, true);
+		setcookie(session_name(), session_id(),  $lifetime, '/',null, null, true);
 		
 		if($id)
 			return self::update(array(
