@@ -2,12 +2,13 @@
 
 require_once 'lib/core/security/Security.php';
 require_once 'lib/utils/Date.php';
+require_once 'lib/utils/Remenber.php';
 
 use \lithium\storage\Session;
 
 class Auth {
     const SESSION_KEY = 'Auth.user';
-
+	/*
     public static function login($user, $remember = false) {
         if($remember) {
             $lifetime = Date::$convert['months'] * 3;
@@ -20,10 +21,21 @@ class Auth {
         session_regenerate_id();
         setcookie(session_name(), session_id(), time() + $lifetime);
         Session::write(self::SESSION_KEY, serialize($user));
+    }*/
+	
+    public static function login($user, $remember = false) {
+    	session_regenerate_id();
+    	
+    	if($remember) {
+    		Remenber::add($user);
+    	}
+    
+    	Session::write(self::SESSION_KEY, serialize($user));
     }
-
+    
     public static function logout() {
         Session::clear();
+        Remenber::clean();
     }
 
     public static function identify($data) {
@@ -36,7 +48,7 @@ class Auth {
     }
 
     public static function loggedIn() {
-        return (bool) Session::read(self::SESSION_KEY);
+        return (bool) Session::read(self::SESSION_KEY) || Remenber::check();
     }
 
     public static function user() {
