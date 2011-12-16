@@ -334,7 +334,6 @@ $(function() {
     
     $('#form-edit-site-info > fieldset').click(function(){
 	$(this).prev().click();    
-	alert('oi')
     });
     
     $('#form-edit-site-info > fieldset .field-group:not(.picture-upload-container)').click(function(e){
