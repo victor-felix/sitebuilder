@@ -301,10 +301,10 @@
 		width:128px;
 		margin-left:25px;
 	}
-        .populate-fields small.two_column {
+        .populate-fields.two_column small, .populate-fields.two_column label {
             width:190px;
         }
-        .populate-fields small.three_column{
+        .populate-fields.three_column  small, .populate-fields.three_column label{
             width:128px;
         }
 	.populate-fields fieldset label {

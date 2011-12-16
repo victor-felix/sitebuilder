@@ -14,14 +14,13 @@
             )) ?>
         </div>
 
-        <div class="form-grid-460 populate-fields">
+        <div class="form-grid-460 populate-fields <?php echo($category->id)?'two_column':'three_column'; ?>">
             <label><?php echo s('Type of category') ?></label>
             <?php
                 $strCssClass = ($category->id)?'two_column':'three_column'; 
                 echo $this->form->input('populate', array(
                 'type' => 'radio',
                 'options' => getDataPopulateFields($category),
-                 'class' => $strCssClass
             ));
             ?>
             <small class="<?php echo $strCssClass; ?>"><?php echo s('Manual Categories allow to manage manually any type of content') ?></small>

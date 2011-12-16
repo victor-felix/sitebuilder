@@ -85,6 +85,9 @@ $.extend($.easing, {
         $('.populate-fields input:checked').trigger('click');
     };
     
+	// Function to add slide 'listItens' for
+	// don't break history slide, so do it when
+	// in slide category go slide business_items/add
 	var addSliderItens = function(urlRequest){
 		if(urlRequest.indexOf("/business_items/add/")!= -1){
 			if(!($('.slide-elem[rel*="index"]').is("*"))){
@@ -328,6 +331,16 @@ $(function() {
         $(this).next('fieldset').slideToggle();
         e.preventDefault();
     });
+    
+    $('#form-edit-site-info > fieldset').click(function(){
+	$(this).prev().click();    
+	alert('oi')
+    });
+    
+    $('#form-edit-site-info > fieldset .field-group:not(.picture-upload-container)').click(function(e){
+	e.stopPropagation();    
+    });
+	
 
     if($('.theme-picker').length) {
         $('.theme-picker a').click(function(e) {
