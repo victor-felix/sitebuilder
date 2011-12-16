@@ -299,7 +299,10 @@
             <input type="hidden" name="image[model]" value="SitePhotos" />
             <a class="close"></a>
             <iframe src="about:blank" id="iframe_<?php echo time(); ?>"></iframe>
-            <div class="default"><?php echo s('add photo'); ?></div>
+            <div class="default">
+		<div class="icon_upload"></div>
+		<?php echo s('add photo'); ?>
+	    </div>
             <div class="wait"><?php echo s('uploading photo...'); ?></div>
             <?php echo $this->form->input('image[photo]', array(
                 'label' => false,
