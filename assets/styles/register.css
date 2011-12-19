@@ -527,7 +527,7 @@ a img {
 
 .picture-upload-container.wait .wait { display: block}
 
-.picture-upload-container.done .wait, .picture-upload-container.done .default { display: none}
+.picture-upload-container.done .wait, .picture-upload-container.done .default { display: nodne}
 .picture-upload-container.done .close { display: block}
 .picture-upload-container + .duplicate-previous { display: none}
 
