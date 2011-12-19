@@ -144,12 +144,12 @@ $.extend($.easing, {
                 type: 'GET',
                 success: function(dataHTML){
                     var target = $('.slide-elem[rel='+data.refresh+']');
-                  target.html(dataHTML);
+                    target.html(dataHTML);
                 }
             });
         }
         if(data && typeof data.go_back != 'undefined' && data.go_back){
-            $('.slide-elem:last .ui-button.back')[0].click();
+            $($('.slide-elem:last .ui-button.back')[0]).click();
         }
         var message=false;
         if(data && typeof data.success != 'undefined') {
@@ -177,7 +177,7 @@ $.extend($.easing, {
             status = parseInt(xhr.status,10);
             try{console.log('returned status ' + status);}catch(e){}
             globalCallback(data,status,xhr);
-            func(data,status,xhr);
+            //func(data,status,xhr);
         };
     };
     
@@ -264,6 +264,7 @@ $.extend($.easing, {
         var self = $(this);
         if(self.hasClass('delete')) {
             var handler = dataWithCode(function(data,status) {
+                //self.trigger('ajax:success', [data]);
             });
             $.ajax({
                url: this.href,
