@@ -4,6 +4,31 @@ class SitesController extends AppController {
     public function register() {
         $this->editRecord('/sites/customize_register');
     }
+    
+    public function add() {
+    	$site = Model::load('Sites');
+    
+    	if(!empty($this->data)) {
+    		$site->segment = MeuMobi::segment();
+    		$site->updateAttributes($this->request->data);
+    		if($site->validate() && $site->save()) {
+    			Session::writeFlash('success', s('Site successfully saved.'));
+    			$this->redirect('/sites/customize_register');
+    			return;
+    		}else{
+    			Session::writeFlash('error', s('Sorry, we had a problem.'));
+    		}
+    	}
+    
+    	$this->set(array(
+    			'site' => $site,
+    			'countries' => Model::load('Countries')->toList(array(
+    					'order' => 'name ASC'
+    			)),
+    			'states' => array(),
+    	));
+    
+    }
 
     public function edit() {
         $this->editRecord('/sites/edit');

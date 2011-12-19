@@ -127,6 +127,11 @@ class UsersController extends AppController {
             'user' => $user
         ));
     }
+    
+    public function change_site($id = null){
+    	Auth::user()->site($id);
+    	$this->redirect('/');
+    }
 
     protected function saveUser($user, $redirect) {
         if(!empty($this->data)) {

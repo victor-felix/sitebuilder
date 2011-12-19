@@ -28,6 +28,8 @@ class Auth {
     	
     	if($remember) {
     		Remenber::add($user);
+    	}else{
+    		Remenber::clean();
     	}
     
     	Session::write(self::SESSION_KEY, serialize($user));

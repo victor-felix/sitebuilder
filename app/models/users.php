@@ -1,9 +1,13 @@
 <?php
+use \lithium\storage\Session;
 
 class Users extends AppModel {
+	const CURRENT_SITE = 'User.site';
+	
     protected $getters = array('firstname', 'lastname');
-    protected $beforeSave = array('hashPassword', 'createToken', 'joinName');
-    protected $afterSave = array('createSite', 'authenticate', 'sendConfirmationMail');
+    protected $beforeSave = array('hashPassword', 'createToken', 'joinName','addSegment');
+    protected $beforeDelete = array('removeSites');
+    protected $afterSave = array('authenticate','createSite', 'sendConfirmationMail');
     protected $validates = array(
         'firstname' => array(
             'rule' => 'notEmpty',
@@ -63,12 +67,40 @@ class Users extends AppModel {
         return preg_replace('/,/', ' ', $this->name);
     }
 
-    public function site() {
-        return Model::load('Sites')->firstByUserIdAndSegment($this->id, MeuMobi::segment());
+    public function site($siteId = false) {
+    	$model = Model::load('UsersSites');
+    	if($siteId && $model->check($this->id, $siteId)) {
+    		return Session::write(static::CURRENT_SITE, $siteId);
+    	}
+    	
+    	$currentSiteId = Session::read(static::CURRENT_SITE);
+    	
+    	if($currentSiteId && $model->check($this->id, $currentSiteId))
+    		$siteId = $currentSiteId;
+    	else{
+    		$siteId = $model->getFirstSite($this);
+    		Session::write(static::CURRENT_SITE, $siteId);
+    	}
+        return Model::load('Sites')->firstById($siteId);
     }
+    
+    public function sites($removeCurrent = false){
+    	$sitesIds = Model::load('UsersSites')->getAllSites($this);
+    	$sites = Model::load('Sites')->allById($sitesIds);
+    	
+    	if($removeCurrent){
+    		$current = $this->site();
+    		foreach ($sites as $key => $site){
+    			if($current->id == $site->id)
+    				unset($sites[$key]);
+    		}
+    	}
+    	
+    	return $sites;
+    } 
 
     public function hasSiteInSegment($segment) {
-        return Model::load('Sites')->exists(array(
+        return Model::load('UsersSites')->exists(array(
             'user_id' => $this->id,
             'segment' => $segment
         ));
@@ -143,15 +175,18 @@ class Users extends AppModel {
     protected function newToken() {
         return Security::hash(time(), 'sha1');
     }
-
+	
+    protected function removeSites() {
+    	return Model::load('UsersSites')->onDeleteUser($this);
+    }
+    
     protected function createSite($created) {
         if($created) {
             $model = Model::load('Sites');
             $model->save(array(
-                'segment' => MeuMobi::segment(),
+                'segment' => $this->segment,
                 'slug' => '',
                 'title' => '',
-                'user_id' => $this->id
             ));
         }
     }
@@ -209,7 +244,12 @@ class Users extends AppModel {
             Auth::login($this);
         }
     }
-
+	
+    protected function addSegment($data) {
+    	$data['segment'] = MeuMobi::segment();
+    	return $data;
+    }
+    
     protected function joinName($data) {
         if(array_key_exists('firstname', $data) && array_key_exists('lastname', $data)) {
             $data['name'] = $data['firstname'] . ',' . $data['lastname'];

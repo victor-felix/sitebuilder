@@ -123,6 +123,7 @@ class Remenber extends \lithium\data\Model  {
 			else
 				return true;
 		}
+		setcookie(session_name(), session_id(),  0, '/',null, null, true);
 		self::remove( array('session_id' => $id ));
 	}
 	

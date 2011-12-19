@@ -5,10 +5,8 @@ require_once 'lib/geocoding/GoogleGeocoding.php';
 class Sites extends AppModel {
     protected $getters = array('feed_url', 'feed_title', 'custom_domain');
     protected $beforeSave = array('setHideCategories', 'getLatLng', 'saveCustomDomain');
-    protected $afterSave = array('saveLogo', 'createRootCategory',
-        'createNewsCategory', 'updateFeed');
-    protected $beforeDelete = array('checkAndDeleteFeed', 'deleteImages', 'deleteCategories',
-        'deleteLogo');
+    protected $afterSave = array('saveLogo', 'createRootCategory', 'createNewsCategory', 'updateFeed','createRelation');
+    protected $beforeDelete = array('checkAndDeleteFeed', 'deleteImages', 'deleteCategories', 'deleteLogo','removeUsers');
     protected $validates = array(
         'slug' => array(
             array(
@@ -223,7 +221,11 @@ class Sites extends AppModel {
 
         return $data;
     }
-
+	
+    protected function removeUsers() {
+    	return Model::load('UsersSites')->onDeleteSite($this);
+    }
+    
     protected function saveCustomDomain($data) {
         if(isset($data['custom_domain']) && (!$data['custom_domain'] || empty($data['domain']))) {
             $data['domain'] = $data['slug'] . '.' . MeuMobi::domain();
@@ -310,6 +312,13 @@ class Sites extends AppModel {
         $model->forceDelete($root->id);
 
         return $id;
+    }
+    
+    protected function createRelation($created) {
+    	if($created){
+	    	Model::load('UsersSites')->add(Auth::user(), $this);
+	    	Auth::user()->site($this->id);
+    	}
     }
 
     protected function saveLogo() {

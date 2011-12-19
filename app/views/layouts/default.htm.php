@@ -39,15 +39,18 @@
                                     </span>
                                     <span class="status current">site atual</span>
                                 </a></li>
-
-                                <!--li><a href="#">
-                                    <span class="site-name">
-                                        <span>Governo do Rio de Janeiro</span>
-                                        <small>http://m.rj.gov.br</small>
-                                    </span>
-                                    <span class="status edit">editar site ›</span>
-                                </a></li>
-                                <li class="new"><a href="#new">Criar novo site meu mobi ›</a></li-->
+                                <?php foreach (Auth::user()->sites(true) as $site): ?>
+                                <li>
+	                                <a href="<?php echo Mapper::url('/users/change_site/'.$site->id) ?>" >
+	                                    <span class="site-name">
+	                                        <span><?php echo e($site->title) ?></span>
+	                                        <small><?php echo e($site->domain) ?></small>
+	                                    </span>
+	                                    <span class="status edit">editar site ›</span>
+	                                </a>
+                                </li>
+                                <?php endforeach; ?>
+                                <li class="new"><a href="<?php echo Mapper::url('/sites/add') ?>">Criar novo site meu mobi ›</a></li>
 
                             </ul>
                         </div>
