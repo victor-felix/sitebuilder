@@ -144,13 +144,12 @@ $.extend($.easing, {
                 type: 'GET',
                 success: function(dataHTML){
                     var target = $('.slide-elem[rel='+data.refresh+']');
-		    console.log(target);
                     target.html(dataHTML);
                 }
             });
         }
         if(data && typeof data.go_back != 'undefined' && data.go_back){
-            $('.slide-elem:last .ui-button.back').click();
+            $($('.slide-elem:last .ui-button.back')[0]).click();
         }
         var message=false;
         if(data && typeof data.success != 'undefined') {
