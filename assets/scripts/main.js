@@ -337,6 +337,13 @@ $(function() {
 
     // expand fieldsets in sites/edit
     $('.fieldset-expand').click(function(e) {
+	var objThis = this;    
+	$($('fieldset[style*="display: block"],fieldset[style=""]')).each(function(i , element){
+		if($(objThis).html() != $(element).prev().html()){
+			$(element).slideToggle();
+			$(element).prev().slideToggle();
+		}
+	});
         $(this).slideToggle();
         $(this).next('fieldset').slideToggle();
         e.preventDefault();
