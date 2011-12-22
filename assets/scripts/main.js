@@ -108,34 +108,45 @@ $.extend($.easing, {
     // Functions that handle the animation
     // Any link with the push-scene class will load in a new slide scene
     // Any link with the pop-scene class will have it's href ignored and goes back one step on the navigation
-    slider.delegate('.push-scene', 'click', function(e){
-        e.preventDefault();
-        var urlRequest = $(this).attr('href');
-        $.get(urlRequest, function(data){
-		slider.append('<div class="slide-elem" rel="'+urlRequest+'">'+data+'</div>');
-		resetSlide();		
-		slider.animate(
-			{marginLeft:(parseInt(slider.css('marginLeft'),10)-slideSize)+'px'},
-			{duration:800,easing:'easeInOutCubic',complete:function() {
-			    if($('.markitup').length) {
-			        $('.markitup').markItUp(mySettings);
-			    }
-			    if($('.chosen').length) {
-			        $('.chosen').chosen();
-			    }
-			    addSliderItens(urlRequest);			
-			}}
-		);
-        });
-    });
+	function pushScene(){
+		slider.undelegate('.push-scene', 'click', pushScene);
+	        var urlRequest = $(this).attr('href');
+	        $.get(urlRequest, function(data){
+			slider.append('<div class="slide-elem" rel="'+urlRequest+'">'+data+'</div>');
+			resetSlide();		
+			slider.animate(
+				{marginLeft:(parseInt(slider.css('marginLeft'),10)-slideSize)+'px'},
+				{duration:800,easing:'easeInOutCubic',complete:function() {
+					if($('.markitup').length) {
+						$('.markitup').markItUp(mySettings);
+					}
+					if($('.chosen').length) {
+						$('.chosen').chosen();
+					}
+					addSliderItens(urlRequest);
+					slider.delegate('.push-scene', 'click', pushScene);
+				}}
+			);
+	        });	    
+	}
+	slider.delegate('.push-scene', 'click', function(e){e.preventDefault();});
+	slider.delegate('.push-scene', 'click', pushScene);
 
-    slider.delegate('.pop-scene', 'click', function(e){
-        e.preventDefault();
-        slider.animate(
-            {marginLeft:(parseInt(slider.css('marginLeft'),10)+slideSize)+'px'},
-            {duration:800,easing:'easeInOutCubic',complete:function(){resetSlide(true);}}
-        );
-    });
+	function popScene(){
+		slider.undelegate('.pop-scene', 'click', popScene);
+		slider.animate(
+			{marginLeft:(parseInt(slider.css('marginLeft'),10)+slideSize)+'px'},
+			{duration:800,easing:'easeInOutCubic',
+			complete:function(){
+				slider.delegate('.pop-scene', 'click', popScene);
+				resetSlide(true);
+			}
+		});	    
+	}
+	slider.delegate('.pop-scene', 'click', function(e){e.preventDefault();});
+	slider.delegate('.pop-scene', 'click', popScene);
+	
+    
     // ajax error/success helper
     var globalCallback = function(data,status) {
         if(data && typeof data.refresh != 'undefined'){
@@ -326,6 +337,13 @@ $(function() {
 
     // expand fieldsets in sites/edit
     $('.fieldset-expand').click(function(e) {
+	var objThis = this;    
+	$($('fieldset[style*="display: block"],fieldset[style=""]')).each(function(i , element){
+		if($(objThis).html() != $(element).prev().html()){
+			$(element).slideToggle();
+			$(element).prev().slideToggle();
+		}
+	});
         $(this).slideToggle();
         $(this).next('fieldset').slideToggle();
         e.preventDefault();
