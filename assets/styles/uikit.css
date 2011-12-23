@@ -118,6 +118,7 @@
 		border-color: #AAA;
 	}
 	
+	.chosen.large,
 	.ui-text.large,
 	.ui-textarea.large {
 		width: 446px;
