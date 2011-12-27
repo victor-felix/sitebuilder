@@ -39,6 +39,11 @@ class UsersSites extends AppModel  {
 	public function add($user, $site) {
 		try{
 			
+			if(!$user->segment){
+				$user->segment = MeuMobi::segment();
+				$user->save();
+			}
+			
 			if($user->segment != $site->segment)
 				return false;
 			
