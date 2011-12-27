@@ -12,11 +12,10 @@ class SitesController extends AppController {
     		$site->segment = MeuMobi::segment();
     		$site->updateAttributes($this->request->data);
     		if($site->validate() && $site->save()) {
-    			Session::writeFlash('success', s('Site successfully saved.'));
+    			Session::writeFlash('success', s('Configuration successfully saved.'));
+    			Session::write('Users.registering', '/sites/customize_register');
     			$this->redirect('/sites/customize_register');
     			return;
-    		}else{
-    			Session::writeFlash('error', s('Sorry, we had a problem.'));
     		}
     	}
     

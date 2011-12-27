@@ -50,6 +50,7 @@ class UsersController extends AppController {
 				if (! $user->hasSiteInSegment ( MeuMobi::segment () )) {
 					$user->registerNewSite ();
 					$this->redirect ( '/sites/register' );
+					Session::write ( 'Users.registering', '/sites/register' );
 				}
 				if (! ($location = Session::flash ( 'Auth.redirect' ))) {
 					if (Auth::user ()->site ()->hide_categories) {
@@ -72,6 +73,7 @@ class UsersController extends AppController {
 				if (! $user->hasSiteInSegment ( MeuMobi::segment () )) {
 					$user->registerNewSite ();
 					$this->redirect ( '/sites/register' );
+					Session::write ( 'Users.registering', '/sites/register' );
 				} else {
 					$this->setAction ( 'login' );
 				}

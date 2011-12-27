@@ -1,10 +1,6 @@
-<div class="page-heading">
-    <div class="grid-4 first">&nbsp;</div>
-    <div class="grid-8">
-        <h1><?php echo $this->pageTitle = s('Settings') ?></h1>
-    </div>
-    <div class="clear"></div>
-</div>
+<?php $this->layout = 'register' ?>
+<?php $this->selectedTab = 1 ?>
+<?php $this->pageTitle = s('Create your mobi') ?>
 
 <?php echo $this->form->create('/sites/add/', array(
     'id' => 'form-register-site-info',
