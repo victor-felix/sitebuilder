@@ -5,7 +5,7 @@ class Users extends AppModel {
 	const CURRENT_SITE = 'User.site';
 	
 	protected $getters = array ('firstname', 'lastname' );
-	protected $beforeSave = array ('hashPassword', 'createToken', 'joinName', 'addSegment' );
+	protected $beforeSave = array ('hashPassword', 'createToken', 'joinName' );
 	protected $beforeDelete = array ('removeSites' );
 	protected $afterSave = array ('authenticate', 'createSite', 'sendConfirmationMail' );
 	protected $validates = array ('firstname' => array ('rule' => 'notEmpty', 'message' => 'You must fill in all fields' ), 'lastname' => array ('rule' => 'notEmpty', 'message' => 'You must fill in all fields' ), 'email' => array (array ('rule' => 'notEmpty', 'message' => 'You must fill in all fields' ), array ('rule' => 'email', 'message' => 'Please enter a valid email address.' ), array ('rule' => array ('unique', 'email' ), 'message' => 'There is an existing account associated with this email address.' ) ), 'password' => array (array ('rule' => array ('minLength', 6 ), 'message' => 'The password should contain at least 6 characters.', 'allowEmpty' => true ), array ('rule' => array ('minLength', 6 ), 'message' => 'The password should contain at least 6 characters.', 'on' => 'create' ) ), 'confirm_password' => array ('rule' => array ('confirmField', 'password' ), 'message' => 'Passwords do not match' ) );
@@ -38,10 +38,12 @@ class Users extends AppModel {
 		
 		if ($currentSiteId && $model->check ( $this->id, $currentSiteId ))
 			$siteId = $currentSiteId;
-		else {
+		else 
 			$siteId = $model->getFirstSite ( $this );
-			Session::write ( static::CURRENT_SITE, $siteId );
-		}
+		
+		if(!$siteId) return false;
+		
+		Session::write ( static::CURRENT_SITE, $siteId );
 		return Model::load ( 'Sites' )->firstById ( $siteId );
 	}
 	
@@ -165,11 +167,6 @@ class Users extends AppModel {
 		if ($created || Auth::loggedIn ()) {
 			Auth::login ( $this );
 		}
-	}
-	
-	protected function addSegment($data) {
-		$data ['segment'] = MeuMobi::segment ();
-		return $data;
 	}
 	
 	protected function joinName($data) {

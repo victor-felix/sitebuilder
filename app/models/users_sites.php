@@ -16,35 +16,35 @@ class UsersSites extends AppModel  {
 	public function getAllSites($user) {
 		$all = array();
 		
-		foreach ($this->allByUserId($user->id) as $item)
+		foreach ($this->allByUserIdAndSegment($user->id, MeuMobi::segment()) as $item)
 			$all[] = $item->site_id;
 		
 		return $all;
 	}
 	
 	public function getFirstSite($user) {
-		if($item = $this->firstByUserId($user->id))
-			return $item->site_id;
-		else
-			return 0;
+		try{
+			if($item = $this->firstByUserIdAndSegment($user->id, MeuMobi::segment()))
+				return $item->site_id;
+			else
+				return false;
+		}catch (Exception $e){
+			return false;
+		}
 	}
 	
 	public function check($userId, $siteId) {
 		return $this->exists(array(
 				'user_id'	 	=> $userId,
 				'site_id'		=> $siteId,
+				'segment'	=> MeuMobi::segment(),
 		));
 	}
 	 
 	public function add($user, $site) {
 		try{
 			
-			if(!$user->segment){
-				$user->segment = MeuMobi::segment();
-				$user->save();
-			}
-			
-			if($user->segment != $site->segment)
+			if(MeuMobi::segment() != $site->segment)
 				return false;
 			
 			if($this->check($user->id, $site->id) )
@@ -52,7 +52,7 @@ class UsersSites extends AppModel  {
 			
 			$this->user_id 	= $user->id;
 			$this->site_id 		= $site->id;
-			$this->segment	= $user->segment;
+			$this->segment	= MeuMobi::segment();
 			
 			return  $this->save();
 		}catch (\Exception $e){
