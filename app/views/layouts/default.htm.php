@@ -30,14 +30,14 @@
                             <a id="share_site" href="<?php echo e(Auth::user()->site()->domain) ?>"><?php echo s('share url') ?></a> -->
                         </p>
                         <div class="site-switcher">
-                            <p>Meus sites mobi</p>
+                            <p><?php echo s('My mobi sites');?></p>
                             <ul>
                                 <li><a href="#">
                                     <span class="site-name">
                                         <span><?php echo e(Auth::user()->site()->title) ?></span>
                                         <small>http://<?php echo e(Auth::user()->site()->domain) ?></small>
                                     </span>
-                                    <span class="status current">site atual</span>
+                                    <span class="status current"><?php echo s('current site')?></span>
                                 </a></li>
                                 <?php foreach (Auth::user()->sites(true) as $site): ?>
                                 <li>
@@ -46,11 +46,11 @@
 	                                        <span><?php echo e($site->title) ?></span>
 	                                        <small><?php echo e($site->domain) ?></small>
 	                                    </span>
-	                                    <span class="status edit">editar site ›</span>
+	                                    <span class="status edit"><?php echo s('edit site ›')?></span>
 	                                </a>
                                 </li>
                                 <?php endforeach; ?>
-                                <li class="new"><a href="<?php echo Mapper::url('/sites/add') ?>">Criar novo site meu mobi ›</a></li>
+                                <li class="new"><a href="<?php echo Mapper::url('/sites/add') ?>"><?php echo s('Create a new MeuMobi site ›') ?></a></li>
 
                             </ul>
                         </div>
