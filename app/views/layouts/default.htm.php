@@ -50,7 +50,7 @@
 	                                </a>
                                 </li>
                                 <?php endforeach; ?>
-                                <li class="new"><a href="<?php echo Mapper::url('/sites/add') ?>"><?php echo s('Create a new MeuMobi site ›') ?></a></li>
+                                <li class="new"><a href="<?php echo Mapper::url('/sites/add') ?>"><?php echo s('Create a new mobi ›') ?></a></li>
 
                             </ul>
                         </div>
