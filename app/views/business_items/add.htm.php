@@ -22,4 +22,4 @@
         <?php echo $this->form->submit(s('Save'), array('class' => 'ui-button red larger')) ?>
     </fieldset>
 
-<?php echo $this->items->endform() ?>
+<?php echo $this->items->endform() ?> 

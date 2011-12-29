@@ -50,4 +50,4 @@
             'categories' => $categories
         )) ?>
     <?php endforeach ?>
-<?php endif ?>
+<?php endif ?> 
