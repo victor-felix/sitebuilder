@@ -42,7 +42,7 @@
                     'label' => false,
                     'class' => 'ui-text large'
                 )) ?>
-            </div>
+            </div> 
 
             <a href="#" class="duplicate-previous">more</a>
  

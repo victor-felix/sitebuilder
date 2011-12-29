@@ -1,4 +1,4 @@
-<?php echo $this->form->create($action, array(
+<?php echo $this->form->create($action, array( 
     'class' => 'form-edit',
     'object' => $category,
     'method' => 'file'
