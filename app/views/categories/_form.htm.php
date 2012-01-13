@@ -25,7 +25,7 @@
             ?>
             <small class="<?php echo $strCssClass; ?>"><?php echo s('Manual Categories allow to manage manually any type of content') ?></small>
             <small class="<?php echo $strCssClass; ?>"><?php echo s('Auto Categories allow to import automatically content from RSS feed') ?></small>
-            <small class="<?php echo $strCssClass; ?>"><?php if(!$category->id) echo s('Import items from CSV'); ?></small>
+            <small class="<?php echo $strCssClass; ?>"><?php echo s('Import items from CSV'); ?></small>
         </div>
 
         <?php if($site->hasManyTypes()): ?>
