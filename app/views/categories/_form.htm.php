@@ -1,5 +1,5 @@
 <?php echo $this->form->create($action, array( 
-    'class' => 'form-edit',
+    'class' => 'form-edit skip-slide',
     'object' => $category,
     'method' => 'file'
 )) ?>
