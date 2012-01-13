@@ -17,7 +17,7 @@
         <div class="form-grid-460 populate-fields <?php echo($category->id)?'two_column':'three_column'; ?>">
             <label><?php echo s('Type of category') ?></label>
             <?php
-                $strCssClass = ($category->id)?'two_column':'three_column'; 
+                $strCssClass = 'three_column';//($category->id)?'two_column':'three_column'; 
                 echo $this->form->input('populate', array(
                 'type' => 'radio',
                 'options' => getDataPopulateFields($category),
