@@ -13,6 +13,7 @@ class ItemsController extends ApiController {
         $conditions = array(
             'site_id' => $this->site()->id
         );
+	echo 'oi';
 
         if(isset($this->request->query['type'])) {
             $type = $conditions['type'] = $this->request->query['type'];
