@@ -14,10 +14,10 @@
             )) ?>
         </div>
 
-        <div class="form-grid-460 populate-fields <?php echo($category->id)?'two_column':'three_column'; ?>">
+        <div class="form-grid-460 populate-fields <?php echo(false)?'two_column':'three_column'; ?>">
             <label><?php echo s('Type of category') ?></label>
             <?php
-                $strCssClass = 'three_column';//($category->id)?'two_column':'three_column'; 
+                $strCssClass = (false)?'two_column':'three_column'; //$category->id
                 echo $this->form->input('populate', array(
                 'type' => 'radio',
                 'options' => getDataPopulateFields($category),
@@ -100,7 +100,7 @@
 <?php
 	// some function for not confund with code HTML
 	function getDataPopulateFields($category){
-		return ($category->id)?
+		return (false)?
 			array(
                     'manual' => s('Manual'),
                     'auto' => s('Auto')):
