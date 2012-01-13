@@ -70,7 +70,11 @@
             )) ?>
             <label for="FormVisibility" class="checkbox"><?php echo s('This category is visible for any user') ?></label>
         </div>
-
+   
+	    <?php if(!is_null($category->id)): ?>
+            <?php echo $this->html->link(s('Export as CSV'), '/api/' . $site->domain . '/export/' . $category->id) ?>
+        <?php endif ?>
+	    
         <?php if($parent): ?>
             <?php echo $this->form->input('parent_id', array(
                 'type' => 'hidden',
