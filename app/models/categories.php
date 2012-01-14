@@ -254,7 +254,7 @@ class Categories extends AppModel {
             $csv = $csv->ReadCSV();
             $classname = '\app\models\items\\' . Inflector::camelize($this->data['type']);
             foreach($csv as $row) {
-                if(isset($row['id'])) {
+                if(isset($row['id']) && $row['id']) {
                     $record = $classname::find('first', array('conditions' => array(
                         '_id' => $row['id']
                     )));
