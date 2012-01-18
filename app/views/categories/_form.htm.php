@@ -40,7 +40,7 @@
             </div>
         <?php endif ?>
 
-        <div class="form-grid-460 first populate-based import <?php if($category->id) echo 'manual'; ?>">
+        <div class="form-grid-460 first populate-based import">
             <?php echo $this->form->input('import', array(
                 'label' => s('CSV File'),
                 'type' => 'file',
