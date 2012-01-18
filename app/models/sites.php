@@ -300,7 +300,7 @@ class Sites extends AppModel {
 				Model::load ( 'Images' )->delete ( $logo->id );
 			}
 
-			Model::load ( 'Images' )->upload ( new SiteLogos ( $this->id ), $this->data ['logo'] );
+			Model::load ( 'Images' )->upload ( new SiteLogos ( $this->id ), $this->data ['logo'], array('visible' => 1) );
 		}
 	}
 
