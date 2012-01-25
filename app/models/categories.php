@@ -254,18 +254,21 @@ class Categories extends AppModel {
             $csv = $csv->ReadCSV();
             $classname = '\app\models\items\\' . Inflector::camelize($this->data['type']);
             foreach($csv as $row) {
-                if(isset($row['id']) && $row['id']) {
+                $record = false;
+            	if(isset($row['id']) && $row['id']) {
                     $record = $classname::find('first', array('conditions' => array(
                         '_id' => $row['id']
                     )));
                 }
-                else {
+                if(!$record){ 
                     $record = $classname::create();
                 }
+                
                 $record->parent_id = $this->data['id'];
                 $record->site_id = $this->data['site_id'];
                 $record->type = $this->data['type'];
                 $fields = $record->fields();
+            
                 foreach($fields as $field) {
                     if(isset($row[$field])) {
                         $record->set(array($field => $row[$field]));
