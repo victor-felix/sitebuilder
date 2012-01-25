@@ -8,74 +8,84 @@ use Model;
 use Categories;
 
 class CategoriesController extends ApiController {
-    public function index() {
-        $categories = Model::load('Categories')->allBySiteIdAndVisibility($this->site()->id, 1);
-        $etag = $this->etag($categories);
-        $self = $this;
+	public function index() {
+		$conditions = array('site_id' => $this->site()->id);
 
-        return $this->whenStale($etag, function() use($categories, $self) {
-            return $self->toJSON($categories);
-        });
-    }
+		$visibility = $this->param('visibility', 1);
+		if($visibility != 'all') {
+			$conditions['visibility'] = (boolean) $visibility;
+		}
 
-    public function show() {
-        $category = Model::load('Categories')->firstBySiteIdAndId($this->site()->id, $this->param('id'));
-        $etag = $this->etag($category);
-        $self = $this;
+		$categories = Model::load('Categories')->all(array(
+			'conditions' => $conditions
+		));
 
-        return $this->whenStale($etag, function() use($category, $self) {
-            return $self->toJSON($category);
-        });
-    }
+		$etag = $this->etag($categories);
+		$self = $this;
 
-    public function children() {
-        $category_id = $this->param('id');
+		return $this->whenStale($etag, function() use($categories, $self) {
+			return $self->toJSON($categories);
+		});
+	}
 
-        if(!$category_id) {
-            $category_id = $this->site()->rootCategory()->id;
-        }
+	public function show() {
+		$category = Model::load('Categories')->firstBySiteIdAndId($this->site()->id, $this->param('id'));
+		$etag = $this->etag($category);
+		$self = $this;
 
-        $categories = Model::load('Categories')->recursiveByParentId($category_id, $this->param('depth', 0));
-        $etag = $this->etag($categories);
-        $self = $this;
+		return $this->whenStale($etag, function() use($category, $self) {
+			return $self->toJSON($category);
+		});
+	}
 
-        return $this->whenStale($etag, function() use($categories, $self) {
-            return $self->toJSON($categories);
-        });
-    }
+	public function children() {
+		$category_id = $this->param('id');
 
-    public function create() {
-        $category = new Categories($this->request->data);
-        $category->site_id = $this->site->id;
+		if(!$category_id) {
+			$category_id = $this->site()->rootCategory()->id;
+		}
 
-        if($category->validate()) {
-            $category->save();
-            $this->response->status(201);
-            return $this->toJSON($category);
-        }
-        else {
-            $this->response->status(422);
-        }
-    }
+		$categories = Model::load('Categories')->recursiveByParentId($category_id, $this->param('depth', 0));
+		$etag = $this->etag($categories);
+		$self = $this;
 
-    public function update() {
-        $category = Model::load('Categories')->firstBySiteIdAndId($this->site()->id, $this->param('id'));
-        $category->updateAttributes(array(
-            'site_id' => $this->site()->id
-        ) + $this->request->data);
+		return $this->whenStale($etag, function() use($categories, $self) {
+			return $self->toJSON($categories);
+		});
+	}
 
-        if($category->validate()) {
-            $category->save();
-            $this->response->status(200);
-            return $this->toJSON($category);
-        }
-        else {
-            $this->response->status(422);
-        }
-    }
+	public function create() {
+		$category = new Categories($this->request->data);
+		$category->site_id = $this->site->id;
 
-    public function destroy() {
-        Model::load('Categories')->delete($this->param('id'));
-        $this->response->status(200);
-    }
+		if($category->validate()) {
+			$category->save();
+			$this->response->status(201);
+			return $this->toJSON($category);
+		}
+		else {
+			$this->response->status(422);
+		}
+	}
+
+	public function update() {
+		$category = Model::load('Categories')->firstBySiteIdAndId($this->site()->id, $this->param('id'));
+		$category->updateAttributes(array(
+			'site_id' => $this->site()->id
+		) + $this->request->data);
+
+		if($category->validate()) {
+			$category->save();
+			$this->response->status(200);
+			return $this->toJSON($category);
+		}
+		else {
+			$this->response->status(422);
+		}
+	}
+
+	public function destroy() {
+		Model::load('Categories')->delete($this->param('id'));
+		$this->response->status(200);
+	}
 }
