@@ -20,7 +20,7 @@ class CategoriesController extends AppController {
         if(!empty($this->data)) {
             $category->site_id = $site->id;
             if($category->validate()) {
-                $category->save();
+            	$category->save();
                 if($this->isXhr()) {
                     $json = array('go_back'=>true,'refresh'=>'/categories', 'success'=>s('Category successfully added.'));
                     $this->respondToJSON($json);
@@ -29,6 +29,15 @@ class CategoriesController extends AppController {
                     Session::writeFlash('success', s('Category successfully added.'));
                     $this->redirect('/categories');
                 }
+            }else{
+            	if($this->isXhr()) {
+            		$json = array('refresh'=>'/categories/add/' . $parent_id, 'error'=>s('Sorry, we can\'t save the category'));
+            		$this->respondToJSON($json);
+            	}
+            	else {
+            		Session::writeFlash('error', s('Sorry, we can\'t save the category'));
+            		$this->redirect('/categories/add/' . $parent_id);
+            	}
             }
         }
 

@@ -11,7 +11,7 @@
 </div>
 
 <?php echo $this->element('categories/form', array(
-    'action' => '/categories/add',
+    'action' => '/categories/add/' . $parent->id,
     'category' => $category,
     'parent' => $parent,
     'site' => $site
