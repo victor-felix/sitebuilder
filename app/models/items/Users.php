@@ -40,6 +40,7 @@ class Users extends \app\models\Items {
 					'title' => 'Business',
 					'type' => array('related', 'Business'),
 					'multiple' => false,
+					'empty'=> '',
 					'name' => 'business_id',
 					'class' => 'ui-select large'
 			),
