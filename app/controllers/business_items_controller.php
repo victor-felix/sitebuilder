@@ -9,10 +9,11 @@ class BusinessItemsController extends AppController {
 		$category = $this->Categories->firstById($parent_id);
 
 		$classname = '\app\models\items\\' . Inflector::camelize($category->type);
-		$business_items = $classname::find('all', array('conditions' => array(
-			'parent_id' => $category->id
-		)));
-
+		$business_items = $classname::find('all', array(
+				'conditions' => array( 'parent_id' => $category->id	),
+				'limit' => $this->param('limit', 20),
+				'page' => $this->param('page', 1)
+				));
 		$this->set(compact('category', 'business_items'));
 	}
 
@@ -49,10 +50,8 @@ class BusinessItemsController extends AppController {
 						'refresh'=>'/business_items/index/' . $parent_id
 					);
 					$this->respondToJSON($json);
-					//return $this->setAction('index', $item->parent_id);
 				}
 				else {
-					echo 'false';
 					Session::writeFlash('success', $message);
 					$this->redirect('/business_items/index/' . $item->parent_id);
 				}
