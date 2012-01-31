@@ -17,7 +17,11 @@ class ItemsHelper extends Helper {
         'boolean' => array(
             'type' => 'checkbox',
             'class' => 'ui-checkbox'
-        )
+        ),
+    	'select' => array(
+                'type' => 'select',
+                'class' => 'ui-select large'
+    	)
     );
     protected $item;
 
@@ -76,8 +80,11 @@ class ItemsHelper extends Helper {
         else {
             $type_attr = $this->types[$type]($field->type);
         }
-
-        $attr = array_merge($defaults, $this->types['default'], $type_attr);
+		
+        $params = (array)$field;
+        unset($params['type'],$params['title']);
+        
+        $attr = array_merge($defaults, $this->types['default'], $type_attr,$params);
         $attr['class'] .= ' large';
 
         return $this->form->input($name, $attr);

@@ -28,15 +28,20 @@ class Users extends \app\models\Items {
 			),
 			'role' => array(
 					'title' => 'role',
-					'type' => 'string'
+					'type' => 'select',
+					'empty'=> '',
+					'options' => array('Patron' => 'Patron','Employé' => 'Employé','Particulier'=>'Particulier'),
 			),
 			'points' => array(
 					'title' => 'points',
 					'type' => 'string'
 			),
 			'business_id' => array(
-					'title' => 'business_id',
-					'type' => 'string'
+					'title' => 'Business',
+					'type' => array('related', 'Business'),
+					'multiple' => false,
+					'name' => 'business_id',
+					'class' => 'ui-select large'
 			),
 			'pushId' => array(
 					'title' => 'pushId',
