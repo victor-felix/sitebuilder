@@ -169,8 +169,18 @@ class Items extends \lithium\data\Model {
     
     public static function addGeocode($self, $params, $chain) {
         $item = $params['entity'];
-
-        if(!empty($item->address)) {
+        $do_geocode = true;
+        
+        if($item->_id){
+	        $do_geocode = !(bool)self::find('count', array(
+			    'conditions' => array(
+			    		'_id' => $item->_id,
+			    		'address' => $item->address,
+			    		'geo'	=> 0
+			    		)
+			));
+        }
+        if($do_geocode && !empty($item->address)) {
             try {
                 $geocode = GoogleGeocoding::geocode($item->address);
                 $location = $geocode->results[0]->geometry->location;
