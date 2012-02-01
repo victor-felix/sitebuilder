@@ -113,6 +113,16 @@ class Items extends \lithium\data\Model {
 		return $self;
 	}
 
+	public function changed($entity, $field) {
+		$export = $entity->export();
+		if(isset($export['update'][$field])) {
+			return $export['data'][$field] != $export['update'][$field];
+		}
+		else {
+			return false;
+		}
+	}
+
 	public static function addTimestamps($self, $params, $chain) {
 		$item = $params['entity'];
 
@@ -125,7 +135,7 @@ class Items extends \lithium\data\Model {
 		return $chain->next($self, $params, $chain);
 	}
 
-	public static function getNotGeocoded($classname, $collection, $conditions = array(), $limit = 20, $page = 1 ){
+	public static function getNotGeocoded($classname, $collection, $conditions = array(), $limit = 20, $page = 1) {
 		/** total of items successfully geocoded */
 		$count = $classname::find('count', array(
 			'conditions' => $conditions + array('geo' => array('$ne' => 0))
@@ -133,7 +143,7 @@ class Items extends \lithium\data\Model {
 
 		/** calculate last page with geocoded items and prevent division by 0 */
 		if($count && $count > $limit) {
-			$lastPg = (int)($count/$limit) + 1;
+			$lastPg = (int) ($count / $limit) + 1;
 		}
 		else {
 			$lastPg = 1;
@@ -152,9 +162,9 @@ class Items extends \lithium\data\Model {
 		}
 
 		$itemsLost = $classname::find('all', array(
-				'conditions' 	=> $conditions + array('geo'=>0),
-				'limit' 		=> $limit,
-				'offset'		=> $offset
+			'conditions' => $conditions + array('geo' => 0),
+			'limit' => $limit,
+			'offset' => $offset
 		));
 
 		if(!$collection->count()) {
@@ -171,19 +181,13 @@ class Items extends \lithium\data\Model {
 
 	public static function addGeocode($self, $params, $chain) {
 		$item = $params['entity'];
-		$do_geocode = true;
 
-		if($item->_id) {
-			$do_geocode = !(bool) self::find('count', array(
-				'conditions' => array(
-					'_id' => $item->_id,
-					'address' => $item->address,
-					'geo'	=> 0
-				)
-			));
+		if(isset($item->latitude) && isset($item->longitude)) {
+			$item->geo = array((float) $item->longitude, (float) $item->latitude);
+			unset($item->latitude);
+			unset($item->longitude);
 		}
-
-		if($do_geocode && !empty($item->address)) {
+		else if($item->changed('address') && !empty($item->address)) {
 			try {
 				$geocode = GoogleGeocoding::geocode($item->address);
 				$location = $geocode->results[0]->geometry->location;
@@ -193,7 +197,7 @@ class Items extends \lithium\data\Model {
 				$item->geo = 0;
 			}
 		}
-		else {
+		else if(empty($item->address)) {
 			$item->geo = 0;
 		}
 

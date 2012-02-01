@@ -13,8 +13,11 @@ $data = $data->ReadCSV();
 
 foreach($data as $row) {
     if($table == 'items') {
-        $classname = '\app\models\items\\' . Inflector::camelize($row['type']);
+        $type = isset($row['type']) ? $row['type'] : getenv('MOBI_TYPE');
+        $classname = '\app\models\items\\' . Inflector::camelize($type);
         $record = $classname::create($row);
+        $record->type = $type;
+        $record->parent_id = $record->parent_id ?: getenv('MOBI_CATEGORY');
         $record->save();
     }
     else {
