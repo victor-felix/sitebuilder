@@ -11,8 +11,8 @@ class BusinessItemsController extends AppController {
 		$classname = '\app\models\items\\' . Inflector::camelize($category->type);
 		$business_items = $classname::find('all', array(
 				'conditions' => array( 'parent_id' => $category->id	),
-				'limit' => $this->param('limit', 20),
-				'page' => $this->param('page', 1)
+				//'limit' => $this->param('limit', 20),
+				//'page' => $this->param('page', 1)
 				));
 		$this->set(compact('category', 'business_items'));
 	}
