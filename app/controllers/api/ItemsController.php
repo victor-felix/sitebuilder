@@ -115,17 +115,21 @@ class ItemsController extends ApiController {
             '_id' => $this->request->params['id'],
             'site_id' => $this->site()->id
         )));
-
-        $classname = '\app\models\items\\' . Inflector::camelize($item->type);
-        $related = $classname::find('all', array(
-            'conditions' => array(
-                '_id' => $item->related->to('array'),
-                'site_id' => $this->site()->id
-            ),
-            'limit' => $this->param('limit', 20),
-            'page' => $this->param('page', 1)
-        ));
-
+        
+		if($item->related) {
+	        $classname = '\app\models\items\\' . Inflector::camelize($item->type);
+	        $related = $classname::find('all', array(
+	            'conditions' => array(
+	                '_id' => $item->related->to('array'),
+	                'site_id' => $this->site()->id
+	            ),
+	            'limit' => $this->param('limit', 20),
+	            'page' => $this->param('page', 1)
+	        ));
+		}else{
+			$related = array();
+		}
+		
         $etag = $this->etag($related);
         $self = $this;
 
