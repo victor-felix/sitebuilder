@@ -245,6 +245,27 @@ class Items extends \lithium\data\Model {
 
 		return $chain->next($self, $params, $chain);
 	}
+
+	public static function paginate($params = array()) {
+		$defaults = array(
+			'limit' => 10,
+			'page'  => 1,
+		);
+
+		$params = array_merge($defaults, $params);
+
+		$items = static::find('all',$params);
+
+		if(!$items){
+			return array();
+		}
+		$paginate = (object)$params;
+
+		unset($params['page'], $params['limit']);
+		$paginate->total = static::count($params);
+
+		return compact('items', 'paginate');
+	}
 }
 
 Items::applyFilter('remove', function($self, $params, $chain) {

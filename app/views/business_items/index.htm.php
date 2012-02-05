@@ -13,8 +13,8 @@
 </div>
 
 <ul class="businessitems-list">
-    <?php if(count($business_items)): ?>
-        <?php foreach($business_items as $bi): ?>
+    <?php if(count($items)): ?>
+        <?php foreach($items as $bi): ?>
         <li>
             <?php if($image = $bi->image()): ?>
                 <?php echo $this->html->imagelink($image->link('80x80'), '/business_items/edit/' . $bi->id(), array(), array(
@@ -36,12 +36,13 @@
     <?php endif ?>
 </ul>
 
-<?php if(count($business_items)): ?>
+<?php if(count($items)): ?>
 <div class="fieldset-actions">
     <div class="grid-4 first">
         <?php echo $this->html->link(s('‹ back'), '/categories', array( 'class' => 'ui-button large back pop-scene' )) ?>
     </div>
     <div class="grid-8">
+        <div><?php echo $this->lithiumPagination->numbers() ?></div>
         <?php echo $this->html->link(s('add item'), '/business_items/add/' . $category->id, array('class' => 'ui-button highlight large push-scene')) ?>
     </div>
     <div class="clear"></div>

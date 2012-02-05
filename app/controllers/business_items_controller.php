@@ -9,12 +9,15 @@ class BusinessItemsController extends AppController {
 		$category = $this->Categories->firstById($parent_id);
 
 		$classname = '\app\models\items\\' . Inflector::camelize($category->type);
-		$business_items = $classname::find('all', array(
+		
+		$params = array(
 				'conditions' => array( 'parent_id' => $category->id	),
-				//'limit' => $this->param('limit', 20),
-				//'page' => $this->param('page', 1)
-				));
-		$this->set(compact('category', 'business_items'));
+				'limit' => $this->param('limit', 10),
+				'page' => $this->param('page', 1)
+				);
+
+		//$business_items = $classname::find('all', );
+		$this->set(compact('category') + $classname::paginate($params));
 	}
 
 	public function add($parent_id = null) {
