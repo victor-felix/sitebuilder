@@ -48,6 +48,22 @@ $checks = array(
     'max_execution_time' => function() {
         $result = ini_get('max_execution_time');
         return array($result == '0', '0', $result);
+    },
+    'config_files' => function() {
+    	$files = array('config/ENVIRONMENT', 'config/connections.php');
+    	$not_found = array_filter($files, function($file) {
+    		return !file_exists(__DIR__ . '/../../' . $file);
+    	});
+
+    	return array(empty($not_found), implode(', ', $files), implode(', ', array_diff($files, $not_found)));
+    },
+	'directories' => function() {
+		$dirs = array('meu-site-builder/tmp/', 'meu-site-builder/log/','public/uploads');
+		$nok_dirs = array_filter($dirs, function($dir) {
+			return  '0777' != substr(sprintf('%o', fileperms(__DIR__ . '/../../' . $dir)), -4);
+		});
+		
+		return array(empty($nok_dirs), implode(', ', $dirs), implode(', ', array_diff($dirs, $nok_dirs)));	
     }
 );
 
