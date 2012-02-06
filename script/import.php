@@ -18,6 +18,7 @@ foreach($data as $row) {
         $record = $classname::create($row);
         $record->type = $type;
         $record->parent_id = $record->parent_id ?: getenv('MOBI_CATEGORY');
+        $record->site_id = Model::load('Categories')->firstById($record->parent_id)->site_id;
         $record->save();
     }
     else {
