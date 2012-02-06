@@ -42,8 +42,8 @@
         <?php echo $this->html->link(s('‹ back'), '/categories', array( 'class' => 'ui-button large back pop-scene' )) ?>
     </div>
     <div class="grid-8">
-        <div><?php echo $this->lithiumPagination->numbers() ?></div>
         <?php echo $this->html->link(s('add item'), '/business_items/add/' . $category->id, array('class' => 'ui-button highlight large push-scene')) ?>
+        <div><?php //echo $this->lithiumPagination->numbers() ?></div>
     </div>
     <div class="clear"></div>
 </div>
