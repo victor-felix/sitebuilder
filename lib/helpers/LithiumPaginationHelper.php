@@ -1,12 +1,11 @@
 <?php
-
 class LithiumPaginationHelper extends Helper{
-	
 	protected $params;
-	
+
 	public function getParams() {
 		if(!$this->params){
 			$this->params = $this->view->controller->get('paginate');
+			$this->params->instance = new $this->params->class();
 		}
 		return $this->params;
 	}
@@ -47,7 +46,7 @@ class LithiumPaginationHelper extends Helper{
             ), $attr);
         }
     }
-    
+
     public function previous($text, $attr = array()) {
         if($this->hasPrevious()) {
             return $this->html->link($text, array(
@@ -55,7 +54,7 @@ class LithiumPaginationHelper extends Helper{
             ), $attr);
         }
     }
-	
+
 	public function first($text, $attr = array()) {
         if($this->hasPrevious()) {
             return $this->html->link($text, array(
@@ -63,7 +62,7 @@ class LithiumPaginationHelper extends Helper{
             ), $attr);
         }
     }
-    
+ 
     public function last($text, $attr = array()) {
         if($this->hasNext()) {
             return $this->html->link($text, array(
@@ -90,17 +89,53 @@ class LithiumPaginationHelper extends Helper{
 		}
 	}
 
-
 	public function pages() {
 		if($this->getParams()) {
-			return ceil($this->getParams()->total / $this->getParams()->limit);
+			return $this->getParams()->pages;
 		}
 	}
-
 
 	public function records() {
 		if($this->getParams()) {
 			return $this->getParams()->total;
 		}
+	}
+	
+	public function sort($params = array()) {
+		if(!$this->getParams()) {
+			return false;
+		}	
+		
+		$fields = array();
+		$instance = $this->getParams()->instance;
+		foreach ($instance->fields(null) as $field){
+			$url = Mapper::url( array('order' => $field) );
+			$fields[$url] = $instance->field(null,$field)->title;
+		}
+		$params += array(
+					'value' => Mapper::here(),
+					'empty' => '',
+					'onchange' => 'self.location=this.value',
+					'options' => $fields,
+				);
+		return $this->form->select( 'sort', $params);
+	}
+	
+	public function limit($range = array(), $params = array()) {
+		if(!$this->getParams()) {
+			return false;
+		}
+		
+		$range += array(10,15,30);
+		foreach ($range as $limit){
+			$url = Mapper::url( array('limit' => $limit) );
+			$options[$url] = $limit;
+		}
+		$params += array(
+				'value' => Mapper::here(),
+				'onchange' => 'self.location=this.value',
+				'options' => $options,
+		);
+		return $this->form->select( 'limit', $params);
 	}
 }

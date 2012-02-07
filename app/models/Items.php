@@ -250,20 +250,27 @@ class Items extends \lithium\data\Model {
 		$defaults = array(
 			'limit' => 10,
 			'page'  => 1,
+			'conditions' => array(),
 		);
-
+		
 		$params = array_merge($defaults, $params);
-
-		$items = static::find('all',$params);
+		$total = static::count(array('conditions' => $params['conditions']));
+		$pages = ceil($total / $params['limit']);
+		
+		if(($params['limit'] * $params['page']) > $total){
+			$params['page'] = $pages;
+		}
+		
+		$items = static::find('all', $params);
 
 		if(!$items){
 			return array();
 		}
+		
 		$paginate = (object)$params;
-
-		unset($params['page'], $params['limit']);
-		$paginate->total = static::count($params);
-
+		$paginate->total = $total;
+		$paginate->pages = $pages;
+		$paginate->class = get_called_class();
 		return compact('items', 'paginate');
 	}
 }

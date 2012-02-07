@@ -12,11 +12,10 @@ class BusinessItemsController extends AppController {
 		
 		$params = array(
 				'conditions' => array( 'parent_id' => $category->id	),
-				'limit' => $this->param('limit', 10),
-				'page' => $this->param('page', 1)
+				'limit' => $this->param('limit', 20),
+				'page' => $this->param('page', 1),
+				'order' => $this->param('order', 'title'),
 				);
-
-		//$business_items = $classname::find('all', );
 		$this->set(compact('category') + $classname::paginate($params));
 	}
 
