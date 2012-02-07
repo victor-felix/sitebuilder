@@ -14,7 +14,7 @@ class BusinessItemsController extends AppController {
 				'conditions' => array( 'parent_id' => $category->id	),
 				'limit' => $this->param('limit', 20),
 				'page' => $this->param('page', 1),
-				'order' => $this->param('order', 'title'),
+				'order' => $this->param('order'),
 				);
 		$this->set(compact('category') + $classname::paginate($params));
 	}

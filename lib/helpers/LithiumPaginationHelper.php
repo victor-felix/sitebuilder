@@ -17,11 +17,11 @@ class LithiumPaginationHelper extends Helper{
 			'tag' => 'span',
 			'current' => 'current'
 		);
-		
+
 		if($this->pages() < 2) {
 			return '';
 		}
-		
+
 		$numbers = array();
 		$start = max($this->page() - $options['modulus'], 1);
 		$end = min($this->page() + $options['modulus'], $this->pages());
@@ -40,48 +40,48 @@ class LithiumPaginationHelper extends Helper{
 	}
 
 	public function next($text, $attr = array()) {
-        if($this->hasNext()) {
-            return $this->html->link($text, array(
-                'page' => $this->page() + 1
-            ), $attr);
-        }
-    }
+		if($this->hasNext()) {
+			return $this->html->link($text, array(
+				'page' => $this->page() + 1
+			), $attr);
+		}
+	}
 
-    public function previous($text, $attr = array()) {
-        if($this->hasPrevious()) {
-            return $this->html->link($text, array(
-                'page' => $this->page() - 1
-            ), $attr);
-        }
-    }
+	public function previous($text, $attr = array()) {
+		if($this->hasPrevious()) {
+			return $this->html->link($text, array(
+				'page' => $this->page() - 1
+			), $attr);
+		}
+	}
 
 	public function first($text, $attr = array()) {
-        if($this->hasPrevious()) {
-            return $this->html->link($text, array(
-                'page' => 1
-            ), $attr);
-        }
-    }
+		if($this->hasPrevious()) {
+			return $this->html->link($text, array(
+				'page' => 1
+			), $attr);
+		}
+	}
  
-    public function last($text, $attr = array()) {
-        if($this->hasNext()) {
-            return $this->html->link($text, array(
-                'page' => $this->pages()
-            ), $attr);
-        }
-    }
+	public function last($text, $attr = array()) {
+		if($this->hasNext()) {
+			return $this->html->link($text, array(
+				'page' => $this->pages()
+			), $attr);
+		}
+	}
 
 	public function hasNext() {
-        if($this->getParams()) {
-            return $this->page() < $this->pages();
-        }
-    }
+		if($this->getParams()) {
+			return $this->page() < $this->pages();
+		}
+	}
 
-    public function hasPrevious() {
-        if($this->getParams()) {
-            return $this->page() > 1;
-        }
-    }
+	public function hasPrevious() {
+		if($this->getParams()) {
+			return $this->page() > 1;
+		}
+	}
 
 	public function page() {
 		if($this->getParams()) {
@@ -100,42 +100,54 @@ class LithiumPaginationHelper extends Helper{
 			return $this->getParams()->total;
 		}
 	}
-	
+
 	public function sort($params = array()) {
 		if(!$this->getParams()) {
 			return false;
 		}	
-		
+
 		$fields = array();
 		$instance = $this->getParams()->instance;
-		foreach ($instance->fields(null) as $field){
+		$value = $this->view->controller->param('order') ? Mapper::here() : false;
+		
+		foreach ($instance->fields(null) as $field) {
 			$url = Mapper::url( array('order' => $field) );
-			$fields[$url] = $instance->field(null,$field)->title;
+			$fields[$url] = $instance->field(null, $field)->title;
 		}
+
 		$params += array(
 					'value' => Mapper::here(),
-					'empty' => '',
+					'empty' =>  array( Mapper::url( array('order' => null) ) => '' ),
 					'onchange' => 'self.location=this.value',
 					'options' => $fields,
 				);
+		
 		return $this->form->select( 'sort', $params);
 	}
-	
+
 	public function limit($range = array(), $params = array()) {
 		if(!$this->getParams()) {
 			return false;
 		}
+
+		$range += array(10, 20, 30);
+		$value = $this->view->controller->param('limit') ? Mapper::here() : false;
 		
-		$range += array(10,15,30);
 		foreach ($range as $limit){
 			$url = Mapper::url( array('limit' => $limit) );
 			$options[$url] = $limit;
+			
+			if(!$value && $limit == $this->getParams()->limit) {
+				$value = $url;
+			}
 		}
+		
 		$params += array(
-				'value' => Mapper::here(),
+				'value' => $value,
 				'onchange' => 'self.location=this.value',
 				'options' => $options,
 		);
+
 		return $this->form->select( 'limit', $params);
 	}
 }
