@@ -90,11 +90,10 @@ class Mapper {
     }
 
     public static function url($url, $full = false, $base = '/') {
-        if(self::isExternal($url)) {
-            return $url;
-        }
-        else if(is_array($url)) {
+        if(is_array($url)) {
             return self::reverse($url);
+        } else if(self::isExternal($url)) {
+            return $url;
         }
         
         if(!self::isRoot($url)) {
@@ -138,7 +137,7 @@ class Mapper {
             if(!in_array($key, $nonParams)) {
                 $url .= '/' . $key . ':' . $value;
             }
-            else if(!is_null($value)) {
+            else if(!is_null($value) && $value != '') {
                 if($key == 'action' && $filtered = self::filterAction($value)) {
                     $value = $filtered['action'];
                 }
