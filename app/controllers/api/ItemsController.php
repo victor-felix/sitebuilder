@@ -69,8 +69,9 @@ class ItemsController extends ApiController {
 	    			'site_id' => $this->site()->id
 	    	)));
 	    	
-	    	if(!$item) throw new \Exception('invalid item');
-    	
+	    	if(!$item){
+	    		throw new \Exception('invalid item');
+	    	}
 	    	$classname = '\app\models\items\\' . Inflector::camelize($data['type']);
 	    	
 	    	$newItem = $classname::create();
@@ -78,15 +79,19 @@ class ItemsController extends ApiController {
 	    	$newItem->site_id = $this->site()->id;
 	    	
 	    	/** if not saved stop right here */
-	    	if(!$newItem->save()){ $this->response->status(422); return;}
+	    	if(!$newItem->save()){ 
+	    		$this->response->status(422); 
+	    		return;
+	    	}
 	    	
     		/** add to related and save */
 	    	if($item->related instanceof \lithium\core\Object){ 
 	    		$related = $item->related->to('array');
 	    		$related[] =  $newItem->id();
 	    		
-	    	} else 
+	    	} else {
 	    		$related[] = $newItem->id();
+	    	}
 	    	
 	    	$item->related = $related;
     		$item->save();
@@ -102,6 +107,7 @@ class ItemsController extends ApiController {
     				$record->save();
 	    		}
     		}
+    		
     		$this->response->status(201);
     		return $this->toJSON($newItem);
 	    
@@ -194,7 +200,8 @@ class ItemsController extends ApiController {
         $category_id = $this->request->data['parent_id'];
         $category = Model::load('Categories')->firstById($category_id);
         $classname = '\app\models\items\\' . Inflector::camelize($category->type);
-        $item = $classname::create($this->request->data);
+        $item = $classname::create();
+        $item->set($this->request->data);
         $item->site_id = $this->site()->id;
         $item->type = $category->type;
 
