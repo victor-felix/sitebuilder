@@ -251,7 +251,7 @@ class Items extends \lithium\data\Model {
 		
 		$params = array_merge($defaults, $params);
 		$total = static::count(array('conditions' => $params['conditions']));
-		$pages = ceil($total / $params['limit']);
+		$pages = $params['limit'] ? ceil($total / $params['limit']) : 1;
 		
 		if(($params['limit'] * $params['page']) > $total){
 			$params['page'] = $pages;
