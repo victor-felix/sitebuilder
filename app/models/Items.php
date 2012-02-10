@@ -194,11 +194,7 @@ class Items extends \lithium\data\Model {
 				$item->geo = array($location->lng, $location->lat);
 			}
 			catch(\Exception $e) {
-				$item->geo = 0;
 			}
-		}
-		else if(empty($item->address)) {
-			$item->geo = 0;
 		}
 
 		return $chain->next($self, $params, $chain);

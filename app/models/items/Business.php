@@ -48,7 +48,7 @@ class Business extends \app\models\Items {
         $parent = parent::_object();
 
         $self->_schema = $parent->_schema + array(
-            'geo'  => array('type' => 'array', 'default' => array()),
+            'geo'  => array('type' => 'array', 'default' => 0),
             'description'  => array('type' => 'string', 'default' => ''),
             'address'  => array('type' => 'string', 'default' => ''),
             'phone'  => array('type' => 'string', 'default' => ''),

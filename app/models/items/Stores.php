@@ -50,7 +50,7 @@ class Stores extends \app\models\Items {
 
         $self->_schema = $parent->_schema + array(
             'related'  => array('type' => 'array', 'default' => array()),
-            'geo'  => array('type' => 'array', 'default' => array()),
+            'geo'  => array('type' => 'array', 'default' => 0),
             'address'  => array('type' => 'string', 'default' => ''),
             'phone'  => array('type' => 'string', 'default' => ''),
             'web'  => array('type' => 'string', 'default' => ''),
