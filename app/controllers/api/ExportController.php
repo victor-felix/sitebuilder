@@ -18,7 +18,14 @@ class ExportController extends ApiController {
         $classname = '\app\models\items\\' . Inflector::camelize($type);
         $items = $classname::find('all', array('conditions' => $conditions));
 
-        return $this->toCSV($items);
+        set_time_limit(0);
+        header("Content-type: application/csv");
+        header("Content-Disposition: attachment; filename=$category_id.csv");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+
+        $classname::exportTo('csv', $conditions);
+        exit;
     }
 
     protected function checkToken() {}

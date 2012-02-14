@@ -13,6 +13,7 @@ use lithium\util\Collection;
 Collection::formats('lithium\net\http\Media');
 
 class Items extends \lithium\data\Model {
+    const EXPORT_LIMIT = 500;
 	protected $getters = array();
 	protected $setters = array();
 	protected $_meta = array(
@@ -115,10 +116,12 @@ class Items extends \lithium\data\Model {
 
 	public function changed($entity, $field) {
 		$export = $entity->export();
+		if(!$export['exists']) {
+			return true;
+		}
 		if(isset($export['update'][$field])) {
 			return $export['data'][$field] != $export['update'][$field];
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
@@ -126,7 +129,7 @@ class Items extends \lithium\data\Model {
 	public static function addTimestamps($self, $params, $chain) {
 		$item = $params['entity'];
 
-		if(!$item->id) {
+		if(!$item->id()) {
 			$item->created = date('Y-m-d H:i:s');
 		}
 
@@ -186,15 +189,17 @@ class Items extends \lithium\data\Model {
 			$item->geo = array((float) $item->longitude, (float) $item->latitude);
 			unset($item->latitude);
 			unset($item->longitude);
-		}
-		else if($item->changed('address') && !empty($item->address)) {
+		} else if($item->changed('address') && !empty($item->address)) {
 			try {
 				$geocode = GoogleGeocoding::geocode($item->address);
 				$location = $geocode->results[0]->geometry->location;
 				$item->geo = array($location->lng, $location->lat);
 			}
 			catch(\Exception $e) {
+			    $item->geo = 0;
 			}
+		} else if(empty($item->address)) {
+		    $item->geo = 0;
 		}
 
 		return $chain->next($self, $params, $chain);
@@ -269,6 +274,54 @@ class Items extends \lithium\data\Model {
 		$paginate->class = get_called_class();
 		return compact('items', 'paginate');
 	}
+	
+	public static function exportTo($format = 'csv', $conditions = array()) {
+		$total = static::count( array('conditions' => $conditions) );
+		$pages = ceil($total / static::EXPORT_LIMIT);
+		/** get fields that can be exported */
+		$fields = array_filter(static::create()->fields(), function($field) {
+			return !is_array($field['type']);
+		});
+	
+		$toCsv = function($item) {
+			echo '"' . implode('","', $item) . '"' . "\n";
+			flush();
+		};
+		
+		$toCsv(array_merge(array('id','type'), $fields));
+	
+		/** parse all items by chunks */
+		for($page = 1; $page <= $pages; $page++) {
+			$items = static::all( array(
+					'conditions' => $conditions,
+					'limit' => static::EXPORT_LIMIT,
+					'page' => $page,
+			) );
+
+			if(!$items) {
+				continue;
+			}
+
+			foreach ($items as $item) {
+				$itemArray = array(
+						'id' => $item->id(),
+						'type' => $item->type
+				);
+
+				foreach($fields as $field) {
+					if(is_string($item[$field]) || is_int($item[$field])) {
+						$itemArray[$field] = $item[$field];
+					} else {
+						$itemArray[$field] = '';
+					}
+				}
+				if($format == 'csv') {
+					$toCsv($itemArray);
+				}
+			}/* end foreach loop*/
+		}/* end for loop*/
+	}
+	
 }
 
 Items::applyFilter('remove', function($self, $params, $chain) {
