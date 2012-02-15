@@ -25,7 +25,7 @@ class Model extends Hookable {
     protected $validates = array();
     protected $errors = array();
 
-    protected $data = array();
+    public $data = array();
     
     protected $beforeSave = array();
     protected $beforeCreate = array();

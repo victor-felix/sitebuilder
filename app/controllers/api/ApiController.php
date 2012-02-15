@@ -47,6 +47,10 @@ class ApiController extends \lithium\action\Controller {
 
             return $collection;
         }
+        else if($record instanceof \meumobi\sitebuilder\Category) {
+            $c = new \app\presenters\CategoryPresenter($record);
+            return $c->toJSON();
+        }
         else {
             return $record->toJSON();
         }

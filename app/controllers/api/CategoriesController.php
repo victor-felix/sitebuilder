@@ -2,50 +2,64 @@
 
 namespace app\controllers\api;
 
-require_once 'app/models/categories.php';
+//require_once 'app/models/categories.php';
 
-use Model;
-use Categories;
+//use Model;
+//use Categories;
 
-class CategoriesController extends ApiController {
-	public function index() {
-		$conditions = array('site_id' => $this->site()->id);
+use app\presenters\CategoryPresenter;
+use meumobi\sitebuilder\Category;
+use meumobi\sitebuilder\Site;
 
-		$visibility = $this->param('visibility', 1);
-		if($visibility != 'all') {
-			$conditions['visibility'] = (boolean) $visibility;
+class CategoriesController extends ApiController
+{
+	protected function query($key)
+	{
+		if (isset($this->request->query[$key])) {
+			return $this->request->query[$key];
 		}
+	}
 
-		$categories = Model::load('Categories')->all(array(
-			'conditions' => $conditions
-		));
+	protected function site()
+	{
+		$domain = $this->request->params['slug'];
+		return Site::findByDomain($domain);
+	}
 
-		$etag = $this->etag($categories);
+	public function index()
+	{
+		$scope = (object) array('visibility' => $this->query('visibility'));
+		$categories = $this->site()->categories($scope);
+
 		$self = $this;
+		$etag = $this->etag($categories);
 
 		return $this->whenStale($etag, function() use($categories, $self) {
 			return $self->toJSON($categories);
 		});
 	}
 
-	public function show() {
-		$category = Model::load('Categories')->firstBySiteIdAndId($this->site()->id, $this->param('id'));
-		$etag = $this->etag($category);
-		$self = $this;
+	public function show()
+	{
+		$category = $this->site()->findCategory($this->request->params['id']);
+		$category = new CategoryPresenter($category);
 
-		return $this->whenStale($etag, function() use($category, $self) {
-			return $self->toJSON($category);
+		$etag = $this->etag($category);
+
+		return $this->whenStale($etag, function() use($category) {
+			return $category->toJSON();
 		});
 	}
 
-	public function children() {
-		$category_id = $this->param('id');
-
-		if(!$category_id) {
-			$category_id = $this->site()->rootCategory()->id;
+	public function children()
+	{
+		if (isset($this->request->params['id'])) {
+			$category = $this->site->findCategory($this->request->params['id']);
+		} else {
+			$category = $this->site->findRootCategory();
 		}
 
-		$categories = Model::load('Categories')->recursiveByParentId($category_id, $this->param('depth', 0));
+		$categories = $category->children(array('depth' => $this->param('depth', 0)));
 		$etag = $this->etag($categories);
 		$self = $this;
 
