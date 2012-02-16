@@ -69,13 +69,12 @@ class CategoriesController extends ApiController
 	}
 
 	public function create() {
-		$category = new Categories($this->request->data);
-		$category->site_id = $this->site->id;
+		$category = $this->site()->buildCategory($this->request->data);
 
-		if($category->validate()) {
-			$category->save();
+		if($category->save()) {
 			$this->response->status(201);
-			return $this->toJSON($category);
+			$category = new CategoryPresenter($category);
+			return $category->toJSON();
 		}
 		else {
 			$this->response->status(422);

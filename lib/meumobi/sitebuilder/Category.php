@@ -20,6 +20,7 @@ class Category
 
 	public static function findAll($scope)
 	{
+		// TODO
 		$conditions = (array) $scope;
 		$categories = Model::load('Categories')->all(array(
 			'conditions' => $conditions
@@ -69,14 +70,13 @@ class Category
 
 	public function countItems($scope = null)
 	{
-		// TODO
-		return Items::find('count', array('conditions' => array(
-			'parent_id' => $this->id
-		)));
+		$scope = (object) array('category' => $this->id);
+		return Item::count($scope);
 	}
 
 	public function children($options = array(), $scope = null)
 	{
+		// TODO
 		$scope = (object) array('parent_id' => $this->id, 'visibility' => 1);
 		$results = static::findAll($scope);
 
@@ -86,13 +86,23 @@ class Category
 				$results = array_merge($results, $children);
 			}
 		}
-		//if($depth > 0) {
-			//foreach($results as $result) {
-				//$children = $this->recursiveByParentId($result->id, $depth - 1);
-				//$results = array_merge($results, $children);
-			//}
-		//}
 
 		return $results;
+	}
+
+	public function isValid()
+	{
+		return true;
+	}
+
+	public function save()
+	{
+		if ($this->isValid()) {
+			Model::load('Categories');
+			$category = new Categories($this->attr);
+			$category->save();
+			$this->attr['id'] = $category->id;
+			return true;
+		}
 	}
 }

@@ -38,4 +38,10 @@ class Site
 		$categories = Category::findBySite($this->attr['id'], $scope);
 		return $categories[0];
 	}
+
+	public function buildCategory($attr = array())
+	{
+		$attr['site_id'] = $this->attr['id'];
+		return new Category($attr);
+	}
 }
