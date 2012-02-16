@@ -31,11 +31,6 @@ class GoogleGeocoding {
         $log = \KLogger::instance(\Filesystem::path('log'));
         $log->logInfo('Geocode Response: %s', $data);
 
-        $json = json_decode($data);
-        if($json->status != 'OK' || empty($json->results)) {
-            throw new Exception('could not find results');
-        }
-
-        return $json;
+        return json_decode($data);
     }
 }

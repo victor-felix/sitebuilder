@@ -6,6 +6,7 @@ use Config;
 use Inflector;
 use Model;
 
+require_once 'lib/utils/Jobs/Geocode.php';
 require_once 'lib/geocoding/GoogleGeocoding.php';
 use GoogleGeocoding;
 
@@ -190,14 +191,14 @@ class Items extends \lithium\data\Model {
 			unset($item->latitude);
 			unset($item->longitude);
 		} else if($item->changed('address') && !empty($item->address)) {
-			try {
-				$geocode = GoogleGeocoding::geocode($item->address);
-				$location = $geocode->results[0]->geometry->location;
-				$item->geo = array($location->lng, $location->lat);
-			}
-			catch(\Exception $e) {
-			    $item->geo = 0;
-			}
+			 $chain->next($self, $params, $chain);
+			$geocode = \Geocode::create();
+			$geocode->params = array(
+					'item_id' => $item->id(),
+					'type' => $item->type,
+			);
+			$geocode->save();
+			return $item;
 		} else if(empty($item->address)) {
 		    $item->geo = 0;
 		}
