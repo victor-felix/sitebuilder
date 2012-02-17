@@ -14,25 +14,25 @@ class Categories extends AppModel {
 	protected $afterSave = array('importItems', 'updateFeed');
 	protected $beforeDelete = array('deleteChildren');
 	protected $defaultScope = array(
-			'order' => '`order` ASC'
-			);
+		'order' => '`order` ASC'
+	);
 	protected $validates = array(
-			'title' => array(
-				array(
-					'rule' => 'notEmpty',
-					'message' => 'A non empty title is required'
-					),
-				array(
-					'rule' => array('maxLength', 50),
-					'message' => 'The title of a category could contain 50 chars max.'
-					)
-				)
-			);
+		'title' => array(
+			array(
+				'rule' => 'notEmpty',
+				'message' => 'A non empty title is required'
+				),
+			array(
+				'rule' => array('maxLength', 50),
+				'message' => 'The title of a category could contain 50 chars max.'
+			)
+		)
+	);
 
 	public function __construct($data = array()) {
 		parent::__construct($data);
 
-		if(is_null($this->id) && !isset($this->data['visibility'])) {
+		if (is_null($this->id) && !isset($this->data['visibility'])) {
 			$this->data['visibility'] = true;
 			$this->data['populate'] = 'manual';
 		}
@@ -42,10 +42,10 @@ class Categories extends AppModel {
 		$root = Model::load('Segments')->firstById($site->segment)->root;
 		$this->id = null;
 		$this->save(array(
-					'title' => __($root),
-					'site_id' => $site->id,
-					'parent_id' => 0
-					));
+			'title' => __($root),
+			'site_id' => $site->id,
+			'parent_id' => 0
+		));
 	}
 
 	public function getRoot($site_id) {
@@ -57,8 +57,8 @@ class Categories extends AppModel {
 		$classname = '\app\models\items\\' . Inflector::camelize($type);
 
 		return $classname::find('all', array('conditions' => array(
-						'parent_id' => $this->id
-						), 'limit' => $limit));
+								'parent_id' => $this->id
+								), 'limit' => $limit));
 	}
 
 	public function hasFeed() {
@@ -76,7 +76,7 @@ class Categories extends AppModel {
 		$parent_id = $this->parent_id;
 		$breadcrumbs = array($this);
 
-		while($parent_id > 0) {
+		while ($parent_id > 0) {
 			$category = $this->firstById($parent_id);
 			$breadcrumbs []= $category;
 			$parent_id = $category->parent_id;
@@ -86,7 +86,7 @@ class Categories extends AppModel {
 	}
 
 	public function parent() {
-		if($this->parent_id) {
+		if ($this->parent_id) {
 			return $this->firstById($this->parent_id);
 		}
 	}
@@ -94,7 +94,7 @@ class Categories extends AppModel {
 	public function recursiveById($id, $depth) {
 		$results = array($this->firstById($id));
 
-		if($depth > 0) {
+		if ($depth > 0) {
 			$children = $this->recursiveByParentId($id, $depth - 1);
 			$results = array_merge($results, $children);
 		}
@@ -105,7 +105,7 @@ class Categories extends AppModel {
 	public function recursiveByParentId($parent_id, $depth) {
 		$results = $this->allByParentIdAndVisibility($parent_id, 1);
 
-		if($depth > 0) {
+		if ($depth > 0) {
 			foreach($results as $result) {
 				$children = $this->recursiveByParentId($result->id, $depth - 1);
 				$results = array_merge($results, $children);
@@ -139,12 +139,12 @@ class Categories extends AppModel {
 		//$log->logInfo('Importing feed "%s"', $this->feed_url);
 		//$log->logInfo('%d articles found', count($items));
 
-		foreach($items as $item) {
+		foreach ($items as $item) {
 			$count = Articles::find('count', array('conditions' => array(
 							'category_id' => $this->id,
 							'guid' => $item->get_id()
 							)));
-			if(!$count) {
+			if (!$count) {
 				Articles::addToFeed($this, $item);
 			}
 			//else {
@@ -164,7 +164,7 @@ class Categories extends AppModel {
 		$conditions = array(
 				'site_id' => $this->site_id,
 				'parent_id' => $this->id
-				);
+			);
 
 		$count = Articles::find('count', array('conditions' => $conditions));
 
@@ -173,7 +173,7 @@ class Categories extends AppModel {
 						'conditions' => $conditions,
 						'limit' => $count - 50,
 						'order' => array('pubdate' => 'ASC')
-						));
+					));
 
 			foreach($articles as $article) {
 				Items::remove(array('_id' => $article->id()));
@@ -191,22 +191,21 @@ class Categories extends AppModel {
 	}
 
 	protected function getOrder($data) {
-		if(is_null($this->id) && $data['parent_id'] != 0) {
+		if (is_null($this->id) && $data['parent_id'] != 0) {
 			$siblings = $this->toList(array(
 						'fields' => array('id', '`order`'),
 						'conditions' => array(
-							'site_id' => $data['site_id'],
-							'parent_id' => $data['parent_id']
-							),
-						'order' => '`order` DESC',
-						'displayField' => 'order',
-						'limit' => 1
-						));
+						'site_id' => $data['site_id'],
+						'parent_id' => $data['parent_id']
+					),
+					'order' => '`order` DESC',
+					'displayField' => 'order',
+					'limit' => 1
+				));
 
-			if(!empty($siblings)) {
+			if (!empty($siblings)) {
 				$data['order'] = current($siblings) + 1;
-			}
-			else {
+			} else {
 				$data['order'] = 0;
 			}
 		}
@@ -215,11 +214,11 @@ class Categories extends AppModel {
 	}
 
 	protected function getItemType($data) {
-		if(is_null($this->id)) {
+		if (is_null($this->id)) {
 			$site = Model::load('Sites')->firstById($this->site_id);
 			$items = (array) $site->itemTypes();
 
-			if(!array_key_exists('type', $data) || !in_array($data['type'], $items)) {
+			if (!array_key_exists('type', $data) || !in_array($data['type'], $items)) {
 				$data['type'] = $items[0];
 			}
 		}
@@ -228,21 +227,19 @@ class Categories extends AppModel {
 	}
 
 	protected function checkItems($data) {
-		if(!is_null($this->id)) {
+		if (!is_null($this->id)) {
 			$original = $this->firstById($this->id);
-			if(
-					$original->populate != 'import' &&
-					$data['populate'] != 'import' && (
-						$original->populate != $data['populate'] ||
-						$original->type != $data['type'])
-			  ) {
-				$items = Items::find('all', array('conditions' => array(
+			if( $original->populate != 'import' &&
+				$data['populate'] != 'import' && (
+				$original->populate != $data['populate'] ||
+				$original->type != $data['type']) ) {
+					$items = Items::find('all', array('conditions' => array(
 								'parent_id' => $this->id
-								)));
+							)));
 
-				foreach($items as $item) {
-					Items::remove(array('_id' => $item->id()));
-				}
+					foreach($items as $item) {
+						Items::remove(array('_id' => $item->id()));
+					}
 			}
 		}
 
@@ -250,40 +247,40 @@ class Categories extends AppModel {
 	}
 
 	protected function importItems($created) {
-		if($this->data['populate'] == 'import') {
+		if ($this->data['populate'] == 'import') {
 			$this->data['populate'] = 'manual';
-			if($this->data['import']['size'] / 1024 > self::IMPORT_MAX_FILE_SIZE) {
+			if ($this->data['import']['size'] / 1024 > self::IMPORT_MAX_FILE_SIZE) {
 				$uploader = new FileUpload();
-					$uploader->path = APP_ROOT . '/public/uploads/imports';
+				$uploader->path = APP_ROOT . '/public/uploads/imports';
+		
+				if ($uploader->validateType($this->data['import'], array('csv'))) {
+					try{
+						$name = $uploader->upload($this->data['import'], time() . '_' . $this->data['import']['name']);
+						$import = Import::create();
+						$import->params = array(
+							'site_id' => $this->data['site_id'],
+							'category_id' => $this->data['id'],
+							'file' => $name,
+							'type' => $this->data['type'],
+						);
+						return $import->save();
+					} catch (Exception $e) {
 					
-					if($uploader->validateType($this->data['import'], array('csv'))) {
-						try{
-							$name = $uploader->upload($this->data['import'], time() . '_' . $this->data['import']['name']);
-								$import = Import::create();
-								$import->params = array(
-										'site_id' => $this->data['site_id'],
-										'category_id' => $this->data['id'],
-										'file' => $name,
-										'type' => $this->data['type'],
-										);
-								return $import->save();
-						} catch (Exception $e) {
-							
-						}
 					}
+				}
 			}
 
 			$csv = new CSVHandler($this->data['import']['tmp_name'], ',');
 			$csv = $csv->ReadCSV();
 			$classname = '\app\models\items\\' . Inflector::camelize($this->data['type']);
-			foreach($csv as $row) {
+			foreach ($csv as $row) {
 				$record = false;
-				if(isset($row['id']) && $row['id']) {
+				if (isset($row['id']) && $row['id']) {
 					$record = $classname::find('first', array('conditions' => array(
 									'_id' => $row['id']
-									)));
+								)));
 				}
-				if(!$record){ 
+				if (!$record) { 
 					$record = $classname::create();
 				}
 
@@ -292,8 +289,8 @@ class Categories extends AppModel {
 				$record->type = $this->data['type'];
 				$fields = $record->fields();
 
-				foreach($fields as $field) {
-					if(isset($row[$field])) {
+				foreach ($fields as $field) {
+					if (isset($row[$field])) {
 						$record->set(array($field => $row[$field]));
 					}
 				}
@@ -309,36 +306,36 @@ class Categories extends AppModel {
 	}
 
 	protected function updateFeed($created) {
-		if(isset($this->data['populate']) && $this->data['populate'] == 'auto') {
-			if(!isset($this->data['feed_url'])) {
+		if (isset($this->data['populate']) && $this->data['populate'] == 'auto') {
+			if (!isset($this->data['feed_url'])) {
 				$this->data['feed_url'] = '';
 			}
 			$is_set = isset($this->data['feed']);
 			$is_empty = $is_set && empty($this->data['feed']);
 
-			if($is_empty or $is_set && $this->data['feed'] != $this->data['feed_url']) {
+			if ($is_empty or $is_set && $this->data['feed'] != $this->data['feed_url']) {
 				$items = Items::find('all', array('conditions' => array(
 								'parent_id' => $this->id
-								)));
+							)));
 
-				foreach($items as $item) {
+				foreach ($items as $item) {
 					Items::remove(array('_id' => $item->id()));
 				}
 
 				$this->update(array(
-							'conditions' => array('id' => $this->id)
+								'conditions' => array('id' => $this->id)
 							), array(
 								'feed_url' => ''
-								));
+							));
 			}
 
-			if($is_set && !$is_empty && $this->data['feed'] != $this->data['feed_url']) {
+			if ($is_set && !$is_empty && $this->data['feed'] != $this->data['feed_url']) {
 				$this->feed_url = $this->data['feed'];
 				$this->update(array(
-							'conditions' => array('id' => $this->id)
+								'conditions' => array('id' => $this->id)
 							), array(
 								'feed_url' => $this->feed_url
-								));
+							));
 
 				$this->updateArticles();
 			}
@@ -347,7 +344,7 @@ class Categories extends AppModel {
 
 	protected function deleteChildren($id, $force = false) {
 		$self = $this->firstById($id);
-		if($self->parent_id == 0 && !$force) {
+		if ($self->parent_id == 0 && !$force) {
 			return false;
 		}
 
@@ -358,7 +355,7 @@ class Categories extends AppModel {
 						'parent_id' => $id
 						)));
 
-		foreach($items as $item) {
+		foreach ($items as $item) {
 			Items::remove(array('_id' => $item->id()));
 		}
 

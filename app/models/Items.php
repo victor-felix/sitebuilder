@@ -191,7 +191,7 @@ class Items extends \lithium\data\Model {
 			unset($item->latitude);
 			unset($item->longitude);
 		} else if($item->changed('address') && !empty($item->address)) {
-			 $chain->next($self, $params, $chain);
+			$chain->next($self, $params, $chain);
 			$geocode = \Geocode::create();
 			$geocode->params = array(
 					'item_id' => $item->id(),
