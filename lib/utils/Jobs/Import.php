@@ -7,37 +7,42 @@ class Import extends Jobs
 	protected $fileDir = '/public/uploads/imports/';
 	protected $fields;
 
-	public function start($entity){
+	public function start($entity)
+	{
 		static::__init();
 		$job = static::first(array(
-					'conditions' => array('type' => 'import'),
-					'order' => 'modified',
-					));
-			if(!$job) {
-				return true;
-			}
+			'conditions' => array('type' => 'import'),
+			'order' => 'modified',
+		));
+		if (!$job) {
+			return true;
+		}
 		return parent::start($job);
 	}
 
 	protected function process($entity)
 	{
-		if(!$this->canProcess($entity)) {
+		if (!$this->canProcess($entity)) {
 			return true;
 		}
-
-		$classname = '\app\models\items\\' . Inflector::camelize($entity->params->type);
+		$classname = '\app\models\items\\' 
+					. Inflector::camelize($entity->params->type);
 		$default = array(
-				'parent_id' => $entity->params->category_id,
-				'site_id' => $entity->params->site_id,
-				'type' => $entity->params->type,
-				);
+			'parent_id' => $entity->params->category_id,
+			'site_id' => $entity->params->site_id,
+			'type' => $entity->params->type,
+		);
 		while($csvLine = $this->next($entity)) {
 			$data = $default + $csvLine;
 			$item = false;
-			if(isset($data['_id'])) {
-				$item = $classname::find( 'first', array('conditions' => array( '_id' => $data['_id'])) );
+			if (isset($data['_id'])) {
+				$item = $classname::find('first', array(
+					'conditions' => array( 
+						'_id' => $data['_id']
+						)
+					));
 			}
-			if(!$item){
+			if (!$item) {
 				$item = $classname::create();
 			}
 			$item->set($data);
@@ -64,8 +69,9 @@ class Import extends Jobs
 
 	protected function canProcess($entity)
 	{
-		if(Model::load('Categories')->exists(array('id' => $entity->params->category_id))
-				&& $this->file($entity)) {
+		if (Model::load('Categories')
+			->exists(array('id' => $entity->params->category_id))
+			&& $this->file($entity)) {
 			return true;
 		}
 	}
@@ -73,13 +79,13 @@ class Import extends Jobs
 	protected function next($entity)
 	{
 		$fields = $this->fields($entity);
-		if(!$line = fgetcsv ($this->file($entity), 3000)) {
+		if (!$line = fgetcsv ($this->file($entity), 3000)) {
 			return false;
 		}
-		for($i = 0; $i < count($fields); $i++ ) {
+		for ($i = 0; $i < count($fields); $i++ ) {
 			$item[$fields[$i]] = isset($line[$i])?$line[$i]:'';
 		}
-		if( isset($item['id']) ) {
+		if ( isset($item['id']) ) {
 			$item['_id'] = $item['id'];
 			unset($item['id']);
 		}
@@ -88,18 +94,18 @@ class Import extends Jobs
 
 	protected function fields($entity)
 	{
-		if(!$this->fields) {
-			rewind ($this->file($entity));
-			$this->fields = fgetcsv ($this->file($entity));
+		if (!$this->fields) {
+			rewind($this->file($entity));
+			$this->fields = fgetcsv($this->file($entity));
 		}
 		return $this->fields;
 	}
 
 	protected function file($entity)
 	{
-		if(!$this->file) {
+		if (!$this->file) {
 			$file = APP_ROOT . $this->fileDir . $entity->params->file;
-			if( is_file($file) ) {
+			if ( is_file($file) ) {
 				$this->file = fopen($file, 'r');
 			} else {
 				$this->file = false;
@@ -110,5 +116,5 @@ class Import extends Jobs
 
 }
 Import::applyFilter('save', function($self, $params, $chain) {
-		return Import::beforeSave($self, $params, $chain);
-		});
+	return Import::beforeSave($self, $params, $chain);
+});
