@@ -1,4 +1,5 @@
-require_relative './meu-site-builder/Capfile'
+load 'deploy' if respond_to?(:namespace)
+load 'meu-site-builder/Capfile'
 
 set :repository, 'git@repos.ipanemax.com:partners.meumobi.git'
 set :deploy_to, '/home/meumobi/PROJECTS/partners.meumobilesite.com'
