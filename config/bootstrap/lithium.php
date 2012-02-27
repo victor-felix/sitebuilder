@@ -14,3 +14,6 @@ Libraries::add('jazz', array(
 Libraries::add('app', array(
     'path' => LIB_ROOT . '/app'
 ));
+Libraries::add('meumobi', array(
+    'path' => LIB_ROOT . '/lib/meumobi'
+));
