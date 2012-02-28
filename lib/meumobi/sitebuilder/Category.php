@@ -42,7 +42,7 @@ class Category
 				$conditions['visibility'] = (bool) $scope->visibility;
 			}
 		}
-		if ($scope->root) {
+		if (isset($scope->root) && $scope->root) {
 			$conditions['parent_id'] = 0;
 		}
 		$categories = Model::load('Categories')->all(array(
