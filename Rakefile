@@ -4,7 +4,7 @@ namespace :meumobi do
   end
 
   task :push do
-    sh 'env GIT_DIR=meu-site-builder/.git git push origin master'
+    sh 'env GIT_DIR=.git git push origin master'
   end
 
   task :update do
@@ -18,3 +18,5 @@ namespace :meumobi do
 
   task :autoupdate => [:pull, :update, :push]
 end
+
+task :default => 'meumobi:autoupdate'
