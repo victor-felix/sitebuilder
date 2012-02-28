@@ -3,60 +3,21 @@
 use lithium\data\Connections;
 
 $mysql = array(
-    'development' => array(
-        'driver' => 'MySql',
-        'host' => '',
-        'user' => '',
-        'password' => '',
-        'database' => '',
-        'prefix' => ''
-    ),
-    'test' => array(
-        'driver' => 'MySql',
-        'host' => '',
-        'user' => '',
-        'password' => '',
-        'database' => '',
-        'prefix' => ''
-    ),
     'production' => array(
         'driver' => 'MySql',
-        'host' => '',
-        'user' => '',
-        'password' => '',
-        'database' => '',
-        'prefix' => ''
-    ),
-    'staging' => array(
-        'driver' => 'MySql',
-        'host' => '',
-        'user' => '',
-        'password' => '',
-        'database' => '',
+        'host' => 'localhost',
+        'user' => 'root',
+        'password' => 'ipanemax2010',
+        'database' => 'partners.meumobi',
         'prefix' => ''
     )
 );
 
 $mongodb = array(
-    'development' => array(
-        'type' => 'MongoDb',
-        'host' => '',
-        'database' => ''
-    ),
-    'test' => array(
-        'type' => 'MongoDb',
-        'host' => '',
-        'database' => ''
-    ),
     'production' => array(
         'type' => 'MongoDb',
-        'host' => '',
-        'database' => ''
-    ),
-    'staging' => array(
-        'type' => 'MongoDb',
-        'host' => '',
-        'database' => ''
+        'host' => 'localhost',
+        'database' => 'partners_meumobi'
     )
 );
 
