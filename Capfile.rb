@@ -1,5 +1,3 @@
-load 'deploy' if respond_to?(:namespace)
-
 set :application, 'meumobi'
 
 set :scm, :git
