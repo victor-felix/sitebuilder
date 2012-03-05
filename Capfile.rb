@@ -34,12 +34,12 @@ namespace :deploy do
   end
 
   task :platform_check do
-    run "#{release_path}/meu-site-builder/script/check_platform.php"
+    run "php #{release_path}/meu-site-builder/script/check_platform.php"
   end
 
   namespace :db do
     task :migrate do
-      run "#{release_path}/meu-site-builder/script/migrate.php"
+      run "php #{release_path}/meu-site-builder/script/migrate.php"
     end
   end
 end
