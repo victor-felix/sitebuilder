@@ -14,12 +14,12 @@ set :php_env, 'production'
 
 namespace :deploy do
   task :permissions do
-    run "chmod -R 777 #{latest_release}/meu-site-builder/tmp"
+    run "chmod -R 777 #{release_path}/meu-site-builder/tmp"
   end
 
   task :shared do
     shared_children.map { |d|
-      run "rm -rf #{latest_release}/#{d} && ln -fs #{shared_path}/#{d} #{latest_release}/#{d}"
+      run "rm -rf #{release_path}/#{d} && ln -fs #{shared_path}/#{d} #{release_path}/#{d}"
     }
   end
 
@@ -45,7 +45,8 @@ namespace :deploy do
 end
 
 after 'deploy:setup', 'deploy:environment'
+after 'deploy:update_code', 'deploy:shared'
 after 'deploy:update_code', 'deploy:symlinks'
-after 'deploy:finalize_update', 'deploy:shared'
-after 'deploy:finalize_update', 'deploy:permissions'
-after 'deploy:finalize_update', 'deploy:db:migrate'
+after 'deploy:update_code', 'deploy:permissions'
+after 'deploy:update_code', 'deploy:db:migrate'
+after 'deploy:update_code', 'deploy:platform_check'
