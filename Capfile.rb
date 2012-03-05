@@ -33,6 +33,10 @@ namespace :deploy do
     run "cp #{release_path}/config/connections.sample.php #{release_path}/config/connections.php"
   end
 
+  task :platform_check do
+    run "#{release_path}/script/check_platform.php"
+  end
+
   namespace :db do
     task :migrate do
       run "#{release_path}/script/migrate.php"
