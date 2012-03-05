@@ -29,8 +29,14 @@ namespace :deploy do
   end
 
   task :symlinks do
-    run "ln -s #{deploy_to}/shared/environment #{release_path}/config/ENVIRONMENT"
+    run "ln -s #{shared_path}/environment #{release_path}/config/ENVIRONMENT"
     run "cp #{release_path}/config/connections.sample.php #{release_path}/config/connections.php"
+  end
+
+  namespace :db do
+    task :migrate do
+      run "#{release_path}/script/migrate.php"
+    end
   end
 end
 
@@ -38,3 +44,4 @@ after 'deploy:setup', 'deploy:environment'
 after 'deploy:update_code', 'deploy:symlinks'
 after 'deploy:finalize_update', 'deploy:shared'
 after 'deploy:finalize_update', 'deploy:permissions'
+after 'deploy:finalize_update', 'deploy:db:migrate'
