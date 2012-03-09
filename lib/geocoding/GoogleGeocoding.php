@@ -32,9 +32,9 @@ class GoogleGeocoding {
         $log->logInfo('Geocode Response: %s', $data);
 
         $json = json_decode($data);
-        if($json->status != 'OK' || empty($json->results)) {
+        /*if($json->status != 'OK' || empty($json->results)) {
             throw new Exception('could not find results');
-        }
+        }*/
 
         return $json;
     }
