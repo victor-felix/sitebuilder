@@ -10,6 +10,7 @@ class Import
 
     public function __construct()
     {
+        set_time_limit(0);
         $this->job = \app\models\Jobs::first(array(
             'conditions' => array('type' => 'import'), 
             'order' => 'modified',
@@ -54,7 +55,7 @@ class Import
                 $record->save();
             }
         }
-        return true;//$this->deleteJob();
+        return $this->deleteJob();
     }
 
     public function next()
@@ -93,10 +94,11 @@ class Import
         return $this->file;
     }
 
-    protected function deleteJob() {
+    protected function deleteJob() 
+    {
         if ($this->file()) {
             fclose($this->file());
-            //unlink(APP_ROOT . $this->fileDir . $this->job->params->file);
+            unlink(APP_ROOT . $this->fileDir . $this->job->params->file);
         }
         return $this->job->delete();
     }
