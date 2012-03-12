@@ -4,7 +4,7 @@ require_once 'lib/geocoding/GoogleGeocoding.php';
 
 class Geocode extends Work
 {
-    const GEOCODE_LIMIT = 10;
+    const GEOCODE_LIMIT = 100;
 
     public function run()
     {
@@ -43,10 +43,6 @@ class Geocode extends Work
                             $jobsToRemove[] = (string)$job->_id;
                 }
             }//end foreach
-
-            if ($page > 10) {
-                break;
-            }
             $page++;
         }//end while
 

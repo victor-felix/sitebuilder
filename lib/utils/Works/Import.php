@@ -102,7 +102,7 @@ class Import extends Work
         }
         if ($this->file()) {
             fclose($this->file());
-            //unlink(APP_ROOT . $this->fileDir . $this->job->params->file);
+            unlink(APP_ROOT . $this->fileDir . $this->job->params->file);
         }
         return $this->job->delete();
     }
