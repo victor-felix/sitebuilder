@@ -1,6 +1,6 @@
 <?php
-
-class Import
+require_once 'lib/utils/Work.php';
+class Import extends Work
 {
     protected $category;
     protected $job;
@@ -8,14 +8,13 @@ class Import
     protected $file;
     protected $fields;
 
-    public function __construct()
+    public function _init()
     {
-        set_time_limit(0);
         $this->job = \app\models\Jobs::first(array(
             'conditions' => array('type' => 'import'), 
             'order' => 'modified',
         ));
-
+        parent::_init();
     }
 
     public function canRun()
@@ -50,10 +49,10 @@ class Import
                 $item['parent_id'] = $this->category->id;
                 $item['site_id'] = $this->category->site_id;
                 $item['type'] = $this->category->type;
-                print_r($item);
                 $record->set($item);
                 $record->save();
             }
+            echo "all items processed in job {$this->job->_id} \n";
         }
         return $this->deleteJob();
     }
@@ -83,12 +82,14 @@ class Import
         return $this->fields;
     }
 
-    protected function file ()
+    protected function file()
     {
-        if (!$this->file) {
+        if ($this->job && !$this->file) {
             $file = APP_ROOT . $this->fileDir . $this->job->params->file;
             if (is_readable($file)) {
                 $this->file = fopen($file, 'r');
+            } else {
+                echo 'file don\'t exists';
             }
         }
         return $this->file;
@@ -96,9 +97,12 @@ class Import
 
     protected function deleteJob() 
     {
+        if(!$this->job) {
+            return true;
+        }
         if ($this->file()) {
             fclose($this->file());
-            unlink(APP_ROOT . $this->fileDir . $this->job->params->file);
+            //unlink(APP_ROOT . $this->fileDir . $this->job->params->file);
         }
         return $this->job->delete();
     }

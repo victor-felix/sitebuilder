@@ -1,19 +1,16 @@
 <?php
+require_once 'lib/utils/Work.php';
 require_once 'lib/geocoding/GoogleGeocoding.php';
 
-class Geocode
+class Geocode extends Work
 {
     const GEOCODE_LIMIT = 10;
 
-    public function __construct()
-    {
-        set_time_limit(0);
-    }
     public function run()
     {
         $page = 1;
         $jobsToRemove = array();
-
+        
         while ($jobs = $this->getJobs($page)) {
             foreach ($jobs as $job) {
                 //echo $job->_id,"\n"; continue;
@@ -35,11 +32,14 @@ class Geocode
                             $location = $geocode->results[0]->geometry->location;
                             $item->geo = array($location->lng, $location->lat);
                             $item->save();
+                            echo "item {$item->_id} geocoded\n";
                             $jobsToRemove[] = (string)$job->_id;
                         break;
                     case 'OVER_QUERY_LIMIT' :
+                        echo "reached geocode limit\n";
                         break 3;
                     default :
+                        echo "cant geocode item {$item->_id}\n";
                             $jobsToRemove[] = (string)$job->_id;
                 }
             }//end foreach
@@ -53,7 +53,7 @@ class Geocode
         return $this->removeJobs($jobsToRemove);
     }
 
- protected function removeJobs($jobsIds)
+    protected function removeJobs($jobsIds)
     {
         return \app\models\Jobs::remove(array('_id' => $jobsIds));
     }
