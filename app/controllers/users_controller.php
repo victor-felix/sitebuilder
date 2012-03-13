@@ -17,6 +17,37 @@ class UsersController extends AppController {
 		parent::beforeFilter ();
 	}
 	
+	public function test(){
+	    $job = \app\models\Jobs::create();
+	    
+	    $data = array(
+	                'type' => 'import',
+	                'params' => array(
+	                            'site_id' => 2,
+	                            'category_id' => 31,
+	                            'file' => '82.csv'
+	                        ),
+	            );
+	    $job->set($data);
+	    $job->save();
+	    echo $job->_id;
+	    exit;
+	    
+	    require_once 'lib/utils/Works/Import.php';
+	    echo '<pre>';
+	    $import = new Import();
+	    $import->run();
+	    exit;
+	}
+	
+	public function vai(){
+		require_once 'lib/utils/Works/Geocode.php';
+		echo '<pre>';
+		$import = new Geocode();
+		$import->run();
+		exit;
+	}
+	
 	public function edit() {
 		$user = $this->Users->firstById ( Auth::user ()->id );
 		$this->saveUser ( $user, '/users/edit' );
