@@ -145,9 +145,17 @@ class UsersController extends AppController
 	
 	public function invite()
 	{
-	    $emails = 'tadeu.valentt@gmail.com
+	    $emails = 'tadeu.valentt@gmail.com,
 	    tadeu.valentt@ipanemax.com';
-	    Auth::user()->invite();
+	    Auth::user()->invite($emails);
+	}
+	
+	public function confirm_invite($token = null)
+	{
+	    if ($token && Auth::user()->confirmInvite($emails)) {
+	        Session::writeFlash('success', s('Congratulations, your invitation was confirmed'));
+	    }
+	    $this->redirect ('/');
 	}
 	
 	protected function saveUser($user, $redirect) 
