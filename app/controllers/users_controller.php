@@ -1,9 +1,17 @@
 <?php
 
-class UsersController extends AppController {
-	protected $redirectIf = array ('register', 'login', 'forgot_password', 'reset_password', 'login_and_register' );
+class UsersController extends AppController 
+{
+	protected $redirectIf = array(
+        'register', 
+        'login', 
+        'forgot_password', 
+        'reset_password', 
+        'login_and_register' 
+    );
 	
-	protected function beforeFilter() {
+	protected function beforeFilter() 
+	{
 		if (Auth::loggedIn ()) {
 			if (in_array ( $this->param ( 'action' ), $this->redirectIf )) {
 				if (Auth::user ()->site ()->hide_categories) {
@@ -17,17 +25,20 @@ class UsersController extends AppController {
 		parent::beforeFilter ();
 	}
 	
-	public function edit() {
+	public function edit() 
+	{
 		$user = $this->Users->firstById ( Auth::user ()->id );
 		$this->saveUser ( $user, '/users/edit' );
 	}
 	
-	public function register() {
+	public function register() 
+	{
 		$user = new Users ();
 		$this->saveUser ( $user, '/sites/register' );
 	}
 	
-	public function confirm($id = null, $token = null) {
+	public function confirm($id = null, $token = null) 
+	{
 		$user = $this->Users->firstById ( $id );
 		if ($user->confirm ( $token )) {
 			if (! Auth::loggedIn ()) {
@@ -42,7 +53,8 @@ class UsersController extends AppController {
 		}
 	}
 	
-	public function login() {
+	public function login() 
+	{
 		if (! empty ( $this->data )) {
 			$user = Auth::identify ( $this->data );
 			if ($user) {
@@ -66,7 +78,8 @@ class UsersController extends AppController {
 		}
 	}
 	
-	public function login_and_register() {
+	public function login_and_register() 
+	{
 		if (! empty ( $this->data )) {
 			$user = Auth::identify ( $this->data );
 			if ($user) {
@@ -85,12 +98,14 @@ class UsersController extends AppController {
 		echo $this->render ( 'users/login' );
 	}
 	
-	public function logout() {
+	public function logout() 
+	{
 		Auth::logout ();
 		$this->redirect ( '/' );
 	}
 	
-	public function forgot_password() {
+	public function forgot_password() 
+	{
 		$user = new Users ();
 		if (! empty ( $this->data )) {
 			if ($user->requestForNewPassword ( $this->data ['email'] )) {
@@ -100,7 +115,8 @@ class UsersController extends AppController {
 		$this->set ( array ('user' => $user ) );
 	}
 	
-	public function reset_password($user_id = null, $token = null) {
+	public function reset_password($user_id = null, $token = null) 
+	{
 		if ($user_id) {
 			$user = $this->Users->firstById ( $user_id );
 			
@@ -111,7 +127,7 @@ class UsersController extends AppController {
 			$this->redirect ( '/' );
 		}
 		
-		if (! empty ( $this->data )) {
+		if (!empty ( $this->data )) {
 			$user->updateAttributes ( $this->data );
 			if ($user->resetPassword ()) {
 				Session::writeFlash ( 'success', s ( 'Password successfully reseted' ) );
@@ -121,13 +137,22 @@ class UsersController extends AppController {
 		$this->set ( array ('user' => $user ) );
 	}
 	
-	public function change_site($id = null) {
-		Auth::user ()->site ( $id );
-		$this->redirect ( '/' );
+	public function change_site($id = null) 
+	{
+		Auth::user()->site ( $id );
+		$this->redirect( '/' );
 	}
 	
-	protected function saveUser($user, $redirect) {
-		if (! empty ( $this->data )) {
+	public function invite()
+	{
+	    $emails = 'tadeu.valentt@gmail.com
+	    tadeu.valentt@ipanemax.com';
+	    Auth::user()->invite();
+	}
+	
+	protected function saveUser($user, $redirect) 
+	{
+		if (!empty( $this->data )) {
 			$user->updateAttributes ( $this->data );
 			if ($user->validate ()) {
 				$user->save ();
@@ -136,6 +161,6 @@ class UsersController extends AppController {
 				$this->redirect ( $redirect );
 			}
 		}
-		$this->set ( array ('user' => $user ) );
+		$this->set(array('user' => $user ));
 	}
 }
