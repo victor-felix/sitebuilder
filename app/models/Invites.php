@@ -18,7 +18,8 @@ class Invites extends \lithium\data\Model
         '_id'  => array('type' => 'id'),
         'site_id' => array('type' => 'integer', 'null' => false),
         'host_id' => array('type' => 'integer', 'null' => false),
-        'mail'  => array('type' => 'string', 'null' => false),
+        'email'  => array('type' => 'string', 'null' => false),
+        'token'  => array('type' => 'string', 'null' => false),
         'created'  => array('type' => 'date', 'default' => 0),
         'modified'  => array('type' => 'date', 'default' => 0),
     );
