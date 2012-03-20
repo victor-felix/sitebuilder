@@ -121,8 +121,10 @@ class Users extends AppModel {
 	    $emails = $this->prepareEmails($emails);
 	    $site = $this->site();
 	    foreach ($emails as $email) {
-	        if ($this->inviteToSite($email, $site)) {
-	            $this->sendInviteEmail($email, "Invited by {$this->fullname()}");
+	        if ($data = $this->inviteToSite($email, $site)) {
+	            $data['link'] = Mapper::url("/users/confirm_invite/{$data['token']}", true);
+	            print_r($data);
+	            //$this->sendInviteEmail($email, "Invited by {$this->fullname()}", $data);
 	        }
 	    }
 	}
@@ -130,8 +132,9 @@ class Users extends AppModel {
 	public function confirmInvite($token)
 	{
 	    $invite = \app\models\Invites::first(array(
-	            'conditions' => array('token' => $token,)
+	            'conditions' => array('token' => $token)
 	            ));
+
 	    if (!$invite) {
 	        return false;
 	    }
@@ -165,7 +168,7 @@ class Users extends AppModel {
 	    );
 	    
 	    $invite = \app\models\Invites::create($data);
-	    return $invite->save();
+	    return $invite->save() ? $data : false;
 	}
 	
 	protected function hashPassword($data) 

@@ -145,16 +145,20 @@ class UsersController extends AppController
 	
 	public function invite()
 	{
+	    echo '<pre>';
 	    $emails = 'tadeu.valentt@gmail.com,
 	    tadeu.valentt@ipanemax.com';
 	    Auth::user()->invite($emails);
+	    exit;
 	}
 	
 	public function confirm_invite($token = null)
 	{
-	    if ($token && Auth::user()->confirmInvite($emails)) {
+	    echo '<pre>';
+	    if ($token && Auth::user()->confirmInvite($token)) {
 	        Session::writeFlash('success', s('Congratulations, your invitation was confirmed'));
 	    }
+	    exit;
 	    $this->redirect ('/');
 	}
 	
