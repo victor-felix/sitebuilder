@@ -31,9 +31,10 @@ class UsersController extends AppController
 		$this->saveUser ( $user, '/users/edit' );
 	}
 	
-	public function register() 
+	public function register($invite_token = null) 
 	{
 		$user = new Users ();
+		$this->set(array('invite_token' => $invite_token));
 		$this->saveUser ( $user, '/sites/register' );
 	}
 	
@@ -163,12 +164,7 @@ class UsersController extends AppController
 	        return;
 	    }
 	    Auth::logout();
-	    $user = new Users ();
-	    $this->set(array(
-            'user' => $user,
-            'invite_token' => $token,
-        ));
-	    echo $this->render('users/register');
+	    $this->redirect('/users/login/' . $token);
 	}
 	
 	protected function saveUser($user, $redirect) 

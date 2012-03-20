@@ -9,11 +9,16 @@
 	float: left;
 }
 
-#FormLogin .forgot-password {
+#FormLogin .forgot-password, #FormLogin .no-account {
 	color: #C02926;
 	text-decoration: none;
 }
 
-#FormLogin .forgot-password:hover {
+#FormLogin .no-account {
+	display: block;
+    margin-bottom: 10px;
+}
+
+#FormLogin .forgot-password:hover , #FormLogin .no-account:hover{
 	text-decoration: underline;
 }

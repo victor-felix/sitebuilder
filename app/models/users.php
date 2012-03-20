@@ -124,7 +124,7 @@ class Users extends AppModel {
 	        if ($data = $this->inviteToSite($email, $site)) {
 	            $data['link'] = Mapper::url("/users/confirm_invite/{$data['token']}", true);
 	            print_r($data);
-	            //$this->sendInviteEmail($email, "Invited by {$this->fullname()}", $data);
+	            $this->sendInviteEmail($email, "Invited by {$this->fullname()}", $data);
 	        }
 	    }
 	}

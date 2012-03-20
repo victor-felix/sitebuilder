@@ -33,6 +33,13 @@
         </div>
 
         <div class="form-grid-220 first">
+            <?php
+            if ($invite_token) {
+                echo $this->html->link(s('Don\'t have account? Click here to register'), '/users/register/' . $invite_token, array(
+                    'class' => 'no-account'
+                ));
+            }
+            ?>
             <?php echo $this->html->link(s('Forgot password?'), '/users/forgot_password', array(
                 'class' => 'forgot-password'
             )) ?>
