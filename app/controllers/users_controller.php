@@ -53,12 +53,14 @@ class UsersController extends AppController
 		}
 	}
 	
-	public function login() 
+	public function login($invite_token = null) 
 	{
+	    $this->set(array('invite_token' => $invite_token));
 		if (! empty ( $this->data )) {
 			$user = Auth::identify ( $this->data );
 			if ($user) {
-				Auth::login ( $user, ( bool ) $this->data ['remember'] );
+				Auth::login( $user, (bool) $this->data ['remember'] );
+				$this->confirmInvite($user, $this->data);
 				if (! $user->hasSiteInSegment ( MeuMobi::segment () )) {
 					$user->registerNewSite ();
 					$this->redirect ( '/sites/register' );
@@ -78,12 +80,14 @@ class UsersController extends AppController
 		}
 	}
 	
-	public function login_and_register() 
+	public function login_and_register($invite_token = null) 
 	{
+	    $this->set(array('invite_token' => $invite_token));
+	    
 		if (! empty ( $this->data )) {
 			$user = Auth::identify ( $this->data );
 			if ($user) {
-				if (! $user->hasSiteInSegment ( MeuMobi::segment () )) {
+				if (!$this->data['invite_token'] && !$user->hasSiteInSegment( MeuMobi::segment())) {
 					$user->registerNewSite ();
 					$this->redirect ( '/sites/register' );
 					Session::write ( 'Users.registering', '/sites/register' );
@@ -181,15 +185,25 @@ class UsersController extends AppController
 				$user->save();
 				Session::writeFlash('success', s('Configuration successfully saved'));
 				
-				if (isset($this->data['invite_token']) && $user->confirmInvite($this->data['invite_token'])) {
-        	        Session::writeFlash('success', s('Congratulations, your invitation was confirmed'));
-        	        $this->redirect('/');
-        	    }
+				$this->confirmInvite($user, $this->data);
 				
 				Session::write('Users.registering', '/sites/register');
 				$this->redirect($redirect);
 			}
 		}
 		$this->set(array('user' => $user));
+	}
+	
+	protected function confirmInvite($user, $data) {
+	    if (isset($data['invite_token'])) {
+	        if ($user->confirmInvite($data['invite_token'])) {
+    	    	Session::writeFlash('success', s('Congratulations, your invitation was confirmed'));
+	        } else {
+	            Session::writeFlash('error', s('Sorry, your invitation can\'t de confirmed'));
+	            Auth::logout();
+	        }
+	        $this->redirect('/');
+	    	return true;
+	    }
 	}
 }
