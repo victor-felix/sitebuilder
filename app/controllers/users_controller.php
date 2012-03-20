@@ -147,32 +147,49 @@ class UsersController extends AppController
 	{
 	    echo '<pre>';
 	    $emails = 'tadeu.valentt@gmail.com,
-	    tadeu.valentt@ipanemax.com';
+	    niliany.diniz@ipanemax.com';
 	    Auth::user()->invite($emails);
 	    exit;
 	}
 	
 	public function confirm_invite($token = null)
 	{
-	    echo '<pre>';
-	    if ($token && Auth::user()->confirmInvite($token)) {
-	        Session::writeFlash('success', s('Congratulations, your invitation was confirmed'));
+	    if (!$token) {
+	        $this->redirect('/');
+	        return;
 	    }
-	    exit;
-	    $this->redirect ('/');
+	    Auth::logout();
+	    $user = new Users ();
+	    $this->set(array(
+            'user' => $user,
+            'invite_token' => $token,
+        ));
+	    echo $this->render('users/register');
 	}
 	
 	protected function saveUser($user, $redirect) 
 	{
 		if (!empty( $this->data )) {
-			$user->updateAttributes ( $this->data );
-			if ($user->validate ()) {
-				$user->save ();
-				Session::writeFlash ( 'success', s ( 'Configuration successfully saved' ) );
-				Session::write ( 'Users.registering', '/sites/register' );
-				$this->redirect ( $redirect );
+		    
+			$user->updateAttributes($this->data);
+			
+			if ($user->validate()) {
+			    if (isset($this->data['invite_token'])) {
+			        $user->cantCreateSite = true;
+			    }
+			    
+				$user->save();
+				Session::writeFlash('success', s('Configuration successfully saved'));
+				
+				if (isset($this->data['invite_token']) && $user->confirmInvite($this->data['invite_token'])) {
+        	        Session::writeFlash('success', s('Congratulations, your invitation was confirmed'));
+        	        $this->redirect('/');
+        	    }
+				
+				Session::write('Users.registering', '/sites/register');
+				$this->redirect($redirect);
 			}
 		}
-		$this->set(array('user' => $user ));
+		$this->set(array('user' => $user));
 	}
 }

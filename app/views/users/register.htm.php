@@ -1,10 +1,11 @@
 <?php $this->layout = 'register' ?>
 <?php $this->selectedTab = 0 ?>
 <?php $this->pageTitle = s('Create your Mobi') ?>
+<?php $invite_token = isset($invite_token) ? $invite_token : '' ?>
 
 <p class="tip-register">
     <strong><?php echo s('Did you already have a MeuMobi account?') ?></strong><br />
-    <?php echo s('%s tu use your existing account', $this->html->link(s('Log in here'), '/users/login_and_register')) ?>
+    <?php echo s('%s tu use your existing account', $this->html->link(s('Log in here'), '/users/login_and_register/' . $invite_token)) ?>
 </p>
 
 <?php echo $this->form->create('/users/register', array(
@@ -58,6 +59,14 @@
             )) ?>
         </div>
     </div>
+    <?php 
+        if ($invite_token) {
+            echo $this->form->input('invite_token', array(
+            		'type' => 'hidden',
+            		'value' => $invite_token,
+            ));
+        } 
+    ?>
 </fieldset>
 
 <fieldset class="actions">

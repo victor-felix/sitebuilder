@@ -1,5 +1,6 @@
 <?php $this->layout = 'login' ?>
 <?php $this->pageTitle = s('Log in') ?>
+<?php $invite_token = isset($invite_token) ? $invite_token : '' ?>
 
 <?php echo $this->form->create(Mapper::here(), array(
     'class' => 'form-register',
@@ -37,6 +38,14 @@
             )) ?>
         </div>
     </div>
+    <?php 
+        if ($invite_token) {
+            echo $this->form->input('invite_token', array(
+            		'type' => 'hidden',
+            		'value' => $invite_token,
+            ));
+        } 
+    ?>
 </fieldset>
 
 <fieldset class="actions">
