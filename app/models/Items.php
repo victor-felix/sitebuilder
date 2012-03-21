@@ -309,11 +309,16 @@ class Items extends \lithium\data\Model {
 				);
 
 				foreach($fields as $field) {
-					if(is_string($item[$field]) || is_int($item[$field])) {
-						$itemArray[$field] = $item[$field];
-					} else {
-						$itemArray[$field] = '';
-					}
+				    if ($item[$field]) {
+    					if(is_string($item[$field]) || is_int($item[$field])) {
+    						$itemArray[$field] = $item[$field];
+    					} else {
+    					    $value = $item[$field];
+    						$itemArray[$field] = implode(',', $value->to('array'));
+    					}
+				    } else {
+				        $itemArray[$field] = '';
+				    }
 				}
 				if($format == 'csv') {
 					$toCsv($itemArray);
