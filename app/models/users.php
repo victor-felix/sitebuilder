@@ -268,8 +268,8 @@ class Users extends AppModel {
     	    	        'layout' => 'mail', 
     	    	        'data' =>  $data,
 	    	        ));
-	    	echo $to, "\n";
-	    	echo (int)$mailer->send ();
+	
+    	 return $mailer->send ();
 	    }
 	}
 	

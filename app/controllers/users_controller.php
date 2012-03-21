@@ -152,7 +152,20 @@ class UsersController extends AppController
 	{
 	    if (isset($this->data['emails'])) {
 	        Auth::user()->invite($this->data['emails']);
-	        Session::writeFlash ( 'success', s ( 'Users invited successfully' ) );
+	        
+	        $message = s('Users invited successfully');
+	        if($this->isXhr()) {
+	        	$json = array(
+        			'success'=> $message,
+        			'go_back'=> true,
+        			'refresh'=> '/sites/users'
+	        	);
+	        	$this->respondToJSON($json);
+	        }
+	        else {
+	        	Session::writeFlash('success', $message);
+	        	$this->redirect('/sites/users');
+	        }
 	    }
 	}
 	

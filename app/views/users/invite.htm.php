@@ -1,5 +1,5 @@
 <div class="page-heading">
-    <div class="grid-4 first"><?php echo $this->html->link(s('‹ back'), '/categories/index/', array('class' => 'ui-button large back pop-scene')) ?>
+    <div class="grid-4 first"><?php echo $this->html->link(s('‹ back'), '/sites/users', array('class' => 'ui-button large back pop-scene')) ?>
     </div>
     <div class="grid-8">
         <h1><?php echo $this->pageTitle =  s('Invite user') ?></h1>
@@ -26,7 +26,7 @@
         </div>
     </fieldset>
     <fieldset class="actions">
-        <?php echo $this->html->link(s('‹ back'), '/categories/index/', array('class' => 'ui-button large back pop-scene')) ?>
+        <?php echo $this->html->link(s('‹ back'), '/sites/users', array('class' => 'ui-button large back pop-scene')) ?>
         <?php echo $this->form->submit(s('Invite'), array('class' => 'ui-button red larger')) ?>
     </fieldset>
 <?php echo $this->form->close() ?>
