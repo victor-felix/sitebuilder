@@ -271,7 +271,12 @@ class Categories extends AppModel {
             
                 foreach($fields as $field) {
                     if(isset($row[$field])) {
-                        $record->set(array($field => $row[$field]));
+                        if ($field == 'related') {
+                            $record->set(array($field => explode(',',$row[$field])));
+                        } else {
+                            $record->set(array($field => $row[$field]));
+                        }
+                        
                     }
                 }
                 try {
