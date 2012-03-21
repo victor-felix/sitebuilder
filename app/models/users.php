@@ -141,6 +141,16 @@ class Users extends AppModel {
 	    $site = Model::load('sites')->firstById($invite->site_id);
 	    
 	    if ($site && $this->addSite($site)) {
+	        $hostUser = self::firstById($invite->host_id);
+	        $data = array(
+	                    'site' => $site,
+	                    'invited_user' => $this,
+	                    'host_user' => $hostUser,
+	                );
+	        $this->sendInviteEmail($this->email, "Invite confirmed", $data, 'users/invite_confirmed_mail.htm');
+	        if($hostUser) {
+	            $this->sendInviteEmail($hostUser->email, s("{$this->fullname()} confirmed the invitation"), $data, 'users/invite_confirmed_host_mail.htm');
+	        }
 	        $invite->delete();
 	        return true;
 	    }

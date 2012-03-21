@@ -70,7 +70,7 @@
                     <?php endif ?>
                     <li><?php echo $this->html->link(s('Settings'), '/settings') ?></li>
                     <li><?php echo $this->html->link(s('Customization'), '/settings/customize') ?></li>
-                    <!-- <li><?php echo $this->html->link(s('My Account'), '/settings/account') ?></li> -->
+                    <li><?php echo $this->html->link(s('Users'), '/sites/users') ?></li>
                 </ul>
             </div>
             <div class="clear"></div>
