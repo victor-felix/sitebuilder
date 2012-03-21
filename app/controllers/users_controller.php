@@ -152,7 +152,7 @@ class UsersController extends AppController
 	{
 	    echo '<pre>';
 	    $emails = 'tadeu.valentt@gmail.com,
-	    niliany.diniz@ipanemax.com';
+	    niliany.diniz@gmail.com';
 	    Auth::user()->invite($emails);
 	    exit;
 	}

@@ -167,6 +167,10 @@ class Users extends AppModel {
             'token' => Security::hash($email . time(),'sha1'),
 	    );
 	    
+	    if ($user = self::firstByEmail($email)) {
+	        $data['user'] = $user;
+	    }
+	     
 	    $invite = \app\models\Invites::create($data);
 	    return $invite->save() ? $data : false;
 	}
@@ -226,7 +230,17 @@ class Users extends AppModel {
 			require_once 'lib/mailer/Mailer.php';
 			$segment = Model::load ( 'Segments' )->firstById ( MeuMobi::segment () );
 
-			$mailer = new Mailer ( array ('from' => $segment->email, 'to' => array ($this->email => $this->fullname () ), 'subject' => s ( '[MeuMobi] Account Confirmation' ), 'views' => array ('text/html' => 'users/confirm_mail.htm' ), 'layout' => 'mail', 'data' => array ('user' => $this, 'title' => s ( '[MeuMobi] Account Confirmation' ) ) ) );
+			$mailer = new Mailer ( array (
+    			        'from' => $segment->email, 
+    			        'to' => array ($this->email => $this->fullname () ), 
+    			        'subject' => s ( '[MeuMobi] Account Confirmation' ), 
+    			        'views' => array ('text/html' => 'users/confirm_mail.htm' ), 
+    			        'layout' => 'mail', 
+    			        'data' => array (
+    			                'user' => $this, 
+    			                'title' => s ( '[MeuMobi] Account Confirmation' ) 
+    			                ) 
+		            ));
 			$mailer->send ();
 		}
 	}
@@ -242,20 +256,21 @@ class Users extends AppModel {
 		}
 	}
     
-	protected function sendInviteEmail($to, $title, $data = array(), $template = '')
+	protected function sendInviteEmail($to, $title, $data = array(), $template = 'users/invite_mail.htm')
 	{
-	    if (!Config::read ( 'Mail.preventSending' )) {
+	    if (Config::read ( 'Mail.preventSending' )) {
 	    	require_once 'lib/mailer/Mailer.php';
 	    	$segment = Model::load( 'Segments' )->firstById ( MeuMobi::segment () );
 	    	$mailer = new Mailer(array(
-	    	        'from' => $segment->email, 
-	    	        'to' => $to,
-	    	        'subject' => $title, 
-	    	        'views' => array('text/html' => $template ), 
-	    	        'layout' => 'mail', 
-	    	        'data' => $data,
+    	    	        'from' => $segment->email, 
+    	    	        'to' => $to,
+    	    	        'subject' => $title, 
+    	    	        'views' => array('text/html' => $template ), 
+    	    	        'layout' => 'mail', 
+    	    	        'data' =>  $data,
 	    	        ));
-	    	$mailer->send ();
+	    	echo $to, "\n";
+	    	echo (int)$mailer->send ();
 	    }
 	}
 	
