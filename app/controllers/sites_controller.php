@@ -55,6 +55,11 @@ class SitesController extends AppController {
         ));
     }
     
+    public function users() {
+        $users = $this->getCurrentSite()->users(true);
+        $this->set(compact('users'));
+    }
+    
     protected function editRecord($redirect_to) {
         $site = $this->getCurrentSite();
         if(!empty($this->data)) {

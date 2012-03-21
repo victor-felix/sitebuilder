@@ -123,6 +123,10 @@
 	line-height: 25px;
 }
 
+#users-list .categories-list li .children-count {
+	width: auto;
+}
+
 .categories-list li:hover .children-count {
 	display: none;
 }

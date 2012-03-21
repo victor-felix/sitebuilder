@@ -142,7 +142,23 @@ class Sites extends AppModel {
 	public function categories() {
 		return Model::load ( 'Categories' )->all ( array ('conditions' => array ('site_id' => $this->id, 'visibility >' => - 1 ) ) );
 	}
-
+    
+	public function users($removeCurrent = false) {
+	    $usersIds = Model::load('UsersSites')->getAllUsers($this);
+	    $users = Model::load('Users')->allById($usersIds);
+	    
+	    if ($removeCurrent) {
+	    	$current = Auth::user();
+	    	foreach ( $users as $key => $user ) {
+	    		if ($current->id == $user->id) {
+	    			unset($users[$key]);
+	    		}
+	    	}
+	    }
+	    
+	    return $users;
+	}
+	
 	public function itemTypes() {
 		return Model::load ( 'Segments' )->firstById ( $this->segment )->items;
 	}
