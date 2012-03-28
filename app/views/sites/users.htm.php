@@ -29,7 +29,9 @@
             <!-- 
                 <a href="/business_items/add/3" class="ui-button highlight push-scene">add item</a>
                 <a href="/business_items/index/3" class="ui-button manage push-scene left-join">manage items</a>--> 
-                <a href="/categories/edit/3" class="ui-button manage push-scene">remove</a>
+                <?php echo $this->html->link(s('remove'), '/sites/remove_user/' . $user->id, array(
+                    'class' => 'ui-button manage push-scene'
+                )) ?>
             </div>
             <div class="children-count"><?php echo s('joined at %s',$user->created) ?></div>
         </li>

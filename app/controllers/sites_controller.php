@@ -60,6 +60,15 @@ class SitesController extends AppController {
         $this->set(compact('users'));
     }
     
+    public function remove_user($userId) {
+        if ($this->getCurrentSite()->removeUser((int)$userId)) {
+            Session::writeFlash('success', s('User successfully removed.'));
+        } else {
+            Session::writeFlash('error', s('Sorry, can\'t remove user.'));
+        }
+        $this->redirect('/sites/users');
+    }
+    
     protected function editRecord($redirect_to) {
         $site = $this->getCurrentSite();
         if(!empty($this->data)) {

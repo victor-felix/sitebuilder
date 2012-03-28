@@ -42,7 +42,7 @@ class UsersSites extends AppModel  {
 	}
 
 	public function add($user, $site) {
-		try{
+		try {
 
 			if(MeuMobi::segment() != $site->segment)
 				return false;
@@ -51,15 +51,25 @@ class UsersSites extends AppModel  {
 				return false;
 
 			$this->user_id 	= $user->id;
-			$this->site_id 		= $site->id;
+			$this->site_id 	= $site->id;
 			$this->segment	= MeuMobi::segment();
 
 			return  $this->save();
-		}catch (\Exception $e){
+		} catch (Exception $e){
 			return false;
 		}
 	}
-
+    
+	public function remove($user, $site) {
+	    try {
+            if($retalion = $this->firstByUserIdAndSiteId($user->id, $site->id)) {
+	            return $retalion->delete($retalion->id);      
+	        }
+	    } catch (Exception $e) {
+	        return false;
+	    }
+	}
+	
 	public function onDeleteUser($user) {
 		$this->deleteAll( array('user_id' => $user->id) );
 	}

@@ -159,6 +159,12 @@ class Sites extends AppModel {
 	    return $users;
 	}
 	
+	public function removeUser($userId) {
+	    if($user = Model::load('Users')->firstById($userId)) {
+	        return Model::load('UsersSites')->remove($user, $this);
+	    }
+	}
+	
 	public function itemTypes() {
 		return Model::load ( 'Segments' )->firstById ( $this->segment )->items;
 	}
