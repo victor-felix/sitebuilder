@@ -6,26 +6,26 @@ class SitesController extends AppController {
     }
     
     public function add() {
-    	$site = Model::load('Sites');
+        $site = Model::load('Sites');
     
-    	if(!empty($this->data)) {
-    		$site->segment = MeuMobi::segment();
-    		$site->updateAttributes($this->request->data);
-    		if($site->validate() && $site->save()) {
-    			Session::writeFlash('success', s('Configuration successfully saved.'));
-    			Session::write('Users.registering', '/sites/customize_register');
-    			$this->redirect('/sites/customize_register');
-    			return;
-    		}
-    	}
+        if(!empty($this->data)) {
+            $site->segment = MeuMobi::segment();
+            $site->updateAttributes($this->request->data);
+            if($site->validate() && $site->save()) {
+                Session::writeFlash('success', s('Configuration successfully saved.'));
+                Session::write('Users.registering', '/sites/customize_register');
+                $this->redirect('/sites/customize_register');
+                return;
+            }
+        }
     
-    	$this->set(array(
-    			'site' => $site,
-    			'countries' => Model::load('Countries')->toList(array(
-    					'order' => 'name ASC'
-    			)),
-    			'states' => array(),
-    	));
+        $this->set(array(
+                'site' => $site,
+                'countries' => Model::load('Countries')->toList(array(
+                        'order' => 'name ASC'
+                )),
+                'states' => array(),
+        ));
     
     }
 
