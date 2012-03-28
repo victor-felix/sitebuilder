@@ -3,6 +3,7 @@ namespace app\models;
 
 class Jobs extends \lithium\data\Model
 {
+    protected static $running_processes = array();
     protected $getters = array();
     protected $setters = array();
 
@@ -27,14 +28,17 @@ class Jobs extends \lithium\data\Model
 
     public static function isRunning($process)
     {
+        if (isset(self::$running_processes[$process])) {
+            return self::$running_processes[$process];
+        }
+        
     	$tmp = LIB_ROOT . '/tmp/';
     	$filePath = $tmp . $process . '.pid';
-    	
     	if (file_exists($filePath) && $file = fopen($filePath, 'r')) {
         	if (!flock($file, LOCK_EX | LOCK_NB)) {
-        	    $pid = fgets($file, 100);
+        	    self::$running_processes[$process] = fgets($file, 100);
         		fclose($file);
-        		return $pid;
+        		return self::$running_processes[$process];
         	} else {
         	    fclose($file);
         	}

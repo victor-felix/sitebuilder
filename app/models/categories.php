@@ -8,7 +8,7 @@ use app\models\items\Articles;
 
 class Categories extends AppModel {
     
-    const MAX_IMPORTFILE_SIZE = 100;
+    const MAX_IMPORTFILE_SIZE = 300;
     protected $beforeSave = array('getOrder', 'getItemType', 'checkItems');
     protected $afterSave = array('importItems', 'updateFeed');
     protected $beforeDelete = array('deleteChildren');
@@ -257,7 +257,7 @@ class Categories extends AppModel {
                && $this->scheduleImport()) {
                 return true;
             }
-            
+
             $csv = new CSVHandler($this->data['import']['tmp_name'], ',');
             $csv = $csv->ReadCSV();
             $classname = '\app\models\items\\' . Inflector::camelize($this->data['type']);
@@ -305,7 +305,6 @@ class Categories extends AppModel {
         if (!app\models\Jobs::isRunning('import')) {
            return false; 
         }
-        
         $uploader = new FileUpload();
         $uploader->path = APP_ROOT . '/public/uploads/imports';
         try {
