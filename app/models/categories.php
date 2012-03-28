@@ -7,6 +7,8 @@ use app\models\Items;
 use app\models\items\Articles;
 
 class Categories extends AppModel {
+    
+    const MAX_IMPORTFILE_SIZE = 100;
     protected $beforeSave = array('getOrder', 'getItemType', 'checkItems');
     protected $afterSave = array('importItems', 'updateFeed');
     protected $beforeDelete = array('deleteChildren');
@@ -249,7 +251,13 @@ class Categories extends AppModel {
     protected function importItems($created) {
         if($this->data['populate'] == 'import') {
             $this->data['populate'] = 'manual';
-
+            
+            $fileSize = $this->data['import']['size'];
+            if($fileSize && self::MAX_IMPORTFILE_SIZE < ($fileSize / 1024)
+               && $this->scheduleImport()) {
+                return true;
+            }
+            
             $csv = new CSVHandler($this->data['import']['tmp_name'], ',');
             $csv = $csv->ReadCSV();
             $classname = '\app\models\items\\' . Inflector::camelize($this->data['type']);
@@ -260,6 +268,7 @@ class Categories extends AppModel {
                         '_id' => $row['id']
                     )));
                 }
+                
                 if(!$record){ 
                     $record = $classname::create();
                 }
@@ -289,7 +298,41 @@ class Categories extends AppModel {
             $this->save();
         }
     }
-
+    
+    protected function scheduleImport()
+    {
+        require_once 'lib/utils/FileUpload.php';
+        if (!app\models\Jobs::isRunning('import')) {
+           return false; 
+        }
+        
+        $uploader = new FileUpload();
+        $uploader->path = APP_ROOT . '/public/uploads/imports';
+        try {
+        	$importFile = $uploader->upload($this->data['import'], Security::hash(time()) . '_:original_name');
+        
+        	$data = array(
+        			'type' => 'import',
+        			'params' => array(
+        					'site_id' => $this->data['site_id'],
+        					'category_id' => $this->data['id'],
+        					'file' => $importFile,
+        			)
+        	);
+        
+        	if ($job = \app\models\Jobs::create($data)->save()) {
+        		Session::writeFlash('success', s('The import was scheduled successfully'));
+        		return true;
+        	} else {
+        		throw new Exception('Cant import file');
+        	}
+        
+        } catch (Exception $e) {
+        	Session::writeFlash('error', s('Sorry, can\'t import category'.$e->getMessage()));
+        	return false;
+        }
+    }
+    
     protected function updateFeed($created) {
         if(isset($this->data['populate']) && $this->data['populate'] == 'auto') {
             if(!isset($this->data['feed_url'])) {

@@ -31,7 +31,15 @@ class Daemonize
         echo 'process: ', $process, ' pid: ', getmypid(),  "\n";
         echo 'delay: ', $delay, "\n";
     }
-
+    
+    public static function canProcess($process = 'import')
+    {
+        if (!extension_loaded('pcntl')) {
+            return false;
+        }
+        
+    }
+    
     public function canRun()
     {
         if (!$this->file) {
@@ -40,7 +48,7 @@ class Daemonize
                 return fwrite($this->file, getmypid());   
             }
         }
-        echo 'cant init',"\n";
+        echo 'can\'t init',"\n";
         return false;
     }
 
@@ -49,7 +57,7 @@ class Daemonize
         if (!$this->canRun()) {
             return false;
         }
-        echo 'runing..',"\n";
+        echo 'running..',"\n";
         while (true) {
             if ($this->shouldStop()) {
                 $this->stop();
