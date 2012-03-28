@@ -1,5 +1,5 @@
 <?php
-require_once 'lib/utils/Work.php';
+require_once dirname(__DIR__) . '/Work.php';
 class Import extends Work
 {
     protected $category;
