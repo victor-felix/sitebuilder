@@ -12,7 +12,7 @@ class BusinessItemsController extends AppController {
 		
 		$params = array(
 				'conditions' => array( 'parent_id' => $category->id	),
-				'limit' => $this->param('limit'),
+				'limit' => $this->param('limit', 5),
 				'page' => $this->param('page'),
 				'order' => $this->param('order',array('modified' => 'DESC')),
 				);

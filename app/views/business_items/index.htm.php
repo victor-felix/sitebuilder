@@ -35,7 +35,13 @@
         <li class="no-results"><?php echo s('No items available on this category') ?></li>
     <?php endif ?>
 </ul>
-
+<?php if(count($items)): ?>
+<div class="pagination">
+    <?php 
+    echo $this->LithiumPagination->numbers();
+    ?>
+</div>
+<?php endif; ?>
 <?php if(count($items)): ?>
 <div class="fieldset-actions">
     <div class="grid-4 first">
