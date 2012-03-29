@@ -151,8 +151,8 @@ class UsersController extends AppController
     public function invite()
     {
         if (Users::ROLE_ADMIN != $this->getCurrentSite()->role) {
-        	$this->redirect('/');
-        	return;
+            $this->redirect('/');
+            return;
         }
         if (isset($this->data['emails'])) {
             Auth::user()->invite($this->data['emails']);
