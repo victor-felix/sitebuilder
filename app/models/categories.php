@@ -263,7 +263,7 @@ class Categories extends AppModel {
             $classname = '\app\models\items\\' . Inflector::camelize($this->data['type']);
             foreach($csv as $row) {
                 $record = false;
-            	if(isset($row['id']) && $row['id']) {
+                if(isset($row['id']) && $row['id']) {
                     $record = $classname::find('first', array('conditions' => array(
                         '_id' => $row['id']
                     )));
@@ -308,27 +308,27 @@ class Categories extends AppModel {
         $uploader = new FileUpload();
         $uploader->path = APP_ROOT . '/public/uploads/imports';
         try {
-        	$importFile = $uploader->upload($this->data['import'], Security::hash(time()) . '_:original_name');
+            $importFile = $uploader->upload($this->data['import'], Security::hash(time()) . '_:original_name');
         
-        	$data = array(
-        			'type' => 'import',
-        			'params' => array(
-        					'site_id' => $this->data['site_id'],
-        					'category_id' => $this->data['id'],
-        					'file' => $importFile,
-        			)
-        	);
-        
-        	if ($job = \app\models\Jobs::create($data)->save()) {
-        		Session::writeFlash('success', s('The import was scheduled successfully'));
-        		return true;
-        	} else {
-        		throw new Exception('Cant import file');
-        	}
-        
+            $data = array(
+                    'type' => 'import',
+                    'params' => array(
+                            'site_id' => $this->data['site_id'],
+                            'category_id' => $this->data['id'],
+                            'file' => $importFile,
+                    )
+            );
+
+            if ($job = \app\models\Jobs::create($data)->save()) {
+                Session::writeFlash('success', s('The import was scheduled successfully'));
+                return true;
+            } else {
+                throw new Exception('Cant import file');
+            }
+
         } catch (Exception $e) {
-        	Session::writeFlash('error', s('Sorry, can\'t import category'.$e->getMessage()));
-        	return false;
+            Session::writeFlash('error', s('Sorry, can\'t import category'.$e->getMessage()));
+            return false;
         }
     }
     

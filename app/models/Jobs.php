@@ -32,18 +32,18 @@ class Jobs extends \lithium\data\Model
             return self::$running_processes[$process];
         }
         
-    	$tmp = LIB_ROOT . '/tmp/';
-    	$filePath = $tmp . $process . '.pid';
-    	if (file_exists($filePath) && $file = fopen($filePath, 'r')) {
-        	if (!flock($file, LOCK_EX | LOCK_NB)) {
-        	    self::$running_processes[$process] = fgets($file, 100);
-        		fclose($file);
-        		return self::$running_processes[$process];
-        	} else {
-        	    fclose($file);
-        	}
-    	}
-    	
+        $tmp = LIB_ROOT . '/tmp/';
+        $filePath = $tmp . $process . '.pid';
+        if (file_exists($filePath) && $file = fopen($filePath, 'r')) {
+            if (!flock($file, LOCK_EX | LOCK_NB)) {
+                self::$running_processes[$process] = fgets($file, 100);
+                fclose($file);
+                return self::$running_processes[$process];
+            } else {
+                fclose($file);
+            }
+        }
+        
     }
     
     public static function addTimestamps ($self, $params, $chain)
