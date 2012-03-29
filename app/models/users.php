@@ -90,10 +90,10 @@ class Users extends AppModel {
 			if ($user) {
 				$user->sendForgottenPasswordMail ();
 			} else {
-				$this->errors ['email'] = 'O e-mail não está cadastrado no MeuMobi';
+				$this->errors ['email'] = 'The e-mail is not registered in MeuMobi';
 			}
 		} else {
-			$this->errors ['email'] = 'Você precisa informar seu e-mail';
+			$this->errors ['email'] = 'You need to provide your e-mail';
 		}
 
 		return empty ( $this->errors );
