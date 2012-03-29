@@ -41,13 +41,13 @@
                                 </a></li>
                                 <?php foreach (Auth::user()->sites(true) as $site): ?>
                                 <li>
-	                                <a href="<?php echo Mapper::url('/users/change_site/'.$site->id) ?>" >
-	                                    <span class="site-name">
-	                                        <span><?php echo e($site->title) ?></span>
-	                                        <small><?php echo e($site->domain) ?></small>
-	                                    </span>
-	                                    <span class="status edit"><?php echo s('edit site ›')?></span>
-	                                </a>
+                                    <a href="<?php echo Mapper::url('/users/change_site/'.$site->id) ?>" >
+                                        <span class="site-name">
+                                            <span><?php echo e($site->title) ?></span>
+                                            <small><?php echo e($site->domain) ?></small>
+                                        </span>
+                                        <span class="status edit"><?php echo s('edit site ›')?></span>
+                                    </a>
                                 </li>
                                 <?php endforeach; ?>
                                 <li class="new"><a href="<?php echo Mapper::url('/sites/add') ?>"><?php echo s('Create a new mobi ›') ?></a></li>
@@ -76,13 +76,7 @@
             <div class="clear"></div>
         </div>
 
-        <?php if($success = Session::flash('success')): ?>
-            <a href="#" id="success-feedback"><?php echo s($success) ?></a>
-        <?php endif ?>
-
-        <?php if($error = Session::flash('error')): ?>
-            <a href="#" id="error-feedback"><?php echo s($error) ?></a>
-        <?php endif ?>
+        <?php echo $this->element('layouts/flash') ?>
 
         <div id="content">
             <?php echo $this->contentForLayout ?>
