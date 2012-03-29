@@ -235,6 +235,7 @@ class Users extends AppModel {
                 $data ['password'] = Security::hash ( $password, 'sha1' );
             }
             unset ( $data ['confirm_password'] );
+
         }
 
         return $data;
