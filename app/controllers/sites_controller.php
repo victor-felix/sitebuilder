@@ -56,6 +56,11 @@ class SitesController extends AppController {
     }
     
     public function users() {
+        Model::load('Users');
+        if (Users::ROLE_ADMIN != $this->getCurrentSite()->role) {
+            $this->redirect('/');
+            return;
+        }
         $users = $this->getCurrentSite()->users(true);
         $this->set(compact('users'));
     }

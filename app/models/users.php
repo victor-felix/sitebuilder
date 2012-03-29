@@ -3,12 +3,52 @@ use lithium\storage\Session, lithium\util\Validator;
 
 class Users extends AppModel {
     const CURRENT_SITE = 'User.site';
-
+    const ROLE_ADMIN = 1;
+    const ROLE_EDITOR = 2;
+    
     protected $getters = array ('firstname', 'lastname' );
     protected $beforeSave = array ('hashPassword', 'createToken', 'joinName' );
     protected $beforeDelete = array ('removeSites');
     protected $afterSave = array ('authenticate', 'createSite', 'sendConfirmationMail' );
-    protected $validates = array ('firstname' => array ('rule' => 'notEmpty', 'message' => 'You must fill in all fields' ), 'lastname' => array ('rule' => 'notEmpty', 'message' => 'You must fill in all fields' ), 'email' => array (array ('rule' => 'notEmpty', 'message' => 'You must fill in all fields' ), array ('rule' => 'email', 'message' => 'Please enter a valid email address.' ), array ('rule' => array ('unique', 'email' ), 'message' => 'There is an existing account associated with this email address.' ) ), 'password' => array (array ('rule' => array ('minLength', 6 ), 'message' => 'The password should contain at least 6 characters.', 'allowEmpty' => true ), array ('rule' => array ('minLength', 6 ), 'message' => 'The password should contain at least 6 characters.', 'on' => 'create' ) ), 'confirm_password' => array ('rule' => array ('confirmField', 'password' ), 'message' => 'Passwords do not match' ) );
+    protected $validates = array (
+                                    'firstname' => array (
+                                        'rule' => 'notEmpty', 
+                                        'message' => 'You must fill in all fields' 
+                                    ), 
+                                    'lastname' => array (
+                                        'rule' => 'notEmpty', 
+                                        'message' => 'You must fill in all fields' 
+                                    ), 
+                                    'email' => array (
+                                        array (
+                                            'rule' => 'notEmpty', 
+                                            'message' => 'You must fill in all fields' 
+                                        ), 
+                                        array (
+                                            'rule' => 'email', 
+                                            'message' => 'Please enter a valid email address.' 
+                                        ), 
+                                        array (
+                                            'rule' => array ('unique', 'email' ), 
+                                            'message' => 'There is an existing account associated with this email address.' 
+                                        ) 
+                                    ), 
+                                    'password' => array (
+                                        array (
+                                            'rule' => array ('minLength', 6 ), 
+                                            'message' => 'The password should contain at least 6 characters.', 
+                                            'allowEmpty' => true 
+                                        ), 
+                                        array (
+                                            'rule' => array ('minLength', 6 ), 
+                                            'message' => 'The password should contain at least 6 characters.', 'on' => 'create' 
+                                        ) 
+                                    ), 
+                                    'confirm_password' => array (
+                                            'rule' => array ('confirmField', 'password' ), 
+                                            'message' => 'Passwords do not match' 
+                                    ) 
+                                );
 
     public function firstname() {
         if (array_key_exists ( 'name', $this->data )) {
@@ -28,10 +68,10 @@ class Users extends AppModel {
         return preg_replace('/,/', ' ', $this->name);
     }
 
-    public function addSite($site)
+    public function addSite($site, $role = 1)
     {
         $model = Model::load('UsersSites');
-        return $model->add($this, $site);
+        return $model->add($this, $site, $role);
     }
     
     public function site($siteId = false) {
@@ -44,14 +84,17 @@ class Users extends AppModel {
 
         if ($currentSiteId && $model->check($this->id, $currentSiteId)) {
             $siteId = $currentSiteId;
-        }
-        else {
+        } else {
             $siteId = $model->getFirstSite($this);
         }
 
         if ($siteId) {
             Session::write(static::CURRENT_SITE, $siteId);
-            return Model::load('Sites')->firstById($siteId);
+            $site = Model::load('Sites')->firstById($siteId);
+            $userSite = $model->firstByUserIdAndSiteIdAndSegment($this->id, $siteId, MeuMobi::segment());
+            $site->role = $userSite->role;
+            $site->joined = $userSite->modified;
+            return $site;
         }
     }
 
@@ -140,7 +183,7 @@ class Users extends AppModel {
         
         $site = Model::load('sites')->firstById($invite->site_id);
         
-        if ($site && $this->addSite($site)) {
+        if ($site && $this->addSite($site, 2)) {
             $hostUser = self::firstById($invite->host_id);
             $data = array(
                         'site' => $site,

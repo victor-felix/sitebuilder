@@ -1,3 +1,4 @@
+<?php $currentSite = Auth::user()->site(); ?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -23,19 +24,19 @@
             <div class="menu">
                 <div class="navigation" id="navbar">
                     <div class="sites">
-                        <p class="business-name"><span><?php echo e(Auth::user()->site()->title) ?></span></p>
+                        <p class="business-name"><span><?php echo e($currentSite->title) ?></span></p>
                         <p class="share">
-                            http://<?php echo e(Auth::user()->site()->domain) ?>
+                            http://<?php echo e($currentSite->domain) ?>
                             <!-- *
-                            <a id="share_site" href="<?php echo e(Auth::user()->site()->domain) ?>"><?php echo s('share url') ?></a> -->
+                            <a id="share_site" href="<?php echo e($currentSite->domain) ?>"><?php echo s('share url') ?></a> -->
                         </p>
                         <div class="site-switcher">
                             <p><?php echo s('My mobi sites');?></p>
                             <ul>
                                 <li><a href="#">
                                     <span class="site-name">
-                                        <span><?php echo e(Auth::user()->site()->title) ?></span>
-                                        <small>http://<?php echo e(Auth::user()->site()->domain) ?></small>
+                                        <span><?php echo e($currentSite->title) ?></span>
+                                        <small>http://<?php echo e($currentSite->domain) ?></small>
                                     </span>
                                     <span class="status current"><?php echo s('current site')?></span>
                                 </a></li>
@@ -65,12 +66,14 @@
                     </div>
                 </div>
                 <ul>
-                    <?php if(!Auth::user()->site()->hide_categories): ?>
-                        <li><?php echo $this->html->link(e(Auth::user()->site()->rootCategory()->title), '/categories') ?></li>
+                    <?php if(!$currentSite->hide_categories): ?>
+                        <li><?php echo $this->html->link(e($currentSite->rootCategory()->title), '/categories') ?></li>
                     <?php endif ?>
                     <li><?php echo $this->html->link(s('Settings'), '/settings') ?></li>
                     <li><?php echo $this->html->link(s('Customization'), '/settings/customize') ?></li>
+                    <?php if(Users::ROLE_ADMIN == $currentSite->role): ?>
                     <li><?php echo $this->html->link(s('Users'), '/sites/users') ?></li>
+                    <?php endif; ?>
                 </ul>
             </div>
             <div class="clear"></div>

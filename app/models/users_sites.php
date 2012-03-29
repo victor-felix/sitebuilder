@@ -41,7 +41,7 @@ class UsersSites extends AppModel  {
         ));
     }
 
-    public function add($user, $site) {
+    public function add($user, $site, $role = 1) {
         try {
 
             if(MeuMobi::segment() != $site->segment)
@@ -50,10 +50,11 @@ class UsersSites extends AppModel  {
             if($this->check($user->id, $site->id) )
                 return false;
 
-            $this->user_id  = $user->id;
-            $this->site_id  = $site->id;
-            $this->segment  = MeuMobi::segment();
-
+            $this->user_id = $user->id;
+            $this->site_id = $site->id;
+            $this->segment = MeuMobi::segment();
+            $this->role = $role;
+            
             return  $this->save();
         } catch (Exception $e){
             return false;
@@ -62,7 +63,7 @@ class UsersSites extends AppModel  {
     
     public function remove($user, $site) {
         try {
-            if($retalion = $this->firstByUserIdAndSiteId($user->id, $site->id)) {
+            if($retalion = $this->firstByUserIdAndSiteIdAndSegment($user->id, $site->id, MeuMobi::segment())) {
                 return $retalion->delete($retalion->id);      
             }
         } catch (Exception $e) {
