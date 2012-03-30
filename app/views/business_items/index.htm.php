@@ -47,8 +47,7 @@
         <?php echo $this->LithiumPagination->next('>>') ?>
     </li>
 </ul>
-<?php endif; ?>
-<?php if(count($items)): ?>
+
 <div class="fieldset-actions">
     <div class="grid-4 first">
         <?php echo $this->html->link(s('‹ back'), '/categories', array( 'class' => 'ui-button large back pop-scene' )) ?>
