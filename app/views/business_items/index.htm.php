@@ -47,38 +47,6 @@
         <?php echo $this->LithiumPagination->next('>>') ?>
     </li>
 </ul>
-<?php 
-$this->html->scriptsForLayout .= '
-<script type="text/javascript">
-<!--
-$.Paginate();
-//-->
-</script>
-';
-?>
-<style>
-<!--
-.pagination-wrapp {
-	text-align: center;
-	list-style: none;
-	margin: 10px 0;
-}
-
-.pagination-wrapp li {
-	display: inline;
-	color: #2F3E6E;
-	font-size: 14px;
-    font-weight: bold;
-}
-
-.pagination-wrapp li a {
-	color: #2F3E6E;
-}
-.pagination-wrapp li .current {
-	font-size: 20px;
-}
--->
-</style>
 <?php endif; ?>
 <?php if(count($items)): ?>
 <div class="fieldset-actions">
