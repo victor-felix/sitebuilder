@@ -12,7 +12,7 @@
     <div class="clear"></div>
 </div>
 
-<ul class="businessitems-list">
+<ul class="businessitems-list paginate-items">
     <?php if(count($items)): ?>
         <?php foreach($items as $bi): ?>
         <li>
@@ -36,11 +36,49 @@
     <?php endif ?>
 </ul>
 <?php if(count($items)): ?>
-<div class="pagination">
-    <?php 
-    echo $this->LithiumPagination->numbers();
-    ?>
-</div>
+<ul id="pagination" class="pagination-wrapp">
+    <li>
+        <?php echo $this->LithiumPagination->previous('<<') ?>
+    </li>
+    <li>
+        <?php echo $this->LithiumPagination->numbers(); ?>
+    </li>
+    <li>
+        <?php echo $this->LithiumPagination->next('>>') ?>
+    </li>
+</ul>
+<?php 
+$this->html->scriptsForLayout .= '
+<script type="text/javascript">
+<!--
+$.Paginate();
+//-->
+</script>
+';
+?>
+<style>
+<!--
+.pagination-wrapp {
+	text-align: center;
+	list-style: none;
+	margin: 10px 0;
+}
+
+.pagination-wrapp li {
+	display: inline;
+	color: #2F3E6E;
+	font-size: 14px;
+    font-weight: bold;
+}
+
+.pagination-wrapp li a {
+	color: #2F3E6E;
+}
+.pagination-wrapp li .current {
+	font-size: 20px;
+}
+-->
+</style>
 <?php endif; ?>
 <?php if(count($items)): ?>
 <div class="fieldset-actions">

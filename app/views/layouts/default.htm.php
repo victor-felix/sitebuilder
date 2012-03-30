@@ -90,7 +90,7 @@
 
         <?php echo $this->element('layouts/footer') ?>
 
-        <?php echo $this->html->script('shared/jquery', 'shared/main', 'shared/markitup', 'shared/async_upload', 'shared/jquery.chosen') ?>
+        <?php echo $this->html->script('shared/jquery', 'shared/main', 'shared/markitup', 'shared/async_upload', 'shared/jquery.chosen', 'shared/paginate') ?>
         <?php echo $this->html->scriptsForLayout ?>
     </body>
 </html>
