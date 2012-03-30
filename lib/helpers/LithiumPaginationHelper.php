@@ -25,6 +25,11 @@ class LithiumPaginationHelper extends Helper{
 		$numbers = array();
 		$start = max($this->page() - $options['modulus'], 1);
 		$end = min($this->page() + $options['modulus'], $this->pages());
+		
+		$n = ($options['modulus'] * 2) + 1;
+		if ($end < $n) {
+		    $end = $n < $this->pages() ? $n : $this->pages();
+		}
 
 		for($i = $start; $i <= $end; $i++) {
 			if($i == $this->page()) {
