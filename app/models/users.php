@@ -308,12 +308,12 @@ class Users extends AppModel {
             $mailer->send ();
         }
     }
-    
+
     protected function sendInviteEmail($to, $title, $data = array(), $template = 'users/invite_mail.htm')
     {
-        if (Config::read ( 'Mail.preventSending' )) {
+        if (!Config::read('Mail.preventSending')) {
             require_once 'lib/mailer/Mailer.php';
-            $segment = Model::load( 'Segments' )->firstById ( MeuMobi::segment () );
+            $segment = Model::load('Segments')->firstById(MeuMobi::segment());
             $mailer = new Mailer(array(
                         'from' => $segment->email, 
                         'to' => $to,
@@ -322,11 +322,11 @@ class Users extends AppModel {
                         'layout' => 'mail', 
                         'data' =>  $data,
                     ));
-    
-         return $mailer->send ();
+
+         return $mailer->send();
         }
     }
-    
+
     protected function authenticate($created) 
     {
         if ($created || Auth::loggedIn ()) {
