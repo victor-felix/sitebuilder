@@ -319,16 +319,42 @@ class Categories extends AppModel {
                     )
             );
 
-            if ($job = \app\models\Jobs::create($data)->save()) {
+            $job = \app\models\Jobs::create($data);
+            if ($job->save()) {
+                $this->sendImportMail(array('job' => $job->to('array')));
                 Session::writeFlash('success', s('The import was scheduled successfully'));
                 return true;
             } else {
-                throw new Exception('Cant import file');
+                throw new Exception('Can\'t import file');
             }
 
         } catch (Exception $e) {
             Session::writeFlash('error', s('Sorry, can\'t import category'.$e->getMessage()));
             return false;
+        }
+    }
+    
+    protected function sendImportMail($params = array()) {
+        if (!Config::read ( 'Mail.preventSending' )) {
+            require_once 'lib/mailer/Mailer.php';
+            $segment = Model::load ( 'Segments' )->firstById (MeuMobi::segment());
+            $user = Auth::user();
+            $default = array(
+                        'user' => $user,
+                        'category' => $this,
+                        'title' => s('[MeuMobi] Category import scheduled'),
+                    );
+            $data = array_merge($default, $params);
+            
+            $mailer = new Mailer (array (
+                        'from' => $segment->email,
+                        'to' => array($user->email => $user->fullname ()),
+                        'subject' => $data['title'],
+                        'views' => array ('text/html' => 'categories/confirm_import_mail.htm'),
+                        'layout' => 'mail',
+                        'data' => $data,
+                    ));
+            return $mailer->send ();
         }
     }
     
