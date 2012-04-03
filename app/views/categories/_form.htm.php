@@ -17,10 +17,13 @@
         <div class="form-grid-460 populate-fields <?php echo(false)?'two_column':'three_column'; ?>">
             <label><?php echo s('Type of category') ?></label>
             <?php
-                $strCssClass = (false)?'two_column':'three_column'; //$category->id
+                $strCssClass = 'three_column';
                 echo $this->form->input('populate', array(
                 'type' => 'radio',
-                'options' => getDataPopulateFields($category),
+                'options' => array(
+                    'manual' => s('Manual'),
+                    'auto' => s('Auto'),
+                    'import' => s('Import')),
             ));
             ?>
             <small class="<?php echo $strCssClass; ?>"><?php echo s('Manual Categories allow to manage manually any type of content') ?></small>
@@ -71,10 +74,10 @@
             <label for="FormVisibility" class="checkbox"><?php echo s('This category is visible for any user') ?></label>
         </div>
    
-	    <?php if(!is_null($category->id)): ?>
+        <?php if(!is_null($category->id)): ?>
             <?php echo $this->html->link(s('Export as CSV'), '/api/' . $site->domain . '/export/' . $category->id) ?>
         <?php endif ?>
-	    
+        
         <?php if($parent): ?>
             <?php echo $this->form->input('parent_id', array(
                 'type' => 'hidden',
@@ -89,24 +92,14 @@
         'class' => 'ui-button red larger'
     )) ?>
     <?php if($category->id && $category->parent_id > 0): ?>
+        
         <?php echo $this->html->link($this->html->image('shared/categories/delete.gif') . s('Delete category'), '/categories/delete/' . $category->id, array(
             'class' => 'ui-button delete'
         )) ?>
+        
+        <?php echo $this->html->link($this->html->image('shared/categories/delete.gif') . s('Delete all items'), '/categories/delete_all_items/' . $category->id, array(
+            'class' => 'ui-button delete delete-items'
+        )) ?> 
     <?php endif ?>
 </fieldset>
 <?php echo $this->form->close() ?>
-
-
-<?php
-	// some function for not confund with code HTML
-	function getDataPopulateFields($category){
-		return (false)?
-			array(
-                    'manual' => s('Manual'),
-                    'auto' => s('Auto')):
-			array(
-                    'manual' => s('Manual'),
-                    'auto' => s('Auto'),
-                    'import' => s('Import'));	
-	}
-?>
