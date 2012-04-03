@@ -334,7 +334,7 @@ class Categories extends AppModel {
         }
 
         $categories = $this->allByParentId($id);
-        $this->deleteSet('Categories', $categories);
+        $this->deleteSet(Model::load('Categories'), $categories);
 
         $items = Items::find('all', array('conditions' => array(
             'parent_id' => $id
