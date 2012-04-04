@@ -8,13 +8,13 @@ class Import extends Work
     protected $file;
     protected $fields;
 
-    public function _init()
+    public function init()
     {
         $this->job = \app\models\Jobs::first(array(
             'conditions' => array('type' => 'import'), 
             'order' => 'modified',
         ));
-        parent::_init();
+        parent::init();
     }
 
     public function canRun()

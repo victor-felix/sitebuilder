@@ -3,25 +3,23 @@ require_once dirname(dirname(dirname(__DIR__))) . '/config/bootstrap.php';
 require_once 'config/settings.php';
 require_once 'config/connections.php';
 
-class Work
+abstract class Work
 {
-    public function __construct()
+    protected $stoping = false;
+    
+    abstract public function init();
+    
+    abstract public function run();
+    
+    public function start()
     {
         try {
-            $this->_init();
+            $this->init();
             $this->run();
         } catch (Exception $e) {
             echo $e->getMessage();
         }
     }
 
-    public function _init()
-    {
-
-    }
-
-    public function run()
-    {
-
-    }
+    
 }
