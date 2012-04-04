@@ -1,7 +1,5 @@
 <?php
-require_once dirname(dirname(dirname(__DIR__))) . '/config/bootstrap.php';
-require_once 'config/settings.php';
-require_once 'config/connections.php';
+namespace utils;
 
 abstract class Work
 {

@@ -1,9 +1,8 @@
 #!/usr/bin/php
 <?php
-require_once dirname( dirname(__FILE__) ) . '/lib/utils/Daemonize.php';
+require_once dirname( dirname(__FILE__) ) . '/lib/utils/Worker.php';
 
 array_shift($argv);
 $type = array_shift($argv);
-$delay = array_shift($argv);
-$daemon = new Daemonize($type, $delay);
-$daemon->run();
+$worker = new utils\Worker($type);
+$worker->run();

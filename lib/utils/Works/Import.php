@@ -1,5 +1,7 @@
 <?php
-require_once dirname(__DIR__) . '/Work.php';
+namespace utils;
+require_once 'lib/utils/Work.php';
+
 class Import extends Work
 {
     protected $category;
@@ -14,7 +16,6 @@ class Import extends Work
             'conditions' => array('type' => 'import'), 
             'order' => 'modified',
         ));
-        parent::init();
     }
 
     public function canRun()
@@ -22,7 +23,7 @@ class Import extends Work
         if (!$this->job) {
             return false;
         }
-        $this->category = Model::load('categories')->firstById($this->job->params->category_id);
+        $this->category = \Model::load('categories')->firstById($this->job->params->category_id);
         if ($this->file() && $this->category) {
             return true;
         }
@@ -32,7 +33,7 @@ class Import extends Work
     {
         if ($this->canRun()) {
             $classname = '\app\models\items\\' .
-            Inflector::camelize($this->category->type);
+            \Inflector::camelize($this->category->type);
 
             while ($item = $this->next()) {
                 if (isset($item['id'])) {

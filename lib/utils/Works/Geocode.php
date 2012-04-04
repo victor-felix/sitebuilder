@@ -1,11 +1,16 @@
 <?php
-require_once dirname(__DIR__) . '/Work.php';
+namespace utils;
+require_once 'lib/utils/Work.php';
 require_once 'lib/geocoding/GoogleGeocoding.php';
 
 class Geocode extends Work
 {
     const GEOCODE_LIMIT = 100;
-
+    public function init()
+    {
+    
+    }
+    
     public function run()
     {
         $page = 1;
@@ -15,7 +20,7 @@ class Geocode extends Work
             foreach ($jobs as $job) {
                 //echo $job->_id,"\n"; continue;
                 $classname = '\app\models\items\\' .
-                Inflector::camelize($job->params->type);
+                \Inflector::camelize($job->params->type);
                 $item = $classname::first(array(
                     'conditions' => array(
                         '_id' => $job->params->item_id,
@@ -26,7 +31,7 @@ class Geocode extends Work
                     continue;
                 }
 
-                $geocode = GoogleGeocoding::geocode($item->address);
+                $geocode = \GoogleGeocoding::geocode($item->address);
                 switch ($geocode->status) {
                     case 'OK' :
                             $location = $geocode->results[0]->geometry->location;
