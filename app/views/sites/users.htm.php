@@ -33,7 +33,7 @@
                     'class' => 'ui-button manage push-scene'
                 )) ?>
             </div>
-            <div class="children-count"><?php echo s('joined at %s',$user->created) ?></div>
+            <div class="children-count"><?php echo s('joined at %s',$user->site()->joined) ?></div>
         </li>
         <?php endforeach; ?>
     </ul>
