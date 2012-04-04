@@ -8,6 +8,7 @@ require_once 'config/connections.php';
 class Worker 
 {
     public $file;
+    protected $log;
     protected $delay;
     protected $process;
     protected $tmpDir;
@@ -17,13 +18,13 @@ class Worker
     	set_time_limit(0);
     	$this->process = $process;
     	$this->tmpDir = dirname( dirname( dirname(__FILE__) ) ) . '/tmp/';
-    	//echo 'process: ', $process, ' pid: ', getmypid(),  "\n";
-    	//echo 'delay: ', $delay, "\n";
+    	$this->log = \KLogger::instance(\Filesystem::path('log'));
     }
     
-    public static function canProcess($process = 'import')
+    public static function start($process)
     {
-        
+        $worker = new self($type);
+        $worker->run();
     }
     
     public function canRun()
@@ -34,7 +35,7 @@ class Worker
     			return fwrite($this->file, getmypid());
     		}
     	}
-    	//echo 'can\'t init',"\n";
+    	$this->log->logNotice('%s work: can\'t init worker', $this->process);
     	return false;
     }
     
@@ -48,7 +49,7 @@ class Worker
 			$work = new $workClass();
 			$work->start();
 		} catch (Exception $e) {
-			//echo $e->getMessage();
+			$this->log->logError('%s work: %s', $this->process, $e->getMessage());
 		}
 		$this->stop();
     }

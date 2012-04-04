@@ -5,20 +5,18 @@ require_once 'lib/geocoding/GoogleGeocoding.php';
 
 class Geocode extends Work
 {
-    const GEOCODE_LIMIT = 100;
+    /*
+     * microseconds delay 
+     */
+    const DELAY_TIME = 250000; 
+    
     public function init()
     {
-    
     }
     
     public function run()
-    {
-        $page = 1;
-        $jobsToRemove = array();
-        
-        while ($jobs = $this->getJobs($page)) {
-            foreach ($jobs as $job) {
-                //echo $job->_id,"\n"; continue;
+    {   
+        while ($job = $this->getJob()) {
                 $classname = '\app\models\items\\' .
                 \Inflector::camelize($job->params->type);
                 $item = $classname::first(array(
@@ -37,21 +35,19 @@ class Geocode extends Work
                             $location = $geocode->results[0]->geometry->location;
                             $item->geo = array($location->lng, $location->lat);
                             $item->save();
-                            echo "item {$item->_id} geocoded\n";
-                            $jobsToRemove[] = (string)$job->_id;
+                            $this->log->logInfo("Geocode work: item {$item->_id} geocoded");
                         break;
                     case 'OVER_QUERY_LIMIT' :
-                        echo "reached geocode limit\n";
-                        break 3;
+                        $this->log->logError('Geocode work: reached geocode limit');
+                        break 2;
                     default :
-                        echo "cant geocode item {$item->_id}\n";
-                            $jobsToRemove[] = (string)$job->_id;
+                        $this->log->logError("cant geocode item {$item->_id}");       
                 }
-            }//end foreach
-            $page++;
+                $job->delete();
+                usleep(self::DELAY_TIME);
         }//end while
 
-        return $this->removeJobs($jobsToRemove);
+        //return $this->removeJobs($jobsToRemove);
     }
 
     protected function removeJobs($jobsIds)
@@ -59,15 +55,13 @@ class Geocode extends Work
         return \app\models\Jobs::remove(array('_id' => $jobsIds));
     }
 
-    protected function getJobs($page) 
+    protected function getJob() 
     {
-        $jobs = \app\models\Jobs::all(array(
+        $job = \app\models\Jobs::first(array(
             'conditions' => array('type' => 'geocode'),
             'order' => 'modified',
-            'limit' => self::GEOCODE_LIMIT,
-            'page' => $page,
         ));
-
-        return count($jobs) ? $jobs : false;
+        
+        return count($job) ? $job : false;
     }
 }

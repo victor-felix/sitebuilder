@@ -12,6 +12,7 @@ class Import extends Work
 
     public function init()
     {
+        $this->log->logInfo('import work: init the work');
         $this->job = \app\models\Jobs::first(array(
             'conditions' => array('type' => 'import'), 
             'order' => 'modified',
@@ -53,7 +54,9 @@ class Import extends Work
                 $record->set($item);
                 $record->save();
             }
-            echo "all items processed in job {$this->job->_id} \n";
+            $this->log->logInfo("import work: all items processed in job {$this->job->_id}");
+        } else {
+            $this->log->logWarn('import work: invalid job');
         }
         return $this->deleteJob();
     }
@@ -90,7 +93,7 @@ class Import extends Work
             if (is_readable($file)) {
                 $this->file = fopen($file, 'r');
             } else {
-                echo 'file don\'t exists';
+                $this->log->logError('Import work: file doesn\'t exist');
             }
         }
         return $this->file;

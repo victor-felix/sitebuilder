@@ -3,7 +3,7 @@ namespace utils;
 
 abstract class Work
 {
-    protected $stoping = false;
+    protected $log;
     
     abstract public function init();
     
@@ -12,6 +12,7 @@ abstract class Work
     public function start()
     {
         try {
+            $this->log = \KLogger::instance(\Filesystem::path('log'));
             $this->init();
             $this->run();
         } catch (Exception $e) {
