@@ -190,7 +190,7 @@ class Items extends \lithium\data\Model {
 			unset($item->latitude);
 			unset($item->longitude);
 		} else if($item->changed('address') && !empty($item->address)) {
-		    if(Jobs::isRunning('geocode')) {
+		    if(true) {
                 $result = $chain->next($self, $params, $chain);
                 $job = \app\models\Jobs::create();
                 $data = array(

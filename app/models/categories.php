@@ -8,7 +8,7 @@ use app\models\items\Articles;
 
 class Categories extends AppModel {
     
-    const MAX_IMPORTFILE_SIZE = 300;
+    const MAX_IMPORTFILE_SIZE = 3;
     protected $beforeSave = array('getOrder', 'getItemType', 'checkItems');
     protected $afterSave = array('importItems', 'updateFeed');
     protected $beforeDelete = array('deleteChildren');
@@ -302,9 +302,6 @@ class Categories extends AppModel {
     protected function scheduleImport()
     {
         require_once 'lib/utils/FileUpload.php';
-        if (!app\models\Jobs::isRunning('import')) {
-           return false; 
-        }
         $uploader = new FileUpload();
         $uploader->path = APP_ROOT . '/public/uploads/imports';
         try {
