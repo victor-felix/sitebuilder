@@ -23,8 +23,8 @@ class Worker
     
     public static function start($process)
     {
-        $worker = new self($type);
-        $worker->run();
+        $log = LIB_ROOT . '/tmp/import.log';
+        exec('php ' . LIB_ROOT . "/script/run_works.php $process  >>  $log  &");
     }
     
     public function canRun()

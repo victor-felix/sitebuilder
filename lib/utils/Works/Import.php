@@ -55,8 +55,6 @@ class Import extends Work
                 $record->save();
             }
             $this->log->logInfo("import work: all items processed in job {$this->job->_id}");
-        } else {
-            $this->log->logWarn('import work: invalid job');
         }
         return $this->deleteJob();
     }
