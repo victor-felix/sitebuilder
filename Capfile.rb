@@ -5,7 +5,6 @@ set :deploy_via, :remote_cache
 set :git_enable_submodules, true
 
 set :use_sudo, false
-ssh_options[:forward_agent] = true
 
 set :normalize_asset_timestamps, false
 set :shared_children, %w(public/uploads meu-site-builder/log)
