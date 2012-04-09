@@ -326,8 +326,13 @@ class Items extends \lithium\data\Model {
                 );
 
                 foreach($fields as $field) {
-                    if(is_string($item[$field]) || is_int($item[$field])) {
-                        $itemArray[$field] = $item[$field];
+                    $value = $item[$field];
+                    if ($value) {
+                        if ($value instanceof \lithium\core\Object) {
+                            $itemArray[$field] = implode(',', $value->to('array'));
+                        } else {
+                            $itemArray[$field] = $value;
+                        }
                     } else {
                         $itemArray[$field] = '';
                     }

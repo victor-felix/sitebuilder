@@ -12,7 +12,7 @@
     <div class="clear"></div>
 </div>
 
-<ul class="businessitems-list">
+<ul class="businessitems-list paginate-items">
     <?php if(count($items)): ?>
         <?php foreach($items as $bi): ?>
         <li>
@@ -35,8 +35,19 @@
         <li class="no-results"><?php echo s('No items available on this category') ?></li>
     <?php endif ?>
 </ul>
-
 <?php if(count($items)): ?>
+<ul id="pagination" class="pagination-wrapp">
+    <li>
+        <?php echo $this->LithiumPagination->previous('<<') ?>
+    </li>
+    <li>
+        <?php echo $this->LithiumPagination->numbers(); ?>
+    </li>
+    <li>
+        <?php echo $this->LithiumPagination->next('>>') ?>
+    </li>
+</ul>
+
 <div class="fieldset-actions">
     <div class="grid-4 first">
         <?php echo $this->html->link(s('‹ back'), '/categories', array( 'class' => 'ui-button large back pop-scene' )) ?>
