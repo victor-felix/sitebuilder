@@ -219,12 +219,11 @@ class Users extends AppModel {
             'email' => $email,
             'token' => Security::hash($email . time(),'sha1'),
         );
+        $invite = \app\models\Invites::create($data);
         
         if ($user = self::firstByEmail($email)) {
-            $data['user'] = $user;
+        	$data['user'] = $user;
         }
-         
-        $invite = \app\models\Invites::create($data);
         return $invite->save() ? $data : false;
     }
     

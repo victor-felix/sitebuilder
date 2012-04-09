@@ -8,7 +8,7 @@
     <?php echo s('%s tu use your existing account', $this->html->link(s('Log in here'), '/users/login_and_register/' . $invite_token)) ?>
 </p>
 
-<?php echo $this->form->create('/users/register', array(
+<?php echo $this->form->create('/users/register/' . $invite_token, array(
     'id' => 'form-register-personal-info',
     'class' => 'form-register',
     'object' => $user

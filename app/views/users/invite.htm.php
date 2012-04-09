@@ -12,7 +12,7 @@
         'id' => 'form-add-businessitem'
     )) ?>
     <fieldset>
-        <h2><?php echo s('common settings') ?></h2>
+        <h2><?php echo s('invite new users') ?></h2>
         <div class="field-group">
             <div class="form-grid-460">
                 <?php echo $this->form->input('emails', array(
