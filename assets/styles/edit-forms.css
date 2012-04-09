@@ -138,6 +138,10 @@
 	max-width: 200px;
 }
 
+.form-edit a.delete-items {
+	margin-right: 10px;
+}
+
 .form-edit a.delete {
 	float: right;
 	position: relative;

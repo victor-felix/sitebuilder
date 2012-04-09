@@ -3,6 +3,7 @@ use lithium\storage\Session, lithium\util\Validator;
 
 class Users extends AppModel {
     const CURRENT_SITE = 'User.site';
+
     const ROLE_ADMIN = 1;
     const ROLE_EDITOR = 2;
     
@@ -73,7 +74,7 @@ class Users extends AppModel {
         $model = Model::load('UsersSites');
         return $model->add($this, $site, $role);
     }
-    
+
     public function site($siteId = false) {
         $model = Model::load('UsersSites');
         if ($siteId && $model->check($this->id, $siteId)) {
@@ -139,10 +140,10 @@ class Users extends AppModel {
             if ($user) {
                 $user->sendForgottenPasswordMail ();
             } else {
-                $this->errors ['email'] = 'O e-mail não está cadastrado no MeuMobi';
+                $this->errors ['email'] = 'The e-mail is not registered in MeuMobi';
             }
         } else {
-            $this->errors ['email'] = 'Você precisa informar seu e-mail';
+            $this->errors ['email'] = 'You need to provide your e-mail';
         }
 
         return empty ( $this->errors );
@@ -158,7 +159,7 @@ class Users extends AppModel {
             return false;
         }
     }
-    
+
     public function invite($emails)
     {
         $emails = $this->prepareEmails($emails);
@@ -235,7 +236,6 @@ class Users extends AppModel {
                 $data ['password'] = Security::hash ( $password, 'sha1' );
             }
             unset ( $data ['confirm_password'] );
-
         }
 
         return $data;
