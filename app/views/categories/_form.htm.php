@@ -94,12 +94,40 @@
     <?php if($category->id && $category->parent_id > 0): ?>
         
         <?php echo $this->html->link($this->html->image('shared/categories/delete.gif') . s('Delete category'), '/categories/delete/' . $category->id, array(
-            'class' => 'ui-button delete'
+            'class' => 'ui-button delete has-confirm','data-confirm' => '#delete-confirm'
         )) ?>
         
         <?php echo $this->html->link($this->html->image('shared/categories/delete.gif') . s('Delete all items'), '/categories/delete_all_items/' . $category->id, array(
-            'class' => 'ui-button delete delete-items'
+            'class' => 'ui-button delete delete-items has-confirm','data-confirm' => '#delete-items-confirm'
         )) ?> 
     <?php endif ?>
 </fieldset>
 <?php echo $this->form->close() ?>
+
+<?php if($category->id && $category->parent_id): ?>
+<div id="delete-confirm" class="delete-confirm">
+    <div class="wrapper">
+        <p>
+            <?php echo s('Really want to delete the <strong>%s</strong> category?', e($category->title)) ?>
+            <br />
+            <?php echo s('This will also delete all items and subcategories') ?>
+        </p>
+        <?php echo $this->html->link(s('Yes, delete'), '/categories/delete/' . $category->id, array(
+            'class' => 'ui-button delete highlight'
+        )) ?>
+        <?php echo $this->html->link(s("No, I don't"), '#', array( 'class' => 'ui-button' )) ?>
+    </div>
+</div>
+
+<div id="delete-items-confirm" class="delete-confirm">
+    <div class="wrapper">
+        <p>
+            <?php echo s('Really want to delete all items from <strong>%s</strong> category?', e($category->title)) ?>
+        </p>
+        <?php echo $this->html->link(s('Yes, delete'), '/categories/delete_all_items/' . $category->id, array(
+            'class' => 'ui-button delete highlight'
+        )) ?>
+        <?php echo $this->html->link(s("No, I don't"), '#', array( 'class' => 'ui-button' )) ?>
+    </div>
+</div>
+<?php endif ?>

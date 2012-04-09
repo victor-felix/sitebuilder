@@ -25,12 +25,12 @@
         <?php echo $this->html->link(
             $this->html->image('shared/categories/delete.gif') . s('Delete %s', $item->type()),
             '/business_items/delete/' . $item->id(),
-            array( 'class' => 'ui-button delete' )
+            array( 'class' => 'ui-button delete has-confirm', 'data-confirm' => '#delete-confirm' )
         ) ?>
     </fieldset>
 <?php echo $this->items->endform() ?>
 
-<div class="delete-confirm">
+<div id="delete-confirm" class="delete-confirm">
     <div class="wrapper">
         <p>
             <?php echo s('Really want to delete <strong>%s</strong>?', e($item->title)) ?>

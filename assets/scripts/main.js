@@ -284,18 +284,21 @@ $.extend($.easing, {
                error: handler
             });
         }
-        else {
-            self.parent().parent().fadeOut('fast');
-        }
+        self.parent().parent().fadeOut('fast');
     });
 
     // Handles the item's deletion in items/edit
-    slider.delegate('#form-edit-businessitem .delete', 'click', function(e) {
-        e.preventDefault();
-        $('#form-edit-businessitem + .delete-confirm').fadeIn('fast');
+    slider.delegate('.ui-button.has-confirm', 'click', function(e) {
+        var confirmSelector = '';
+        if(confirmSelector = $(this).data('confirm')){
+        	e.preventDefault();
+        	$(confirmSelector).fadeIn('fast');
+    	}
     });
 
-    slider.delegate('#form-edit-businessitem + .delete-confirm .ui-button', 'ajax:success', function(e, data) {
+    slider.delegate('.delete-confirm .ui-button', 'ajax:success', function(e, data) {
+    	console.log('oiiii');
+    	$('.delete-confirm').fadeOut('fast');
         $('.slide-elem:last').prev().html(data);
         $('.slide-elem:last .ui-button.back').click();
     });
