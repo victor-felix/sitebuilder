@@ -77,7 +77,11 @@ class CategoriesController extends AppController {
         $this->Categories->delete($id);
         $message = s('Category successfully deleted.');
         if($this->isXhr()) {
-            $json = array('success'=>$message);
+            $json = array(
+                        'success'=>$message,
+                        'go_back'=>true,
+						'refresh'=>'/categories'
+                    );
             $this->respondToJSON($json);
         }
         else {
