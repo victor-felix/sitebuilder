@@ -270,12 +270,13 @@ $.extend($.easing, {
     // Handles the delete confirmation dialog buttons.
     // When clicked cancel, closes the dialog. When clicked OK, makes the
     // request and triggers ajax:success event
-    slider.delegate('.delete-confirm .ui-button', 'click', function(e) {
-        e.preventDefault();
+    content.delegate('.delete-confirm .ui-button', 'click', function(e) {
         var self = $(this);
         if(self.hasClass('delete')) {
+        	if(!slider.length) {
+        		return;
+        	}
             var handler = dataWithCode(function(data,status) {
-                //self.trigger('ajax:success', [data]);
             });
             $.ajax({
                url: this.href,
@@ -284,18 +285,21 @@ $.extend($.easing, {
                error: handler
             });
         }
-        else {
-            self.parent().parent().fadeOut('fast');
-        }
+        self.parent().parent().fadeOut('fast');
+        e.preventDefault();
     });
 
     // Handles the item's deletion in items/edit
-    slider.delegate('#form-edit-businessitem .delete', 'click', function(e) {
-        e.preventDefault();
-        $('#form-edit-businessitem + .delete-confirm').fadeIn('fast');
+    content.delegate('.ui-button.has-confirm', 'click', function(e) {
+        var confirmSelector = '';
+        if(confirmSelector = $(this).data('confirm')){
+        	e.preventDefault();
+        	$(confirmSelector).fadeIn('fast');
+    	}
     });
 
-    slider.delegate('#form-edit-businessitem + .delete-confirm .ui-button', 'ajax:success', function(e, data) {
+    content.delegate('.delete-confirm .ui-button', 'ajax:success', function(e, data) {
+    	$('.delete-confirm').fadeOut('fast');
         $('.slide-elem:last').prev().html(data);
         $('.slide-elem:last .ui-button.back').click();
     });
