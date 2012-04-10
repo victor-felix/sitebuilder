@@ -1,10 +1,8 @@
 <?php
 
 require_once 'lib/simplepie/SimplePie.php';
-require_once 'lib/csv/CSVHandler.php';
-
-use app\models\Items;
-use app\models\items\Articles;
+require_once 'lib/utils/Works/Import.php';
+use app\models\Items, app\models\items\Articles, utils\Import as Import;
 
 class Categories extends AppModel {
     
@@ -255,46 +253,13 @@ class Categories extends AppModel {
             $fileSize = $this->data['import']['size'];
             if($fileSize && self::MAX_IMPORTFILE_SIZE < ($fileSize / 1024)
                && $this->scheduleImport()) {
-                return true;
+                return $this->save();;
             }
-
-            $csv = new CSVHandler($this->data['import']['tmp_name'], ',');
-            $csv = $csv->ReadCSV();
-            $classname = '\app\models\items\\' . Inflector::camelize($this->data['type']);
-            foreach($csv as $row) {
-                $record = false;
-                if(isset($row['id']) && $row['id']) {
-                    $record = $classname::find('first', array('conditions' => array(
-                        '_id' => $row['id']
-                    )));
-                }
-                
-                if(!$record){ 
-                    $record = $classname::create();
-                }
-                
-                $record->parent_id = $this->data['id'];
-                $record->site_id = $this->data['site_id'];
-                $record->type = $this->data['type'];
-                $fields = $record->fields();
-            
-                foreach($fields as $field) {
-                    if(isset($row[$field])) {
-                        if ($field == 'related') {
-                            $record->set(array($field => explode(',',$row[$field])));
-                        } else {
-                            $record->set(array($field => $row[$field]));
-                        }
-                        
-                    }
-                }
-                try {
-                    $record->save();
-                }
-                catch(\MongoException $e) {
-                }
-            }
-
+            $import = new Import();
+            $import->notIsJob();
+            $import->category($this);
+            $import->file($this->data['import']['tmp_name']);
+            $import->start();
             $this->save();
         }
     }
@@ -306,10 +271,11 @@ class Categories extends AppModel {
         $uploader->path = APP_ROOT . '/public/uploads/imports';
         try {
             $importFile = $uploader->upload($this->data['import'], Security::hash(time()) . '_:original_name');
-        
+
             $data = array(
                     'type' => 'import',
                     'params' => array(
+                            'method' => $this->data['import_method'],
                             'site_id' => $this->data['site_id'],
                             'category_id' => $this->data['id'],
                             'file' => $importFile,

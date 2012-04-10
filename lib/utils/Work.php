@@ -16,7 +16,7 @@ abstract class Work
             $this->init();
             $this->run();
         } catch (Exception $e) {
-            echo $e->getMessage();
+            
         }
     }
 

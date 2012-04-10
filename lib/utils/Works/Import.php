@@ -9,23 +9,27 @@ class Import extends Work
     protected $fileDir = '/public/uploads/imports/';
     protected $file;
     protected $fields;
-
+    protected $isJob = true;
+    protected $imported = array();
+    
     public function init()
     {
         $this->log->logInfo('import work: init the work');
-        $this->job = \app\models\Jobs::first(array(
-            'conditions' => array('type' => 'import'), 
-            'order' => 'modified',
-        ));
+        if ($this->isJob) {
+            $this->job = \app\models\Jobs::first(array(
+                'conditions' => array('type' => 'import'), 
+                'order' => 'modified',
+            ));
+        }
     }
 
     public function canRun()
     {
-        if (!$this->job) {
+        if ($this->isJob && !$this->job) {
             return false;
         }
-        $this->category = \Model::load('categories')->firstById($this->job->params->category_id);
-        if ($this->file() && $this->category) {
+        
+        if ($this->file() && $this->category()) {
             return true;
         }
     }
@@ -34,7 +38,7 @@ class Import extends Work
     {
         if ($this->canRun()) {
             $classname = '\app\models\items\\' .
-            \Inflector::camelize($this->category->type);
+            \Inflector::camelize($this->category()->type);
 
             while ($item = $this->next()) {
                 if (isset($item['id'])) {
@@ -44,29 +48,41 @@ class Import extends Work
                         ),
                     ));
                 }
+                
                 if (! $record) {
                     $record = $classname::create();
                 }
 
-                $item['parent_id'] = $this->category->id;
-                $item['site_id'] = $this->category->site_id;
-                $item['type'] = $this->category->type;
+                $item['parent_id'] = $this->category()->id;
+                $item['site_id'] = $this->category()->site_id;
+                $item['type'] = $this->category()->type;
                 $record->set($item);
                 $record->save();
             }
-            $this->log->logInfo("import work: all items processed in job {$this->job->_id}");
         }
         return $this->deleteJob();
     }
-
-    public function next()
+    
+    public function category(\Categories $category = null) 
+    {
+        if (!($this->category instanceof \Categories)) {
+            $this->category = $category ? $category : 
+            \Model::load('categories')->firstById($this->job->params->category_id);
+        }
+        return $this->category;
+    }
+    
+    public function notIsJob()
+    {
+        $this->isJob = false;
+    }
+    
+    protected function next()
     {
         $fields = $this->fields();
-
         if (!$row = fgetcsv($this->file(), 3000)) {
             return false;
         }
-
         foreach ($fields as $key => $field) {
             if (isset($row[$key])) {
                 $data[$field] = $row[$key];
@@ -74,7 +90,7 @@ class Import extends Work
         }
         return $data;
     }
-
+    
     protected function fields()
     {
         if (!$this->fields) {
@@ -84,10 +100,10 @@ class Import extends Work
         return $this->fields;
     }
 
-    protected function file()
+    public function file($file = false)
     {
-        if ($this->job && !$this->file) {
-            $file = APP_ROOT . $this->fileDir . $this->job->params->file;
+        if (!$this->file) {
+            $file = $file ? $file : APP_ROOT . $this->fileDir . $this->job->params->file;
             if (is_readable($file)) {
                 $this->file = fopen($file, 'r');
             } else {
@@ -99,9 +115,10 @@ class Import extends Work
 
     protected function deleteJob() 
     {
-        if(!$this->job) {
+        if(!$this->isJob || !$this->job) {
             return true;
         }
+        $this->log->logInfo("import work: all items processed in job {$this->job->_id}");
         if ($this->file()) {
             fclose($this->file());
             unlink(APP_ROOT . $this->fileDir . $this->job->params->file);
