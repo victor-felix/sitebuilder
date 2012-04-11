@@ -4,12 +4,16 @@ require_once 'lib/utils/Work.php';
 
 class Import extends Work
 {
+    const INCLUSIVE = 0;
+    const EXCLUSIVE = 1;
+    
     protected $category;
     protected $job;
     protected $fileDir = '/public/uploads/imports/';
     protected $file;
     protected $fields;
     protected $isJob = true;
+    protected $method;
     protected $imported = array();
     
     public function init()
@@ -20,6 +24,7 @@ class Import extends Work
                 'conditions' => array('type' => 'import'), 
                 'order' => 'modified',
             ));
+            $this->method = $this->job->params->method;
         }
     }
 
@@ -58,9 +63,12 @@ class Import extends Work
                 $item['type'] = $this->category()->type;
                 $record->set($item);
                 $record->save();
+                if (self::EXCLUSIVE == $this->method) {
+                    $this->imported[] = (string)$record->_id;
+                }
             }
         }
-        return $this->deleteJob();
+        return $this->stop();
     }
     
     public function category(\Categories $category = null) 
@@ -72,9 +80,27 @@ class Import extends Work
         return $this->category;
     }
     
+    public function setMethod($method = null)
+    {
+        $this->method = (int)$method;
+    }
+    
     public function notIsJob()
     {
         $this->isJob = false;
+    }
+
+    public function file($file = false)
+    {
+        if (!$this->file) {
+            $file = $file ? $file : APP_ROOT . $this->fileDir . $this->job->params->file;
+            if (is_readable($file)) {
+                $this->file = fopen($file, 'r');
+            } else {
+                $this->log->logError('Import work: file doesn\'t exist');
+            }
+        }
+        return $this->file;
     }
     
     protected function next()
@@ -90,7 +116,7 @@ class Import extends Work
         }
         return $data;
     }
-    
+
     protected function fields()
     {
         if (!$this->fields) {
@@ -100,17 +126,20 @@ class Import extends Work
         return $this->fields;
     }
 
-    public function file($file = false)
-    {
-        if (!$this->file) {
-            $file = $file ? $file : APP_ROOT . $this->fileDir . $this->job->params->file;
-            if (is_readable($file)) {
-                $this->file = fopen($file, 'r');
-            } else {
-                $this->log->logError('Import work: file doesn\'t exist');
-            }
+    protected function stop() {
+        if (self::EXCLUSIVE == $this->method && count($this->imported)) {
+            $classname = '\app\models\items\\' .
+                         \Inflector::camelize($this->category()->type);
+            $classname::remove(
+    array(
+            'parent_id' => $this->category()->id,
+            '_id' => array(
+                '$nin' => $this->imported,
+            ),
+        )
+            );
         }
-        return $this->file;
+        return $this->deleteJob();
     }
 
     protected function deleteJob() 
