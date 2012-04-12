@@ -8,7 +8,7 @@ use app\models\Items, app\models\items\Articles, utils\Import as Import;
 
 class Categories extends AppModel {
     
-    const MAX_IMPORTFILE_SIZE = 4;
+    const MAX_IMPORTFILE_SIZE = 5;
     protected $beforeSave = array('getOrder', 'getItemType', 'checkItems');
     protected $afterSave = array('importItems', 'updateFeed');
     protected $beforeDelete = array('deleteChildren');
