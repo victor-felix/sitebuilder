@@ -175,10 +175,11 @@ class UsersController extends AppController
     
     public function confirm_invite($token = null)
     {
-        if (!$token) {
+        if (!$token || !Users::validateInvite($token)) {
             $this->redirect('/');
             return;
         }
+        
         Auth::logout();
         $this->redirect('/users/login/' . $token);
     }

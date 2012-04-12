@@ -51,21 +51,24 @@ class Users extends AppModel {
                                     ) 
                                 );
 
-    public function firstname() {
+    public function firstname() 
+    {
         if (array_key_exists ( 'name', $this->data )) {
             preg_match ( '/([^,]+),([^,]+)/', $this->data ['name'], $name );
             return $name [1];
         }
     }
 
-    public function lastname() {
+    public function lastname() 
+    {
         if (array_key_exists ( 'name', $this->data )) {
             preg_match ( '/([^,]+),([^,]+)/', $this->data ['name'], $name );
             return $name [2];
         }
     }
 
-    public function fullname() {
+    public function fullname() 
+    {
         return preg_replace('/,/', ' ', $this->name);
     }
 
@@ -75,7 +78,8 @@ class Users extends AppModel {
         return $model->add($this, $site, $role);
     }
 
-    public function site($siteId = false) {
+    public function site($siteId = false) 
+    {
         $model = Model::load('UsersSites');
         if ($siteId && $model->check($this->id, $siteId)) {
             return Session::write(static::CURRENT_SITE, $siteId);
@@ -99,7 +103,8 @@ class Users extends AppModel {
         }
     }
 
-    public function sites($removeCurrent = false) {
+    public function sites($removeCurrent = false) 
+    {
         $sitesIds = Model::load ( 'UsersSites' )->getAllSites ( $this );
         $sites = Model::load ( 'Sites' )->allById ( $sitesIds );
 
@@ -134,7 +139,8 @@ class Users extends AppModel {
         }
     }
 
-    public function requestForNewPassword($email) {
+    public function requestForNewPassword($email) 
+    {
         if (! empty ( $email )) {
             $user = $this->firstByEmail ( $email );
             if ($user) {
@@ -149,7 +155,8 @@ class Users extends AppModel {
         return empty ( $this->errors );
     }
 
-    public function resetPassword() {
+    public function resetPassword() 
+    {
         if ($this->validate ()) {
             $this->token = $this->newToken ();
             $this->save ();
@@ -199,6 +206,13 @@ class Users extends AppModel {
             return true;
         }
     } 
+    
+    public static function validateInvite($token) 
+    {
+        return \app\models\Invites::find('count', array(
+        		'conditions' => array('token' => $token)
+        ));
+    }
     
     protected function prepareEmails($emails)
     {
