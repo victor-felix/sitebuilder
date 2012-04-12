@@ -1,15 +1,10 @@
 <?php
-
 namespace app\models;
+require_once 'lib/utils/Works/Geocode.php';
 
-use Config;
-use Inflector;
-use Model;
+use Config, Inflector, Model, GoogleGeocoding,
+    lithium\util\Collection, utils\Geocode as Geocode;
 
-require_once 'lib/geocoding/GoogleGeocoding.php';
-use GoogleGeocoding;
-
-use lithium\util\Collection;
 Collection::formats('lithium\net\http\Media');
 
 class Items extends \lithium\data\Model {
@@ -190,7 +185,7 @@ class Items extends \lithium\data\Model {
             unset($item->latitude);
             unset($item->longitude);
         } else if($item->changed('address') && !empty($item->address)) {
-            if(true) {
+            if(Geocode::check('geocode')) {
                 $result = $chain->next($self, $params, $chain);
                 $job = \app\models\Jobs::create();
                 $data = array(

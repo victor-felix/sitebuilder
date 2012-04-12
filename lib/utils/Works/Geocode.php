@@ -26,6 +26,7 @@ class Geocode extends Work
                 ));
 
                 if (!$item) {
+                    $job->delete();
                     continue;
                 }
 
