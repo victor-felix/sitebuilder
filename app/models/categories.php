@@ -2,11 +2,13 @@
 
 require_once 'lib/simplepie/SimplePie.php';
 require_once 'lib/utils/Works/Import.php';
+require_once 'lib/utils/FileUpload.php';
+
 use app\models\Items, app\models\items\Articles, utils\Import as Import;
 
 class Categories extends AppModel {
     
-    const MAX_IMPORTFILE_SIZE = 3;
+    const MAX_IMPORTFILE_SIZE = 4;
     protected $beforeSave = array('getOrder', 'getItemType', 'checkItems');
     protected $afterSave = array('importItems', 'updateFeed');
     protected $beforeDelete = array('deleteChildren');
@@ -257,6 +259,7 @@ class Categories extends AppModel {
             }
             $import = new Import();
             $import->notIsJob();
+            $import->setMethod($this->data['import_method']);
             $import->category($this);
             $import->file($this->data['import']['tmp_name']);
             $import->start();
@@ -266,7 +269,9 @@ class Categories extends AppModel {
     
     protected function scheduleImport()
     {
-        require_once 'lib/utils/FileUpload.php';
+        if (!Import::check('import')) {
+            return false;
+        }
         $uploader = new FileUpload();
         $uploader->path = APP_ROOT . '/public/uploads/imports';
         try {
