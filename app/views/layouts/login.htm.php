@@ -16,13 +16,7 @@
             )) ?>
         </div>
 
-        <?php if($success = Session::flash('success')): ?>
-            <a href="#" id="success-feedback"><?php echo s($success) ?></a>
-        <?php endif ?>
-
-        <?php if($error = Session::flash('error')): ?>
-            <a href="#" id="error-feedback"><?php echo s($error) ?></a>
-        <?php endif ?>
+        <?php echo $this->element('layouts/flash') ?>
 
         <div id="content">
             <?php echo $this->contentForLayout ?>
