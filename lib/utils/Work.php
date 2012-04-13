@@ -32,11 +32,11 @@ abstract class Work
     public static function initCronJobs($jobs = null, $canInit = true)
     {
         $scripts[] = array(
-                'time' => '*/2 * * * *',
+                'time' => '*/10 * * * *',
                 'script' => 'import',
         );
         $scripts[] = array(
-                'time' => '*/5 * * * *',
+                'time' => '0 */1 * * *',
                 'script' => 'geocode',
         );
         
