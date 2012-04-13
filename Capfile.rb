@@ -31,6 +31,10 @@ namespace :deploy do
     run "ln -s #{shared_path}/environment #{release_path}/config/ENVIRONMENT"
     run "cp #{release_path}/config/connections.sample.php #{release_path}/config/connections.php"
   end
+  
+  task :cronfile do
+    run "php #{release_path}/meu-site-builder/script/create_cron.php"
+  end
 
   task :platform_check do
     run "php #{release_path}/meu-site-builder/script/check_platform.php"
@@ -47,5 +51,6 @@ after 'deploy:setup', 'deploy:environment'
 after 'deploy:update_code', 'deploy:shared'
 after 'deploy:update_code', 'deploy:symlinks'
 after 'deploy:update_code', 'deploy:permissions'
+after 'deploy:update_code', 'deploy:cronfile'
 after 'deploy:update_code', 'deploy:db:migrate'
 after 'deploy:update_code', 'deploy:platform_check'

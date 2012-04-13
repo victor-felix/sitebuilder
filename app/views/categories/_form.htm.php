@@ -42,8 +42,18 @@
                 <small><?php echo s("The type of content defined which content could be inserted on category, it couldn't be updated after creation") ?></small>
             </div>
         <?php endif ?>
-
-        <div class="form-grid-460 first populate-based import">
+        <div class="form-grid-460 first populate-based import import_method">
+            <label><?php echo s('Method of import') ?></label>
+            <?php
+                echo $this->form->input('import_method', array(
+                            'type' => 'radio',
+                            'value' => 0,
+                            'options' => array(
+                                0 => s('Inclusive'),
+                                1 => s('Exclusive'),
+                            )
+                        ));
+            ?>
             <?php echo $this->form->input('import', array(
                 'label' => s('CSV File'),
                 'type' => 'file',

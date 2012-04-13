@@ -1,12 +1,14 @@
 <?php
 
 require_once 'lib/simplepie/SimplePie.php';
-require_once 'lib/csv/CSVHandler.php';
+require_once 'lib/utils/Works/Import.php';
+require_once 'lib/utils/FileUpload.php';
 
-use app\models\Items;
-use app\models\items\Articles;
+use app\models\Items, app\models\items\Articles, utils\Import as Import;
 
 class Categories extends AppModel {
+    
+    const MAX_IMPORTFILE_SIZE = 300;
     protected $beforeSave = array('getOrder', 'getItemType', 'checkItems');
     protected $afterSave = array('importItems', 'updateFeed');
     protected $beforeDelete = array('deleteChildren');
@@ -249,47 +251,81 @@ class Categories extends AppModel {
     protected function importItems($created) {
         if($this->data['populate'] == 'import') {
             $this->data['populate'] = 'manual';
-
-            $csv = new CSVHandler($this->data['import']['tmp_name'], ',');
-            $csv = $csv->ReadCSV();
-            $classname = '\app\models\items\\' . Inflector::camelize($this->data['type']);
-            foreach($csv as $row) {
-                $record = false;
-            	if(isset($row['id']) && $row['id']) {
-                    $record = $classname::find('first', array('conditions' => array(
-                        '_id' => $row['id']
-                    )));
-                }
-                if(!$record){ 
-                    $record = $classname::create();
-                }
-                
-                $record->parent_id = $this->data['id'];
-                $record->site_id = $this->data['site_id'];
-                $record->type = $this->data['type'];
-                $fields = $record->fields();
             
-                foreach($fields as $field) {
-                    if(isset($row[$field])) {
-                        if ($field == 'related') {
-                            $record->set(array($field => explode(',',$row[$field])));
-                        } else {
-                            $record->set(array($field => $row[$field]));
-                        }
-                        
-                    }
-                }
-                try {
-                    $record->save();
-                }
-                catch(\MongoException $e) {
-                }
+            $fileSize = $this->data['import']['size'];
+            if($fileSize && self::MAX_IMPORTFILE_SIZE < ($fileSize / 1024)
+               && $this->scheduleImport()) {
+                return $this->save();;
             }
-
+            $import = new Import();
+            $import->notIsJob();
+            $import->setMethod($this->data['import_method']);
+            $import->category($this);
+            $import->file($this->data['import']['tmp_name']);
+            $import->start();
             $this->save();
         }
     }
+    
+    protected function scheduleImport()
+    {
+        if (!Import::check('import')) {
+            return false;
+        }
+        $uploader = new FileUpload();
+        $uploader->path = APP_ROOT . '/public/uploads/imports';
+        try {
+            $importFile = $uploader->upload($this->data['import'], Security::hash(time()) . '_:original_name');
 
+            $data = array(
+                    'type' => 'import',
+                    'params' => array(
+                            'method' => $this->data['import_method'],
+                            'site_id' => $this->data['site_id'],
+                            'category_id' => $this->data['id'],
+                            'file' => $importFile,
+                    )
+            );
+
+            $job = \app\models\Jobs::create($data);
+            if ($job->save()) {
+                $this->sendImportMail(array('job' => $job->to('array')));
+                Session::writeFlash('success', s('The import was scheduled successfully'));
+                return true;
+            } else {
+                throw new Exception('Can\'t import file');
+            }
+
+        } catch (Exception $e) {
+            Session::writeFlash('error', s('Sorry, can\'t import category'.$e->getMessage()));
+            return false;
+        }
+    }
+    
+    protected function sendImportMail($params = array()) {
+        if (!Config::read ( 'Mail.preventSending' )) {
+            require_once 'lib/mailer/Mailer.php';
+            $segment = Model::load ( 'Segments' )->firstById (MeuMobi::segment());
+            $user = Auth::user();
+            $default = array(
+                        'user' => $user,
+                        'category' => $this,
+                        'title' => s('[MeuMobi] Category import scheduled'),
+                    );
+            $data = array_merge($default, $params);
+            
+            $mailer = new Mailer (array (
+                        'from' => $segment->email,
+                        'to' => array($user->email => $user->fullname ()),
+                        'subject' => $data['title'],
+                        'views' => array ('text/html' => 'categories/confirm_import_mail.htm'),
+                        'layout' => 'mail',
+                        'data' => $data,
+                    ));
+            return $mailer->send ();
+        }
+    }
+    
     protected function updateFeed($created) {
         if(isset($this->data['populate']) && $this->data['populate'] == 'auto') {
             if(!isset($this->data['feed_url'])) {

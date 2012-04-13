@@ -1,15 +1,10 @@
 <?php
-
 namespace app\models;
+require_once 'lib/utils/Works/Geocode.php';
 
-use Config;
-use Inflector;
-use Model;
+use Config, Inflector, Model, GoogleGeocoding,
+    lithium\util\Collection, utils\Geocode as Geocode;
 
-require_once 'lib/geocoding/GoogleGeocoding.php';
-use GoogleGeocoding;
-
-use lithium\util\Collection;
 Collection::formats('lithium\net\http\Media');
 
 class Items extends \lithium\data\Model {
@@ -190,13 +185,30 @@ class Items extends \lithium\data\Model {
             unset($item->latitude);
             unset($item->longitude);
         } else if($item->changed('address') && !empty($item->address)) {
-            try {
-                $geocode = GoogleGeocoding::geocode($item->address);
-                $location = $geocode->results[0]->geometry->location;
-                $item->geo = array($location->lng, $location->lat);
-            }
-            catch(\Exception $e) {
-                $item->geo = 0;
+            if(Geocode::check('geocode')) {
+                $result = $chain->next($self, $params, $chain);
+                $job = \app\models\Jobs::create();
+                $data = array(
+                        'type' => 'geocode',
+                        'params' => array(
+                                'item_id' => (string) $item->_id,
+                                'type' => $item->type,
+                        ),
+                );
+                $job->set($data);
+                $job->save();
+                return $result;
+            } else {
+                try {
+                    $geocode = GoogleGeocoding::geocode($item->address);
+                    if($geocode->status == 'OK') {
+                        $location = $geocode->results[0]->geometry->location;
+                        $item->geo = array($location->lng, $location->lat);
+                    }
+                }
+                catch(\Exception $e) {
+                    $item->geo = 0;
+                }
             }
         } else if(empty($item->address)) {
             $item->geo = 0;
