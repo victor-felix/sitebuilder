@@ -22,49 +22,53 @@ abstract class Work
 
     public static function check($job)
     {  
-        switch ($job) {
-            case 'import' :
-                $job = 'run_import.php';
-                break;
-            case 'geocode' :
-                $job = 'run_geocode.php';
-                break;
-        }
-        if (!(bool)exec('crontab -l | grep "'. $job .'"')) {
+        
+        if (!(bool)exec('crontab -l | grep "'. self::getScript($job) .'"')) {
             self::initCronJobs();
         }
-        return  (bool)exec('crontab -l | grep "'. $job .'"');
+        return  (bool)exec('crontab -l | grep "'. self::getScript($job) .'"');
     }
     
     public static function initCronJobs($jobs = null, $canInit = true)
     {
         $scripts[] = array(
                 'time' => '*/2 * * * *',
-                'script' => 'run_import.php',
+                'script' => 'import',
         );
         $scripts[] = array(
                 'time' => '*/5 * * * *',
-                'script' => 'run_geocode.php',
+                'script' => 'geocode',
         );
         
         $jobs = $jobs ? $jobs : $scripts;
         
         $cronFilePath = APP_ROOT .'/config/cron';
-        if (!is_file($cronFilePath)) {
-            $file = fopen($cronFilePath, 'w');
-            fwrite($file, 'MAIL=""' . PHP_EOL);
-            foreach ($jobs as $job) {
-                $line = $job['time'] . ' php ' . LIB_ROOT 
-                . '/script/' . $job['script'] . ' > /dev/null' . PHP_EOL;
-                fwrite($file, $line);
-            }
-            fclose($file);
-            chmod($cronFilePath,0777);
+        exec("crontab -l > $cronFilePath");
+        $file = fopen($cronFilePath, 'a');
+        foreach ($jobs as $job) {
+            $line = $job['time'] . ' php ' . self::getScript($job['script']) . ' > /dev/null' . PHP_EOL;
+            fwrite($file, $line);
         }
+        fclose($file);
+        chmod($cronFilePath,0777);
+        
         
         if ($canInit) {
             exec("crontab $cronFilePath");
         }
+    }
+    
+    public static function getScript($job)
+    {
+        switch ($job) {
+        	case 'import' :
+        		$job = LIB_ROOT . '/script/run_import.php';
+        		break;
+        	case 'geocode' :
+        		$job = LIB_ROOT . '/script/run_geocode.php';
+        		break;
+        }
+        return $job;
     }
     
 }
