@@ -9,13 +9,13 @@ class Geocode extends Work
      * microseconds delay 
      */
     const DELAY_TIME = 250000; 
-    
+
     public function init()
     {
     }
-    
+
     public function run()
-    {   
+    {
         while ($job = $this->getJob()) {
                 $classname = '\app\models\items\\' .
                 \Inflector::camelize($job->params->type);
@@ -42,7 +42,7 @@ class Geocode extends Work
                         $this->log->logError('Geocode work: reached geocode limit');
                         break 2;
                     default :
-                        $this->log->logError("cant geocode item {$item->_id}");       
+                        $this->log->logError("cant geocode item {$item->_id}");
                 }
                 $job->delete();
                 usleep(self::DELAY_TIME);
@@ -62,7 +62,7 @@ class Geocode extends Work
             'conditions' => array('type' => 'geocode'),
             'order' => 'modified',
         ));
-        
+
         return count($job) ? $job : false;
     }
 }

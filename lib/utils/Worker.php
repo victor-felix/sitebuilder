@@ -12,7 +12,7 @@ class Worker
     protected $delay;
     protected $process;
     protected $tmpDir;
-    
+
     public function __construct($process)
     {
         set_time_limit(0);
@@ -20,13 +20,13 @@ class Worker
         $this->tmpDir = dirname( dirname( dirname(__FILE__) ) ) . '/tmp/';
         $this->log = \KLogger::instance(\Filesystem::path('log'));
     }
-    
+
     public static function start($process)
     {
         $log = LIB_ROOT . '/tmp/import.log';
         exec('php ' . LIB_ROOT . "/script/run_works.php $process  >>  $log  &");
     }
-    
+
     public function canRun()
     {
         if (!$this->file) {
@@ -38,7 +38,7 @@ class Worker
         $this->log->logNotice('%s work: can\'t init worker', $this->process);
         return false;
     }
-    
+
     public function run()
     {
         if (!$this->canRun()) {
@@ -53,19 +53,19 @@ class Worker
         }
         $this->stop();
     }
-    
+
     protected function getWorkClass()
     {
         $class = ucfirst($this->process);
         require_once 'lib/utils/Works/' . $class . '.php';
         return 'utils\\'.$class;
     }
-    
+
     protected function stop()
     {
         if ($this->file) {
             fclose($this->file);
             unlink($this->tmpDir . $this->process . '.pid');
         }
-    }   
+    }
 }

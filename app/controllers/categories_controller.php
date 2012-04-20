@@ -89,7 +89,7 @@ class CategoriesController extends AppController {
             $json = array(
                         'success'=>$message,
                         'go_back'=>true,
-						'refresh'=>'/categories'
+                        'refresh'=>'/categories'
                     );
             $this->respondToJSON($json);
         }
@@ -103,7 +103,7 @@ class CategoriesController extends AppController {
         $category = $this->Categories->firstById($id);
         $status = 'error';
         $message = "Sorry, we can't remove items";
-        
+
         if($category) {
             $classname = '\app\models\items\\' . Inflector::camelize($category->type);
             $classname::remove(array('parent_id' => $category->id));
@@ -119,7 +119,7 @@ class CategoriesController extends AppController {
             $this->redirect('/categories');
         }
     }
-    
+
     public function reorder() {
         $this->autoRender = false;
     }

@@ -6,7 +6,7 @@ class Import extends Work
 {
     const INCLUSIVE = 0;
     const EXCLUSIVE = 1;
-    
+
     protected $category;
     protected $job;
     protected $fileDir = '/public/uploads/imports/';
@@ -15,7 +15,7 @@ class Import extends Work
     protected $isJob = true;
     protected $method;
     protected $imported = array();
-    
+
     public function init()
     {
         $this->log->logInfo('import work: init the work');
@@ -33,7 +33,7 @@ class Import extends Work
         if ($this->isJob && !$this->job) {
             return false;
         }
-        
+
         if ($this->file() && $this->category()) {
             return true;
         }
@@ -53,7 +53,7 @@ class Import extends Work
                         ),
                     ));
                 }
-                
+
                 if (! $record) {
                     $record = $classname::create();
                 }
@@ -70,7 +70,7 @@ class Import extends Work
         }
         return $this->stop();
     }
-    
+
     public function category(\Categories $category = null) 
     {
         if (!($this->category instanceof \Categories)) {
@@ -79,12 +79,12 @@ class Import extends Work
         }
         return $this->category;
     }
-    
+
     public function setMethod($method = null)
     {
         $this->method = (int)$method;
     }
-    
+
     public function notIsJob()
     {
         $this->isJob = false;
@@ -102,7 +102,7 @@ class Import extends Work
         }
         return $this->file;
     }
-    
+
     protected function next()
     {
         $fields = $this->fields();
