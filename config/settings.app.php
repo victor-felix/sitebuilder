@@ -24,3 +24,4 @@ Config::write('Segments', array(
 ));
 
 Config::write('Themes.url', 'http://meu-template-engine.meumobi.com/api/index');
+Config::write('SiteManager.url', 'http://meu-site-manager.meumobilesite.com');
