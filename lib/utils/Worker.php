@@ -15,10 +15,10 @@ class Worker
     
     public function __construct($process)
     {
-    	set_time_limit(0);
-    	$this->process = $process;
-    	$this->tmpDir = dirname( dirname( dirname(__FILE__) ) ) . '/tmp/';
-    	$this->log = \KLogger::instance(\Filesystem::path('log'));
+        set_time_limit(0);
+        $this->process = $process;
+        $this->tmpDir = dirname( dirname( dirname(__FILE__) ) ) . '/tmp/';
+        $this->log = \KLogger::instance(\Filesystem::path('log'));
     }
     
     public static function start($process)
@@ -29,43 +29,43 @@ class Worker
     
     public function canRun()
     {
-    	if (!$this->file) {
-    		$this->file = fopen($this->tmpDir . $this->process . '.pid', 'w+');
-    		if ($this->file && flock($this->file, LOCK_EX | LOCK_NB)) {
-    			return fwrite($this->file, getmypid());
-    		}
-    	}
-    	$this->log->logNotice('%s work: can\'t init worker', $this->process);
-    	return false;
+        if (!$this->file) {
+            $this->file = fopen($this->tmpDir . $this->process . '.pid', 'w+');
+            if ($this->file && flock($this->file, LOCK_EX | LOCK_NB)) {
+                return fwrite($this->file, getmypid());
+            }
+        }
+        $this->log->logNotice('%s work: can\'t init worker', $this->process);
+        return false;
     }
     
     public function run()
     {
-    	if (!$this->canRun()) {
-    		return false;
-    	}
-		try {
-			$workClass = $this->getWorkClass();
-			$work = new $workClass();
-			$work->start();
-		} catch (Exception $e) {
-			$this->log->logError('%s work: %s', $this->process, $e->getMessage());
-		}
-		$this->stop();
+        if (!$this->canRun()) {
+            return false;
+        }
+        try {
+            $workClass = $this->getWorkClass();
+            $work = new $workClass();
+            $work->start();
+        } catch (Exception $e) {
+            $this->log->logError('%s work: %s', $this->process, $e->getMessage());
+        }
+        $this->stop();
     }
     
     protected function getWorkClass()
     {
-    	$class = ucfirst($this->process);
-    	require_once 'lib/utils/Works/' . $class . '.php';
-    	return 'utils\\'.$class;
+        $class = ucfirst($this->process);
+        require_once 'lib/utils/Works/' . $class . '.php';
+        return 'utils\\'.$class;
     }
     
     protected function stop()
     {
-    	if ($this->file) {
-    		fclose($this->file);
-    		unlink($this->tmpDir . $this->process . '.pid');
-    	}
+        if ($this->file) {
+            fclose($this->file);
+            unlink($this->tmpDir . $this->process . '.pid');
+        }
     }   
 }

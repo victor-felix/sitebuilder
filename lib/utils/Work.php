@@ -46,7 +46,8 @@ abstract class Work
         exec("crontab -l > $cronFilePath");
         $file = fopen($cronFilePath, 'a');
         foreach ($jobs as $job) {
-            $line = $job['time'] . ' php ' . self::getScript($job['script']) . ' > /dev/null' . PHP_EOL;
+            $line = $job['time'] . ' php ' . self::getScript($job['script']) .
+            ' > /dev/null' . PHP_EOL;
             fwrite($file, $line);
         }
         fclose($file);
@@ -61,12 +62,12 @@ abstract class Work
     public static function getScript($job)
     {
         switch ($job) {
-        	case 'import' :
-        		$job = LIB_ROOT . '/script/run_import.php';
-        		break;
-        	case 'geocode' :
-        		$job = LIB_ROOT . '/script/run_geocode.php';
-        		break;
+            case 'import' :
+                $job = LIB_ROOT . '/script/run_import.php';
+                break;
+            case 'geocode' :
+                $job = LIB_ROOT . '/script/run_geocode.php';
+                break;
         }
         return $job;
     }
