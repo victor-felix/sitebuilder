@@ -274,6 +274,21 @@
     </div>
 </fieldset>
 
+<a href="#" class="fieldset-expand"><?php echo s('Google API') ?> <span><?php echo s('Optional') ?></span></a>
+<fieldset style="display:none">
+    <h2><?php echo s('Google API') ?></h2>
+    <div class="field-group">
+        <div class="form-grid-460 first">
+            <span class="optional"><?php echo s('Optional') ?></span>
+            <?php echo $this->form->input('google_analytics', array(
+                'label' => s('Google Analytics code'),
+                'type' => 'text',
+                'class' => 'ui-text large'
+            )) ?>
+        </div>
+    </div>
+</fieldset>
+
 <a href="#" class="fieldset-expand"><?php echo s('Photos of Business') ?> <span><?php echo s('Optional') ?></span></a>
 <fieldset style="display:none">
     <h2><?php echo s('Photos of Business') ?></h2>
