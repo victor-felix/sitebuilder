@@ -1,11 +1,14 @@
-<?php if (!$analytics || !($analytics instanceof Analytics)) : ?>
+<?php if (!$analytics) : ?>
     <p>Analytics not is enabled</p>
 <?php else: ?>
     <?php if ($analytics->isAuthenticated()): ?>
-        <?php if ($analytics->getProfile()): ?>
-            <?php  var_dump($analytics->getProfile())  ?>
+        <?php if ($analytics->profile_id): ?>
+            <pre>
+            <?php //print_r($analytics->getTraffic()) ?>
+            <?php print_r($analytics->getMobileTraffic()) ?>
+            <?php //print_r($analytics->getTopPages(5)) ?>
+            </pre>
         <?php else: ?>
-        <pre><?php // print_r($analytics->getProfiles())  ?> </pre>
             <form action="/dashboard/profile"  method="POST" >
             <p>Select analytics profile</p>
             <select name="profile" >

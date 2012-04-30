@@ -4,33 +4,33 @@ require_once 'lib/google/Analytics.php';
 class DashboardController extends AppController 
 {
     protected $uses = array();
+    protected $analytics;
+
+    protected function beforeFilter()
+    {
+        $this->analytics =  google\Analytics::load($this->getCurrentSite());
+    }
 
     public function index()
     {
-        $analytics = new Analytics();
-        $analytics->authenticate();
-        $this->set(compact('analytics'));
+        $this->analytics->authenticate();
+        $this->set(array('analytics' => $this->analytics));
     }
 
-    public function google()
-    {
-        $analytics = new Analytics();
-        $analytics->authenticate();
+    public function google($data = array())
+    {   
+        $this->analytics->authenticate();
         $this->redirect('/dashboard/index');
     }
 
     public function profile()
     {
-       // if ($this->data) {
-        $site = $this->getCurrentSite();
-        $site->title ='carai';
-        $site->save();
-            /*
+        if ($this->data) {
             list($profileId, $uiId) = explode(',', $this->data['profile']);
-            $analytics = new Analytics();
-            $analytics->setProfile($profileId);
-            //$analytics->setUiId($uiId);*/
-        //}
-        //$this->redirect('/dashboard/index');
+            $this->analytics->profile_id = $profileId;
+            $this->analytics->profile_uid = $uiId;
+            $this->analytics->save();
+        }
+        $this->redirect('/dashboard/index');
     }
 }
