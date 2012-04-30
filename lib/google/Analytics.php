@@ -140,13 +140,38 @@ class Analytics extends \lithium\data\Model
     
     public function getMobileTraffic($self)
     {
-        $metrics = 'ga:visits,ga:pageviews,ga:timeOnSite';
-        $dimensions = 'ga:browser,ga:operatingSystem,ga:source';
+        $metrics = 'ga:visits';
+        $dimensions = 'ga:operatingSystem,ga:screenResolution';
         $params = array(
         		'dimensions' => $dimensions,
+                'sort' => '-ga:visits',
+                //'max-results' => 10,
                 'segment' => 'gaid::-11'
         );
-        return $this->fetchData($self, $metrics, $params);
+        
+        $result = $this->fetchData($self, $metrics, $params);
+        $totalVisits = $result['totalsForAllResults']['ga:visits'];
+        $headers = array();
+        $trafficBySystem = array();
+        $trafficByScreen = array();
+        
+        foreach ($result['columnHeaders'] as $index => $header) {
+            $headers[$header['name']] = $index;
+        }
+        
+        foreach ($result['rows'] as $row) {
+            $system = $row[$headers['ga:operatingSystem']];
+            $screen = $row[$headers['ga:screenResolution']];
+            $visits = $row[$headers['ga:visits']];
+            @$trafficBySystem[$system] += $visits;
+            @$trafficByScreen[$screen] += $visits;
+        }
+        
+        return array(
+                    'system' => $trafficBySystem,
+                    'screen' => $trafficByScreen,
+                    'total' => $totalVisits,
+                );
     }
     
     public function getTopPages($self, $limit = 5)
@@ -158,7 +183,8 @@ class Analytics extends \lithium\data\Model
             'sort' => '-ga:pageviews', 
             'max-results' => $limit,
         );
-        return $this->fetchData($self, $metrics, $params);
+        $result = $this->fetchData($self, $metrics, $params);
+        return $result['rows'];
     }
     
     public function fetchData($self, $metrics, $params)
