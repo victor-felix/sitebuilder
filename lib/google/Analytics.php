@@ -133,7 +133,7 @@ class Analytics extends \lithium\data\Model
         $metrics = 'ga:visits, ga:avgTimeOnSite, ga:pageviews, ga:percentNewVisits';
         $dimensions = 'ga:day';
         $params = array(
-        		'dimensions' => $dimensions,
+                'dimensions' => $dimensions,
         );
         return $this->fetchData($self, $metrics, $params);
     }
@@ -143,7 +143,7 @@ class Analytics extends \lithium\data\Model
         $metrics = 'ga:visits';
         $dimensions = 'ga:operatingSystem,ga:screenResolution';
         $params = array(
-        		'dimensions' => $dimensions,
+                'dimensions' => $dimensions,
                 'sort' => '-ga:visits',
                 //'max-results' => 10,
                 'segment' => 'gaid::-11'

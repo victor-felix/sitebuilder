@@ -4,6 +4,7 @@
 <?php else: ?>
     <?php if ($analytics->isAuthenticated()): ?>
         <?php if ($analytics->profile_id): ?>
+            <h2 class="title"><?php echo s('Visits over past 30 days')?></h2>
             <!-- traffic -->
             <div class="traffic report-box" style="float:none; width:auto;">
             <?php 
@@ -15,13 +16,13 @@
                     <li><b><?php echo number_format($totals['ga:pageviews']); ?></b> <?php echo s('Pageviews') ?></li>
                 </ul>
                 <ul>
-                    <li><b><?php echo  (int)$totals['ga:avgTimeOnSite']; ?></b> <?php echo s('Avg. Time on site') ?></li>
+                    <li><b><?php echo  date('H:i:s', (int)$totals['ga:avgTimeOnSite']); ?></b> <?php echo s('Avg. Time on site') ?></li>
                     <li><b><?php echo number_format($totals['ga:percentNewVisits'], 2); ?></b> <?php echo s('%% New Visits') ?></li>
                 </ul>
             </div>
             <!-- traffic -->
             <!-- top pages -->
-            <div class="report-box" style="float:none; width:auto;">
+            <div class="report-box" style="float:none; width:auto; clear: both;">
                 <h3>Top pages</h3>
                 <ul>
                     <?php foreach ($analytics->getTopPages(5) as $row): ?>
@@ -38,7 +39,7 @@
                 <ul>
                     <?php 
                     foreach ($mobileTraffic['system'] as $system => $visits):?>
-                    <li><?php echo s('%s - <i>%u visits</i>',$system,$visits) ?></li>
+                    <li><?php echo s('%s - <i>%u visits</i>, %% %s',$system,$visits, number_format(($visits * 100) / $mobileTraffic['total'], 2) ) ?></li>
                     <?php endforeach;?>
                 </ul>
             </div>
@@ -49,7 +50,7 @@
                     $i = 0;
                     foreach ($mobileTraffic['screen'] as $screem => $visits):
                     ?>
-                    <li><?php echo s('%s - <i>%u visits</i>',$screem,$visits) ?></li>
+                    <li><?php echo s('%s - <i>%u visits</i>, %% %s',$screem,$visits, number_format(($visits * 100) / $mobileTraffic['total'], 2)) ?></li>
                     <?php
                     if (++$i > 9) {
                         break;
@@ -73,8 +74,7 @@
             </form>
          <!-- Select profile form -->
         <?php endif; ?>
-        
-        
+
     <?php else: ?>
     <!-- enable analytics link -->
     <p>
@@ -85,21 +85,25 @@
 <?php endif;?>
 </div>
 <style>
+.analytics {
+	color: #444444; 
+	padding: 10px;                   
+}
 .traffic ul {
 	float: left;
-	margin-right: 20px;
+	margin-right: 100px;
 	overflow: hidden;
 	text-align: right;
-    width: 250px;
+    width: 200px;
 }
 .traffic b {
 	float: left;
 }
 .report-box {
-	color: #444444;
+	overflow: hidden;
 	float: left; 
 	width: 200px;
-	margin: 10px;    
+	margin: 10px 0;    
 }
 .report-box li {
 	list-style: none;
