@@ -4,22 +4,28 @@ class SiteManager
 {
 	public static function create($domain, $instance)
 	{
-		return self::request('PUT', $domain, array('instance' => $instance));
+		if (Config::read('SiteManager.url')) {
+			return self::request('PUT', $domain, array('instance' => $instance));
+		}
 	}
 
 	public static function update($previous, $domain, $instance)
 	{
-		if ($previous != $domain) {
-			self::delete($previous);
-			self::create($domain, $instance);
-			return true;
+		if (Config::read('SiteManager.url') {
+			if ($previous != $domain) {
+				self::delete($previous);
+				self::create($domain, $instance);
+				return true;
+			}
+			return false;
 		}
-		return false;
 	}
 
 	public static function delete($domain)
 	{
-		return self::request('DELETE', $domain);
+		if (Config::read('SiteManager.url')) {
+			return self::request('DELETE', $domain);
+		}
 	}
 
 	protected static function request($method, $domain, $data = null)
