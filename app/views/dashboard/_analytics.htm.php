@@ -3,8 +3,15 @@
     <p>Analytics not is enabled</p>
 <?php else: ?>
     <?php if ($analytics->isAuthenticated()): ?>
+<?php 
+$this->html->scriptsForLayout .= '<script type="text/javascript" src="https://www.google.com/jsapi"></script>'
+                               . '<script type="text/javascript" src="/scripts/shared/dashboard.js"></script>'
+?>
         <?php if ($analytics->profile_id): ?>
             <h2 class="title"><?php echo s('Visits over past 30 days')?></h2>
+            
+            <div id="chart_div" style="width: 600px; height: 350px;"></div>
+            
             <!-- traffic -->
             <div class="traffic report-box" style="float:none; width:auto;">
             <?php 
