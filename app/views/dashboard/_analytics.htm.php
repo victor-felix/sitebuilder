@@ -30,27 +30,27 @@
 </div>
 <style>
 .analytics {
-	color: #444444; 
-	padding: 10px;                   
+    color: #444444; 
+    padding: 10px;
 }
 .traffic ul {
-	float: left;
-	margin-right: 100px;
-	overflow: hidden;
-	text-align: right;
+    float: left;
+    margin-right: 100px;
+    overflow: hidden;
+    text-align: right;
     width: 200px;
 }
 .traffic b {
-	float: left;
+    float: left;
 }
 .report-box {
-	overflow: hidden;
-	float: left; 
-	width: 200px;
-	margin: 10px 0;    
+    overflow: hidden;
+    float: left; 
+    width: 200px;
+    margin: 10px 0;
 }
 .report-box li {
-	list-style: none;
-	margin: 5px 0;
+    list-style: none;
+    margin: 5px 0;
 }
 </style>

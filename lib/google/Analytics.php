@@ -15,7 +15,7 @@ class Analytics extends \lithium\data\Model
     protected $service;
     protected $startDate;
     protected $endDate;
-    
+
     //protected $getters = array();
     //protected $setters = array();
     protected $_meta = array(
@@ -48,7 +48,6 @@ class Analytics extends \lithium\data\Model
             $self->save();
         }
         $self->service();
-       
         return $self;
     }
 
@@ -64,9 +63,11 @@ class Analytics extends \lithium\data\Model
         $this->getService();
     }
 
-    public static function logout()
+    public function logout($self)
     {
-        return Session::delete(self::OAUTH_TOKEN);
+        Session::delete(self::OAUTH_TOKEN);
+        $this->client->revokeToken($self->refresh_token);
+        return $this->delete($self);
     }
 
     public function authenticate($self)
@@ -121,13 +122,13 @@ class Analytics extends \lithium\data\Model
         }
         return array();
     }
-    
+
     public function setRange($startDate, $endDate, $format = 'Y-m-d')
     {
         $this->startDate = \DateTime::createFromFormat( $format, $startDate);
         $this->endDate = \DateTime::createFromFormat( $format, $endDate);
     }
-    
+
     public function getTraffic($self)
     {
         $headers = array();
@@ -159,7 +160,7 @@ class Analytics extends \lithium\data\Model
             'totals' => $result['totalsForAllResults'],
         );
     }
-    
+
     public function getMobileTraffic($self)
     {
         $headers = array();
@@ -173,14 +174,14 @@ class Analytics extends \lithium\data\Model
                 //'max-results' => 10,
                 'segment' => 'gaid::-11'
         );
-        
+
         $result = $this->fetchData($self, $metrics, $params);
         $totalVisits = $result['totalsForAllResults']['ga:visits'];
-                
+
         foreach ($result['columnHeaders'] as $index => $header) {
             $headers[$header['name']] = $index;
         }
-        
+
         foreach ($result['rows'] as $row) {
             $system = $row[$headers['ga:operatingSystem']];
             $screen = $row[$headers['ga:screenResolution']];
@@ -188,14 +189,14 @@ class Analytics extends \lithium\data\Model
             @$trafficBySystem[$system] += $visits;
             @$trafficByScreen[$screen] += $visits;
         }
-        
+
         return array(
                     'system' => $trafficBySystem,
                     'screen' => $trafficByScreen,
                     'total' => $totalVisits,
                 );
     }
-    
+
     public function getTopPages($self, $limit = 5)
     {
         $metrics = 'ga:pageviews';
@@ -208,7 +209,7 @@ class Analytics extends \lithium\data\Model
         $result = $this->fetchData($self, $metrics, $params);
         return $result['rows'];
     }
-    
+
     public function fetchData($self, $metrics, $params)
     {
         if (!$this->startDate || !$this->endDate) {
@@ -223,5 +224,4 @@ class Analytics extends \lithium\data\Model
                 $metrics,
                 $params);
     }
-    
 }

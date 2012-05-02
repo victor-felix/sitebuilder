@@ -4,10 +4,9 @@ $this->html->scriptsForLayout .= '<script type="text/javascript" src="https://ww
 ?>
 
 <div id="chart_div" style="width: 800px; height: 450px;"></div>
-
+<p><?php echo $this->html->link(s('Disable analytics'), '/dashboard/disable', array('class' => '')) ?></p>
 <!-- traffic -->
 <div class="traffic report-box" style="float:none; width:auto;">
-
 <?php
     $traffic = $analytics->getTraffic();
     $totals = $traffic['totals'];
@@ -28,9 +27,7 @@ google.setOnLoadCallback(function(){
     }
     , data);
 });
-</script>
-';
-
+</script>';
 ?>
 
 
