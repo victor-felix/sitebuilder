@@ -1,10 +1,16 @@
+<?php 
+$this->html->scriptsForLayout .= '<script type="text/javascript" src="https://www.google.com/jsapi"></script>'
+                               . '<script type="text/javascript" src="/scripts/shared/dashboard.js"></script>';
+?>
 <div class="analytics" >
 <?php if (!$analytics) : ?>
     <p>Analytics not is enabled</p>
 <?php else: ?>
     <?php if ($analytics->isAuthenticated()): ?>
-        <?php if ($analytics->profile_id): ?>
-        <?php echo $this->element('dashboard/analytics_report', compact('analytics')) ?> 
+        <?php  if ($analytics->profile_id): ?>
+            <div id="analytics_report" data-url="<?php echo Mapper::url('/dashboard/analytics_report')?>">
+                <?php //echo $this->element('dashboard/analytics_report', compact('analytics')) ?> 
+            </div>
         <?php else: ?>
         <!-- Select profile form -->
             <form action="/dashboard/profile"  method="POST" >
@@ -33,6 +39,12 @@
     color: #444444; 
     padding: 10px;
 }
+
+#analytics_report {
+    background: url('/images/shared/dashboard/ajax-loading.gif') no-repeat 50% 45%;
+    height: 450px;
+}
+
 .traffic ul {
     float: left;
     margin-right: 100px;

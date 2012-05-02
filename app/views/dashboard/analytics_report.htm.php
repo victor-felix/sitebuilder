@@ -1,12 +1,3 @@
-<?php 
-$this->html->scriptsForLayout .= '<script type="text/javascript" src="https://www.google.com/jsapi"></script>'
-                               . '<script type="text/javascript" src="/scripts/shared/dashboard.js"></script>';
-?>
-
-<div id="chart_div" style="width: 800px; height: 450px;"></div>
-<p><?php echo $this->html->link(s('Disable analytics'), '/dashboard/disable', array('class' => '')) ?></p>
-<!-- traffic -->
-<div class="traffic report-box" style="float:none; width:auto;">
 <?php
     $traffic = $analytics->getTraffic();
     $totals = $traffic['totals'];
@@ -16,21 +7,14 @@ $this->html->scriptsForLayout .= '<script type="text/javascript" src="https://ww
         $chartData .= ",[\"$day\", $visits]";
     }
     $chartData .= ']';
-
-$this->html->scriptsForLayout .= '<script type="text/javascript">
-google.setOnLoadCallback(function(){
-    var data = ' . $chartData . ';
-    $("#chart_div").drawChart(
-    {
-        title: " ' . s('Visits over past 30 days') . '",
-        legend: {position: "none"}
-    }
-    , data);
-});
-</script>';
 ?>
 
+<div id="chart_div" style="width: 800px; height: 450px;"></div>
 
+
+<p><?php echo $this->html->link(s('Disable analytics'), '/dashboard/disable', array('class' => '')) ?></p>
+<!-- traffic -->
+<div class="traffic report-box" style="float:none; width:auto;">
     <ul>
         <li><b><?php echo number_format($totals['ga:visits']); ?></b> <?php echo s('Visits') ?></li>
         <li><b><?php echo number_format($totals['ga:pageviews']); ?></b> <?php echo s('Pageviews') ?></li>
@@ -80,3 +64,6 @@ google.setOnLoadCallback(function(){
     </ul>
 </div>
 <!-- Mobile report -->
+<script type="text/javascript">
+    var lineChartData = <?php echo $chartData; ?>;
+</script>

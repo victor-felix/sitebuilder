@@ -17,6 +17,13 @@ class DashboardController extends AppController
         $this->set(array('analytics' => $this->analytics));
     }
 
+    public function analytics_report()
+    {
+        $this->layout = false;
+        $this->analytics->authenticate();
+        $this->set(array('analytics' => $this->analytics));
+    }
+
     public function google($data = array())
     {
         if ($this->analytics->authenticate()) {
