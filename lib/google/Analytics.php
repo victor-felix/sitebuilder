@@ -130,16 +130,41 @@ class Analytics extends \lithium\data\Model
     
     public function getTraffic($self)
     {
+        $headers = array();
+        $rows = array();
         $metrics = 'ga:visits, ga:avgTimeOnSite, ga:pageviews, ga:percentNewVisits';
+        //$dimensions = 'ga:visitorType, ga:day';
         $dimensions = 'ga:day';
         $params = array(
                 'dimensions' => $dimensions,
         );
-        return $this->fetchData($self, $metrics, $params);
+
+        $result = $this->fetchData($self, $metrics, $params);
+        foreach ($result['columnHeaders'] as $index => $header) {
+            $headers[$header['name']] = $index;
+        }
+
+        //visits by day
+        foreach ( $result['rows'] as $row ) {
+            $rows[$row[$headers['ga:day']]] = $row[$headers['ga:visits']];
+        }
+        //visits by type
+        /*
+        foreach ($result['rows'] as $row) {
+            $rows[ $row[$headers['ga:visitorType']] ] [ $row[$headers['ga:day']] ] = $row[$headers['ga:visits']];
+        }
+        */
+        return array(
+            'rows' => $rows,
+            'totals' => $result['totalsForAllResults'],
+        );
     }
     
     public function getMobileTraffic($self)
     {
+        $headers = array();
+        $trafficBySystem = array();
+        $trafficByScreen = array();
         $metrics = 'ga:visits';
         $dimensions = 'ga:operatingSystem,ga:screenResolution';
         $params = array(
@@ -151,10 +176,7 @@ class Analytics extends \lithium\data\Model
         
         $result = $this->fetchData($self, $metrics, $params);
         $totalVisits = $result['totalsForAllResults']['ga:visits'];
-        $headers = array();
-        $trafficBySystem = array();
-        $trafficByScreen = array();
-        
+                
         foreach ($result['columnHeaders'] as $index => $header) {
             $headers[$header['name']] = $index;
         }
