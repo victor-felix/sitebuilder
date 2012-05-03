@@ -72,24 +72,29 @@ class Analytics extends \lithium\data\Model
 
     public function authenticate($self)
     {
+        $site = \Auth::user()->site();
+        $token = Session::read(self::OAUTH_TOKEN);
+
         if (isset($_GET['code'])) {
             $auth = $this->client->authenticate();
             $data =  json_decode($this->client->getAccessToken());
             $self->refresh_token = $data->refresh_token;
             $self->save();
-            Session::write(self::OAUTH_TOKEN, $this->client->getAccessToken());
-        } else if ($token = Session::read(self::OAUTH_TOKEN)) {
-            $data =  json_decode($token, true);
-            
+            //save token in session based on site
+            Session::write( self::OAUTH_TOKEN, array($site->id => $this->client->getAccessToken()) );
+        } else if (isset($token[$site->id])) {
+            $data =  json_decode($token[$site->id], true);
+
             /*  add refresh token if not exists*/
             if (!array_key_exists('refresh_token', $data)) {
                 $data['refresh_token'] = $self->refresh_token;
             }
-            
+
             $this->client->setAccessToken(json_encode($data));
         } else if ($self->refresh_token) {
             $this->client->refreshToken($self->refresh_token);
-            Session::write(self::OAUTH_TOKEN, $this->client->getAccessToken());
+            //save token in session based on site
+            Session::write( self::OAUTH_TOKEN, array($site->id => $this->client->getAccessToken()) );
         }
         return $this->isAuthenticated();
     }
@@ -177,12 +182,13 @@ class Analytics extends \lithium\data\Model
 
         $result = $this->fetchData($self, $metrics, $params);
         $totalVisits = $result['totalsForAllResults']['ga:visits'];
-
+        $rows = isset($result['rows']) ? $result['rows'] : array();
+        
         foreach ($result['columnHeaders'] as $index => $header) {
             $headers[$header['name']] = $index;
         }
 
-        foreach ($result['rows'] as $row) {
+        foreach ($rows as $row) {
             $system = $row[$headers['ga:operatingSystem']];
             $screen = $row[$headers['ga:screenResolution']];
             $visits = $row[$headers['ga:visits']];
@@ -207,7 +213,7 @@ class Analytics extends \lithium\data\Model
             'max-results' => $limit,
         );
         $result = $this->fetchData($self, $metrics, $params);
-        return $result['rows'];
+        return isset($result['rows']) ? $result['rows'] : array();
     }
 
     public function fetchData($self, $metrics, $params)
