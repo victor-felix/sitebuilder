@@ -25,7 +25,7 @@ $this->html->scriptsForLayout .= '<script type="text/javascript" src="https://ww
                 </form>
              <!-- Select profile form -->
              <?php else: ?>
-                 <p><?php echo $this->html->link(s('sorry, you don\'t have a google analytics account, please click here to create one'), 'http://www.google.com/analytics/', array('target' => '_blank')) ?></p>
+                 <p><?php echo $this->html->link(s('Sorry, you don\'t have a google analytics account, please click here to create one'), 'http://www.google.com/analytics/', array('target' => '_blank')) ?></p>
              <?php endif; ?>
         <?php endif; ?>
         <p><?php echo $this->html->link(s('Disable analytics'), '/dashboard/disable', array('class' => '')) ?></p>
