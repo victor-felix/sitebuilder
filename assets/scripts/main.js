@@ -273,9 +273,9 @@ $.extend($.easing, {
     content.delegate('.delete-confirm .ui-button', 'click', function(e) {
         var self = $(this);
         if(self.hasClass('delete')) {
-        	if(!slider.length) {
-        		return;
-        	}
+            if(!slider.length) {
+                return;
+            }
             var handler = dataWithCode(function(data,status) {
             });
             $.ajax({
@@ -293,13 +293,13 @@ $.extend($.easing, {
     content.delegate('.ui-button.has-confirm', 'click', function(e) {
         var confirmSelector = '';
         if(confirmSelector = $(this).data('confirm')){
-        	e.preventDefault();
-        	$(confirmSelector).fadeIn('fast');
-    	}
+            e.preventDefault();
+            $(confirmSelector).fadeIn('fast');
+        }
     });
 
     content.delegate('.delete-confirm .ui-button', 'ajax:success', function(e, data) {
-    	$('.delete-confirm').fadeOut('fast');
+        $('.delete-confirm').fadeOut('fast');
         $('.slide-elem:last').prev().html(data);
         $('.slide-elem:last .ui-button.back').click();
     });
@@ -323,28 +323,28 @@ $.extend($.easing, {
         e.preventDefault();
         $(this).prev().clone().insertBefore(this);
     });
-    
+
     $.Paginate = function(params) {
         this.settings = {
             controls_wrapp: "#pagination",
             paginate_items_wrapp: ".paginate-items"
         };
-        
+
         this.settings = $.extend(this.settings, params);
-        
+
         this.refreshData = function(data) {
             var result = $(data).filter(this.settings.paginate_items_wrapp);
             var controls = $(data).filter(this.settings.controls_wrapp);
-            
+
             $(this.settings.paginate_items_wrapp).slideUp('slow', function(){
                 $(this).html(result.html()).slideDown('slow');
             });
-            
+
             $(this.settings.controls_wrapp).hide()
             .html(controls.html())
             .show();
         }
-        
+
         this.init = function() {
             var paginate = this;
             slider.delegate(this.settings.controls_wrapp+ ' a', 'click',function(){
@@ -358,11 +358,11 @@ $.extend($.easing, {
                 return false;
             });
         }
-        
+
         this.init();
     }
     $.Paginate();
-    
+
 })(jQuery);
 
 $(function() {
@@ -473,5 +473,14 @@ $(function() {
             e.stopPropagation();
             $(this).closest(".user").toggleClass("open");
             $("#navbar .sites.open").removeClass("open")
-        })
+        });
+    /**
+     *Implement bussiness description counter
+     */
+    $('#form-edit-site-info #businessDescription').keyup(function(){
+        var remainVal = $(this).attr('maxlenght') - $(this).val().length;
+        $('#businessCounter').html(remainVal);
+    });
+    $('#form-edit-site-info #businessDescription').keyup();
+    /* end counter  */
 });

@@ -12,12 +12,13 @@
         <div class="form-grid-460">
             <span class="optional"><?php echo s('Optional') ?></span>
             <?php echo $this->form->input('description', array(
+                'id' => 'businessDescription',
                 'label' => s('Description of business'),
                 'type' => 'textarea',
                 'class' => 'ui-textarea large',
                 'maxlenght' => 500
             )) ?>
-            <small><?php echo s('Give a brief description baout your business and related activities. Max of 500 chars.') ?></small>
+            <small><?php echo s('Give a brief description baout your business and related activities. Remaining <span id="businessCounter" >500</span> chars.') ?></small>
         </div>
 
         <div class="form-grid-460 first">
