@@ -121,7 +121,11 @@ class Analytics extends \lithium\data\Model
 
     public function getProfiles()
     {
-        $profiles = $this->getService()->management_profiles->listManagementProfiles("~all", "~all");
+        try {
+            $profiles = $this->getService()->management_profiles->listManagementProfiles("~all", "~all");
+        } catch (\Exception $e) {
+            return array();
+        }
         if ($profiles && count($profiles['items'])) {
             return $profiles['items'];
         }
