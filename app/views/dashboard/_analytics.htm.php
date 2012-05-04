@@ -12,19 +12,23 @@ $this->html->scriptsForLayout .= '<script type="text/javascript" src="https://ww
                 <?php //echo $this->element('dashboard/analytics_report', compact('analytics')) ?> 
             </div>
         <?php else: ?>
-        <!-- Select profile form -->
-            <form action="/dashboard/profile"  method="POST" >
-            <p>Select analytics profile</p>
-            <select name="profile" >
-            <?php foreach($analytics->getProfiles() as $profile): ?>
-                <option value="<?php echo $profile['id'], ',', $profile['webPropertyId'] ?>"><?php echo $profile['name'] ?></option>
-            <?php endforeach; ?>
-            </select>
-            <input type="submit" value="send" />
-            </form>
-         <!-- Select profile form -->
+            <?php if ($profiles = $analytics->getProfiles()):?>
+            <!-- Select profile form -->
+                <form action="/dashboard/profile"  method="POST" >
+                <p>Select analytics profile</p>
+                <select name="profile" >
+                <?php foreach($analytics->getProfiles() as $profile): ?>
+                    <option value="<?php echo $profile['id'], ',', $profile['webPropertyId'] ?>"><?php echo $profile['name'] ?></option>
+                <?php endforeach; ?>
+                </select>
+                <input type="submit" value="send" />
+                </form>
+             <!-- Select profile form -->
+             <?php else: ?>
+                 <p><?php echo $this->html->link(s('sorry, you don\'t have a google analytics account, please click here to create one'), 'http://www.google.com/analytics/', array('target' => '_blank')) ?></p>
+             <?php endif; ?>
         <?php endif; ?>
-
+        <p><?php echo $this->html->link(s('Disable analytics'), '/dashboard/disable', array('class' => '')) ?></p>
     <?php else: ?>
     <!-- enable analytics link -->
     <p>
