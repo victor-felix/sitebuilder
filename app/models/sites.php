@@ -13,8 +13,11 @@ class Sites extends AppModel {
         'createRelation'
     );
     protected $beforeDelete = array(
-        'checkAndDeleteFeed', 'deleteImages', 'deleteCategories', 'deleteLogo',
-        'removeUsers', 'removeFromSiteManager'
+        'deleteImages', 
+        'deleteCategories', 
+        'deleteLogo',
+        'removeUsers', 
+        'removeFromSiteManager'
     );
     protected $validates = array(
         'slug' => array(
@@ -260,13 +263,15 @@ class Sites extends AppModel {
         return $data;
     }
 
-    protected function removeUsers() {
-        return Model::load ( 'UsersSites' )->onDeleteSite ( $this );
+    protected function removeUsers($id) {
+        Model::load ( 'UsersSites' )->onDeleteSite ( $this );
+        return $id;
     }
 
-    protected function removeFromSiteManager()
+    protected function removeFromSiteManager($id)
     {
-        return SiteManager::delete($this->domain);
+        SiteManager::delete($this->domain);
+        return $id;
     }
 
     protected function saveCustomDomain($data)
