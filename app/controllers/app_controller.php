@@ -43,7 +43,13 @@ class AppController extends Controller {
 
     public function getCurrentSite() {
         if(Auth::loggedIn()) {
-            return Auth::user()->site();
+            if ($site = Auth::user()->site()) {
+                return $site;
+            } else {
+                Auth::user()->registerNewSite ();
+                $this->redirect ( '/sites/register' );
+                Session::write ( 'Users.registering', '/sites/register' );
+            }
         }
         else {
             Session::flash('Auth.redirect', Mapper::here());
