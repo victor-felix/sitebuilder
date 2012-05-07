@@ -4,21 +4,21 @@ class SitesController extends AppController {
     public function register() {
         $this->editRecord('/sites/customize_register');
     }
-    
+
     public function add() {
         $site = Model::load('Sites');
-    
+
         if(!empty($this->data)) {
             $site->segment = MeuMobi::segment();
             $site->updateAttributes($this->request->data);
             if($site->validate() && $site->save()) {
-                Session::writeFlash('success', s('Configuration successfully saved.'));
+                //Session::writeFlash('success', s('Configuration successfully saved.'));
                 Session::write('Users.registering', '/sites/customize_register');
                 $this->redirect('/sites/customize_register');
                 return;
             }
         }
-    
+
         $this->set(array(
                 'site' => $site,
                 'countries' => Model::load('Countries')->toList(array(
@@ -26,13 +26,37 @@ class SitesController extends AppController {
                 )),
                 'states' => array(),
         ));
-    
+
     }
 
     public function edit() {
         $this->editRecord('/sites/edit');
     }
-    
+
+    public function remove($id = null) {
+        if ($id) {
+            $site = Model::load('Sites')->firstById($id);
+        } else {
+            $site = $this->getCurrentSite();
+        }
+        try {
+            if ($site->userRole() == Users::ROLE_ADMIN) {
+                $sucess = $site->delete($site->id);
+            } else {
+                $sucess = $site->removeUser(Auth::User()->id());
+            }
+        } catch (Exception $e) {
+            $sucess = false;
+        }
+        
+        if ($sucess) {
+            Session::writeFlash('success', s('Site was successfully removed'));
+        } else {
+            Session::writeFlash('error', s('Sorry, can\'t remove site'));
+        }
+        $this->redirect('/');
+    }
+
     public function customize_edit() {
         $this->customizeSite(s('Configuration successfully saved.'), '/sites/customize_edit');
     }
@@ -40,13 +64,13 @@ class SitesController extends AppController {
     public function customize_register() {
         $this->customizeSite(s('Configuration successfully saved.'), '/sites/finished');
     }
-    
+
     public function finished() {
         $this->set(array(
             'site' => $this->getCurrentSite()
         ));
     }
-    
+
     public function verify_slug($slug = null) {
         $this->respondToJSON(array(
             'unique' => !$this->Sites->exists(array(
@@ -54,7 +78,7 @@ class SitesController extends AppController {
             ))
         ));
     }
-    
+
     public function users() {
         Model::load('Users');
         if (Users::ROLE_ADMIN != $this->getCurrentSite()->role) {
@@ -64,7 +88,7 @@ class SitesController extends AppController {
         $users = $this->getCurrentSite()->users(true);
         $this->set(compact('users'));
     }
-    
+
     public function remove_user($userId) {
         if ($this->getCurrentSite()->removeUser((int)$userId)) {
             Session::writeFlash('success', s('User successfully removed.'));
@@ -73,7 +97,7 @@ class SitesController extends AppController {
         }
         $this->redirect('/sites/users');
     }
-    
+
     protected function editRecord($redirect_to) {
         $site = $this->getCurrentSite();
         if(!empty($this->data)) {
