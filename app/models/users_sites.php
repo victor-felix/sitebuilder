@@ -54,13 +54,13 @@ class UsersSites extends AppModel  {
             $this->site_id = $site->id;
             $this->segment = MeuMobi::segment();
             $this->role = $role;
-            
+
             return  $this->save();
         } catch (Exception $e){
             return false;
         }
     }
-    
+
     public function remove($user, $site) {
         try {
             if($retalion = $this->firstByUserIdAndSiteIdAndSegment($user->id, $site->id, MeuMobi::segment())) {
@@ -70,13 +70,23 @@ class UsersSites extends AppModel  {
             return false;
         }
     }
-    
+
     public function onDeleteUser($user) {
-        $this->deleteAll( array('user_id' => $user->id) );
+        if ($user->id) {
+            $this->deleteAll( array(
+                    'conditions' => array(
+                            'user_id' => $user->id)
+            ));
+        }
     }
 
     public function onDeleteSite($site) {
-        $this->deleteAll( array('site_id' => $site->id) );
+        if ($site->id) {
+            $this->deleteAll( array(
+                    'conditions' => array(
+                            'site_id' => $site->id)
+                    ));
+        }
     }
 
 }
