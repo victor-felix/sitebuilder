@@ -11,7 +11,7 @@ class SiteManager
 
 	public static function update($previous, $domain, $instance)
 	{
-		if (Config::read('SiteManager.url') {
+		if (Config::read('SiteManager.url')) {
 			if ($previous != $domain) {
 				self::delete($previous);
 				self::create($domain, $instance);
