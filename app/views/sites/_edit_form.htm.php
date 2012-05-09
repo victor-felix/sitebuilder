@@ -274,7 +274,7 @@
         </div>
     </div>
 </fieldset>
-
+<!-- 
 <a href="#" class="fieldset-expand"><?php echo s('Google API') ?> <span><?php echo s('Optional') ?></span></a>
 <fieldset style="display:none">
     <h2><?php echo s('Google API') ?></h2>
@@ -289,7 +289,7 @@
         </div>
     </div>
 </fieldset>
-
+-->
 <a href="#" class="fieldset-expand"><?php echo s('Photos of Business') ?> <span><?php echo s('Optional') ?></span></a>
 <fieldset style="display:none">
     <h2><?php echo s('Photos of Business') ?></h2>
