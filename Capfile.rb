@@ -22,6 +22,12 @@ namespace :deploy do
     }
   end
 
+  task :shared_setup do
+    shared_children.map { |d|
+      run "mkdir -p #{shared_path}/#{d}"
+    }
+  end
+
   task :environment do
     run "chmod -R 777 #{shared_path}/meu-site-builder/log"
     put php_env, "#{shared_path}/environment"
@@ -47,6 +53,7 @@ namespace :deploy do
   end
 end
 
+after 'deploy:setup', 'deploy:shared_setup'
 after 'deploy:setup', 'deploy:environment'
 after 'deploy:update_code', 'deploy:shared'
 after 'deploy:update_code', 'deploy:symlinks'
