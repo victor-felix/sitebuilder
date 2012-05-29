@@ -14,6 +14,7 @@ set :php_env, 'production'
 namespace :deploy do
   task :permissions do
     run "chmod -R 777 #{release_path}/meu-site-builder/tmp"
+    run "chmod -R 777 #{release_path}/public/uploads"
   end
 
   task :shared do
@@ -30,6 +31,7 @@ namespace :deploy do
 
   task :environment do
     run "chmod -R 777 #{shared_path}/meu-site-builder/log"
+    run "chmod -R 777 #{shared_path}/public/uploads"
     put php_env, "#{shared_path}/environment"
   end
 
