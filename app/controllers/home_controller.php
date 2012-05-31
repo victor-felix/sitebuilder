@@ -1,7 +1,7 @@
 <?php
 
 class HomeController extends AppController {
-    public $uses = array();
+    public $uses = array('users');
     public $layout = 'home';
 
     public function index() {

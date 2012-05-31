@@ -13,44 +13,44 @@ class Users extends AppModel {
 	protected $beforeDelete = array ('removeSites');
 	protected $afterSave = array ('authenticate', 'createSite', 'sendConfirmationMail' );
 	protected $validates = array (
-							'firstname' => array (
-								'rule' => 'notEmpty', 
-								'message' => 'You must fill in all fields' 
-							), 
-							'lastname' => array (
-								'rule' => 'notEmpty', 
-								'message' => 'You must fill in all fields' 
-							), 
-							'email' => array (
-								array (
-									'rule' => 'notEmpty', 
-									'message' => 'You must fill in all fields' 
-								), 
-								array (
-									'rule' => 'email', 
-									'message' => 'Please enter a valid email address.' 
-								), 
-								array (
-									'rule' => array ('unique', 'email' ), 
-									'message' => 'There is an existing account associated with this email address.' 
-								) 
-							), 
-							'password' => array (
-								array (
-									'rule' => array ('minLength', 6 ), 
-									'message' => 'The password should contain at least 6 characters.', 
-									'allowEmpty' => true 
-								), 
-								array (
-									'rule' => array ('minLength', 6 ), 
-									'message' => 'The password should contain at least 6 characters.', 'on' => 'create' 
-								) 
-							), 
-							'confirm_password' => array (
-									'rule' => array ('confirmField', 'password' ), 
-									'message' => 'Passwords do not match' 
-							) 
-						);
+		'firstname' => array (
+			'rule' => 'notEmpty', 
+			'message' => 'You must fill in all fields' 
+		), 
+		'lastname' => array (
+			'rule' => 'notEmpty', 
+			'message' => 'You must fill in all fields' 
+		), 
+		'email' => array (
+			array (
+				'rule' => 'notEmpty', 
+				'message' => 'You must fill in all fields' 
+			), 
+			array (
+				'rule' => 'email', 
+				'message' => 'Please enter a valid email address.' 
+			), 
+			array (
+				'rule' => array ('unique', 'email' ), 
+				'message' => 'There is an existing account associated with this email address.' 
+			) 
+		), 
+		'password' => array (
+			array (
+				'rule' => array ('minLength', 6 ), 
+				'message' => 'The password should contain at least 6 characters.', 
+				'allowEmpty' => true 
+			), 
+			array (
+				'rule' => array ('minLength', 6 ), 
+				'message' => 'The password should contain at least 6 characters.', 'on' => 'create' 
+			) 
+		), 
+		'confirm_password' => array (
+				'rule' => array ('confirmField', 'password' ), 
+				'message' => 'Passwords do not match' 
+		) 
+	);
 
 	public function firstname() 
 	{
@@ -218,6 +218,10 @@ class Users extends AppModel {
 			return true;
 		}
 	} 
+	
+	public static function signupIsEnabled() {
+		return Model::load ( 'Segments' )->firstById ( MeuMobi::segment () )->enableSignUp;
+	}
 	
 	public static function validateInvite($token) 
 	{
