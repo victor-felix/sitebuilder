@@ -23,14 +23,14 @@
             </div>
             <div class="menu">
                 <div class="navigation" id="navbar">
-                    <div class="sites <?php echo (Users::ROLE_USER == $currentSite->role) ? 'solo' : '' ?>">
+                    <div class="sites">
                         <p class="business-name"><span><?php echo e($currentSite->title) ?></span></p>
                         <p class="share">
                             http://<?php echo e($currentSite->domain) ?>
                             <!-- *
                             <a id="share_site" href="<?php echo e($currentSite->domain) ?>"><?php echo s('share url') ?></a> -->
                         </p>
-                        <?php if (Users::ROLE_USER != $currentSite->role): ?>
+                        
                         <div class="site-switcher">
                             <p><?php echo s('My mobi sites');?></p>
                             <ul>
@@ -52,11 +52,11 @@
                                     </a>
                                 </li>
                                 <?php endforeach; ?>
+                                <?php if (Users::ROLE_USER != $currentSite->role): ?>
                                 <li class="new"><a href="<?php echo Mapper::url('/sites/add') ?>"><?php echo s('Create a new mobi ›') ?></a></li>
-
+								<?php endif; ?>
                             </ul>
                         </div>
-                        <?php endif; ?>
                     </div>
                     <div class="user">
                         <p><?php echo s('Hi <strong>%s</strong>', e(Auth::user()->firstname())) ?></p>
