@@ -14,6 +14,7 @@ set :php_env, 'production'
 namespace :deploy do
   task :permissions do
     run "chmod -R 777 #{release_path}/meu-site-builder/tmp"
+    run "chmod -R 777 #{release_path}/public/uploads"
   end
 
   task :shared do
@@ -22,8 +23,15 @@ namespace :deploy do
     }
   end
 
+  task :shared_setup do
+    shared_children.map { |d|
+      run "mkdir -p #{shared_path}/#{d}"
+    }
+  end
+
   task :environment do
     run "chmod -R 777 #{shared_path}/meu-site-builder/log"
+    run "chmod -R 777 #{shared_path}/public/uploads"
     put php_env, "#{shared_path}/environment"
   end
 
@@ -47,6 +55,7 @@ namespace :deploy do
   end
 end
 
+after 'deploy:setup', 'deploy:shared_setup'
 after 'deploy:setup', 'deploy:environment'
 after 'deploy:update_code', 'deploy:shared'
 after 'deploy:update_code', 'deploy:symlinks'

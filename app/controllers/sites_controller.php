@@ -6,8 +6,13 @@ class SitesController extends AppController {
 	}
 
 	public function add() {
+		Model::load('users');
+		if (Users::ROLE_USER == $this->getCurrentSite()->role) {
+			$this->redirect('/');
+			return;
+		}
+		
 		$site = Model::load('Sites');
-
 		if(!empty($this->data)) {
 			$site->segment = MeuMobi::segment();
 			$site->updateAttributes($this->request->data);
@@ -18,7 +23,7 @@ class SitesController extends AppController {
 				return;
 			}
 		}
-
+		
 		$this->set(array(
 				'site' => $site,
 				'countries' => Model::load('Countries')->toList(array(
@@ -26,13 +31,12 @@ class SitesController extends AppController {
 				)),
 				'states' => array(),
 		));
-
 	}
 
 	public function edit() {
 		$this->editRecord('/sites/edit');
 	}
-
+	
 	public function remove($id = null) {
 		if ($id) {
 			$site = Model::load('Sites')->firstById($id);
@@ -64,13 +68,13 @@ class SitesController extends AppController {
 	public function customize_register() {
 		$this->customizeSite(s('Configuration successfully saved.'), '/sites/finished');
 	}
-
+	
 	public function finished() {
 		$this->set(array(
 			'site' => $this->getCurrentSite()
 		));
 	}
-
+	
 	public function verify_slug($slug = null) {
 		$this->respondToJSON(array(
 			'unique' => !$this->Sites->exists(array(
@@ -78,7 +82,7 @@ class SitesController extends AppController {
 			))
 		));
 	}
-
+	
 	public function users() {
 		Model::load('Users');
 		if (Users::ROLE_ADMIN != $this->getCurrentSite()->role) {
@@ -88,7 +92,7 @@ class SitesController extends AppController {
 		$users = $this->getCurrentSite()->users(true);
 		$this->set(compact('users'));
 	}
-
+	
 	public function remove_user($userId) {
 		if ($this->getCurrentSite()->removeUser((int)$userId)) {
 			Session::writeFlash('success', s('User successfully removed.'));
@@ -97,7 +101,7 @@ class SitesController extends AppController {
 		}
 		$this->redirect('/sites/users');
 	}
-
+	
 	protected function editRecord($redirect_to) {
 		$site = $this->getCurrentSite();
 		if(!empty($this->data)) {

@@ -18,7 +18,11 @@
             </div>
 
             <p class="login">
-                <?php echo $this->html->link(s('Log in'), '/login') ?> <?php echo s('or') ?> <?php echo $this->html->link(s('Sign Up'), '/register') ?>
+                <?php echo $this->html->link(s('Log in'), '/login') ?>
+                <?php if(Users::signupIsEnabled()): ?>
+                 <?php echo s('or') ?>
+                 <?php echo $this->html->link(s('Sign Up'), '/register') ?>
+                <?php endif; ?>
             </p>
 
             <div class="get-started">

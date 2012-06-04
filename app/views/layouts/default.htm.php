@@ -30,6 +30,7 @@
                             <!-- *
                             <a id="share_site" href="<?php echo e($currentSite->domain) ?>"><?php echo s('share url') ?></a> -->
                         </p>
+                        
                         <div class="site-switcher">
                             <p><?php echo s('My mobi sites');?></p>
                             <ul>
@@ -51,8 +52,9 @@
                                     </a>
                                 </li>
                                 <?php endforeach; ?>
+                                <?php if (Users::ROLE_USER != $currentSite->role): ?>
                                 <li class="new"><a href="<?php echo Mapper::url('/sites/add') ?>"><?php echo s('Create a new mobi ›') ?></a></li>
-
+								<?php endif; ?>
                             </ul>
                         </div>
                     </div>
@@ -60,6 +62,7 @@
                         <p><?php echo s('Hi <strong>%s</strong>', e(Auth::user()->firstname())) ?></p>
                         <ul>
                             <li><?php echo $this->html->link(s('My Account'), '/settings/account') ?></li>
+                            <li><?php echo $this->html->link(s('Dashboard'), '/dashboard/index') ?></li>
                             <li><?php echo $this->html->link(s('Log out ›'), '/logout') ?></li>
                         </ul>
                         <!-- <?php echo $this->html->link(s('Log out ›'), '/logout') ?> -->

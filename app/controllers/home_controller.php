@@ -1,7 +1,7 @@
 <?php
 
 class HomeController extends AppController {
-    public $uses = array();
+    public $uses = array('users');
     public $layout = 'home';
 
     public function index() {
@@ -12,6 +12,10 @@ class HomeController extends AppController {
             else {
                 $this->redirect('/categories');
             }
+        }
+        
+        if(!Users::signupIsEnabled()) {
+        	$this->redirect('/login');
         }
     }
 }
