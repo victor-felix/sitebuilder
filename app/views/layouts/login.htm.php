@@ -9,11 +9,12 @@
     <body>
 
         <div id="header">
-            <?php echo $this->html->imagelink('layout/logo.png', '/', array(
+            <?php /* echo $this->html->imagelink('layout/logo.png', '/', array(
                 'alt' => 'MeuMobi'
             ), array(
                 'class' => 'logo'
-            )) ?>
+            )) */ ?>
+            <h2 class="logo"><?php echo $this->controller->getSegment()->title ?></h2>
         </div>
 
         <?php echo $this->element('layouts/flash') ?>

@@ -148,7 +148,7 @@ a img {
 
 .form-register fieldset {
 	border: 0;
-	border-bottom: 1px solid #DDD;
+	/*border-bottom: 1px solid #DDD;*/
 	clear: both;
 	padding-bottom: 10px;
 }

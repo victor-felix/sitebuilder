@@ -56,7 +56,11 @@ class AppController extends Controller {
             $this->redirect('/users/login');
         }
     }
-
+	
+	public function getSegment() {
+		return Model::load ( 'Segments' )->firstById ( MeuMobi::segment () );
+	}
+	
     protected function toJSON($record) {
         if(is_array($record)) {
             foreach($record as $k => $v) {

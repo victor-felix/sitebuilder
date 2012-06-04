@@ -10,7 +10,8 @@
 }
 
 #FormLogin .forgot-password, #FormLogin .no-account {
-	color: #C02926;
+	color: #2F3E6E;
+	margin-left: 87px;
 	text-decoration: none;
 }
 

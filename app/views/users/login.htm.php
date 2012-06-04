@@ -40,9 +40,7 @@
                 ));
             }
             ?>
-            <?php echo $this->html->link(s('Forgot password?'), '/users/forgot_password', array(
-                'class' => 'forgot-password'
-            )) ?>
+           
         </div>
     </div>
     <?php 
@@ -57,9 +55,13 @@
 
 <fieldset class="actions">
     <?php echo $this->form->submit(s('Log in'), array(
-        'class' => 'ui-button red large',
-        'style' => 'margin-right: 415px'
+        'class' => 'ui-button large',
+        'style' => 'margin-left: 235px; float: left;'
     ))?>
+    
+     <?php echo $this->html->link(s('Forgot password?'), '/users/forgot_password', array(
+                'class' => 'forgot-password'
+            )) ?>
 </fieldset>
 
 <?php echo $this->form->close() ?>
