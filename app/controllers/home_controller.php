@@ -13,5 +13,9 @@ class HomeController extends AppController {
                 $this->redirect('/categories');
             }
         }
+        
+        if(!Users::signupIsEnabled()) {
+        	$this->redirect('/login');
+        }
     }
 }
