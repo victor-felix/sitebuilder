@@ -2,7 +2,7 @@
 
 class SitesController extends AppController {
 	public function register() {
-		$this->editRecord('/sites/customize_register');
+		$this->editRecord('/sites/customize_register', false);
 	}
 
 	public function add() {
@@ -102,13 +102,15 @@ class SitesController extends AppController {
 		$this->redirect('/sites/users');
 	}
 	
-	protected function editRecord($redirect_to) {
+	protected function editRecord($redirect_to, $allowMessage = true) {
 		$site = $this->getCurrentSite();
 		if(!empty($this->data)) {
 			$site->updateAttributes($this->request->data);
 			if($site->validate()) {
 				$site->save();
-				Session::writeFlash('success', s('Configuration successfully saved.'));
+				if ($allowMessage) {
+					Session::writeFlash('success', s('Configuration successfully saved.'));
+				}
 				if($redirect_to == '/sites/customize_register') {
 					Session::write('Users.registering', '/sites/customize_register');
 				}

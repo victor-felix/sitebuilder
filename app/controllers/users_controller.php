@@ -38,7 +38,7 @@ class UsersController extends AppController
 		}
 		$user = new Users ();
 		$this->set(array('invite_token' => $invite_token));
-		$this->saveUser ( $user, '/sites/register' );
+		$this->saveUser ($user, '/sites/register', false);
 	}
 	
 	public function confirm($id = null, $token = null) 
@@ -187,7 +187,7 @@ class UsersController extends AppController
 		$this->redirect('/users/login/' . $token);
 	}
 	
-	protected function saveUser($user, $redirect) 
+	protected function saveUser($user, $redirect, $allowMessage = true) 
 	{
 		if (!empty( $this->data )) {
 			
@@ -199,7 +199,9 @@ class UsersController extends AppController
 				}
 				
 				$user->save();
-				Session::writeFlash('success', s('Configuration successfully saved'));
+				if ($allowMessage) {
+					Session::writeFlash('success', s('Configuration successfully saved'));
+				}
 				
 				$this->confirmInvite($user, $this->data);
 				
