@@ -14,7 +14,6 @@ set :php_env, 'production'
 namespace :deploy do
   task :permissions do
     run "chmod -Rf 777 #{release_path}/meu-site-builder/tmp"
-    run "chmod -Rf 777 #{release_path}/public/uploads"
   end
 
   task :shared do
