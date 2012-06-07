@@ -33,7 +33,7 @@ class ItemsHelper extends Helper {
                 'type' => Inflector::underscore($type[1]),
                 'site_id' => $view->controller->getCurrentSite()->id
             );
-            $items = $classname::find('all', array('conditions' => $conditions));
+            $items = $classname::find('all', array('conditions' => $conditions, 'order' => 'title'));
             $options = array();
 
             foreach($items as $item) {

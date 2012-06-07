@@ -85,67 +85,67 @@ $.extend($.easing, {
         $('.populate-fields input:checked').trigger('click');
     };
     
-	// Function to add slide 'listItens' for
-	// don't break history slide, so do it when
-	// in slide category go slide business_items/add
-	var addSliderItens = function(urlRequest){
-		if(urlRequest.indexOf("/business_items/add/")!= -1){
-			if(!($('.slide-elem[rel*="index"]').is("*"))){
-				var urlRequestItens = urlRequest.replace("add", "index");
-				$.ajax({
-					url: urlRequestItens,
-					type: 'GET',
-					success: function(dataIndex){
-						$(slider).width($(slider).width()+slideSize);
-						$(slider).css('marginLeft', (parseInt(slider.css('marginLeft'),10)-slideSize)+'px');
-						$('.slide-elem:last').before('<div class="slide-elem" rel="'+urlRequestItens+'">'+dataIndex+'</div>');						
-					}
-				});	
-			}	
-		}	    
-	}
+    // Function to add slide 'listItens' for
+    // don't break history slide, so do it when
+    // in slide category go slide business_items/add
+    var addSliderItens = function(urlRequest){
+        if(urlRequest.indexOf("/business_items/add/")!= -1){
+            if(!($('.slide-elem[rel*="index"]').is("*"))){
+                var urlRequestItens = urlRequest.replace("add", "index");
+                $.ajax({
+                    url: urlRequestItens,
+                    type: 'GET',
+                    success: function(dataIndex){
+                        $(slider).width($(slider).width()+slideSize);
+                        $(slider).css('marginLeft', (parseInt(slider.css('marginLeft'),10)-slideSize)+'px');
+                        $('.slide-elem:last').before('<div class="slide-elem" rel="'+urlRequestItens+'">'+dataIndex+'</div>');                      
+                    }
+                }); 
+            }   
+        }       
+    }
 
     // Functions that handle the animation
     // Any link with the push-scene class will load in a new slide scene
     // Any link with the pop-scene class will have it's href ignored and goes back one step on the navigation
-	function pushScene(){
-		slider.undelegate('.push-scene', 'click', pushScene);
-	        var urlRequest = $(this).attr('href');
-	        $.get(urlRequest, function(data){
-			slider.append('<div class="slide-elem" rel="'+urlRequest+'">'+data+'</div>');
-			resetSlide();		
-			slider.animate(
-				{marginLeft:(parseInt(slider.css('marginLeft'),10)-slideSize)+'px'},
-				{duration:800,easing:'easeInOutCubic',complete:function() {
-					if($('.markitup').length) {
-						$('.markitup').markItUp(mySettings);
-					}
-					if($('.chosen').length) {
-						$('.chosen').chosen();
-					}
-					addSliderItens(urlRequest);
-					slider.delegate('.push-scene', 'click', pushScene);
-				}}
-			);
-	        });	    
-	}
-	slider.delegate('.push-scene', 'click', function(e){e.preventDefault();});
-	slider.delegate('.push-scene', 'click', pushScene);
+    function pushScene(){
+        slider.undelegate('.push-scene', 'click', pushScene);
+            var urlRequest = $(this).attr('href');
+            $.get(urlRequest, function(data){
+            slider.append('<div class="slide-elem" rel="'+urlRequest+'">'+data+'</div>');
+            resetSlide();       
+            slider.animate(
+                {marginLeft:(parseInt(slider.css('marginLeft'),10)-slideSize)+'px'},
+                {duration:800,easing:'easeInOutCubic',complete:function() {
+                    if($('.markitup').length) {
+                        $('.markitup').markItUp(mySettings);
+                    }
+                    if($('.chosen').length) {
+                        $('.chosen').chosen();
+                    }
+                    addSliderItens(urlRequest);
+                    slider.delegate('.push-scene', 'click', pushScene);
+                }}
+            );
+            });     
+    }
+    slider.delegate('.push-scene', 'click', function(e){e.preventDefault();});
+    slider.delegate('.push-scene', 'click', pushScene);
 
-	function popScene(){
-		slider.undelegate('.pop-scene', 'click', popScene);
-		slider.animate(
-			{marginLeft:(parseInt(slider.css('marginLeft'),10)+slideSize)+'px'},
-			{duration:800,easing:'easeInOutCubic',
-			complete:function(){
-				slider.delegate('.pop-scene', 'click', popScene);
-				resetSlide(true);
-			}
-		});	    
-	}
-	slider.delegate('.pop-scene', 'click', function(e){e.preventDefault();});
-	slider.delegate('.pop-scene', 'click', popScene);
-	
+    function popScene(){
+        slider.undelegate('.pop-scene', 'click', popScene);
+        slider.animate(
+            {marginLeft:(parseInt(slider.css('marginLeft'),10)+slideSize)+'px'},
+            {duration:800,easing:'easeInOutCubic',
+            complete:function(){
+                slider.delegate('.pop-scene', 'click', popScene);
+                resetSlide(true);
+            }
+        });     
+    }
+    slider.delegate('.pop-scene', 'click', function(e){e.preventDefault();});
+    slider.delegate('.pop-scene', 'click', popScene);
+    
     
     // ajax error/success helper
     var globalCallback = function(data,status) {
@@ -270,12 +270,13 @@ $.extend($.easing, {
     // Handles the delete confirmation dialog buttons.
     // When clicked cancel, closes the dialog. When clicked OK, makes the
     // request and triggers ajax:success event
-    slider.delegate('.delete-confirm .ui-button', 'click', function(e) {
-        e.preventDefault();
+    content.delegate('.delete-confirm .ui-button', 'click', function(e) {
         var self = $(this);
         if(self.hasClass('delete')) {
+            if(!slider.length) {
+                return;
+            }
             var handler = dataWithCode(function(data,status) {
-                //self.trigger('ajax:success', [data]);
             });
             $.ajax({
                url: this.href,
@@ -284,18 +285,21 @@ $.extend($.easing, {
                error: handler
             });
         }
-        else {
-            self.parent().parent().fadeOut('fast');
-        }
+        self.parent().parent().fadeOut('fast');
+        e.preventDefault();
     });
 
     // Handles the item's deletion in items/edit
-    slider.delegate('#form-edit-businessitem .delete', 'click', function(e) {
-        e.preventDefault();
-        $('#form-edit-businessitem + .delete-confirm').fadeIn('fast');
+    content.delegate('.ui-button.has-confirm', 'click', function(e) {
+        var confirmSelector = '';
+        if(confirmSelector = $(this).data('confirm')){
+            e.preventDefault();
+            $(confirmSelector).fadeIn('fast');
+        }
     });
 
-    slider.delegate('#form-edit-businessitem + .delete-confirm .ui-button', 'ajax:success', function(e, data) {
+    content.delegate('.delete-confirm .ui-button', 'ajax:success', function(e, data) {
+        $('.delete-confirm').fadeOut('fast');
         $('.slide-elem:last').prev().html(data);
         $('.slide-elem:last .ui-button.back').click();
     });
@@ -319,6 +323,46 @@ $.extend($.easing, {
         e.preventDefault();
         $(this).prev().clone().insertBefore(this);
     });
+
+    $.Paginate = function(params) {
+        this.settings = {
+            controls_wrapp: "#pagination",
+            paginate_items_wrapp: ".paginate-items"
+        };
+
+        this.settings = $.extend(this.settings, params);
+
+        this.refreshData = function(data) {
+            var result = $(data).filter(this.settings.paginate_items_wrapp);
+            var controls = $(data).filter(this.settings.controls_wrapp);
+
+            $(this.settings.paginate_items_wrapp).slideUp('slow', function(){
+                $(this).html(result.html()).slideDown('slow');
+            });
+
+            $(this.settings.controls_wrapp).hide()
+            .html(controls.html())
+            .show();
+        }
+
+        this.init = function() {
+            var paginate = this;
+            slider.delegate(this.settings.controls_wrapp+ ' a', 'click',function(){
+                $.ajax({
+                    url: $(this).attr('href'),
+                    type: 'GET',
+                    success: function(dataHTML){
+                        paginate.refreshData(dataHTML);
+                    }
+                });
+                return false;
+            });
+        }
+
+        this.init();
+    }
+    $.Paginate();
+
 })(jQuery);
 
 $(function() {
@@ -337,26 +381,26 @@ $(function() {
 
     // expand fieldsets in sites/edit
     $('.fieldset-expand').click(function(e) {
-	var objThis = this;    
-	$($('fieldset[style*="display: block"],fieldset[style=""]')).each(function(i , element){
-		if($(objThis).html() != $(element).prev().html()){
-			$(element).slideToggle();
-			$(element).prev().slideToggle();
-		}
-	});
+    var objThis = this;    
+    $($('fieldset[style*="display: block"],fieldset[style=""]')).each(function(i , element){
+        if($(objThis).html() != $(element).prev().html()){
+            $(element).slideToggle();
+            $(element).prev().slideToggle();
+        }
+    });
         $(this).slideToggle();
         $(this).next('fieldset').slideToggle();
         e.preventDefault();
     });
     
     $('#form-edit-site-info > fieldset').click(function(){
-	$(this).prev().click();    
+    $(this).prev().click();    
     });
     
     $('#form-edit-site-info > fieldset .field-group:not(.picture-upload-container)').click(function(e){
-	e.stopPropagation();    
+    e.stopPropagation();    
     });
-	
+    
 
     if($('.theme-picker').length) {
         $('.theme-picker a').click(function(e) {
@@ -416,18 +460,27 @@ $(function() {
     if($('.chosen').length) {
         $('.chosen').chosen();
     }
-	$('body').click(function(e){
-		$("#navbar .open").removeClass("open");
-	})
-	$("#navbar")
-		.delegate(".business-name", 'click', function(e){
-			e.stopPropagation();
-			$(this).closest(".sites").toggleClass("open");
-			$("#navbar .user.open").removeClass("open")
-		})
-		.delegate(".user p", 'click', function(e){
-			e.stopPropagation();
-			$(this).closest(".user").toggleClass("open");
-			$("#navbar .sites.open").removeClass("open")
-		})
+    $('body').click(function(e){
+        $("#navbar .open").removeClass("open");
+    })
+    $("#navbar")
+        .delegate(".business-name", 'click', function(e){
+            e.stopPropagation();
+            $(this).closest(".sites").toggleClass("open");
+            $("#navbar .user.open").removeClass("open")
+        })
+        .delegate(".user p", 'click', function(e){
+            e.stopPropagation();
+            $(this).closest(".user").toggleClass("open");
+            $("#navbar .sites.open").removeClass("open")
+        });
+    /**
+     *Implement bussiness description counter
+     */
+    $('#form-edit-site-info #businessDescription').keyup(function(){
+        var remainVal = $(this).attr('maxlenght') - $(this).val().length;
+        $('#businessCounter').html(remainVal);
+    });
+    $('#form-edit-site-info #businessDescription').keyup();
+    /* end counter  */
 });

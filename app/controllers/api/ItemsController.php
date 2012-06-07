@@ -37,11 +37,11 @@ class ItemsController extends ApiController {
             return $self->toJSON($items);
         });
     }
-	
+
     protected function _prepareAdd($data) {
     	$need 		= array('type','parent_id');
     	$discard	= array('created','updated','geo');
-    	
+
     	foreach ($discard as $field){
     		if(array_key_exists($field, $data))
     			unset($data[$field]);
@@ -52,50 +52,50 @@ class ItemsController extends ApiController {
     	}
     	return $data;
     }
-    
+
     /**
      * Add new item related to another item
      * @return array|multitype:NULL
      */
-    
-    public function add() {    	
+
+    public function add() {
     	try{
 	    	$data = $this->_prepareAdd( $this->request->data );
-	    		    	
+
 	    	$images = isset($data['images']) ? $data['images']: false;
-	    	
+
 	    	$item = Items::find('first', array('conditions' => array(
 	    			'_id' => $this->request->params['id'],
 	    			'site_id' => $this->site()->id
 	    	)));
-	    	
+
 	    	if(!$item){
 	    		throw new \Exception('invalid item');
 	    	}
 	    	$classname = '\app\models\items\\' . Inflector::camelize($data['type']);
-	    	
+
 	    	$newItem = $classname::create();
 	    	$newItem->set($data);
 	    	$newItem->site_id = $this->site()->id;
-	    	
+
 	    	/** if not saved stop right here */
-	    	if(!$newItem->save()){ 
-	    		$this->response->status(422); 
+	    	if(!$newItem->save()){
+	    		$this->response->status(422);
 	    		return;
 	    	}
-	    	
+
     		/** add to related and save */
-	    	if($item->related instanceof \lithium\core\Object){ 
+	    	if($item->related instanceof \lithium\core\Object){
 	    		$related = $item->related->to('array');
 	    		$related[] =  $newItem->id();
-	    		
+
 	    	} else {
 	    		$related[] = $newItem->id();
 	    	}
-	    	
+
 	    	$item->related = $related;
     		$item->save();
-    		
+
     		/** if images, update and save*/
     		if($images){
 	    		foreach($images as  $id => $image) {
@@ -107,21 +107,21 @@ class ItemsController extends ApiController {
     				$record->save();
 	    		}
     		}
-    		
+
     		$this->response->status(201);
     		return $this->toJSON($newItem);
-	    
+
     	} catch (\Exception $e){
     		$this->response->status(422);
     	}
     }
-    
+
     public function related() {
         $item = Items::find('first', array('conditions' => array(
             '_id' => $this->request->params['id'],
             'site_id' => $this->site()->id
         )));
-        
+
 		if($item->related) {
 	        $classname = '\app\models\items\\' . Inflector::camelize($item->type);
 	        $related = $classname::find('all', array(
@@ -135,7 +135,7 @@ class ItemsController extends ApiController {
 		}else{
 			$related = array();
 		}
-		
+
         $etag = $this->etag($related);
         $self = $this;
 

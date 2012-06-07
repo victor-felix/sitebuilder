@@ -241,6 +241,7 @@ a img {
 	margin-top: 1px;
 	background: #FFF;
 	display: none;
+    z-index: 2;
 }
 #header .navigation .user li {
 	width: 100%;

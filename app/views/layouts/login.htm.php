@@ -9,20 +9,18 @@
     <body>
 
         <div id="header">
+        <?php if(Users::signupIsEnabled()): ?>
             <?php echo $this->html->imagelink('layout/logo.png', '/', array(
                 'alt' => 'MeuMobi'
             ), array(
                 'class' => 'logo'
             )) ?>
+           <?php else: ?>
+            <h2 class="logo"><?php echo $this->controller->getSegment()->title ?></h2>
+            <?php endif; ?>
         </div>
 
-        <?php if($success = Session::flash('success')): ?>
-            <a href="#" id="success-feedback"><?php echo s($success) ?></a>
-        <?php endif ?>
-
-        <?php if($error = Session::flash('error')): ?>
-            <a href="#" id="error-feedback"><?php echo s($error) ?></a>
-        <?php endif ?>
+        <?php echo $this->element('layouts/flash') ?>
 
         <div id="content">
             <?php echo $this->contentForLayout ?>

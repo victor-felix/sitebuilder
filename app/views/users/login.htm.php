@@ -1,5 +1,6 @@
 <?php $this->layout = 'login' ?>
 <?php $this->pageTitle = s('Log in') ?>
+<?php $invite_token = isset($invite_token) ? $invite_token : '' ?>
 
 <?php echo $this->form->create(Mapper::here(), array(
     'class' => 'form-register',
@@ -32,18 +33,35 @@
         </div>
 
         <div class="form-grid-220 first">
-            <?php echo $this->html->link(s('Forgot password?'), '/users/forgot_password', array(
-                'class' => 'forgot-password'
-            )) ?>
+            <?php
+            if ($invite_token) {
+                echo $this->html->link(s('Don\'t have account? Click here to register'), '/users/register/' . $invite_token, array(
+                    'class' => 'no-account'
+                ));
+            }
+            ?>
+           
         </div>
     </div>
+    <?php 
+        if ($invite_token) {
+            echo $this->form->input('invite_token', array(
+            		'type' => 'hidden',
+            		'value' => $invite_token,
+            ));
+        } 
+    ?>
 </fieldset>
 
 <fieldset class="actions">
     <?php echo $this->form->submit(s('Log in'), array(
-        'class' => 'ui-button red large',
-        'style' => 'margin-right: 415px'
+        'class' => 'ui-button large',
+        'style' => 'margin-left: 235px; float: left;'
     ))?>
+    
+     <?php echo $this->html->link(s('Forgot password?'), '/users/forgot_password', array(
+                'class' => 'forgot-password'
+            )) ?>
 </fieldset>
 
 <?php echo $this->form->close() ?>

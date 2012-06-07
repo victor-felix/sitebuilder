@@ -83,3 +83,22 @@
 	margin-left: 207px;
 }
 
+.pagination-wrapp {
+    text-align: center;
+    list-style: none;
+    margin: 10px 0;
+}
+
+.pagination-wrapp li {
+    display: inline;
+    color: #2F3E6E;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.pagination-wrapp li a {
+    color: #2F3E6E;
+}
+.pagination-wrapp li .current {
+    font-size: 20px;
+}

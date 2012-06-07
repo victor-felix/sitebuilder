@@ -43,14 +43,24 @@ class AppController extends Controller {
 
     public function getCurrentSite() {
         if(Auth::loggedIn()) {
-            return Auth::user()->site();
+            if ($site = Auth::user()->site()) {
+                return $site;
+            } else {
+                Auth::user()->registerNewSite ();
+                $this->redirect ( '/sites/register' );
+                Session::write ( 'Users.registering', '/sites/register' );
+            }
         }
         else {
             Session::flash('Auth.redirect', Mapper::here());
             $this->redirect('/users/login');
         }
     }
-
+	
+	public function getSegment() {
+		return Model::load ( 'Segments' )->firstById ( MeuMobi::segment () );
+	}
+	
     protected function toJSON($record) {
         if(is_array($record)) {
             foreach($record as $k => $v) {

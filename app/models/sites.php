@@ -1,19 +1,23 @@
 <?php
 
 require_once 'lib/geocoding/GoogleGeocoding.php';
+require_once 'lib/sitemanager/SiteManager.php';
 
 class Sites extends AppModel {
 	protected $getters = array('feed_url', 'feed_title', 'custom_domain');
 	protected $beforeSave = array(
-		'setHideCategories', 'getLatLng', 'saveCustomDomain'
+		'setHideCategories', 'getLatLng', 'saveCustomDomain', 'updateSiteManager'
 	);
 	protected $afterSave = array(
 		'saveLogo', 'createRootCategory', 'createNewsCategory', 'updateFeed',
 		'createRelation'
 	);
 	protected $beforeDelete = array(
-		'checkAndDeleteFeed', 'deleteImages', 'deleteCategories', 'deleteLogo',
-		'removeUsers'
+		'deleteImages', 
+		'deleteCategories', 
+		'deleteLogo',
+		'removeUsers', 
+		'removeFromSiteManager'
 	);
 	protected $validates = array(
 		'slug' => array(
@@ -44,13 +48,13 @@ class Sites extends AppModel {
 				'message' => 'Only valid gif, jpg or png are allowed'
 			),
 			array(
-				'rule' => array ('validImage'),
+				'rule' => array('validImage'),
 				'message' => 'Only valid gif, jpg or png are allowed'
 			)
 		),
 		'description' => array(
 			array(
-				'rule' => array ('maxLength', 500),
+				'rule' => array('maxLength', 500),
 				'message' => 'The description of the site could contain 500 chars max.'
 			)
 		)
@@ -85,7 +89,7 @@ class Sites extends AppModel {
 	}
 
 	public function custom_domain() {
-		return ! empty ( $this->data ['domain'] ) && strpos ( $this->domain, '.' . MeuMobi::domain () ) === false;
+		return !empty($this->data['domain']) && strpos($this->domain, '.' . MeuMobi::domain()) === false;
 	}
 
 	public function photos() {
@@ -140,7 +144,54 @@ class Sites extends AppModel {
 	}
 
 	public function categories() {
-		return Model::load ( 'Categories' )->all ( array ('conditions' => array ('site_id' => $this->id, 'visibility >' => - 1 ) ) );
+		return Model::load('Categories')->all(array(
+				'conditions' => array ('site_id' => $this->id, 'visibility >' => - 1),
+				'order' => 'title'
+				));
+	}
+
+	public function userRole() {
+		try {
+			if ($this->role) {
+				return $this->role;
+			}
+		} catch(Exception $e) {
+
+		}
+
+		$model = Model::load('UsersSites')->first(array(
+			'user_id'		=> Auth::user()->id(),
+			'site_id'		=> $this->id,
+			'segment'	=> MeuMobi::segment(),
+		));
+
+		if ($model) {
+			$this->role = $model->role;
+		}
+		return $this->role;
+	}
+
+
+	public function users($removeCurrent = false) {
+		$usersIds = Model::load('UsersSites')->getAllUsers($this);
+		$users = Model::load('Users')->allById($usersIds);
+
+		if ($removeCurrent) {
+			$current = Auth::user();
+			foreach ( $users as $key => $user ) {
+				if ($current->id == $user->id) {
+					unset($users[$key]);
+				}
+			}
+		}
+
+		return $users;
+	}
+
+	public function removeUser($userId) {
+		if($user = Model::load('Users')->firstById($userId)) {
+			return Model::load('UsersSites')->remove($user, $this);
+		}
 	}
 
 	public function itemTypes() {
@@ -215,15 +266,22 @@ class Sites extends AppModel {
 		return $data;
 	}
 
-	protected function removeUsers() {
-		return Model::load ( 'UsersSites' )->onDeleteSite ( $this );
+	protected function removeUsers($id) {
+		Model::load ( 'UsersSites' )->onDeleteSite ( $this );
+		return $id;
 	}
 
-	protected function saveCustomDomain($data) {
-		if (isset ( $data ['custom_domain'] ) && (! $data ['custom_domain'] || empty ( $data ['domain'] ))) {
-			$data ['domain'] = $data ['slug'] . '.' . MeuMobi::domain ();
-		}
+	protected function removeFromSiteManager($id)
+	{
+		SiteManager::delete($this->domain);
+		return $id;
+	}
 
+	protected function saveCustomDomain($data)
+	{
+		if (isset($data['custom_domain']) && (!$data['custom_domain'] || empty($data['domain']))) {
+			$data['domain'] = $data['slug'] . '.' . MeuMobi::domain();
+		}
 		return $data;
 	}
 
@@ -269,6 +327,20 @@ class Sites extends AppModel {
 			$category->updateAttributes ( array ('title' => $this->data ['feed_title'], 'feed' => $this->data ['feed_url'] ) );
 			$category->save ();
 		}
+	}
+
+	protected function updateSiteManager($data)
+	{
+		$instance = MeuMobi::instance();
+		$domain = $data['domain'];
+		if ($this->id) {
+			$previous = $this->firstById($this->id);
+			$previous = $previous->domain;
+			SiteManager::update($previous, $domain, $instance);
+		} else {
+			SiteManager::create($domain, $instance);
+		}
+		return $data;
 	}
 
 	protected function deleteLogo($id) {

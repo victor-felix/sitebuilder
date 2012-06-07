@@ -20,9 +20,12 @@ class CategoriesController extends AppController {
         if(!empty($this->data)) {
             $category->site_id = $site->id;
             if($category->validate()) {
-            	$category->save();
+                $category->save();
                 if($this->isXhr()) {
-                    $json = array('go_back'=>true,'refresh'=>'/categories', 'success'=>s('Category successfully added.'));
+                    $json = array(
+                        'go_back'=>true,'refresh'=>'/categories', 
+                        'success'=>s('Category successfully added.')
+                        );
                     $this->respondToJSON($json);
                 }
                 else {
@@ -30,14 +33,17 @@ class CategoriesController extends AppController {
                     $this->redirect('/categories');
                 }
             }else{
-            	if($this->isXhr()) {
-            		$json = array('refresh'=>'/categories/add/' . $parent_id, 'error'=>s('Sorry, we can\'t save the category'));
-            		$this->respondToJSON($json);
-            	}
-            	else {
-            		Session::writeFlash('error', s('Sorry, we can\'t save the category'));
-            		$this->redirect('/categories/add/' . $parent_id);
-            	}
+                if($this->isXhr()) {
+                    $json = array(
+                        'refresh'=>'/categories/add/' . $parent_id, 
+                        'error'=>s('Sorry, we can\'t save the category')
+                        );
+                    $this->respondToJSON($json);
+                }
+                else {
+                    Session::writeFlash('error', s('Sorry, we can\'t save the category'));
+                    $this->redirect('/categories/add/' . $parent_id);
+                }
             }
         }
 
@@ -56,7 +62,10 @@ class CategoriesController extends AppController {
             if($category->validate()) {
                 $category->save();
                 if($this->isXhr()) {
-                    $json = array('go_back'=>true,'refresh'=>'/categories', 'success'=>s('Category successfully updated.'));
+                    $json = array(
+                        'go_back'=>true,'refresh'=>'/categories', 
+                        'success'=>s('Category successfully updated.')
+                        );
                     $this->respondToJSON($json);
                 }
                 else {
@@ -77,11 +86,36 @@ class CategoriesController extends AppController {
         $this->Categories->delete($id);
         $message = s('Category successfully deleted.');
         if($this->isXhr()) {
-            $json = array('success'=>$message);
+            $json = array(
+                        'success'=>$message,
+                        'go_back'=>true,
+                        'refresh'=>'/categories'
+                    );
             $this->respondToJSON($json);
         }
         else {
             Session::writeFlash('success', $message);
+            $this->redirect('/categories');
+        }
+    }
+
+    public function delete_all_items($id = null) {
+        $category = $this->Categories->firstById($id);
+        $status = 'error';
+        $message = "Sorry, we can't remove items";
+
+        if($category) {
+            $classname = '\app\models\items\\' . Inflector::camelize($category->type);
+            $classname::remove(array('parent_id' => $category->id));
+            $status = 'success';
+            $message = s('Category Items deleted successfully.');
+        }
+        if($this->isXhr()) {
+            $json = array($status => $message);
+            $this->respondToJSON($json);
+        }
+        else {
+            Session::writeFlash($status, $message);
             $this->redirect('/categories');
         }
     }

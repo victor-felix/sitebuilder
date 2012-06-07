@@ -2,7 +2,7 @@
 
 class Images extends AppModel {
     protected $afterSave = array('fillFields');
-    protected $beforeDelete = array('deleteFile');
+    protected $beforeDelete = array('deleteFile', 'updateTimestamps');
 
     public function upload($model, $image, $attr = array()) {
         return $this->saveImage('uploadFile', $model, $image, $attr);
@@ -77,6 +77,14 @@ class Images extends AppModel {
             $info['path'] = $path . '/' . $filename;
             $self->updateAttributes($info);
             $self->save();
+
+            if ($self->model == 'Items') {
+                $item = \app\models\Items::find('type', array('conditions' => array(
+                    '_id' => $self->foreign_key
+                )));
+                $item->modified = date('Y-m-d H:i:s');
+                $item->save();
+            }
 
             $this->resizeImage($model, $path, $filename);
 
@@ -164,6 +172,20 @@ class Images extends AppModel {
             )));
 
             $this->deleteResizedFiles($self->model, $self->path);
+        }
+
+        return $id;
+    }
+
+    protected function updateTimestamps($id) {
+        $self = $this->firstById($id);
+
+        if ($self->model == 'Items') {
+            $item = \app\models\Items::find('type', array('conditions' => array(
+                '_id' => $self->foreign_key
+            )));
+            $item->modified = date('Y-m-d H:i:s');
+            $item->save();
         }
 
         return $id;
