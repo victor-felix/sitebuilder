@@ -22,7 +22,22 @@ class MeuMobi
 
 	public static function domain()
 	{
-		$domain = self::instance();
-		return substr($domain, strpos($domain, '.') + 1);
+		$segment = Model::load('Segments')->firstById(static::segment());
+		$domain = null;
+
+		if (property_exists($segment, 'domain')) {
+			$domain = $segment->domain;
+		}
+
+		if (!$domain) {
+			$domain = Config::read('Sites.domain');
+		}
+
+		if (!$domain) {
+			$domain = self::instance();
+			$domain = substr($domain, strpos($domain, '.') + 1);
+		}
+
+		return $domain;
 	}
 }
