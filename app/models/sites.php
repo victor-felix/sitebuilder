@@ -332,7 +332,7 @@ class Sites extends AppModel {
 	protected function updateSiteManager($data)
 	{
 		$instance = MeuMobi::instance();
-		$domain = $this->data['domain'];
+		$domain = $data['domain'];
 		if ($this->id) {
 			$previous = $this->firstById($this->id);
 			$previous = $previous->domain;
