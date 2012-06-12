@@ -7,379 +7,379 @@ require_once 'lib/utils/FileUpload.php';
 use app\models\Items, app\models\items\Articles, utils\Import as Import;
 
 class Categories extends AppModel {
-    
-    const MAX_IMPORTFILE_SIZE = 300;
-    protected $beforeSave = array('getOrder', 'getItemType', 'checkItems');
-    protected $afterSave = array('importItems', 'updateFeed');
-    protected $beforeDelete = array('deleteChildren');
-    protected $defaultScope = array(
-        'order' => '`order` ASC'
-    );
-    protected $validates = array(
-        'title' => array(
-            array(
-                'rule' => 'notEmpty',
-                'message' => 'A non empty title is required'
-            ),
-            array(
-                'rule' => array('maxLength', 50),
-                'message' => 'The title of a category could contain 50 chars max.'
-            )
-        )
-    );
 
-    public function __construct($data = array()) {
-        parent::__construct($data);
+	const MAX_IMPORTFILE_SIZE = 300;
+	protected $beforeSave = array('getOrder', 'getItemType', 'checkItems');
+	protected $afterSave = array('importItems', 'updateFeed');
+	protected $beforeDelete = array('deleteChildren');
+	protected $defaultScope = array(
+		'order' => '`order` ASC'
+	);
+	protected $validates = array(
+		'title' => array(
+			array(
+				'rule' => 'notEmpty',
+				'message' => 'A non empty title is required'
+			),
+			array(
+				'rule' => array('maxLength', 50),
+				'message' => 'The title of a category could contain 50 chars max.'
+			)
+		)
+	);
 
-        if(is_null($this->id) && !isset($this->data['visibility'])) {
-            $this->data['visibility'] = true;
-            $this->data['populate'] = 'manual';
-        }
-    }
+	public function __construct($data = array()) {
+		parent::__construct($data);
 
-    public function createRoot($site) {
-        $root = Model::load('Segments')->firstById($site->segment)->root;
-        $this->id = null;
-        $this->save(array(
-            'title' => __($root),
-            'site_id' => $site->id,
-            'parent_id' => 0
-        ));
-    }
+		if(is_null($this->id) && !isset($this->data['visibility'])) {
+			$this->data['visibility'] = true;
+			$this->data['populate'] = 'manual';
+		}
+	}
 
-    public function getRoot($site_id) {
-        return $this->firstBySiteIdAndParentId($site_id, 0);
-    }
+	public function createRoot($site) {
+		$root = Model::load('Segments')->firstById($site->segment)->root;
+		$this->id = null;
+		$this->save(array(
+			'title' => __($root),
+			'site_id' => $site->id,
+			'parent_id' => 0
+		));
+	}
 
-    public function childrenItems($limit = null) {
-        $type = Inflector::underscore($this->type);
-        $classname = '\app\models\items\\' . Inflector::camelize($type);
+	public function getRoot($site_id) {
+		return $this->firstBySiteIdAndParentId($site_id, 0);
+	}
 
-        return $classname::find('all', array('conditions' => array(
-            'parent_id' => $this->id
-        ), 'limit' => $limit));
-    }
+	public function childrenItems($limit = null) {
+		$type = Inflector::underscore($this->type);
+		$classname = '\app\models\items\\' . Inflector::camelize($type);
 
-    public function hasFeed() {
-        $populate = $this->populate;
-        return $populate == 'auto';
-    }
+		return $classname::find('all', array('conditions' => array(
+			'parent_id' => $this->id
+		), 'limit' => $limit));
+	}
 
-    public function childrenCount() {
-        return Items::find('count', array('conditions' => array(
-            'parent_id' => $this->id
-        )));
-    }
+	public function hasFeed() {
+		$populate = $this->populate;
+		return $populate == 'auto';
+	}
 
-    public function breadcrumbs() {
-        $parent_id = $this->parent_id;
-        $breadcrumbs = array($this);
+	public function childrenCount() {
+		return Items::find('count', array('conditions' => array(
+			'parent_id' => $this->id
+		)));
+	}
 
-        while($parent_id > 0) {
-            $category = $this->firstById($parent_id);
-            $breadcrumbs []= $category;
-            $parent_id = $category->parent_id;
-        }
+	public function breadcrumbs() {
+		$parent_id = $this->parent_id;
+		$breadcrumbs = array($this);
 
-        return array_reverse($breadcrumbs);
-    }
+		while($parent_id > 0) {
+			$category = $this->firstById($parent_id);
+			$breadcrumbs []= $category;
+			$parent_id = $category->parent_id;
+		}
 
-    public function parent() {
-        if($this->parent_id) {
-            return $this->firstById($this->parent_id);
-        }
-    }
+		return array_reverse($breadcrumbs);
+	}
 
-    public function recursiveById($id, $depth) {
-        $results = array($this->firstById($id));
+	public function parent() {
+		if($this->parent_id) {
+			return $this->firstById($this->parent_id);
+		}
+	}
 
-        if($depth > 0) {
-            $children = $this->recursiveByParentId($id, $depth - 1);
-            $results = array_merge($results, $children);
-        }
+	public function recursiveById($id, $depth) {
+		$results = array($this->firstById($id));
 
-        return $results;
-    }
+		if($depth > 0) {
+			$children = $this->recursiveByParentId($id, $depth - 1);
+			$results = array_merge($results, $children);
+		}
 
-    public function recursiveByParentId($parent_id, $depth) {
-        $results = $this->allByParentIdAndVisibility($parent_id, 1);
+		return $results;
+	}
 
-        if($depth > 0) {
-            foreach($results as $result) {
-                $children = $this->recursiveByParentId($result->id, $depth - 1);
-                $results = array_merge($results, $children);
-            }
-        }
+	public function recursiveByParentId($parent_id, $depth) {
+		$results = $this->allByParentIdAndVisibility($parent_id, 1);
 
-        return $results;
-    }
+		if($depth > 0) {
+			foreach($results as $result) {
+				$children = $this->recursiveByParentId($result->id, $depth - 1);
+				$results = array_merge($results, $children);
+			}
+		}
 
-    public function toJSON() {
-        $data = $this->data;
-        $data['items_count'] = $this->childrenCount();
-        return $data;
-    }
+		return $results;
+	}
 
-    public function forceDelete($id) {
-        $this->deleteChildren($id, true);
-        $this->deleteAll(array(
-            'conditions' => array(
-                'id' => $id
-            )
-        ));
-    }
+	public function toJSON() {
+		$data = $this->data;
+		$data['items_count'] = $this->childrenCount();
+		return $data;
+	}
 
-    public function updateArticles() {
-        //$log = KLogger::instance(Filesystem::path('log'));
+	public function forceDelete($id) {
+		$this->deleteChildren($id, true);
+		$this->deleteAll(array(
+			'conditions' => array(
+				'id' => $id
+			)
+		));
+	}
 
-        $feed = $this->getFeed();
-        $items = $feed->get_items();
+	public function updateArticles() {
+		//$log = KLogger::instance(Filesystem::path('log'));
 
-        //$log->logInfo('Importing feed "%s"', $this->feed_url);
-        //$log->logInfo('%d articles found', count($items));
+		$feed = $this->getFeed();
+		$items = $feed->get_items();
 
-        foreach($items as $item) {
-            $count = Articles::find('count', array('conditions' => array(
-                'category_id' => $this->id,
-                'guid' => $item->get_id()
-            )));
-            if(!$count) {
-                Articles::addToFeed($this, $item);
-            }
-            //else {
-                //$log->logInfo('Article "%s" already exists. Skipping', $item->get_id());
-            //}
-        }
+		//$log->logInfo('Importing feed "%s"', $this->feed_url);
+		//$log->logInfo('%d articles found', count($items));
 
-        $this->cleanup();
+		foreach($items as $item) {
+			$count = Articles::find('count', array('conditions' => array(
+				'category_id' => $this->id,
+				'guid' => $item->get_id()
+			)));
+			if(!$count) {
+				Articles::addToFeed($this, $item);
+			}
+			//else {
+			//$log->logInfo('Article "%s" already exists. Skipping', $item->get_id());
+			//}
+		}
 
-        $this->updateAttributes(array(
-            'updated' => date('Y-m-d H:i:s')
-        ));
-        $this->save();
-    }
+		$this->cleanup();
 
-    public function cleanup() {
-        $conditions = array(
-            'site_id' => $this->site_id,
-            'parent_id' => $this->id
-        );
+		$this->updateAttributes(array(
+			'updated' => date('Y-m-d H:i:s')
+		));
+		$this->save();
+	}
 
-        $count = Articles::find('count', array('conditions' => $conditions));
+	public function cleanup() {
+		$conditions = array(
+			'site_id' => $this->site_id,
+			'parent_id' => $this->id
+		);
 
-        if($count > 50) {
-            $count = Articles::find('all', array(
-                'conditions' => $conditions,
-                'limit' => $count - 50,
-                'order' => array('pubdate' => 'ASC')
-            ));
+		$count = Articles::find('count', array('conditions' => $conditions));
 
-            foreach($articles as $article) {
-                Items::remove(array('_id' => $article->id()));
-            }
-        }
-    }
+		if($count > 50) {
+			$count = Articles::find('all', array(
+				'conditions' => $conditions,
+				'limit' => $count - 50,
+				'order' => array('pubdate' => 'ASC')
+			));
 
-    protected function getFeed() {
-        $feed = new SimplePie();
-        $feed->enable_cache(false);
-        $feed->set_feed_url($this->feed_url);
-        $feed->init();
+			foreach($articles as $article) {
+				Items::remove(array('_id' => $article->id()));
+			}
+		}
+	}
 
-        return $feed;
-    }
+	protected function getFeed() {
+		$feed = new SimplePie();
+		$feed->enable_cache(false);
+		$feed->set_feed_url($this->feed_url);
+		$feed->init();
 
-    protected function getOrder($data) {
-        if(is_null($this->id) && $data['parent_id'] != 0) {
-            $siblings = $this->toList(array(
-                'fields' => array('id', '`order`'),
-                'conditions' => array(
-                    'site_id' => $data['site_id'],
-                    'parent_id' => $data['parent_id']
-                ),
-                'order' => '`order` DESC',
-                'displayField' => 'order',
-                'limit' => 1
-            ));
+		return $feed;
+	}
 
-            if(!empty($siblings)) {
-                $data['order'] = current($siblings) + 1;
-            }
-            else {
-                $data['order'] = 0;
-            }
-        }
+	protected function getOrder($data) {
+		if(is_null($this->id) && $data['parent_id'] != 0) {
+			$siblings = $this->toList(array(
+				'fields' => array('id', '`order`'),
+				'conditions' => array(
+					'site_id' => $data['site_id'],
+					'parent_id' => $data['parent_id']
+				),
+				'order' => '`order` DESC',
+				'displayField' => 'order',
+				'limit' => 1
+			));
 
-        return $data;
-    }
+			if(!empty($siblings)) {
+				$data['order'] = current($siblings) + 1;
+			}
+			else {
+				$data['order'] = 0;
+			}
+		}
 
-    protected function getItemType($data) {
-        if(is_null($this->id)) {
-            $site = Model::load('Sites')->firstById($this->site_id);
-            $items = (array) $site->itemTypes();
+		return $data;
+	}
 
-            if(!array_key_exists('type', $data) || !in_array($data['type'], $items)) {
-                $data['type'] = $items[0];
-            }
-        }
+	protected function getItemType($data) {
+		if(is_null($this->id)) {
+			$site = Model::load('Sites')->firstById($this->site_id);
+			$items = (array) $site->itemTypes();
 
-        return $data;
-    }
+			if(!array_key_exists('type', $data) || !in_array($data['type'], $items)) {
+				$data['type'] = $items[0];
+			}
+		}
 
-    protected function checkItems($data) {
-        if(!is_null($this->id)) {
-            $original = $this->firstById($this->id);
-            if(
-                $original->populate != 'import' &&
-                $data['populate'] != 'import' && (
-                $original->populate != $data['populate'] ||
-                $original->type != $data['type'])
-            ) {
-                $items = Items::find('all', array('conditions' => array(
-                    'parent_id' => $this->id
-                )));
+		return $data;
+	}
 
-                foreach($items as $item) {
-                    Items::remove(array('_id' => $item->id()));
-                }
-            }
-        }
+	protected function checkItems($data) {
+		if(!is_null($this->id)) {
+			$original = $this->firstById($this->id);
+			if(
+				$original->populate != 'import' &&
+				$data['populate'] != 'import' && (
+					$original->populate != $data['populate'] ||
+					$original->type != $data['type'])
+			) {
+				$items = Items::find('all', array('conditions' => array(
+					'parent_id' => $this->id
+				)));
 
-        return $data;
-    }
+				foreach($items as $item) {
+					Items::remove(array('_id' => $item->id()));
+				}
+			}
+		}
 
-    protected function importItems($created) {
-        if($this->data['populate'] == 'import') {
-            $this->data['populate'] = 'manual';
-            
-            $fileSize = $this->data['import']['size'];
-            if($fileSize && self::MAX_IMPORTFILE_SIZE < ($fileSize / 1024)
-               && $this->scheduleImport()) {
-                return $this->save();;
-            }
-            $import = new Import();
-            $import->notIsJob();
-            $import->setMethod($this->data['import_method']);
-            $import->category($this);
-            $import->file($this->data['import']['tmp_name']);
-            $import->start();
-            $this->save();
-        }
-    }
-    
-    protected function scheduleImport()
-    {
-        if (!Import::check('import')) {
-            return false;
-        }
-        $uploader = new FileUpload();
-        $uploader->path = APP_ROOT . '/public/uploads/imports';
-        try {
-            $importFile = $uploader->upload($this->data['import'], Security::hash(time()) . '_:original_name');
+		return $data;
+	}
 
-            $data = array(
-                    'type' => 'import',
-                    'params' => array(
-                            'method' => $this->data['import_method'],
-                            'site_id' => $this->data['site_id'],
-                            'category_id' => $this->data['id'],
-                            'file' => $importFile,
-                    )
-            );
+	protected function importItems($created) {
+		if($this->data['populate'] == 'import') {
+			$this->data['populate'] = 'manual';
 
-            $job = \app\models\Jobs::create($data);
-            if ($job->save()) {
-                $this->sendImportMail(array('job' => $job->to('array')));
-                Session::writeFlash('success', s('The import was scheduled successfully'));
-                return true;
-            } else {
-                throw new Exception('Can\'t import file');
-            }
+			$fileSize = $this->data['import']['size'];
+			if($fileSize && self::MAX_IMPORTFILE_SIZE < ($fileSize / 1024)
+				&& $this->scheduleImport()) {
+					return $this->save();;
+				}
+			$import = new Import();
+			$import->notIsJob();
+			$import->setMethod($this->data['import_method']);
+			$import->category($this);
+			$import->file($this->data['import']['tmp_name']);
+			$import->start();
+			$this->save();
+		}
+	}
 
-        } catch (Exception $e) {
-            Session::writeFlash('error', s('Sorry, can\'t import category'.$e->getMessage()));
-            return false;
-        }
-    }
-    
-    protected function sendImportMail($params = array()) {
-        if (!Config::read ( 'Mail.preventSending' )) {
-            require_once 'lib/mailer/Mailer.php';
-            $segment = Model::load ( 'Segments' )->firstById (MeuMobi::segment());
-            $user = Auth::user();
-            $default = array(
-                        'user' => $user,
-                        'category' => $this,
-                        'title' => s('[MeuMobi] Category import scheduled'),
-                    );
-            $data = array_merge($default, $params);
-            
-            $mailer = new Mailer (array (
-                        'from' => $segment->email,
-                        'to' => array($user->email => $user->fullname ()),
-                        'subject' => $data['title'],
-                        'views' => array ('text/html' => 'categories/confirm_import_mail.htm'),
-                        'layout' => 'mail',
-                        'data' => $data,
-                    ));
-            return $mailer->send ();
-        }
-    }
-    
-    protected function updateFeed($created) {
-        if(isset($this->data['populate']) && $this->data['populate'] == 'auto') {
-            if(!isset($this->data['feed_url'])) {
-                $this->data['feed_url'] = '';
-            }
-            $is_set = isset($this->data['feed']);
-            $is_empty = $is_set && empty($this->data['feed']);
+	protected function scheduleImport()
+	{
+		if (!Import::check('import')) {
+			return false;
+		}
+		$uploader = new FileUpload();
+		$uploader->path = APP_ROOT . '/public/uploads/imports';
+		try {
+			$importFile = $uploader->upload($this->data['import'], Security::hash(time()) . '_:original_name');
 
-            if($is_empty or $is_set && $this->data['feed'] != $this->data['feed_url']) {
-                $items = Items::find('all', array('conditions' => array(
-                    'parent_id' => $this->id
-                )));
+			$data = array(
+				'type' => 'import',
+				'params' => array(
+					'method' => $this->data['import_method'],
+					'site_id' => $this->data['site_id'],
+					'category_id' => $this->data['id'],
+					'file' => $importFile,
+				)
+			);
 
-                foreach($items as $item) {
-                    Items::remove(array('_id' => $item->id()));
-                }
+			$job = \app\models\Jobs::create($data);
+			if ($job->save()) {
+				$this->sendImportMail(array('job' => $job->to('array')));
+				Session::writeFlash('success', s('The import was scheduled successfully'));
+				return true;
+			} else {
+				throw new Exception('Can\'t import file');
+			}
 
-                $this->update(array(
-                    'conditions' => array('id' => $this->id)
-                ), array(
-                    'feed_url' => ''
-                ));
-            }
+		} catch (Exception $e) {
+			Session::writeFlash('error', s('Sorry, can\'t import category'.$e->getMessage()));
+			return false;
+		}
+	}
 
-            if($is_set && !$is_empty && $this->data['feed'] != $this->data['feed_url']) {
-                $this->feed_url = $this->data['feed'];
-                $this->update(array(
-                    'conditions' => array('id' => $this->id)
-                ), array(
-                    'feed_url' => $this->feed_url
-                ));
+	protected function sendImportMail($params = array()) {
+		if (!Config::read ( 'Mail.preventSending' )) {
+			require_once 'lib/mailer/Mailer.php';
+			$segment = Model::load ( 'Segments' )->firstById (MeuMobi::segment());
+			$user = Auth::user();
+			$default = array(
+				'user' => $user,
+				'category' => $this,
+				'title' => s('[MeuMobi] Category import scheduled'),
+			);
+			$data = array_merge($default, $params);
 
-                $this->updateArticles();
-            }
-        }
-    }
+			$mailer = new Mailer (array (
+				'from' => $segment->email,
+				'to' => array($user->email => $user->fullname ()),
+				'subject' => $data['title'],
+				'views' => array ('text/html' => 'categories/confirm_import_mail.htm'),
+				'layout' => 'mail',
+				'data' => $data,
+			));
+			return $mailer->send ();
+		}
+	}
 
-    protected function deleteChildren($id, $force = false) {
-        $self = $this->firstById($id);
-        if($self->parent_id == 0 && !$force) {
-            return false;
-        }
+	protected function updateFeed($created) {
+		if(isset($this->data['populate']) && $this->data['populate'] == 'auto') {
+			if(!isset($this->data['feed_url'])) {
+				$this->data['feed_url'] = '';
+			}
+			$is_set = isset($this->data['feed']);
+			$is_empty = $is_set && empty($this->data['feed']);
 
-        $categories = $this->allByParentId($id);
-        $this->deleteSet(Model::load('Categories'), $categories);
+			if($is_empty or $is_set && $this->data['feed'] != $this->data['feed_url']) {
+				$items = Items::find('all', array('conditions' => array(
+					'parent_id' => $this->id
+				)));
 
-        $items = Items::find('all', array('conditions' => array(
-            'parent_id' => $id
-        )));
+				foreach($items as $item) {
+					Items::remove(array('_id' => $item->id()));
+				}
 
-        foreach($items as $item) {
-            Items::remove(array('_id' => $item->id()));
-        }
+				$this->update(array(
+					'conditions' => array('id' => $this->id)
+				), array(
+					'feed_url' => ''
+				));
+			}
 
-        return $id;
-    }
+			if($is_set && !$is_empty && $this->data['feed'] != $this->data['feed_url']) {
+				$this->feed_url = $this->data['feed'];
+				$this->update(array(
+					'conditions' => array('id' => $this->id)
+				), array(
+					'feed_url' => $this->feed_url
+				));
+
+				$this->updateArticles();
+			}
+		}
+	}
+
+	protected function deleteChildren($id, $force = false) {
+		$self = $this->firstById($id);
+		if($self->parent_id == 0 && !$force) {
+			return false;
+		}
+
+		$categories = $this->allByParentId($id);
+		$this->deleteSet(Model::load('Categories'), $categories);
+
+		$items = Items::find('all', array('conditions' => array(
+			'parent_id' => $id
+		)));
+
+		foreach($items as $item) {
+			Items::remove(array('_id' => $item->id()));
+		}
+
+		return $id;
+	}
 }

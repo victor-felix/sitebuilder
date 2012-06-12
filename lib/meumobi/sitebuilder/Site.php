@@ -44,4 +44,21 @@ class Site
 		$attr['site_id'] = $this->attr['id'];
 		return new Category($attr);
 	}
+
+	public function extensions($scope = null)
+	{
+		return Extension::findBySite($this->attr['id'], $scope);
+	}
+
+	public function findExtension($extensionId)
+	{
+		$scope = (object) array('site' => $this->attr['id']);
+		return Extension::find($extensionId, $scope);
+	}
+
+	public function buildExtension($attr = array())
+	{
+		$attr['site_id'] = $this->attr['id'];
+		return new Extension($attr);
+	}
 }

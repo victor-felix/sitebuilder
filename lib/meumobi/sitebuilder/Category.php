@@ -90,6 +90,10 @@ class Category
 		return $results;
 	}
 
+	public function extensions($scope = null) {
+		return Extension::findByCategory($this->attr['id'], $scope);
+	}
+
 	public function isValid()
 	{
 		return true;

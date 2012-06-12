@@ -2,7 +2,7 @@
 
 namespace app\presenters;
 
-class CategoryPresenter {
+class ExtensionPresenter {
 	protected $model;
 
 	public function __construct($model)
@@ -27,12 +27,9 @@ class CategoryPresenter {
 
 	public function toJSON()
 	{
+		$keys = array('site_id', 'created', 'modified');
 		$attr = $this->model->attributes();
-		$attr['items_count'] = $this->model->countItems();
-		$attr['extensions'] = array_map(function($extension) {
-			$presenter = new ExtensionPresenter($extension);
-			return $presenter->toJSON();
-		}, $this->model->extensions());
+		$attr = array_diff_key($attr, array_flip($keys));
 		return $attr;
 	}
 }

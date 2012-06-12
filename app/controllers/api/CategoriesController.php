@@ -2,11 +2,6 @@
 
 namespace app\controllers\api;
 
-//require_once 'app/models/categories.php';
-
-//use Model;
-//use Categories;
-
 use app\presenters\CategoryPresenter;
 use meumobi\sitebuilder\Category;
 use meumobi\sitebuilder\Site;
