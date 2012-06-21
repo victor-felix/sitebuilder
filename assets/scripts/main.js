@@ -394,22 +394,22 @@ $(function() {
     });
     
     $('#form-edit-site-info > fieldset').click(function(e){
-    	if ($(this).prev().is('a.fieldset-expand')) {
-    		if ($(e.target).hasClass('duplicate-previous')
-    				|| $(e.target).parents('.picture-upload-container:first').length > 0
-    				|| e.originalEvent 
-    				&& $(e.originalEvent.target).hasClass('picture-upload-container')) {
-    			console.log('upload click');
-    		} else {
-    			$(this).prev().click();
-    		}
-    	}
+        if ($(this).prev().is('a.fieldset-expand')) {
+            if ($(e.target).hasClass('duplicate-previous')
+                    || $(e.target).parents('.picture-upload-container:first').length > 0
+                    || e.originalEvent 
+                    && $(e.originalEvent.target).hasClass('picture-upload-container')) {
+                console.log('upload click');
+            } else {
+                $(this).prev().click();
+            }
+        }
     });
     
     $('#form-edit-site-info > fieldset .field-group').click(function(e){
-    	if ($(this).children('.picture-upload-container').length < 1) {
-    		e.stopPropagation();
-    	}
+        if ($(this).children('.picture-upload-container').length < 1) {
+            e.stopPropagation();
+        }
     });
     
 
