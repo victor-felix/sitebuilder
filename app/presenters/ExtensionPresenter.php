@@ -27,9 +27,11 @@ class ExtensionPresenter {
 
 	public function toJSON()
 	{
+		$site = \Model::load('Sites')->firstById($this->model->site_id);
 		$keys = array('site_id', 'created', 'modified');
 		$attr = $this->model->attributes();
 		$attr = array_diff_key($attr, array_flip($keys));
+		$attr['url'] = Mapper::url('/api/' . $site->domain .'/categories/' . $this->model->category_id, true);
 		return $attr;
 	}
 }
