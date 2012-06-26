@@ -31,7 +31,7 @@ class ExtensionPresenter {
 		$keys = array('site_id', 'created', 'modified');
 		$attr = $this->model->attributes();
 		$attr = array_diff_key($attr, array_flip($keys));
-		$attr['url'] = Mapper::url('/api/' . $site->domain .'/categories/' . $this->model->category_id, true);
+		$attr['url'] = \Mapper::url('/api/' . $site->domain .'/categories/' . $this->model->category_id, true);
 		return $attr;
 	}
 }
