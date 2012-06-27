@@ -164,7 +164,7 @@ class Articles extends \app\models\Items {
 
     protected static function getContentImages($item) {
         $content = str_get_html($item->get_content());
-        $links = $content->find('a[rel=lightbox]');
+        $links = $content->find('a[rel*=lightbox]');
 
         $images = array();
 
