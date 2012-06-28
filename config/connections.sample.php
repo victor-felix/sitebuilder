@@ -6,9 +6,9 @@ $mysql = array(
     'production' => array(
         'driver' => 'MySql',
         'host' => 'localhost',
-        'user' => 'root',
-        'password' => 'ipanemax2010',
-        'database' => 'partners.meumobi',
+        'user' => 'meumobi',
+        'password' => 'q1T10Cr',
+        'database' => 'partners_meumobi',
         'prefix' => ''
     )
 );
