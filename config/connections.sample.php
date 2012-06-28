@@ -8,7 +8,7 @@ $mysql = array(
         'host' => 'localhost',
         'user' => 'meumobi',
         'password' => 'q1T10Cr',
-        'database' => 'partners_meumobi',
+        'database' => 'partners.meumobi',
         'prefix' => ''
     )
 );
