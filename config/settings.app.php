@@ -40,3 +40,4 @@ Config::write('Segments', array(
 	),
 ));
 
+Config::write('Sites.domain', 'int-meumobi.com');
