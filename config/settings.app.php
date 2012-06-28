@@ -22,11 +22,11 @@ Config::write('Segments', array(
 		'hideCategories' => 0,
 		'enableSignUp' => 1
 	),
-	'enterprise' => array(
+	'ipanemax' => array(
 		'title' => 'Enterprise',
 		'items' => array('articles', 'events', 'products', 'links', 'business', 'restaurants', 'stores', 'users'),
 		'root' => 'Index',
-		'email' => array('no-reply@enterprise.com' => 'Enterprise'),
+		'email' => array('no-reply@ipanemax.com' => '!panemax'),
 		'hideCategories' => 0,
 		'enableSignUp' => 0
 	),
@@ -35,6 +35,14 @@ Config::write('Segments', array(
 		'items' => array('articles', 'events', 'products', 'links', 'business', 'restaurants', 'stores', 'users'),
 		'root' => 'Index',
 		'email' => array('no-reply@oi.com' => 'Oi'),
+		'hideCategories' => 0,
+		'enableSignUp' => 0
+	),
+	'agencia3' => array(
+		'title' => 'Agencia3',
+		'items' => array('articles', 'events', 'products', 'links', 'business', 'restaurants', 'stores', 'users'),
+		'root' => 'Index',
+		'email' => array('no-reply@agencia3.com' => 'Agencia3'),
 		'hideCategories' => 0,
 		'enableSignUp' => 0
 	),
