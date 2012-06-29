@@ -8,7 +8,6 @@
 )) ?>
 
 <fieldset>
-    <h2><?php echo s('Log in') ?></h2>
     <div class="field-group">
         <div class="form-grid-220 first">
             <?php echo $this->form->input('email', array(
@@ -31,17 +30,15 @@
             )) ?>
             <label for="FormRemember" class="checkbox"><?php echo s('Remember me') ?></label>
         </div>
-
+		<?php if ($invite_token): ?>
         <div class="form-grid-220 first">
             <?php
-            if ($invite_token) {
                 echo $this->html->link(s('Don\'t have account? Click here to register'), '/users/register/' . $invite_token, array(
                     'class' => 'no-account'
                 ));
-            }
             ?>
-           
         </div>
+        <?php endif;?>
     </div>
     <?php 
         if ($invite_token) {
@@ -56,7 +53,7 @@
 <fieldset class="actions">
     <?php echo $this->form->submit(s('Log in'), array(
         'class' => 'ui-button large',
-        'style' => 'margin-left: 235px; float: left;'
+        'style' => 'float: left;'
     ))?>
     
      <?php echo $this->html->link(s('Forgot password?'), '/users/forgot_password', array(

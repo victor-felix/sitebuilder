@@ -11,7 +11,8 @@
 
 #FormLogin .forgot-password, #FormLogin .no-account {
 	color: #2F3E6E;
-	margin-left: 87px;
+	float: right;
+	margin-top: 10px;
 	text-decoration: none;
 }
 
