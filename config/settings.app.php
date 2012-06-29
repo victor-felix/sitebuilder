@@ -3,7 +3,7 @@
 Config::write('Sites.blacklist', array());
 
 Config::write('SiteLogos.resizes', array('200x200'));
-Config::write('SitePhotos.resizes', array('80x80#', '139x139#'));
+Config::write('SitePhotos.resizes', array('80x80#', '139x139#', '320x200#'));
 Config::write('BusinessItems.resizes', array('80x60#', '85x85#', '80x80#', '30x30#', '139x139#', '173x154#'));
 
 Config::write('Segments', array(
@@ -23,10 +23,10 @@ Config::write('Segments', array(
 		'enableSignUp' => 1
 	),
 	'ipanemax' => array(
-		'title' => 'Enterprise',
+		'title' => 'Oi',
 		'items' => array('articles', 'events', 'products', 'links', 'business', 'restaurants', 'stores', 'users'),
 		'root' => 'Index',
-		'email' => array('no-reply@ipanemax.com' => '!panemax'),
+		'email' => array('no-reply@ipanemax.com' => 'ipanemax'),
 		'hideCategories' => 0,
 		'enableSignUp' => 0
 	),
