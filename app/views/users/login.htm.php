@@ -3,62 +3,62 @@
 <?php $invite_token = isset($invite_token) ? $invite_token : '' ?>
 
 <?php echo $this->form->create(Mapper::here(), array(
-    'class' => 'form-register',
-    'id' => 'FormLogin'
+	'class' => 'form-register',
+	'id' => 'FormLogin'
 )) ?>
 
 <fieldset>
-    <div class="field-group">
-        <div class="form-grid-220 first">
-            <?php echo $this->form->input('email', array(
-                'label' => s('E-Mail'),
-                'class' => 'ui-text'
-            )) ?>
-        </div>
-        
-        <div class="form-grid-220 first">
-            <?php echo $this->form->input('password', array(
-                'label' => s('Senha'),
-                'class' => 'ui-text'
-            )) ?>
-        </div>
-        
-        <div class="form-grid-220 first">
-            <?php echo $this->form->input('remember', array(
-                'label' => false,
-                'type' => 'checkbox'
-            )) ?>
-            <label for="FormRemember" class="checkbox"><?php echo e('Remember me') ?></label>
-        </div>
+	<div class="field-group">
+		<div class="form-grid-220 first">
+			<?php echo $this->form->input('email', array(
+				'label' => s('E-Mail'),
+				'class' => 'ui-text'
+			)) ?>
+		</div>
+		
+		<div class="form-grid-220 first">
+			<?php echo $this->form->input('password', array(
+				'label' => s('Senha'),
+				'class' => 'ui-text'
+			)) ?>
+		</div>
+		
+		<div class="form-grid-220 first">
+			<?php echo $this->form->input('remember', array(
+				'label' => false,
+				'type' => 'checkbox'
+			)) ?>
+			<label for="FormRemember" class="checkbox"><?php echo s('Remember me') ?></label>
+		</div>
 		<?php if ($invite_token): ?>
-        <div class="form-grid-220 first">
-            <?php
-                echo $this->html->link(s('Don\'t have account? Click here to register'), '/users/register/' . $invite_token, array(
-                    'class' => 'no-account'
-                ));
-            ?>
-        </div>
-        <?php endif;?>
-    </div>
-    <?php 
-        if ($invite_token) {
-            echo $this->form->input('invite_token', array(
-            		'type' => 'hidden',
-            		'value' => $invite_token,
-            ));
-        } 
-    ?>
+		<div class="form-grid-220 first">
+			<?php
+				echo $this->html->link(s('Don\'t have account? Click here to register'), '/users/register/' . $invite_token, array(
+					'class' => 'no-account'
+				));
+			?>
+		</div>
+		<?php endif;?>
+	</div>
+	<?php 
+		if ($invite_token) {
+			echo $this->form->input('invite_token', array(
+					'type' => 'hidden',
+					'value' => $invite_token,
+			));
+		} 
+	?>
 </fieldset>
 
 <fieldset class="actions">
-    <?php echo $this->form->submit(s('Log in'), array(
-        'class' => 'ui-button large',
-        'style' => 'float: left;'
-    ))?>
-    
-     <?php echo $this->html->link(s('Forgot password?'), '/users/forgot_password', array(
-                'class' => 'forgot-password'
-            )) ?>
+	<?php echo $this->form->submit(s('Log in'), array(
+		'class' => 'ui-button large',
+		'style' => 'float: left;'
+	))?>
+	
+	 <?php echo $this->html->link(s('Forgot password?'), '/users/forgot_password', array(
+				'class' => 'forgot-password'
+			)) ?>
 </fieldset>
 
 <?php echo $this->form->close() ?>
