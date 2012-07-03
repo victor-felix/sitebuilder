@@ -62,7 +62,7 @@
                         <p><?php echo s('Hi <strong>%s</strong>', e(Auth::user()->firstname())) ?></p>
                         <ul>
                             <li><?php echo $this->html->link(s('My Account'), '/settings/account') ?></li>
-                            <li><?php echo $this->html->link(s('Dashboard'), '/dashboard/index') ?></li>
+                            <!-- li><?php echo $this->html->link(s('Dashboard'), '/dashboard/index') ?></li -->
                             <li><?php echo $this->html->link(s('Log out ›'), '/logout') ?></li>
                         </ul>
                         <!-- <?php echo $this->html->link(s('Log out ›'), '/logout') ?> -->
