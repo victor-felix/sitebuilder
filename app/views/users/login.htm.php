@@ -28,7 +28,7 @@
                 'label' => false,
                 'type' => 'checkbox'
             )) ?>
-            <label for="FormRemember" class="checkbox"><?php echo s('Remember me') ?></label>
+            <label for="FormRemember" class="checkbox"><?php echo e('Remember me') ?></label>
         </div>
 		<?php if ($invite_token): ?>
         <div class="form-grid-220 first">
