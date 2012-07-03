@@ -8,7 +8,7 @@
 )) ?>
 
 <fieldset>
-    <h2><?php echo s('Retrieve your Password') ?></h2>
+    <!--h2><?php echo s('Retrieve your Password') ?></h2 -->
     <div class="field-group">
         <div class="form-grid-220 first">
             <?php echo $this->form->input('email', array(
@@ -21,8 +21,8 @@
 
 <fieldset class="actions">
     <?php echo $this->form->submit(s('Retrieve your Password'), array(
-        'class' => 'ui-button red large',
-        'style' => 'margin-right: 415px'
+        'class' => 'ui-button large',
+        'style' => 'float:none;'
     ))?>
 </fieldset>
 
