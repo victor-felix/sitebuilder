@@ -25,6 +25,9 @@ body {
 	background: #54579A;
 }
 
+#header .navigation .user a {
+	color: #54579A;
+}
 
 .businessitems-list li .info a {
 	color: #54579A;
@@ -114,12 +117,4 @@ body {
 
 #FormLogin .forgot-password, #FormLogin .no-account {
 	color: #54579A;
-}
-
-#header div.logo {
-	border-bottom: 1px solid #D3D3D3;
-    float: left;
-    height: 91px;
-    padding-top: 38px;
-    width: 300px;
 }
