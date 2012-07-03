@@ -564,8 +564,12 @@ a img {
 	color: inherit;
 	font-size: 24px;
     text-decoration: none;
+    max-width: 235px;
+    display: inline-block;
 }
-
+.login #header .logo img {
+	max-width: 100%;
+}
 .login .form-register .field-group {
 	float: none;
 	margin: 0 auto;

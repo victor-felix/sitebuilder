@@ -46,9 +46,19 @@ a img {
 #header div.logo {
 	border-bottom: 1px solid #D3D3D3;
 	float: left;
-	height: 50px;
-	padding-top: 79px;
+	height: 129px;
 	width: 300px;
+	position: relative;
+}
+
+#header div.logo a {
+	bottom: 0;
+    position: absolute;
+    width: 100%;
+}
+
+#header div.logo img {
+	max-width: 100%;
 }
 
 #header .menu {

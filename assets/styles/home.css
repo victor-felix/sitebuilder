@@ -50,6 +50,10 @@ a img {
 	width: 300px;
 }
 
+#header div.logo img {
+	max-width: 100%;
+}
+
 #header p.login {
 	border-bottom: 1px solid #D3D3D3;
 	float: left;
