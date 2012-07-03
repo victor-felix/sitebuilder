@@ -51,7 +51,7 @@
 'Settings': 'Configurações'
 'Customization': 'Customização'
 'My Account': 'Minha Conta'
-'Users':'Usuários';
+'Users': 'Usuários'
 #views/layouts/error
 'Page not found': 'Página não encontrada'
 #views/layouts/home
