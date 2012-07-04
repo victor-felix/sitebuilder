@@ -567,6 +567,7 @@ a img {
 .login #header .logo {
     text-decoration: none;
     max-width: 235px;
+    font-size: 28px;
     display: inline-block;
 }
 
