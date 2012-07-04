@@ -2,7 +2,7 @@
 <html>
     <head>
         <?php echo $this->html->charset() ?>
-        <title>:( <?php echo s('Page not found') ?> - MeuMobi</title>
+        <title>:( <?php echo s('Page not found') ?> - $this->controller->getSegment()->title</title>
         <link rel="shortcut icon" href="<?php echo Mapper::url("/images/layout/favicon.png") ?>" type="image/png" />
         <?php echo $this->html->stylesheet('shared/register', 'shared/uikit') ?>
     </head>

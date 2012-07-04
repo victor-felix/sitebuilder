@@ -39,6 +39,11 @@ a img {
 	width: 780px;
 }
 
+#header .logo {
+	font-size: 28px;
+    text-decoration: none;
+}
+
 #content {
 	border-radius: 3px;
 	-webkit-border-radius: 3px;
