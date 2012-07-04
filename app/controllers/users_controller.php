@@ -33,7 +33,7 @@ class UsersController extends AppController
 	
 	public function register($invite_token = null) 
 	{
-		if (!Users::signupIsEnabled()) {
+		if (!($invite_token && Users::validateInvite($invite_token) ) && !Users::signupIsEnabled()) {
 			return $this->redirect('/');
 		}
 		$user = new Users ();
