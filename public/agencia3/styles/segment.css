@@ -122,3 +122,7 @@ body {
 #FormLogin .forgot-password, #FormLogin .no-account {
 	color: #516C24;
 }
+
+#header .navigation .sites .site-switcher li.new a {
+	color: #516C24;
+}
