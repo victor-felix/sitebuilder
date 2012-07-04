@@ -495,13 +495,13 @@ $(function() {
 	/* end counter	*/
 });
 
-$(document).ready(function(){
-	/* Fix broken images alt on webkits browsers */
-	$('.logo img').each(function() {
-		if (!this.complete || !(typeof this.naturalWidth != "undefined") || this.naturalWidth == 0) {
-			$(this).parent().html($(this).attr('alt'));
-			$(this).remove();
-		}
-	});
-	
+$(window).load(function(){
+    /* Fix broken images alt on webkits browsers */
+    $('.logo img').each(function() {
+        if (!this.complete || (typeof this.naturalWidth == "undefined") || this.naturalWidth == 0) {
+            $(this).parent().html($(this).attr('alt'));
+            $(this).remove();
+        }   
+    }); 
+        
 });

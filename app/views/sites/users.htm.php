@@ -24,7 +24,7 @@
     <ul class="categories-list">
         <?php foreach ($users as $user): ?>
         <li data-parentid="0" data-catid="3" class="level-0">
-            <span title="click to edit" data-saveurl="/categories/edit/3" class="title edit-in-place"><?php echo $user->fullname() ?></span>
+            <span data-saveurl="/categories/edit/3" class="title"><?php echo $user->fullname() ?></span>
             <div class="controls">
             <!-- 
                 <a href="/business_items/add/3" class="ui-button highlight push-scene">add item</a>
