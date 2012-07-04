@@ -559,23 +559,28 @@ a img {
 	border-right	: 1px solid #CCCCCC;
 }
 
+.login #success-feedback, #error-feedback {
+	margin: 0 auto;
+	width: 292px;
+}
 
 .login #header .logo {
-	color: inherit;
-	font-size: 24px;
     text-decoration: none;
     max-width: 235px;
     display: inline-block;
 }
+
 .login #header .logo img {
 	max-width: 100%;
 }
+
 .login .form-register .field-group {
 	float: none;
 	margin: 0 auto;
     width: 300px;
     padding-top: 25px;
 }
+
 .login .form-register .form-grid-220 {
 	margin-bottom: 25px;
 }
@@ -587,9 +592,11 @@ a img {
 .login .form-register fieldset.actions {
 	padding: 0 20px 25px;
 }
+
 .login .ui-text, .login .ui-textarea {
 	width: 285px;
 }
+
 .login #footer {
 	display: none;
 }

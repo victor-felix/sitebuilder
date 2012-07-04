@@ -49,12 +49,16 @@ a img {
 	height: 129px;
 	width: 300px;
 	position: relative;
+	font-size: 28px;
 }
 
 #header div.logo a {
 	bottom: 0;
     position: absolute;
     width: 100%;
+    text-decoration: none;
+    font-size: inherit;
+    color: inherit;
 }
 
 #header div.logo img {

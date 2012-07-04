@@ -362,7 +362,6 @@ $.extend($.easing, {
 		this.init();
 	}
 	$.Paginate();
-
 })(jQuery);
 
 $(function() {
@@ -494,10 +493,15 @@ $(function() {
 	});
 	$('#form-edit-site-info #businessDescription').keyup();
 	/* end counter	*/
-	
+});
+
+$(document).ready(function(){
 	/* Fix broken images alt on webkits browsers */
-	$('.logo img').error(function() {
-		$(this).parent().html($(this).attr('alt'));
-		$(this).remove();
+	$('.logo img').each(function() {
+		if (!this.complete || !(typeof this.naturalWidth != "undefined") || this.naturalWidth == 0) {
+			$(this).parent().html($(this).attr('alt'));
+			$(this).remove();
+		}
 	});
+	
 });
