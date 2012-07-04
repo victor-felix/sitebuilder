@@ -23,7 +23,7 @@ Config::write('Segments', array(
 		'enableSignUp' => 1
 	),
 	'ipanemax' => array(
-		'title' => 'Oi',
+		'title' => 'Ipanemax',
 		'items' => array('articles', 'events', 'products', 'links', 'business', 'restaurants', 'stores', 'users'),
 		'root' => 'Index',
 		'email' => array('no-reply@ipanemax.com' => 'ipanemax'),
