@@ -2,16 +2,15 @@
 <html>
     <head>
         <?php echo $this->html->charset() ?>
-        <title>:( <?php echo s('Page not found') ?> - $this->controller->getSegment()->title</title>
+        <title>:( <?php echo s('Page not found') ?> - <?php echo MeuMobi::currentSegment()->title ?></title>
         <link rel="shortcut icon" href="<?php echo Mapper::url("/images/layout/favicon.png") ?>" type="image/png" />
         <?php echo $this->html->stylesheet('shared/register', 'shared/uikit') ?>
     </head>
 
     <body>
         <div id="header">
-            <?php echo $this->html->link($this->html->image('layout/logo.png', array('alt'=>'MeuMobi')), '/', array('class'=>'logo')); ?>
+            <?php echo $this->html->link($this->html->image('layout/logo.png', array('alt'=> MeuMobi::currentSegment()->title)), '/', array('class'=>'logo')); ?>
         </div>
-
 
         <div id="content" style="background:none;-webkit-box-shadow: none;-moz-box-shadow: none;border: 0">
             <div class="registration-finished" style="padding-bottom: 10px">

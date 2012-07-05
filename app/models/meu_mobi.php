@@ -13,7 +13,12 @@ class MeuMobi
 			YamlDictionary::dictionary($segment);
 		}
 	}
-
+	
+	public static function currentSegment()
+	{
+		return Model::load ( 'Segments' )->firstById ( self::segment() );
+	}
+	
 	public static function instance()
 	{
 		$domain = Mapper::domain();
