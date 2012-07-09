@@ -124,6 +124,7 @@ Router::connect(new Route(array(
 )));
 
 Router::resources('categories', $defaults);
+Router::resources('extensions', $defaults);
 Router::resources('items', $defaults);
 Router::resources('news', array('only' => 'index') + $defaults);
 Router::resources('images', $defaults);
