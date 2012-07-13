@@ -1,3 +1,5 @@
+require 'digest/sha1'
+
 module Meumobi
   class Segment < Thor
     include Thor::Actions
@@ -20,6 +22,7 @@ Config::write('Segments', array_merge(Config::read('Segments'), array(
 
     desc "create SEGMENT_NAME", "creates a new segment"
     def create(name=nil)
+      password = Digest::SHA1.hexdigest(Time.now.to_i.to_s)[0..8]
       options = { name: name }
       options[:title] = ask "title:"
       options[:email] = ask "email:"
@@ -42,6 +45,10 @@ Config::write('Segments', array_merge(Config::read('Segments'), array(
       empty_directory "config/segments"
       create_file "config/segments/#{name}.yml"
       create_file "config/segments/#{name}.php", Template % options
+
+      run "php #{self.class.source_root}/meu-site-builder/script/create_user.php #{options[:email]} #{password}"
+      say "Your email is: #{options[:email]}"
+      say "Your password is: #{password}"
 
     end
 
