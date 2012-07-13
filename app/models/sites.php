@@ -44,12 +44,12 @@ class Sites extends AppModel {
 		),
 		'logo' => array(
 			array(
-				'rule' => array('fileUpload', 1, array('jpg', 'gif', 'png')),
-				'message' => 'Only valid gif, jpg or png are allowed'
+				'rule' => array('fileUpload', 1, array('jpg', 'jpeg', 'gif', 'png')),
+				'message' => 'Only valid gif, jpg, jpeg or png are allowed'
 			),
 			array(
 				'rule' => array('validImage'),
-				'message' => 'Only valid gif, jpg or png are allowed'
+				'message' => 'Only valid gif, jpg, jpeg or png are allowed'
 			)
 		),
 		'description' => array(

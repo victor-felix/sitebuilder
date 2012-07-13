@@ -11,7 +11,7 @@
         <div id="header">
             <div class="logo">
                 <?php echo $this->html->imagelink('layout/logo.png', '/', array(
-                    'alt' => 'MeuMobi'
+                    'alt' => $this->controller->getSegment()->title
                 ), array(
                     'class' => 'logo'
                 )) ?>

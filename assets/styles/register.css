@@ -39,6 +39,11 @@ a img {
 	width: 780px;
 }
 
+#header .logo {
+	font-size: 28px;
+    text-decoration: none;
+}
+
 #content {
 	border-radius: 3px;
 	-webkit-border-radius: 3px;
@@ -534,38 +539,56 @@ a img {
 .login #header{
 	width: 340px;
 	background-color: #fff;
-	box-shadow: -2px 2px 2px #CCCCCC, 2px 2px 2px #CCCCCC, 0 2px 2px #CCCCCC;
-	-webkit-box-shadow: -2px 2px 2px #CCCCCC, 2px 2px 2px #CCCCCC, 0 2px 2px #CCCCCC;
-	-moz-box-shadow: -2px 2px 2px #CCCCCC, 2px 2px 2px #CCCCCC, 0 2px 2px #CCCCCC;
+	border-radius: 3px 3px 0 0;
+	-webkit-border-radius: 3px 3px 0 0;
+	-moz-border-radius: 3px 3px 0 0;
+	box-shadow: -1px 1px 1px #CCCCCC, 1px 1px 1px #CCCCCC, 0 1px 1px #CCCCCC;
+	-webkit-box-shadow: -1px 1px 1px #CCCCCC, 1px 1px 1px #CCCCCC, 0 1px 1px #CCCCCC;
+	-moz-box-shadow: -1px 1px 1px #CCCCCC, 1px 1px 1px #CCCCCC, 0 1px 1px #CCCCCC;
+	text-align: center;
+	margin-top: 70px;
+	border-top-width: 15px;
+	border-bottom: 1px solid #CCCCCC;
+	padding: 30px 0 20px;
 }
 
 .login #content {
 	width: 340px;
-	-webkit-border-top-left-radius: 0 0 3px 3px;
-	-webkit-border-top-right-radius: 0 0 3px 3px;
-	-moz-border-radius-topleft: 0 0 3px 3px;
-	-moz-border-radius-topright: 0 0 3px 3px;
-	border-radius: 0 0 3px 3px;
-	box-shadow: -2px 2px 2px #ccc, 2px 2px 2px #ccc;
-	-webkit-box-shadow: -2px 2px 2px #CCC, 2px 2px 2px #ccc;
-	-moz-box-shadow: -2px 2px 2px #CCC, 2px 2px 2px #ccc;
+	border-radius: 0;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	box-shadow: 0 2px 2px #CCCCCC;
+	-webkit-box-shadow: 0 2px 2px #CCCCCC;
+	-moz-box-shadow: 0 2px 2px #CCCCCC;
+	border-left: 1px solid #CCCCCC;
+	border-right	: 1px solid #CCCCCC;
 }
 
-.login #header {
-	text-align: center;
-	border-bottom: 1px solid #CCCCCC;
+.login #success-feedback, #error-feedback {
+	margin: 0 auto;
+	width: 292px;
 }
 
 .login #header .logo {
-	color: inherit;
-	font-size: 24px;
     text-decoration: none;
+    max-width: 235px;
+    font-size: 28px;
+    display: inline-block;
+}
+
+.login #header .logo img {
+	max-width: 100%;
 }
 
 .login .form-register .field-group {
 	float: none;
 	margin: 0 auto;
     width: 300px;
+    padding-top: 25px;
+}
+
+.login .form-register .form-grid-220 {
+	margin-bottom: 25px;
 }
 
 .login .form-register fieldset {
@@ -573,5 +596,13 @@ a img {
 }
 
 .login .form-register fieldset.actions {
-	padding: 0 25px 25px;
+	padding: 0 20px 25px;
+}
+
+.login .ui-text, .login .ui-textarea {
+	width: 285px;
+}
+
+.login #footer {
+	display: none;
 }

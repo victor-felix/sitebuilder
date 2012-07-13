@@ -3,7 +3,7 @@
 <html>
     <head>
         <?php echo $this->html->charset() ?>
-        <title>MeuMobi - <?php echo $this->pageTitle ?></title>
+        <title><?php echo $this->controller->getSegment()->title, ' - ' ,  $this->pageTitle ?></title>
         <link rel="shortcut icon" href="<?php echo Mapper::url('/images/layout/favicon.png') ?>" type="image/png" />
         <?php echo $this->html->stylesheet('shared/base', 'shared/uikit', 'shared/categories',
             'shared/edit-forms', 'shared/businessitems', 'segment', 'shared/markitup.simple',
@@ -16,7 +16,7 @@
         <div id="header">
             <div class="logo">
                 <?php echo $this->html->imagelink('layout/logo.png', '/', array(
-                    'alt' => 'MeuMobi'
+                    'alt' => $this->controller->getSegment()->title
                 ), array(
                     'class' => 'logo'
                 )) ?>
@@ -62,7 +62,7 @@
                         <p><?php echo s('Hi <strong>%s</strong>', e(Auth::user()->firstname())) ?></p>
                         <ul>
                             <li><?php echo $this->html->link(s('My Account'), '/settings/account') ?></li>
-                            <li><?php echo $this->html->link(s('Dashboard'), '/dashboard/index') ?></li>
+                            <!-- li><?php echo $this->html->link(s('Dashboard'), '/dashboard/index') ?></li -->
                             <li><?php echo $this->html->link(s('Log out ›'), '/logout') ?></li>
                         </ul>
                         <!-- <?php echo $this->html->link(s('Log out ›'), '/logout') ?> -->

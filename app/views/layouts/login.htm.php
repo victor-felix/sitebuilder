@@ -10,7 +10,8 @@
 
         <div id="header">
             <?php echo $this->html->imagelink('layout/logo.png', '/', array(
-                'alt' => $this->controller->getSegment()->title
+                'alt' => $this->controller->getSegment()->title,
+            	'title' =>  $this->controller->getSegment()->title
             ), array(
                 'class' => 'logo'
             )) ?>
