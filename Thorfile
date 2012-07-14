@@ -141,9 +141,6 @@ class %{type} extends Items {
       options[:fields] = fields.map { |f| FieldTemplate % f }.join "\n"
       options[:schema] = schema.map { |s| SchemaTemplate % s }.join "\n"
 
-      puts ItemTemplate % options
-      return
-
       create_file "meu-site-builder/app/models/items/#{type.underscore}.php", ItemTemplate % options
       say "Don't forget to enable this item type in a segment!"
 
