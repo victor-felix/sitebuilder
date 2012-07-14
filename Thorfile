@@ -76,34 +76,7 @@ class %{type} extends Items {
     protected $type = '%{type}';
 
     protected $fields = array(
-        'title' => array(
-            'title' => 'Title',
-            'type' => 'string'
-        ),
-        'description' => array(
-            'title' => 'Description',
-            'type' => 'richtext'
-        ),
-        'address' => array(
-            'title' => 'Address',
-            'type' => 'string'
-        ),
-        'phone' => array(
-            'title' => 'Phone',
-            'type' => 'string'
-        ),
-        'activity' => array(
-            'title' => 'Activity',
-            'type' => 'string'
-        ),
-        'web' => array(
-            'title' => 'Web',
-            'type' => 'string'
-        ),
-        'mail' => array(
-            'title' => 'Mail',
-            'type' => 'string'
-        )
+      %{fields}
     );
 
     public static function __init() {
@@ -113,13 +86,7 @@ class %{type} extends Items {
         $parent = parent::_object();
 
         $self->_schema = $parent->_schema + array(
-            'geo'  => array('type' => 'array', 'default' => 0),
-            'description'  => array('type' => 'string', 'default' => ''),
-            'address'  => array('type' => 'string', 'default' => ''),
-            'phone'  => array('type' => 'string', 'default' => ''),
-            'activity'  => array('type' => 'string', 'default' => ''),
-            'web'  => array('type' => 'string', 'default' => ''),
-            'mail'  => array('type' => 'string', 'default' => '')
+          %{schema}
         );
     }
 }
@@ -141,11 +108,45 @@ class %{type} extends Items {
 });
     TEMPLATE
 
+    FieldTemplate = <<-TEMPLATE
+        '%{name}' => array(
+            'title' => '%{title}',
+            'type' => '%{type}'
+        ),
+    TEMPLATE
+
+    SchemaTemplate = "'%s' => array('type' => '%s', default => %s)"
+
     desc "create TYPENAME FIELD=TYPE...", "creates a new type"
-    def create(type=nil)
+    def create(type=nil, *args)
+      fields = args.map { |i|
+        name, type = i.split ":"
+        { name: name, title: name.humanize, type: type }
+      }
+
+      schema = fields.each_with_object([]) do |field, schema|
+        unless ['string', 'richtext', 'boolean', 'geo'].include? field[:type]
+          raise ArgumentError, "Invalid type #{field[:type]}"
+        end
+
+        if field[:type] == 'geo'
+          schema << [:geo, :array, 0]
+          field[:type] = 'string'
+        end
+
+        schema << [field[:name], field[:type], "''"]
+      end
+
       options = { type: type.camelize }
+      options[:fields] = fields.map { |f| FieldTemplate % f }.join "\n"
+      options[:schema] = schema.map { |s| SchemaTemplate % s }.join "\n"
+
+      puts ItemTemplate % options
+      return
+
       create_file "meu-site-builder/app/models/items/#{type.underscore}.php", ItemTemplate % options
       say "Don't forget to enable this item type in a segment!"
+
     end
   end
 end
