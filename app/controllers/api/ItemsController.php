@@ -28,7 +28,8 @@ class ItemsController extends ApiController {
         $items = $classname::find('all', array(
             'conditions' => $conditions,
             'limit' => $this->param('limit', 20),
-            'page' => $this->param('page', 1)
+            'page' => $this->param('page', 1),
+        	'order' => array('title','name')
         ));
         $etag = $this->etag($items);
         $self = $this;
