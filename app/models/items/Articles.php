@@ -4,7 +4,6 @@ namespace app\models\items;
 
 require_once 'lib/htmlpurifier/HTMLPurifier.auto.php';
 require_once 'lib/dom/SimpleHtmlDom.php';
-require_once 'lib/bbcode/Decoda.php';
 
 use Model;
 use Mapper;
@@ -12,7 +11,6 @@ use DOMDocument;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use Filesystem;
-use Decoda;
 
 use app\models\Items;
 
@@ -48,7 +46,6 @@ class Articles extends \app\models\Items {
             'guid'  => array('type' => 'string', 'default' => ''),
             'link'  => array('type' => 'string', 'default' => ''),
             'pubdate'  => array('type' => 'date', 'default' => 0),
-            'format'  => array('type' => 'string', 'default' => 'bbcode'),
             'description'  => array('type' => 'string', 'default' => ''),
             'author'  => array('type' => 'string', 'default' => ''),
         );
@@ -213,16 +210,6 @@ class Articles extends \app\models\Items {
         return false;
     }
 
-    public function toJSON($entity) {
-        $self = parent::toJSON($entity);
-
-        if($self['format'] == 'bbcode') {
-            $parser = new Decoda($self['description']);
-            $self['description'] = '<p>' . $parser->parse(true) . '</p>';
-        }
-
-        return $self;
-    }
 }
 
 Articles::applyFilter('save', function($self, $params, $chain) {
