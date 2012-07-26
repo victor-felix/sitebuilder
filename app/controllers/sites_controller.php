@@ -105,9 +105,19 @@ class SitesController extends AppController {
 	protected function editRecord($redirect_to, $allowMessage = true) {
 		$site = $this->getCurrentSite();
 		if(!empty($this->data)) {
+			$images = array_unset($this->data, 'image');
 			$site->updateAttributes($this->request->data);
 			if($site->validate()) {
 				$site->save();
+				
+				foreach($images as $id => $image) {
+					if(is_numeric($id)) {
+						$record = Model::load('Images')->firstById($id);
+						$record->title = $image['title'];
+						$record->save();
+					}
+				}
+				
 				if ($allowMessage) {
 					Session::writeFlash('success', s('Configuration successfully saved.'));
 				}
