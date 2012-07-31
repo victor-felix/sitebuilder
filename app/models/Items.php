@@ -102,7 +102,8 @@ class Items extends \lithium\data\Model {
 		$self = $entity->to('array');
 
 		foreach ($this->fields as $code => $field) {
-			if ($field['type'] == 'richtext') {
+			if ($field['type'] == 'richtext' 
+				&& !(isset($self['format']) && $self['format'] == 'html')) {
 				$parser = new Decoda($self[$code]);
 				$self[$code] = '<p>' . $parser->parse(true) . '</p>';
 			}
