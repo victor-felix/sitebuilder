@@ -3,7 +3,7 @@
 class UsersSites extends AppModel  {
 
     protected $table = 'users_sites';
-
+	 
     public function getAllUsers($site) {
         $all = array();
 

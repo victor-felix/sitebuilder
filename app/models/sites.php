@@ -4,12 +4,12 @@ require_once 'lib/geocoding/GoogleGeocoding.php';
 require_once 'lib/sitemanager/SiteManager.php';
 
 class Sites extends AppModel {
-	protected $getters = array('feed_url', 'feed_title', 'custom_domain');
+	protected $getters = array('feed_url', 'feed_title', 'custom_domain', );
 	protected $beforeSave = array(
-		'setHideCategories', 'getLatLng', 'saveCustomDomain', 'updateSiteManager'
+		'setHideCategories', 'getLatLng', 'saveDomain', 'updateSiteManager',
 	);
 	protected $afterSave = array(
-		'saveLogo', 'createRootCategory', 'createNewsCategory', 'updateFeed',
+		'saveLogo', 'createRootCategory', 'createNewsCategory', 'updateFeed','saveDomains',
 		'createRelation'
 	);
 	protected $beforeDelete = array(
@@ -33,10 +33,6 @@ class Sites extends AppModel {
 				'rule' => 'blacklist',
 				'message' => 'This domain is not available'
 			)
-		),
-		'domain' => array(
-			'rule' => array('unique', 'domain'),
-			'message' => 'This domain is not available'
 		),
 		'title' => array(
 			'rule' => 'notEmpty',
@@ -91,7 +87,24 @@ class Sites extends AppModel {
 	public function custom_domain() {
 		return !empty($this->data['domain']) && strpos($this->domain, '.' . MeuMobi::domain()) === false;
 	}
-
+		
+	public function firstByDomain($domain) {
+		$siteDomain = Model::load ( 'SitesDomains' )->firstByDomain($domain);
+		if ($siteDomain) {
+			return self::firstById($siteDomain->site_id);
+		}
+	}
+	
+	public function domains() {
+		$domains = array();
+		if ($siteDomains = Model::load ( 'SitesDomains' )->allBySiteId ( $this->id )) {
+			foreach ($siteDomains as $item) {
+				$domains[$item->id] = $item->domain;
+			}
+		}
+		return $domains;
+	}
+	
 	public function photos() {
 		return Model::load ( 'Images' )->allByRecord ( 'SitePhotos', $this->id );
 	}
@@ -273,18 +286,102 @@ class Sites extends AppModel {
 
 	protected function removeFromSiteManager($id)
 	{
-		SiteManager::delete($this->domain);
+		foreach ($this->domains() as $domain) {
+			SiteManager::delete($domain);
+		}
 		return $id;
 	}
 
-	protected function saveCustomDomain($data)
+	protected function saveDomain($data)
 	{
-		if (isset($data['custom_domain']) && (!$data['custom_domain'] || empty($data['domain']))) {
-			$data['domain'] = $data['slug'] . '.' . MeuMobi::domain();
+		
+		$defaultDomain = '';
+		$siteId = isset($data['id']) ? $data['id'] : null;
+		//if can, create default domain
+		if (isset($data['slug']) && $data['slug']) {
+			$defaultDomain = $data['slug'] . '.' . MeuMobi::domain();
 		}
+		
+		//check if use a default or custon domain
+		if (isset($data['custom_domain'])) {
+			if ($data['custom_domain'] 
+				&& (isset($data['domains']) && is_array($data['domains']))) {
+				//add the first custon domain to the domain field
+				$data['domain'] = reset($data['domains']);
+				
+				//check if domain already exists
+				if ($domain = Model::load('SitesDomains')->check($data['domain'])) {
+					if ($domain->site_id != $siteId ) {
+						throw new RuntimeException("The {$data['domain']} is not available");
+					}
+				}
+				//remove the default domain
+				SiteManager::delete($defaultDomain);
+				if ($siteDomain = Model::load('SitesDomains')->firstByDomain($defaultDomain)) {
+					$siteDomain->delete($siteDomain->id);
+				}
+			} else {
+				$data['domain'] = $defaultDomain;
+				$data['domains'] = array($defaultDomain);
+			}
+		}
+		//echo '<pre>'; print_r($data); exit;
 		return $data;
 	}
-
+	
+	protected function saveDomains($created) 
+	{		
+		$instance = MeuMobi::instance();
+		//handle default error if domains not exists
+		try {
+			$domains = $this->domains;
+		} catch (Exception $e) {
+			$domains = array();
+		}
+		//try {
+		
+			/*save custon domains*/
+		foreach ($domains as $id => $domain) {				
+			$previous = '';
+			//check if domain exist in the site
+			
+			if ($domain && $siteDomain = Model::load('SitesDomains')->check($domain)) {
+				//TODO throw error if domain already exits
+				if ($siteDomain->site_id != $this->id) {
+					throw new RuntimeException("The {$domain} is not available");
+				}
+				continue;
+			} 
+			//check if is changing the domain value
+			if ($siteDomain = Model::load('SitesDomains')->firstByIdAndSiteId($id, $this->id)) {
+				$previous = $siteDomain->domain;
+			} else {
+				$siteDomain = Model::load('SitesDomains');
+			}
+			
+			//check if new value is empyt
+			if (!$domain) {
+				//if new domain no exists, remove it
+				if ($previous) {
+					SiteManager::delete($siteDomain->domain);
+					$siteDomain->delete($siteDomain->id);
+				}
+				continue;
+			}
+			
+			$siteDomain->domain = $domain;
+			$siteDomain->site_id = $this->id;
+			if ($siteDomain->validate()) {
+				$siteDomain->save();
+				if ($previous) {
+					SiteManager::update($previous, $domain, $instance);
+				} else {
+					SiteManager::create($domain, $instance);
+				}
+			}
+		}
+		//} catch (Exception $e) {}
+	}
 	protected function setHideCategories($data) {
 		$segment = Model::load ( 'Segments' )->firstById ( MeuMobi::segment () );
 		$data ['hide_categories'] = $segment->hideCategories;
@@ -331,15 +428,6 @@ class Sites extends AppModel {
 
 	protected function updateSiteManager($data)
 	{
-		$instance = MeuMobi::instance();
-		$domain = $data['domain'];
-		if ($this->id) {
-			$previous = $this->firstById($this->id);
-			$previous = $previous->domain;
-			SiteManager::update($previous, $domain, $instance);
-		} else {
-			SiteManager::create($domain, $instance);
-		}
 		return $data;
 	}
 
