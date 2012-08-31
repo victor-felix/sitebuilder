@@ -323,7 +323,12 @@ $.extend($.easing, {
 		e.preventDefault();
 		$(this).prev().clone().insertBefore(this);
 	});
-
+	
+	$('.js-duplicate-previous').click(function(e) {
+		e.preventDefault();
+		$(this).prev().clone().insertBefore(this);
+	});
+	
 	$.Paginate = function(params) {
 		this.settings = {
 			controls_wrapp: "#pagination",

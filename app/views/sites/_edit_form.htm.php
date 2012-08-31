@@ -56,15 +56,32 @@
 				<label for="FormCustomDomain" class="checkbox"><?php echo s('use a custom domain name') ?></label>
 
 				<div class="input text">
-					<p class="meumobi-url">
+					<?php foreach ($site->domains() as $id => $domain): 
+						if($domain != $site->slug.'.'.MeuMobi::domain()):
+					?>
+					<p class="meumobi-url clear">
 						<span>http://</span>
-						<?php echo $this->form->input('domain', array(
+						<?php echo $this->form->input("domains[$id]", array(
+							'label' => false,
+							'div' => false,
+							'type' => 'text',
+							'class' => 'ui-text',
+							'value' =>  $domain,
+						)) ?>
+					</p>
+					<?php 
+					endif;
+					endforeach; ?>
+					<p class="meumobi-url clear">
+						<span>http://</span>
+						<?php echo $this->form->input('domains[]', array(
 							'label' => false,
 							'div' => false,
 							'type' => 'text',
 							'class' => 'ui-text'
 						)) ?>
 					</p>
+					<a href="#" class="js-duplicate-previous"><?php echo s('add domain')?></a>
 					<div class="clear"></div>
 				</div>
 			</div>
