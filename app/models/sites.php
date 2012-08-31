@@ -325,7 +325,6 @@ class Sites extends AppModel {
 				$data['domains'] = array($defaultDomain);
 			}
 		}
-		//echo '<pre>'; print_r($data); exit;
 		return $data;
 	}
 	
