@@ -4,7 +4,6 @@ namespace app\controllers\api;
 
 use app\presenters\ExtensionPresenter;
 use meumobi\sitebuilder\Extension;
-use meumobi\sitebuilder\Site;
 
 class ExtensionsController extends ApiController
 {
@@ -13,12 +12,6 @@ class ExtensionsController extends ApiController
 		if (isset($this->request->query[$key])) {
 			return $this->request->query[$key];
 		}
-	}
-
-	protected function site()
-	{
-		$domain = $this->request->params['slug'];
-		return Site::findByDomain($domain);
 	}
 
 	public function index()
@@ -39,7 +32,7 @@ class ExtensionsController extends ApiController
 		$extension = new ExtensionPresenter($extension);
 
 		$etag = $this->etag($extension);
-
+		$extension->domain = $this->request->params['slug'];
 		return $this->whenStale($etag, function() use($extension) {
 			return $extension->toJSON();
 		});

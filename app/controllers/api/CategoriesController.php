@@ -4,7 +4,6 @@ namespace app\controllers\api;
 
 use app\presenters\CategoryPresenter;
 use meumobi\sitebuilder\Category;
-use meumobi\sitebuilder\Site;
 
 class CategoriesController extends ApiController
 {
@@ -13,12 +12,6 @@ class CategoriesController extends ApiController
 		if (isset($this->request->query[$key])) {
 			return $this->request->query[$key];
 		}
-	}
-
-	protected function site()
-	{
-		$domain = $this->request->params['slug'];
-		return Site::findByDomain($domain);
 	}
 
 	public function index()

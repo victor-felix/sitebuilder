@@ -4,6 +4,7 @@ namespace app\controllers\api;
 
 use lithium\action\Dispatcher;
 use lithium\util\Inflector;
+use meumobi\sitebuilder\Site;
 use DateTime;
 
 class ApiController extends \lithium\action\Controller {
@@ -68,9 +69,10 @@ class ApiController extends \lithium\action\Controller {
     }
 
     protected function site() {
-        $slug = $this->request->params['slug'];
-        return \Model::load('Sites')->firstByDomain($slug);
+    	$domain = $this->request->params['slug'];
+    	return Site::findByDomain($domain);
     }
+    
 
     protected function checkToken() {
         if(\Config::read('Api.ignoreAuth')) return;
