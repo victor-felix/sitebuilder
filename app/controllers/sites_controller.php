@@ -107,24 +107,34 @@ class SitesController extends AppController {
 		if(!empty($this->data)) {
 			$images = array_unset($this->data, 'image');
 			$site->updateAttributes($this->request->data);
-			if($site->validate()) {
-				$site->save();
-				
-				foreach($images as $id => $image) {
-					if(is_numeric($id)) {
-						$record = Model::load('Images')->firstById($id);
-						$record->title = $image['title'];
-						$record->save();
+			try {
+				if($site->validate()) {
+					$site->save();
+					
+					foreach($images as $id => $image) {
+						if(is_numeric($id)) {
+							$record = Model::load('Images')->firstById($id);
+							$record->title = $image['title'];
+							$record->save();
+						}
 					}
+					
+					if ($allowMessage) {
+						Session::writeFlash('success', s('Configuration successfully saved.'));
+					}
+					if($redirect_to == '/sites/customize_register') {
+						Session::write('Users.registering', '/sites/customize_register');
+					}
+					$this->redirect($redirect_to);
 				}
-				
+			}catch (RuntimeException $e) {
 				if ($allowMessage) {
-					Session::writeFlash('success', s('Configuration successfully saved.'));
+					Session::writeFlash('error', s('Sorry, %s',$e->getMessage()));
 				}
-				if($redirect_to == '/sites/customize_register') {
-					Session::write('Users.registering', '/sites/customize_register');
+			} catch (Exception $e) {
+				if ($allowMessage) {
+					Session::writeFlash('error', s('Sorry, an error occurred while saving'));
 				}
-				$this->redirect($redirect_to);
 			}
 		}
 
