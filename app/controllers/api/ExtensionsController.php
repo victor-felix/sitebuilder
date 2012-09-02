@@ -37,7 +37,7 @@ class ExtensionsController extends ApiController
 	{
 		$extension = $this->site()->findExtension($this->request->params['id']);
 		$extension = new ExtensionPresenter($extension);
-		$extension->domain = $this->request->params['slug'];
+
 		$etag = $this->etag($extension);
 
 		return $this->whenStale($etag, function() use($extension) {
@@ -52,7 +52,6 @@ class ExtensionsController extends ApiController
 		if($extension->save()) {
 			$this->response->status(201);
 			$extension = new ExtensionPresenter($extension);
-			$extension->domain = $this->request->params['slug'];
 			return $extension->toJSON();
 		}
 		else {
@@ -71,7 +70,6 @@ class ExtensionsController extends ApiController
 		if($extension->save()) {
 			$this->response->status(200);
 			$extension = new ExtensionPresenter(new Extension($extension->to('array')));
-			$extension->domain = $this->request->params['slug'];
 			return $extension->toJSON();
 		}
 		else {
