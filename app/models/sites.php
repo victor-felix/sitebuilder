@@ -320,7 +320,6 @@ class Sites extends AppModel {
 	protected function saveDomains($created) 
 	{		
 		$instance = MeuMobi::instance();
-		$siteDomain = Model::load('SitesDomains');
 		//handle default error if domains not exists
 		try {
 			$domains = $this->domains;
@@ -330,18 +329,17 @@ class Sites extends AppModel {
 		foreach ($domains as $id => $domain) {
 			$previous = '';
 			//check if domain exist in the site
-			if ($domain && $domainExists = $siteDomain->check($domain)) {
+			if ($domain && $domainExists = Model::load('SitesDomains')->check($domain)) {
 				if ($domainExists->site_id != $this->id) {
 					throw new RuntimeException("The {$domain} is not available");
 				}
 				continue;
 			}
 			//check if is changing the domain value
-			if ($oldDomain = $siteDomain->firstByIdAndSiteId($id, $this->id)) {
-				$siteDomain = $oldDomain;
+			if ($siteDomain = Model::load('SitesDomains')->firstByIdAndSiteId($id, $this->id)) {
 				$previous = $siteDomain->domain;
 			} else {
-				$siteDomain->id = null;
+				$siteDomain = new SitesDomains();
 			}
 			
 			//if old domain is empty, removes it
