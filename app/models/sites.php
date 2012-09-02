@@ -345,7 +345,7 @@ class Sites extends AppModel {
 			//if old domain is empty, removes it
 			if (!$domain) {
 				if ($previous) {
-					//SiteManager::delete($siteDomain->domain);
+					SiteManager::delete($siteDomain->domain);
 					$siteDomain->delete($siteDomain->id);
 				}
 				continue;
@@ -356,9 +356,9 @@ class Sites extends AppModel {
 			if ($siteDomain->validate()) {
 				$siteDomain->save();
 				if ($previous) {
-					//SiteManager::update($previous, $domain, $instance);
+					SiteManager::update($previous, $domain, $instance);
 				} else {
-					//SiteManager::create($domain, $instance);
+					SiteManager::create($domain, $instance);
 				}
 			}
 		}
