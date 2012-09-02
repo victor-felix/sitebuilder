@@ -294,75 +294,60 @@ class Sites extends AppModel {
 
 	protected function saveDomain($data)
 	{
-		
-		$defaultDomain = '';
 		$siteId = isset($data['id']) ? $data['id'] : null;
-		//if can, create default domain
-		if (isset($data['slug']) && $data['slug']) {
-			$defaultDomain = $data['slug'] . '.' . MeuMobi::domain();
-		}
-		
 		//check if use a default or custon domain
 		if (isset($data['custom_domain'])) {
 			if ($data['custom_domain'] 
-				&& (isset($data['domains']) && is_array($data['domains']))) {
+				&& (isset($data['domains']) && reset($data['domains']))) {
 				//add the first custon domain to the domain field
-				$data['domain'] = reset($data['domains']);
-				
-				//check if domain already exists
-				if ($domain = Model::load('SitesDomains')->check($data['domain'])) {
-					if ($domain->site_id != $siteId ) {
-						throw new RuntimeException("The {$data['domain']} is not available");
-					}
-				}
-				//remove the default domain
-				SiteManager::delete($defaultDomain);
-				if ($siteDomain = Model::load('SitesDomains')->firstByDomain($defaultDomain)) {
-					$siteDomain->delete($siteDomain->id);
-				}
+				$domain = reset($data['domains']);
 			} else {
-				$data['domain'] = $defaultDomain;
-				$data['domains'] = array($defaultDomain);
+				$domain = $data['slug'] . '.' . MeuMobi::domain();
+				$data['domains'] = (array)$domain;
 			}
+			//check if domain already exists
+			if ($exists = Model::load('SitesDomains')->check($domain)) {
+				if ($exists->site_id != $siteId ) {
+					throw new RuntimeException("The {$domain} is not available");
+				}
+			}
+			$data['domain'] = $domain;
 		}
+		
 		return $data;
 	}
 	
 	protected function saveDomains($created) 
 	{		
 		$instance = MeuMobi::instance();
+		$siteDomain = Model::load('SitesDomains');
 		//handle default error if domains not exists
 		try {
 			$domains = $this->domains;
 		} catch (Exception $e) {
 			$domains = array();
 		}
-		//try {
-		
-			/*save custon domains*/
-		foreach ($domains as $id => $domain) {				
+		foreach ($domains as $id => $domain) {
 			$previous = '';
 			//check if domain exist in the site
-			
-			if ($domain && $siteDomain = Model::load('SitesDomains')->check($domain)) {
-				//TODO throw error if domain already exits
-				if ($siteDomain->site_id != $this->id) {
+			if ($domain && $domainExists = $siteDomain->check($domain)) {
+				if ($domainExists->site_id != $this->id) {
 					throw new RuntimeException("The {$domain} is not available");
 				}
 				continue;
-			} 
+			}
 			//check if is changing the domain value
-			if ($siteDomain = Model::load('SitesDomains')->firstByIdAndSiteId($id, $this->id)) {
+			if ($oldDomain = $siteDomain->firstByIdAndSiteId($id, $this->id)) {
+				$siteDomain = $oldDomain;
 				$previous = $siteDomain->domain;
 			} else {
-				$siteDomain = Model::load('SitesDomains');
+				$siteDomain->id = null;
 			}
 			
-			//check if new value is empyt
+			//if old domain is empty, removes it
 			if (!$domain) {
-				//if new domain no exists, remove it
 				if ($previous) {
-					SiteManager::delete($siteDomain->domain);
+					//SiteManager::delete($siteDomain->domain);
 					$siteDomain->delete($siteDomain->id);
 				}
 				continue;
@@ -373,13 +358,12 @@ class Sites extends AppModel {
 			if ($siteDomain->validate()) {
 				$siteDomain->save();
 				if ($previous) {
-					SiteManager::update($previous, $domain, $instance);
+					//SiteManager::update($previous, $domain, $instance);
 				} else {
-					SiteManager::create($domain, $instance);
+					//SiteManager::create($domain, $instance);
 				}
 			}
 		}
-		//} catch (Exception $e) {}
 	}
 	protected function setHideCategories($data) {
 		$segment = Model::load ( 'Segments' )->firstById ( MeuMobi::segment () );
