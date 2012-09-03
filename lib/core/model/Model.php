@@ -345,9 +345,7 @@ class Model extends Hookable {
         
         // apply modified timestamp
         $date = date('Y-m-d H:i:s');
-        if(!array_key_exists('modified', $this->data)):
-            $this->data['modified'] = $date;
-        endif;
+        $this->data['modified'] = $date;
 
         $pk = $this->primaryKey();
 
@@ -362,7 +360,7 @@ class Model extends Hookable {
         }
 
         // apply created timestamp
-        if(!$exists && !array_key_exists('created', $this->data)):
+        if(!$exists):
             $this->data['created'] = $date;
         endif;
 
