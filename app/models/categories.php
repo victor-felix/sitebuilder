@@ -10,7 +10,7 @@ class Categories extends AppModel {
 
 	const MAX_IMPORTFILE_SIZE = 300;
 	protected $beforeSave = array('getOrder', 'getItemType', 'checkItems');
-	protected $afterSave = array('importItems', 'updateFeed');
+	protected $afterSave = array('importItems', 'updateFeed', 'updateParentCategory');
 	protected $beforeDelete = array('deleteChildren');
 	protected $defaultScope = array(
 		'order' => '`order` ASC'
@@ -323,6 +323,16 @@ class Categories extends AppModel {
 				'data' => $data,
 			));
 			return $mailer->send ();
+		}
+	}
+
+	protected function updateParentCategory($created)
+	{
+		$parent = $this->parent();
+
+		if ($parent) {
+			$parent->updated = date('Y-m-d H:i:s');
+			$parent->save();
 		}
 	}
 

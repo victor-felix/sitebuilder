@@ -79,7 +79,7 @@ class ExtensionsController extends ApiController
 
 	public function destroy()
 	{
-		Extensions::remove(array(
+		\app\models\Extensions::remove(array(
 			'_id' => $this->request->params['id']
 		));
 		$this->response->status(200);
