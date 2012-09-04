@@ -10,7 +10,7 @@ class Categories extends AppModel {
 
 	const MAX_IMPORTFILE_SIZE = 300;
 	protected $beforeSave = array('getOrder', 'getItemType', 'checkItems');
-	protected $afterSave = array('importItems', 'updateFeed', 'updateParentCategory');
+	protected $afterSave = array('importItems', 'updateFeed', 'updateParentTimestamps');
 	protected $beforeDelete = array('deleteChildren');
 	protected $defaultScope = array(
 		'order' => '`order` ASC'
@@ -326,14 +326,20 @@ class Categories extends AppModel {
 		}
 	}
 
-	protected function updateParentCategory($created)
+	protected function updateParentTimestamps($created)
 	{
+		$date = date('Y-m-d H:i:s');
 		$parent = $this->parent();
 
 		if ($parent) {
-			$parent->updated = date('Y-m-d H:i:s');
+			$parent->modified = $date;
 			$parent->save();
 		}
+
+		$site = Model::load('Sites')->firstById($this->site_id);
+		$site->updated = $date;
+		$site->save();
+
 	}
 
 	protected function updateFeed($created) {

@@ -21,6 +21,11 @@ class Site
 		$this->attr = $attr;
 	}
 
+	public function __get($attr)
+	{
+		return $this->attr[$attr];
+	}
+
 	public function categories($scope = null)
 	{
 		return Category::findBySite($this->attr['id'], $scope);

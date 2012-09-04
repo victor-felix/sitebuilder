@@ -8,7 +8,7 @@ use meumobi\sitebuilder\Site;
 use DateTime;
 
 class ApiController extends \lithium\action\Controller {
-	protected $beforeFilter = array('log', 'checkToken', 'checkSite');
+	protected $beforeFilter = array('log', 'checkToken', 'checkSite', 'checkEtag');
 	protected $site;
 	protected $params;
 
@@ -65,6 +65,15 @@ class ApiController extends \lithium\action\Controller {
 		$this->site = $this->site();
 		if(!$this->site) {
 			throw new \app\models\sites\MissingSiteException();
+		}
+	}
+
+	protected function checkEtag()
+	{
+		$etag = $this->etag($this->site());
+		if ($this->isFresh($etag)) {
+			$this->response->status(304);
+			return false;
 		}
 	}
 

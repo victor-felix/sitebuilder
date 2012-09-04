@@ -26,12 +26,7 @@ class CategoriesController extends ApiController
 		$scope = (object) array('visibility' => $this->query('visibility'));
 		$categories = $this->site()->categories($scope);
 
-		$self = $this;
-		$etag = $this->etag($categories);
-
-		return $this->whenStale($etag, function() use($categories, $self) {
-			return $self->toJSON($categories);
-		});
+		return $this->toJSON($categories);
 	}
 
 	public function show()
@@ -39,11 +34,7 @@ class CategoriesController extends ApiController
 		$category = $this->site()->findCategory($this->request->params['id']);
 		$category = new CategoryPresenter($category);
 
-		$etag = $this->etag($category);
-
-		return $this->whenStale($etag, function() use($category) {
-			return $category->toJSON();
-		});
+		return $category->toJSON();
 	}
 
 	public function children()
@@ -55,12 +46,7 @@ class CategoriesController extends ApiController
 		}
 
 		$categories = $category->children(array('depth' => $this->param('depth', 0)));
-		$etag = $this->etag($categories);
-		$self = $this;
-
-		return $this->whenStale($etag, function() use($categories, $self) {
-			return $self->toJSON($categories);
-		});
+		return $this->toJSON($categories);
 	}
 
 	public function create() {

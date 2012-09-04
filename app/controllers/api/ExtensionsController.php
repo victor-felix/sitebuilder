@@ -49,12 +49,11 @@ class ExtensionsController extends ApiController
 	{
 		$extension = $this->site()->buildExtension($this->request->data);
 
-		if($extension->save()) {
+		if ($extension->save()) {
 			$this->response->status(201);
 			$extension = new ExtensionPresenter($extension);
 			return $extension->toJSON();
-		}
-		else {
+		} else {
 			$this->response->status(422);
 		}
 	}
@@ -67,12 +66,11 @@ class ExtensionsController extends ApiController
 
 		$extension->set($this->request->data);
 
-		if($extension->save()) {
+		if ($extension->save()) {
 			$this->response->status(200);
 			$extension = new ExtensionPresenter(new Extension($extension->to('array')));
 			return $extension->toJSON();
-		}
-		else {
+		} else {
 			$this->response->status(422);
 		}
 	}
