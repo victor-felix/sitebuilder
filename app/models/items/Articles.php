@@ -74,7 +74,7 @@ class Articles extends \app\models\Items {
         $images = static::getArticleImages($item);
         foreach($images as $image) {
             $image = static::getImageUrl($image, $article['guid']);
-            $result = Model::load('Images')->download($this, $image, array(
+            $result = Model::load('Images')->download($article, $image, array(
                 'url' => $image
             ));
 
