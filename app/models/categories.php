@@ -9,9 +9,9 @@ use app\models\Items, app\models\items\Articles, utils\Import as Import;
 class Categories extends AppModel {
 
 	const MAX_IMPORTFILE_SIZE = 300;
-	protected $beforeSave = array('getOrder', 'getItemType', 'checkItems');
+	protected $beforeSave = array('setOrder', 'getItemType', 'checkItems');
 	protected $afterSave = array('importItems', 'updateFeed', 'updateParentTimestamps');
-	protected $beforeDelete = array('deleteChildren');
+	protected $beforeDelete = array('deleteChildren', 'updateOrders');
 	protected $defaultScope = array(
 		'order' => '`order` ASC'
 	);
@@ -179,7 +179,147 @@ class Categories extends AppModel {
 			}
 		}
 	}
-
+	
+	public function moveUp($steps = 1) {
+		$oldOrder = $this->order;
+		$previus = $this->findByOrder($oldOrder - $steps);
+		
+		if (!$previus) {
+			return false;
+		}
+		
+		$this->order = $previus->order;
+		$previus->order = $oldOrder;
+		if ($this->save() && $previus->save()) {
+			return $this->order;
+		}
+	}
+	
+	public function moveDown($steps = 1) {
+		$oldOrder = $this->order;
+		$previus = $this->findByOrder($oldOrder + $steps);
+		
+		if (!$previus) {
+			return false;
+		}
+		
+		$this->order = $previus->order;
+		$previus->order = $oldOrder;
+		if ($this->save() && $previus->save()) {
+			return $this->order;
+		}
+	}
+	 
+	public function resetOrder($siteId) {
+		$all = $this->all(array(
+				'conditions' => array (
+					'site_id' => $siteId, 
+					'visibility >' => -1),
+				'order' => 'created'
+				) );
+		
+		$foreignKeys = array();
+		
+		foreach ($all as $item) {
+			if (!$item->parent_id) continue;
+			$foreignKeys[$item->parent_id][] = $item;
+		}
+		
+		//TODO update all at once, not per item
+		foreach ($foreignKeys as $items) {
+			for ($i = 0; $i < count($items); $i++) {
+				$item = $items[$i];
+				$item->order = $i + 1;
+				$item->save();
+			}
+		}
+		return true;
+	}
+	
+	public function getFirst($parent_id = null, $site_id = null) {
+		$parent_id = $parent_id ? $parent_id : $this->parent_id;
+		$site_id = $site_id ? $site_id : $this->site_id;
+		
+		$conditions = array(
+				'parent_id' => $parent_id,
+				'site_id' => $site_id,
+				'visibility >' => -1
+		);
+		
+		return $this->first(array(
+				'conditions' => $conditions,
+				'order' => '`order` ASC',
+		));
+	}
+	
+	public function getLast($parent_id = null, $site_id = null) {
+		$parent_id = $parent_id ? $parent_id : $this->parent_id;
+		$site_id = $site_id ? $site_id : $this->site_id;
+		
+		$conditions = array(
+				'parent_id' => $parent_id,
+				'site_id' => $site_id,
+				'visibility >' => -1
+		);
+		
+		return $this->first(array(
+					'conditions' => $conditions,
+					'order' => '`order` DESC',
+				));
+	}
+	
+	public function findByOrder($order) {
+		if (!(int)$order) {
+			return false;
+		}
+		
+		$conditions = array(
+			'`order`' => $order,
+			'parent_id' => $this->parent_id,
+			'site_id' => $this->site_id, 
+			'visibility >' => -1			
+		);
+		
+		return $this->first(array(
+					'conditions' => $conditions,
+					'order' => '`order` DESC',
+				));
+	}
+	
+	protected function setOrder($data) {
+		if (!$this->id) {
+			$last = $this->getLast();
+			if ($last) {
+				$data['order'] = $last->order + 1;
+			} else {
+				$data['order'] = 1;
+			} 
+		}
+		return $data;
+	}
+	
+	protected function updateOrders($id, $force = false) {
+		$self = $this->firstById($id);
+		if ($self->parent_id && $self->visibility > -1) {
+			$conditions = array(
+				'`order` >' => $self->order,
+				'parent_id' => $self->parent_id,
+				'site_id' => $self->site_id, 
+				'visibility >' => -1			
+			);
+			
+			$all = $this->all(compact('conditions'));
+			//TODO use update instead of looping all items
+			if ($all) {
+				foreach ($all as $item) {
+					$item->order = $item->order - 1;
+					$item->save();
+				}
+			}
+		}
+		return $id;
+	}
+	
 	protected function getFeed() {
 		$feed = new SimplePie();
 		$feed->enable_cache(false);
@@ -187,30 +327,6 @@ class Categories extends AppModel {
 		$feed->init();
 
 		return $feed;
-	}
-
-	protected function getOrder($data) {
-		if(is_null($this->id) && $data['parent_id'] != 0) {
-			$siblings = $this->toList(array(
-				'fields' => array('id', '`order`'),
-				'conditions' => array(
-					'site_id' => $data['site_id'],
-					'parent_id' => $data['parent_id']
-				),
-				'order' => '`order` DESC',
-				'displayField' => 'order',
-				'limit' => 1
-			));
-
-			if(!empty($siblings)) {
-				$data['order'] = current($siblings) + 1;
-			}
-			else {
-				$data['order'] = 0;
-			}
-		}
-
-		return $data;
 	}
 
 	protected function getItemType($data) {
