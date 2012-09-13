@@ -129,7 +129,122 @@ class Items extends \lithium\data\Model {
 			return false;
 		}
 	}
+	
+	public function getFirst($entity) {
+		return self::find('first', array(
+			'conditions' => array(
+				'parent_id' => $entity->parent_id,
+			),
+			'order' => array('order' => 'ASC')
+		));
+	}
+	
+	public function getLast($entity) {
+		return self::find('first', array(
+				'conditions' => array(
+						'parent_id' => $entity->parent_id,
+				),
+				'order' => array('order' => 'DESC')
+		));
+	}
+	
+	public function moveUp($entity, $steps = 1) {
+		$oldOrder = $entity->order;
+		$previus = $this->findByOrder($entity, $oldOrder - $steps);
+		
+		if (!$previus) {
+			return false;
+		}
+		
+		$entity->order = $previus->order;
+		$previus->order = $oldOrder;
+		if ($entity->save() && $previus->save()) {
+			return $entity->order;
+		}
+	}
+	
+	public function moveDown($entity, $steps = 1) {
+		$oldOrder = $entity->order;
+		$previus = $this->findByOrder($entity, $oldOrder + $steps);
+	
+		if (!$previus) {
+			return false;
+		}
+	
+		$entity->order = $previus->order;
+		$previus->order = $oldOrder;
+		if ($entity->save() && $previus->save()) {
+			return $entity->order;
+		}
+	}
+	
+	public function findByOrder($entity, $order) {
+		if (!(int)$order) {
+			return false;
+		}
+		//'order' => array('created' => 'DESC')
+		return Items::find('first', array('conditions' => array(
+				'order' => $order,
+				'parent_id' => $entity->parent_id,
+		)));
+	}
+	
+	/**
+	 * set the order value with the last order plus 1
+	 */
+	public static function addOrder($self, $params, $chain) {
+		$item = $params['entity'];
+	
+		if(!$item->id()) {
+			$last = $item->getLast();
+			if ($last) {
+				$item->order = $last->order + 1;
+			} else {
+				$item->order = 1;
+			}
+		}
 
+		return $chain->next($self, $params, $chain);
+	}
+	
+	/**
+	 * Update item ordering after remove item
+	 */
+	public static function updateOrdering($self, $params, $chain) {
+		if(isset($params['conditions']['_id'])) {
+			$id = $params['conditions']['_id'];
+			$item = static::find('first', array(
+				'conditions' => array(
+					'_id' => $id
+				),
+				'fields' => array(
+					'order',
+					'parent_id',
+					'site_id'
+				)
+			));
+			
+			if ($item) {
+				$conditions = array(
+					'order' => array('>' => $item->order),
+				//'order' => 'order +1',
+					'parent_id' => $item->parent_id,
+					'site_id' => $item->site_id,
+				);
+				//static::update(array('order' => 7), $conditions);
+				$all = static::find('all',array(
+					'conditions' => $conditions,
+				));
+			}
+			echo '<pre>';
+			print_r($item->to('array'));
+			print_r($all->to('array')); 
+			
+		}
+		exit;
+		return $chain->next($self, $params, $chain);
+	}
+	
 	public static function addTimestamps($self, $params, $chain) {
 		$item = $params['entity'];
 
@@ -366,8 +481,16 @@ Items::applyFilter('remove', function($self, $params, $chain) {
 	return $chain->next($self, $params, $chain);
 });
 
+Items::applyFilter('remove', function($self, $params, $chain) {
+	return Items::updateOrdering($self, $params, $chain);
+});
+
 Items::applyFilter('save', function($self, $params, $chain) {
 	return Items::addTimestamps($self, $params, $chain);
+});
+
+Items::applyFilter('save', function($self, $params, $chain) {
+	return Items::addOrder($self, $params, $chain);
 });
 
 Items::finder('type', function($self, $params, $chain) {

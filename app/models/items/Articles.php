@@ -212,6 +212,14 @@ class Articles extends \app\models\Items {
 
 }
 
+Articles::applyFilter('remove', function($self, $params, $chain) {
+	return Items::updateOrdering($self, $params, $chain);
+});
+
 Articles::applyFilter('save', function($self, $params, $chain) {
     return Items::addTimestamps($self, $params, $chain);
+});
+
+Articles::applyFilter('save', function($self, $params, $chain) {
+	return Items::addOrder($self, $params, $chain);
 });
