@@ -28,6 +28,16 @@ class SiteManager
 		}
 	}
 
+	public static function regenerate($domains, $instance)
+	{
+		if (Config::read('SiteManager.url')) {
+			foreach ($domains as $domain) {
+				self::create($domain, $instance);
+			}
+		}
+		return true;
+	}
+
 	protected static function request($method, $domain, $data = null)
 	{
 		$base = Config::read('SiteManager.url');
