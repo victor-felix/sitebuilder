@@ -78,7 +78,7 @@ class Images extends AppModel {
             $self->updateAttributes($info);
             $self->save();
 
-            if ($self->model == 'Items') {
+            if ($self->model == 'Items' && $self->foreign_key) {
                 $item = \app\models\Items::find('type', array('conditions' => array(
                     '_id' => $self->foreign_key
                 )));

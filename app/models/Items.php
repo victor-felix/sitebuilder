@@ -104,7 +104,8 @@ class Items extends \lithium\data\Model {
 		foreach ($this->fields as $code => $field) {
 			if ($field['type'] == 'richtext' 
 				&& !(isset($self['format']) && $self['format'] == 'html')) {
-				$parser = new Decoda($self[$code]);
+				$allowedTagsConvertion = array('b', 'i', 'color', 'url', 'big', 'small');
+				$parser = new Decoda($self[$code], $allowedTagsConvertion);
 				$self[$code] = '<p>' . $parser->parse(true) . '</p>';
 			}
 		}

@@ -13,7 +13,7 @@ class ItemsController extends ApiController {
 		$conditions = array(
 			'site_id' => $this->site()->id
 		);
-
+		$order = array('created' => 'ASC');
 		if(isset($this->request->query['type'])) {
 			$type = $conditions['type'] = $this->request->query['type'];
 		}
@@ -22,14 +22,20 @@ class ItemsController extends ApiController {
 			$category = Model::load('Categories')->firstById($category_id);
 			$conditions['parent_id'] = $category->id;
 			$type = $conditions['type'] = $category->type;
+			
+			//order by news by pubdate
+			if ($category->visibility == -1) {
+				$order = array('pubdate' => 'DESC');
+			}
 		}
-
+		
+		
 		$classname = '\app\models\items\\' . Inflector::camelize($type);
 		$items = $classname::find('all', array(
 			'conditions' => $conditions,
 			'limit' => $this->param('limit', 20),
 			'page' => $this->param('page', 1),
-			'order' => array('created' => 'ASC'),
+			'order' => $order,
 		));
 		$etag = $this->etag($items);
 		$self = $this;

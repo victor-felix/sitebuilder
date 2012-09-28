@@ -60,7 +60,24 @@ class SitesController extends AppController {
 		}
 		$this->redirect('/');
 	}
-
+	
+	public function regenerate_domains() {
+		if ($this->getCurrentSite()->userRole() != Users::ROLE_ADMIN) {
+			Session::writeFlash('error', s('Sorry, You are not allowed to do this'));
+			$this->redirect('/');
+		}
+		
+		$domains = Model::load('SitesDomains')->toList(array('displayField'=>'domain'));
+		$sucess = SiteManager::regenerate($domains, MeuMobi::instance());
+		if ($sucess) {
+			Session::writeFlash('success', s('Domains was successfully regenerated'));
+		} else {
+			Session::writeFlash('error', s('Sorry, can\'t regenerate domains'));
+		}
+		
+		$this->redirect('/');
+	}
+	
 	public function customize_edit() {
 		$this->customizeSite(s('Configuration successfully saved.'), '/sites/customize_edit');
 	}
