@@ -130,25 +130,18 @@ class Categories extends AppModel {
 	}
 
 	public function updateArticles() {
-		//$log = KLogger::instance(Filesystem::path('log'));
-
+	
 		$feed = $this->getFeed();
 		$items = $feed->get_items();
 
-		//$log->logInfo('Importing feed "%s"', $this->feed_url);
-		//$log->logInfo('%d articles found', count($items));
-
 		foreach($items as $item) {
 			$count = Articles::find('count', array('conditions' => array(
-				'category_id' => $this->id,
+				'parent_id' => $this->id,
 				'guid' => $item->get_id()
 			)));
 			if(!$count) {
 				Articles::addToFeed($this, $item);
 			}
-			//else {
-			//$log->logInfo('Article "%s" already exists. Skipping', $item->get_id());
-			//}
 		}
 
 		$this->cleanup();
@@ -168,14 +161,14 @@ class Categories extends AppModel {
 		$count = Articles::find('count', array('conditions' => $conditions));
 
 		if($count > 50) {
-			$count = Articles::find('all', array(
+			$ids = Articles::find('list', array(
 				'conditions' => $conditions,
 				'limit' => $count - 50,
 				'order' => array('pubdate' => 'ASC')
 			));
-
-			foreach($articles as $article) {
-				Items::remove(array('_id' => $article->id()));
+			$ids = array_keys($ids);
+			if ($ids) {
+				Articles::remove(array('_id' => $ids));
 			}
 		}
 	}
