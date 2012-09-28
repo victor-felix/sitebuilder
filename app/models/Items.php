@@ -131,14 +131,19 @@ class Items extends \lithium\data\Model {
 		}
 	}
 
-	public static function addTimestamps($self, $params, $chain) {
+	public static function addTimestamps($self, $params, $chain)
+	{
 		$item = $params['entity'];
+		$date = date('Y-m-d H:i:s');
+		$category = $item->parent();
 
-		if(!$item->id()) {
-			$item->created = date('Y-m-d H:i:s');
+		if (!$item->id()) {
+			$item->created = $date;
 		}
 
-		$item->modified = date('Y-m-d H:i:s');
+		$item->modified = $date;
+		$category->modified = $date;
+		$category->save();
 
 		return $chain->next($self, $params, $chain);
 	}
