@@ -121,6 +121,44 @@ class CategoriesController extends AppController {
     }
 
     public function reorder() {
-        $this->autoRender = false;
+        $this->Categories->resetOrder($this->getCurrentSite()->id);
+        $status = 'success';
+        $message = s('Categories were reordered successfully');
+        if($this->isXhr()) {
+        	$json = array($status => $message);
+        	$this->respondToJSON($json);
+        }
+        else {
+        	Session::writeFlash($status, $message);
+        	$this->redirect('/categories');
+        }
+    }
+    
+    public function moveup($id = null) {
+    	$category = $this->Categories->firstById($id);
+    	$category->moveUp();
+    	
+    	if($this->isXhr()) {
+    		$json = array();
+    		$this->respondToJSON($json);
+    	}
+    	else {
+    		Session::writeFlash($status, $message);
+    		$this->redirect('/categories');
+    	}
+    }
+    
+    public function movedown($id = null) {
+    	$category = $this->Categories->firstById($id);
+    	$category->moveDown();
+    	 
+    	if($this->isXhr()) {
+    		$json = array();
+    		$this->respondToJSON($json);
+    	}
+    	else {
+    		Session::writeFlash($status, $message);
+    		$this->redirect('/categories');
+    	}
     }
 }

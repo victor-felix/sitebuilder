@@ -10,6 +10,12 @@
     </span>
 
     <div class="controls">
+    	<?php echo $this->html->link(s('Down'), '/categories/movedown/' . $category->id, array(
+                'class' => 'ui-button highlight'
+         )) ?>
+    	<?php echo $this->html->link(s('Up'), '/categories/moveup/' . $category->id, array(
+         	'class' => 'ui-button highlight left-join'
+         )) ?>
         <?php if(!$category->hasFeed()): ?>
             <?php echo $this->html->link(s('add item'), '/business_items/add/' . $category->id, array(
                 'class' => 'ui-button highlight push-scene'

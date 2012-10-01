@@ -159,7 +159,7 @@ class Sites extends AppModel {
 	public function categories() {
 		return Model::load('Categories')->all(array(
 				'conditions' => array ('site_id' => $this->id, 'visibility >' => - 1),
-				'order' => 'title'
+				'order' => '`order`'
 				));
 	}
 
