@@ -46,3 +46,7 @@ class Products extends \app\models\Items {
 Products::applyFilter('save', function($self, $params, $chain) {
     return Items::addTimestamps($self, $params, $chain);
 });
+
+Products::applyFilter('save', function($self, $params, $chain) {
+	return Items::addOrder($self, $params, $chain);
+});

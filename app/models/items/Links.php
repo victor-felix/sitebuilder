@@ -30,6 +30,10 @@ class Links extends \app\models\Items {
     }
 }
 
-Articles::applyFilter('save', function($self, $params, $chain) {
+Links::applyFilter('save', function($self, $params, $chain) {
     return Items::addTimestamps($self, $params, $chain);
+});
+
+Links::applyFilter('save', function($self, $params, $chain) {
+	return Items::addOrder($self, $params, $chain);
 });

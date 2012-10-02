@@ -76,3 +76,7 @@ Stores::finder('nearest', function($self, $params, $chain) {
 Stores::finder('within', function($self, $params, $chain) {
     return Items::withinFinder($self, $params, $chain);
 });
+
+Stores::applyFilter('save', function($self, $params, $chain) {
+	return Items::addOrder($self, $params, $chain);
+});

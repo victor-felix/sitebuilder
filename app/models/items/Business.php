@@ -74,3 +74,7 @@ Business::finder('nearest', function($self, $params, $chain) {
 Business::finder('within', function($self, $params, $chain) {
     return Items::withinFinder($self, $params, $chain);
 });
+
+Business::applyFilter('save', function($self, $params, $chain) {
+	return Items::addOrder($self, $params, $chain);
+});

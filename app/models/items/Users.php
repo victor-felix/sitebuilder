@@ -80,3 +80,7 @@ Users::applyFilter('save', function($self, $params, $chain) {
 Users::applyFilter('save', function($self, $params, $chain) {
 	return Items::addTimestamps($self, $params, $chain);
 });
+
+Users::applyFilter('save', function($self, $params, $chain) {
+	return Items::addOrder($self, $params, $chain);
+});

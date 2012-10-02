@@ -69,3 +69,7 @@ Events::finder('nearest', function($self, $params, $chain) {
 Events::finder('within', function($self, $params, $chain) {
     return Items::withinFinder($self, $params, $chain);
 });
+
+Events::applyFilter('save', function($self, $params, $chain) {
+	return Items::addOrder($self, $params, $chain);
+});
