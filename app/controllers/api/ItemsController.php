@@ -13,7 +13,7 @@ class ItemsController extends ApiController {
 		$conditions = array(
 			'site_id' => $this->site()->id
 		);
-		$order = array('created' => 'ASC');
+		$order = array('order' => 'ASC');
 		if(isset($this->request->query['type'])) {
 			$type = $conditions['type'] = $this->request->query['type'];
 		}

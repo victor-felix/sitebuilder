@@ -27,6 +27,12 @@
             <?php endif ?>
             <div class="info">
                 <?php echo $this->html->link(e($bi->title), '/business_items/edit/' . $bi->id(), array('class' => 'push-scene')) ?>
+                
+                <span class="move-controls">
+                	<?php echo $this->html->link(s('Move Up'), '/business_items/move_up/' . $bi->id(), array('class' => 'move-up')) ?>
+                	<?php echo $this->html->link(s('Move Down'), '/business_items/move_down/' . $bi->id(), array('class' => 'move-down')) ?>
+                </span>
+                
                 <p><?php echo $bi->description ?></p>
             </div>
         </li>

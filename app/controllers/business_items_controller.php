@@ -11,7 +11,7 @@ class BusinessItemsController extends AppController {
 		$classname = '\app\models\items\\' . Inflector::camelize($category->type);
 		
 		$params = array(
-				'conditions' => array( 'parent_id' => $category->id	),
+				'conditions' => array( 'parent_id' => $category->id),
 				'limit' => $this->param('limit', 10),
 				'page' => $this->param('page',1),
 				'order' => $this->param('order', array('order','title')),
@@ -132,5 +132,63 @@ class BusinessItemsController extends AppController {
 
 	public function reorder() {
 		$this->autoRender = false;
+	}
+	
+	public function move_up($id) {
+		$item = Items::find('first', array('conditions' => array(
+				'_id' => $id
+		)));
+		$currentOrder = $item->order; 
+		
+		if (($currentOrder - 1) == $item->moveUp()) {
+			$status = 'success';
+			$message = s('Item successfully moved up');
+		} else {
+			$status = 'error';
+			$message = s('Item not moved up');
+		}
+		
+		if($this->isXhr()) {
+			$json = array(
+				$status => $message,
+				'go_back'=>true,
+				'refresh'=>'/business_items/index/' . $item->parent_id
+			);
+			
+			$this->respondToJSON($json);
+		}
+		else {
+			Session::writeFlash($status, $message);
+			$this->redirect('/business_items/index/' . $item->parent_id);
+		}
+	}
+	
+	public function move_down($id) {
+		$item = Items::find('first', array('conditions' => array(
+				'_id' => $id
+		)));
+		$currentOrder = $item->order;
+		
+		if (($currentOrder + 1) == $item->moveDown()) {
+			$status = 'success';
+			$message = s('Item successfully moved down');
+		} else {
+			$status = 'error';
+			$message = s('Item not moved down');
+		}
+		
+		if($this->isXhr()) {
+			$json = array(
+					$status => $message,
+					'go_back'=>true,
+					'refresh'=>'/business_items/index/' . $item->parent_id
+			);
+				
+			$this->respondToJSON($json);
+		}
+		else {
+			Session::writeFlash($status, $message);
+			$this->redirect('/business_items/index/' . $item->parent_id);
+		}
 	}
 }
