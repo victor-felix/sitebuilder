@@ -2,7 +2,7 @@
 namespace app\models;
 require_once 'lib/utils/Works/Geocode.php';
 require_once 'lib/bbcode/Decoda.php';
-
+use lithium\data\Connections;
 use Config, Inflector, Model, GoogleGeocoding, Decoda,
 	lithium\util\Collection, utils\Geocode as Geocode;
 
@@ -184,10 +184,25 @@ class Items extends \lithium\data\Model {
 			return false;
 		}
 		//'order' => array('created' => 'DESC')
-		return Items::find('first', array('conditions' => array(
+		$item = Items::find('first', array('conditions' => array(
 				'order' => $order,
 				'parent_id' => $entity->parent_id,
 		)));
+		
+		if (!$item) {
+			$conditions = array(
+					'parent_id' => $entity->parent_id,
+			);
+			
+			if ($order > 0) {
+				$conditions['order'] = array('>' => $order);
+			} else {
+				$conditions['order'] = array('<' => $order);
+			}
+			
+			$item = Items::find('first', compact('conditions'));
+		}
+		return $item;
 	}
 	
 	/**
@@ -206,6 +221,31 @@ class Items extends \lithium\data\Model {
 		}
 
 		return $chain->next($self, $params, $chain);
+	}
+	
+	public static function resetItemsOrdering($parentId)
+	{
+		$orderMethod = "
+			function orderItems(parent) {
+				try	{
+					var order = 0;
+			  		db.items.find({parent_id: parent}).forEach( function(item) {
+			                     	item.order = ++order;
+			                     	db.items.save(item);
+			                     });
+			        return order;
+			    } catch(err) {
+				  return 0;
+				}
+			}
+		";
+
+		$db = Items::connection()->connection;
+		$response = $db->execute($orderMethod, (array)$parentId);
+		
+		if (isset($response['retval'])) { 
+			return $response['retval'];
+		}
 	}
 	
 	/**
@@ -228,21 +268,17 @@ class Items extends \lithium\data\Model {
 			if ($item) {
 				$conditions = array(
 					'order' => array('>' => $item->order),
-				//'order' => 'order +1',
 					'parent_id' => $item->parent_id,
 					'site_id' => $item->site_id,
 				);
-				//static::update(array('order' => 7), $conditions);
-				$all = static::find('all',array(
-					'conditions' => $conditions,
-				));
+				$values = array(
+						'$inc' => array('order' => -1),
+						);
+				
+				static::update($values, $conditions);
 			}
-			echo '<pre>';
-			print_r($item->to('array'));
-			print_r($all->to('array')); 
 			
 		}
-		exit;
 		return $chain->next($self, $params, $chain);
 	}
 
