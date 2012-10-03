@@ -10,11 +10,24 @@ $mysql = array(
         'password' => 'q1T10Cr',
         'database' => 'partners.meumobi',
         'prefix' => ''
+    ),
+    'integration' => array(
+        'driver' => 'MySql',
+        'host' => 'localhost',
+        'user' => 'imax',
+        'password' => 'q1T10Cr',
+        'database' => 'partners.meumobi',
+        'prefix' => ''
     )
 );
 
 $mongodb = array(
     'production' => array(
+        'type' => 'MongoDb',
+        'host' => 'localhost',
+        'database' => 'partners_meumobi'
+    )
+    'integration' => array(
         'type' => 'MongoDb',
         'host' => 'localhost',
         'database' => 'partners_meumobi'
