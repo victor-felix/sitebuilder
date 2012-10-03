@@ -26,7 +26,7 @@ $mongodb = array(
         'type' => 'MongoDb',
         'host' => 'localhost',
         'database' => 'partners_meumobi'
-    )
+    ),
     'integration' => array(
         'type' => 'MongoDb',
         'host' => 'localhost',
