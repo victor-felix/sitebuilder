@@ -97,7 +97,7 @@ class Import extends Work
             if (is_readable($file)) {
                 $this->file = fopen($file, 'r');
             } else {
-                $this->log->logError('Import work: file doesn\'t exist');
+                //$this->log->logError('Import work: file doesn\'t exist');
             }
         }
         return $this->file;
