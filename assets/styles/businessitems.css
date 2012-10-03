@@ -103,14 +103,20 @@
     font-size: 20px;
 }
 
-.move-controls {
-	float: right;
+.info:hover .move-controls {
+	display: block;
 }
 
-.move-controls a {
+.move-controls {
+	float: right;
+	display: none;
+}
+
+.businessitems-list li .info .move-controls a {
 	background: url(/images/shared/layout/ui-button-white.png) center repeat-x;
 	padding: 2px 5px;
 	cursor: pointer;
 	border: 1px solid #CCC;
+	font-size: 12px;
 	border-radius: 2px;
 }
