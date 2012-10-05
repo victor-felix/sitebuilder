@@ -29,8 +29,8 @@ $checks = array(
 	},
 	'mongo' => function() {
 		$version = phpversion('mongo');
-		$result = $version == '1.2.6';
-		return array($result, '1.2.6', $version);
+		$result = preg_match('/^1\.2.(\d)+/', $version);
+		return array($result, '> 1.2.10', $version);
 	},
 	'imagick' => function() {
 		$version = phpversion('imagick');
