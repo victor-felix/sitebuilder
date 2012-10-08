@@ -53,7 +53,13 @@ class Sites extends AppModel {
 				'rule' => array('maxLength', 500),
 				'message' => 'The description of the site could contain 500 chars max.'
 			)
-		)
+		),
+		'feed_url' => array(
+			array(
+				'rule' => 'isValidRss',
+				'message' => 'The rss feed is invalid'
+			),
+		),
 	);
 
 	public function __construct($data = array()) {
@@ -464,6 +470,13 @@ class Sites extends AppModel {
 	protected function blacklist($value) {
 		$blacklist = Config::read ( 'Sites.blacklist' );
 		return ! in_array ( $value, $blacklist );
+	}
+	
+	protected function isValidRss($value)
+	{
+		$category = $this->newsCategory();
+		$category->updateAttributes (array('feed' => $value));
+		return $category->validate();
 	}
 }
 
