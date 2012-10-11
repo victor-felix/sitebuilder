@@ -1,5 +1,5 @@
 <?php
-
+require_once 'lib/simplepie/SimplePie.php';
 require_once 'lib/geocoding/GoogleGeocoding.php';
 require_once 'lib/sitemanager/SiteManager.php';
 
@@ -474,9 +474,15 @@ class Sites extends AppModel {
 	
 	protected function isValidRss($value)
 	{
-		$category = $this->newsCategory();
-		$category->updateAttributes (array('feed' => $value));
-		return $category->validate();
+		if (!trim($value)) {
+			return true;
+		}
+		$feed = new SimplePie();
+		$feed->enable_cache(false);
+		$feed->set_feed_url($value);
+		$feed->init();
+		
+		return !$feed->error();
 	}
 }
 
