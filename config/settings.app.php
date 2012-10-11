@@ -49,3 +49,4 @@ Config::write('Segments', array(
 ));
 
 Config::write('Sites.domain', 'int-meumobi.com');
+Config::write('multiInstances', 1);
