@@ -8,6 +8,6 @@ Config::write('Debug.showErrors', true);
 
 Config::write('Api.ignoreAuth', true);
 
-Config::write('Themes.url', 'http://meu-cloud-db.int-meumobi.com/configs.json');
-Config::write('SiteManager.url', 'http://meu-site-manager.meumobilesite.com');
+Config::write('Themes.url', 'http://meu-cloud-db.meumobi.com/configs.json');
+Config::write('SiteManager.url', 'http://meu-site-manager.meumobi.com');
 Config::write('TemplateEngine.url', 'http://meu-template-engine.int-meumobi.com');
