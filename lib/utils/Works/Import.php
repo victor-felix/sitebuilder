@@ -18,7 +18,6 @@ class Import extends Work
 
     public function init()
     {
-        $this->log->logInfo('import work: init the work');
         if ($this->isJob) {
             $this->job = \app\models\Jobs::first(array(
                 'conditions' => array('type' => 'import'), 
@@ -44,7 +43,7 @@ class Import extends Work
         if ($this->canRun()) {
             $classname = '\app\models\items\\' .
             \Inflector::camelize($this->category()->type);
-
+            $this->log->logInfo("import work: init job {$this->job->_id}");
             while ($item = $this->next()) {
                 if (isset($item['id'])) {
                     $record = $classname::find('first', array(
