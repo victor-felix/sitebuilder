@@ -14,7 +14,7 @@ set :shared_children, %w(public/uploads meu-site-builder/log)
 
 set :php_env, 'production'
 
-set :whenever_command, 'bundle exec whenever'
+set :whenever_command, 'bundle exec whenever -w'
 
 namespace :deploy do
   task :permissions do
