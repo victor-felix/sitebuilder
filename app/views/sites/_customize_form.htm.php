@@ -33,7 +33,7 @@
                             <a href="<?php echo '#' . $theme->_id ?>">
                                 <span class="thumbs">
                                 <?php foreach ($theme->thumbnails as $thumbnail): ?>
-                                    <?php echo $this->html->image(Config::read('TemplateEngine.url') . $thumbnail) ?>
+                                    <?php echo $this->html->image(Themes::thumbPath($thumbnail)) ?>
                                 <?php endforeach ?>
                                 </span>
                                 <span><?php echo $theme->name ?></span>

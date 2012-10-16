@@ -41,6 +41,9 @@ class SiteManager
 
 	protected static function request($method, $domain, $data = null)
 	{
+		if (!Config::read('multiInstances')) {
+			return true;
+		}
 		$base = Config::read('SiteManager.url');
 		$url = "{$base}/domain/{$domain}";
 
