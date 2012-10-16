@@ -1,3 +1,6 @@
+require 'bundler/capistrano'
+require 'whenever/capistrano'
+
 set :application, 'meumobi'
 
 set :scm, :git
@@ -10,6 +13,8 @@ set :normalize_asset_timestamps, false
 set :shared_children, %w(public/uploads meu-site-builder/log)
 
 set :php_env, 'production'
+
+set :whenever_command, 'bundle exec whenever'
 
 namespace :deploy do
   task :permissions do
