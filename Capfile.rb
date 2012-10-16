@@ -1,5 +1,4 @@
 require 'bundler/capistrano'
-require 'whenever/capistrano'
 
 set :application, 'meumobi'
 
@@ -13,8 +12,6 @@ set :normalize_asset_timestamps, false
 set :shared_children, %w(public/uploads meu-site-builder/log)
 
 set :php_env, 'production'
-
-set :whenever_command, 'bundle exec whenever -w'
 
 namespace :deploy do
   task :permissions do
@@ -45,7 +42,7 @@ namespace :deploy do
   end
   
   task :cronfile do
-    run "php #{release_path}/meu-site-builder/script/create_cron.php"
+    run "cd #{release_path} && bundle exec whenever -w"
   end
 
   task :platform_check do
