@@ -25,7 +25,13 @@ class Categories extends AppModel {
 				'rule' => array('maxLength', 50),
 				'message' => 'The title of a category could contain 50 chars max.'
 			)
-		)
+		),
+		'feed' => array(
+			array(
+				'rule' => 'isValidRss',
+				'message' => 'The rss feed is invalid'
+			),
+		),
 	);
 
 	public function __construct($data = array()) {
@@ -506,5 +512,18 @@ class Categories extends AppModel {
 		}
 
 		return $id;
+	}
+	
+	protected function isValidRss($value) 
+	{
+		if (!trim($value)) {
+			return true;
+		}
+		$feed = new SimplePie();
+		$feed->enable_cache(false);
+		$feed->set_feed_url($value);
+		$feed->init();
+		
+		return !$feed->error();
 	}
 }

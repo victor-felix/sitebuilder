@@ -1,5 +1,5 @@
 <?php
-
+require_once 'lib/simplepie/SimplePie.php';
 require_once 'lib/geocoding/GoogleGeocoding.php';
 require_once 'lib/sitemanager/SiteManager.php';
 
@@ -53,7 +53,13 @@ class Sites extends AppModel {
 				'rule' => array('maxLength', 500),
 				'message' => 'The description of the site could contain 500 chars max.'
 			)
-		)
+		),
+		'feed_url' => array(
+			array(
+				'rule' => 'isValidRss',
+				'message' => 'The rss feed is invalid'
+			),
+		),
 	);
 
 	public function __construct($data = array()) {
@@ -464,6 +470,19 @@ class Sites extends AppModel {
 	protected function blacklist($value) {
 		$blacklist = Config::read ( 'Sites.blacklist' );
 		return ! in_array ( $value, $blacklist );
+	}
+	
+	protected function isValidRss($value)
+	{
+		if (!trim($value)) {
+			return true;
+		}
+		$feed = new SimplePie();
+		$feed->enable_cache(false);
+		$feed->set_feed_url($value);
+		$feed->init();
+		
+		return !$feed->error();
 	}
 }
 
