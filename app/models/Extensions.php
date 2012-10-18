@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use meumobi\sitebuilder\Extension;
+
 class Extensions extends \lithium\data\Model
 {
 	protected $_meta = array(
@@ -46,5 +48,5 @@ class Extensions extends \lithium\data\Model
 }
 
 Extensions::applyFilter('save', function($self, $params, $chain) {
-	return Items::addTimestamps($self, $params, $chain);
+	return Extensions::addTimestamps($self, $params, $chain);
 });
