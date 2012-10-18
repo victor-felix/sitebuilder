@@ -47,6 +47,8 @@ class GoogleGeocoding {
     		}
     		
     		$url = $urls[self::$CURRENT_URL];
+    	} else if ($goNext) {
+    		return false;
     	} else {
     		$url = 'http://maps.googleapis.com';
     	}
