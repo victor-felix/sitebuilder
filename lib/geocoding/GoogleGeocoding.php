@@ -37,6 +37,10 @@ class GoogleGeocoding {
     			$next = self::$CURRENT_URL + 1;
     			if (isset($urls[$next])) {
     				self::$CURRENT_URL = $next;
+    				
+    				$log = \KLogger::instance(\Filesystem::path('log'));
+    				$log->logInfo('Change geocode url to: %s', $urls[self::$CURRENT_URL]);
+    				
     			} else {
     				return false;
     			}
