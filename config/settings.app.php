@@ -56,6 +56,6 @@ Config::write('Segments', array(
 		'enableSignUp' => 0
 	),
 ));
-Config::write('multiInstances', 1);
+
 Config::write('Sites.domain', 'int-meumobi.com');
 Config::write('multiInstances', 1);
