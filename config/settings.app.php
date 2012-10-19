@@ -2,25 +2,34 @@
 
 Config::write('Sites.blacklist', array());
 
+Config::write('Geocode.urls', array(
+	'http://maps.googleapis.com',
+	'http://elefante.ipanemax.com',
+	'http://laguna.ipanemax.com',
+	'http://branca.ipanemax.com',
+	'http://bonita.ipanemax.com',
+));
+
 Config::write('SiteLogos.resizes', array('200x200'));
 Config::write('SitePhotos.resizes', array('80x80#', '139x139#', '314x220'));
 Config::write('BusinessItems.resizes', array('80x60#', '85x85#', '80x80#', '30x30#', '139x139#', '173x154#', '314x220'));
 
 Config::write('Segments', array(
 	'example' => array(
-		'title' => 'Example Segment',
-		'items' => array('articles', 'events', 'products', 'links', 'business', 'restaurants', 'stores', 'users'),
+		'title' => 'MeuMobi Enterprise',
+		'items' => array('articles', 'business'),
 		'root' => 'Index',
-		'email' => array('no-reply@example.com' => 'Example'),
-		'hideCategories' => 1
+		'email' => array('no-reply@meumobi.com' => 'MeuMobi'),
+		'hideCategories' => 0,
+		'enableSignup' => 0,
 	),
 	'1440group' => array(
 		'title' => '1440group',
-		'items' => array('articles', 'links', 'business'),
+		'items' => array('articles', 'business'),
 		'root' => 'Index',
 		'email' => array('no-reply@1440group.com' => '1440group'),
 		'hideCategories' => 0,
-		'enableSignUp' => 1
+		'enableSignUp' => 0,
 	),
 	'ipanemax' => array(
 		'title' => 'Ipanemax',
@@ -47,5 +56,5 @@ Config::write('Segments', array(
 		'enableSignUp' => 0
 	),
 ));
-
+Config::write('multiInstances', 1);
 Config::write('Sites.domain', 'int-meumobi.com');
