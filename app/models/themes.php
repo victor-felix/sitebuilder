@@ -3,7 +3,7 @@
 class Themes {
 	public function all() 
 	{
-		if (Config::read('Themes.url') && Config::read('multiInstances')) {
+		if (Config::read('Themes.url')) {
 			$url = sprintf('%s?tags[]=%s', Config::read('Themes.url'), MeuMobi::segment());
 		} else {
 			$url = sprintf("%s/public/%s/themes/themes.json", APP_ROOT, MeuMobi::segment());
@@ -28,7 +28,7 @@ class Themes {
 	
 	public static function thumbPath($thumbnail) 
 	{
-		if (Config::read('TemplateEngine.url') && Config::read('multiInstances')) {
+		if (Config::read('TemplateEngine.url')) {
 			$path = Config::read('TemplateEngine.url') . $thumbnail;
 		} else {
 			$path = sprintf("/themes/%s", $thumbnail);
