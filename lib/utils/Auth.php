@@ -18,9 +18,14 @@ class Auth {
 			Remenber::clean();
 		}
 		
-		//update last login
-		$user->last_login = date('Y-m-d H:i:s');
-		$user->save();
+		if ($user->id) {
+			//update last login
+			$user->update(array(
+					'conditions' => array('id' => $user->id)
+			), array(
+					'last_login' => date('Y-m-d H:i:s'),
+			));
+		}
 		
 		Session::write(self::SESSION_KEY, serialize($user));
 	}
