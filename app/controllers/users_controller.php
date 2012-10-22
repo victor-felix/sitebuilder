@@ -198,6 +198,8 @@ class UsersController extends AppController
 					$user->cantCreateSite = true;
 				}
 				
+				$is_new = (bool) $user->id;
+				
 				$user->save();
 				if ($allowMessage) {
 					Session::writeFlash('success', s('Configuration successfully saved'));
@@ -205,7 +207,10 @@ class UsersController extends AppController
 				
 				$this->confirmInvite($user, $this->data);
 				
-				Session::write('Users.registering', '/sites/register');
+				if (!$is_new) {
+					Session::write('Users.registering', '/sites/register');
+				}
+				
 				$this->redirect($redirect);
 			}
 		}
