@@ -83,6 +83,12 @@ class Remenber extends \lithium\data\Model  {
 			session_regenerate_id();
 			$user = Model::load('Users')->firstById($item->user_id);
 			Session::write(Auth::SESSION_KEY, serialize($user));
+			//update last login
+			$user->update(array(
+					'conditions' => array('id' => $user->id)
+			), array(
+					'last_login' => date('Y-m-d H:i:s'),
+			));
 			
 			$itemArr =  $item->to('array');
 			return self::add($user, $itemArr['_id']);
