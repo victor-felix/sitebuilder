@@ -1,10 +1,10 @@
 <?php
 
-ini_set('error_reporting', -1);
-ini_set('display_errors', 'On');
+ini_set('error_reporting', 0);
+ini_set('display_errors', 'Off');
 
 Config::write('Mail.preventSending', false);
-Config::write('Debug.showErrors', true);
+Config::write('Debug.showErrors', false);
 
 Config::write('Api.ignoreAuth', true);
 
