@@ -23,13 +23,13 @@ class ExtensionsController extends AppController {
 					$json = array(
 							'success'=>$message,
 							'go_back'=>true,
-							'refresh'=>'/categories/index/' . $category_id
+							'refresh'=>'/categories/edit/' . $category_id
 					);
 					$this->respondToJSON($json);
 				}
 				else {
 					Session::writeFlash('success', $message);
-					$this->redirect('/categories/index/' . $category_id);
+					$this->redirect('/categories/edit/' . $category_id);
 				}
 			}
 		}
@@ -53,32 +53,64 @@ class ExtensionsController extends AppController {
 					$json = array(
 							'success'=>$message,
 							'go_back'=>true,
-							'refresh'=>'/categories/index/' . $category_id
+							'refresh'=>'/categories/edit/' . $category->id
 					);
 					$this->respondToJSON($json);
 				}
 				else {
 					Session::writeFlash('success', $message);
-					$this->redirect('/categories/index/' . $category_id);
+					$this->redirect('/categories/edit/' . $category->id);
 				}
 			}
 		}
 		$this->set(compact('extension','category'));
 	}
 
+	public function enable($id = null) {
+		$site = $this->getCurrentSite();
+		$extension = Extensions::find('type', array('conditions' => array(
+				'_id' => $id,
+				'site_id' => $site->id(),
+		)));
+		
+		$extension->enabled = $extension->enabled ? 0 : 1;
+		if($extension->save()) {
+			$message = $extension->enabled 
+			? s('Extension successfully enabled') 
+			: s('Extension successfully disabled');
+			
+			if($this->isXhr()) {
+				$json = array(
+						'success'=>$message,
+						'go_back'=>true,
+						'refresh'=>'/categories/edit/' . $extension->category_id
+				);
+				$this->respondToJSON($json);
+			}
+			else {
+				Session::writeFlash('success', $message);
+				$this->redirect('/categories/edit/' . $extension->category_id);
+			}
+		}
+		
+		$this->set(compact('extension','category'));
+	}
+	
 	public function delete($id = null) {
-		$extension = Items::find('first', array('conditions' => array(
+		$extension = Items::find('type', array('conditions' => array(
 			'_id' => $id
 		)));
-		$parent_id = $extension->parent_id;
-		Items::remove(array('_id' => $id));
+		
+		$category_id = $extension->category_id;
+		
+		$extension->delete();
 		$message = s('Item successfully deleted.');
 
 		if($this->isXhr()) {
 			$json = array(
 				'success'=>$message,
 				'go_back'=>true,
-				'refresh'=>'/business_items/index/' . $parent_id
+				'refresh'=> '/categories/edit/' . $category_id,
 			);
 			$this->respondToJSON($json);
 		}

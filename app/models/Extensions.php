@@ -83,6 +83,43 @@ class Extensions extends \lithium\data\Model
 		return $classname::find('first', $params['options']);
 	}
 	
+	public static function available($categoryType, $category_id = false)
+	{
+		$segment = \MeuMobi::currentSegment();
+		$availableExtensions = array();
+		
+		if (property_exists($segment, 'extensions')) {
+			$allExtensions = (array)$segment->extensions;
+			
+			//loop all the segment allowed extension types
+			foreach ($allExtensions as $extensionName) {
+				$extension = null;
+				$classname = '\app\models\extensions\\' . Inflector::camelize($extensionName);
+				$extension = $classname::create();
+				
+				//check if allowed-item is set, if so, check id item type is allowed
+				if ($extension->specification('allowed-items') 
+					&& !in_array($categoryType, $extension->specification('allowed-items'))) {
+					continue;
+				}
+				
+				//if has a category,check a extension for this category exists
+				if ($category_id) {
+					$item = $classname::find('first', array('conditions' => array(
+						'category_id' => $category_id,
+						'extension' => $extensionName,
+					)));
+					
+					if ($item) {
+						$extension = $item;
+					} 
+				}
+				
+				$availableExtensions[] = $extension;
+			}
+		}
+		return $availableExtensions;
+	}
 }
 
 Extensions::applyFilter('save', function($self, $params, $chain) {

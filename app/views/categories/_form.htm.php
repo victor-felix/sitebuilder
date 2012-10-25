@@ -106,6 +106,8 @@
 	</div>
 </fieldset>
 
+<?php echo $this->element('categories/extensions', compact('category')) ?>
+
 <fieldset class="actions">
 	<?php echo $this->form->submit(s('Save'), array(
 		'class' => 'ui-button red larger'
