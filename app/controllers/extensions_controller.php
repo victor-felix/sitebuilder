@@ -47,8 +47,8 @@ class ExtensionsController extends AppController {
 		
 		if(!empty($this->data)) {
 			$extension->set($this->data);
-			if($extension->save()) {
-				$message = s('Extension successfully added.');
+			if($extension->validates() && $extension->save()) {
+				$message = s('Extension successfully edited');
 				if($this->isXhr()) {
 					$json = array(
 							'success'=>$message,
