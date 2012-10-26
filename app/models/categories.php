@@ -350,13 +350,9 @@ class Categories extends AppModel {
 					$original->populate != $data['populate'] ||
 					$original->type != $data['type'])
 			) {
-				$items = Items::find('all', array('conditions' => array(
+				$items = Items::remove(array(
 					'parent_id' => $this->id
-				)));
-
-				foreach($items as $item) {
-					Items::remove(array('_id' => $item->id()));
-				}
+				));
 			}
 		}
 
@@ -466,13 +462,9 @@ class Categories extends AppModel {
 			$is_empty = $is_set && empty($this->data['feed']);
 
 			if($is_empty or $is_set && $this->data['feed'] != $this->data['feed_url']) {
-				$items = Items::find('all', array('conditions' => array(
+				$items = Items::remove(array(
 					'parent_id' => $this->id
-				)));
-
-				foreach($items as $item) {
-					Items::remove(array('_id' => $item->id()));
-				}
+				));
 
 				$this->update(array(
 					'conditions' => array('id' => $this->id)
@@ -514,7 +506,7 @@ class Categories extends AppModel {
 		return $id;
 	}
 	
-	protected function isValidRss($value) 
+	public function isValidRss($value) 
 	{
 		if (!trim($value)) {
 			return true;
