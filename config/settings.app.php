@@ -20,6 +20,7 @@ Config::write('Segments', array(
 		'items' => array('articles', 'business'),
 		'root' => 'Index',
 		'email' => array('no-reply@meumobi.com' => 'MeuMobi'),
+		'extensions' =>array('store-locator', 'rss'),
 		'hideCategories' => 0,
 		'enableSignup' => 0,
 	),
@@ -28,6 +29,7 @@ Config::write('Segments', array(
 		'items' => array('articles', 'business'),
 		'root' => 'Index',
 		'email' => array('no-reply@1440group.com' => '1440group'),
+		'extensions' =>array('store-locator', 'rss'),
 		'hideCategories' => 0,
 		'enableSignUp' => 0,
 	),
@@ -36,6 +38,7 @@ Config::write('Segments', array(
 		'items' => array('articles', 'events', 'products', 'links', 'business', 'restaurants', 'stores', 'users'),
 		'root' => 'Index',
 		'email' => array('no-reply@ipanemax.com' => 'ipanemax'),
+		'extensions' =>array('store-locator', 'rss'),
 		'hideCategories' => 0,
 		'enableSignUp' => 0
 	),
@@ -44,6 +47,7 @@ Config::write('Segments', array(
 		'items' => array('articles', 'events', 'products', 'links', 'business', 'restaurants', 'stores', 'users'),
 		'root' => 'Index',
 		'email' => array('no-reply@oi.com' => 'Oi'),
+		'extensions' =>array('store-locator', 'rss'),
 		'hideCategories' => 0,
 		'enableSignUp' => 0
 	),
@@ -51,6 +55,7 @@ Config::write('Segments', array(
 		'title' => 'Agencia3',
 		'items' => array('articles', 'events', 'products', 'links', 'business', 'restaurants', 'stores', 'users'),
 		'root' => 'Index',
+		'extensions' =>array('store-locator', 'rss'),
 		'email' => array('no-reply@agencia3.com' => 'Agencia3'),
 		'hideCategories' => 0,
 		'enableSignUp' => 0
