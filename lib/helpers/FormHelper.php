@@ -255,7 +255,7 @@ class FormHelper extends Helper {
         if($model = $this->model()):
             $errors = $this->model()->errors();
             if(array_key_exists($name, $errors)) {
-                return $errors[$name];
+                return is_array($errors[$name]) ? reset($errors[$name]) : $errors[$name];
             }
         endif;
 
