@@ -22,12 +22,11 @@
 				'type' => 'radio',
 				'options' => array(
 					'manual' => s('Manual'),
-					'auto' => s('Auto'),
+					//'auto' => s('Auto'),
 					'import' => s('Import')),
 			));
 			?>
 			<small class="<?php echo $strCssClass; ?>"><?php echo s('Manual Categories allow to manage manually any type of content') ?></small>
-			<small class="<?php echo $strCssClass; ?>"><?php echo s('Auto Categories allow to import automatically content from RSS feed') ?></small>
 			<small class="<?php echo $strCssClass; ?>"><?php echo s('Import items from CSV'); ?></small>
 		</div>
 
