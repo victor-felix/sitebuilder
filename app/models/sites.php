@@ -13,10 +13,10 @@ class Sites extends AppModel {
 		'createRelation'
 	);
 	protected $beforeDelete = array(
-		'deleteImages', 
-		'deleteCategories', 
+		'deleteImages',
+		'deleteCategories',
 		'deleteLogo',
-		'removeUsers', 
+		'removeUsers',
 		'removeFromSiteManager'
 	);
 	protected $validates = array(
@@ -93,14 +93,14 @@ class Sites extends AppModel {
 	public function custom_domain() {
 		return !empty($this->data['domain']) && strpos($this->domain, '.' . MeuMobi::domain()) === false;
 	}
-		
+
 	public function firstByDomain($domain) {
 		$siteDomain = Model::load ( 'SitesDomains' )->firstByDomain($domain);
 		if ($siteDomain) {
 			return self::firstById($siteDomain->site_id);
 		}
 	}
-	
+
 	public function domains() {
 		$domains = array();
 		if ($siteDomains = Model::load ( 'SitesDomains' )->allBySiteId ( $this->id )) {
@@ -110,7 +110,7 @@ class Sites extends AppModel {
 		}
 		return $domains;
 	}
-	
+
 	public function photos() {
 		return Model::load ( 'Images' )->allByRecord ( 'SitePhotos', $this->id );
 	}
@@ -303,7 +303,7 @@ class Sites extends AppModel {
 		$siteId = isset($data['id']) ? $data['id'] : null;
 		//check if use a default or custon domain
 		if (isset($data['custom_domain'])) {
-			if ($data['custom_domain'] 
+			if ($data['custom_domain']
 				&& (isset($data['domains']) && reset($data['domains']))) {
 				//add the first custon domain to the domain field
 				$domain = reset($data['domains']);
@@ -319,12 +319,12 @@ class Sites extends AppModel {
 			}
 			$data['domain'] = $domain;
 		}
-		
+
 		return $data;
 	}
-	
-	protected function saveDomains($created) 
-	{		
+
+	protected function saveDomains($created)
+	{
 		$instance = MeuMobi::instance();
 		//handle default error if domains not exists
 		try {
@@ -347,7 +347,7 @@ class Sites extends AppModel {
 			} else {
 				$siteDomain = new SitesDomains();
 			}
-			
+
 			//if old domain is empty, removes it
 			if (!$domain) {
 				if ($previous) {
@@ -356,7 +356,7 @@ class Sites extends AppModel {
 				}
 				continue;
 			}
-			
+
 			$siteDomain->domain = $domain;
 			$siteDomain->site_id = $this->id;
 			if ($siteDomain->validate()) {
@@ -376,8 +376,14 @@ class Sites extends AppModel {
 	}
 
 	protected function getLatLng($data) {
-		if (array_key_exists ( 'street', $data )) {
-			if (empty ( $data ['street'] )) {
+		if (array_key_exists('street', $data)) {
+			$original = $this->firstById($this->id);
+
+			if ($original->street != $data['street']) {
+				return $data;
+			}
+
+			if (empty($data['street'])) {
 				$data ['latitude'] = $data ['longitude'] = null;
 			} else {
 				try {
@@ -471,7 +477,7 @@ class Sites extends AppModel {
 		$blacklist = Config::read ( 'Sites.blacklist' );
 		return ! in_array ( $value, $blacklist );
 	}
-	
+
 	protected function isValidRss($value)
 	{
 		if (!trim($value)) {
@@ -481,7 +487,7 @@ class Sites extends AppModel {
 		$feed->enable_cache(false);
 		$feed->set_feed_url($value);
 		$feed->init();
-		
+
 		return !$feed->error();
 	}
 }
