@@ -21,12 +21,22 @@ Config::write('Segments', array_merge(Config::read('Segments'), array(
 )));
     TEMPLATE
 
+    IndexTemplate = <<-TEMPLATE
+<?php
+
+$segment = '%{name}';
+
+require dirname(dirname(__DIR__)) . '/meu-site-builder/dispatch.php';
+    TEMPLATE
+
     desc "create SEGMENT_NAME", "creates a new segment"
     def create(name=nil)
-      password = Digest::SHA1.hexdigest(Time.now.to_i.to_s)[0..8]
       options = { name: name }
       options[:title] = ask "title:"
       options[:email] = ask "email:"
+      options[:user_name] = ask "user's name:"
+      options[:user_email] = ask "user's email:"
+      options[:user_password] = ask "user's password:"
       options[:root] = ask "root category title:"
       options[:primary_color] = ask "primary color:"
       options[:hide_categories] = yes?("hide categories? (y/n)") ? 1 : 0
@@ -38,7 +48,7 @@ Config::write('Segments', array_merge(Config::read('Segments'), array(
       empty_directory "public/#{name}/scripts"
 
       [:images, :styles, :scripts].each do |dir|
-        create_link "public/#{name}/#{dir}/shared", "public/#{dir}"
+        create_link "public/#{name}/#{dir}/shared", "../../#{dir}"
       end
 
       create_link "public/#{name}/uploads", "public/uploads"
@@ -46,10 +56,11 @@ Config::write('Segments', array_merge(Config::read('Segments'), array(
       empty_directory "config/segments"
       create_file "config/segments/#{name}.yml"
       create_file "config/segments/#{name}.php", SegmentTemplate % options
+      create_file "public/#{name}/index.php", IndexTemplate % options
 
-      run "php #{self.class.source_root}/meu-site-builder/script/create_user.php #{options[:email]} #{password}"
-      say "Your email is: #{options[:email]}"
-      say "Your password is: #{password}"
+      run "php #{self.class.source_root}/meu-site-builder/script/create_user.php #{options[:user_name]} #{options[:user_email]} #{options[:user_password]}"
+      say "Your email is: #{options[:user_email]}"
+      say "Your password is: #{options[:user_password]}"
 
     end
 
@@ -124,7 +135,7 @@ class %{type} extends Items {
         { name: name, title: name.humanize, type: type }
       }
 
-      schema = fields.each_with_object([]) do |field, schema|
+      schemas = fields.each_with_object([]) do |field, schema|
         unless ['string', 'richtext', 'boolean', 'geo'].include? field[:type]
           raise ArgumentError, "Invalid type #{field[:type]}"
         end
@@ -139,7 +150,7 @@ class %{type} extends Items {
 
       options = { type: type.camelize }
       options[:fields] = fields.map { |f| FieldTemplate % f }.join "\n"
-      options[:schema] = schema.map { |s| SchemaTemplate % s }.join "\n"
+      options[:schema] = schemas.map { |s| SchemaTemplate % s }.join "\n"
 
       create_file "meu-site-builder/app/models/items/#{type.underscore}.php", ItemTemplate % options
       say "Don't forget to enable this item type in a segment!"
