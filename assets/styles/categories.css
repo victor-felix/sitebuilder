@@ -1,3 +1,11 @@
+.left {
+	float: left;
+}
+
+.right {
+	float: right;
+}
+
 .grid-4 {
 	margin-left: 20px;
 	float: left;
@@ -13,6 +21,18 @@
 .grid-4.first,
 .grid-8.first {
 	margin-left: 0;
+}
+
+.title-3 {
+	font-size: 18px;
+	color: #666;
+	font-weight: normal;
+}
+
+.title-3 span.description {
+	font-size: 12px;
+	font-style: italic;
+	display: block;
 }
 
 .tip {
@@ -289,4 +309,23 @@
 	padding-left: 10px;
 	font-family: 'Medula One', cursive;
 	font-style: normal;
+}
+
+.file-import {
+	margin: 15px 0;
+	display: none;
+}
+
+.file-import .radio {
+}
+
+.file-import .radio input {
+	float: left;
+	margin: 3px 0px 0 5px;
+}
+
+.file-import .radio label {
+	float: left;
+	font-size: 15px;
+	width: 150px;
 }

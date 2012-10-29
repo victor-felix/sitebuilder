@@ -22,7 +22,7 @@
 		<?php if($site->hasManyTypes()): ?>
 			<div class="form-grid-460 first populate-based manual import">
 				<?php echo $this->form->input('type', array(
-					'label' => s('Type'),
+					'label' => s('Content Type'),
 					'type' => 'select',
 					'class' => 'ui-select large',
 					'options' => Segments::listItemTypesFor($site->segment)
@@ -55,33 +55,16 @@
 			<div class="form-grid-460 first populate-based import import_method">
 				<label><?php echo s('This category allows the importing and exporting of data in CSV format. <br/>Use recommended for advanced users only') ?></label>
 				<br>
-				<?php
-					/*echo $this->form->input('import_method', array(
-								'type' => 'radio',
-								'value' => 0,
-								'options' => array(
-									0 => s('Inclusive'),
-									1 => s('Exclusive'),
-								)
-							));*/
+				<?php 
+					echo $this->html->link(
+								s('Import CSV file'), 
+								'',
+								array( 
+										'class' => 'ui-button js-expand-target',
+										'data-target' => 'div.file-import'
+									)
+							) 
 				?>
-				<div class="ui-file-hidded">
-					<?php echo $this->form->input('import', array(
-						'label' => null,
-						'type' => 'file',
-						'class' => null,
-						'style' => 'width: 105px; height: 30px;'
-					)) ?>
-					<p class="replace-field" >
-						<?php 
-							echo $this->html->link(
-										s('Import CSV file'), 
-										'',
-										array( 'class' => 'ui-button' )
-									) 
-						?>
-					</p>
-				</div>
 				<?php if(!is_null($category->id)): ?>
 					<?php 
 						echo $this->html->link(
@@ -91,6 +74,28 @@
 								) 
 					?>
 				<?php endif ?>
+				<div class="file-import">
+					<?php 
+					echo $this->form->input('import', array(
+						'label' => null,
+						'type' => 'file',
+						'class' => 'ui-select large',
+						)) 
+					?>
+					<br>
+					
+					<label><?php echo s('Method of import') ?></label>
+					<?php
+					echo $this->form->input('import_method', array(
+								'type' => 'radio',
+								'value' => 0,
+								'options' => array(
+									0 => s('Inclusive'),
+									1 => s('Exclusive'),
+								)
+							));
+					?>
+				</div>
 			</div>
 		
 		</div>

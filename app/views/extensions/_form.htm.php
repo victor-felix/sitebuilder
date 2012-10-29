@@ -1,13 +1,36 @@
 <fieldset>
-	<h2><?php echo s('extension status') ?></h2>
-	<div class="field-group">
-	   <div class="form-grid-460 first">
-			<?php echo $this->form->input('enabled', array(
+	<div class="grid-4 first">
+        <div class="tip">
+			<h2><?php echo s('extension status') ?></h2>
+		</div>
+    </div>
+	<div class="grid-8">
+		<div class="field-group">
+			<div class="ui-switch right <? echo $extension->enabled ? 'enabled' : '' ?>" data-target="#FormEnabled">
+				<p class="on">
+					<span><?php echo s('enabled') ?></span>
+					<a class="ui-button" ></a>
+				</p>
+				
+				<p class="off">
+					<span><?php echo s('disabled') ?></span>
+					<a class="ui-button" ></a>
+				</p>
+				<?php echo $this->form->input('enabled', array(
+				'type' => 'hidden',
+			)) ?>
+			</div>
+			
+			<h3 class="title-3" >
+				<?php echo s($extension->specification('title'))?>
+				<span class="description"><?php echo s($extension->specification('description'))?></span>
+			</h3>
+			
+			<?php /* echo $this->form->input('enabled', array(
 				'type' => 'checkbox',
 				'label' => s('Enabled'),
 				'value' => 1
-			)) ?>
-			<label for="FormEnabled" class="checkbox"><?php echo s('This extension is enabled') ?></label>
+			)) */?>
 		</div>
 	</div>
 </fieldset>

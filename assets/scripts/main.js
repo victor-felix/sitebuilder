@@ -322,6 +322,30 @@ $.extend($.easing, {
 		e.preventDefault();
 		$(this).prev().clone().insertBefore(this);
 	});
+
+	// expand any target element
+	content.delegate('.js-expand-target', 'click', function(e) {
+		var targetSelector = $(this).data('target');
+		var target = $(targetSelector).slideToggle();
+		e.preventDefault();
+	});
+	
+	// switch button
+	content.delegate('.ui-switch a', 'click', function(e) {
+		var switchButton = $(this).parents('.ui-switch:first');
+		var isEnabled = switchButton.hasClass('enabled');
+		if (isEnabled) {
+			switchButton.removeClass('enabled');
+		} else {
+			switchButton.addClass('enabled');
+		}
+		
+		if(switchButton.data('target')) {
+			$(switchButton.data('target')).val(Number(!isEnabled));
+		}
+		
+		e.preventDefault();
+	});
 	
 	$.Paginate = function(params) {
 		this.settings = {
@@ -390,7 +414,7 @@ $(function() {
 		$(this).next('fieldset').slideToggle();
 		e.preventDefault();
 	});
-	
+		
 	$('#form-edit-site-info > fieldset').click(function(e){
 		if ($(this).prev().is('a.fieldset-expand')) {
 			if ($(e.target).hasClass('duplicate-previous')

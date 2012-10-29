@@ -18,7 +18,7 @@
 	        	 }
              ?>	
 	        <li class="level-0">
-	        	<a href="<?php echo $href ?>" >   
+	        	<a href="<?php echo $href ?>" class="push-scene" >   
 	            <p class="title">
 	            		
 		            <span class="accessory-label" >
