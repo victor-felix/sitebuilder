@@ -261,12 +261,6 @@ $.extend($.easing, {
 		}
 	});
 
-	content.delegate('.populate-fields input','click', function(e){
-		var me = $(this).val();
-		$('.populate-based:not(.'+me+'):visible').slideUp('slow');
-		$('.populate-based.'+me).hide().removeClass('hidden').slideDown('slow');
-	});
-
 	// Handles the delete confirmation dialog buttons.
 	// When clicked cancel, closes the dialog. When clicked OK, makes the
 	// request and triggers ajax:success event

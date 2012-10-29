@@ -324,39 +324,17 @@
 	border-bottom:none;
 }
 
-.populate-fields fieldset label,
-.import_method fieldset label,
-.populate-fields small {
-	float:left;
-	width:128px;
-	margin-left:25px;
-}
-.populate-fields.two_column small, .populate-fields.two_column label {
-    width:190px;
-}
-.populate-fields.three_column  small, .populate-fields.three_column label{
-    width:128px;
-}
-.import_method fieldset label,
-.populate-fields fieldset label {
-	font-size:15px;
-}
-.import_method input,
-.populate-fields input {
-	float:left;
-	margin:3px -25px 0 5px;
-}
-.populate-based {
-	display:none;
-}
-	
 .form-edit div.input.checkbox input {
 	margin-top:5px;
 }
 
 .form-edit label.checkbox {
 	margin:-1.2em 0 0 20px;
-	
+}
+
+.form-edit .ui-file-hidded {
+	float: left;
+	margin-right: 15px;
 }
 
 .picture-upload-container { border-radius: 4px;position: relative; float: left; height: 138px; margin: 0 0 50px 20px; width: 138px; background-color: #FFF; border: 1px solid #CCC; font-size: 15px; color: #707070; background-position: center center; background-repeat: no-repeat}
