@@ -61,6 +61,10 @@ class Extensions extends \lithium\data\Model
 			return $this->specification[$field];
 		}
 	}
+	
+	public function parent($entity) {
+		return \Model::load('Categories')->firstById($entity->category_id);
+	}
 
 	public static function addTimestampsAndType($self, $params, $chain)
 	{
