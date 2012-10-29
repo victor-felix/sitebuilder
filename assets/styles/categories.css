@@ -33,6 +33,7 @@
 	font-size: 12px;
 	font-style: italic;
 	display: block;
+	color: #999
 }
 
 .tip {
@@ -295,13 +296,23 @@
 .composed-list li .description {
 	font-size: 12px;
 	font-style: italic;
+	color: #999;
 }
 
 .composed-list li .accessory-label {
 	float: right;
-	font-size: 13px;
+	font-size: 14px;
 	font-style: italic;
 	padding: 0 25px 0 10px;
+}
+
+.composed-list li:hover .accessory-label {
+	color: #cecece;
+}
+
+.composed-list li .accessory-label span {
+	float: left;
+	margin-top: 2px;
 }
 
 .composed-list li .accessory-label .arrow {
@@ -309,6 +320,8 @@
 	padding-left: 10px;
 	font-family: 'Medula One', cursive;
 	font-style: normal;
+	color: #cecece;
+	margin: 0;
 }
 
 .file-import {

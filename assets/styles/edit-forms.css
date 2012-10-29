@@ -41,6 +41,7 @@
 	font-size: 14px;
 	line-height: 18px;
 	padding-right: 30px;
+	color: #999;
 }
 
 .form-edit .field-group {
@@ -62,6 +63,12 @@
 	clear: both;
 	margin-bottom: 30px;
 	width: 460px;
+}
+
+.form-edit .form-grid-570 {
+	float: left;
+	padding: 40px 0 0 0;
+	width: 540px;
 }
 
 .form-edit .form-grid-220.first {

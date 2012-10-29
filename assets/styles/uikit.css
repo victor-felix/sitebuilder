@@ -176,7 +176,7 @@
 	-moz-border-radius: 2px;
 	-webkit-border-radius: 2px;
 	font-size: 16px;
-	color: #54C958;
+	color: #88cc00;
 }
 	.ui-switch .ui-button {
 		width: 60px;
@@ -213,7 +213,7 @@
 	
 	.ui-switch .off span {
 		float: right;
-		color: #F54949;
+		color: #cdcdcd;
 	}
 /* as seen on https://github.com/paulirish/html5-boilerplate/wiki/Make-it-better */
 button:focus { outline-width:0px; outline-style:dotted; }

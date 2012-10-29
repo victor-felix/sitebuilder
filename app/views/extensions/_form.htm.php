@@ -5,7 +5,7 @@
 		</div>
     </div>
 	<div class="grid-8">
-		<div class="field-group">
+		<div class="form-grid-570">
 			<div class="ui-switch right <? echo $extension->enabled ? 'enabled' : '' ?>" data-target="#FormEnabled">
 				<p class="on">
 					<span><?php echo s('enabled') ?></span>

@@ -22,7 +22,7 @@
 	            <p class="title">
 	            		
 		            <span class="accessory-label" >
-		            	<?php echo s('%s', $extension->enabled ? 'enabled' : 'disabled' ) ?>
+		            	<span><?php echo s('%s', $extension->enabled ? 'enabled' : 'disabled' ) ?></span>
 		            	<span class="arrow" >&#62;</span>
 		            </span>
 	            	<?php echo s($extension->specification('title')) ?>
