@@ -344,12 +344,9 @@ class Categories extends AppModel {
 	protected function checkItems($data) {
 		if(!is_null($this->id)) {
 			$original = $this->firstById($this->id);
-			if(
-				$original->populate != 'import' &&
-				$data['populate'] != 'import' && (
-					$original->populate != $data['populate'] ||
-					$original->type != $data['type'])
-			) {
+			
+			if(	$original->populate != $data['populate'] 
+				|| $original->type != $data['type'] ) {
 				$items = Items::remove(array(
 					'parent_id' => $this->id
 				));
@@ -360,21 +357,18 @@ class Categories extends AppModel {
 	}
 
 	protected function importItems($created) {
-		if($this->data['populate'] == 'import') {
-			$this->data['populate'] = 'manual';
-
+		if (is_uploaded_file($this->data['import']['tmp_name'])) {
 			$fileSize = $this->data['import']['size'];
 			if($fileSize && self::MAX_IMPORTFILE_SIZE < ($fileSize / 1024)
 				&& $this->scheduleImport()) {
 					return $this->save();;
-				}
+			}
 			$import = new Import();
 			$import->notIsJob();
 			$import->setMethod($this->data['import_method']);
 			$import->category($this);
 			$import->file($this->data['import']['tmp_name']);
 			$import->start();
-			$this->save();
 		}
 	}
 
