@@ -24,7 +24,23 @@
 	font: lighter 24px/22px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica,arial,sans-serif;
 	margin-right: 20px;
 	padding: 40px 0 30px 25px;
+	text-transform: lowercase;
 	width: 275px;
+}
+
+.form-edit .tip {
+	border-top: none;
+	padding: 35px 25px 25px
+}
+
+.form-edit .tip h2 {
+	padding: 0 0 10px;
+}
+
+.form-edit .tip p {
+	font-size: 14px;
+	line-height: 18px;
+	padding-right: 30px;
 }
 
 .form-edit .field-group {

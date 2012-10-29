@@ -5,7 +5,13 @@
 )) ?>
 
 <fieldset>
-	<h2><?php echo s('category') ?></h2>
+	<div class="grid-4 first">
+        <div class="tip">
+			<h2><?php echo s('category') ?></h2>
+		</div>
+    </div>
+    
+    <div class="grid-8"> 
 	<div class="field-group">
 		<div class="form-grid-460 first">
 			<?php echo $this->form->input('title', array(
@@ -102,6 +108,7 @@
 				'value' => $parent->id
 			)) ?>
 		<?php endif ?>
+	</div>
 	</div>
 </fieldset>
 
