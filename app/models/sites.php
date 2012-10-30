@@ -377,10 +377,12 @@ class Sites extends AppModel {
 
 	protected function getLatLng($data) {
 		if (array_key_exists('street', $data)) {
-			$original = $this->firstById($this->id);
+			if ($this->id) {
+				$original = $this->firstById($this->id);
 
-			if ($original->street != $data['street']) {
-				return $data;
+				if ($original->street != $data['street']) {
+					return $data;
+				}
 			}
 
 			if (empty($data['street'])) {
