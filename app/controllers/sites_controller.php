@@ -79,10 +79,20 @@ class SitesController extends AppController {
 	}
 	
 	public function customize_edit() {
+		Model::load('Users');
+		if (Users::ROLE_ADMIN != $this->getCurrentSite()->role) {
+			$this->redirect('/');
+			return;
+		}
 		$this->customizeSite(s('Configuration successfully saved.'), '/sites/customize_edit');
 	}
 
 	public function customize_register() {
+		Model::load('Users');
+		if (Users::ROLE_ADMIN != $this->getCurrentSite()->role) {
+			$this->redirect('/');
+			return;
+		}
 		$this->customizeSite(s('Configuration successfully saved.'), '/sites/finished');
 	}
 	
