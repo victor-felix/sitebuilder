@@ -1,5 +1,5 @@
 <!-- extensions -->
-<?php if ($category->id): ?>
+
 <fieldset>
     <div class="grid-4 first">
         <div class="tip">
@@ -7,7 +7,8 @@
             <p><?php echo s('yout can enable extensions to add custom functionality to this category. the availability of extensions change according to the content type of the category') ?></p>
         </div>
     </div>
-    <div class="grid-8">    
+    <div class="grid-8">
+    	<?php if ($category->id): ?>
     	<ul class="composed-list">
     	<?php foreach (app\models\Extensions::available($category->type, $category->id) as $extension): ?>
     		<?php 
@@ -34,7 +35,33 @@
 	        </li>
 	    <?php endforeach; ?>
 	    </ul>
+	<?php else: ?>
+		<?php foreach ((array) MeuMobi::currentSegment()->items as $key => $itemType): ?>
+		
+			<ul class="composed-list js-extension-list <?php echo $itemType?>"  style="<?php if($key) echo 'display:none;' ?>" >
+	    	<?php foreach (app\models\Extensions::available($itemType) as $extension): ?>
+	    		<?php
+	                 $href = sprintf('/extensions/add/%s/%s', $extension->specification('type'), 0);
+	             ?>	
+		        <li class="level-0">
+		        	<a href="<?php echo $href ?>" class="push-scene" >   
+		            <p class="title">
+		            		
+			            <span class="accessory-label" >
+			            	<span><?php echo s('disabled' ) ?></span>
+			            	<span class="arrow" >&#62;</span>
+			            </span>
+		            	<?php echo s($extension->specification('title')) ?>
+		            	<br/>
+		            	<span class="description"><?php echo s($extension->specification('description')) ?></span>
+			         
+		            </p>
+		            </a>
+		        </li>
+		    <?php endforeach; ?>
+		    </ul>
+		<?php endforeach;?>
+	<?php endif;?>
     </div>
 </fieldset>
-<?php endif;?>
 <!-- extensions -->

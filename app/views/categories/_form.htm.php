@@ -24,7 +24,7 @@
 				<?php echo $this->form->input('type', array(
 					'label' => s('Content Type'),
 					'type' => 'select',
-					'class' => 'ui-select large',
+					'class' => 'ui-select large item-types',
 					'options' => Segments::listItemTypesFor($site->segment)
 				)) ?>
 				<small><?php echo s("The type of content defined which content could be inserted on category, it couldn't be updated after creation") ?></small>

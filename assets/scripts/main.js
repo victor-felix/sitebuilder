@@ -347,6 +347,15 @@ $.extend($.easing, {
 		e.preventDefault();
 	});
 	
+	//change availabe extension by selected type
+	content.delegate('select.item-types', 'change', function(e) {
+		var type = $(this).val();
+		
+		$('.js-extension-list:visible').slideUp('fast', function() {
+			$('.js-extension-list.'+type).slideDown('fast');
+		});
+		e.preventDefault();
+	});
 	$.Paginate = function(params) {
 		this.settings = {
 			controls_wrapp: "#pagination",
