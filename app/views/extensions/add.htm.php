@@ -10,7 +10,7 @@
     <div class="clear"></div>
 </div>
 
-<?php echo $this->items->form(null, $extension, array(
+<?php echo $this->items->form('/extensions/add/' . $extension->specification('type') . '/' . $category->id, $extension, array(
     'class' => 'form-edit',
     'id' => 'form-add-businessitem'
 )) ?>

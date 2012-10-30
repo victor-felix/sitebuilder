@@ -19,7 +19,7 @@
 	        	 }
              ?>	
 	        <li class="level-0">
-	        	<a href="<?php echo $href ?>" class="push-scene" >   
+	        	<a href="<?php echo $href ?>" class="" >   
 	            <p class="title">
 	            		
 		            <span class="accessory-label" >
@@ -44,7 +44,7 @@
 	                 $href = sprintf('/extensions/add/%s/%s', $extension->specification('type'), 0);
 	             ?>	
 		        <li class="level-0">
-		        	<a href="<?php echo $href ?>" class="push-scene" >   
+		        	<a href="<?php echo $href ?>" class="" >   
 		            <p class="title">
 		            		
 			            <span class="accessory-label" >

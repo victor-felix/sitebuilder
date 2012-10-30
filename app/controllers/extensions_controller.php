@@ -8,7 +8,13 @@ class ExtensionsController extends AppController {
 		
 	public function add($extension, $category_id = null) {
 		$site = $this->getCurrentSite();
-		$category = Model::load('Categories')->firstById($category_id);
+		if (!$category_id || !$category = Model::load('Categories')->firstById($category_id)) {
+			$data = $_GET;
+			//print_r($data); exit;
+			$category = new Categories($data);
+			$category->site_id = $site->id;
+			$category->save();
+		}
 		$classname = '\app\models\extensions\\' . Inflector::camelize($extension);
 		$extension = $classname::create();
 		
@@ -17,19 +23,19 @@ class ExtensionsController extends AppController {
 			$extension->category_id = $category->id;
 			$extension->site_id = $site->id;
 			
-			if($extension->save()) {
+			if($extension->validates() && $extension->save()) {
 				$message = s('Extension successfully added.');
 				if($this->isXhr()) {
 					$json = array(
 							'success'=>$message,
 							'go_back'=>true,
-							'refresh'=>'/categories/edit/' . $category_id
+							'refresh'=>'/categories/edit/' . $category->id
 					);
 					$this->respondToJSON($json);
 				}
 				else {
 					Session::writeFlash('success', $message);
-					$this->redirect('/categories/edit/' . $category_id);
+					$this->redirect('/categories/edit/' . $category->id);
 				}
 			}
 		}
