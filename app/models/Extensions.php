@@ -130,7 +130,25 @@ class Extensions extends \lithium\data\Model
 		}
 		return $availableExtensions;
 	}
+	
+	public static function beforeRemove($extension) {
+		
+	}
 }
+
+Extensions::applyFilter('remove', function($self, $params, $chain) {
+		
+	$items = Extensions::find('all', array(
+		'conditions' => $params['conditions']
+	));
+	
+	foreach($items as $item) {
+		$classname = '\app\models\extensions\\' . Inflector::camelize($item->extension);
+		$classname::beforeRemove($item);
+	}
+	
+	return $chain->next($self, $params, $chain);
+});
 
 Extensions::applyFilter('save', function($self, $params, $chain) {
 	return Extensions::addTimestampsAndType($self, $params, $chain);

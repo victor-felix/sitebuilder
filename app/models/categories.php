@@ -1,5 +1,7 @@
 <?php
 
+use app\models\Extensions;
+
 require_once 'lib/simplepie/SimplePie.php';
 require_once 'lib/utils/Works/Import.php';
 require_once 'lib/utils/FileUpload.php';
@@ -351,6 +353,13 @@ class Categories extends AppModel {
 					'parent_id' => $this->id
 				));
 			}
+			
+			//remove old extensions
+			if ($original->type != $data['type']) {
+				Extensions::remove(array(
+						'category_id' => $this->id
+				));
+			}
 		}
 
 		return $data;
@@ -496,7 +505,13 @@ class Categories extends AppModel {
 		foreach($items as $item) {
 			Items::remove(array('_id' => $item->id()));
 		}
-
+		
+		//remove old extensions
+		Extensions::remove(array(
+				'category_id' => $id,
+		));
+		
+		
 		return $id;
 	}
 	

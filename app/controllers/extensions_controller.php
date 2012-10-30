@@ -10,7 +10,6 @@ class ExtensionsController extends AppController {
 		$site = $this->getCurrentSite();
 		if (!$category_id || !$category = Model::load('Categories')->firstById($category_id)) {
 			$data = $_GET;
-			//print_r($data); exit;
 			$category = new Categories($data);
 			$category->site_id = $site->id;
 			$category->save();

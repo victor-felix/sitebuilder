@@ -57,6 +57,22 @@ class Rss extends Extensions {
 		}
 		return $chain->next($self, $params, $chain);
 	}
+	
+	public static function beforeRemove($extension) {
+		if ($extension->category_id ) {
+			$category = \Model::load('Categories')->firstById($extension->category_id);
+			
+			if ($category->populate == 'auto') {
+				$category->update(array(
+						'conditions' => array('id' => $category->id)
+				), array(
+						'populate' => 'manual',
+						'feed_url' => '',
+				));
+				return true;
+			}
+		}
+	}
 }
 
 
