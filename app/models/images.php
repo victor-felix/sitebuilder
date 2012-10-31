@@ -180,7 +180,7 @@ class Images extends AppModel {
     protected function updateTimestamps($id) {
         $self = $this->firstById($id);
 
-        if ($self->model == 'Items') {
+        if ($self->model == 'Items' && $self->foreign_key) {
             $item = \app\models\Items::find('type', array('conditions' => array(
                 '_id' => $self->foreign_key
             )));
