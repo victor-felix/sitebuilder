@@ -14,10 +14,18 @@ class SitesController extends AppController {
 		
 		$site = Model::load('Sites');
 		if(!empty($this->data)) {
+			$images = array_unset($this->data, 'image');
 			$site->segment = MeuMobi::segment();
 			$site->updateAttributes($this->request->data);
 			if($site->validate() && $site->save()) {
-				//Session::writeFlash('success', s('Configuration successfully saved.'));
+				foreach($images as $id => $image) {
+					if(is_numeric($id)) {
+						$record = Model::load('Images')->firstById($id);
+						$record->title = $image['title'];
+						$record->foreign_key = $site->id;
+						$record->save();
+					}
+				}
 				Session::write('Users.registering', '/sites/customize_register');
 				$this->redirect('/sites/customize_register');
 				return;
