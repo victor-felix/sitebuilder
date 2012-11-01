@@ -6,7 +6,7 @@
     </div>
 	<div class="grid-8">
 		<div class="form-grid-570">
-			<div class="ui-switch right <? echo $extension->enabled ? 'enabled' : '' ?>" data-target="#FormEnabled">
+			<div class="ui-switch right <?php echo $extension->enabled ? 'enabled' : '' ?>" data-target="#FormEnabled">
 				<p class="on">
 					<span><?php echo s('enabled') ?></span>
 					<a class="ui-button" ></a>
