@@ -454,51 +454,39 @@ $(function() {
 		}
 	});
 	
-
-	if($('.theme-picker').length) {
-		$('.theme-picker a').click(function(e) {
-			var self = $(this),
-				href = self.attr('href'),
-				theme = href.substr(href.indexOf('#') + 1),
-				skin_picker = $('.skin-picker ul');
-
-			e.preventDefault();
-
-			$('.theme-picker li.selected').removeClass('selected');
-			self.parent().addClass('selected');
-			$('#FormTheme').val(theme);
-
-			skin_picker.html('');
-			$.get('/skins', {theme: theme}, function(response) {
-				skin_picker.html(response);
-
-				var current_skin = $('#FormSkin').val();
-				var skin_selector = '.skin-picker a[href*=' + $('#FormSkin').val() + ']';
-
-				if(current_skin && $(skin_selector).length) {
-					$(skin_selector).click();
-				}
-				else {
-					$('.skin-picker a:first').click();
-				}
-			})
-		});
-
-		$('.theme-picker a[href*=' + $('#FormTheme').val() + ']').click();
-		$('.skin-picker').delegate('a', 'click', function(e) {
-			var self = $(this),
-				href = self.attr('href'),
-				skin = href.substr(href.indexOf('#') + 1);
-
-			$('.skin-picker li.selected').removeClass('selected');
-			self.parent().addClass('selected');
-			$('#FormSkin').val(skin);
-		});
-	}
-
-	if($('#FormSkin').val()) {
-		$('.skin-picker a[href*=' + $('#FormSkin').val() + ']').parent().addClass('selected');
-	}
+	//handle theme selection
+	$('.theme-picker ul li a').click(function(e) {
+		e.preventDefault();
+		
+		var self = $(this);
+		var theme = self.attr('href').replace("#", "");
+		var skin_picker = $('#' + theme + '-skins');
+		
+		//select theme
+		$('.theme-picker li.selected').removeClass('selected');
+		self.parent().addClass('selected');
+		$('#theme').val(theme);
+		
+		//show correct skin list
+		$('.skin-picker ul:visible').hide();
+		skin_picker.show();
+		
+		//change skin value to default skin
+		var skin = skin_picker.find('li.selected a').attr('href').replace("#", "");
+		$('#skin').val(skin);
+	});
+	
+	//handle skin selection
+	$('.skin-picker ul a').click(function(e) {
+		e.preventDefault();
+		var self = $(this);
+		var skin = self.attr('href').replace("#", "");
+		
+		//select skin
+		self.parents('ul:first').find('li.selected').removeClass('selected');
+		self.parent('li').addClass('selected');
+		$('#skin').val(skin);
+	});
 
 	// flash messages
 	$('#success-feedback, #error-feedback').click(function(e) {
