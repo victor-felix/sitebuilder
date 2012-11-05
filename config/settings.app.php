@@ -64,3 +64,9 @@ Config::write('Segments', array(
 
 Config::write('Sites.domain', 'int-meumobi.com');
 Config::write('multiInstances', 1);
+$dir = new GlobIterator(__DIR__ . '/segments/*.php');
+foreach($dir as $file) {
+    if($file->isFile()) {
+        require $file->getPathname();
+    }
+}
