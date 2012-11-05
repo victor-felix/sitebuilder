@@ -282,6 +282,18 @@ class Items extends \lithium\data\Model {
 		return $chain->next($self, $params, $chain);
 	}
 
+	public static function removeImages($self, $params, $chain)
+	{
+		if (isset($params['conditions']['_id'])) {
+			$model = Model::load('Images');
+			$images = $model->allByRecord('Items', $params['conditions']['_id']);
+			foreach ($images as $item) {
+				$model->delete($item->id);
+			}
+		}
+		return $chain->next($self, $params, $chain);
+	}
+
 	public static function addTimestamps($self, $params, $chain)
 	{
 		$item = $params['entity'];
@@ -525,6 +537,10 @@ Items::applyFilter('remove', function($self, $params, $chain) {
 
 Items::applyFilter('remove', function($self, $params, $chain) {
 	return Items::updateOrdering($self, $params, $chain);
+});
+
+Items::applyFilter('remove', function($self, $params, $chain) {
+	return Items::removeImages($self, $params, $chain);
 });
 
 Items::applyFilter('save', function($self, $params, $chain) {

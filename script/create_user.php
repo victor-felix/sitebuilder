@@ -13,5 +13,5 @@ $password = array_shift($argv);
 $user = new Users();
 $user->cantCreateSite = true;
 $user->updateAttributes(array('name' => $name, 'email' => $email,
-	'password' => $password, 'active' => 1));
+	'password' => $password, 'confirm_password' => $password, 'active' => 1));
 $user->save();

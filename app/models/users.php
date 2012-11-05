@@ -43,7 +43,8 @@ class Users extends AppModel {
 			),
 			array (
 				'rule' => array ('minLength', 6 ),
-				'message' => 'The password should contain at least 6 characters.', 'on' => 'create'
+				'message' => 'The password should contain at least 6 characters.',
+				'on' => 'create'
 			)
 		),
 		'confirm_password' => array (
@@ -259,12 +260,12 @@ class Users extends AppModel {
 
 	protected function hashPassword($data)
 	{
-		if (array_key_exists ( 'password', $data ) && array_key_exists ( 'confirm_password', $data )) {
-			$password = array_unset ( $data, 'password' );
-			if (! empty ( $password )) {
-				$data ['password'] = Security::hash ( $password, 'sha1' );
+		if (array_key_exists('password', $data) && array_key_exists('confirm_password', $data)) {
+			$password = array_unset ($data, 'password');
+			if (!empty($password)) {
+				$data['password'] = Security::hash($password, 'sha1');
 			}
-			unset ( $data ['confirm_password'] );
+			unset($data ['confirm_password']);
 		}
 
 		return $data;

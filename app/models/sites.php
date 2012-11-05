@@ -380,7 +380,7 @@ class Sites extends AppModel {
 			if ($this->id) {
 				$original = $this->firstById($this->id);
 
-				if ($original->street != $data['street']) {
+				if ($original->street == $data['street']) {
 					return $data;
 				}
 			}
