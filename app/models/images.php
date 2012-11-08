@@ -42,6 +42,13 @@ class Images extends AppModel {
         return $path;
     }
 
+    public function regenerate($model) {
+      $fileInfo = pathinfo($this->path);
+      $path = $fileInfo['dirname'];
+      $filename = $fileInfo['basename'];
+      $this->resizeImage($model, $path, $filename);
+    }
+
     public function toJSON() {
         $data = $this->data;
 
