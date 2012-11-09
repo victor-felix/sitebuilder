@@ -125,7 +125,12 @@ class SitesController extends AppController {
 			return;
 		}
 		$users = $this->getCurrentSite()->users(true);
-		$this->set(compact('users'));
+		$site = $this->getCurrentSite();
+		$invites = \app\models\Invites::find('all', array('conditions' => array(
+			'site_id' => $site->id,
+		)));
+		
+		$this->set(compact('users', 'invites'));
 	}
 	
 	public function remove_user($userId) {

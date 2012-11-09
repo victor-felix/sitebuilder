@@ -36,6 +36,12 @@
             <div class="children-count"><?php echo s('joined at %s',$user->site()->joined) ?></div>
         </li>
         <?php endforeach; ?>
+        <?php foreach ($invites as $invite): ?>
+        <li  class="level-0">
+            <span class="title"><?php echo $invite->email ?></span>
+            <div class="children-count" style="display: block;" ><?php echo s('Token %s',$invite->token) ?></div>
+        </li>
+        <?php endforeach; ?>
     </ul>
     <?php echo $this->html->link(s('Invite new user'), '/users/invite', array(
         'class' => 'ui-button large add push-scene',
