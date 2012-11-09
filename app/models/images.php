@@ -1,266 +1,266 @@
 <?php
 
 class Images extends AppModel {
-    protected $afterSave = array('fillFields');
-    protected $beforeDelete = array('deleteFile', 'updateTimestamps');
+	protected $afterSave = array('fillFields');
+	protected $beforeDelete = array('deleteFile', 'updateTimestamps');
 
-    public function upload($model, $image, $attr = array()) {
-        return $this->saveImage('uploadFile', $model, $image, $attr);
-    }
+	public function upload($model, $image, $attr = array()) {
+		return $this->saveImage('uploadFile', $model, $image, $attr);
+	}
 
-    public function download($model, $image, $attr = array()) {
-        return $this->saveImage('downloadFile', $model, $image, $attr);
-    }
+	public function download($model, $image, $attr = array()) {
+		return $this->saveImage('downloadFile', $model, $image, $attr);
+	}
 
-    public function allByRecord($model, $fk) {
-        return $this->all(array(
-            'conditions' => array(
-                'model' => $model,
-                'foreign_key' => $fk,
-                'visible' => 1
-            )
-        ));
-    }
+	public function allByRecord($model, $fk) {
+		return $this->all(array(
+			'conditions' => array(
+				'model' => $model,
+				'foreign_key' => $fk,
+				'visible' => 1
+			)
+		));
+	}
 
-    public function firstByRecord($model, $fk) {
-        return $this->first(array(
-            'conditions' => array(
-                'model' => $model,
-                'foreign_key' => $fk,
-                'visible' => 1
-            )
-        ));
-    }
+	public function firstByRecord($model, $fk) {
+		return $this->first(array(
+			'conditions' => array(
+				'model' => $model,
+				'foreign_key' => $fk,
+				'visible' => 1
+			)
+		));
+	}
 
-    public function link($size = null) {
-        $path = String::insert('/:path/:size:filename', array(
-            'model' => Inflector::underscore($this->model),
-            'filename' => basename($this->path),
-            'path' => dirname($this->path),
-            'size' => $size ? $size . '_' : ''
-        ));
-        return $path;
-    }
+	public function link($size = null) {
+		$path = String::insert('/:path/:size:filename', array(
+			'model' => Inflector::underscore($this->model),
+			'filename' => basename($this->path),
+			'path' => dirname($this->path),
+			'size' => $size ? $size . '_' : ''
+		));
+		return $path;
+	}
 
-    public function regenerate($model) {
-      $fileInfo = pathinfo($this->path);
-      $path = $fileInfo['dirname'];
-      $filename = $fileInfo['basename'];
-      $this->resizeImage($model, $path, $filename);
-    }
+	public function regenerate($model) {
+		$fileInfo = pathinfo($this->path);
+		$path = $fileInfo['dirname'];
+		$filename = $fileInfo['basename'];
+		$this->resizeImage($model, $path, $filename);
+	}
 
-    public function toJSON() {
-        $data = $this->data;
+	public function toJSON() {
+		$data = $this->data;
+		$data['path'] = '/' . $data['path'];
+		return $data;
+	}
 
-        $data['path'] = '/' . $data['path'];
+	protected function saveImage($method, $model, $image, $attr) {
+		if(!$this->transactionStarted()) {
+			$transaction = true;
+			$this->begin();
+		}
+		else {
+			$transaction = false;
+		}
 
-        return $data;
-    }
+		try {
+			$self = new Images();
 
-    protected function saveImage($method, $model, $image, $attr) {
-        if(!$this->transactionStarted()) {
-            $transaction = true;
-            $this->begin();
-        }
-        else {
-            $transaction = false;
-        }
+			$defaults = array(
+				'model' => $model->imageModel(),
+				'foreign_key' => $model->id()
+			);
+			$self->save(array_merge($defaults, $attr));
 
-        try {
-            $self = new Images();
+			$path = $this->getPath($model);
+			$filename = $this->{$method}($model, $image);
 
-            $defaults = array(
-                'model' => $model->imageModel(),
-                'foreign_key' => $model->id()
-            );
-            $self->save(array_merge($defaults, $attr));
+			$info = $this->getImageInfo($path, $filename);
+			$filename = $self->renameTempImage($info);
 
-            $path = $this->getPath($model);
-            $filename = $this->{$method}($model, $image);
+			$info['path'] = $path . '/' . $filename;
+			$self->updateAttributes($info);
+			$self->save();
 
-            $info = $this->getImageInfo($path, $filename);
-            $filename = $self->renameTempImage($info);
+			if ($self->model == 'Items' && $self->foreign_key) {
+				$item = \app\models\Items::find('type', array('conditions' => array(
+					'_id' => $self->foreign_key
+				)));
+				$item->modified = date('Y-m-d H:i:s');
+				$item->save();
+			}
 
-            $info['path'] = $path . '/' . $filename;
-            $self->updateAttributes($info);
-            $self->save();
+			$this->resizeImage($model, $path, $filename);
 
-            if ($self->model == 'Items' && $self->foreign_key) {
-                $item = \app\models\Items::find('type', array('conditions' => array(
-                    '_id' => $self->foreign_key
-                )));
-                $item->modified = date('Y-m-d H:i:s');
-                $item->save();
-            }
+			if($transaction) {
+				$this->commit();
+			}
 
-            $this->resizeImage($model, $path, $filename);
+			return $self;
+		}
+		catch(Exception $e) {
+			if($transaction) {
+				$this->rollback();
+			}
+			else {
+				$this->delete($self->id);
+			}
+		}
+	}
 
-            if($transaction) {
-                $this->commit();
-            }
+	protected function uploadFile($model, $image) {
+		require_once 'lib/utils/FileUpload.php';
 
-            return $self;
-        }
-        catch(Exception $e) {
-            if($transaction) {
-                $this->rollback();
-            }
-            else {
-                $this->delete($self->id);
-            }
-        }
-    }
+		$uploader = new FileUpload();
+		$uploader->path = APP_ROOT . '/public/' . $this->getPath($model);
 
-    protected function uploadFile($model, $image) {
-        require_once 'lib/utils/FileUpload.php';
+		return $uploader->upload($image, ':original_name');
+	}
 
-        $uploader = new FileUpload();
-        $uploader->path = APP_ROOT . '/public/' . $this->getPath($model);
+	protected function downloadFile($model, $image) {
+		require_once 'lib/utils/FileDownload.php';
 
-        return $uploader->upload($image, ':original_name');
-    }
+		$downloader = new FileDownload();
+		$downloader->path = APP_ROOT . '/public/' . $this->getPath($model);
 
-    protected function downloadFile($model, $image) {
-        require_once 'lib/utils/FileDownload.php';
+		return $downloader->download($image, ':original_name');
+	}
 
-        $downloader = new FileDownload();
-        $downloader->path = APP_ROOT . '/public/' . $this->getPath($model);
+	protected function renameTempImage($info) {
+		$types = array(
+			'image/jpeg' => 'jpg',
+			'image/png' => 'png',
+			'image/gif' => 'gif'
+		);
+		$destination = String::insert(':id.:ext', array(
+			'id' => $this->id,
+			'ext' => $types[$info['type']]
+		));
+		Filesystem::rename(APP_ROOT . '/public/' . $info['path'], $destination);
 
-        return $downloader->download($image, ':original_name');
-    }
+		return $destination;
+	}
 
-    protected function renameTempImage($info) {
-        $types = array(
-            'image/jpeg' => 'jpg',
-            'image/png' => 'png',
-            'image/gif' => 'gif'
-        );
-        $destination = String::insert(':id.:ext', array(
-            'id' => $this->id,
-            'ext' => $types[$info['type']]
-        ));
-        Filesystem::rename(APP_ROOT . '/public/' . $info['path'], $destination);
+	protected function resizeImage($model, $path, $filename) {
+		require_once 'lib/phpthumb/ThumbLib.inc.php';
+		$fullpath = Filesystem::path(APP_ROOT . '/public/' . $path . '/' . $filename);
+		$resizes = $model->resizes();
+		$modes = array(
+			'' => 'resize',
+			'#' => 'adaptiveResize',
+			'!' => 'cropFromCenter'
+		);
 
-        return $destination;
-    }
+		foreach($resizes as $resize) {
+			$image = PhpThumbFactory::create($fullpath);
 
-    protected function resizeImage($model, $path, $filename) {
-        require_once 'lib/phpthumb/ThumbLib.inc.php';
-        $fullpath = Filesystem::path(APP_ROOT . '/public/' . $path . '/' . $filename);
-        $resizes = $model->resizes();
-        $modes = array(
-            '' => 'resize',
-            '#' => 'adaptiveResize',
-            '!' => 'cropFromCenter'
-        );
+			extract($this->parseResizeValue($resize)); // extracts $resize, $w, $h, $mode
+			$method = $modes[$mode];
+			$image->{$method}($w, $h);
+			$resisedFile = String::insert(':path/:wx:h_:filename', array(
+				'path' => Filesystem::path(APP_ROOT . '/public/' . $path),
+				'filename' => $filename,
+				'w' => $w,
+				'h' => $h
+			));
+			
+			$image->save($resisedFile);
+			chmod($resisedFile, 0777);
+		}
+	}
 
-        foreach($resizes as $resize) {
-            $image = PhpThumbFactory::create($fullpath);
+	protected function deleteFile($id) {
+		$self = $this->firstById($id);
 
-            extract($this->parseResizeValue($resize)); // extracts $resize, $w, $h, $mode
-            $method = $modes[$mode];
-            $image->{$method}($w, $h);
+		if(!is_null($self->path)) {
+			Filesystem::delete(String::insert(APP_ROOT . '/public/:filename', array(
+				'filename' => $self->path
+			)));
 
-            $image->save(String::insert(':path/:wx:h_:filename', array(
-                'path' => Filesystem::path(APP_ROOT . '/public/' . $path),
-                'filename' => $filename,
-                'w' => $w,
-                'h' => $h
-            )));
-        }
-    }
+			$this->deleteResizedFiles($self->model, $self->path);
+		}
 
-    protected function deleteFile($id) {
-        $self = $this->firstById($id);
+		return $id;
+	}
 
-        if(!is_null($self->path)) {
-            Filesystem::delete(String::insert(APP_ROOT . '/public/:filename', array(
-                'filename' => $self->path
-            )));
+	protected function updateTimestamps($id) {
+		$self = $this->firstById($id);
 
-            $this->deleteResizedFiles($self->model, $self->path);
-        }
+		if ($self->model == 'Items' && $self->foreign_key) {
+			$item = \app\models\Items::find('type', array('conditions' => array(
+				'_id' => $self->foreign_key
+			)));
+			$item->modified = date('Y-m-d H:i:s');
+			$item->save();
+		}
 
-        return $id;
-    }
+		return $id;
+	}
 
-    protected function updateTimestamps($id) {
-        $self = $this->firstById($id);
+	protected function deleteResizedFiles($model, $filename) {
+		if($model == 'Items') {
+			$model = new \app\models\Items;
+			$resizes = $model->resizes();
+		}
+		else {
+			$model = Model::load($model);
+			$resizes = $model->resizes();
+		}
 
-        if ($self->model == 'Items' && $self->foreign_key) {
-            $item = \app\models\Items::find('type', array('conditions' => array(
-                '_id' => $self->foreign_key
-            )));
-            $item->modified = date('Y-m-d H:i:s');
-            $item->save();
-        }
+		foreach($resizes as $resize) {
+			$values = $this->parseResizeValue($resize);
+			Filesystem::delete(String::insert(':path/:wx:h_:filename', array(
+				'path' => Filesystem::path(APP_ROOT . '/public/' . dirname($filename)),
+				'filename' => basename($filename),
+				'w' => $values['w'],
+				'h' => $values['h']
+			)));
+		}
+	}
 
-        return $id;
-    }
+	protected function parseResizeValue($value) {
+		preg_match('/^(\d+)x(\d+)(#|!|>|)$/', $value, $options);
+		$keys = array('resize', 'w', 'h', 'mode');
+		return array_combine($keys, $options);
+	}
 
-    protected function deleteResizedFiles($model, $filename) {
-        if($model == 'Items') {
-            $model = new \app\models\Items;
-            $resizes = $model->resizes();
-        }
-        else {
-            $model = Model::load($model);
-            $resizes = $model->resizes();
-        }
+	protected function getImageInfo($path, $filename) {
+		$filepath = Filesystem::path(APP_ROOT . '/public/' . $path . '/' . $filename);
+		$image = new Imagick($filepath);
+		$size = $image->getImageLength();
 
-        foreach($resizes as $resize) {
-            $values = $this->parseResizeValue($resize);
-            Filesystem::delete(String::insert(':path/:wx:h_:filename', array(
-                'path' => Filesystem::path(APP_ROOT . '/public/' . dirname($filename)),
-                'filename' => basename($filename),
-                'w' => $values['w'],
-                'h' => $values['h']
-            )));
-        }
-    }
+		return array(
+			'path' => $path . '/' . $filename,
+			'type' => $image->getImageMimeType(),
+			'filesize' => $size,
+			'filesize_octal' => decoct($size)
+		);
+	}
 
-    protected function parseResizeValue($value) {
-        preg_match('/^(\d+)x(\d+)(#|!|>|)$/', $value, $options);
-        $keys = array('resize', 'w', 'h', 'mode');
-        return array_combine($keys, $options);
-    }
+	protected function getPath($model) {
+		if(!is_string($model)) {
+			$model = $model->imageModel();
+		}
 
-    protected function getImageInfo($path, $filename) {
-        $filepath = Filesystem::path(APP_ROOT . '/public/' . $path . '/' . $filename);
-        $image = new Imagick($filepath);
-        $size = $image->getImageLength();
+		return String::insert('uploads/:model', array(
+			'model' => Inflector::underscore($model)
+		));
+	}
 
-        return array(
-            'path' => $path . '/' . $filename,
-            'type' => $image->getImageMimeType(),
-            'filesize' => $size,
-            'filesize_octal' => decoct($size)
-        );
-    }
+	protected function fillFields() {
+		$schema = array_keys($this->schema());
+		$self = array_keys($this->data);
+		$diff = array_diff($schema, $self);
 
-    protected function getPath($model) {
-        if(!is_string($model)) {
-            $model = $model->imageModel();
-        }
+		foreach($diff as $i) {
+			$this->data[$i] = null;
+		}
+	}
 
-        return String::insert('uploads/:model', array(
-            'model' => Inflector::underscore($model)
-        ));
-    }
-
-    protected function fillFields() {
-        $schema = array_keys($this->schema());
-        $self = array_keys($this->data);
-        $diff = array_diff($schema, $self);
-
-        foreach($diff as $i) {
-            $this->data[$i] = null;
-        }
-    }
-
-    public function __toString() {
-        return $this->path;
-    }
+	public function __toString() {
+		return $this->path;
+	}
 }
 
 class ImageNotFoundException extends Exception {}
