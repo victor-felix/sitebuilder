@@ -455,37 +455,40 @@ $(function() {
 	});
 	
 	//handle theme selection
-	$('.theme-picker ul li a').click(function(e) {
+	$('.theme-picker > ul > li').click(function(e) {
 		e.preventDefault();
 		
 		var self = $(this);
-		var theme = self.attr('href').replace("#", "");
-		var skin_picker = $('#' + theme + '-skins');
+		var theme = self.data('theme');
+		var skin_picker = self.children('.skin-picker');
 		
 		//select theme
-		$('.theme-picker li.selected').removeClass('selected');
-		self.parent().addClass('selected');
+		$('.theme-picker > ul > li.selected').removeClass('selected');
+		self.addClass('selected');
 		$('#theme').val(theme);
 		
-		//show correct skin list
-		$('.skin-picker ul:visible').hide();
-		skin_picker.show();
-		
 		//change skin value to default skin
-		var skin = skin_picker.find('li.selected a').attr('href').replace("#", "");
+		var skin = skin_picker.find('li.selected').data('skin');
 		$('#skin').val(skin);
 	});
 	
 	//handle skin selection
-	$('.skin-picker ul a').click(function(e) {
+	$('.skin-picker li').click(function(e) {
 		e.preventDefault();
 		var self = $(this);
-		var skin = self.attr('href').replace("#", "");
+		var theme_picker = self.parent('ul');
+		var skin = self.data('skin');
+		var theme = theme_picker.data('theme');
 		
 		//select skin
-		self.parents('ul:first').find('li.selected').removeClass('selected');
-		self.parent('li').addClass('selected');
+		theme_picker.children('li.selected').removeClass('selected');
+		self.addClass('selected');
 		$('#skin').val(skin);
+		
+		//select theme
+		$('.theme-picker > ul > li.selected').removeClass('selected');
+		theme_picker.addClass('selected');
+		$('#theme').val(theme);
 	});
 
 	// flash messages

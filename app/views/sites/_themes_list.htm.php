@@ -31,7 +31,7 @@
 								?>
 								
 								<?php foreach($skins as $skin): ?>
-								<li class="<?php if($skin == $currentThemeSkin) echo 'selected'?>" data-skin="<?php echo $skin ?>">
+								<li class="<?php if($skin == $currentThemeSkin) echo 'selected';?>" data-skin="<?php echo $skin ?>">
 									<span style="background-color:#<?php echo $skin ?>"></span>
 								</li>
 								<?php endforeach ?>
