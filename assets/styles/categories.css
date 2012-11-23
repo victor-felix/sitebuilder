@@ -55,7 +55,24 @@
 	font-size: 13px;
 	line-height: 17px;
 }
+
+.tip-big {
 	
+}
+
+.form-edit .tip-big h2 {
+	float: none;
+	width: auto;
+	padding: 0;
+	margin: 0 0 10px;
+}
+
+.form-edit .tip-big p {
+	font-size: 20PX;
+	font-weight: lighter;
+	color: #888;
+}
+
 .categories-list {
 	border-bottom: 1px solid #DDD;
 	margin-bottom: 30px;
