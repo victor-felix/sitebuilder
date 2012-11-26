@@ -28,5 +28,5 @@
 		'themes' => $themes,
         'site' => $site)) 
 ?>
-
+<?php echo $this->element('sites/theme_preview', array( 'site' => $site))  ?>
 </fieldset>

@@ -94,3 +94,18 @@
 /**
 *Theme Preview
 */
+.theme-preview {
+	background: url(/images/shared/themes/iphone.png) no-repeat 0 0;
+	position: relative;
+	width: 380px;
+	float: right;
+	height: 745px;
+}
+
+.theme-preview .wrapp {
+	position: absolute;
+	top: 132px;
+	left: 33px;
+	width: 320px;
+	height: 480px;
+}
