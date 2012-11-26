@@ -2,8 +2,7 @@
 	$currentTheme = $site->theme ? $site->theme : $themes[0]->_id;
 	$currentSkin = $site->skin ? $site->skin : key($themes[0]->colors);
 ?>
-<fieldset>
-	<h2><?php echo s('themes') ?></h2>
+
 	<div class="themes">
 		<div class="form-grid-570 first">
 			<div class="tip-big">
@@ -11,7 +10,6 @@
 				<p style="margin: 0 0 15px 0"><?php echo s('give your mobile a custom look with one of the themes bellow. choose the one that fits you best.') ?></p>
 			</div>
 			<div class="theme-picker">
-				<h3><?php echo s('Select a theme <em>(more themes very soon)</em>') ?></h3>
 				<ul>
 					<?php foreach($themes as $theme): ?>
 						<li class="<?php if($theme->_id == $currentTheme) echo 'selected'?>" data-theme="<?php echo $theme->_id ?>">
@@ -55,4 +53,3 @@
 			)) ?>
 		</div>
 	</div>
-</fieldset>
