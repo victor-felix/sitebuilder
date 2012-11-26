@@ -4,7 +4,6 @@
 ?>
 
 	<div class="themes">
-		<div class="form-grid-570 first">
 			<div class="tip-big">
 				<h2><?php echo s('pick up a theme')?></h2>
 				<p style="margin: 0 0 15px 0"><?php echo s('give your mobile a custom look with one of the themes bellow. choose the one that fits you best.') ?></p>
@@ -51,5 +50,4 @@
 					'value' => $currentSkin,
 				'id' => 'skin'
 			)) ?>
-		</div>
 	</div>

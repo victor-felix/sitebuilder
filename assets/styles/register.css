@@ -212,6 +212,16 @@ body {
 	margin-right: 5px;
 }
 
+/*
+* register theme
+*/
+.form-register .themes {
+	padding: 40px 0 0 25px;
+}
+
+/*
+* register finished
+*/
 .registration-finished {}
 
 .registration-finished img {
