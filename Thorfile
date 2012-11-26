@@ -51,14 +51,14 @@ require dirname(dirname(__DIR__)) . '/meu-site-builder/dispatch.php';
         create_link "public/#{name}/#{dir}/shared", "../../#{dir}"
       end
 
-      create_link "public/#{name}/uploads", "public/uploads"
+      create_link "public/#{name}/uploads", "../uploads"
 
       empty_directory "config/segments"
       create_file "config/segments/#{name}.yml"
       create_file "config/segments/#{name}.php", SegmentTemplate % options
       create_file "public/#{name}/index.php", IndexTemplate % options
 
-      run "php #{self.class.source_root}/meu-site-builder/script/create_user.php #{options[:user_name]} #{options[:user_email]} #{options[:user_password]}"
+      run "php #{self.class.source_root}/meu-site-builder/script/create_user.php '#{options[:user_name]}' '#{options[:user_email]}' '#{options[:user_password]}'"
       say "Your email is: #{options[:user_email]}"
       say "Your password is: #{options[:user_password]}"
 
