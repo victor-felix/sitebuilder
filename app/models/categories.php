@@ -13,7 +13,7 @@ class Categories extends AppModel {
 	const MAX_IMPORTFILE_SIZE = 300;
 	protected $beforeSave = array('setOrder', 'getItemType', 'checkItems');
 	protected $afterSave = array('importItems', 'updateFeed', 'updateParentTimestamps');
-	protected $beforeDelete = array('deleteChildren', 'updateOrders');
+	protected $beforeDelete = array('deleteChildren', 'updateOrders', 'updateParentTimestampsWhenDeleted');
 	protected $defaultScope = array(
 		'order' => '`order` ASC'
 	);
@@ -138,7 +138,7 @@ class Categories extends AppModel {
 	}
 
 	public function updateArticles() {
-	
+
 		$feed = $this->getFeed();
 		$items = $feed->get_items();
 
@@ -180,52 +180,52 @@ class Categories extends AppModel {
 			}
 		}
 	}
-	
+
 	public function moveUp($steps = 1) {
 		$oldOrder = $this->order;
 		$previus = $this->findByOrder($oldOrder - $steps);
-		
+
 		if (!$previus) {
 			return false;
 		}
-		
+
 		$this->order = $previus->order;
 		$previus->order = $oldOrder;
 		if ($this->save() && $previus->save()) {
 			return $this->order;
 		}
 	}
-	
+
 	public function moveDown($steps = 1) {
 		$oldOrder = $this->order;
 		$previus = $this->findByOrder($oldOrder + $steps);
-		
+
 		if (!$previus) {
 			return false;
 		}
-		
+
 		$this->order = $previus->order;
 		$previus->order = $oldOrder;
 		if ($this->save() && $previus->save()) {
 			return $this->order;
 		}
 	}
-	 
+
 	public function resetOrder($siteId) {
 		$all = $this->all(array(
 				'conditions' => array (
-					'site_id' => $siteId, 
+					'site_id' => $siteId,
 					'visibility >' => -1),
 				'order' => 'created'
 				) );
-		
+
 		$foreignKeys = array();
-		
+
 		foreach ($all as $item) {
 			if (!$item->parent_id) continue;
 			$foreignKeys[$item->parent_id][] = $item;
 		}
-		
+
 		//TODO update all at once, not per item
 		foreach ($foreignKeys as $items) {
 			for ($i = 0; $i < count($items); $i++) {
@@ -236,57 +236,57 @@ class Categories extends AppModel {
 		}
 		return true;
 	}
-	
+
 	public function getFirst($parent_id = null, $site_id = null) {
 		$parent_id = $parent_id ? $parent_id : $this->parent_id;
 		$site_id = $site_id ? $site_id : $this->site_id;
-		
+
 		$conditions = array(
 				'parent_id' => $parent_id,
 				'site_id' => $site_id,
 				'visibility >' => -1
 		);
-		
+
 		return $this->first(array(
 				'conditions' => $conditions,
 				'order' => '`order` ASC',
 		));
 	}
-	
+
 	public function getLast($parent_id = null, $site_id = null) {
 		$parent_id = $parent_id ? $parent_id : $this->parent_id;
 		$site_id = $site_id ? $site_id : $this->site_id;
-		
+
 		$conditions = array(
 				'parent_id' => $parent_id,
 				'site_id' => $site_id,
 				'visibility >' => -1
 		);
-		
+
 		return $this->first(array(
 					'conditions' => $conditions,
 					'order' => '`order` DESC',
 				));
 	}
-	
+
 	public function findByOrder($order) {
 		if (!(int)$order) {
 			return false;
 		}
-		
+
 		$conditions = array(
 			'`order`' => $order,
 			'parent_id' => $this->parent_id,
-			'site_id' => $this->site_id, 
-			'visibility >' => -1			
+			'site_id' => $this->site_id,
+			'visibility >' => -1
 		);
-		
+
 		return $this->first(array(
 					'conditions' => $conditions,
 					'order' => '`order` DESC',
 				));
 	}
-	
+
 	protected function setOrder($data) {
 		if (!$this->id) {
 			$last = $this->getLast();
@@ -294,21 +294,21 @@ class Categories extends AppModel {
 				$data['order'] = $last->order + 1;
 			} else {
 				$data['order'] = 1;
-			} 
+			}
 		}
 		return $data;
 	}
-	
+
 	protected function updateOrders($id, $force = false) {
 		$self = $this->firstById($id);
 		if ($self->parent_id && $self->visibility > -1) {
 			$conditions = array(
 				'`order` >' => $self->order,
 				'parent_id' => $self->parent_id,
-				'site_id' => $self->site_id, 
-				'visibility >' => -1			
+				'site_id' => $self->site_id,
+				'visibility >' => -1
 			);
-			
+
 			$all = $this->all(compact('conditions'));
 			//TODO use update instead of looping all items
 			if ($all) {
@@ -320,7 +320,7 @@ class Categories extends AppModel {
 		}
 		return $id;
 	}
-	
+
 	protected function getFeed() {
 		$feed = new SimplePie();
 		$feed->enable_cache(false);
@@ -346,14 +346,14 @@ class Categories extends AppModel {
 	protected function checkItems($data) {
 		if(!is_null($this->id)) {
 			$original = $this->firstById($this->id);
-			
-			if(	$original->populate != $data['populate'] 
+
+			if(	$original->populate != $data['populate']
 				|| $original->type != $data['type'] ) {
 				$items = Items::remove(array(
 					'parent_id' => $this->id
 				));
 			}
-			
+
 			//remove old extensions
 			if ($original->type != $data['type']) {
 				Extensions::remove(array(
@@ -366,7 +366,7 @@ class Categories extends AppModel {
 	}
 
 	protected function importItems($created) {
-		if (is_uploaded_file($this->data['import']['tmp_name'])) {
+		if (isset($this->data['import']) && is_uploaded_file($this->data['import']['tmp_name'])) {
 			$fileSize = $this->data['import']['size'];
 			if($fileSize && self::MAX_IMPORTFILE_SIZE < ($fileSize / 1024)
 				&& $this->scheduleImport()) {
@@ -453,7 +453,25 @@ class Categories extends AppModel {
 		$site = Model::load('Sites')->firstById($this->site_id);
 		$site->updated = $date;
 		$site->save();
+	}
 
+	protected function updateParentTimestampsWhenDeleted($id)
+	{
+		$self = $this->firstById($id);
+
+		$date = date('Y-m-d H:i:s');
+		$parent = $self->parent();
+
+		if ($parent) {
+			$parent->modified = $date;
+			$parent->save();
+		}
+
+		$site = Model::load('Sites')->firstById($self->site_id);
+		$site->updated = $date;
+		$site->save();
+
+		return $id;
 	}
 
 	protected function updateFeed($created) {
@@ -505,17 +523,17 @@ class Categories extends AppModel {
 		foreach($items as $item) {
 			Items::remove(array('_id' => $item->id()));
 		}
-		
+
 		//remove old extensions
 		Extensions::remove(array(
 				'category_id' => $id,
 		));
-		
-		
+
+
 		return $id;
 	}
-	
-	public function isValidRss($value) 
+
+	public function isValidRss($value)
 	{
 		if (!trim($value)) {
 			return true;
@@ -524,7 +542,7 @@ class Categories extends AppModel {
 		$feed->enable_cache(false);
 		$feed->set_feed_url($value);
 		$feed->init();
-		
+
 		return !$feed->error();
 	}
 }
