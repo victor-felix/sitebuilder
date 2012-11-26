@@ -453,43 +453,6 @@ $(function() {
 			e.stopPropagation();
 		}
 	});
-	
-	//handle theme selection
-	$('.theme-picker > ul > li').click(function(e) {
-		e.preventDefault();
-		
-		var self = $(this);
-		var theme = self.data('theme');
-		var skin_picker = self.children('.skin-picker');
-		
-		//select theme
-		$('.theme-picker > ul > li.selected').removeClass('selected');
-		self.addClass('selected');
-		$('#theme').val(theme);
-		
-		//change skin value to default skin
-		var skin = skin_picker.find('li.selected').data('skin');
-		$('#skin').val(skin);
-	});
-	
-	//handle skin selection
-	$('.skin-picker li').click(function(e) {
-		e.preventDefault();
-		var self = $(this);
-		var theme_picker = self.parent('ul');
-		var skin = self.data('skin');
-		var theme = theme_picker.data('theme');
-		
-		//select skin
-		theme_picker.children('li.selected').removeClass('selected');
-		self.addClass('selected');
-		$('#skin').val(skin);
-		
-		//select theme
-		$('.theme-picker > ul > li.selected').removeClass('selected');
-		theme_picker.addClass('selected');
-		$('#theme').val(theme);
-	});
 
 	// flash messages
 	$('#success-feedback, #error-feedback').click(function(e) {

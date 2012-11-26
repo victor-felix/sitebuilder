@@ -40,7 +40,7 @@
         
         <?php echo $this->element('layouts/footer') ?>
         
-        <?php echo $this->html->script('shared/jquery', 'shared/main',  'shared/async_upload') ?>
+        <?php echo $this->html->script('shared/jquery', 'shared/main',  'shared/async_upload', 'shared/themes') ?>
         <?php echo $this->html->scriptsForLayout ?>
     </body>
 </html>
