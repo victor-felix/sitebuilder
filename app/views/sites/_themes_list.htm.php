@@ -10,7 +10,7 @@
 			</div>
 			<div class="theme-picker">
 				<ul>
-					<?php foreach($themes as $theme): ?>
+					<?php foreach($themes as $i => $theme): ?>
 						<li class="<?php if($theme->_id == $currentTheme) echo 'selected'?>" data-theme="<?php echo $theme->_id ?>">
 							<p class="thumbs">
 							<?php foreach ($theme->thumbnails as $thumbnail): ?>
@@ -34,6 +34,10 @@
 								<?php endforeach ?>
 							</ul>
 						</li>
+						
+						<?php if (($i+1) %3 == 0): ?>
+							<li class="clear"></li>
+						<?php endif; ?>
 					<?php endforeach ?>
 				</ul>
 				<div class="clear"></div>

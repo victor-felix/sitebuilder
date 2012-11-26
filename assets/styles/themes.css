@@ -34,6 +34,14 @@
 	box-shadow: inset 0 0 0 3px #687598;
 }
 
+.theme-picker > ul > li.clear {
+	width: 100%;
+	height: 0px;
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
 .theme-picker > ul > li .thumbs {
 	color: #333;
 	font-size: 11px;
