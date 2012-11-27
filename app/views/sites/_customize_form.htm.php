@@ -1,4 +1,4 @@
-<!--fieldset>
+<fieldset>
     <h2><?php echo s('Logo') ?></h2>
     <div class="field-group">
         <?php if($site->logo()): ?>
@@ -17,9 +17,9 @@
             <small><?php echo s('To improve appearence of logo on your mobi site, we recommend to use an image on GIF or PNG with transparent background. Max size 50kb') ?></small>
         </div>
     </div>
-</fieldset -->
+</fieldset>
             
-<fieldset>
+<fieldset style="position: relative;">
 <?php if ($action == 'edit'): ?>
 	<h2><?php echo s('themes') ?></h2>
 <?php endif;?>
