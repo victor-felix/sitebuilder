@@ -69,6 +69,10 @@ $(function() {
 	});
 	//autoload theme
 	if ($('#theme-frame').data('autoload')) {
-		reloadPreview();
+		var theme_picker = $('.theme-picker > ul > li.selected');
+		var theme = theme_picker.data('theme');
+		var skin = theme_picker.children('.skin-picker').find('li.selected').data('skin');
+		
+		reloadPreview(theme, skin);
 	}
 });
