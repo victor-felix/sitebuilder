@@ -92,11 +92,11 @@
 		<?php echo $this->element('layouts/footer') ?>
 		
 		<div class="live-preview">
-			<p class="show-action">
+			<a href="#" class="show-action">
 				<?php echo s('LIVE PREVIEW')?>
-			</p>
+			</a>>
 			<div class="live-wrapp">
-			<a class="close" href="#">close</a>
+				<a class="close" href="#">close</a>
 				<?php echo $this->element('sites/theme_preview', array('site' => $currentSite))  ?>
 			</div>
 		</div>

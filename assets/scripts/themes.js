@@ -47,6 +47,27 @@ $(function() {
 		reloadPreview(theme, skin);
 	});
 	
+	//handle live preview show
+	$('div.live-preview .show-action').click(function(e) {
+		e.preventDefault();
+		var self = $(this);
+		var preview = $('div.live-preview .live-wrapp');
+		
+		self.hide();
+		preview.animate({width: 'toggle'},500);
+		reloadPreview();
+	});
+	
+	//handle live preview close
+	$('div.live-preview .live-wrapp .close').click(function(e) {
+		e.preventDefault();
+		var self = $(this);
+		var show = $('div.live-preview .show-action');
+		var preview = $('div.live-preview .live-wrapp');
+		preview.animate({width: 'toggle'},500);
+		show.show();
+	});
+	//autoload theme
 	if ($('#theme-frame').data('autoload')) {
 		reloadPreview();
 	}

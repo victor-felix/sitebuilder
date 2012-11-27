@@ -116,6 +116,7 @@
 	left: 33px;
 	width: 320px;
 	height: 480px;
+	background: url(/images/shared/themes/load.gif) no-repeat 50% 45% white;
 }
 
 /**
@@ -137,16 +138,17 @@
 	border-radius: 0 3px 3px 0;
 	-webkit-border-radius: 0 3px 3px 0;
 	-moz-border-radius: 0 3px 3px 0;
-	display: none;
+	text-decoration: none;
 }
 
 .live-preview .live-wrapp {
-	
+	display: none;
 	position: absolute;
 	top: 150px;
 	left: 0;
+	width: 398px;
 	background-color: #303030;
-	padding: 20px 15px 15px 30px;
+	padding: 20px 15px 15px 15px;
 	border-radius: 0 3px 3px 0;
 	-webkit-border-radius: 0 3px 3px 0;
 	-moz-border-radius: 0 3px 3px 0;
@@ -154,11 +156,13 @@
 
 .live-preview .live-wrapp .close {
 	color: #fff;
-	top: 15px;
-	left: 15px;
+	position: absolute;
+	right: 390px;
+	top: 20px;
 	text-indent: -99px;
 	width: 17px;
 	height: 17px;
 	overflow: hidden;
+	display: block;
 	background: url(/images/shared/themes/icon-close.png) no-repeat 0 0;
 }
