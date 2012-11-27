@@ -46,5 +46,8 @@ $(function() {
 		$('#theme').val(theme);
 		reloadPreview(theme, skin);
 	});
-	reloadPreview();
+	
+	if ($('#theme-frame').data('autoload')) {
+		reloadPreview();
+	}
 });
