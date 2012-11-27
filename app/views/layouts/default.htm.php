@@ -90,7 +90,17 @@
 		</div>
 
 		<?php echo $this->element('layouts/footer') ?>
-
+		
+		<div class="live-preview">
+			<p class="show-action">
+				<?php echo s('LIVE PREVIEW')?>
+			</p>
+			<div class="live-wrapp">
+			<a class="close" href="#">close</a>
+				<?php echo $this->element('sites/theme_preview', array('site' => $currentSite))  ?>
+			</div>
+		</div>
+		
 		<?php echo $this->html->script('shared/jquery', 'shared/main', 'shared/markitup', 'shared/async_upload', 'shared/jquery.chosen', 'shared/themes') ?>
 		<?php echo $this->html->scriptsForLayout ?>
 	</body>

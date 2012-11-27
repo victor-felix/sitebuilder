@@ -117,3 +117,48 @@
 	width: 320px;
 	height: 480px;
 }
+
+/**
+*Live Preview
+*/
+.live-preview {
+	
+}
+
+.live-preview .show-action {
+	position: fixed;
+	top: 150px;
+	left: 0;
+	background: url(/images/shared/themes/icon-iphone.png) no-repeat 48% 7px #303030;
+	color: white;
+	padding: 50px 3px 10px 0;
+	width: 70px;
+	text-align: center;
+	border-radius: 0 3px 3px 0;
+	-webkit-border-radius: 0 3px 3px 0;
+	-moz-border-radius: 0 3px 3px 0;
+	display: none;
+}
+
+.live-preview .live-wrapp {
+	
+	position: absolute;
+	top: 150px;
+	left: 0;
+	background-color: #303030;
+	padding: 20px 15px 15px 30px;
+	border-radius: 0 3px 3px 0;
+	-webkit-border-radius: 0 3px 3px 0;
+	-moz-border-radius: 0 3px 3px 0;
+}
+
+.live-preview .live-wrapp .close {
+	color: #fff;
+	top: 15px;
+	left: 15px;
+	text-indent: -99px;
+	width: 17px;
+	height: 17px;
+	overflow: hidden;
+	background: url(/images/shared/themes/icon-close.png) no-repeat 0 0;
+}
