@@ -6,7 +6,7 @@
 			src="" 
 			data-url="<?php echo $url ?>"
 			<?php if ($autoload) echo 'data-autoload="1"'; ?>
-			width="320px" 
+			width="330px" 
 			height="480px"></iframe>
 	</div>
 </div>
