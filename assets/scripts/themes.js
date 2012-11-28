@@ -5,8 +5,15 @@ $(function() {
 		if (theme && skin) {
 			url += "?theme=" + theme + "&skin=" + skin;
 		}
-		frame.attr('src', url);
+		$('.theme-preview .wrapp .load').fadeIn(300, function(){
+			frame.attr('src', url);
+		});
 	}
+	
+	//frame loaded
+	$('#theme-frame').load(function() {
+		$('.theme-preview .wrapp .load').fadeOut(500);
+	});
 	
 	//handle theme selection
 	$('.theme-picker > ul > li').click(function(e) {
@@ -67,6 +74,7 @@ $(function() {
 		preview.animate({width: 'toggle'},500);
 		show.show();
 	});
+		
 	//autoload theme
 	if ($('#theme-frame').data('autoload')) {
 		var theme_picker = $('.theme-picker > ul > li.selected');

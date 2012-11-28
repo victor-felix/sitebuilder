@@ -113,12 +113,25 @@
 .theme-preview .wrapp {
 	position: absolute;
 	top: 132px;
-	left: 25px;
-	width: 320px;
-	height: 480px;
-	background: url(/images/shared/themes/load.gif) no-repeat 50% 45% white;
+	left: 22px;
+	width: 339px;
+	height: 483px;
+	background: white;
 }
 
+.theme-preview  #theme-frame {
+	width: 335px;
+	height: 480px;
+}
+
+.theme-preview .wrapp .load {
+	background: url(/images/shared/themes/load.gif) no-repeat 50% 45% #fff;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
 /**
 *Live Preview
 */
