@@ -8,6 +8,7 @@
 }
 .theme-picker {
 	margin-bottom: 5px;
+	min-height: 560px;
 }
 
 .theme-picker > ul > li {
@@ -132,6 +133,13 @@
 	left: 0;
 	top: 0;
 }
+
+.form-edit .theme-preview {
+	position: absolute;
+	right: -40px;
+	top: 28px;
+}
+
 /**
 *Live Preview
 */
