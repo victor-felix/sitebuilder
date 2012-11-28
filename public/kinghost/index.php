@@ -1,5 +1,5 @@
 <?php
 
-$segment = 'example';
+$segment = 'kinghost';
 
 require dirname(dirname(__DIR__)) . '/meu-site-builder/dispatch.php';
