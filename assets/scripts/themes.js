@@ -36,20 +36,19 @@ $(function() {
 	
 	//handle skin selection
 	$('.skin-picker li').click(function(e) {
-		e.preventDefault();
+		e.stopPropagation();
 		var self = $(this);
-		var theme_picker = self.parent('ul');
+		var parentTheme = self.parents('li:first');
 		var skin = self.data('skin');
-		var theme = theme_picker.data('theme');
-		
+		var theme = parentTheme.data('theme');
 		//select skin
-		theme_picker.children('li.selected').removeClass('selected');
+		parentTheme.find('li.selected').removeClass('selected');
 		self.addClass('selected');
 		$('#skin').val(skin);
 		
 		//select theme
-		$('.theme-picker > ul > li.selected').removeClass('selected');
-		theme_picker.addClass('selected');
+		parentTheme.parent().children('li.selected').removeClass('selected');
+		parentTheme.addClass('selected');
 		$('#theme').val(theme);
 		reloadPreview(theme, skin);
 	});
@@ -80,7 +79,6 @@ $(function() {
 		var theme_picker = $('.theme-picker > ul > li.selected');
 		var theme = theme_picker.data('theme');
 		var skin = theme_picker.children('.skin-picker').find('li.selected').data('skin');
-		
 		reloadPreview(theme, skin);
 	}
 	
