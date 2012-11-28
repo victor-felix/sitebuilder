@@ -20,16 +20,11 @@
 </fieldset>
             
 <fieldset style="position: relative;">
-<?php if ($action == 'edit'): ?>
-	<h2><?php echo s('themes') ?></h2>
-<?php endif;?>
 
 <?php echo $this->element('sites/themes_list', array(
 		'themes' => $themes,
         'site' => $site)) 
 ?>
 
-<?php if ($action != 'edit'): ?>
 <?php echo $this->element('sites/theme_preview', array( 'site' => $site, 'autoload' => true))  ?>
-<?php endif;?>
 </fieldset>

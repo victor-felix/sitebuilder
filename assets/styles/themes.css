@@ -3,7 +3,7 @@
 */
 .themes {
 	float: left;
-	padding: 40px 0 0 0;
+	padding: 40px 0 0 25px;
 	width: 530px;
 }
 .theme-picker {
@@ -128,7 +128,7 @@
 
 .live-preview .show-action {
 	position: fixed;
-	top: 150px;
+	top: 250px;
 	left: 0;
 	background: url(/images/shared/themes/icon-iphone.png) no-repeat 48% 7px #303030;
 	color: white;
@@ -143,8 +143,8 @@
 
 .live-preview .live-wrapp {
 	display: none;
-	position: absolute;
-	top: 150px;
+	position: fixed;
+	top: 20px;
 	left: 0;
 	width: 398px;
 	background-color: #303030;
