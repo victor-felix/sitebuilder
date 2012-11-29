@@ -94,7 +94,7 @@
 		<div class="live-preview">
 			<a href="#" class="show-action">
 				<?php echo s('LIVE PREVIEW')?>
-			</a>>
+			</a>
 			<div class="live-wrapp">
 				<a class="close" href="#">close</a>
 				<?php echo $this->element('sites/theme_preview', array('site' => $currentSite))  ?>
