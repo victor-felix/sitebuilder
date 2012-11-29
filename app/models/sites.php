@@ -489,8 +489,12 @@ class Sites extends AppModel {
 		$feed->enable_cache(false);
 		$feed->set_feed_url($value);
 		$feed->init();
-
-		return !$feed->error();
+		
+		if ($feed->error()) {
+			Debug::log("Rss: " . $feed->error());
+			return false;
+		}
+		return true;
 	}
 }
 
