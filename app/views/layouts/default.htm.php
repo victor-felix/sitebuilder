@@ -22,7 +22,7 @@
 					'class' => 'logo'
 				)) ?>
 			</div>
-			<div class="menu">
+			<div class="contextual-navbar">
 				<div class="navigation" id="navbar">
 					<div class="sites">
 						<p class="business-name"><span><?php echo e($currentSite->title) ?></span></p>
@@ -69,14 +69,31 @@
 						<!-- <?php echo $this->html->link(s('Log out ›'), '/logout') ?> -->
 					</div>
 				</div>
-				<ul>
+				<ul class="dropdown">
 					<?php if(!$currentSite->hide_categories): ?>
 						<li><?php echo $this->html->link(e($currentSite->rootCategory()->title), '/categories') ?></li>
 					<?php endif ?>
-					<li><?php echo $this->html->link(s('Settings'), '/settings') ?></li>
+					<li>
+						<p><?php echo s('content')?><span class="arrow"></span></p>
+						<ul>
+							<li><?php echo $this->html->link(s('conpany info'), '/settings') ?></li>
+						</ul>
+					</li>
 					<?php if(Users::ROLE_ADMIN == $currentSite->role): ?>
-					<li><?php echo $this->html->link(s('Customization'), '/settings/customize') ?></li>
-					<li><?php echo $this->html->link(s('Users'), '/sites/users') ?></li>
+					<li>
+						<p><?php echo s('appearance')?><span class="arrow"></span></p>
+						<ul>
+							<li><?php echo $this->html->link(s('themes'), '/settings/customize') ?></li>
+						</ul>
+					</li>
+					<li>
+						<p><?php echo s('settings')?><span class="arrow"></span></p>
+						<ul>
+							<!-- li><?php echo $this->html->link(s('general'), '/settings/customize') ?></li>
+							<li><?php echo $this->html->link(s('custom domain'), '/settings/customize') ?></li -->
+							<li><?php echo $this->html->link(s('users'), '/sites/users') ?></li>
+						</ul>
+					</li>
 					<?php endif; ?>
 				</ul>
 			</div>
