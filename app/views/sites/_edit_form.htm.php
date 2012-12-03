@@ -43,73 +43,6 @@
 			<?php else: ?>
 				<small><?php echo s("You can't change the url of your mobile site") ?></small>
 			<?php endif ?>
-
-			<div class="site-mobile-custom-domain">
-				<div class="input checkbox">
-					<?php echo $this->form->input('custom_domain', array(
-						'label' => false,
-						'div' => false,
-						'type' => 'checkbox',
-						'class' => 'ui-checkbox'
-					)) ?>
-				</div>
-				<label for="FormCustomDomain" class="checkbox"><?php echo s('use a custom domain name') ?></label>
-
-				<div class="input text">
-					<?php foreach ($site->domains() as $id => $domain): 
-						if($domain != $site->slug.'.'.MeuMobi::domain()):
-					?>
-					<p class="meumobi-url clear">
-						<span>http://</span>
-						<?php echo $this->form->input("domains[$id]", array(
-							'label' => false,
-							'div' => false,
-							'type' => 'text',
-							'class' => 'ui-text',
-							'value' =>  $domain,
-						)) ?>
-					</p>
-					<?php 
-					endif;
-					endforeach; ?>
-					<p class="meumobi-url clear">
-						<span>http://</span>
-						<?php echo $this->form->input('domains[]', array(
-							'label' => false,
-							'div' => false,
-							'type' => 'text',
-							'class' => 'ui-text'
-						)) ?>
-					</p>
-					<a href="#" class="js-duplicate-previous"><?php echo s('add domain')?></a>
-					<div class="clear"></div>
-				</div>
-			</div>
-		</div>
-	</div>
-</fieldset>
-
-<a href="#" class="fieldset-expand"><?php echo s('News feed - RSS') ?> <span><?php echo s('Optional') ?></span></a>
-<fieldset style="display:none">
-	<h2><?php echo s('News feed - RSS') ?></h2>
-	<div class="field-group">
-		<div class="form-grid-460 first">
-			<span class="optional"><?php echo s('Optional') ?></span>
-			<?php echo $this->form->input('feed_title', array(
-				'label' => s('Title'),
-				'type' => 'text',
-				'class' => 'ui-text large'
-			)) ?>
-		</div>
-
-		<div class="form-grid-460 first">
-			<span class="optional"><?php echo s('Optional') ?></span>
-			<?php echo $this->form->input('feed_url', array(
-				'label' => s('url of RSS feed'),
-				'type' => 'text',
-				'class' => 'ui-text large'
-			)) ?>
-			<small><?php echo s('RSS (most commonly expanded as "Really Simple Syndication") is a family of web feed formats used to publish frequently updated works—such as blog entries, news headlines—in a standardized format. You can use it to feed news section of your mobi site') ?></small>
 		</div>
 	</div>
 </fieldset>
@@ -193,25 +126,6 @@
 				'class' => 'ui-text'
 			)) ?>
 		</div>
-
-		<div class="form-grid-220 first">
-			<?php echo $this->form->input('timezone', array(
-				'label' => s('Timezone'),
-				'type' => 'select',
-				'class' => 'ui-select',
-				'options' => $site->timezones()
-			)) ?>
-		</div>
-
-		<div class="form-grid-220">
-			<?php echo $this->form->input('date_format', array(
-				'label' => s('Date format'),
-				'type' => 'select',
-				'class' => 'ui-select',
-				'options' => $site->dateFormats()
-			)) ?>
-		</div>
-
 	</div>
 </fieldset>
 
@@ -288,21 +202,6 @@
 				'class' => 'ui-text large'
 			)) ?>
 			<small><?php echo s('Ex: http://www.yourwebsite.com/') ?></small>
-		</div>
-	</div>
-</fieldset>
-
-<a href="#" class="fieldset-expand"><?php echo s('Google Analytics') ?> <span><?php echo s('Optional') ?></span></a>
-<fieldset style="display:none">
-	<h2><?php echo s('Google Analytics') ?></h2>
-	<div class="field-group">
-		<div class="form-grid-460 first">
-			<span class="optional"><?php echo s('Optional') ?></span>
-			<?php echo $this->form->input('google_analytics', array(
-				'label' => s('Account Number'),
-				'type' => 'text',
-				'class' => 'ui-text large'
-			)) ?>
 		</div>
 	</div>
 </fieldset>

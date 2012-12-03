@@ -151,16 +151,11 @@ class SitesController extends AppController {
 	}
 	
 	public function custom_domain() {
-		$site = $this->getCurrentSite();
-		if(!empty($this->data)) {
-			$site->updateAttributes($this->data);
-			if($site->validate() && $site->save()) {
-				Session::writeFlash('success', s('Configuration successfully saved'));
-			}
-		}
-		$this->set(array(
-			'site' => $site,
-		));
+		$this->general();
+	}
+	
+	public function news() {
+		$this->general();
 	}
 	
 	public function finished() {

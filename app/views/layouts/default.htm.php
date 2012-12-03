@@ -77,6 +77,7 @@
 						<p><?php echo s('content')?><span class="arrow"></span></p>
 						<ul>
 							<li><?php echo $this->html->link(s('conpany info'), '/settings') ?></li>
+							<li><?php echo $this->html->link(s('News'), '/sites/news') ?></li>
 						</ul>
 					</li>
 					<?php if(Users::ROLE_ADMIN == $currentSite->role): ?>
@@ -89,8 +90,8 @@
 					<li>
 						<p><?php echo s('settings')?><span class="arrow"></span></p>
 						<ul>
-							<!-- li><?php echo $this->html->link(s('general'), '/settings/customize') ?></li>
-							<li><?php echo $this->html->link(s('custom domain'), '/settings/customize') ?></li -->
+							<li><?php echo $this->html->link(s('general'), '/settings/general') ?></li>
+							<li><?php echo $this->html->link(s('custom domain'), '/settings/custom_domain') ?></li>
 							<li><?php echo $this->html->link(s('users'), '/sites/users') ?></li>
 						</ul>
 					</li>
