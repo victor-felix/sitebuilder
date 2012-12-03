@@ -12,6 +12,7 @@ Config::write('Segments', array_merge(Config::read('Segments'), array(
   '%{name}' => array(
     'title' => '%{title}',
     'items' => array('%{item_types}'),
+    'extensions' => array('%{extensions}'),
     'root' => '%{root}',
     'email' => array('%{email}' => '%{title}'),
     'hideCategories' => %{hide_categories},
@@ -34,7 +35,8 @@ require dirname(dirname(__DIR__)) . '/meu-site-builder/dispatch.php';
       options = { name: name }
       options[:title] = ask "title:"
       options[:email] = ask "email:"
-      options[:user_name] = ask "user's name:"
+      options[:user_first] = ask "user's first name:"
+      options[:user_last] = ask "user's last name:"
       options[:user_email] = ask "user's email:"
       options[:user_password] = ask "user's password:"
       options[:root] = ask "root category title:"
@@ -42,7 +44,9 @@ require dirname(dirname(__DIR__)) . '/meu-site-builder/dispatch.php';
       options[:hide_categories] = yes?("hide categories? (y/n)") ? 1 : 0
       options[:enable_signup] = yes?("enable signup? (y/n)") ? 1 : 0
       options[:item_types] = ask "item types (separated by spaces):"
+      options[:extensions] = ask "extensions (separated by spaces):"
       options[:item_types] = options[:item_types].split(" ").join("', '")
+      options[:extensions] = options[:extensions].split(" ").join("', '")
 
       directory "public/example", "public/#{name}"
       empty_directory "public/#{name}/scripts"
@@ -58,7 +62,7 @@ require dirname(dirname(__DIR__)) . '/meu-site-builder/dispatch.php';
       create_file "config/segments/#{name}.php", SegmentTemplate % options
       create_file "public/#{name}/index.php", IndexTemplate % options
 
-      run "php #{self.class.source_root}/meu-site-builder/script/create_user.php '#{options[:user_name]}' '#{options[:user_email]}' '#{options[:user_password]}'"
+      run "php #{self.class.source_root}/meu-site-builder/script/create_user.php '#{options[:user_first]}' '#{options[:user_last]}' '#{options[:user_email]}' '#{options[:user_password]}'"
       say "Your email is: #{options[:user_email]}"
       say "Your password is: #{options[:user_password]}"
 
