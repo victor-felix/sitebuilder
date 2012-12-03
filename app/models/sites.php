@@ -91,7 +91,17 @@ class Sites extends AppModel {
 	}
 
 	public function custom_domain() {
-		return !empty($this->data['domain']) && strpos($this->domain, '.' . MeuMobi::domain()) === false;
+		try {
+			$domain = Model::load ( 'SitesDomains' )->first(array(
+				'conditions' => array(
+					'site_id' => $this->id,
+					'domain !=' =>  $this->slug . '.' . MeuMobi::domain(),
+				),		
+			));
+			return $domain ? $domain->domain : null;
+		} catch (Exception $e) {
+			return null;
+		} 
 	}
 
 	public function firstByDomain($domain) {
@@ -302,15 +312,15 @@ class Sites extends AppModel {
 	{
 		$siteId = isset($data['id']) ? $data['id'] : null;
 		//check if use a default or custon domain
-		if (isset($data['custom_domain'])) {
-			if ($data['custom_domain']
-				&& (isset($data['domains']) && reset($data['domains']))) {
-				//add the first custon domain to the domain field
-				$domain = reset($data['domains']);
-			} else {
-				$domain = $data['slug'] . '.' . MeuMobi::domain();
-				$data['domains'] = (array)$domain;
+		if (isset($data['slug']) || isset($data['domains'])) {
+			$data['domains'][] = $data['slug'] . '.' . MeuMobi::domain();
+			$domain = reset($data['domains']);
+			
+			//add the first custom domain to the domain field
+			if ($custom = $this->custom_domain()) {
+				$domain = $custom;
 			}
+			
 			//check if domain already exists
 			if ($exists = Model::load('SitesDomains')->check($domain)) {
 				if ($exists->site_id != $siteId ) {

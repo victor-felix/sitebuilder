@@ -6,7 +6,7 @@
     <div class="clear"></div>
 </div>
 
-<?php echo $this->form->create('/sites/general/' . $site->id, array(
+<?php echo $this->form->create('/sites/custom_domain/' . $site->id, array(
     'id' => 'form-general-site-info',
     'class' => 'form-edit',
     'object' => $site,
@@ -19,16 +19,6 @@
 		<div class="form-grid-460 first">
 			
 			<div class="site-mobile-custom-domain">
-				<div class="input checkbox">
-					<?php echo $this->form->input('custom_domain', array(
-						'label' => false,
-						'div' => false,
-						'type' => 'checkbox',
-						'class' => 'ui-checkbox'
-					)) ?>
-				</div>
-				<label for="FormCustomDomain" class="checkbox"><?php echo s('use a custom domain name') ?></label>
-
 				<div class="input text">
 					<?php foreach ($site->domains() as $id => $domain): 
 						if($domain != $site->slug.'.'.MeuMobi::domain()):

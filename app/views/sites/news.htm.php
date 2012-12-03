@@ -6,7 +6,7 @@
     <div class="clear"></div>
 </div>
 
-<?php echo $this->form->create('/sites/general/' . $site->id, array(
+<?php echo $this->form->create('/sites/news/' . $site->id, array(
     'id' => 'form-general-site-info',
     'class' => 'form-edit',
     'object' => $site,
