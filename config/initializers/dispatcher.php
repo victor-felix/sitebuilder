@@ -128,7 +128,6 @@ Router::resources('extensions', $defaults);
 Router::resources('items', $defaults);
 Router::resources('news', array('only' => 'index') + $defaults);
 Router::resources('images', $defaults);
-Router::resources('sites', $defaults);
 
 Dispatcher::applyFilter('run', function($self, $params, $chain) {
     if($route = Router::parse($params['request'])) {
@@ -182,7 +181,7 @@ Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
             foreach($data as $row) {
                 $r = array();
                 foreach($header as $column) {
-                    if(!is_array($row[$column])) {
+                    if(is_string($row[$column])) {
                         $r []= $row[$column];
                     }
                     else {
