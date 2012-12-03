@@ -134,12 +134,15 @@
 	top: 0;
 }
 
-.form-edit .theme-preview {
+.form-edit .theme-preview, .form-register .theme-preview {
 	position: absolute;
 	right: -40px;
 	top: 28px;
 }
 
+.form-register .theme-picker {
+	min-height: 620px
+}
 /**
 *Live Preview
 */
