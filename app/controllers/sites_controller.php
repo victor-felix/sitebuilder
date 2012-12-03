@@ -134,7 +134,33 @@ class SitesController extends AppController {
 			$this->redirect('/');
 			return;
 		}
-		$this->customizeSite(s('Configuration successfully saved.'), '/sites/finished');
+		$this->customizeSite(s('Configuration successfully saved'), '/sites/finished');
+	}
+	
+	public function general() {
+		$site = $this->getCurrentSite();
+		if(!empty($this->data)) {
+			$site->updateAttributes($this->data);
+			if($site->validate() && $site->save()) {
+				Session::writeFlash('success', s('Configuration successfully saved'));
+			}
+		}
+		$this->set(array(
+			'site' => $site,
+		));
+	}
+	
+	public function custom_domain() {
+		$site = $this->getCurrentSite();
+		if(!empty($this->data)) {
+			$site->updateAttributes($this->data);
+			if($site->validate() && $site->save()) {
+				Session::writeFlash('success', s('Configuration successfully saved'));
+			}
+		}
+		$this->set(array(
+			'site' => $site,
+		));
 	}
 	
 	public function finished() {
