@@ -311,9 +311,11 @@ class Sites extends AppModel {
 	protected function saveDomain($data)
 	{
 		$siteId = isset($data['id']) ? $data['id'] : null;
-		//check if use a default or custon domain
-		if (isset($data['slug']) || isset($data['domains'])) {
-			$data['domains'][] = $data['slug'] . '.' . MeuMobi::domain();
+		//check if has a default or custom domains
+		if ((isset($data['slug']) && trim($data['slug'])) 
+			|| isset($data['domains'])) {
+			$defaultDomain = $data['slug'] . '.' . MeuMobi::domain();
+			$data['domains'][] = $defaultDomain;
 			$domain = reset($data['domains']);
 			
 			//add the first custom domain to the domain field
@@ -327,7 +329,7 @@ class Sites extends AppModel {
 					throw new RuntimeException("The {$domain} is not available");
 				}
 			}
-			$data['domain'] = $domain;
+			$data['domain'] = $domain ? $domain : $defaultDomain;
 		}
 
 		return $data;
