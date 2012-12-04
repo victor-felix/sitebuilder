@@ -76,7 +76,7 @@
 					<li>
 						<p><?php echo s('content')?><span class="arrow"></span></p>
 						<ul>
-							<li><?php echo $this->html->link(s('conpany info'), '/settings') ?></li>
+							<li><?php echo $this->html->link(s('Company Info'), '/settings') ?></li>
 							<li><?php echo $this->html->link(s('News'), '/sites/news') ?></li>
 						</ul>
 					</li>
@@ -90,9 +90,9 @@
 					<li>
 						<p><?php echo s('settings')?><span class="arrow"></span></p>
 						<ul>
-							<li><?php echo $this->html->link(s('general'), '/settings/general') ?></li>
-							<li><?php echo $this->html->link(s('custom domain'), '/settings/custom_domain') ?></li>
-							<li><?php echo $this->html->link(s('users'), '/sites/users') ?></li>
+							<li><?php echo $this->html->link(s('General'), '/settings/general') ?></li>
+							<li><?php echo $this->html->link(s('Custom Domain'), '/settings/custom_domain') ?></li>
+							<li><?php echo $this->html->link(s('Users'), '/sites/users') ?></li>
 						</ul>
 					</li>
 					<?php endif; ?>
