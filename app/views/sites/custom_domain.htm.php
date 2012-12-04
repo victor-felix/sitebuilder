@@ -1,7 +1,7 @@
 <div class="page-heading">
     <div class="grid-4 first">&nbsp;</div>
     <div class="grid-8">
-        <h1><?php echo $this->pageTitle = s('General') ?></h1>
+        <h1><?php echo $this->pageTitle = s('Custom Domain') ?></h1>
     </div>
     <div class="clear"></div>
 </div>
@@ -14,7 +14,7 @@
 )) ?>
 
 <fieldset>
-	<h2><?php echo s('details about your business') ?></h2>
+	<h2><?php echo s('Custom Domain') ?></h2>
 	<div class="field-group">
 		<div class="form-grid-460 first">
 			
