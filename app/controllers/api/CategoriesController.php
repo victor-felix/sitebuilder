@@ -50,6 +50,7 @@ class CategoriesController extends ApiController
 	}
 
 	public function create() {
+		$this->requireUserAuth();
 		$category = $this->site()->buildCategory($this->request->data);
 
 		if($category->save()) {
@@ -63,6 +64,7 @@ class CategoriesController extends ApiController
 	}
 
 	public function update() {
+		$this->requireUserAuth();
 		$category = Model::load('Categories')->firstBySiteIdAndId($this->site()->id, $this->param('id'));
 		$category->updateAttributes(array(
 			'site_id' => $this->site()->id
@@ -79,6 +81,7 @@ class CategoriesController extends ApiController
 	}
 
 	public function destroy() {
+		$this->requireUserAuth();
 		Model::load('Categories')->delete($this->param('id'));
 		$this->response->status(200);
 	}

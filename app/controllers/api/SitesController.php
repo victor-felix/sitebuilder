@@ -5,17 +5,8 @@ namespace app\controllers\api;
 use Model;
 
 class SitesController extends ApiController {
-    public function index() {
-        $sites = Model::load('Sites')->all();
-        $etag = $this->etag($sites);
-        $self = $this;
-
-        return $this->whenStale($etag, function() use($sites, $self) {
-            return $self->toJSON($sites);
-        });
-    }
-
     public function show() {
+		$this->requireUserAuth();
         $slug = $this->param('slug', $this->param('id'));
         $site = Model::load('Sites')->firstByDomain($slug);
         if($slug) {

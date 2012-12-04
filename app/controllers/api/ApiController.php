@@ -8,7 +8,7 @@ use meumobi\sitebuilder\Site;
 use DateTime;
 
 class ApiController extends \lithium\action\Controller {
-	protected $beforeFilter = array('log', 'checkToken', 'checkSite', 'checkEtag');
+	protected $beforeFilter = array('log', 'checkSite', 'checkEtag');
 	protected $site;
 	protected $params;
 
@@ -81,18 +81,6 @@ class ApiController extends \lithium\action\Controller {
 		$domain = $this->request->params['slug'];
 		return \Model::load('Sites')->firstByDomain($domain);
 		return Site::findByDomain($domain);
-	}
-	
-
-	protected function checkToken() {
-		if(\Config::read('Api.ignoreAuth')) return;
-
-		$token = $this->request->env('HTTP_X_AUTHENTICATION_TOKEN');
-
-		if($token != 'c8e75b59161a5922c04ede9a533867e371fa2933') {
-			$this->response->status(403);
-			return false;
-		}
 	}
 
 	protected function log() {
@@ -174,4 +162,18 @@ class ApiController extends \lithium\action\Controller {
 		$data = $this->_render['data'];
 		$media::render($this->response, $data, $options + array('request' => $this->request));
 	}
+
+	protected function requireUserAuth()
+	{
+		if(\Config::read('Api.ignoreAuth')) return;
+
+		$token = $this->request->env('HTTP_X_AUTHENTICATION_TOKEN');
+		if($token != 'c8e75b59161a5922c04ede9a533867e371fa2933') {
+			throw new NotAuthenticatedException();
+		}
+	}
+}
+
+class NotAuthenticatedException extends \Exception {
+    protected $message = 'authentication required';
 }
