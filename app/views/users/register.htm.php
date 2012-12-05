@@ -10,16 +10,20 @@
 
 <?php echo $this->form->create('/users/register/' . $invite_token, array(
     'id' => 'form-register-personal-info',
-    'class' => 'form-register',
+    'class' => 'form-register form-edit',
     'object' => $user
 )) ?>
 
 <fieldset>
-    <h2><?php echo s('Personal details') ?></h2>
+    <div class="grid-4">
+        <div class="tip">
+			<h2 class="greater"><?php echo s('Personal information') ?></h2>
+		</div>
+    </div>
     <div class="field-group">
         <div class="form-grid-220 first">
             <?php echo $this->form->input('firstname', array(
-                'label' => s('Firstname'),
+                'label' => s('First Name'),
                 'type' => 'text',
                 'class' => 'ui-text'
             )) ?>
@@ -27,7 +31,7 @@
         
         <div class="form-grid-220">
             <?php echo $this->form->input('lastname', array(
-                'label' => s('Lastname'),
+                'label' => s('Last Name'),
                 'type' => 'text',
                 'class' => 'ui-text'
             )) ?>
@@ -39,7 +43,7 @@
                 'type' => 'text',
                 'class' => 'ui-text large'
             )) ?>
-            <small><?php echo s('Type a valid E-mail address.') ?><?php echo s('An activation message should be sent') ?></small>
+            <small><?php echo s('Type a valid email address. An activation message should be sent to the informed address') ?></small>
         </div>
         
         <div class="form-grid-220 first">
@@ -48,7 +52,11 @@
                 'type' => 'password',
                 'class' => 'ui-text'
             )) ?>
-            <small><?php echo s('The password should contain at least 6 characters.') ?></small>
+            <small style="width: 300px;">
+            		<?php echo s('Your password needs to be at least 6 characters long.') ?>
+					<br>
+            		<?php echo s('Tip: to choose a safer password, avoid simple words and use uppercase and lowercasa letters and numbers.') ?>
+            </small>
         </div>
         
         <div class="form-grid-220 first">

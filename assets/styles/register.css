@@ -85,133 +85,6 @@ body {
   color: #c02926;
 }
 
-.form-register fieldset {
-	border: 0;
-	/*border-bottom: 1px solid #DDD;*/
-	clear: both;
-	padding-bottom: 10px;
-}
-
-.form-register fieldset.actions {
-	border: 0;
-	padding: 25px;
-}
-
-.form-register fieldset.actions button {
-	float: right;
-}
-
-.form-register fieldset h2 {
-	color: #c02926;
-	float: left;
-	font: lighter 24px/22px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica,arial,sans-serif;
-	margin-right: 20px;
-	padding: 40px 0 30px 25px;
-	width: 220px;
-}
-
-.form-register .field-group {
-	float: left;
-	padding: 40px 0 0 0;
-	width: 460px;
-}
-
-.form-register .form-grid-220 {
-	position: relative;
-	float: left;
-	margin-left: 20px;
-	margin-bottom: 30px;
-	width: 220px;
-}
-
-.form-register .form-grid-460 {
-	position: relative;
-	clear: both;
-	margin-bottom: 30px;
-	width: 460px;
-}
-
-.form-register .form-grid-220.first {
-	margin-left: 0;
-	clear: left;
-}
-
-.form-register label {
-	display: block;
-	font-size: 12px;
-	color: #666;
-	margin-bottom: 2px;
-}
-
-.form-register small {
-	color: #888;
-	display: block;
-	font-size: 11px;
-	line-height: 12px;
-	margin-top: 8px;
-}
-
-.form-register .optional {
-	color: #CCC;
-	position: absolute;
-	right: 0;
-	font-size: 11px;
-	font-style: italic;
-}
-
-.form-register p.error {
-	color: #F00;
-	font-style: italic;
-	margin-top: 4px;
-}
-
-.form-register .fieldset-expand {
-	border-bottom: 1px solid #DDD;
-	color: #c02926;
-	display: block;
-	font: lighter 18px/22px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica,arial,sans-serif;
-	text-decoration: none;
-	outline: none;
-	padding: 30px 25px;
-}
-
-	.form-register .fieldset-expand:hover {
-		background: url(/images/shared/layout/ui-button-white.png) center repeat-x;
-		border-bottom-color: #CCC;
-		-moz-box-shadow: 0 1px 0px #EEE;
-		-webkit-box-shadow: 0 1px 0px #EEE;
-	}
-	
-	.form-register .fieldset-expand:active {
-		background: url(/images/shared/layout/ui-button-white-active.png) center repeat-x;
-	}
-	
-	.form-register .fieldset-expand span {
-		background: url(/images/shared/register/arrow-expand-fieldset.png) right no-repeat;
-		font-style: italic;
-		color: #999;
-		float: right;
-		font-size: 16;
-		padding-right: 40px;
-	}
-	
-.form-register .meumobi-url {
-}
-
-.form-register .meumobi-url span {
-	color: #999;
-	font-size: 17px;
-	display: inline-block;
-	line-height: 29px;
-	margin-right: 5px;
-	float: left;
-}
-
-.form-register .meumobi-url input {
-	float: left;
-	margin-right: 5px;
-}
-
 /*
 * register theme
 */
@@ -336,6 +209,10 @@ body {
 	max-width: 100%;
 }
 
+.login .form-register {
+	border: 0;
+}
+
 .login .form-register .field-group {
 	float: none;
 	margin: 0 auto;
@@ -349,10 +226,19 @@ body {
 
 .login .form-register fieldset {
 	padding: 0;
+	border: 0;
 }
 
 .login .form-register fieldset.actions {
 	padding: 0 20px 25px;
+}
+
+.login .form-register fieldset.actions button {
+	margin: 0;
+}
+
+.login .form-register .checkbox, .login .form-edit div.input.checkbox input {
+	margin: 0;
 }
 
 .login .ui-text, .login .ui-textarea {

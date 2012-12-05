@@ -33,8 +33,9 @@
 	}
 
 	.ui-button.larger {
-		font-size: 22px;
-		padding: 9px 18px;
+		font-size: 28px;
+		padding: 4px 18px;
+		text-transform: lowercase;
 	}
 
 	.ui-button.small {

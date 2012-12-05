@@ -3,7 +3,7 @@
 <?php $invite_token = isset($invite_token) ? $invite_token : '' ?>
 
 <?php echo $this->form->create(Mapper::here(), array(
-	'class' => 'form-register',
+	'class' => 'form-register form-edit',
 	'id' => 'FormLogin'
 )) ?>
 
