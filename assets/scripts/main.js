@@ -405,6 +405,17 @@ $.extend($.easing, {
 		this.init();
 	}
 	$.Paginate();
+	
+	//handle cunstom domain
+	var change_custom_domain = function(e){
+		var self = $(this);
+		if (self.val()) {
+			$('.form-edit .current-custom-domain').html(self.val());
+		}
+	};
+	
+	content.delegate('.form-edit .domains .ui-text', 'focusin', change_custom_domain);
+	content.delegate('.form-edit .domains .ui-text', 'keyup', change_custom_domain);
 })(jQuery);
 
 $(function() {
@@ -470,6 +481,7 @@ $(function() {
 	$('body').click(function(e){
 		$("#navbar .open").removeClass("open");
 	})
+	
 	$("#navbar")
 		.delegate(".business-name", 'click', function(e){
 			e.stopPropagation();
@@ -481,15 +493,15 @@ $(function() {
 			$(this).closest(".user").toggleClass("open");
 			$("#navbar .sites.open").removeClass("open")
 		});
-	/**
-	 *Implement bussiness description counter
-	 */
+	
+	//Implement bussiness description counter
 	$('#form-edit-site-info #businessDescription').keyup(function(){
 		var remainVal = $(this).attr('maxlenght') - $(this).val().length;
 		$('#businessCounter').html(remainVal);
 	});
+	
 	$('#form-edit-site-info #businessDescription').keyup();
-	/* end counter	*/
+	
 });
 
 $(window).load(function(){

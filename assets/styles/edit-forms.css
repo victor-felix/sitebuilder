@@ -35,6 +35,12 @@
 
 .form-edit .tip h2 {
 	padding: 0 0 10px;
+	float: none;
+}
+
+.form-edit .tip h2.greater {
+	font-size: 30px;
+	line-height: 26px;
 }
 
 .form-edit .tip p {
@@ -42,6 +48,20 @@
 	line-height: 18px;
 	padding-right: 30px;
 	color: #999;
+}
+
+.form-edit .tip p img.icon {
+	float: left;
+	margin: 0 10px 7px 0;
+}
+
+.form-edit .tip p img.icon + span {
+	padding-top: 10px;
+	display: block;
+}
+
+.form-edit .tip small {
+	clear: both;
 }
 
 .form-edit .field-group {
@@ -76,7 +96,7 @@
 	clear: left;
 }
 
-.form-edit label {
+.form-edit label, .form-edit .label {
 	display: block;
 	font-size: 12px;
 	color: #666;
@@ -134,7 +154,26 @@
 		width: 30px;
 	}
 	
-.form-edit .meumobi-url {
+.form-edit .domains {
+	padding: 25px 0;
+	clear: both;
+}
+
+.form-edit .domains p {
+	margin: 10px 0;
+}
+
+.form-edit .custom-domain-setup {
+	margin: 5px 0;
+}
+
+.form-edit .custom-domain-setup small {
+	font-size: 13px;
+}
+
+.form-edit .custom-domain-setup span {
+	color: #999;
+	font-size: 17px;
 }
 
 .form-edit .meumobi-url span {
@@ -149,6 +188,14 @@
 .form-edit .meumobi-url input {
 	float: left;
 	margin-right: 5px;
+}
+
+.form-edit p.code {
+	border: 1px solid #CCC;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	padding: 10px;
 }
 
 .form-edit .logo {

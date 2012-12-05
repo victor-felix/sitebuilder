@@ -89,7 +89,11 @@ class Sites extends AppModel {
 			return $category->title;
 		}
 	}
-
+	
+	public function defaultDomain() {
+		return $this->slug . '.' . MeuMobi::domain();
+	}
+	
 	public function custom_domain() {
 		try {
 			$domain = Model::load ( 'SitesDomains' )->first(array(

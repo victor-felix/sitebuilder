@@ -124,6 +124,11 @@
 		width: 446px;
 	}
 	
+	.ui-text.greater {
+		padding: 6px;
+		font-size: 21px;
+	}
+	
 	.ui-text.disabled,
 	.ui-text.disabled:hover,
 	.ui-text.disabled:active,

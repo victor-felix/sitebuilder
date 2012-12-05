@@ -4,7 +4,7 @@
         <?php echo $this->html->charset() ?>
         <title><?php echo $this->controller->getSegment()->title, ' - ' , $this->pageTitle ?></title>
         <link rel="shortcut icon" href="<?php echo Mapper::url("/images/layout/favicon.png") ?>" type="image/png" />
-        <?php echo $this->html->stylesheet('shared/base', 'shared/register', 'shared/uikit', 'shared/themes','segment') ?>
+        <?php echo $this->html->stylesheet('shared/base', 'shared/register', 'shared/edit-forms', 'shared/uikit', 'shared/themes','segment') ?>
     </head>
     
     <body>
