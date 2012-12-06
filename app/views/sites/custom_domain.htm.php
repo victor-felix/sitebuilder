@@ -64,22 +64,22 @@
 					<div class="clear"></div>
 				</div>
 				
-				<?php if ($custom):?>
+				
 				<p class="label">Now visit your website hosting provider and create a CNAME record with these values:</p>
 				
 				<p class="custom-domain-setup">
-					<small style="display: inline;">sub-domain: </small>
-					<span class="current-custom-domain"><?php echo $custom;?>	</span>
+					<small style="display: inline;">alias: </small>
+					<span class="current-custom-domain"><?php echo $custom ? $custom : 'm.yourcompany.com';?></span>
 					<br>
 					<small style="display: inline;">destination: </small>
 					<span><?php echo $site->defaultDomain() ?></span>
 				</p>
-				<?php endif;?>
+				
 			</div>
 		</div>
 	</div>
 </fieldset>
-<?php if ($custom):?>
+
 <fieldset>
 	<div class="grid-4 first">
         <div class="tip">
@@ -136,13 +136,14 @@
 									RedirectToMeuMobi("http://%s");
 								</script>';
 					$script = e($script);
-					echo sprintf($script, "<b class='current-custom-domain'>{$custom}</b>");
+					$str = $custom ? $custom : 'm.yourcompany.com';
+					echo sprintf($script, "<b class='current-custom-domain'>{$str}</b>");
 				?></pre>
 			</div>
     	</div>
 	</div>
 </fieldset>
-<?php endif;?>
+
 <fieldset class="actions">
     <?php echo $this->form->submit(s('Save'), array(
         'class' => 'ui-button red larger'

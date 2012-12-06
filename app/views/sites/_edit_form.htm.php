@@ -281,7 +281,7 @@
 <fieldset>
 	<div class="grid-4 first">
         <div class="tip">
-			<h2><?php echo s('Your links on web') ?></h2>
+			<h2><?php echo s('Your business photos') ?></h2>
 		</div>
     </div>
     
