@@ -6,6 +6,8 @@ use lithium\action\Dispatcher;
 use lithium\util\Inflector;
 use meumobi\sitebuilder\Site;
 use DateTime;
+use Config;
+use Model;
 
 class ApiController extends \lithium\action\Controller {
 	protected $beforeFilter = array('log', 'checkSite', 'checkEtag');
@@ -165,10 +167,11 @@ class ApiController extends \lithium\action\Controller {
 
 	protected function requireUserAuth()
 	{
-		if(\Config::read('Api.ignoreAuth')) return;
+		if (\Config::read('Api.ignoreAuth')) return;
 
 		$token = $this->request->env('HTTP_X_AUTHENTICATION_TOKEN');
-		if($token != 'c8e75b59161a5922c04ede9a533867e371fa2933') {
+
+		if (!Model::load('UsersSites')->isUserAuthenticatedOnSite($this->site()->id, $token)) {
 			throw new NotAuthenticatedException();
 		}
 	}
