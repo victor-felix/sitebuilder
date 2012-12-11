@@ -1,8 +1,67 @@
 <?php
 
+require_once 'app/models/users.php';
+
 class SitesController extends AppController {
-	public function register() {
-		$this->editRecord('/sites/customize_register', false);
+	public function customize_register()
+	{
+		$session = Session::read('Users.signup');
+
+		$site = new Sites();
+		$site->segment = MeuMobi::segment();
+
+		if (!empty($this->data)) {
+			$site->updateAttributes($this->data);
+			if ($site->validateTheme()) {
+				Session::write('Users.signup', array(
+					'path' => '/sites/register',
+					'user' => $session['user'],
+					'site' => $site->data
+				));
+				$this->redirect('/sites/register');
+			}
+		}
+
+		$themes = Model::load('Themes')->all();
+
+		$this->set(compact('site', 'themes'));
+	}
+
+	public function register()
+	{
+		$session = Session::read('Users.signup');
+
+		$user = new Users();
+		$site = new Sites();
+		$site->segment = MeuMobi::segment();
+
+		$user->updateAttributes($session['user']);
+		$site->updateAttributes($session['site']);
+
+		if (!empty($this->data)) {
+			$site->updateAttributes($this->data);
+
+			if ($site->validate()) {
+				Users::signup($user, $site);
+				Session::delete('Users.signup');
+				Session::writeFlash('success', s('Configuration successfully saved'));
+				$this->redirect('/sites/finished');
+			}
+		}
+
+		if ($site->state_id) {
+			$states = Model::load('States')->toListByCountryId($site->country_id, array(
+				'order' => 'name ASC'
+			));
+		} else {
+			$states = array();
+		}
+
+		$countries = Model::load('Countries')->toList(array(
+			'order' => 'name ASC'
+		));
+
+		$this->set(compact('site', 'countries', 'states'));
 	}
 
 	public function add() {
@@ -11,7 +70,7 @@ class SitesController extends AppController {
 			$this->redirect('/');
 			return;
 		}
-		
+
 		$site = Model::load('Sites');
 		if(!empty($this->data)) {
 			$images = array_unset($this->data, 'image');
@@ -31,7 +90,7 @@ class SitesController extends AppController {
 				return;
 			}
 		}
-		
+
 		$this->set(array(
 				'site' => $site,
 				'countries' => Model::load('Countries')->toList(array(
@@ -44,7 +103,7 @@ class SitesController extends AppController {
 	public function edit() {
 		$this->editRecord('/sites/edit');
 	}
-	
+
 	public function remove($id = null) {
 		if ($id) {
 			$site = Model::load('Sites')->firstById($id);
@@ -60,7 +119,7 @@ class SitesController extends AppController {
 		} catch (Exception $e) {
 			$sucess = false;
 		}
-		
+
 		if ($sucess) {
 			Session::writeFlash('success', s('Site was successfully removed'));
 		} else {
@@ -68,19 +127,19 @@ class SitesController extends AppController {
 		}
 		$this->redirect('/');
 	}
-	
+
 	public function preview($theme = '', $skin = '') {
 		$this->autoRender = false;
 		$site = $this->getCurrentSite();
-		//$url = "http://{$site->domain}";	
+		//$url = "http://{$site->domain}";
 		$url = 'http://santacasajf.meumobi.com';
-		
+
 		//check if has params, if not use the current site
 		if (!$theme || !$skin) {
 			$theme = $site->theme;
 			$skin = $site->skin;
 		}
-		
+
 		$opts = array(
 				'http'=>array(
 						'method'=>"GET",
@@ -88,7 +147,7 @@ class SitesController extends AppController {
 						'header'=>"Accept-language: {$_SERVER["HTTP_ACCEPT_LANGUAGE"]}"
 				)
 		);
-		
+
 		if ($source = file_get_contents($url, false, stream_context_create($opts))) {
 			$doc = new DOMDocument();
 			$doc->loadHTML($source);
@@ -101,13 +160,13 @@ class SitesController extends AppController {
 			echo $doc->saveHTML( );
 		}
 	}
-	
+
 	public function regenerate_domains() {
 		if ($this->getCurrentSite()->userRole() != Users::ROLE_ADMIN) {
 			Session::writeFlash('error', s('Sorry, You are not allowed to do this'));
 			$this->redirect('/');
 		}
-		
+
 		$domains = Model::load('SitesDomains')->toList(array('displayField'=>'domain'));
 		$sucess = SiteManager::regenerate($domains, MeuMobi::instance());
 		if ($sucess) {
@@ -115,10 +174,10 @@ class SitesController extends AppController {
 		} else {
 			Session::writeFlash('error', s('Sorry, can\'t regenerate domains'));
 		}
-		
+
 		$this->redirect('/');
 	}
-	
+
 	public function customize_edit() {
 		Model::load('Users');
 		if (Users::ROLE_ADMIN != $this->getCurrentSite()->role) {
@@ -128,15 +187,6 @@ class SitesController extends AppController {
 		$this->customizeSite(s('Configuration successfully saved.'), '/sites/customize_edit');
 	}
 
-	public function customize_register() {
-		Model::load('Users');
-		if (Users::ROLE_ADMIN != $this->getCurrentSite()->role) {
-			$this->redirect('/');
-			return;
-		}
-		$this->customizeSite(s('Configuration successfully saved'), '/sites/finished');
-	}
-	
 	public function general() {
 		$site = $this->getCurrentSite();
 		if(!empty($this->data)) {
@@ -149,21 +199,21 @@ class SitesController extends AppController {
 			'site' => $site,
 		));
 	}
-	
+
 	public function custom_domain() {
 		$this->general();
 	}
-	
+
 	public function news() {
 		$this->general();
 	}
-	
+
 	public function finished() {
 		$this->set(array(
 			'site' => $this->getCurrentSite()
 		));
 	}
-	
+
 	public function verify_slug($slug = null) {
 		$this->respondToJSON(array(
 			'unique' => !$this->Sites->exists(array(
@@ -171,7 +221,7 @@ class SitesController extends AppController {
 			))
 		));
 	}
-	
+
 	public function users() {
 		Model::load('Users');
 		if (Users::ROLE_ADMIN != $this->getCurrentSite()->role) {
@@ -183,10 +233,10 @@ class SitesController extends AppController {
 		$invites = \app\models\Invites::find('all', array('conditions' => array(
 			'site_id' => $site->id,
 		)));
-		
+
 		$this->set(compact('users', 'invites'));
 	}
-	
+
 	public function remove_user($userId) {
 		if ($this->getCurrentSite()->removeUser((int)$userId)) {
 			Session::writeFlash('success', s('User successfully removed.'));
@@ -195,7 +245,7 @@ class SitesController extends AppController {
 		}
 		$this->redirect('/sites/users');
 	}
-	
+
 	protected function editRecord($redirect_to, $allowMessage = true) {
 		$site = $this->getCurrentSite();
 		if(!empty($this->data)) {
@@ -204,7 +254,7 @@ class SitesController extends AppController {
 			try {
 				if($site->validate()) {
 					$site->save();
-					
+
 					foreach($images as $id => $image) {
 						if(is_numeric($id)) {
 							$record = Model::load('Images')->firstById($id);
@@ -212,7 +262,7 @@ class SitesController extends AppController {
 							$record->save();
 						}
 					}
-					
+
 					if ($allowMessage) {
 						Session::writeFlash('success', s('Configuration successfully saved.'));
 					}

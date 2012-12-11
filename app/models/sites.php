@@ -1,4 +1,5 @@
 <?php
+
 require_once 'lib/simplepie/SimplePie.php';
 require_once 'lib/geocoding/GoogleGeocoding.php';
 require_once 'lib/sitemanager/SiteManager.php';
@@ -89,23 +90,23 @@ class Sites extends AppModel {
 			return $category->title;
 		}
 	}
-	
+
 	public function defaultDomain() {
 		return $this->slug . '.' . MeuMobi::domain();
 	}
-	
+
 	public function custom_domain() {
 		try {
 			$domain = Model::load ( 'SitesDomains' )->first(array(
 				'conditions' => array(
 					'site_id' => $this->id,
 					'domain !=' =>  $this->slug . '.' . MeuMobi::domain(),
-				),		
+				),
 			));
 			return $domain ? $domain->domain : null;
 		} catch (Exception $e) {
 			return null;
-		} 
+		}
 	}
 
 	public function firstByDomain($domain) {
@@ -268,6 +269,11 @@ class Sites extends AppModel {
 		return $tz_server->getOffset ( $time_site ) / 3600;
 	}
 
+	public function validateTheme()
+	{
+		return $this->theme && $this->skin;
+	}
+
 	public function toJSON() {
 		$data = array_merge ( $this->data, array ('logo' => null, 'photos' => array (), 'timezone' => $this->timezone () ) );
 
@@ -316,17 +322,17 @@ class Sites extends AppModel {
 	{
 		$siteId = isset($data['id']) ? $data['id'] : null;
 		//check if has a default or custom domains
-		if ((isset($data['slug']) && trim($data['slug'])) 
+		if ((isset($data['slug']) && trim($data['slug']))
 			|| isset($data['domains'])) {
 			$defaultDomain = $data['slug'] . '.' . MeuMobi::domain();
 			$data['domains'][] = $defaultDomain;
 			$domain = reset($data['domains']);
-			
+
 			//add the first custom domain to the domain field
 			if ($custom = $this->custom_domain()) {
 				$domain = $custom;
 			}
-			
+
 			//check if domain already exists
 			if ($exists = Model::load('SitesDomains')->check($domain)) {
 				if ($exists->site_id != $siteId ) {
@@ -429,6 +435,7 @@ class Sites extends AppModel {
 			$category->save ();
 		}
 	}
+
 	protected function updateFeed($created) {
 		if (isset ( $this->data ['feed_url'] )) {
 			$category = $this->newsCategory ();
@@ -505,7 +512,7 @@ class Sites extends AppModel {
 		$feed->enable_cache(false);
 		$feed->set_feed_url($value);
 		$feed->init();
-		
+
 		if ($feed->error()) {
 			Debug::log("Rss: " . $feed->error());
 			return false;

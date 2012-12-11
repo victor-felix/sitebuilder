@@ -5,94 +5,93 @@ require 'lib/core/storage/Session.php';
 require 'lib/utils/Auth.php';
 
 class AppController extends Controller {
-    protected $allowed = array('skins', 'users', 'states', 'images');
+	protected $allowed = array('skins', 'users', 'states', 'images');
 
-    protected function beforeFilter() {
-        $registering = Session::read('Users.registering');
-        if(
-            $registering &&
-            ($registering != $this->param('here') && !in_array($this->param('controller'), $this->allowed))
-        ) {
-            $this->redirect($registering);
-        }
-        if($this->isXhr()) {
-            $this->autoLayout = false;
-        }
-    }
+	protected function beforeFilter() {
+		if ($signup = Session::read('Users.signup')) {
+			if ($signup['path'] != $this->param('here') && !in_array($this->param('controller'), $this->allowed)) {
+				$this->redirect($signup['path']);
+			}
+		}
 
-    public static function load($name, $instance = false) {
-        $filename = 'app/controllers/' . Inflector::underscore($name) . '.php';
-        $name = basename($name);
-        if(!class_exists($name) && Filesystem::exists($filename)) {
-            require_once $filename;
-        }
-        if(class_exists($name)) {
-            if($instance) {
-                return new $name();
-            }
-            else {
-                return true;
-            }
-        }
-        else {
-            throw new MissingControllerException(array(
-                'controller' => $name
-            ));
-        }
-    }
+		if ($this->isXhr()) {
+			$this->autoLayout = false;
+		}
+	}
 
-    public function getCurrentSite() {
-        if(Auth::loggedIn()) {
-            if ($site = Auth::user()->site()) {
-                return $site;
-            } else {
-                Auth::user()->registerNewSite ();
-                $this->redirect ( '/sites/register' );
-                Session::write ( 'Users.registering', '/sites/register' );
-            }
-        }
-        else {
-            Session::flash('Auth.redirect', Mapper::here());
-            $this->redirect('/users/login');
-        }
-    }
-	
+	public static function load($name, $instance = false) {
+		$filename = 'app/controllers/' . Inflector::underscore($name) . '.php';
+		$name = basename($name);
+		if(!class_exists($name) && Filesystem::exists($filename)) {
+			require_once $filename;
+		}
+		if(class_exists($name)) {
+			if($instance) {
+				return new $name();
+			}
+			else {
+				return true;
+			}
+		}
+		else {
+			throw new MissingControllerException(array(
+				'controller' => $name
+			));
+		}
+	}
+
+	public function getCurrentSite() {
+		if(Auth::loggedIn()) {
+			if ($site = Auth::user()->site()) {
+				return $site;
+			} else {
+				Auth::user()->registerNewSite ();
+				$this->redirect ( '/sites/register' );
+				Session::write ( 'Users.registering', '/sites/register' );
+			}
+		}
+		else {
+			Session::flash('Auth.redirect', Mapper::here());
+			$this->redirect('/users/login');
+		}
+	}
+
 	public function getSegment() {
 		return Model::load ( 'Segments' )->firstById ( MeuMobi::segment () );
 	}
-	
-    protected function toJSON($record) {
-        if(is_array($record)) {
-            foreach($record as $k => $v) {
-                $record[$k] = $this->toJSON($v);
-            }
-        }
-        else if($record instanceof Model) {
-            $record = $record->toJSON();
-        }
 
-        return $record;
-    }
+	protected function toJSON($record) {
+		if(is_array($record)) {
+			foreach($record as $k => $v) {
+				$record[$k] = $this->toJSON($v);
+			}
+		}
+		else if($record instanceof Model) {
+			$record = $record->toJSON();
+		}
 
-    protected function respondToJSON($record) {
-        header('Content-type: application/json');
-        echo json_encode($this->toJSON($record));
-        $this->stop();
-    }
+		return $record;
+	}
+
+	protected function respondToJSON($record) {
+		header('Content-type: application/json');
+		echo json_encode($this->toJSON($record));
+		$this->stop();
+	}
 }
 
 function __($key) {
-    $arguments = func_get_args();
-    $arguments[0] = I18n::translate($key);
-    return call_user_func_array('sprintf', $arguments);
+	$arguments = func_get_args();
+	$arguments[0] = I18n::translate($key);
+	return call_user_func_array('sprintf', $arguments);
 }
 
 function s($key) {
-    $arguments = func_get_args();
-    $arguments[0] = YamlDictionary::translate($key);
-    return call_user_func_array('__', $arguments);
+	$arguments = func_get_args();
+	$arguments[0] = YamlDictionary::translate($key);
+	return call_user_func_array('__', $arguments);
 }
 
 function e($text) {
-    return Sanitize::html($text);
+	return Sanitize::html($text);
 }

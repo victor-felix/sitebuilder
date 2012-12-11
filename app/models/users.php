@@ -8,10 +8,10 @@ class Users extends AppModel {
 	const ROLE_EDITOR = 2;
 	const ROLE_USER = 3;
 
-	protected $getters = array ('firstname', 'lastname' );
-	protected $beforeSave = array ('hashPassword', 'createToken', 'joinName' );
-	protected $beforeDelete = array ('removeSites');
-	protected $afterSave = array ('authenticate', 'createSite', 'sendConfirmationMail' );
+	protected $getters = array('firstname', 'lastname');
+	protected $beforeSave = array('hashPassword', 'createToken', 'joinName');
+	protected $beforeDelete = array('removeSites');
+	protected $afterSave = array('authenticate', 'sendConfirmationMail');
 	protected $validates = array (
 		'firstname' => array (
 			'rule' => 'notEmpty',
@@ -52,6 +52,12 @@ class Users extends AppModel {
 				'message' => 'Passwords do not match'
 		)
 	);
+
+	public static function signup($user, $site)
+	{
+		$user->save();
+		$site->save();
+	}
 
 	public function firstname()
 	{
@@ -134,8 +140,8 @@ class Users extends AppModel {
 	}
 
 	public function registerNewSite() {
-		$this->createSite ( true );
-		$this->authenticate ( true );
+		$this->createSite();
+		$this->authenticate(true);
 	}
 
 	public function confirm($token) {
@@ -290,21 +296,14 @@ class Users extends AppModel {
 		return Model::load ( 'UsersSites' )->onDeleteUser ( $this );
 	}
 
-	protected function createSite($created)
+	protected function createSite()
 	{
-		try {
-			$canCreate = !$this->cantCreateSite;
-		} catch (Exception $e) {
-			$canCreate = true;
-		}
-		if ($created && $canCreate) {
-			$model = Model::load('Sites');
-			$model->save (array(
-				'segment' => MeuMobi::segment(),
-				'slug' => '',
-				'title' => ''
-			));
-		}
+		$model = Model::load('Sites');
+		$model->save(array(
+			'segment' => MeuMobi::segment(),
+			'slug' => '',
+			'title' => ''
+		));
 	}
 
 	protected function sendConfirmationMail($created)

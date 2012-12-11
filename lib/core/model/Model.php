@@ -26,7 +26,7 @@ class Model extends Hookable {
     protected $errors = array();
 
     public $data = array();
-    
+
     protected $beforeSave = array();
     protected $beforeCreate = array();
     protected $beforeUpdate = array();
@@ -53,7 +53,7 @@ class Model extends Hookable {
         }
         $this->loadBehaviors($this->behaviors);
     }
-    
+
     public function __call($method, $args) {
         $regex = '/(?P<method>first|all)By(?P<fields>[\w]+)/';
         if(preg_match($regex, $method, $output)) {
@@ -79,19 +79,23 @@ class Model extends Hookable {
         // @todo shouldn't fail silently
         $this->data[$name] = $value;
     }
-    
+
     public function __get($name) {
         $attrs = array('data', '_models', '_behaviors');
-        
+
         foreach($attrs as $attr) {
             if(array_key_exists($name, $this->{$attr})) {
                 return $this->{$attr}[$name];
             }
         }
-        
+
+        if(array_key_exists($name, $this->schema())) {
+            return null;
+        }
+
         throw new RuntimeException(get_class($this) . '->' . $name . ' does not exist.');
     }
-    
+
     public function hasAttribute($attr) {
         return array_key_exists($attr, $this->data);
     }
@@ -103,7 +107,7 @@ class Model extends Hookable {
     public function hasSetter($attr) {
         return in_array($attr, $this->setters);
     }
-    
+
     public static function load($name) {
         if(!array_key_exists($name, Model::$instances)) {
             $filename = 'app/models/' . Inflector::underscore($name) . '.php';
@@ -137,7 +141,7 @@ class Model extends Hookable {
     public function getTable() {
         return $this->table;
     }
-    
+
     public function schema() {
         return Table::load($this)->schema();
     }
@@ -156,29 +160,29 @@ class Model extends Hookable {
             $this->loadBehavior($behavior, $options);
         endforeach;
     }
-    
+
     protected function loadBehavior($behavior, $options = array()) {
         $behavior = Inflector::camelize($behavior);
         Behavior::load($behavior);
         return $this->_behaviors[$behavior] = new $behavior($this, $options);
     }
-    
+
     public function query($query) {
         return $this->connection()->query($query);
     }
-    
+
     public function fetch($query) {
         return $this->connection()->fetchAll($query);
     }
-    
+
     public function begin() {
         return $this->connection()->begin();
     }
-    
+
     public function commit() {
         return $this->connection()->commit();
     }
-    
+
     public function rollback() {
         return $this->connection()->rollback();
     }
@@ -190,15 +194,15 @@ class Model extends Hookable {
     public function insertId() {
         return $this->connection()->insertId();
     }
-    
+
     public function affectedRows() {
         return $this->connection()->affectedRows();
     }
-    
+
     public function escape($value) {
         return $this->connection()->escape($value);
     }
-    
+
     protected function scope($scope, $params, $defaults = array()) {
         if(is_array($scope)) {
             $params = $scope;
@@ -208,7 +212,7 @@ class Model extends Hookable {
         if(is_null($scope)) {
             $scope = 'default';
         }
-        
+
         if($scope !== false) {
             $scope_name = $scope . 'Scope';
             $scope = $this->{$scope_name};
@@ -216,14 +220,14 @@ class Model extends Hookable {
         else {
             $scope = array();
         }
-        
+
         return array_merge($defaults, $scope, $params);
     }
-    
+
     public function all($scope = null, $params = array()) {
         $defaults = array( 'table' => $this->table() );
         $params = $this->scope($scope, $params, $defaults);
-        
+
         $query = $this->connection()->read($params);
 
         $results = array();
@@ -234,22 +238,22 @@ class Model extends Hookable {
 
         return $results;
     }
-    
+
     public function first($scope = null, $params = array()) {
         $params['limit'] = 1;
         $results = $this->all($scope, $params);
 
         return empty($results) ? null : $results[0];
     }
-    
+
     public function count($scope = null, $params = array()) {
         $defaults = array( 'table' => $this->table() );
         $params = $this->scope($scope, $params, $defaults);
         unset($params['offset'], $params['limit']);
-        
+
         return $this->connection()->count($params);
     }
-    
+
     public function paginate($scope = null, $params = array()) {
         $count = $this->count($scope, $params);
 
@@ -272,7 +276,7 @@ class Model extends Hookable {
 
         return $this->all(false, $params);
     }
-    
+
     public function toList($scope = null, $params = array()) {
         $defaults = array(
             'key' => $this->primaryKey(),
@@ -280,7 +284,7 @@ class Model extends Hookable {
             'table' => $this->table()
         );
         $params = $this->scope($scope, $params, $defaults);
-        
+
         if(!array_key_exists('fields', $params)) {
             $params['fields'] = array_merge(
                 (array) $params['key'],
@@ -299,23 +303,23 @@ class Model extends Hookable {
             else {
                 $value = $result[$params['displayField']];
             }
-            
+
             $results[$result[$params['key']]] = $value;
         }
 
         return $results;
     }
-    
+
     public function exists($conditions) {
         return (bool) $this->count(array(
             'conditions' => $conditions
         ));
     }
-    
+
     public function updateAttributes($data) {
         $this->data = array_merge($this->data, $data);
     }
-    
+
     public function insert($data) {
         $params = array(
             'values' => $data,
@@ -324,7 +328,7 @@ class Model extends Hookable {
 
         return $this->connection()->create($params);
     }
-    
+
     public function update($params, $data) {
         $params += array(
             'values' => $data,
@@ -337,12 +341,12 @@ class Model extends Hookable {
     public function save($data = array()) {
         if(!empty($data)) {
             $this->data = $data;
-            
+
             if(!array_key_exists('id', $this->data)) {
                 $this->data['id'] = null;
             }
         }
-        
+
         // apply modified timestamp
         $date = date('Y-m-d H:i:s');
         $this->data['modified'] = $date;
@@ -410,7 +414,7 @@ class Model extends Hookable {
         if(!$this->data):
             return false;
         endif;
-        
+
         foreach($this->validates as $field => $rules):
             if(!is_array($rules) || (is_array($rules) && isset($rules['rule']))):
                 $rules = array($rules);
@@ -454,7 +458,7 @@ class Model extends Hookable {
             endif;
         endif;
     }
-    
+
     public function errors() {
         return $this->errors;
     }
@@ -462,7 +466,7 @@ class Model extends Hookable {
     public function data() {
         return $this->data;
     }
-    
+
     public function delete($id, $dependent = true) {
         $params = array(
             'conditions' => array(
@@ -470,19 +474,19 @@ class Model extends Hookable {
             ),
             'limit' => 1
         );
-        
+
         $delete = false;
-        
+
         if($this->exists(array($this->primaryKey() => $id))) {
             if(!$this->fireFilter('beforeDelete', $id)) return false;
             $delete = (bool) $this->deleteAll($params);
 
             $this->fireAction('afterDelete', $id);
         }
-        
+
         return $delete;
     }
-    
+
     public function deleteAll($params = array()) {
         $db = $this->connection();
         $params += array(
