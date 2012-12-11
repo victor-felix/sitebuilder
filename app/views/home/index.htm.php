@@ -161,8 +161,8 @@
 							<div class="slider">
 								<div style="width: 255px;">
 									<p>
-										<?php echo s('<b>40% percent</b> of all mobile web searches pertain to the searcher´s local environment, 
-										meaning customers are looking for goods and services they need while on the go')?>
+										<b>40% percent</b> of all mobile web searches pertain to the searcher´s local environment, 
+										meaning customers are looking for goods and services they need while on the go
 									</p>
 									<p class="author">Google Research, 2012</p>
 								</div>
