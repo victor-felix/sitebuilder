@@ -94,16 +94,19 @@ small {
 
 .hero.outer.wrapp .hero-unit .block h3 {
 	font-weight: bold;
-	font-size: 34px;
+	font-size: 40px;
 }
 
 .hero.outer.wrapp .hero-unit .block p {
 	font-size: 24px;
+	margin: 26px 0;
+	color: #506064;
 }
 
 .hero.outer.wrapp .hero-unit .block .trial {
 	line-height: 12px;
-	margin-top: 10px;
+	margin: 10px 0 0 ;
+	color: #fff;
 }
 
 .outer.wrapp .title {

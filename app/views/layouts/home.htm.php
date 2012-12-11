@@ -21,9 +21,17 @@
 	    			<?php echo s('+55 21 4042.7270')?>
 	    		</p>
 	    		<p class="login pull-left">
-		    		<a class="active" href="#"><?php echo s('sign up now')?></a>
+		    		<?php
+						echo $this->html->link(s('sign up now'), '/users/register/' . $invite_token, array(
+							'class' => 'active'
+						));
+					?>
 		    		<?php echo s('or')?>
-		    		<a href="#"><?php echo s('sign in')?></a>
+		    		<?php
+						echo $this->html->link( s('sign in'), '/users/login/' . $invite_token, array(
+							'class' => ''
+						));
+					?>
 	    		</p>
     		</div>
     	</div>
