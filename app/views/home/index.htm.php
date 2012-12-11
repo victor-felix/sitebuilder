@@ -8,8 +8,14 @@
 						<a class="btn big" href="#">start your free trial</a>
 						<p class="trial"><small><b>NO</b> Credit card required 14-day<br> fully functional trial</small></p>
 				  	</div>
-				  <div class="slider pull-right">
-				  	<img alt="" src="/images/shared/home/slide-1.png">
+				  	<div class="pull-right">
+					  <div class="slider ">
+					  	<p><img alt="" src="/images/shared/home/slide-1.png"></p>
+					  	<p><img alt="" src="/images/shared/home/slide-1.png"></p>
+					  	<p><img alt="" src="/images/shared/home/slide-1.png"></p>
+					  </div>
+					  <div class="pagination"></div>
+					</div>
 				  </div>
 				</div>
 			</div>
@@ -153,12 +159,31 @@
 							<h3><b>get mobile.</b><br> a few insights on the mobile market.</h3>
 							
 							<div class="slider">
-								<p>
-								<b>40% percent</b> of all mobile web searches pertain to the searcher's local environment, 
-								meaning customers are looking for goods and services they need while on the go
-								</p>
-								<p class="author">Google Research, 2012</p>
+								<div style="width: 255px;">
+									<p>
+										<b>40% percent</b> of all mobile web searches pertain to the searcher's local environment, 
+										meaning customers are looking for goods and services they need while on the go
+									</p>
+									<p class="author">Google Research, 2012</p>
+								</div>
+								
+								<div style="width: 255px;">
+									<p>
+										<b>60% percent</b> of all mobile web searches pertain to the searcher's local environment, 
+										meaning customers are looking for goods and services they need while on the go
+									</p>
+									<p class="author">Google Research, 2012</p>
+								</div>
+								
+								<div style="width: 255px;">
+									<p>
+										<b>120% percent</b> of all mobile web searches pertain to the searcher's local environment, 
+										meaning customers are looking for goods and services they need while on the go
+									</p>
+									<p class="author">Google Research, 2012</p>
+								</div>
 							</div>
+							<div class="pagination"></div>
 						</div>
 					</div>
 					<div class="about span8">

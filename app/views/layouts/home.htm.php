@@ -17,13 +17,13 @@
     		</h1>
     		<div class="pull-right">
 	    		<p class="call pull-left">
-	    			<span>need convincing? call us</span>
-	    			+55 21 4042.7270
+	    			<span><?php echo s('need convincing? call us')?></span>
+	    			<?php echo s('+55 21 4042.7270')?>
 	    		</p>
 	    		<p class="login pull-left">
-		    		<a class="active" href="#">sign up now</a>
-		    		or
-		    		<a href="#">sign in</a>
+		    		<a class="active" href="#"><?php echo s('sign up now')?></a>
+		    		<?php echo s('or')?>
+		    		<a href="#"><?php echo s('sign in')?></a>
 	    		</p>
     		</div>
     	</div>
@@ -31,35 +31,49 @@
 		<div class="footer">
 			<div class="container">
 				<div class="links" >
-					<a class="logo" href="#">Meumobi</a>
-					<a href="#">About Us</a>
-					<a href="#">Our Blog</a>
-					<a href="#">Support</a>
+					<a class="logo" href="#"><?php echo s('MeuMobi')?></a>
+					<a href="#"><?php echo s('About Us')?></a>
+					<a href="#"><?php echo s('Our Blog')?></a>
+					<a href="#"><?php echo s('Support')?></a>
 					<p class="copy"><?php echo s('&copy;2011 MeuMobi. All rights reserved') ?></p>
 				</div>
 				<div class="contact">
 					<div>
-					<p class="upper">Contact Us</p>
+					<p class="upper"><?php echo s('Contact Us')?></p>
 					<p>
-						email
-						<span>contact@meumobi.com</span>
+						<?php echo s('email')?>
+						<span><?php echo s('contact@meumobi.com')?></span>
 					</p>
 					
-					<p>phone
-						<span>+55 21 4042.7270</span>	
+					<p><?php echo s('phone')?>
+						<span><?php echo s('+55 21 4042.7270')?></span>	
 					</p>
 					</div>
 				</div>
 				<div class="social">
-					<span class="upper">Find us on</span>
-					<a class="face" href="#">facebook</a>
-					<a class="twitter" href="#">twitter</a>
+					<span class="upper"><?php echo s('Find us on')?></span>
+					<a class="face" href="#"><?php echo s('facebook')?></a>
+					<a class="twitter" href="#"><?php echo s('twitter')?></a>
 				</div>
 			</div>
+			<script type="text/javascript">
+
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-22519238-3']);
+			  _gaq.push(['_setDomainName', '.meumobi.com']);
+			  _gaq.push(['_trackPageview']);
+			
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			
+			</script>
 		</div>
         <?php //echo $this->element('layouts/footer') ?>
-
-        <?php echo $this->html->script() ?>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+        <?php echo $this->html->script('shared/jquery', 'shared/jquery.carouFredSel-6.1.0-packed','shared/jquery.touchSwipe.min', 'shared/jquery.ba-throttle-debounce.min', 'shared/home') ?>
         <?php echo $this->html->scriptsForLayout ?>
     </body>
 </html>

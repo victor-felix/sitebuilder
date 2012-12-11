@@ -82,7 +82,7 @@ small {
 
 .hero.outer.wrapp .hero-unit {
 	margin: 0;
-	padding: 60px 0;
+	padding: 60px 0 25px;
 	background-color: #111;
 	color: #fff;
 }
@@ -110,6 +110,34 @@ small {
 	color: #B9B9B9;
 	font-size: 22px;
 	font-weight: 700;
+}
+
+.hero-unit .slider p {
+	width: 485px;
+	height: 370px;	
+}
+
+.pagination {
+	text-align: center;
+}
+.pagination a {
+	background: #fff;
+	width: 10px;
+	height: 10px;
+	margin: 0 5px 0 0;
+	display: inline-block;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+}
+
+.pagination a.selected {
+	background: #595959;
+	cursor: default;
+}
+
+.pagination a span {
+	display: none;
 }
 
 /* presentation */
@@ -291,8 +319,19 @@ small {
 	color: #666;
 }
 
-.quotes .about {
-	
+.quotes .pagination {
+	text-align: left;
+	margin: 10px 0 10px;
+}
+
+.quotes .pagination a {
+	background: #CCCCCC;
+	width: 8px;
+	height: 8px;
+}
+
+.quotes .pagination a.selected {
+	background: #444444;
 }
 
 .quotes .about h3 {

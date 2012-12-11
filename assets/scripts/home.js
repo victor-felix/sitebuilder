@@ -1,6 +1,4 @@
-(function($) {
-  $('#slideshow').cycle({'fx': 'scrollUp'});
-
+$(function() {
   $('p.login a:first-of-type').click(function(e){
       $('#login-window').show();
       $('#FormEmail').focus();
@@ -17,4 +15,21 @@
       $('#login-window').hide();
     }
   });
-})(jQuery);
+  
+	// Using default configuration
+	$(".hero-unit .slider").carouFredSel({
+		items		: 1,
+		scroll		: {
+			fx			: "crossfade"
+		},
+		pagination  : ".hero-unit .pagination"
+	});
+	
+	$(".quotes .slider").carouFredSel({
+		items		: 1,
+		scroll		: {
+			fx			: "crossfade"
+		},
+		pagination  : ".quotes .pagination"
+	});
+});
