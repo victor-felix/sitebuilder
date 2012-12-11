@@ -40,7 +40,7 @@ Config::write('Segments', array(
 		'email' => array('no-reply@ipanemax.com' => 'ipanemax'),
 		'extensions' =>array('store-locator', 'rss'),
 		'hideCategories' => 0,
-		'enableSignUp' => 0
+		'enableSignUp' => 1
 	),
 	'oi' => array(
 		'title' => 'Oi',
