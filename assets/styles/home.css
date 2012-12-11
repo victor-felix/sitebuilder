@@ -1,293 +1,420 @@
-* {
-	padding: 0;
-	margin: 0;
+h3 {
+	line-height: normal;
 }
 
-body {
-	background: #EFEFEF;
-	font: 12px Arial, Helvetica, sans-serif;
+small {
+	font-size: 12px;
 }
 
-.clear {
-	clear: both;
+.btn.big {
+	padding: 7px 12px 9px;
+	background-color: #C81713;
+	background-image: none;
+	color: white;
+	box-shadow: none;
+	text-shadow: none;
+	font-weight: bold;
+	font-size: 20px;
+	border: none;
 }
 
-a img {
-	border: 0;
+.btn.big:hover {
+	background-color: #FF4E00;
 }
 
-::selection {
-	background:#cc0000;
-	color:#fff;
+.outer.wrapp {
+	padding-top: 20px;
 }
 
-::-moz-selection {
-	background:#cc0000;
-	color:#fff;
+/* header */
+.header h1 {
+	margin: 25px 0 0 0;
+	line-height: normal;
 }
 
-::-webkit-selection {
-	background:#cc0000;
-	color:#fff;
-}
-
-#header {
-	border-top: 10px solid #c02926;
-	border-bottom: 1px solid #DDD;
-	margin-bottom: 50px;
-	color: #707070;
-	height: 560px;
-	margin: 0 auto 50px auto;
-	position: relative;
-	width: 940px;
-}
-	
-#header div.logo {
-	border-bottom: 1px solid #D3D3D3;
-	float: left;
-	height: 62px;
-	padding-top: 48px;
-	width: 300px;
-}
-
-#header div.logo img {
-	max-width: 100%;
-}
-
-#header p.login {
-	border-bottom: 1px solid #D3D3D3;
-	float: left;
-	font-size: 13px;
-	height: 25px;
-	padding-top: 85px;
-	margin-left: 20px;
-	width: 620px;
-}
-
-#header p.login a {
-	color: #C02926;
-	text-decoration: none;
-}
-
-#header p.login a:hover {
-	text-decoration: underline;
-}
-
-#content {
-	clear: both;
-	margin: 0 auto 50px auto;
-	position: relative;
-	width: 940px;
-}
-
-small.facts {
-	color: #999;
-}
-
-#footer {
-	background: #E8E8E8;
-	height: 150px;
-}
-
-#footer #footer-wrapper {
-	margin: 0 auto;
-	padding-top: 30px;
-	width: 940px;
-}
-
-#footer #footer-wrapper ul {
-	float: right;
+.header h1 span.border {
+	background-color: #C02926;
+	display: block;
+	width: 62px;
+	height: 5px;
 	margin-top: 10px;
 }
 
-#footer #footer-wrapper img {
-	float: left;
+.header > div {
+	margin-top: 30px;
 }
 
-#footer #footer-wrapper ul li {
-	color: #ACACAC;
-	display: inline;
-	float: left;
-	font-size: 11px;
-	list-style: none;
-	margin-left: 10px;
+.header .call {
+	font-size: 18px;
 }
 
-#footer #footer-wrapper ul li a {
-	color: #ACACAC;
+.header .call span {
+	display: block;
+	font-size: 13px;
+}
+
+.header .login {
+	margin: 20px 0 0 25px;
+}
+
+.header .login a {
 	font-weight: bold;
+	color: inherit;
+}
+
+.header .login a.active {
+	background-color: #C81713;
+	color: white;
+	padding: 3px 10px 4px;
+	border-radius: 10px;
+}
+
+.header .login a.active:hover{
+	background-color: #FF4E00;
 	text-decoration: none;
 }
 
-#footer #footer-wrapper ul li a:hover {
-	text-decoration: underline;
+/* hero */
+.hero.outer.wrapp {
+	background-color: #111;
+	padding: 0;
 }
 
-#slideshow {
-	position: absolute;
-	height: 560px;
-	left: 490px;
-	width: 450px;
-	top: 0;
+.hero.outer.wrapp .hero-unit {
+	margin: 0;
+	padding: 60px 0;
+	background-color: #111;
+	color: #fff;
 }
 
-#slideshow img {
-	margin-top: 40px;
+.hero.outer.wrapp .hero-unit .block {
+	min-width: 340px;
+	max-width: 45%;
 }
 
-.get-started {
-	clear: both;
-	padding-top: 60px;
+.hero.outer.wrapp .hero-unit .block h3 {
+	font-weight: bold;
+	font-size: 34px;
 }
 
-.get-started h2 {
-	color: #726f6d;
-	font: lighter 52px/52px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica,arial,sans-serif;
-	letter-spacing: -2px;
-	margin-bottom: 20px;
-	width: 460px;
+.hero.outer.wrapp .hero-unit .block p {
+	font-size: 24px;
 }
 
-.get-started p.subtitle {
-	color: #9b9794;
-	font: 24px/26px "Myriad Pro", "Myriad Web", "Helvetica Neue", Helvetica,arial,sans-serif;
-	font-style: italic;
-	margin-bottom: 20px;
-	width: 460px;
+.hero.outer.wrapp .hero-unit .block .trial {
+	line-height: 12px;
+	margin-top: 10px;
 }
 
-.get-started a {
-	background: url(/images/home/register-button.png) 0 0 no-repeat;
-	display: block;
-	height: 62px;
-	text-indent: -9999px;
-	overflow: hidden;
-	outline: none;
-	width: 300px;
+.outer.wrapp .title {
+	color: #B9B9B9;
+	font-size: 22px;
+	font-weight: 700;
 }
 
-	.get-started a:hover {
-		background-position: 0 -62px;
-	}
+/* presentation */
+
+.presentation {
+	border-bottom: 1px solid #DDD;
+}
+
+.presentation .thumbnail {
+	border: none;
+	box-shadow: none;
+}
+
+.presentation .thumbnail > img {
 	
-	.get-started a:active {
-		background-position: 0 -124px;
-	}
-	
-h2.porque {
-	color: #9b9794;
-	clear: both;
-	font: 38px "Myriad Pro", "Myriad Web", "Helvetica Neue", Helvetica,arial,sans-serif;
-	font-style: italic;
-	letter-spacing: -1px;
-	margin-bottom: -45px;
-	text-transform: lowercase;
 }
+
+.presentation .thumbnail h3 {
+	font-size: 20px;
+	font-weight: lighter;
+}
+
+.presentation .thumbnail p {
+	color: #888;
+}
+
+/* features */
 
 .features {
-	margin-bottom: 20px;
+	border-bottom: 1px solid #DDD;
 }
 
-.features li {
-	border-bottom: 1px solid #DDD;
-	display: inline;
-	float: left;
-	width: 220px;
-	height: 140px;
-	margin-bottom: 40px;
+.features h2 {
+	color: #C81713;
+	font-weight: lighter;
+}
+
+.features .block {
+	padding: 0px 20px 0px 50px;
+	position: relative;
+}
+
+.features .block .icon {
+	background-color: #C81713;
+	-webkit-border-radius: 25px;
+	-moz-border-radius: 25px;
+	border-radius: 25px;
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 4px 7px;
+}
+
+.features .map .icon {
+	padding: 4px 8px;
+}
+
+.features .store-locator .icon {
+	padding: 7px 7px;
+}
+
+.features .rss .icon {
+	padding: 7px 7px;
+}
+
+.features .block p {
+	font-size: 12px;
+}
+
+.features .phone {
+	margin-left: 50px;
+}
+
+/* prices */
+
+.prices {
+	background-color: #E5E5E5;
+	-webkit-box-shadow: inset 0px 1px 3px 0px #777;
+	box-shadow: inset 0px 1px 3px 0px #777;
+}
+
+.prices h3 {
+	font-size: 28px;
+}
+
+.prices h2 {
+	color: #C3C3C3;
+	font-weight: bold;
+	font-size: 36px;
+	margin-bottom: 0;
+}
+
+.prices h2 span {
+	color: #C81713;
+}
+
+.prices .row p {
+	font-size: 18px;
+	font-style: italic;
+	color: #999;
+}
+
+.prices ul {
+	margin: 10px 0;
+}
+
+.prices li {
+	color: #777;
+	font-size: 16px;
 	list-style: none;
+	padding: 15px 0 15px 35px;
+	border-top: 1px solid white;
+	position: relative;
+}
+
+.prices li:first-child {
+	border-top: none;
+}
+
+.prices li .icon {
+	background: url("/images/shared/home/check.png") no-repeat 6px 7px white;
+	display: inline-block;
+	width: 25px;
+	height: 25px;
+	border-radius: 25px;
+	position: absolute;
+	top: 24%;
+	left: 0;
+}
+
+.prices li.uncheck {
+	font-style: italic;
+	color: #999;
+}
+
+.prices li.uncheck .icon {
+	background: none;
+	border: 1px solid #fff;
+}
+
+.prices .action {
+	text-align: center;
+	margin: 10px 0 25px;
+}
+
+.prices .action .trial {
+	line-height: 12px;
+	display: block;
+	margin-top: 10px;
+	color: #999;
+}
+
+/* quotes */
+
+.quotes.outer.wrapp {
+	border-bottom: 1px solid #DDD;
+	padding: 60px 0 30px;
+}
+
+.quotes .insights {
+	border-right: 1px solid #DDD;
+	padding: 10px 45px 10px 0;
+	background: url("/images/shared/home/glob-watermark.png") no-repeat right 10px;
+}
+
+.quotes .insights h3 {
+	font-weight: normal;
+}
+
+.quotes .insights .slider {
+	color: #999;
+	margin-top: 25px;
+}
+
+.quotes .insights .slider .author {
+	font-weight: bold;
+	font-size: 12px;
+	color: #666;
+}
+
+.quotes .about {
+	
+}
+
+.quotes .about h3 {
+	padding: 0 27% 15px;
+	font-size: 23px;
+	font-weight: bolder;
+	text-align: center;
+	line-height: 23px;
+}
+
+.quotes .about .quote {
+	color: #666;
+	padding: 0 25px;
+	text-align: center;
+}
+
+.quotes .about .quote p {
+	font: italic 19px/22px myriad pro, Georgia, serif;
+}
+
+.quotes .about .quote .author {
+	font-weight: bold;
+	font-size: 12px;
+	font-family: inherit;
+	color: #666;
+	font-style: normal;
+}
+
+/* custom-solution */
+
+.custom-solution {
+	text-align: center;
+	padding: 25px 15%;
+}
+
+.custom-solution h3 {
+	color: #C81713;
+}
+
+/* footer */
+
+.footer {
+	background: #444444;
+	color: #ACACAC;
+	padding: 30px 0;
+}
+
+.footer .upper {
+	text-transform: uppercase;
+	font-size: 11px;
+}
+
+.footer .links, .footer .contact, .footer .social {
+	float: left;
+	width: 33%;
+}
+
+.footer .links {
+	width: 37%;
+}
+
+.footer .links a {
+	color: inherit;
+	text-transform: uppercase;
+	font-size: 11px;
+	margin: 0 5px;
+}
+
+.footer .copy {
+	font-size: 11px;
+	color: #888;
+	margin-top: 20px;
+}
+
+.footer a.logo {
+	width: 125px;
+	height: 20px;
+	margin-left: 0;
+	text-indent: -99px;
+	background: url("/images/shared/home/logo-mini.png") no-repeat 0 0;
+	display: inline-block;
+	overflow: hidden;
+}
+
+.footer .contact {
+	width: 25%;
+}
+
+.footer .contact > div {
+	padding-left: 45px;
+}
+
+.footer .contact .upper {
+	
+}
+
+.footer .contact p {
+	font-size: 12px;
+}
+
+.footer .contact p span {
+	display: block;
+	font-size: 18px;
+	font-weight: normal;
+}
+
+.footer .social {
+	text-align: right;
+}
+
+.footer .social a {
+	color: inherit;
+	display: inline-block;
+	padding: 0px 0 4px 30px;
 	margin-left: 20px;
 }
 
-.features li.first {
-	margin-left: 0;
+.footer .social a.face {
+	background: url("/images/shared/home/facebook.png") no-repeat 0 0;
+	margin-left: 5px;
 }
 
-.features li p.title {
-	color: #C02926;
-	font: 18px/18px "Myriad Pro", "Myriad Web", "Helvetica Neue", Helvetica,arial,sans-serif;
-	margin-bottom: 10px;
-}
-
-.features li p.description {
-	color: #9b9794;
-	font-size: 12px;
-	line-height: 16px;
-}
-
-#login-window {
-	border-radius: 3px;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	border: 3px solid #BBB;
-	display: none;
-	background: #FFF;
-	position: absolute;
-	top: 67px;
-	left: 302px;
-	padding: 15px;
-	z-index: 10;
-	-webkit-box-shadow: 0 0px 1px #333;
-	-moz-box-shadow: 0 0px 1px #333;
-}
-
-#login-window p {
-	font-size: 13px;
-	margin-bottom: 15px;
-	border-bottom: 1px solid #DDD;
-	padding-bottom: 10px;
-}
-
-#login-window p a {
-	text-decoration: none;
-	color: #C02926;
-}
-
-#login-window .input {
-	margin-bottom: 6px;
-}
-
-#login-window label {
-	display: block;
-	font-size: 11px;
-	margin-bottom: 4px;
-}
-
-#login-window label.checkbox {
-	line-height: 30px;
-	float: left;
-}
-
-#login-window button {
-	clear: both;
-	float: left;
-}
-
-#login-window .cancel,
-#login-window .forgot-password {
-	color: #C02926;
-	font-size: 11px;
-	text-decoration: none;
-}
-
-#login-window .cancel {
-	float: right;
-	margin-top: 7px;
-}
-
-#login-window .forgot-password {
-	clear: both;
-	display: block;
-	margin: 0px 0 11px;
-}
-
-#login-window .cancel:hover,
-#login-window .forgot-password:hover {
-	text-decoration: underline;
-}
-
-#login-window div.checkbox {
-	float: left;
-	padding: 8px 0;
-	width: 22px;
+.footer .social a.twitter {
+	background: url("/images/shared/home/twitter.png") no-repeat 0 0;
 }
