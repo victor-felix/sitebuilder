@@ -321,7 +321,8 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	position: absolute;
 	right: 0;
 	bottom: 0;
-	width: 300px;
+	max-width: 300px;
+	max-height: 35px;
 	text-align: right;
 }
 

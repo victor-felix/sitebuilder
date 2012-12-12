@@ -407,24 +407,24 @@ $.extend($.easing, {
 	$.Paginate();
 	
 	//text dinamic fontsize plugin
-		$.fn.textfill = function(options) {
-			return this.each(function() {
-				var self = $(this);
-				var fontSize = self.data('max-font-size') ? self.data('max-font-size') : 30;
-				var ourText =  self.children(':first');
-				var maxHeight = self.height();
-				var maxWidth = self.width();
-				var textHeight;
-				var textWidth;
-				do {
-					ourText.css('font-size', fontSize);
-					textHeight = ourText.height();
-					textWidth = ourText.width();
-					fontSize = fontSize - 1;
-				} while ((textWidth > maxWidth) && fontSize > 3);
-			});
-		};
-		$('p.dynamic-text').textfill();
+	$.fn.textfill = function(options) {
+		return this.each(function() {
+			var self = $(this);
+			var fontSize = self.data('max-font-size') ? self.data('max-font-size') : 30;
+			var ourText =  self.children(':first');
+			var maxHeight = parseInt(self.css('max-height'));
+			var maxWidth = parseInt(self.css('max-width'));
+			var textHeight;
+			var textWidth;
+			do {
+				ourText.css('font-size', fontSize);
+				textHeight = ourText.height();
+				textWidth = ourText.width();
+				fontSize = fontSize - 1;
+			} while ((textHeight > maxHeight || textWidth > maxWidth) && fontSize > 3);
+		});
+	};
+	$('p.dynamic-text').textfill();
 	
 	//handle cunstom domain
 	var change_custom_domain = function(e){
