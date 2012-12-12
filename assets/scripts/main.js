@@ -11,7 +11,7 @@ var mySettings = {
 	},
 	onTab: {
 		keepDefault: false,
-		openWith: '    '},
+		openWith: '		 '},
 	markupSet: [
 		{name: 'Bold', key: 'B', openWith:'[b]', closeWith: '[/b]'},
 		{name: 'Italic', key: 'I', openWith: '[i]', closeWith: '[/i]'},
@@ -208,11 +208,11 @@ $.extend($.easing, {
 			}
 		});
 		$.ajax({
-		   url: url,
-		   data: $(this).serialize(),
-		   type: 'POST',
-		   success: handler,
-		   error: handler
+			 url: url,
+			 data: $(this).serialize(),
+			 type: 'POST',
+			 success: handler,
+			 error: handler
 		});
 	});
 
@@ -252,11 +252,11 @@ $.extend($.easing, {
 			});
 			var url = inPlace.attr('data-saveurl');
 			$.ajax({
-			   url: url,
-			   data: {title:this.value},
-			   type: 'POST',
-			   success: handler,
-			   error: handler
+				 url: url,
+				 data: {title:this.value},
+				 type: 'POST',
+				 success: handler,
+				 error: handler
 			});
 		}
 	});
@@ -273,10 +273,10 @@ $.extend($.easing, {
 			var handler = dataWithCode(function(data,status) {
 			});
 			$.ajax({
-			   url: this.href,
-			   type: 'GET',
-			   success: handler,
-			   error: handler
+				 url: this.href,
+				 type: 'GET',
+				 success: handler,
+				 error: handler
 			});
 		}
 		self.parent().parent().fadeOut('fast');
@@ -406,6 +406,26 @@ $.extend($.easing, {
 	}
 	$.Paginate();
 	
+	//text dinamic fontsize plugin
+		$.fn.textfill = function(options) {
+			return this.each(function() {
+				var self = $(this);
+				var fontSize = self.data('max-font-size') ? self.data('max-font-size') : 30;
+				var ourText =  self.children(':first');
+				var maxHeight = self.height();
+				var maxWidth = self.width();
+				var textHeight;
+				var textWidth;
+				do {
+					ourText.css('font-size', fontSize);
+					textHeight = ourText.height();
+					textWidth = ourText.width();
+					fontSize = fontSize - 1;
+				} while ((textWidth > maxWidth) && fontSize > 3);
+			});
+		};
+		$('p.dynamic-text').textfill();
+	
 	//handle cunstom domain
 	var change_custom_domain = function(e){
 		var self = $(this);
@@ -434,7 +454,7 @@ $(function() {
 
 	// expand fieldsets in sites/edit
 	$('.fieldset-expand').click(function(e) {
-	var objThis = this;    
+	var objThis = this;		 
 	$($('fieldset[style*="display: block"],fieldset[style=""]')).each(function(i , element){
 		if($(objThis).html() != $(element).prev().html()){
 			$(element).slideToggle();
@@ -505,12 +525,12 @@ $(function() {
 });
 
 $(window).load(function(){
-    /* Fix broken images alt on webkits browsers */
-    $('.logo img').each(function() {
-        if (!this.complete || (typeof this.naturalWidth == "undefined") || this.naturalWidth == 0) {
-            $(this).parent().html($(this).attr('alt'));
-            $(this).remove();
-        }   
-    }); 
-        
+		/* Fix broken images alt on webkits browsers */
+		$('.logo img').each(function() {
+				if (!this.complete || (typeof this.naturalWidth == "undefined") || this.naturalWidth == 0) {
+						$(this).parent().html($(this).attr('alt'));
+						$(this).remove();
+				}		
+		}); 
+				
 });

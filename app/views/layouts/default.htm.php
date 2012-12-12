@@ -15,6 +15,9 @@
 	<body>
 
 		<div id="header">
+			<div class="global-navbar">
+			
+			</div>
 			<div class="logo">
 				<?php echo $this->html->imagelink('layout/logo.png', '/', array(
 					'alt' => $this->controller->getSegment()->title
@@ -24,50 +27,16 @@
 			</div>
 			<div class="contextual-navbar">
 				<div class="navigation" id="navbar">
-					<div class="sites">
-						<p class="business-name"><span><?php echo e($currentSite->title) ?></span></p>
-						<p class="share">
+					<p class="business-name">
+						<span><?php echo s('You\'re currently editing')?></span>
+						<?php echo e($currentSite->title) ?>
+					</p>
+					
+					<p class="site-url dynamic-text" data-max-font-size="36">
+						<span>
 							http://<?php echo e($currentSite->domain) ?>
-							<!-- *
-							<a id="share_site" href="<?php echo e($currentSite->domain) ?>"><?php echo s('share url') ?></a> -->
-						</p>
-						
-						<div class="site-switcher">
-							<p><?php echo s('My mobi sites');?></p>
-							<ul>
-								<li><a href="#">
-									<span class="site-name">
-										<span><?php echo e($currentSite->title) ?></span>
-										<small>http://<?php echo e($currentSite->domain) ?></small>
-									</span>
-									<span class="status current"><?php echo s('current site')?></span>
-								</a></li>
-								<?php foreach (Auth::user()->sites(true) as $site): ?>
-								<li>
-									<a href="<?php echo Mapper::url('/users/change_site/'.$site->id) ?>" >
-										<span class="site-name">
-											<span><?php echo e($site->title) ?></span>
-											<small><?php echo e($site->domain) ?></small>
-										</span>
-										<span class="status edit"><?php echo s('edit site ›')?></span>
-									</a>
-								</li>
-								<?php endforeach; ?>
-								<?php if (Users::ROLE_USER != $currentSite->role): ?>
-								<li class="new"><a href="<?php echo Mapper::url('/sites/add') ?>"><?php echo s('Create a new mobi ›') ?></a></li>
-								<?php endif; ?>
-							</ul>
-						</div>
-					</div>
-					<div class="user">
-						<p><?php echo s('Hi <strong>%s</strong>', e(Auth::user()->firstname())) ?></p>
-						<ul>
-							<li><?php echo $this->html->link(s('My Account'), '/settings/account') ?></li>
-							<!-- li><?php echo $this->html->link(s('Dashboard'), '/dashboard/index') ?></li -->
-							<li><?php echo $this->html->link(s('Log out ›'), '/logout') ?></li>
-						</ul>
-						<!-- <?php echo $this->html->link(s('Log out ›'), '/logout') ?> -->
-					</div>
+						</span>
+					</p>						
 				</div>
 				<ul class="dropdown">
 					<?php if(!$currentSite->hide_categories): ?>
