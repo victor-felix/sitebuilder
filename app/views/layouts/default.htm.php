@@ -13,11 +13,50 @@
 	</head>
 
 	<body>
-
-		<div id="header">
-			<div class="global-navbar">
-			
+		<div class="global-navbar">
+			<div class="container">
+				<p class="dash left">meumobi<b>enterprise</b></p>
+				<ul class="sites dropdown left">
+					<li>
+						<p><?php echo e($currentSite->title) ?></p>
+						<ul style="">
+							<li>
+								<small><?php echo s('Select one site to edit it')?></small>
+							</li>
+							<?php foreach (Auth::user()->sites() as $site): ?>
+								<?php if ($site->id == $currentSite->id):?>
+								<li class="current">
+									<?php echo e($site->title) ?>
+									<span><?php echo s('Currently editing');?></span>
+								</li>
+								<?php else: ?>
+								<li>
+									<a href="<?php echo Mapper::url('/users/change_site/'.$site->id) ?>" >
+										<?php echo e($site->title) ?>
+									</a>
+								</li>
+								<?php endif;?>
+							<?php endforeach; ?>
+							<?php if (Users::ROLE_USER != $currentSite->role): ?>
+								<li class="new"><a href="<?php echo Mapper::url('/sites/add') ?>"><?php echo s('new mobile site...') ?></a></li>
+							<?php endif; ?>
+							<!-- › -->
+						</ul>
+					</li>
+				</ul>
+				<ul class="user dropdown right">
+					<li>
+						<p><?php echo e(Auth::user()->firstname()) ?></p>
+						<ul>
+							<li><?php echo $this->html->link(s('My Account'), '/settings/account') ?></li>
+							<!-- li><?php echo $this->html->link(s('Dashboard'), '/dashboard/index') ?></li -->
+							<li><?php echo $this->html->link(s('Log out ›'), '/logout') ?></li>
+						</ul>
+					</li>
+				</ul>
 			</div>
+		</div>
+		<div id="header">
 			<div class="logo">
 				<?php echo $this->html->imagelink('layout/logo.png', '/', array(
 					'alt' => $this->controller->getSegment()->title
