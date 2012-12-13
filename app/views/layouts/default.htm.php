@@ -46,7 +46,7 @@
 				</ul>
 				<ul class="user dropdown right">
 					<li>
-						<p><?php echo e(Auth::user()->firstname()) ?></p>
+						<p><span class="icon"></span><?php echo e(Auth::user()->firstname()) ?></p>
 						<ul>
 							<li><?php echo $this->html->link(s('My Account'), '/settings/account') ?></li>
 							<!-- li><?php echo $this->html->link(s('Dashboard'), '/dashboard/index') ?></li -->

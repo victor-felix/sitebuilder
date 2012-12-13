@@ -239,18 +239,35 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	width: 175px;
 }
 
-.global-navbar .user > li > p {
-	float: right;
-	background: url("/images/shared/layout/icon-user.png") no-repeat 10px 50%;
-	padding: 7px 10px 7px 30px;
-}
-
-.global-navbar .user:hover > li > p {
-	background: url("/images/shared/layout/icon-user-on.png") no-repeat 10px 50% #fff;
-}
 .global-navbar .user li ul {
 	top: 30px;
 }
+
+.global-navbar .user > li > p {
+	float: right;
+	position: relative;
+	padding: 7px 30px 7px 35px;
+	background-position: 87% 50%;
+}
+
+.global-navbar .user:hover > li > p {
+	background-position: 87% 50%;
+}
+
+.global-navbar .user > li > p .icon {
+	background: url("/images/shared/layout/icon-user.png") no-repeat;
+	display: block;
+	width: 11px;
+	height: 10px;
+	position: absolute;
+	left: 13px;
+	top: 10px;
+}
+
+.global-navbar .user:hover > li > p .icon {
+	background: url("/images/shared/layout/icon-user-on.png") no-repeat;
+}
+
 /**
  *header 
  */
