@@ -201,9 +201,9 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	font-weight: normal;
 	font-style: italic;
 	text-transform: lowercase;
-	padding: 5px 10px;
+	padding: 20px 10px 10px;
 	display: block;
-	color: #888;
+	color: #999;
 	border-bottom: 1px solid #DDD;
 }
 
@@ -215,7 +215,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 }
 
 .global-navbar ul.dropdown li ul .current {
-	color: #b4b4b4;
+	color: #999;
 	font-style: italic;
 }
 
