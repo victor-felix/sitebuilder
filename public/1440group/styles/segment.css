@@ -17,6 +17,10 @@ body {
 	border-color: #1070a0;
 }
 
+.global-navbar {
+	background-color: #1070a0;
+}
+
 #header .navigation .user a:hover {
 	background: #1070a0;
 }

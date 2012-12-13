@@ -17,6 +17,10 @@ body {
 	border-color: #54579A;
 }
 
+.global-navbar {
+	background-color: #54579A;
+}
+
 .login #header {
 	border-top: 10px solid #54579A;
 }
