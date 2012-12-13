@@ -194,6 +194,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 
 .global-navbar .dropdown > li {
 	z-index: 3;
+	height: 30px;
 }
 
 .global-navbar .dropdown ul li small {
