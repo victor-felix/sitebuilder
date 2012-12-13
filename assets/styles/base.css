@@ -182,13 +182,13 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 }
 
 .global-navbar .dropdown > li > p {
-	padding: 7px 25px 7px 10px;
-	background: url("/images/shared/layout/icon-arrow.png") no-repeat 93% 50%;
+	padding: 7px 30px 7px 15px;
+	background: url("/images/shared/layout/icon-arrow.png") no-repeat 89% 50%;
 	display: inline-block;
 }
 
 .global-navbar .dropdown:hover > li > p {
-	background: url("/images/shared/markitup/icon-nav-open.png") no-repeat 93% 50% white;
+	background: url("/images/shared/markitup/icon-nav-open.png") no-repeat 89% 50% white;
 	color: #2F3E6E;
 }
 
@@ -228,7 +228,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 }
 
 .global-navbar .dropdown ul li a, .global-navbar ul.dropdown li ul .current {
-	padding: 10px;
+	padding: 12px 10px;
 }
 
 .global-navbar .sites ul li.new a {
@@ -260,7 +260,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	width: 11px;
 	height: 10px;
 	position: absolute;
-	left: 13px;
+	left: 15px;
 	top: 10px;
 }
 
@@ -441,6 +441,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	text-transform: lowercase;
 	margin-top: 10px;
 	padding: 5px 0 5px 0;
+	font-weight: normal;
 }
 
 #header .contextual-navbar > ul > li > a:hover {
