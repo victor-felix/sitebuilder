@@ -13,7 +13,7 @@
 	border-color: #7665A9;
 }
 
-#header {
+.login #header {
 	border-top: 10px solid #7665A9;
 }
 
@@ -42,11 +42,6 @@
 
 .skin-picker ul li.selected a {
 	border-color: #7665A9;
-}
-
-
-#header {
-	border-top: 10px solid #7665A9;
 }
 
 #header p.login a {

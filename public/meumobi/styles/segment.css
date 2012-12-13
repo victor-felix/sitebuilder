@@ -13,10 +13,6 @@
 	border-color: #2f3e6e;
 }
 
-#header {
-	border-top: 10px solid #2f3e6e;
-}
-
 #header .navigation .user a:hover {
 	background: #2f3e6e;
 }
@@ -42,11 +38,6 @@
 
 .skin-picker ul li.selected a {
 	border-color: #2f3e6e;
-}
-
-
-#header {
-	border-top: 10px solid #2f3e6e;
 }
 
 #header p.login a {

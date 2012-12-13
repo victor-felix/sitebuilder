@@ -17,7 +17,7 @@ body {
 	border-color: #54579A;
 }
 
-#header {
+.login #header {
 	border-top: 10px solid #54579A;
 }
 

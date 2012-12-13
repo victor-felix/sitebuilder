@@ -17,10 +17,6 @@ body {
 	border-color: #516C24;
 }
 
-#header {
-	border-top: 10px solid #516C24;
-}
-
 #header .navigation .user a:hover {
 	background: #C2CB1E;
 }
@@ -52,7 +48,7 @@ body {
 }
 
 
-#header {
+.login #header {
 	border-top: 10px solid #C2CB1E;
 }
 

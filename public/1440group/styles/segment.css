@@ -17,10 +17,6 @@ body {
 	border-color: #1070a0;
 }
 
-#header {
-	border-top: 10px solid #1070a0;
-}
-
 #header .navigation .user a:hover {
 	background: #1070a0;
 }
@@ -49,7 +45,7 @@ body {
 }
 
 
-#header {
+.login #header {
 	border-top: 10px solid #1070a0;
 }
 
