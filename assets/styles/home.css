@@ -14,8 +14,9 @@ small {
 	box-shadow: none;
 	text-shadow: none;
 	font-weight: bold;
-	font-size: 20px;
+	font-size: 24px;
 	border: none;
+	font-family: "HelveticaNeueBold", "HelveticaNeue-Bold", "Helvetica Neue Bold", Arial;
 }
 
 .btn.big:hover {
@@ -45,7 +46,8 @@ small {
 }
 
 .header .call {
-	font-size: 18px;
+	text-align: right;
+	font-size: 20px;
 }
 
 .header .call span {
@@ -59,14 +61,17 @@ small {
 
 .header .login a {
 	font-weight: bold;
+	font-family: Arial;
 	color: inherit;
+	font-size: 18px;
 }
 
 .header .login a.active {
 	background-color: #C81713;
 	color: white;
-	padding: 3px 10px 4px;
+	padding: 2px 9px 3px;
 	border-radius: 10px;
+	font-size: 16px;
 }
 
 .header .login a.active:hover{
@@ -94,7 +99,9 @@ small {
 
 .hero.outer.wrapp .hero-unit .block h3 {
 	font-weight: bold;
-	font-size: 40px;
+	font-size: 48px;
+	line-height: 44px;
+	font-family: "HelveticaNeueBold", "HelveticaNeue-Bold", "Helvetica Neue Bold", Arial;	
 }
 
 .hero.outer.wrapp .hero-unit .block p {
@@ -111,7 +118,7 @@ small {
 
 .outer.wrapp .title {
 	color: #B9B9B9;
-	font-size: 22px;
+	font-size: 24px;
 	font-weight: 700;
 }
 
@@ -154,12 +161,8 @@ small {
 	box-shadow: none;
 }
 
-.presentation .thumbnail > img {
-	
-}
-
 .presentation .thumbnail h3 {
-	font-size: 20px;
+	font-size: 22px;
 	font-weight: lighter;
 }
 
@@ -176,6 +179,7 @@ small {
 .features h2 {
 	color: #C81713;
 	font-weight: lighter;
+	font-size: 32px;
 }
 
 .features .block {
@@ -224,13 +228,13 @@ small {
 }
 
 .prices h3 {
-	font-size: 28px;
+	font-size: 32px;
 }
 
 .prices h2 {
 	color: #C3C3C3;
 	font-weight: bold;
-	font-size: 36px;
+	font-size: 44px;
 	margin-bottom: 0;
 }
 
@@ -239,7 +243,7 @@ small {
 }
 
 .prices .row p {
-	font-size: 18px;
+	font-size: 20px;
 	font-style: italic;
 	color: #999;
 }
@@ -250,7 +254,7 @@ small {
 
 .prices li {
 	color: #777;
-	font-size: 16px;
+	font-size: 18px;
 	list-style: none;
 	padding: 15px 0 15px 35px;
 	border-top: 1px solid white;
@@ -309,11 +313,13 @@ small {
 
 .quotes .insights h3 {
 	font-weight: normal;
+	font-size: 30px;
 }
 
 .quotes .insights .slider {
 	color: #999;
 	margin-top: 25px;
+	font-size: 16px;
 }
 
 .quotes .insights .slider .author {
@@ -339,7 +345,7 @@ small {
 
 .quotes .about h3 {
 	padding: 0 27% 15px;
-	font-size: 23px;
+	font-size: 24px;
 	font-weight: bolder;
 	text-align: center;
 	line-height: 23px;
@@ -352,7 +358,7 @@ small {
 }
 
 .quotes .about .quote p {
-	font: italic 19px/22px myriad pro, Georgia, serif;
+	font: italic 20px/22px myriad pro, Georgia, serif;
 }
 
 .quotes .about .quote .author {
@@ -368,10 +374,12 @@ small {
 .custom-solution {
 	text-align: center;
 	padding: 25px 15%;
+	font-size: 16px;
 }
 
 .custom-solution h3 {
 	color: #C81713;
+	font-size: 28px;
 }
 
 /* footer */

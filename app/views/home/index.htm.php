@@ -6,7 +6,7 @@
 						<h3><?php echo s('Create a mobile website for your business')?></h3>
 						<p><?php echo s('Works with over 6000 cellphones, smartphones and tablets.')?></p>
 						<a class="btn big" href="/users/register/"><?php echo s('start your free trial')?></a>
-						<p class="trial"><small><b><?php echo s('NO')?></b> <?php echo s('Credit card required 14-day')?><br> <?php echo s('fully functional trial')?></small></p>
+						<p class="trial"><small><b><?php echo s('NO')?></b> <?php echo s('Credit card required')?><br> <?php echo s('14-day, fully functional trial')?></small></p>
 				  	</div>
 				  	<div class="pull-right">
 					  <div class="slider ">

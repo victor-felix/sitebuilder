@@ -18,7 +18,7 @@
     		<div class="pull-right">
 	    		<p class="call pull-left">
 	    			<span><?php echo s('need convincing? call us')?></span>
-	    			<?php echo s('+55 21 4042.7270')?>
+	    			<b><?php echo s('+55 21 4042.7270')?></b>
 	    		</p>
 	    		<p class="login pull-left">
 		    		<?php
