@@ -57,13 +57,13 @@ small {
 
 .header .login {
 	margin: 20px 0 0 25px;
+	font-size: 18px;
 }
 
 .header .login a {
 	font-weight: bold;
 	font-family: Arial;
 	color: inherit;
-	font-size: 18px;
 }
 
 .header .login a.active {
@@ -87,7 +87,7 @@ small {
 
 .hero.outer.wrapp .hero-unit {
 	margin: 0;
-	padding: 60px 0 25px;
+	padding: 50px 0 5px;
 	background-color: #111;
 	color: #fff;
 }
@@ -95,6 +95,7 @@ small {
 .hero.outer.wrapp .hero-unit .block {
 	min-width: 340px;
 	max-width: 45%;
+	padding-top: 10px;
 }
 
 .hero.outer.wrapp .hero-unit .block h3 {
@@ -107,7 +108,8 @@ small {
 
 .hero.outer.wrapp .hero-unit .block p {
 	font-size: 24px;
-	margin: 26px 0;
+	margin: 26px 0 40px;
+	line-height: 24px;
 	color: #506064;
 }
 
@@ -154,8 +156,9 @@ small {
 
 /* presentation */
 
-.presentation {
+div.wrapp.presentation {
 	border-bottom: 1px solid #DDD;
+	padding-top: 45px;
 }
 
 .presentation .thumbnail {
@@ -166,10 +169,16 @@ small {
 .presentation .thumbnail h3 {
 	font-size: 22px;
 	font-weight: lighter;
+	color: #444;
+}
+
+.presentation .thumbnail p.img {
+	height: 130px;
 }
 
 .presentation .thumbnail p {
-	color: #888;
+	color: #999;
+	line-height: 17px;
 }
 
 /* features */
@@ -184,9 +193,18 @@ small {
 	font-size: 32px;
 }
 
+.features .title {
+	letter-spacing: -1px;
+	margin-bottom: 35px;
+}
+
 .features .block {
 	padding: 0px 20px 0px 50px;
 	position: relative;
+}
+
+.features .block.store-locator, .features .block.rss {
+	height: 110px;
 }
 
 .features .block .icon {
@@ -198,7 +216,7 @@ small {
 	position: absolute;
 	top: 0;
 	left: 0;
-	padding: 4px 7px;
+	padding: 6px 9px;
 }
 
 .features .map .icon {
@@ -215,6 +233,9 @@ small {
 
 .features .block p {
 	font-size: 12px;
+	line-height: 14px;
+	width: 93%;
+	color: #999;
 }
 
 .features .phone {
@@ -223,14 +244,17 @@ small {
 
 /* prices */
 
-.prices {
+div.wrapp.prices {
 	background-color: #E5E5E5;
 	-webkit-box-shadow: inset 0px 1px 3px 0px #777;
 	box-shadow: inset 0px 1px 3px 0px #777;
+	padding-top: 45px;
 }
 
 .prices h3 {
+	color: #222;
 	font-size: 32px;
+	padding-bottom: 20px;
 }
 
 .prices h2 {
@@ -247,7 +271,7 @@ small {
 .prices .row p {
 	font-size: 20px;
 	font-style: italic;
-	color: #999;
+	color: #adadad;
 	letter-spacing: -1px;
 	margin: 10px 0 25px;
 }
@@ -300,29 +324,32 @@ small {
 	display: block;
 	margin-top: 10px;
 	color: #999;
+	font-style: italic;
 }
 
 /* quotes */
 
 .quotes.outer.wrapp {
 	border-bottom: 1px solid #DDD;
-	padding: 60px 0 30px;
+	padding: 70px 0 40px;
 }
 
 .quotes .insights {
 	border-right: 1px solid #DDD;
-	padding: 10px 45px 10px 0;
+	padding: 5px 45px 0px 0;
 	background: url("/images/shared/home/glob-watermark.png") no-repeat right 10px;
 }
 
 .quotes .insights h3 {
 	font-weight: normal;
 	font-size: 30px;
+	line-height: 30px;
+	color: #444;
 }
 
 .quotes .insights .slider {
-	color: #999;
-	margin-top: 25px;
+	color: #888;
+	margin-top: 20px;
 	font-size: 16px;
 }
 
@@ -348,7 +375,7 @@ small {
 }
 
 .quotes .about h3 {
-	padding: 0 27% 15px;
+	padding: 0 27% 30px;
 	font-size: 24px;
 	font-weight: bolder;
 	text-align: center;
@@ -359,26 +386,52 @@ small {
 	color: #666;
 	padding: 0 25px;
 	text-align: center;
+	
 }
 
 .quotes .about .quote p {
+	min-height: 135px;
+	position: relative;
 	font: italic 20px/22px myriad pro, Georgia, serif;
+	color: #555;
 }
 
 .quotes .about .quote .author {
 	font-weight: bold;
 	font-size: 12px;
 	font-family: inherit;
-	color: #666;
+	color: #999;
 	font-style: normal;
+	min-height: auto;
 }
 
+.quotes .about .quote .icon {
+	background: url("/images/shared/home/quotes.png") no-repeat;
+	height: 48px;
+	width: 52px;
+	display: block;
+	position: absolute;
+	
+}
+
+.quotes .about .quote .icon.left {
+	left: -15px;
+	top: -15px;
+}
+
+.quotes .about .quote .icon.right {
+	bottom: -15px;
+	right: -15px;
+	background-position: -58px 0px;
+}
 /* custom-solution */
 
 .custom-solution {
 	text-align: center;
-	padding: 25px 15%;
 	font-size: 16px;
+	color: #999;
+	max-width: 660px;
+	margin: 30px auto 40px;
 }
 
 .custom-solution h3 {

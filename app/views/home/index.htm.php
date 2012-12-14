@@ -26,28 +26,28 @@
 				<ul class="thumbnails">
 				  <li class="span3">
 				    <div class="thumbnail">
-				      <img src="/images/shared/home/icon-middle-04.png" alt="">
+				      <p class="img"><img src="/images/shared/home/icon-middle-04.png" alt=""></p>
 				      <h3><?php echo s('Easy to use control panel')?></h3>
 				      <p><?php echo s('Quickly manage the content of your mobile website in a full-featured, easy to use, control panel.')?></p>
 				    </div>
 				  </li>
 				  <li class="span3">
 				    <div class="thumbnail">
-				      <p><img src="/images/shared/home/icon-middle-02.png" alt=""></p>
+				      <p class="img"><img src="/images/shared/home/icon-middle-02.png" alt=""></p>
 				      <h3><?php echo s('Professionally designed themes')?></h3>
 				      <p><?php echo s('Get your the right look with premium themes that fit your business segment, whether it´s an restaurant or an hospital.')?></p>
 				    </div>
 				  </li>
 				  <li class="span3">
 				    <div class="thumbnail">
-				      <img src="/images/shared/home/icon-middle-03.png" alt="">
+				      <p class="img"><img src="/images/shared/home/icon-middle-03.png" alt=""></p>
 				      <h3><?php echo s('Add your products, services & menus')?></h3>
 				      <p><?php echo s('Your mobile website has space for your restaurant menu, your products, services, photos, and more.')?></p>
 				    </div>
 				  </li>
 				  <li class="span3">
 				    <div class="thumbnail">
-				      <img src="/images/shared/home/icon-middle-01.png" alt="">
+				      <p class="img"><img src="/images/shared/home/icon-middle-01.png" alt=""></p>
 				      <h3><?php echo s('Compatible with over 6000 devices')?></h3>
 				      <p><?php echo s('From the cutting edge smartphones to the oldest and cheapest cell phones, your mobile website is for everyone.')?></p>
 				    </div>
@@ -57,9 +57,10 @@
 		</div>
 		<div class="features outer wrapp">
 			<div class="container">
-				<h3 class="title"><?php echo s('Get the most out of the mobile web with these features.')?></h3>
+				
 				<div class="row">
 					<div class="span4">
+						<h3 class="title"><?php echo s('Get the most out of the mobile web with these features.')?></h3>
 						<div class="call block">
 							<span class="icon"><img alt="" src="/images/shared/home/fone.png"></span>
 							<h2><?php echo s('Click-to-call')?></h2>
@@ -189,7 +190,10 @@
 						<div class="row">
 							<div class="span4">
 								<div class="quote">
+									
 									<p>
+										<span class="icon left"></span>
+										<span class="icon right"></span>
 										<?php echo s('MeuMobi provides a very innovative mobile marketing solution to businesses, brands and media companies. They´re awesome.')?>
 									</p>
 									<p class="author"><?php echo s('Google Research, 2012')?></p>
@@ -199,6 +203,8 @@
 							<div class="span4">
 								<div class="quote">
 									<p>
+										<span class="icon left"></span>
+										<span class="icon right"></span>
 										<?php echo s('This company is great! Their service is awesome, being their main advantage the simplicity and beauty of the website.')?>
 									</p>
 									<p class="author"><?php echo s('Google Research, 2012')?></p>
