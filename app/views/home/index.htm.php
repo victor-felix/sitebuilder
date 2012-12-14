@@ -5,7 +5,7 @@
 					<div class="block pull-left">
 						<h3><?php echo s('Create a mobile website for your business')?></h3>
 						<p><?php echo s('Works with over 6000 cellphones, smartphones and tablets.')?></p>
-						<a class="btn big" href="/users/register/"><?php echo s('start your free trial')?></a>
+						<a class="btn big" href="/users/register/"><?php echo s('start your free trial ›')?></a>
 						<p class="trial"><small><b><?php echo s('NO')?></b> <?php echo s('Credit card required')?><br> <?php echo s('14-day, fully functional trial')?></small></p>
 				  	</div>
 				  	<div class="pull-right">
@@ -22,9 +22,7 @@
 		</div>
 		<div class="presentation outer wrapp">
 			<div class="container">
-				<div class="row">
-					<h3 class="title span4"><?php echo s('Everything your company needs to a great mobile presence.')?></h3>
-				</div>
+				<h3 class="title"><?php echo s('Everything your company needs to a great mobile presence.')?></h3>
 				<ul class="thumbnails">
 				  <li class="span3">
 				    <div class="thumbnail">
@@ -59,9 +57,9 @@
 		</div>
 		<div class="features outer wrapp">
 			<div class="container">
+				<h3 class="title"><?php echo s('Get the most out of the mobile web with these features.')?></h3>
 				<div class="row">
 					<div class="span4">
-						<h3 class="title"><?php echo s('Get the most out of the mobile web with these features.')?></h3>
 						<div class="call block">
 							<span class="icon"><img alt="" src="/images/shared/home/fone.png"></span>
 							<h2><?php echo s('Click-to-call')?></h2>
@@ -121,7 +119,7 @@
 							<li><span class="icon"></span><?php echo s('<b>free</b> community support')?></li>
 							<li><span class="icon"></span><?php echo s('<b>basic</b> themes')?></li>
 							<li><span class="icon"></span><?php echo s('<b>click-to-call</b>, maps & directions')?></li>
-							<li class="uncheck"><span class="icon"></span><?php echo s('more features? checkout Pro')?> &#62;</li>
+							<li class="uncheck"><span class="icon"></span><?php echo s('more features? checkout Pro')?> ›</li>
 						</ul>
 					</div>
 					<div class="span6">

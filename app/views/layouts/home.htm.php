@@ -28,7 +28,7 @@
 					?>
 		    		<?php echo s('or')?>
 		    		<?php
-						echo $this->html->link( s('sign in'), '/users/login/' . $invite_token, array(
+						echo $this->html->link( s('sign in ›'), '/users/login/' . $invite_token, array(
 							'class' => ''
 						));
 					?>

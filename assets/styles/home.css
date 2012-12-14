@@ -7,7 +7,7 @@ small {
 }
 
 .btn.big {
-	padding: 7px 12px 9px;
+	padding: 15px;
 	background-color: #C81713;
 	background-image: none;
 	color: white;
@@ -101,6 +101,7 @@ small {
 	font-weight: bold;
 	font-size: 48px;
 	line-height: 44px;
+	letter-spacing: -3px;
 	font-family: "HelveticaNeueBold", "HelveticaNeue-Bold", "Helvetica Neue Bold", Arial;	
 }
 
@@ -120,6 +121,7 @@ small {
 	color: #B9B9B9;
 	font-size: 24px;
 	font-weight: 700;
+	max-width: 370px;
 }
 
 .hero-unit .slider p {
@@ -246,6 +248,8 @@ small {
 	font-size: 20px;
 	font-style: italic;
 	color: #999;
+	letter-spacing: -1px;
+	margin: 10px 0 25px;
 }
 
 .prices ul {
