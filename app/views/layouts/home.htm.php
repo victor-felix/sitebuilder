@@ -60,8 +60,8 @@
 				</div>
 				<div class="social">
 					<span class="upper"><?php echo s('Find us on')?></span>
-					<a class="face" href="#"><?php echo s('facebook')?></a>
-					<a class="twitter" href="#"><?php echo s('twitter')?></a>
+					<a class="face" href="http://www.facebook.com/meumobi"><?php echo s('facebook')?></a>
+					<a class="twitter" href="http://twitter.com/MeuMobi"><?php echo s('twitter')?></a>
 				</div>
 			</div>
 			<script type="text/javascript">
