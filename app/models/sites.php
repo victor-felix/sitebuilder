@@ -194,9 +194,9 @@ class Sites extends AppModel {
 		}
 
 		$model = Model::load('UsersSites')->first(array(
-			'user_id'		=> Auth::user()->id(),
-			'site_id'		=> $this->id,
-			'segment'	=> MeuMobi::segment(),
+			'user_id' => Auth::user()->id(),
+			'site_id' => $this->id,
+			'segment' => MeuMobi::segment(),
 		));
 
 		if ($model) {
@@ -229,7 +229,7 @@ class Sites extends AppModel {
 	}
 
 	public function itemTypes() {
-		return Model::load ( 'Segments' )->firstById ( $this->segment )->items;
+		return MeuMobi::currentSegment()->items;
 	}
 
 	public function hasManyTypes() {
@@ -392,8 +392,8 @@ class Sites extends AppModel {
 		}
 	}
 	protected function setHideCategories($data) {
-		$segment = Model::load ( 'Segments' )->firstById ( MeuMobi::segment () );
-		$data ['hide_categories'] = $segment->hideCategories;
+		$segment = MeuMobi::currentSegment();
+		$data['hide_categories'] = $segment->hideCategories;
 		return $data;
 	}
 

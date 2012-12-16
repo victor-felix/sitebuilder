@@ -1,4 +1,4 @@
-<?php $currentSite = Auth::user()->site(); ?>
+<?php $currentSite = Auth::user()->site() ?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -19,7 +19,7 @@
 				<ul class="sites dropdown left">
 					<li>
 						<p><?php echo e($currentSite->title) ?></p>
-						<ul style="">
+						<ul>
 							<li>
 								<small><?php echo s('Select one site to edit it')?></small>
 							</li>
@@ -38,9 +38,8 @@
 								<?php endif;?>
 							<?php endforeach; ?>
 							<?php if (Users::ROLE_USER != $currentSite->role): ?>
-								<li class="new"><a href="<?php echo Mapper::url('/sites/add') ?>"><?php echo s('new mobile site...') ?></a></li>
+								<li class="new"><a href="<?php echo Mapper::url('/create_site/theme') ?>"><?php echo s('new mobile site...') ?></a></li>
 							<?php endif; ?>
-							<!-- › -->
 						</ul>
 					</li>
 				</ul>
@@ -48,9 +47,9 @@
 					<li>
 						<p><span class="icon"></span><?php echo e(Auth::user()->firstname()) ?></p>
 						<ul>
-							<li><?php echo $this->html->link(s('My Account'), '/settings/account') ?></li>
+							<li><?php echo $this->html->link(s('My Account'), '/users/edit') ?></li>
 							<!-- li><?php echo $this->html->link(s('Dashboard'), '/dashboard/index') ?></li -->
-							<li><?php echo $this->html->link(s('Log out ›'), '/logout') ?></li>
+							<li><?php echo $this->html->link(s('Log out ›'), '/users/logout') ?></li>
 						</ul>
 					</li>
 				</ul>
@@ -58,7 +57,7 @@
 		</div>
 		<div id="header">
 			<div class="logo">
-				<?php echo $this->html->imagelink('layout/logo.png', '/', array(
+				<?php echo $this->html->imagelink('layout/logo.png', '/categories', array(
 					'alt' => $this->controller->getSegment()->title
 				), array(
 					'class' => 'logo'
@@ -70,12 +69,12 @@
 						<span><?php echo s('You\'re currently editing')?></span>
 						<?php echo e($currentSite->title) ?>
 					</p>
-					
+
 					<p class="site-url dynamic-text" data-max-font-size="36">
 						<span>
 							http://<?php echo e($currentSite->domain) ?>
 						</span>
-					</p>						
+					</p>
 				</div>
 				<ul class="dropdown">
 					<?php if(!$currentSite->hide_categories): ?>
@@ -84,7 +83,7 @@
 					<li>
 						<p><?php echo s('content')?><span class="arrow"></span></p>
 						<ul>
-							<li><?php echo $this->html->link(s('Company Info'), '/settings') ?></li>
+							<li><?php echo $this->html->link(s('Company Info'), '/sites/business_info') ?></li>
 							<li><?php echo $this->html->link(s('News'), '/sites/news') ?></li>
 						</ul>
 					</li>
@@ -92,7 +91,7 @@
 					<li>
 						<p><?php echo s('appearance')?><span class="arrow"></span></p>
 						<ul>
-							<li><?php echo $this->html->link(s('themes'), '/settings/customize') ?></li>
+							<li><?php echo $this->html->link(s('themes'), '/sites/theme') ?></li>
 						</ul>
 					</li>
 					<li>
@@ -116,7 +115,7 @@
 		</div>
 
 		<?php echo $this->element('layouts/footer') ?>
-		
+
 		<div class="live-preview">
 			<a href="#" class="show-action">
 				<?php echo s('LIVE PREVIEW')?>
@@ -126,7 +125,7 @@
 				<?php echo $this->element('sites/theme_preview', array('site' => $currentSite))  ?>
 			</div>
 		</div>
-		
+
 		<?php echo $this->html->script('shared/jquery', 'shared/main', 'shared/markitup', 'shared/async_upload', 'shared/jquery.chosen', 'shared/themes') ?>
 		<?php echo $this->html->scriptsForLayout ?>
 	</body>

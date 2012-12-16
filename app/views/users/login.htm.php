@@ -1,8 +1,7 @@
 <?php $this->layout = 'login' ?>
 <?php $this->pageTitle = s('Log in') ?>
-<?php $invite_token = isset($invite_token) ? $invite_token : '' ?>
 
-<?php echo $this->form->create(Mapper::here(), array(
+<?php echo $this->form->create(null, array(
 	'class' => 'form-register form-edit',
 	'id' => 'FormLogin'
 )) ?>
@@ -30,35 +29,25 @@
 			)) ?>
 			<label for="FormRemember" class="checkbox"><?php echo s('Remember me') ?></label>
 		</div>
-		<?php if ($invite_token): ?>
 		<div class="form-grid-220 first">
 			<?php
-				echo $this->html->link(s('Don\'t have account? Click here to register'), '/users/register/' . $invite_token, array(
+				echo $this->html->link(s('Don\'t have account? Click here to register'), '/signup/user', array(
 					'class' => 'no-account'
 				));
 			?>
 		</div>
-		<?php endif;?>
 	</div>
-	<?php 
-		if ($invite_token) {
-			echo $this->form->input('invite_token', array(
-					'type' => 'hidden',
-					'value' => $invite_token,
-			));
-		} 
-	?>
 </fieldset>
 
 <fieldset class="actions">
 	<?php echo $this->form->submit(s('Log in'), array(
 		'class' => 'ui-button large',
-		'style' => 'float: left;'
+		'style' => 'float: left'
 	))?>
 	
 	 <?php echo $this->html->link(s('Forgot password?'), '/users/forgot_password', array(
-				'class' => 'forgot-password'
-			)) ?>
+		'class' => 'forgot-password'
+	)) ?>
 </fieldset>
 
 <?php echo $this->form->close() ?>

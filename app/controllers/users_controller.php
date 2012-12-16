@@ -2,32 +2,9 @@
 
 class UsersController extends AppController
 {
-	protected $redirectIf = array(
-		'register',
-		'login',
-		'forgot_password',
-		'reset_password',
-		'login_and_register'
-	);
-
-	protected function beforeFilter()
-	{
-		if (Auth::loggedIn()) {
-			if (in_array($this->param('action'), $this->redirectIf)) {
-				if (Auth::user()->site()->hide_categories) {
-					$this->redirect('/sites/edit');
-				} else {
-					$this->redirect('/categories');
-				}
-			}
-		}
-
-		parent::beforeFilter();
-	}
-
 	public function edit()
 	{
-		$user = $this->Users->firstById(Auth::user()->id);
+		$user = Auth::user();
 		if (!empty($this->data)) {
 			$user->updateAttributes($this->data);
 			if ($user->validate()) {
@@ -37,28 +14,6 @@ class UsersController extends AppController
 			}
 		}
 		$this->set(compact('user'));
-	}
-
-	public function register($invite_token = null)
-	{
-		if (!($invite_token && Users::validateInvite($invite_token)) && !Users::signupIsEnabled()) {
-			return $this->redirect('/');
-		}
-
-		$user = new Users();
-
-		if (!empty($this->data)) {
-			$user->updateAttributes($this->data);
-			if ($user->validate()) {
-				Session::write('Users.signup', array(
-					'path' => '/sites/customize_register',
-					'user' => $user->data
-				));
-				$this->redirect('/sites/customize_register');
-			}
-		}
-
-		$this->set(compact('user', 'invite_token'));
 	}
 
 	public function confirm($id = null, $token = null)
@@ -168,7 +123,7 @@ class UsersController extends AppController
 	public function change_site($id = null)
 	{
 		Auth::user()->site ( $id );
-		$this->redirect( '/' );
+		$this->redirect('/categories');
 	}
 
 	public function invite()

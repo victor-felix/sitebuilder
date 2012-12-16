@@ -21,14 +21,14 @@
                 <div class="head">
                     <h1><?php echo s('Create your Mobi') ?></h1>
                     <ul class="steps">
-                        <li <?php if(!isset($this->selectedTab) || $this->selectedTab == 0): ?>class="current"<?php endif ?>>
+                        <li <?php if($this->selectedTab == 0): ?>class="current"<?php endif ?>>
                             <?php echo s('Personal details') ?>
                         </li>
-                        <li <?php if(isset($this->selectedTab) && $this->selectedTab == 1): ?>class="current"<?php endif ?>>
-                            <?php echo s('Business details') ?>
+                        <li <?php if($this->selectedTab == 1): ?>class="current"<?php endif ?>>
+                            <?php echo s('Customization') ?>
                         </li>
-                        <li <?php if(isset($this->selectedTab) && $this->selectedTab == 2): ?>class="current"<?php endif ?>>
-                            <?php echo s('Customization and logo') ?>
+                        <li <?php if($this->selectedTab == 2): ?>class="current"<?php endif ?>>
+                            <?php echo s('Business details') ?>
                         </li>
                     </ul>
                     <div class="clear"></div>

@@ -1,25 +1,42 @@
 <?php
 
-class Segments {
-    public function all() {
-        return Config::read('Segments');
-    }
+class Segments
+{
+	protected $attr;
 
-    public function firstById($id) {
-        $segments = $this->all();
-        return (object) $segments[$id];
-    }
+	public static function firstById($id)
+	{
+		$segments = Config::read('Segments');
+		return new self($segments[$id]);
+	}
 
-    public static function listItemTypesFor($segment) {
-        $segment = Model::load('Segments')->firstById($segment);
-        $types = (array) $segment->items;
-        $type_list = array();
+	public function __construct($attr)
+	{
+		$this->attr = $attr;
+	}
 
-        foreach($types as $type) {
-            $title = Inflector::humanize($type);
-            $type_list[$type] = $title;
-        }
+	public function __get($key)
+	{
+		if (array_key_exists($key, $this->attr)) {
+			return $this->attr[$key];
+		}
+	}
 
-        return $type_list;
-    }
+	public function isSignupEnabled()
+	{
+		return $this->enableSignUp;
+	}
+
+	public static function listItemTypesFor($segment) {
+		$segment = self::firstById($segment);
+		$types = (array) $segment->items;
+		$type_list = array();
+
+		foreach($types as $type) {
+			$title = Inflector::humanize($type);
+			$type_list[$type] = $title;
+		}
+
+		return $type_list;
+	}
 }

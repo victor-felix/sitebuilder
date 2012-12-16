@@ -27,7 +27,7 @@ class Controller {
                 $this->uses = array($this->name);
             }
         }
-        
+
         array_map(array($this, 'loadModel'), $this->uses);
         $this->data = array_merge_recursive($_POST, $_FILES);
     }
@@ -38,13 +38,13 @@ class Controller {
 
     public function __get($name) {
         $attrs = array('models', 'view');
-        
+
         foreach($attrs as $attr) {
             if(array_key_exists($name, $this->{$attr})) {
                 return $this->{$attr}[$name];
             }
         }
-        
+
         throw new RuntimeException(get_class($this) . '->' . $name . ' does not exist.');
     }
 
@@ -67,21 +67,21 @@ class Controller {
             ));
         }
     }
-    
+
     public static function hasViewForAction($request) {
         if(is_null($request['extension'])) {
             $request['extension'] = 'htm';
         }
         return Filesystem::exists('app/views/' . $request['controller'] . '/' . $request['action'] . '.' . $request['extension'] . '.php');
     }
-    
+
     public function name() {
         $classname = get_class($this);
         $lenght = strpos($classname, 'Controller');
-        
+
         return substr($classname, 0, $lenght);
     }
-    
+
     public function callAction($request) {
         if($this->hasAction($request['action']) || Controller::hasViewForAction($request)) {
             return $this->dispatch($request);
@@ -93,7 +93,7 @@ class Controller {
             ));
         }
     }
-    
+
     public function hasAction($action) {
         $class = new ReflectionClass(get_class($this));
         if($class->hasMethod($action)) {
@@ -104,12 +104,12 @@ class Controller {
             return false;
         }
     }
-    
+
     protected function dispatch($request) {
         $this->params = $request;
         $this->beforeFilter();
         $view = View::path($request);
-    
+
         if($this->hasAction($request['action'])) {
             call_user_func_array(array($this, $request['action']), $request['params']);
             $view = null;
@@ -122,34 +122,34 @@ class Controller {
         }
 
         $this->afterFilter();
-    
+
         return $output;
     }
-    
+
     protected function loadModel($model) {
         $model = Inflector::camelize($model);
         return $this->models[$model] = Model::load($model);
     }
-    
+
     protected function beforeFilter() { }
-    
+
     protected function beforeRender() { }
-    
+
     protected function afterFilter() { }
-    
+
     public function setAction($action) {
         $args = func_get_args();
         $this->params['action'] = array_shift($args);
-        
+
         return call_user_func_array(array($this, $action), $args);
     }
-    
+
     public function render($action = null) {
         $view = new View;
         $layout = $this->autoLayout ? $this->layout : false;
         $view->controller = $this;
         $this->autoRender = false;
-        
+
         if(is_null($action)) {
             $action = Inflector::underscore($this->name) . '/' . $this->params['action'];
             if($this->params['extension']) {
@@ -159,7 +159,7 @@ class Controller {
 
         return $view->render($action, $this->view, $layout);
     }
-    
+
     public function redirect($url, $status = null, $exit = true) {
         $this->autoRender = false;
         $codes = array(
@@ -203,7 +203,7 @@ class Controller {
             503 => 'Service Unavailable',
             504 => 'Gateway Time-out'
         );
-        
+
         if(!is_null($status) && isset($codes[$status])) {
             header('HTTP/1.1 ' . $status . ' ' . $codes[$status]);
         }
@@ -219,7 +219,7 @@ class Controller {
             }
         }
         else {
-            $this->view[$var] = $value;            
+            $this->view[$var] = $value;
         }
     }
 
@@ -254,7 +254,7 @@ class Controller {
         }
         return false;
     }
-    
+
     public function stop() {
         exit(0);
     }

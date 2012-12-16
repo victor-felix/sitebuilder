@@ -5,38 +5,9 @@ require 'lib/core/storage/Session.php';
 require 'lib/utils/Auth.php';
 
 class AppController extends Controller {
-	protected $allowed = array('skins', 'users', 'states', 'images');
-
 	protected function beforeFilter() {
-		if ($signup = Session::read('Users.signup')) {
-			if ($signup['path'] != $this->param('here') && !in_array($this->param('controller'), $this->allowed)) {
-				$this->redirect($signup['path']);
-			}
-		}
-
 		if ($this->isXhr()) {
 			$this->autoLayout = false;
-		}
-	}
-
-	public static function load($name, $instance = false) {
-		$filename = 'app/controllers/' . Inflector::underscore($name) . '.php';
-		$name = basename($name);
-		if(!class_exists($name) && Filesystem::exists($filename)) {
-			require_once $filename;
-		}
-		if(class_exists($name)) {
-			if($instance) {
-				return new $name();
-			}
-			else {
-				return true;
-			}
-		}
-		else {
-			throw new MissingControllerException(array(
-				'controller' => $name
-			));
 		}
 	}
 
@@ -57,7 +28,7 @@ class AppController extends Controller {
 	}
 
 	public function getSegment() {
-		return Model::load ( 'Segments' )->firstById ( MeuMobi::segment () );
+		return MeuMobi::currentSegment();
 	}
 
 	protected function toJSON($record) {

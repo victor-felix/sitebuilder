@@ -53,12 +53,6 @@ class Users extends AppModel {
 		)
 	);
 
-	public static function signup($user, $site)
-	{
-		$user->save();
-		$site->save();
-	}
-
 	public function firstname()
 	{
 		if (array_key_exists ( 'name', $this->data )) {
@@ -226,10 +220,6 @@ class Users extends AppModel {
 		}
 	}
 
-	public static function signupIsEnabled() {
-		return Model::load ( 'Segments' )->firstById ( MeuMobi::segment () )->enableSignUp;
-	}
-
 	public static function validateInvite($token)
 	{
 		return \app\models\Invites::find('count', array(
@@ -310,7 +300,7 @@ class Users extends AppModel {
 	{
 		if ($created && ! Config::read ( 'Mail.preventSending' )) {
 			require_once 'lib/mailer/Mailer.php';
-			$segment = Model::load ( 'Segments' )->firstById ( MeuMobi::segment () );
+			$segment = MeuMobi::currentSegment();
 
 			$mailer = new Mailer ( array (
 						'from' => $segment->email,
@@ -331,7 +321,7 @@ class Users extends AppModel {
 	{
 		if (!Config::read ( 'Mail.preventSending' )) {
 			require_once 'lib/mailer/Mailer.php';
-			$segment = Model::load ( 'Segments' )->firstById ( MeuMobi::segment () );
+			$segment = MeuMobi::currentSegment();
 
 			$mailer = new Mailer ( array (
 				'from' => $segment->email,
@@ -352,7 +342,7 @@ class Users extends AppModel {
 	{
 		if (!Config::read('Mail.preventSending')) {
 			require_once 'lib/mailer/Mailer.php';
-			$segment = Model::load('Segments')->firstById(MeuMobi::segment());
+			$segment = MeuMobi::currentSegment();
 			$mailer = new Mailer(array(
 						'from' => $segment->email,
 						'to' => $to,

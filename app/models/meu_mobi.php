@@ -1,5 +1,7 @@
 <?php
 
+require_once 'app/models/segments.php';
+
 class MeuMobi
 {
 	protected static $segment;
@@ -13,12 +15,12 @@ class MeuMobi
 			YamlDictionary::dictionary($segment);
 		}
 	}
-	
+
 	public static function currentSegment()
 	{
-		return Model::load ( 'Segments' )->firstById ( self::segment() );
+		return Segments::firstById(static::$segment);
 	}
-	
+
 	public static function instance()
 	{
 		$domain = Mapper::domain();
