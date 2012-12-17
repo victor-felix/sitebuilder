@@ -37,7 +37,7 @@
 								</li>
 								<?php endif;?>
 							<?php endforeach; ?>
-							<?php if (Users::ROLE_USER != $currentSite->role): ?>
+							<?php if (Users::ROLE_ADMIN == $currentSite->role): ?>
 								<li class="new"><a href="<?php echo Mapper::url('/create_site/theme') ?>"><?php echo s('new mobile site...') ?></a></li>
 							<?php endif; ?>
 						</ul>
