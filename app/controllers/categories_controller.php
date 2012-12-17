@@ -7,6 +7,8 @@ class CategoriesController extends AppController
 		if (Auth::user()->site()->hide_categories) {
 			$this->redirect('/sites/business_info');
 		}
+
+		parent::beforeFilter();
 	}
 
 	public function index() {
