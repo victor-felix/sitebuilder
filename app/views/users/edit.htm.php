@@ -8,7 +8,7 @@
 
 <?php echo $this->form->create('/users/edit', array(
     'id' => 'form-edit-personal-info',
-    'class' => 'form-edit',
+    'class' => 'form-edit default-form',
     'object' => $user
 )) ?>
 

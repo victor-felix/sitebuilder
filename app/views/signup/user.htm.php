@@ -3,7 +3,7 @@
 
 <?php echo $this->form->create(null, array(
 	'id' => 'form-register-personal-info',
-	'class' => 'form-register form-edit',
+	'class' => 'form-register default-form',
 	'object' => $user
 )) ?>
 

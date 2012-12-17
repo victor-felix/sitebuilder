@@ -1,24 +1,24 @@
-.form-edit {
+.default-form {
 	border-top: 1px solid #DDD;
 }
 
-.form-edit fieldset {
+.default-form fieldset {
 	border: 0;
 	border-bottom: 1px solid #DDD;
 	clear: both;
 	padding-bottom: 10px;
 }
 
-.form-edit fieldset.actions {
+.default-form fieldset.actions {
 	border: 0;
 	padding: 25px;
 }
 
-.form-edit fieldset.actions button {
+.default-form fieldset.actions button {
 	margin-left: 295px;
 }
 
-.form-edit fieldset h2 {
+.default-form fieldset h2 {
 	color: #c02926;
 	float: left;
 	font: lighter 24px/22px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica,arial,sans-serif;
@@ -28,49 +28,49 @@
 	width: 275px;
 }
 
-.form-edit .tip {
+.default-form .tip {
 	border-top: none;
 	padding: 35px 25px 25px
 }
 
-.form-edit .tip h2 {
+.default-form .tip h2 {
 	padding: 0 0 10px;
 	float: none;
 }
 
-.form-edit .tip h2.greater {
+.default-form .tip h2.greater {
 	font-size: 30px;
 	line-height: 29px;
 }
 
-.form-edit .tip p {
+.default-form .tip p {
 	font-size: 14px;
 	line-height: 18px;
 	padding-right: 30px;
 	color: #999;
 }
 
-.form-edit .tip p img.icon {
+.default-form .tip p img.icon {
 	float: left;
 	margin: 0 10px 7px 0;
 }
 
-.form-edit .tip p img.icon + span {
+.default-form .tip p img.icon + span {
 	padding-top: 10px;
 	display: block;
 }
 
-.form-edit .tip small {
+.default-form .tip small {
 	clear: both;
 }
 
-.form-edit .field-group {
+.default-form .field-group {
 	float: left;
 	padding: 40px 0 0 0;
 	width: 460px;
 }
 
-.form-edit .form-grid-220 {
+.default-form .form-grid-220 {
 	position: relative;
 	float: left;
 	margin-left: 20px;
@@ -78,32 +78,32 @@
 	width: 220px;
 }
 
-.form-edit .form-grid-460 {
+.default-form .form-grid-460 {
 	position: relative;
 	clear: both;
 	margin-bottom: 30px;
 	width: 460px;
 }
 
-.form-edit .form-grid-570 {
+.default-form .form-grid-570 {
 	float: left;
 	padding: 40px 0 0 0;
 	width: 540px;
 }
 
-.form-edit .form-grid-220.first {
+.default-form .form-grid-220.first {
 	margin-left: 0;
 	clear: left;
 }
 
-.form-edit label, .form-edit .label {
+.default-form label, .default-form .label {
 	display: block;
 	font-size: 12px;
 	color: #666;
 	margin-bottom: 2px;
 }
 
-.form-edit small {
+.default-form small {
 	color: #888;
 	display: block;
 	font-size: 11px;
@@ -111,7 +111,7 @@
 	margin-top: 8px;
 }
 
-.form-edit .optional {
+.default-form .optional {
 	color: #CCC;
 	position: absolute;
 	right: 0;
@@ -119,13 +119,13 @@
 	font-style: italic;
 }
 
-.form-edit p.error {
+.default-form p.error {
 	color: #F00;
 	font-style: italic;
 	margin-top: 4px;
 }
 
-.form-edit .fieldset-expand {
+.default-form .fieldset-expand {
 	border-bottom: 1px solid #DDD;
 	color: #c02926;
 	display: block;
@@ -135,18 +135,18 @@
 	padding: 30px 25px;
 }
 
-	.form-edit .fieldset-expand:hover {
+	.default-form .fieldset-expand:hover {
 		background: url(/images/shared/layout/ui-button-white.png) center repeat-x;
 		border-bottom-color: #CCC;
 		-moz-box-shadow: 0 1px 0px #EEE;
 		-webkit-box-shadow: 0 1px 0px #EEE;
 	}
 	
-	.form-edit .fieldset-expand:active {
+	.default-form .fieldset-expand:active {
 		background: url(/images/shared/layout/ui-button-white-active.png) center repeat-x;
 	}
 	
-	.form-edit .fieldset-expand span {
+	.default-form .fieldset-expand span {
 		background: url(/images/shared/register/arrow-expand-fieldset.png) right no-repeat;
 		float: right;
 		padding-right: 40px;
@@ -154,29 +154,29 @@
 		width: 30px;
 	}
 	
-.form-edit .domains {
+.default-form .domains {
 	padding: 25px 0;
 	clear: both;
 }
 
-.form-edit .domains p {
+.default-form .domains p {
 	margin: 10px 0;
 }
 
-.form-edit .custom-domain-setup {
+.default-form .custom-domain-setup {
 	margin: 5px 0;
 }
 
-.form-edit .custom-domain-setup small {
+.default-form .custom-domain-setup small {
 	font-size: 13px;
 }
 
-.form-edit .custom-domain-setup span {
+.default-form .custom-domain-setup span {
 	color: #999;
 	font-size: 17px;
 }
 
-.form-edit .meumobi-url span {
+.default-form .meumobi-url span {
 	color: #999;
 	font-size: 17px;
 	display: inline-block;
@@ -185,12 +185,12 @@
 	float: left;
 }
 
-.form-edit .meumobi-url input {
+.default-form .meumobi-url input {
 	float: left;
 	margin-right: 5px;
 }
 
-.form-edit p.code {
+.default-form p.code {
 	border: 1px solid #CCC;
 	border-radius: 2px;
 	-moz-border-radius: 2px;
@@ -198,7 +198,7 @@
 	padding: 10px;
 }
 
-.form-edit .logo {
+.default-form .logo {
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	border-radius: 3px;
@@ -208,18 +208,18 @@
 	max-width: 200px;
 }
 
-.form-edit a.delete-items {
+.default-form a.delete-items {
 	margin-right: 10px;
 }
 
-.form-edit a.delete {
+.default-form a.delete {
 	float: right;
 	position: relative;
 	padding-left: 25px;
 	margin-top: 8px;
 }
 
-.form-edit a.delete img {
+.default-form a.delete img {
 	position: absolute;
 	top: 5px;
 	left: 7px;
@@ -242,11 +242,11 @@
 	border-bottom:none;
 }
 
-.form-edit div.input.checkbox input {
+.default-form div.input.checkbox input {
 	margin-top:5px;
 }
 
-.form-edit label.checkbox {
+.default-form label.checkbox {
 	margin:-1.2em 0 0 20px;
 	
 }

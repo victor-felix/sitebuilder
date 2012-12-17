@@ -8,7 +8,7 @@
     <div class="clear"></div>
 </div>
     <?php echo $this->form->create(Mapper::here(), array(
-        'class' => 'form-edit',
+        'class' => 'form-edit default-form',
         'id' => 'form-add-businessitem'
     )) ?>
     <fieldset>

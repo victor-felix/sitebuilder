@@ -11,7 +11,7 @@
 </div>
 
 <?php echo $this->items->form('/extensions/edit/' . $extension->id(), $extension, array(
-    'class' => 'form-edit',
+    'class' => 'form-edit default-form',
     'id' => 'form-edit-businessitem'
 )) ?>
     
