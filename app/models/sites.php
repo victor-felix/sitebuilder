@@ -10,8 +10,8 @@ class Sites extends AppModel {
 		'setHideCategories', 'getLatLng', 'saveDomain', 'updateSiteManager',
 	);
 	protected $afterSave = array(
-		'saveLogo', 'createRootCategory', 'createNewsCategory', 'updateFeed','saveDomains',
-		'createRelation'
+		'saveLogo', 'createRootCategory', 'createNewsCategory', 'updateFeed',
+		'saveDomains', 'createRelation'
 	);
 	protected $beforeDelete = array(
 		'deleteImages',
@@ -473,13 +473,14 @@ class Sites extends AppModel {
 		}
 	}
 
-	protected function saveLogo() {
-		if (array_key_exists ( 'logo', $this->data ) && $this->data ['logo'] ['error'] == 0) {
-			if ($logo = $this->logo ()) {
-				Model::load ( 'Images' )->delete ( $logo->id );
+	protected function saveLogo()
+	{
+		if (array_key_exists('logo', $this->data) && !$this->data['logo']['error']) {
+			if ($logo = $this->logo()) {
+				Model::load('Images')->delete($logo->id);
 			}
 
-			Model::load ( 'Images' )->upload ( new SiteLogos ( $this->id ), $this->data ['logo'], array('visible' => 1) );
+			Model::load('Images')->upload(new SiteLogos($this->id), $this->data['logo'], array('visible' => 1));
 		}
 	}
 

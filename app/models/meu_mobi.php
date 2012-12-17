@@ -29,7 +29,7 @@ class MeuMobi
 
 	public static function domain()
 	{
-		$segment = Model::load('Segments')->firstById(static::segment());
+		$segment = self::currentSegment();
 		$domain = null;
 
 		if (property_exists($segment, 'domain')) {

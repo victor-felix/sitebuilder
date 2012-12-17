@@ -46,7 +46,7 @@ class Categories extends AppModel {
 	}
 
 	public function createRoot($site) {
-		$root = Model::load('Segments')->firstById($site->segment)->root;
+		$root = MeuMobi::currentSegment()->root;
 		$this->id = null;
 		$this->save(array(
 			'title' => __($root),
