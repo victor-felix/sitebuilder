@@ -326,20 +326,6 @@ class Sites extends AppModel {
 			|| isset($data['domains'])) {
 			$defaultDomain = $data['slug'] . '.' . MeuMobi::domain();
 			$data['domains'][] = $defaultDomain;
-			$domain = reset($data['domains']);
-
-			//add the first custom domain to the domain field
-			if ($custom = $this->custom_domain()) {
-				$domain = $custom;
-			}
-
-			//check if domain already exists
-			if ($exists = Model::load('SitesDomains')->check($domain)) {
-				if ($exists->site_id != $siteId ) {
-					throw new RuntimeException("The {$domain} is not available");
-				}
-			}
-			$data['domain'] = $domain ? $domain : $defaultDomain;
 		}
 
 		return $data;
@@ -352,14 +338,15 @@ class Sites extends AppModel {
 		try {
 			$domains = $this->domains;
 		} catch (Exception $e) {
-			$domains = array();
+			return $created;
 		}
+		
 		foreach ($domains as $id => $domain) {
 			$previous = '';
 			//check if domain exist in the site
 			if ($domain && $domainExists = Model::load('SitesDomains')->check($domain)) {
 				if ($domainExists->site_id != $this->id) {
-					throw new RuntimeException("The {$domain} is not available");
+					Session::writeFlash('error', s("The domain %s is not available", $domain));
 				}
 				continue;
 			}
@@ -389,6 +376,20 @@ class Sites extends AppModel {
 					SiteManager::create($domain, $instance);
 				}
 			}
+		}
+		
+		//set site domain field
+		$defaultDomain = $this->data['slug'] . '.' . MeuMobi::domain();
+		$custom = $this->custom_domain();
+		$domain = $custom ? $custom : $defaultDomain;
+		
+		//update only if different
+		if ($this->data['domain'] != $domain) {
+			$this->update(array(
+					'conditions' => array('id' => $this->id)
+			), array(
+					'domain' => $domain,
+			));
 		}
 	}
 	protected function setHideCategories($data) {
