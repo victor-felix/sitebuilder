@@ -38,7 +38,7 @@
         <?php echo $this->html->link(s('Yes, delete'), '/business_items/delete/' . $item->id(), array(
             'class' => 'ui-button delete highlight'
         )) ?>
-        <?php echo $this->html->link(s("No, I don't"), '#', array( 'class' => 'ui-button' )) ?>
+        <?php echo $this->html->link(s("No, I don\'t"), '#', array( 'class' => 'ui-button' )) ?>
     </div>
 </div>
  

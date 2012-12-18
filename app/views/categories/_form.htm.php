@@ -172,7 +172,7 @@
 		<?php echo $this->html->link(s('Yes, delete'), '/categories/delete/' . $category->id, array(
 			'class' => 'ui-button delete highlight'
 		)) ?>
-		<?php echo $this->html->link(s("No, I don't"), '#', array( 'class' => 'ui-button' )) ?>
+		<?php echo $this->html->link(s("No, I don\'t"), '#', array( 'class' => 'ui-button' )) ?>
 	</div>
 </div>
 
@@ -184,7 +184,7 @@
 		<?php echo $this->html->link(s('Yes, delete'), '/categories/delete_all_items/' . $category->id, array(
 			'class' => 'ui-button delete highlight'
 		)) ?>
-		<?php echo $this->html->link(s("No, I don't"), '#', array( 'class' => 'ui-button' )) ?>
+		<?php echo $this->html->link(s("No, I don\'t"), '#', array( 'class' => 'ui-button' )) ?>
 	</div>
 </div>
 <?php endif ?>
