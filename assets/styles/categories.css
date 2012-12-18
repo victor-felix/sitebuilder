@@ -1,11 +1,11 @@
-.form-edit .tip-big h2 {
+.default-form .tip-big h2 {
 	float: none;
 	width: auto;
 	padding: 0;
 	margin: 0 0 10px;
 }
 
-.form-edit .tip-big p {
+.default-form .tip-big p {
 	font-size: 20PX;
 	font-weight: lighter;
 	color: #888;

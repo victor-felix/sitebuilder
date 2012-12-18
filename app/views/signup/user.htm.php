@@ -3,7 +3,7 @@
 
 <?php echo $this->form->create(null, array(
 	'id' => 'form-register-personal-info',
-	'class' => 'form-register form-edit',
+	'class' => 'form-register default-form',
 	'object' => $user
 )) ?>
 
@@ -63,7 +63,7 @@
 	</fieldset>
 
 	<fieldset class="actions">
-		<?php echo $this->form->submit(s('Continue ›'), array(
+		<?php echo $this->form->submit(s('next step ›'), array(
 			'class' => 'ui-button red large'
 		)) ?>
 	</fieldset>

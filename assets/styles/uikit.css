@@ -28,7 +28,9 @@
 	}
 
 	.ui-button.large {
-		font-size: 18px;
+		font-size: 28px;
+		text-transform: lowercase;
+		letter-spacing: -2px;
 		padding: 7px 14px;
 	}
 

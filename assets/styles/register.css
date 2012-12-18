@@ -16,7 +16,8 @@ body {
 
 #header {
 	margin: 0 auto;
-	padding: 50px 0 30px;
+	padding: 50px 0 0px;
+	border-top: 10px #2F3E6E solid;
 }
 
 #header .logo {
@@ -33,45 +34,53 @@ body {
 	-moz-box-shadow: 0 0 2px #CCC;
 }
 
-#content .head {
-	-webkit-border-top-left-radius: 3px;
-	-webkit-border-top-right-radius: 3px;
-	-moz-border-radius-topleft: 3px;
-	-moz-border-radius-topright: 3px;
-	background: #c02926;
-	padding: 45px 25px 0 25px;
+#header .head {
+	padding: 45px 0;
 }
 
-#content .head h1 {
-	color: #FFF;
-	font-size:36px;
+#header .head h1 {
+	font: lighter 43px/45px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica,arial,sans-serif;
 	float: left;
 	margin-top: -10px;
-	text-shadow: 0 1px 1px rgba(0,0,0,0.4);
-	width: 340px;
+	width: 390px;
 	border: none;
+	color: #2F3E6E;
 }
 
-#content .head .steps {
+#header .head .steps {
 	float: right;
 }
 
-#content .head .steps li {
-	border-left: 1px solid rgba(255, 255, 255, 0.2);
-	color: rgba(255, 255, 255, 0.4);
+#header .head .steps li {
+	color: #BBBBBB;
 	display: inline;
 	float: left;
 	font-size: 15px;
-	height: 50px;
 	line-height: 14px;
-	padding-left: 10px;
-	width: 100px;
+	margin-left: 40px;
+	width: 132px;
 }
 
-#content .head .steps li.current {
-	border-color: #FFF;
-	color: #FFF;
-	text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+#header .head .steps li.current {
+	color: #2F3E6E;
+}
+
+#header .head .steps li h3 {
+	font-weight: lighter;
+	font: lighter 43px/22px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica,arial,sans-serif;
+	margin-bottom: 23px;
+}
+
+#header .login {
+	
+}
+
+#header .login a {
+	text-decoration: none;
+}
+
+#header .login a:hover {
+	text-decoration: underline;
 }
 
 .tip-register {

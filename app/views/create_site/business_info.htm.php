@@ -2,7 +2,7 @@
 
 <?php echo $this->form->create(null, array(
 	'id' => 'form-register-site-info',
-	'class' => 'form-register',
+	'class' => 'form-register default-form',
 	'object' => $site,
 	'method' => 'file'
 )) ?>

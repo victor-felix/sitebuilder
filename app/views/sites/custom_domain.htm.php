@@ -10,7 +10,7 @@
 
 <?php echo $this->form->create('/sites/custom_domain/' . $site->id, array(
     'id' => 'form-general-site-info',
-    'class' => 'form-edit',
+    'class' => 'form-edit default-form',
     'object' => $site,
     //'method' => 'file'
 )) ?>

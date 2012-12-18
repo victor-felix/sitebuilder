@@ -154,7 +154,7 @@ $.extend($.easing, {
 				url: data.refresh,
 				type: 'GET',
 				success: function(dataHTML){
-					var target = $('.slide-elem[rel='+data.refresh+']');
+					var target = $('.slide-elem[rel="'+data.refresh+'"]');
 					target.html(dataHTML);
 				}
 			});

@@ -14,26 +14,42 @@
             ), array(
                 'class' => 'logo'
             )) ?>
-        </div>
-        
-        <div id="content">
+            
+            <?php  if($this->selectedTab == 0): ?>
+            <p class="login right">
+	            <?php echo s('Already have an account?');?>
+	            <?php 
+	            	 echo $this->html->link(s('Sign in ›'), '/users/login',  array(
+		                'class' => ''
+		            ));
+				?>
+            </p>
+            <?php endif;?>
+            
+            <!-- dint understand this conditional, but keep it anyway -->
             <?php if(!isset($this->showTitle) || (isset($this->showTitle) && $this->showTitle)): ?>
                 <div class="head">
-                    <h1><?php echo s('Create your Mobi') ?></h1>
+                    <h1><?php echo s('Start your free trial in 3 simple steps') ?></h1>
                     <ul class="steps">
                         <li <?php if($this->selectedTab == 0): ?>class="current"<?php endif ?>>
-                            <?php echo s('Personal details') ?>
+                        	<h3>1</h3>
+                            <?php echo s('Enter your personal information') ?>
                         </li>
                         <li <?php if($this->selectedTab == 1): ?>class="current"<?php endif ?>>
-                            <?php echo s('Customization') ?>
+                            <h3>2</h3>
+                            <?php echo s('Choose a theme for your mobile site') ?>
                         </li>
                         <li <?php if($this->selectedTab == 2): ?>class="current"<?php endif ?>>
-                            <?php echo s('Business details') ?>
+                            <h3>3</h3>
+                            <?php echo s('Enter your business description') ?>
                         </li>
                     </ul>
                     <div class="clear"></div>
                 </div>
             <?php endif ?>
+        </div>
+        
+        <div id="content">
             
             <?php echo $this->contentForLayout ?>
         </div>

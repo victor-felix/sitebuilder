@@ -8,7 +8,7 @@
 
 <?php echo $this->form->create('/sites/news/' . $site->id, array(
     'id' => 'form-general-site-info',
-    'class' => 'form-edit',
+    'class' => 'form-edit default-form',
     'object' => $site,
     //'method' => 'file'
 )) ?>

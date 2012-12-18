@@ -8,7 +8,7 @@
 
 <?php echo $this->form->create(null, array(
 	'id' => 'form-edit-site-info',
-	'class' => 'form-edit',
+	'class' => 'form-edit default-form',
 	'object' => $site,
 	'method' => 'file'
 )) ?>
