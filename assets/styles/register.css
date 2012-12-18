@@ -83,6 +83,10 @@ body {
 	text-decoration: underline;
 }
 
+.form-register.default-form fieldset.actions button {
+	margin-left: 280px;
+}
+
 .tip-register {
   color: #333;
   background: #ffc;

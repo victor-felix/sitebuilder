@@ -28,15 +28,14 @@
 	}
 
 	.ui-button.large {
-		font-size: 28px;
-		text-transform: lowercase;
-		letter-spacing: -2px;
+		font-size: 18px;
 		padding: 7px 14px;
 	}
 
 	.ui-button.larger {
 		font-size: 28px;
-		padding: 4px 18px;
+		padding: 7px 14px;
+		letter-spacing: -2px;
 		text-transform: lowercase;
 	}
 
