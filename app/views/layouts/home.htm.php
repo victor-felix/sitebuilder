@@ -24,7 +24,7 @@
 							'class' => 'active'
 						)) ?>
 						<?php echo s('or')?>
-					<?php echo $this->html->link( s('sign in ›'), '/users/login', array(
+					<?php echo $this->html->link( s('Sign in ›'), '/users/login', array(
 						'class' => ''
 					)) ?>
 				</p>
