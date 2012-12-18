@@ -138,11 +138,11 @@ class Users extends AppModel {
 		$this->authenticate(true);
 	}
 
-	public function confirm($token) {
+	public function confirm($token)
+	{
 		if ($token == $this->token) {
 			$this->active = 1;
-			$this->save ();
-
+			$this->save();
 			return true;
 		} else {
 			return false;
@@ -234,19 +234,26 @@ class Users extends AppModel {
 		});
 	}
 
-	protected function inviteToSite($email,$site)
+	protected function inviteToSite($email, $site)
 	{
+		\app\models\Invites::remove(array(
+			'site_id' => $site->id,
+			'email' => $email
+		));
+
 		$data = array(
 			'site_id' => $site->id,
 			'host_id' => $this->id,
 			'email' => $email,
-			'token' => Security::hash($email . time(),'sha1'),
+			'token' => Security::hash(time(), 'sha1'),
 		);
+
 		$invite = \app\models\Invites::create($data);
 
 		if ($user = self::firstByEmail($email)) {
 			$data['user'] = $user;
 		}
+
 		return $invite->save() ? $data : false;
 	}
 
