@@ -7,6 +7,7 @@ class SignupController extends AppController
 {
 	protected $uses = array();
 	protected $layout = 'register';
+	protected $workflowSteps = array('user', 'theme', 'business_info');
 
 	protected function beforeFilter()
 	{
@@ -18,22 +19,30 @@ class SignupController extends AppController
 			$this->redirect('/users/login');
 		}
 
-		if ($signup = Session::read('Signup')) {
-			if ($signup['path'] != $this->param('here')) {
-				$this->redirect($signup['path']);
+		if ($session = Session::read('Signup')) {
+			$currentStep = array_search($session['step'], $this->workflowSteps);
+			$attemptedStep = array_search($this->param('action'), $this->workflowSteps);
+			if ($currentStep < $attemptedStep) {
+				$this->redirect("/signup/{$session['step']}");
 			}
 		}
 	}
 
 	public function user()
 	{
+		$session = Session::read('Signup');
+
 		$user = new Users();
+
+		if ($session) {
+			$user->updateAttributes($session['user']);
+		}
 
 		if (!empty($this->data)) {
 			$user->updateAttributes($this->data);
 			if ($user->validate()) {
 				Session::write('Signup', array(
-					'path' => '/signup/theme',
+					'step' => 'theme',
 					'user' => $user->data
 				));
 				$this->redirect('/signup/theme');
@@ -49,11 +58,15 @@ class SignupController extends AppController
 
 		$site = new Sites(array('segment' => MeuMobi::segment()));
 
+		if (array_key_exists('site', $session)) {
+			$site->updateAttributes($session['site']);
+		}
+
 		if (!empty($this->data)) {
 			$site->updateAttributes($this->data);
 			if ($site->validateTheme()) {
 				Session::write('Signup', array(
-					'path' => '/signup/business_info',
+					'step' => 'business_info',
 					'user' => $session['user'],
 					'site' => $site->data
 				));
