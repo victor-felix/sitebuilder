@@ -65,8 +65,8 @@
 	color: #7665A9;
 }
 
-#content .head {
-	background: #7665A9;
+#header .head h1, #header .head .steps li.current {
+	color: #7665A9;
 }
 
 .form-register fieldset h2 {

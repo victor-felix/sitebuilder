@@ -69,8 +69,8 @@ body {
 	color: #74D500;
 }
 
-#content .head {
-	background: #74D500;
+#header .head h1, #header .head .steps li.current {
+	color: #74D500;
 }
 
 .form-register fieldset h2 {
