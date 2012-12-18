@@ -183,7 +183,7 @@ class Users extends AppModel {
 		$site = $this->site();
 		foreach ($emails as $email) {
 			if ($data = $this->inviteToSite($email, $site)) {
-				$data['link'] = Mapper::url("/users/confirm_invite/{$data['token']}", true);
+				$data['link'] = Mapper::url("/accept_invite/login/{$data['token']}", true);
 				$this->sendInviteEmail($email, "Invited by {$this->fullname()}", $data);
 			}
 		}
@@ -192,26 +192,23 @@ class Users extends AppModel {
 	public function confirmInvite($token)
 	{
 		$invite = \app\models\Invites::first(array(
-				'conditions' => array('token' => $token)
-				));
+			'conditions' => array('token' => $token)
+		));
 
-		if (!$invite) {
-			return false;
-		}
+		if (!$invite) return false;
 
 		$site = Model::load('sites')->firstById($invite->site_id);
-
 		$user_role = $this->hasSiteAsAdmin() ? self::ROLE_EDITOR : self::ROLE_USER;
 
 		if ($site && $this->addSite($site, $user_role)) {
 			$hostUser = self::firstById($invite->host_id);
 			$data = array(
-						'site' => $site,
-						'invited_user' => $this,
-						'host_user' => $hostUser,
-					);
+				'site' => $site,
+				'invited_user' => $this,
+				'host_user' => $hostUser,
+			);
 			$this->sendInviteEmail($this->email, "Invite confirmed", $data, 'users/invite_confirmed_mail.htm');
-			if($hostUser) {
+			if ($hostUser) {
 				$this->sendInviteEmail($hostUser->email, s("{$this->fullname()} confirmed the invitation"), $data, 'users/invite_confirmed_host_mail.htm');
 			}
 			$this->site($site->id);
@@ -223,14 +220,13 @@ class Users extends AppModel {
 	public static function validateInvite($token)
 	{
 		return \app\models\Invites::find('count', array(
-				'conditions' => array('token' => $token)
+			'conditions' => array('token' => $token)
 		));
 	}
 
 	protected function prepareEmails($emails)
 	{
-		$chars = array("
-				", " ", "\n", "\r", "chr(13)", "\t", "\0", "\x0B");
+		$chars = array(" ", "\n", "\r", "chr(13)", "\t", "\0", "\x0B");
 		$emails = str_replace($chars, '', (string)$emails);
 
 		return array_filter(explode(',', $emails), function($email) {
