@@ -27,7 +27,7 @@
 					'class' => 'ui-select large item-types',
 					'options' => Segments::listItemTypesFor($site->segment)
 				)) ?>
-				<small><?php echo s("The type of content defined which content could be inserted on category, it couldn't be updated after creation") ?></small>
+				<small><?php echo s("The type of content defined which content could be inserted on category, it couldn\'t be updated after creation") ?></small>
 			</div>
 		<?php endif ?>	
 		<?php if($parent): ?>
