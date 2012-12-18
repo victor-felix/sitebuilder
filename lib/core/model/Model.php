@@ -410,8 +410,8 @@ class Model extends Hookable {
             'on' => false
         );
 
-        $this->data = $this->fireFilter('beforeValidate', $this->data);
-        if(!$this->data):
+        $data = $this->fireFilter('beforeValidate', $this->data);
+        if(!$data):
             return false;
         endif;
 

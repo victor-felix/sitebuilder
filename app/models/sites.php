@@ -20,6 +20,7 @@ class Sites extends AppModel {
 		'removeUsers',
 		'removeFromSiteManager'
 	);
+	protected $beforeValidate = array('checkForValidRss');
 	protected $validates = array(
 		'slug' => array(
 			array(
@@ -54,12 +55,6 @@ class Sites extends AppModel {
 				'rule' => array('maxLength', 500),
 				'message' => 'The description of the site could contain 500 chars max.'
 			)
-		),
-		'feed_url' => array(
-			array(
-				'rule' => 'isValidRss',
-				'message' => 'The rss feed is invalid'
-			),
 		),
 	);
 
@@ -505,21 +500,20 @@ class Sites extends AppModel {
 		return ! in_array ( $value, $blacklist );
 	}
 
-	protected function isValidRss($value)
+	protected function checkForValidRss($data)
 	{
-		if (!trim($value)) {
-			return true;
-		}
+		if (!trim($data['feed_url'])) return true;
 		$feed = new SimplePie();
 		$feed->enable_cache(false);
-		$feed->set_feed_url($value);
+		$feed->set_feed_url($data['feed_url']);
 		$feed->init();
 
 		if ($feed->error()) {
-			Debug::log("Rss: " . $feed->error());
+			$this->errors['feed_url'] = $feed->error();
 			return false;
 		}
-		return true;
+
+		return $data;
 	}
 }
 
