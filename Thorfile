@@ -48,14 +48,14 @@ require dirname(dirname(__DIR__)) . '/meu-site-builder/dispatch.php';
       options[:item_types] = options[:item_types].split(" ").join("', '")
       options[:extensions] = options[:extensions].split(" ").join("', '")
 
-      directory "public/example", "public/#{name}"
+      directory "meu-site-builder/segment", "public/#{name}"
       empty_directory "public/#{name}/scripts"
 
       [:images, :styles, :scripts].each do |dir|
         create_link "public/#{name}/#{dir}/shared", "../../#{dir}"
       end
 
-      create_link "public/#{name}/uploads", "../uploads"
+      create_link "public/#{name}/uploads", "../../uploads"
 
       empty_directory "config/segments"
       create_file "config/segments/#{name}.yml"
