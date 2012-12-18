@@ -98,7 +98,7 @@ class Extensions extends \lithium\data\Model
 		$segment = \MeuMobi::currentSegment();
 		$availableExtensions = array();
 
-		if (property_exists($segment, 'extensions')) {
+		if ($segment->extensions) {
 			$allExtensions = (array)$segment->extensions;
 
 			//loop all the segment allowed extension types
