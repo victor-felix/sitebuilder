@@ -327,6 +327,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	letter-spacing: -1px;
 	display: inline;
 	padding-right: 8px;
+	color: #444;
 }
 
 #header .navigation .business-name span{
@@ -346,6 +347,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	max-width: 300px;
 	max-height: 35px;
 	text-align: right;
+	color: #999;
 }
 
 #header .navigation .user {
