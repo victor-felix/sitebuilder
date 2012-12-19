@@ -7,7 +7,8 @@ small {
 }
 
 .btn.big {
-	padding: 15px;
+	letter-spacing: -1px;
+	padding: 14px 17px;
 	background-color: #C81713;
 	background-image: none;
 	color: white;
@@ -24,7 +25,7 @@ small {
 }
 
 .outer.wrapp {
-	padding-top: 20px;
+	padding-top: 45px;
 }
 
 /* header */
@@ -58,6 +59,8 @@ small {
 .header .login {
 	margin: 20px 0 0 25px;
 	font-size: 18px;
+	text-transform: lowercase;
+	letter-spacing: -1px;
 }
 
 .header .login a {
@@ -69,8 +72,8 @@ small {
 .header .login a.active {
 	background-color: #C81713;
 	color: white;
-	padding: 2px 9px 3px;
-	border-radius: 10px;
+	padding: 1px 13px 3px;
+	border-radius: 15px;
 	font-size: 16px;
 }
 
@@ -95,7 +98,7 @@ small {
 .hero.outer.wrapp .hero-unit .block {
 	min-width: 340px;
 	max-width: 45%;
-	padding-top: 10px;
+	padding-top: 15px;
 }
 
 .hero.outer.wrapp .hero-unit .block h3 {
@@ -124,6 +127,10 @@ small {
 	font-size: 24px;
 	font-weight: 700;
 	max-width: 370px;
+}
+
+.hero-unit .slider {
+	margin-right: 15px;
 }
 
 .hero-unit .slider p {
@@ -158,7 +165,6 @@ small {
 
 div.wrapp.presentation {
 	border-bottom: 1px solid #DDD;
-	padding-top: 45px;
 }
 
 .presentation .thumbnail {
@@ -170,10 +176,12 @@ div.wrapp.presentation {
 	font-size: 22px;
 	font-weight: lighter;
 	color: #444;
+	margin-top: 5px;
 }
 
 .presentation .thumbnail p.img {
 	height: 130px;
+	margin: 0;
 }
 
 .presentation .thumbnail p {
@@ -189,7 +197,6 @@ div.wrapp.presentation {
 
 .features h2 {
 	color: #C81713;
-	font-weight: lighter;
 	font-size: 32px;
 }
 
@@ -205,6 +212,7 @@ div.wrapp.presentation {
 
 .features .block.store-locator, .features .block.rss {
 	height: 110px;
+	margin-left: 35px;
 }
 
 .features .block .icon {
@@ -216,19 +224,19 @@ div.wrapp.presentation {
 	position: absolute;
 	top: 0;
 	left: 0;
-	padding: 6px 9px;
+	padding: 10px;
 }
 
 .features .map .icon {
-	padding: 4px 8px;
+	padding: 6px 10px;
 }
 
 .features .store-locator .icon {
-	padding: 7px 7px;
+	
 }
 
-.features .rss .icon {
-	padding: 7px 7px;
+.features .call .icon {
+	padding: 7px 10px;
 }
 
 .features .block p {
@@ -239,7 +247,7 @@ div.wrapp.presentation {
 }
 
 .features .phone {
-	margin-left: 50px;
+	margin-left: 85px;
 }
 
 /* prices */
@@ -248,7 +256,6 @@ div.wrapp.prices {
 	background-color: #E5E5E5;
 	-webkit-box-shadow: inset 0px 1px 3px 0px #777;
 	box-shadow: inset 0px 1px 3px 0px #777;
-	padding-top: 45px;
 }
 
 .prices h3 {
