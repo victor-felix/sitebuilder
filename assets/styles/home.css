@@ -25,7 +25,7 @@ small {
 }
 
 .outer.wrapp {
-	padding-top: 45px;
+	padding-top: 55px;
 }
 
 /* header */
@@ -165,6 +165,7 @@ small {
 
 div.wrapp.presentation {
 	border-bottom: 1px solid #DDD;
+	padding-top: 45px;
 }
 
 .presentation .thumbnail {
@@ -206,13 +207,14 @@ div.wrapp.presentation {
 }
 
 .features .block {
-	padding: 0px 20px 0px 50px;
+	padding: 0px 0px 0px 50px;
 	position: relative;
 }
 
 .features .block.store-locator, .features .block.rss {
 	height: 110px;
 	margin-left: 35px;
+	margin-top: 20px;
 }
 
 .features .block .icon {
