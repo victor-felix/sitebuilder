@@ -446,6 +446,10 @@ div.wrapp.prices {
 	font-size: 28px;
 }
 
+.custom-solution p {
+	font-style: italic;
+}
+
 /* footer */
 
 .footer {

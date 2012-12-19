@@ -276,9 +276,8 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
  *header 
  */
 #header {
-	margin-bottom: 50px;
 	color: #707070;
-	margin: 0 auto 50px auto;
+	margin: 5px auto 50px;
 	width: 940px;
 }
 	
@@ -311,7 +310,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 
 #header .contextual-navbar .navigation {
 	border-bottom: 1px solid #D3D3D3;
-	padding-top: 35px;
+	padding-top: 30px;
 	position: relative;
 }
 
@@ -332,6 +331,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 
 #header .navigation .business-name span{
 	display: block;
+	margin-bottom: 5px;
 	font-size: 9px;
 	color: #999;
 	letter-spacing: normal;
