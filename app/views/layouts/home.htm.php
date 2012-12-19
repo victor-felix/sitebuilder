@@ -40,7 +40,10 @@
 					<a href="#"><?php echo s('About Us')?></a>
 					<a href="#"><?php echo s('Our Blog')?></a>
 					<a href="#"><?php echo s('Support')?></a>
-					<p class="copy"><?php echo s('&copy;2011 MeuMobi. All rights reserved') ?></p>
+					<p class="copy">
+						<span class="border" ></span>
+						<?php echo s('&copy;2011 MeuMobi. All rights reserved') ?>
+					</p>
 				</div>
 				<div class="contact">
 					<div>

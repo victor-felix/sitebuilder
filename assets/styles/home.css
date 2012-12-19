@@ -481,6 +481,13 @@ div.wrapp.prices {
 	margin-top: 20px;
 }
 
+.footer .copy .border {
+	display: block;
+	width: 63px;
+	border-top: 1px solid;
+	margin: 20px 0 15px;
+}
+
 .footer a.logo {
 	width: 125px;
 	height: 20px;
@@ -496,7 +503,7 @@ div.wrapp.prices {
 }
 
 .footer .contact > div {
-	padding-left: 45px;
+	padding-left: 75px;
 }
 
 .footer .contact .upper {
@@ -515,6 +522,7 @@ div.wrapp.prices {
 
 .footer .social {
 	text-align: right;
+	float: right;
 }
 
 .footer .social a {
