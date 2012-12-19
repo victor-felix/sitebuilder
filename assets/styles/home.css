@@ -142,7 +142,7 @@ small {
 	text-align: center;
 }
 .pagination a {
-	background: #fff;
+	background: #595959;
 	width: 10px;
 	height: 10px;
 	margin: 0 5px 0 0;
@@ -153,7 +153,7 @@ small {
 }
 
 .pagination a.selected {
-	background: #595959;
+	background: #fff;
 	cursor: default;
 }
 
