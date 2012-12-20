@@ -12,6 +12,15 @@ body {
     color:#fff;
 }
 
+#header .contextual-navbar ul li a:hover {
+	background-color: #74D500;
+	border-color: #74D500;
+}
+
+.global-navbar {
+	background:#74D500;
+}
+
 #header .menu ul li a:hover {
 	background-color: #74D500;
 	border-color: #74D500;
