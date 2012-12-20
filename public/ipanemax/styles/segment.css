@@ -17,8 +17,8 @@ body {
 	border-color: #74D500;
 }
 
-#header {
-	border-top: 10px solid #74D500;
+.login #header {
+	border-top: 15px solid #74D500;
 }
 
 #header .logo {
