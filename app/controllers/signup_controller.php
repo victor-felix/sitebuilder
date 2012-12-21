@@ -34,7 +34,7 @@ class SignupController extends AppController
 
 		$user = new Users();
 
-		if ($session) {
+		if ($session && array_key_exists('user', $session)) {
 			$user->updateAttributes($session['user']);
 		}
 

@@ -9,11 +9,11 @@ require_once 'lib/utils/FileUpload.php';
 use app\models\Items, app\models\items\Articles, utils\Import as Import;
 
 class Categories extends AppModel {
-
 	const MAX_IMPORTFILE_SIZE = 300;
 	protected $beforeSave = array('setOrder', 'getItemType', 'checkItems');
-	protected $afterSave = array('importItems', 'updateFeed', 'updateParentTimestamps');
+	protected $afterSave = array('importItems', 'updateParentTimestamps');
 	protected $beforeDelete = array('deleteChildren', 'updateOrders', 'updateParentTimestampsWhenDeleted');
+	protected $beforeValidate = array('checkForValidRss');
 	protected $defaultScope = array(
 		'order' => '`order` ASC'
 	);
@@ -27,12 +27,6 @@ class Categories extends AppModel {
 				'rule' => array('maxLength', 50),
 				'message' => 'The title of a category could contain 50 chars max.'
 			)
-		),
-		'feed' => array(
-			array(
-				'rule' => 'isValidRss',
-				'message' => 'The rss feed is invalid'
-			),
 		),
 	);
 
@@ -68,9 +62,9 @@ class Categories extends AppModel {
 		), 'limit' => $limit));
 	}
 
-	public function hasFeed() {
-		$populate = $this->populate;
-		return $populate == 'auto';
+	public function hasFeed()
+	{
+		return $this->populate == 'auto';
 	}
 
 	public function childrenCount() {
@@ -137,8 +131,8 @@ class Categories extends AppModel {
 		));
 	}
 
-	public function updateArticles() {
-
+	public function updateArticles()
+	{
 		$feed = $this->getFeed();
 		$items = $feed->get_items();
 
@@ -324,7 +318,7 @@ class Categories extends AppModel {
 	protected function getFeed() {
 		$feed = new SimplePie();
 		$feed->enable_cache(false);
-		$feed->set_feed_url($this->feed_url);
+		$feed->set_feed_url($this->feed);
 		$feed->init();
 
 		return $feed;
@@ -347,17 +341,13 @@ class Categories extends AppModel {
 		if(!is_null($this->id)) {
 			$original = $this->firstById($this->id);
 
-			if(	$original->populate != $data['populate']
-				|| $original->type != $data['type'] ) {
-				$items = Items::remove(array(
-					'parent_id' => $this->id
-				));
+			if($original->type != $data['type']) {
+				$this->removeItems();
 			}
 
-			//remove old extensions
 			if ($original->type != $data['type']) {
 				Extensions::remove(array(
-						'category_id' => $this->id
+					'category_id' => $this->id
 				));
 			}
 		}
@@ -370,7 +360,7 @@ class Categories extends AppModel {
 			$fileSize = $this->data['import']['size'];
 			if($fileSize && self::MAX_IMPORTFILE_SIZE < ($fileSize / 1024)
 				&& $this->scheduleImport()) {
-					return $this->save();;
+					return $this->save();
 			}
 			$import = new Import();
 			$import->notIsJob();
@@ -474,48 +464,9 @@ class Categories extends AppModel {
 		return $id;
 	}
 
-	protected function updateFeed($created) {
-		if(isset($this->data['populate']) && $this->data['populate'] == 'auto') {
-			if(!isset($this->data['feed_url'])) {
-				$this->data['feed_url'] = '';
-			}
-			$is_set = isset($this->data['feed']);
-			$is_empty = $is_set && empty($this->data['feed']);
-
-			if($is_empty or $is_set && $this->data['feed'] != $this->data['feed_url']) {
-				$items = Items::remove(array(
-					'parent_id' => $this->id
-				));
-
-				$this->update(array(
-					'conditions' => array('id' => $this->id)
-				), array(
-					'feed_url' => ''
-				));
-			}
-
-			if($is_set && !$is_empty && $this->data['feed'] != $this->data['feed_url']) {
-				$this->feed_url = $this->data['feed'];
-				$this->update(array(
-					'conditions' => array('id' => $this->id)
-				), array(
-					'feed_url' => $this->feed_url
-				));
-
-				$this->updateArticles();
-			}
-		}
-	}
-
-	protected function deleteChildren($id, $force = false) {
-		$self = $this->firstById($id);
-		if($self->parent_id == 0 && !$force) {
-			return false;
-		}
-
-		$categories = $this->allByParentId($id);
-		$this->deleteSet(Model::load('Categories'), $categories);
-
+	public function removeItems()
+	{
+		$id = $this->id;
 		$items = Items::find('all', array('conditions' => array(
 			'parent_id' => $id
 		)));
@@ -523,29 +474,41 @@ class Categories extends AppModel {
 		foreach($items as $item) {
 			Items::remove(array('_id' => $item->id()));
 		}
+	}
 
-		//remove old extensions
+	protected function deleteChildren($id, $force = false)
+	{
+		$self = $this->firstById($id);
+
+		if ($self->parent_id == 0 && !$force) {
+			return false;
+		}
+
+		$categories = $this->allByParentId($id);
+		$this->deleteSet(Model::load('Categories'), $categories);
+
+		$this->removeItems();
+
 		Extensions::remove(array(
-				'category_id' => $id,
+			'category_id' => $id,
 		));
-
 
 		return $id;
 	}
 
-	public function isValidRss($value)
+	public function checkForValidRss($data)
 	{
-		if (!trim($value)) {
-			return true;
-		}
+		if (!trim($data['feed'])) return true;
 		$feed = new SimplePie();
 		$feed->enable_cache(false);
-		$feed->set_feed_url($value);
+		$feed->set_feed_url($data['feed']);
 		$feed->init();
+
 		if ($feed->error()) {
-			Debug::log("Rss: " . $feed->error());
+			$this->errors['feed'] = $feed->error();
 			return false;
 		}
-		return true;
+
+		return $data;
 	}
 }
