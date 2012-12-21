@@ -45,6 +45,31 @@
 <fieldset>
 	<div class="grid-4 first">
         <div class="tip">
+			<h2><?php echo s('visibility') ?></h2>
+		</div>
+    </div>
+    
+    <div class="grid-8"> 
+		<div class="field-group">			
+			<div class="form-grid-460 first">
+				<?php echo $this->form->input('visibility', array(
+					'type' => 'checkbox',
+					'label' => null,
+					'value' => 1
+				)) ?>
+				<label for="FormVisibility" class="checkbox"><?php echo s('This category is visible for any user') ?></label>
+			</div>	
+		</div>
+	</div>
+</fieldset>
+
+<?php 
+	$fullOptions = MeuMobi::currentSegment()->fullOptions;
+	if($fullOptions === null || $fullOptions):
+?>
+<fieldset>
+	<div class="grid-4 first">
+        <div class="tip">
 			<h2><?php echo s('advanced options') ?></h2>
 		</div>
     </div>
@@ -105,27 +130,6 @@
 <fieldset>
 	<div class="grid-4 first">
         <div class="tip">
-			<h2><?php echo s('visibility') ?></h2>
-		</div>
-    </div>
-    
-    <div class="grid-8"> 
-		<div class="field-group">			
-			<div class="form-grid-460 first">
-				<?php echo $this->form->input('visibility', array(
-					'type' => 'checkbox',
-					'label' => null,
-					'value' => 1
-				)) ?>
-				<label for="FormVisibility" class="checkbox"><?php echo s('This category is visible for any user') ?></label>
-			</div>	
-		</div>
-	</div>
-</fieldset>
-
-<fieldset>
-	<div class="grid-4 first">
-        <div class="tip">
 			<h2><?php echo s('icon') ?></h2>
 		</div>
     </div>
@@ -143,7 +147,7 @@
 		</div>
 	</div>
 </fieldset>
-
+<?php endif;?>
 <fieldset class="actions">
 	<?php echo $this->form->submit(s('Save'), array(
 		'class' => 'ui-button red larger'
