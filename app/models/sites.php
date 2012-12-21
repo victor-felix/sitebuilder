@@ -338,20 +338,27 @@ class Sites extends AppModel {
 		
 		foreach ($domains as $id => $domain) {
 			$previous = '';
-			//check if domain exist in the site
-			if ($domain && $domainExists = Model::load('SitesDomains')->check($domain)) {
-				if ($domainExists->site_id != $this->id) {
-					Session::writeFlash('error', s("The domain %s is not available", $domain));
-				}
-				continue;
-			}
+			
 			//check if is changing the domain value
 			if ($siteDomain = Model::load('SitesDomains')->firstByIdAndSiteId($id, $this->id)) {
 				$previous = $siteDomain->domain;
 			} else {
 				$siteDomain = new SitesDomains();
 			}
-
+			
+			//check if domain exist in the site
+			if ($domain && $domainExists = Model::load('SitesDomains')->check($domain)) {
+				if ($domainExists->site_id != $this->id) {
+					Session::writeFlash('error', s("The domain %s is not available", $domain));
+					
+					//delete if change the domain to a existent domain
+				} else if ($previous && $siteDomain->id != $domainExists->id) {
+					SiteManager::delete($siteDomain->domain);
+					$siteDomain->delete($siteDomain->id);
+				}
+				continue;
+			}
+			
 			//if old domain is empty, removes it
 			if (!$domain) {
 				if ($previous) {
