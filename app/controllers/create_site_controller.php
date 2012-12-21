@@ -34,7 +34,7 @@ class CreateSiteController extends AppController
 
 		$site = new Sites(array('segment' => MeuMobi::segment()));
 
-		if (array_key_exists('site', $session)) {
+		if ($session && array_key_exists('site', $session)) {
 			$site->updateAttributes($session['site']);
 		}
 

@@ -109,22 +109,22 @@ class CategoriesController extends AppController
 		}
 	}
 
-	public function delete_all_items($id = null) {
+	public function delete_all_items($id = null)
+	{
 		$category = $this->Categories->firstById($id);
 		$status = 'error';
 		$message = "Sorry, we can't remove items";
 
-		if($category) {
-			$classname = '\app\models\items\\' . Inflector::camelize($category->type);
-			$classname::remove(array('parent_id' => $category->id));
+		if ($category) {
+			$category->removeItems();
 			$status = 'success';
 			$message = s('Category Items deleted successfully.');
 		}
-		if($this->isXhr()) {
+
+		if ($this->isXhr()) {
 			$json = array($status => $message);
 			$this->respondToJSON($json);
-		}
-		else {
+		} else {
 			Session::writeFlash($status, $message);
 			$this->redirect('/categories');
 		}
