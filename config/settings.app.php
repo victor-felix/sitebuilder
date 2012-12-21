@@ -22,7 +22,8 @@ Config::write('Segments', array(
 		'email' => array('no-reply@meumobi.com' => 'MeuMobi'),
 		'extensions' =>array('store-locator', 'rss'),
 		'hideCategories' => 0,
-		'enableSignup' => 0,
+		'enableSignUp' => 0,
+		'fullOptions' => 0,
 	),
 	'1440group' => array(
 		'title' => '1440group',
