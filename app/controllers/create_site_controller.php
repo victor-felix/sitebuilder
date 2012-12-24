@@ -6,6 +6,7 @@ require_once 'app/models/users.php';
 class CreateSiteController extends AppController
 {
 	protected $uses = array();
+	protected $layout = 'register';
 	protected $workflowSteps = array('theme', 'business_info');
 
 	protected function beforeFilter()

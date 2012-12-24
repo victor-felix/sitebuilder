@@ -1,4 +1,6 @@
 <?php $this->pageTitle = s('Create a new Site') ?>
+<?php $this->selectedTab = 1 ?>
+
 
 <?php echo $this->form->create(null, array(
 	'id' => 'form-register-customize',
@@ -14,9 +16,14 @@
 	)) ?>
 
 	<fieldset class="actions">
-	<?php echo $this->form->submit(s('Save ›'), array(
-		'class' => 'ui-button red larger'
-	)) ?>
+		<?php echo $this->html->link(s('‹ back'), '/', array(
+	        'class' => 'ui-button large',
+	        'style' => ''
+	    )) ?>
+		<?php echo $this->form->submit(s('next step ›'), array(
+			'class' => 'ui-button red larger',
+			'style' => 'margin-left: 280px'
+		)) ?>
 	</fieldset>
 
 <?php echo $this->form->close() ?>
