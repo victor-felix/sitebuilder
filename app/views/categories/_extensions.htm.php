@@ -24,7 +24,7 @@
 	            		
 		            <span class="accessory-label" >
 		            	<span><?php echo s('%s', $extension->enabled ? 'enabled' : 'disabled' ) ?></span>
-		            	<span class="arrow" >&#62;</span>
+		            	<span class="arrow" >›</span>
 		            </span>
 	            	<?php echo s($extension->specification('title')) ?>
 	            	<br/>
@@ -49,7 +49,7 @@
 		            		
 			            <span class="accessory-label" >
 			            	<span><?php echo s('disabled' ) ?></span>
-			            	<span class="arrow" >&#62;</span>
+			            	<span class="arrow" >›</span>
 			            </span>
 		            	<?php echo s($extension->specification('title')) ?>
 		            	<br/>

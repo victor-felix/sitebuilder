@@ -7,7 +7,7 @@
 				<?php if($action == 'register'): ?>
 				<br>
 				<br>
-				<small><?php echo s("you´ll be able to change and add other information later") ?></small>
+				<small><?php echo s('you´ll be able to change and add other information later') ?></small>
 				<?php endif ?>
 			</p>
 		</div>
@@ -70,8 +70,8 @@
 						<div class="clear"></div>
 					</div>
 				</div>
-					<small><?php echo s("If you wish to use a custom domain, you can configure one after this wizard.<br>
-								In the admin panel you will find instructions on haw to proceed") ?></small>
+					<small><?php echo s('If you wish to use a custom domain, you can configure one after this wizard.<br>
+								In the admin panel you will find instructions on haw to proceed') ?></small>
 			</div>
 		</div>
 	</div>

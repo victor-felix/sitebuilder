@@ -5,7 +5,6 @@
 		<?php echo $this->html->charset() ?>
 		<title><?php echo $this->controller->getSegment()->title, ' - ' ,  $this->pageTitle ?></title>
 		<link rel="shortcut icon" href="<?php echo Mapper::url('/images/layout/favicon.png') ?>" type="image/png" />
-		<link href='http://fonts.googleapis.com/css?family=Medula+One' rel='stylesheet' type='text/css'>
 		<?php echo $this->html->stylesheet('shared/base', 'shared/uikit', 'shared/categories',
 			'shared/edit-forms', 'shared/businessitems', 'segment', 'shared/markitup.simple',
 			'shared/markitup.xbbcode', 'shared/chosen', 'shared/themes') ?>
