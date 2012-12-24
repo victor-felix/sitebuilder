@@ -349,7 +349,7 @@ class Sites extends AppModel {
 			//check if domain exist in the site
 			if ($domain && $domainExists = Model::load('SitesDomains')->check($domain)) {
 				if ($domainExists->site_id != $this->id) {
-					Session::writeFlash('error', s("The domain %s is not available", $domain));
+					Session::writeFlash('error', s('The domain %s is not available', $domain));
 					
 					//delete if change the domain to a existent domain
 				} else if ($previous && $siteDomain->id != $domainExists->id) {

@@ -184,7 +184,7 @@ class Users extends AppModel {
 		foreach ($emails as $email) {
 			if ($data = $this->inviteToSite($email, $site)) {
 				$data['link'] = Mapper::url("/accept_invite/login/{$data['token']}", true);
-				$this->sendInviteEmail($email, s("Invited by %s", $this->fullname()), $data);
+				$this->sendInviteEmail($email, s('Invited by %s', $this->fullname()), $data);
 			}
 		}
 	}
@@ -209,7 +209,7 @@ class Users extends AppModel {
 			);
 			$this->sendInviteEmail($this->email, "Invite confirmed", $data, 'users/invite_confirmed_mail.htm');
 			if ($hostUser) {
-				$this->sendInviteEmail($hostUser->email, s("%s confirmed the invitation", $this->fullname()), $data, 'users/invite_confirmed_host_mail.htm');
+				$this->sendInviteEmail($hostUser->email, s('%s confirmed the invitation', $this->fullname()), $data, 'users/invite_confirmed_host_mail.htm');
 			}
 			$this->site($site->id);
 			$invite->delete();
