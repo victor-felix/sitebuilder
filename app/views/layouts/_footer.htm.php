@@ -1,15 +1,36 @@
-<div id="footer">
-	<div id="footer-wrapper">
-		<?php echo $this->html->image('shared/layout/logo-footer.png') ?>
-		<ul>
-			<li>powered by <a href="http://www.bkrender.com/">BkRender</a></li>
-			<li><a href="http://meumobi.uservoice.com"><?php echo s('feedback') ?></a></li>
-			<li><?php echo s('&copy;2011 MeuMobi. All rights reserved') ?></li>
-		</ul>
-	<div>
-	<div class="clear"></div>
-</div>
+<div class="footer">
+	<div class="container">
+		<div class="links" >
+			<a class="logo" href="#"><?php echo s('MeuMobi')?></a>
+			<a href="#"><?php echo s('About Us')?></a>
+			<a href="#"><?php echo s('Our Blog')?></a>
+			<a href="#"><?php echo s('Support')?></a>
+			<p class="copy">
+				<span class="border" ></span>
+				<?php echo s('&copy;2011 MeuMobi. All rights reserved') ?>
+			</p>
+		</div>
+		<div class="contact">
+			<div>
+			<p class="upper"><?php echo s('Contact Us')?></p>
+			<p>
+				<?php echo s('email')?>
+				<span><?php echo s('contact@meumobi.com')?></span>
+			</p>
 
+			<p><?php echo s('phone')?>
+				<span><?php echo s('+55 21 4042.7270')?></span>	
+			</p>
+			</div>
+		</div>
+		<div class="social">
+			<span class="upper"><?php echo s('Find us on')?></span>
+			<a class="face" href="http://www.facebook.com/meumobi"><?php echo s('facebook')?></a>
+			<a class="twitter" href="http://twitter.com/MeuMobi"><?php echo s('twitter')?></a>
+		</div>
+	</div>
+</div>
+		
 <script type="text/javascript">
 	var _gaq = _gaq || [];
 	_gaq.push(['_setAccount', 'UA-22519238-3']);
