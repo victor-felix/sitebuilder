@@ -32,52 +32,9 @@
 		</div>
 
 		<?php echo $this->contentForLayout ?>
-
-		<div class="footer">
-			<div class="container">
-				<div class="links" >
-					<a class="logo" href="#"><?php echo s('MeuMobi')?></a>
-					<a href="#"><?php echo s('About Us')?></a>
-					<a href="#"><?php echo s('Our Blog')?></a>
-					<a href="#"><?php echo s('Support')?></a>
-					<p class="copy">
-						<span class="border" ></span>
-						<?php echo s('&copy;2011 MeuMobi. All rights reserved') ?>
-					</p>
-				</div>
-				<div class="contact">
-					<div>
-					<p class="upper"><?php echo s('Contact Us')?></p>
-					<p>
-						<?php echo s('email')?>
-						<span><?php echo s('contact@meumobi.com')?></span>
-					</p>
-
-					<p><?php echo s('phone')?>
-						<span><?php echo s('+55 21 4042.7270')?></span>	
-					</p>
-					</div>
-				</div>
-				<div class="social">
-					<span class="upper"><?php echo s('Find us on')?></span>
-					<a class="face" href="http://www.facebook.com/meumobi"><?php echo s('facebook')?></a>
-					<a class="twitter" href="http://twitter.com/MeuMobi"><?php echo s('twitter')?></a>
-				</div>
-			</div>
-		</div>
-		<script type="text/javascript">
-			var _gaq = _gaq || [];
-			_gaq.push(['_setAccount', 'UA-22519238-3']);
-			_gaq.push(['_setDomainName', '.meumobi.com']);
-			_gaq.push(['_trackPageview']);
-
-			(function() {
-				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-			})();
-		</script>
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+		
+		<?php echo $this->element('layouts/footer') ?>
+		
 		<?php echo $this->html->script('shared/jquery', 'shared/jquery.carouFredSel-6.1.0-packed','shared/jquery.touchSwipe.min', 'shared/jquery.ba-throttle-debounce.min', 'shared/home') ?>
 		<?php echo $this->html->scriptsForLayout ?>
 	</body>
