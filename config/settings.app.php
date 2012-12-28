@@ -10,6 +10,7 @@ Config::write('Geocode.urls', array(
 	'http://bonita.ipanemax.com',
 ));
 
+Config::write('Preview.url', 'http://placeholder.meumobi.com');
 Config::write('SiteLogos.resizes', array('200x200'));
 Config::write('SitePhotos.resizes', array('139x139#', '314x220'));
 Config::write('BusinessItems.resizes', array('80x60#', '80x80#', '139x139#', '314x220'));
@@ -41,7 +42,8 @@ Config::write('Segments', array(
 		'email' => array('no-reply@ipanemax.com' => 'ipanemax'),
 		'extensions' =>array('store-locator', 'rss'),
 		'hideCategories' => 0,
-		'enableSignUp' => 1
+		'enableSignUp' => 1,
+		'sitePreviewUrl' => 'http://placeholder.int-meumobi.com'
 	),
 	'oi' => array(
 		'title' => 'Oi',
