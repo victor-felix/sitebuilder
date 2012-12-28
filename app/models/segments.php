@@ -27,6 +27,15 @@ class Segments
 		return $this->enableSignUp;
 	}
 
+	public function sitePreviewUrl()
+	{
+		if (array_key_exists('sitePreviewUrl', $this->attr)) {
+			return $this->attr['sitePreviewUrl'];
+		} else {
+			return Config::read('Preview.url');
+		}
+	}
+
 	public static function listItemTypesFor($segment) {
 		$segment = self::firstById($segment);
 		$types = (array) $segment->items;
