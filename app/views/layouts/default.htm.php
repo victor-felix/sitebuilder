@@ -124,7 +124,11 @@
 				<?php echo $this->element('sites/theme_preview', array('site' => $currentSite))  ?>
 			</div>
 		</div>
-
+		
+		<div class="support">
+			<a id="support-link" href="#"><?php echo s('support') ?></a>
+		</div>
+		
 		<?php echo $this->html->script('shared/jquery', 'shared/main', 'shared/markitup', 'shared/async_upload', 'shared/jquery.chosen', 'shared/themes') ?>
 		<?php echo $this->html->scriptsForLayout ?>
 	</body>

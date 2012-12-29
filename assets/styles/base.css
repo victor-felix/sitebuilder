@@ -780,3 +780,42 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 .footer .social a.twitter {
 	background: url("/images/shared/home/twitter.png") no-repeat 0 0;
 }
+
+.support {
+	position: fixed;
+	top: 390px;
+	left: -26px;/*
+	width: 40px;
+	height: 90px;*/
+	overflow: hidden;
+	-webkit-border-radius: 0 0 3px 3px;
+	-moz-border-radius: 0 0 3px 3px;
+	text-decoration: none;
+	background: #2E3A58;
+	
+		/* Safari */
+	-webkit-transform: rotate(-90deg);
+	
+	/* Firefox */
+	-moz-transform: rotate(-90deg);
+	
+	/* IE */
+	-ms-transform: rotate(-90deg);
+	
+	/* Opera */
+	-o-transform: rotate(-90deg);
+	
+	/* Internet Explorer */
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+.support a {
+	color: white;
+	text-decoration: none;
+	display: block;
+	padding: 12px 14px;
+	font-size: 13px;
+	font-weight: bold;
+	letter-spacing: 0px;
+	text-transform: uppercase;
+}
