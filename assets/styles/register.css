@@ -175,6 +175,7 @@ body {
 }
 
 .login #header{
+	border-color: #2F3E6E;
 	width: 340px;
 	background-color: #fff;
 	border-radius: 3px 3px 0 0;
