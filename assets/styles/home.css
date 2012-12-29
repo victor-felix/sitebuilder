@@ -199,6 +199,7 @@ div.wrapp.presentation {
 .features h2 {
 	color: #C81713;
 	font-size: 32px;
+	letter-spacing: -1px;
 }
 
 .features .title {
