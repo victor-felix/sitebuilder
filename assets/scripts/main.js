@@ -534,3 +534,10 @@ $(window).load(function(){
 		}); 
 				
 });
+
+//support link toggle
+$zopim(function() {
+	$('#support-link').click(function(){
+		$zopim.livechat.window.toggle();
+	});
+});
