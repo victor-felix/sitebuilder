@@ -4,7 +4,7 @@
 			<a class="logo" href="#"><?php echo s('MeuMobi')?></a>
 			<a href="#"><?php echo s('About Us')?></a>
 			<a href="#"><?php echo s('Our Blog')?></a>
-			<a id="support" href="javascript:void()"><?php echo s('Support')?></a>
+			<a id="support" href="javascript:void(0)"><?php echo s('Support')?></a>
 			<p class="copy">
 				<span class="border" ></span>
 				<?php echo s('&copy;2011 MeuMobi. All rights reserved') ?>
