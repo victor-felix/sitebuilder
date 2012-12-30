@@ -436,6 +436,10 @@ $.extend($.easing, {
 	
 	content.delegate('.form-edit .domains .ui-text', 'focusin', change_custom_domain);
 	content.delegate('.form-edit .domains .ui-text', 'keyup', change_custom_domain);
+	
+	//restrict to alphanumeric
+	$('.domains .ui-text').alphanumeric({allow:".-_ "});
+	
 })(jQuery);
 
 $(function() {
@@ -533,11 +537,4 @@ $(window).load(function(){
 				}		
 		}); 
 				
-});
-
-//support link toggle
-$zopim(function() {
-	$('#support-link').click(function(){
-		$zopim.livechat.window.toggle();
-	});
 });

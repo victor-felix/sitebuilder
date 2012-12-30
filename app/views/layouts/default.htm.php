@@ -9,16 +9,6 @@
 			'shared/edit-forms', 'shared/businessitems', 'segment', 'shared/markitup.simple',
 			'shared/markitup.xbbcode', 'shared/chosen', 'shared/themes') ?>
 		<?php echo $this->html->stylesForLayout ?>
-		
-		<!--Start of Zopim Live Chat Script-->
-		<script type="text/javascript">
-		window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
-		d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
-		_.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute('charset','utf-8');
-		$.src='//cdn.zopim.com/?szNHAQVZXjPDDc8HYQjKMX2q6VjnMxSA';z.t=+new Date;$.
-		type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
-		</script>
-		<!--End of Zopim Live Chat Script-->
 	</head>
 
 	<body>
@@ -139,7 +129,7 @@
 			<a id="support-link" href="#"><?php echo s('support') ?></a>
 		</div>
 		
-		<?php echo $this->html->script('shared/jquery', 'shared/main', 'shared/markitup', 'shared/async_upload', 'shared/jquery.chosen', 'shared/themes') ?>
+		<?php echo $this->html->script('shared/jquery', 'shared/support_chat','shared/jquery.alphanumeric.pack', 'shared/main', 'shared/markitup', 'shared/async_upload', 'shared/jquery.chosen', 'shared/themes') ?>
 		<?php echo $this->html->scriptsForLayout ?>
 	</body>
 </html>

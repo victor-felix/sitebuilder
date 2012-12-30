@@ -17,7 +17,7 @@ body {
 #header {
 	margin: 0 auto;
 	padding: 50px 0 0px;
-	border-top: 10px solid;
+	border-top: 10px solid #2F3E6E;
 }
 
 #header .logo {
@@ -175,7 +175,6 @@ body {
 }
 
 .login #header{
-	border-color: #2F3E6E;
 	width: 340px;
 	background-color: #fff;
 	border-radius: 3px 3px 0 0;
