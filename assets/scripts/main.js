@@ -439,6 +439,9 @@ $.extend($.easing, {
 	
 	//restrict to alphanumeric
 	$('.domains .ui-text').alphanumeric({allow:".-_ "});
+	$('.domains .js-duplicate-previous').click(function(){
+		$('.domains .ui-text').alphanumeric({allow:".-_ "});
+	});
 	
 })(jQuery);
 
