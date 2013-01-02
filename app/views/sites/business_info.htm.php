@@ -23,9 +23,11 @@
 		<?php echo $this->form->submit(s('Save'), array(
 			'class' => 'ui-button red larger'
 		)) ?>
+		<?php if (Users::ROLE_ADMIN == $currentSite->role): ?>
 		<?php echo $this->html->link($this->html->image('shared/categories/delete.gif') . s('Delete site'), '/sites/remove/' . $site->id, array(
 			'class' => 'ui-button delete has-confirm','data-confirm' => '#delete-confirm'
 		)) ?>
+		<?php endif; ?>
 	</fieldset>
 
 <?php echo $this->form->close() ?>
