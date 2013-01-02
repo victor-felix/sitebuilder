@@ -438,10 +438,12 @@ $.extend($.easing, {
 	content.delegate('.form-edit .domains .ui-text', 'keyup', change_custom_domain);
 	
 	//restrict to alphanumeric
-	$('.domains .ui-text').alphanumeric({allow:".-_ "});
-	$('.domains .js-duplicate-previous').click(function(){
+	try {
 		$('.domains .ui-text').alphanumeric({allow:".-_ "});
-	});
+		$('.domains .js-duplicate-previous').click(function(){
+			$('.domains .ui-text').alphanumeric({allow:".-_ "});
+		});
+	} catch(e) {}
 	
 })(jQuery);
 

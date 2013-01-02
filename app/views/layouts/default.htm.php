@@ -129,7 +129,7 @@
 			<a id="support-link" href="#"><?php echo s('support') ?></a>
 		</div>
 		
-		<?php echo $this->html->script('shared/jquery', 'shared/support_chat','shared/jquery.alphanumeric.pack', 'shared/main', 'shared/markitup', 'shared/async_upload', 'shared/jquery.chosen', 'shared/themes') ?>
+		<?php echo $this->html->script('shared/jquery', 'shared/support_chat', 'shared/jquery.formrestrict', 'shared/jquery.alphanumeric', 'shared/main', 'shared/markitup', 'shared/async_upload', 'shared/jquery.chosen', 'shared/themes') ?>
 		<?php echo $this->html->scriptsForLayout ?>
 	</body>
 </html>
