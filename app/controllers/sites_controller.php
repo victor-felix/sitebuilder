@@ -70,14 +70,11 @@ class SitesController extends AppController
 			$site = $this->getCurrentSite();
 		}
 
-		try {
-			if ($site->userRole() == Users::ROLE_ADMIN) {
-				$sucess = $site->delete($site->id);
-			} else {
-				$sucess = $site->removeUser(Auth::User()->id());
-			}
-		} catch (Exception $e) {
-			$sucess = false;
+		$sucess = false;
+		
+		//remove site only if has more than one
+		if (count(Auth::User()->sites()) > 1) {
+			$sucess = $site->delete($site->id);
 		}
 
 		if ($sucess) {
