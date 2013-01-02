@@ -580,7 +580,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 
 .picture-upload-container .text {
     position: absolute;
-    z-index: 9999;
+    z-index: 2;
     cursor: text;
     top: 100%;
     width: 126px;
