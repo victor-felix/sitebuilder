@@ -28,13 +28,13 @@
     <div class="grid-8"> 
 		<div class="field-group">
 			<div class="form-grid-460 first">
-				<p class="label">This is the address of your mobile site:</p>
+				<p class="label"><?php echo s('This is the address of your mobile site:')?></p>
 				<p class="meumobi-url">
 					<span>http://<?php echo $site->defaultDomain() ?></span>
 				</p>
 				
 				<div class="input text domains">
-					<p class="label">Enter your custom domains:</p>
+					<p class="label"><?php echo s('Enter your custom domains') ?>:</p>
 					<?php foreach ($site->domains() as $id => $domain): 
 						if($domain != $site->slug.'.'.MeuMobi::domain()):
 					?>
@@ -65,13 +65,13 @@
 				</div>
 				
 				
-				<p class="label">Now visit your website hosting provider and create a CNAME record with these values:</p>
+				<p class="label"><?php echo s('Now visit your website hosting provider and create a CNAME record with these values:')?></p>
 				
 				<p class="custom-domain-setup">
-					<small style="display: inline;">alias: </small>
+					<small style="display: inline;"><?php echo s('alias') ?>: </small>
 					<span class="current-custom-domain"><?php echo $custom ? $custom : 'm.yourcompany.com';?></span>
 					<br>
-					<small style="display: inline;">destination: </small>
+					<small style="display: inline;"><?php echo s('destination')?>: </small>
 					<span><?php echo $site->defaultDomain() ?></span>
 				</p>
 				
@@ -93,20 +93,17 @@
     <div class="grid-8">
     	<div class="field-group">
     		<div class="form-grid-460">
-	    		<p class="label">Copy the code below into the html of your regular website's homepage
-				(ex: index.html) to automatically redirect mobile visitors to 
-				your mobile site.</p>
+	    		<p class="label"><?php echo s('Copy the code below into the html of your regular website\'s homepage(ex: index.html) to automatically redirect mobile visitors to your mobile site.') ?></p>
 				<br>
 				<p class="label">
-				Paste this code into the &lt;head&gt; tag on your site. You only 
-				need to do this once.
+				<?php echo s('Paste this code into the &lt;head&gt; tag on your site. You only need to do this once.')?>
 				</p>
 				
 				<br>
 				<br>
 				
 				<p class="label">
-				<b>If you have a MeuMobi domain</b>, copy this code:
+				<?php echo s('<b>If you have a MeuMobi domain</b>, copy this code:')?>
 				</p>
 				
 				<p class="code"><?php 
@@ -125,7 +122,7 @@
 				<br>
 				
 				<p class="label">
-				<b>if you created a custom domain</b>, copy this code:
+				<?php echo s('<b>if you created a custom domain</b>, copy this code:')?>
 				</p>
 				
 				<p class="code"><?php 
