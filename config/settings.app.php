@@ -18,7 +18,7 @@ Config::write('BusinessItems.resizes', array('80x60#', '80x80#', '139x139#', '31
 Config::write('Segments', array(
 	'example' => array(
 		'title' => 'MeuMobi Enterprise',
-		'items' => array('articles', 'business'),
+		'items' => array('articles', 'business', 'users'),
 		'root' => 'Index',
 		'email' => array('no-reply@meumobi.com' => 'MeuMobi'),
 		'extensions' =>array('store-locator', 'rss'),
