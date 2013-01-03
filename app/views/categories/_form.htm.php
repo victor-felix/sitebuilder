@@ -21,13 +21,22 @@
 		</div>
 		<?php if($site->hasManyTypes()): ?>
 			<div class="form-grid-460 first populate-based manual import">
-				<?php echo $this->form->input('type', array(
-					'label' => s('Content Type'),
-					'type' => 'select',
-					'class' => 'ui-select large item-types',
-					'options' => Segments::listItemTypesFor($site->segment)
-				)) ?>
+				<?php if (!$category->id):?>
+					<?php echo $this->form->input('type', array(
+						'label' => s('Content Type'),
+						'type' => 'select',
+						'class' => 'ui-select large item-types',
+						'options' => Segments::listItemTypesFor($site->segment)
+					)) ?>
 				<small><?php echo s('The type of content defined which content could be inserted on category, it couldn\'t be updated after creation') ?></small>
+				<?php else:?>
+					<?php echo $this->form->input('type', array(
+						'label' => s('Content Type'),
+						'type' => 'text',
+						'class' => 'ui-text large disabled',
+						'disabled' => true,
+					)) ?>
+				<?php endif;?>
 			</div>
 		<?php endif ?>	
 		<?php if($parent): ?>
