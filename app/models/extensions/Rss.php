@@ -16,7 +16,8 @@ class Rss extends Extensions
 	protected $specification = array(
 		'title' => 'News feed - RSS',
 		'description' => 'Import content automatically from a RSS feed',
-		'type' => 'rss'
+		'type' => 'rss',
+		'allowed-items' => array('articles'),
 	);
 
 	protected $fields = array(
