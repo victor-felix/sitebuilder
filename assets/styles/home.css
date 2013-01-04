@@ -454,6 +454,13 @@ div.wrapp.prices {
 	font-style: italic;
 }
 
+.custom-solution p .mail {
+	font-family: arial;
+	display: block;
+	margin-top: 2px;
+	font-size: 15px;
+}
+
 /* footer */
 
 .footer {

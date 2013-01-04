@@ -219,6 +219,7 @@
 		<h3><?php echo s('need custom solutions?')?></h3>
 		<p>
 		<?php echo s('Create custom layout, integration with any CMS, open API, business with multiple location, any custom solutions. Great for agencies, resellers, and big companies.')?>
+		<b class="mail" >enterprise@meumobi.com</b>
 		</p>
 	</div>
 </div>
