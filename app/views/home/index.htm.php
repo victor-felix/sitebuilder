@@ -5,7 +5,7 @@
 				<h3><?php echo s('Create a mobile website for your business.')?></h3>
 				<p><?php echo s('Works with over 6000 cellphones and smartphones.')?></p>
 				<a class="btn big" href="/signup/user"><?php echo s('start your free trial ›')?></a>
-				<p class="trial"><small><b><?php echo s('NO')?></b> <?php echo s('Credit card required')?><br> <?php echo s('14-day, fully functional trial')?></small></p>
+				<p class="trial"><small><b><?php echo s('NO')?></b> <?php echo s('Credit card required.')?><br> <?php echo s('30-day, fully functional trial.')?></small></p>
 			</div>
 			<div class="pull-right">
 				<div class="slider ">
@@ -21,7 +21,7 @@
 </div>
 <div class="presentation outer wrapp">
 	<div class="container">
-		<h3 class="title"><?php echo s('Everything you need to create a professional <b>mobile site</b>.')?></h3>
+		<h3 class="title"><?php echo s('Everything you need to create a <br>professional <b>mobile site</b>.')?></h3>
 		<ul class="thumbnails">
 			<li class="span3">
 			<div class="thumbnail">
@@ -56,7 +56,7 @@
 </div>
 <div class="features outer wrapp">
 	<div class="container">
-		<h3 class="title"><?php echo s('Allow your <b>customers to connect your business</b> easily. Add <b>extensions</b> for businesses with multiple locations and online publishers.')?></h3>
+		<h3 class="title"><?php echo s('Allow your <b>customers to connect your business</b> easily. <br>Add <b>extensions</b> for businesses with multiple locations <br>and online publishers.')?></h3>
 		<div class="row">
 			<div class="span4">
 				<div class="call block">
