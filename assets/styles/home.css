@@ -480,7 +480,7 @@ div.wrapp.prices {
 }
 
 .footer .links {
-	width: 37%;
+	width: 280px;
 }
 
 .footer .links a {
@@ -488,12 +488,13 @@ div.wrapp.prices {
 	text-transform: uppercase;
 	font-size: 11px;
 	margin: 0 5px;
+	float: left;
 }
 
 .footer .copy {
 	font-size: 11px;
 	color: #888;
-	margin-top: 20px;
+	margin-top: 40px;
 }
 
 .footer .copy .border {
@@ -518,7 +519,7 @@ div.wrapp.prices {
 }
 
 .footer .contact > div {
-	padding-left: 75px;
+	padding-top: 1px;
 }
 
 .footer .contact .upper {
@@ -526,12 +527,14 @@ div.wrapp.prices {
 }
 
 .footer .contact p {
-	font-size: 12px;
+	font-size: 11px;
+	margin: 0;
+	line-height: 18px;
 }
 
 .footer .contact p span {
 	display: block;
-	font-size: 18px;
+	font-size: 13px;
 	font-weight: normal;
 }
 

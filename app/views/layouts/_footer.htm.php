@@ -2,9 +2,8 @@
 	<div class="container">
 		<div class="links" >
 			<a class="logo" href="#"><?php echo s('MeuMobi')?></a>
-			<a href="#"><?php echo s('About Us')?></a>
-			<a href="#"><?php echo s('Our Blog')?></a>
-			<a id="support" href="javascript:void(0)"><?php echo s('Support')?></a>
+			<a href="http://blog.meumobi.com/about" target="_blank"><?php echo s('About Us')?></a>
+			<a href="http://blog.meumobi.com" target="_blank"><?php echo s('Our Blog')?></a>
 			<p class="copy">
 				<span class="border" ></span>
 				<?php echo s('&copy;2011 MeuMobi. All rights reserved') ?>
@@ -14,11 +13,10 @@
 			<div>
 			<p class="upper"><?php echo s('Contact Us')?></p>
 			<p>
-				<?php echo s('email')?>
 				<span><?php echo s('contact@meumobi.com')?></span>
 			</p>
 
-			<p><?php echo s('phone')?>
+			<p>
 				<span><?php echo s('+55 21 4042.7270')?></span>	
 			</p>
 			</div>
