@@ -84,14 +84,14 @@ small {
 
 /* hero */
 .hero.outer.wrapp {
-	background-color: #111;
+	background-color: #202729;
 	padding: 0;
 }
 
 .hero.outer.wrapp .hero-unit {
 	margin: 0;
 	padding: 50px 0 5px;
-	background-color: #111;
+	background-color: #202729;
 	color: #fff;
 }
 
