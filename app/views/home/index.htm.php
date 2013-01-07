@@ -9,9 +9,9 @@
 			</div>
 			<div class="pull-right">
 				<div class="slider ">
-				<p><img alt="" src="/images/shared/home/slide-1.png"></p>
-				<p><img alt="" src="/images/shared/home/slide-1.png"></p>
-				<p><img alt="" src="/images/shared/home/slide-1.png"></p>
+				<p><img alt="" src="/images/shared/home/en/slide-01.png"></p>
+				<p><img alt="" src="/images/shared/home/en/slide-02.png"></p>
+				<p><img alt="" src="/images/shared/home/en/slide-03.png"></p>
 				</div>
 				<div class="pagination"></div>
 			</div>
@@ -25,28 +25,28 @@
 		<ul class="thumbnails">
 			<li class="span3">
 			<div class="thumbnail">
-				<p class="img"><img src="/images/shared/home/icon-middle-04.png" alt=""></p>
+				<p class="img"><img src="/images/shared/home/en/icon-middle-01.png" alt=""></p>
 				<h3><?php echo s('Choose themes designed by experts')?></h3>
 				<p><?php echo s('Get your the right look with professional themes that fit your business segment. Whether it\'s a restaurant or an hospital.')?></p>
 			</div>
 			</li>
 			<li class="span3">
 			<div class="thumbnail">
-				<p class="img"><img src="/images/shared/home/icon-middle-02.png" alt=""></p>
+				<p class="img"><img src="/images/shared/home/en/icon-middle-02.png" alt=""></p>
 				<h3><?php echo s('Fill in the information of your business')?></h3>
 				<p><?php echo s('Business description, location, contacts, social links, pictures, logo, and more!')?></p>
 			</div>
 			</li>
 			<li class="span3">
 			<div class="thumbnail">
-				<p class="img"><img src="/images/shared/home/icon-middle-03.png" alt=""></p>
+				<p class="img"><img src="/images/shared/home/en/icon-middle-03.png" alt=""></p>
 				<h3><?php echo s('Add products, services or menus')?></h3>
 				<p><?php echo s('Your mobile website has space for your restaurant menu, your products, services, all with descriptions and photos.')?></p>
 			</div>
 			</li>
 			<li class="span3">
 			<div class="thumbnail">
-				<p class="img"><img src="/images/shared/home/icon-middle-01.png" alt=""></p>
+				<p class="img"><img src="/images/shared/home/en/icon-middle-04.png" alt=""></p>
 				<h3><?php echo s('Provide your site for over 6000 devices')?></h3>
 				<p><?php echo s('From the cutting-edge smartphones to the oldest and cheapest cell phones. Your mobile website is for everyone!')?></p>
 			</div>
