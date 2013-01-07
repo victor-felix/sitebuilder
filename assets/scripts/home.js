@@ -9,8 +9,8 @@ $(function() {
 	$(".hero-unit .slider").carouFredSel({
 		items : 1,
 		scroll : {
-			fx : "crossfade",
-			duration : 1000,
+			fx : "fade",
+			duration : 1500,
 			pauseOnHover: true
 		},
 		pagination : ".hero-unit .pagination"
