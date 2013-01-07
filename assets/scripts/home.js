@@ -7,18 +7,20 @@ $(function() {
   
 	// Using default configuration
 	$(".hero-unit .slider").carouFredSel({
-		items		: 1,
-		scroll		: {
-			fx			: "crossfade"
+		items : 1,
+		scroll : {
+			fx : "crossfade",
+			duration : 1000,
+			pauseOnHover: true
 		},
-		pagination  : ".hero-unit .pagination"
+		pagination : ".hero-unit .pagination"
 	});
 	
 	$(".quotes .slider").carouFredSel({
-		items		: 1,
-		scroll		: {
-			fx			: "crossfade"
+		items : 1,
+		scroll : {
+			fx : "crossfade"
 		},
-		pagination  : ".quotes .pagination"
+		pagination : ".quotes .pagination"
 	});
 });
