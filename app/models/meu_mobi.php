@@ -6,19 +6,14 @@ class MeuMobi
 {
 	protected static $segment;
 
-	public static function segment($segment = null)
+	public static function segment()
 	{
-		if (is_null($segment)) {
-			return static::$segment;
-		} else {
-			static::$segment = $segment;
-			YamlDictionary::dictionary($segment);
-		}
+		return self::currentSegment()->id;
 	}
 
 	public static function currentSegment()
 	{
-		return Segments::firstById(static::$segment);
+		return Segments::current();
 	}
 
 	public static function instance()

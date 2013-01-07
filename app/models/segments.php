@@ -4,10 +4,9 @@ class Segments
 {
 	protected $attr;
 
-	public static function firstById($id)
+	public static function current()
 	{
-		$segments = Config::read('Segments');
-		return new self($segments[$id]);
+		return new self(Config::read('Segment'));
 	}
 
 	public function __construct($attr)
@@ -33,6 +32,17 @@ class Segments
 			return $this->attr['sitePreviewUrl'];
 		} else {
 			return Config::read('Preview.url');
+		}
+	}
+
+	public function themeTag()
+	{
+		if (array_key_exists('themeTag', $this->themeTag)) {
+			return $this->attr['themeTag'];
+		} else if(!Config::read('Themes.ignoreTag')) {
+			return $this->id;
+		} else {
+			return false;
 		}
 	}
 
