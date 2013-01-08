@@ -97,7 +97,7 @@ small {
 
 .hero.outer.wrapp .hero-unit .block {
 	min-width: 340px;
-	max-width: 45%;
+	max-width: 385px;
 	padding-top: 15px;
 }
 
@@ -125,8 +125,7 @@ small {
 .outer.wrapp .title {
 	color: #B9B9B9;
 	font-size: 24px;
-	font-weight: 700;
-	max-width: 370px;
+	font-weight: normal;
 }
 
 .hero-unit .slider {
@@ -181,7 +180,7 @@ div.wrapp.presentation {
 }
 
 .presentation .thumbnail p.img {
-	height: 130px;
+	height: 135px;
 	margin: 0;
 }
 
@@ -204,18 +203,18 @@ div.wrapp.presentation {
 
 .features .title {
 	letter-spacing: -1px;
-	margin-bottom: 35px;
+	margin: 0 0 5px;
 }
 
 .features .block {
 	padding: 0px 0px 0px 50px;
 	position: relative;
+	min-height: 110px
 }
 
 .features .block.store-locator, .features .block.rss {
-	height: 110px;
 	margin-left: 35px;
-	margin-top: 20px;
+	margin-top: 0px;
 }
 
 .features .block .icon {
@@ -244,7 +243,7 @@ div.wrapp.presentation {
 
 .features .block p {
 	font-size: 12px;
-	line-height: 14px;
+	line-height: 17px;
 	width: 93%;
 	color: #999;
 }
@@ -269,7 +268,7 @@ div.wrapp.prices {
 
 .prices h2 {
 	color: #C3C3C3;
-	font-weight: bold;
+	font-weight: normal;
 	font-size: 44px;
 	margin-bottom: 0;
 }
@@ -283,7 +282,8 @@ div.wrapp.prices {
 	font-style: italic;
 	color: #adadad;
 	letter-spacing: -1px;
-	margin: 10px 0 25px;
+	margin: 10px 0 0px;
+	min-height: 40px;
 }
 
 .prices ul {
@@ -363,6 +363,11 @@ div.wrapp.prices {
 	font-size: 16px;
 }
 
+.quotes .insights .slider > div {
+	height: 160px;
+	width: 255px;
+}
+
 .quotes .insights .slider .author {
 	font-weight: bold;
 	font-size: 12px;
@@ -385,7 +390,7 @@ div.wrapp.prices {
 }
 
 .quotes .about h3 {
-	padding: 0 27% 30px;
+	padding: 0 25% 30px;
 	font-size: 24px;
 	font-weight: bolder;
 	text-align: center;
@@ -395,13 +400,13 @@ div.wrapp.prices {
 
 .quotes .about .quote {
 	color: #666;
-	padding: 0 25px;
+	padding: 0 15px;
 	text-align: center;
 	
 }
 
 .quotes .about .quote p {
-	min-height: 135px;
+	min-height: 115px;
 	position: relative;
 	font: italic 20px/22px myriad pro, Georgia, serif;
 	color: #555;
@@ -441,7 +446,7 @@ div.wrapp.prices {
 	text-align: center;
 	font-size: 16px;
 	color: #999;
-	max-width: 660px;
+	max-width: 530px;
 	margin: 30px auto 40px;
 }
 
