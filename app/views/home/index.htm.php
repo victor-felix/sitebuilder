@@ -84,9 +84,6 @@
 								<?php echo s('A mobile map interface with geolocated address <b>(ex.: stores, atms, gas stations, tourist spots).</b>')?>
 							</p>
 						</div>
-						<div class="phone">
-							<img alt="" src="/images/shared/home/icon-phone-mini.png">
-						</div>
 					</div>
 					<div class="span4">
 						<div class="rss block">
@@ -96,6 +93,15 @@
 								<?php echo s('Import any content automatically from a RSS feed. Great for online publishers <b>(ex.: blogs, news site, online journals).</b>')?>
 							</p>
 						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="span4">
+						<div class="phone">
+							<img alt="" src="/images/shared/home/icon-phone-mini.png">
+						</div>
+					</div>
+					<div class="span4">
 						<div class="phone">
 							<img alt="" src="/images/shared/home/icon-phone-mini.png">
 						</div>
