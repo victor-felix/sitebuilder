@@ -182,6 +182,11 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	width: 300px;
 }
 
+.global-navbar .sites ul {
+	max-height: 450px;
+	overflow-y: auto;
+}
+
 .global-navbar .dropdown > li > p {
 	padding: 7px 30px 7px 15px;
 	background: url("/images/shared/layout/icon-arrow.png") no-repeat 89% 50%;
