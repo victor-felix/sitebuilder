@@ -22,7 +22,7 @@ class AppController extends Controller {
 			}
 		}
 		else {
-			Session::flash('Auth.redirect', Mapper::here());
+			Session::write('Auth.redirect', Mapper::here());
 			$this->redirect('/users/login');
 		}
 	}
