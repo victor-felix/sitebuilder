@@ -8,6 +8,7 @@
     </head>
     
     <body>
+    	<div class="wrapper">
         <div id="header">
             <?php echo $this->html->imagelink('layout/logo.png', '/', array(
                 'alt' => $this->controller->getSegment()->title
@@ -49,13 +50,14 @@
             <?php endif ?>
         </div>
         
-        <div id="content">
-            
-            <?php echo $this->contentForLayout ?>
+        <div class="content-wrapp">
+	        <div id="content">
+	            <?php echo $this->contentForLayout ?>
+	        </div>
         </div>
         
         <?php echo $this->element('layouts/footer') ?>
-        
+        </div>
         <?php echo $this->html->script('shared/jquery', 'shared/support_chat', 'shared/jquery.formrestrict', 'shared/jquery.alphanumeric', 'shared/main',  'shared/async_upload', 'shared/themes') ?>
         <?php echo $this->html->scriptsForLayout ?>
     </body>
