@@ -257,3 +257,7 @@ body {
 .login #footer {
 	display: none;
 }
+
+.login .wrapper {
+	overflow: hidden;
+}
