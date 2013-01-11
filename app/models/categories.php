@@ -318,7 +318,7 @@ class Categories extends AppModel {
 	protected function getFeed() {
 		$feed = new SimplePie();
 		$feed->enable_cache(false);
-		$feed->set_feed_url($this->feed);
+		$feed->set_feed_url($this->feed_url);
 		$feed->init();
 
 		return $feed;
