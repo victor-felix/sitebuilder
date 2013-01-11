@@ -39,7 +39,9 @@ class UsersController extends AppController
 					$this->redirect('/sites/register');
 					Session::write('Users.registering', '/sites/register');
 				}
-				if (!($location = Session::flash('Auth.redirect'))) {
+				if ($location = Session::read('Auth.redirect')) {
+					Session::delete('Auth.redirect');
+				} else {
 					$location = '/categories';
 				}
 				$this->redirect ($location);

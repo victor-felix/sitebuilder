@@ -3,9 +3,18 @@
 	margin: 0;
 }
 
+html, body {
+	height:100%;
+}
+
 body {
 	background: #EFEFEF;
 	font: 12px Arial, Helvetica, sans-serif;
+}
+
+.wrapper {
+	min-height:100%;
+	position:relative;	
 }
 
 .hidden {
@@ -180,6 +189,11 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	margin-left: 20px;
 	font-size: 14px;
 	width: 300px;
+}
+
+.global-navbar .sites ul {
+	max-height: 450px;
+	overflow-y: auto;
 }
 
 .global-navbar .dropdown > li > p {
@@ -490,6 +504,11 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 /**
  *content 
  */
+
+.content-wrapp {
+	padding-bottom: 150px;
+}
+
 #content {
 	background: #FFF;
 	clear: both;
@@ -676,6 +695,11 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 	font-size: 14px;
 	line-height: 20px;
+	
+	position: absolute;
+	width: 100%;
+	left: 0;
+	bottom: 0;
 }
 
 .footer p {

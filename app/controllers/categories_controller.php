@@ -4,7 +4,7 @@ class CategoriesController extends AppController
 {
 	protected function beforeFilter()
 	{
-		if (Auth::user()->site()->hide_categories) {
+		if ($this->getCurrentSite()->hide_categories) {
 			$this->redirect('/sites/business_info');
 		}
 
