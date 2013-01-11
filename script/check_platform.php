@@ -58,7 +58,7 @@ $checks = array(
 		return array($result, implode(', ', $files), implode(', ', $found));
 	},
 	'rwx_permissions' => function() {
-		$files = array('meu-site-builder/tmp', 'meu-site-builder/log',
+		$files = array('tmp', 'log',
 			'public/uploads');
 		$ok_files = array_filter($files, function($file) {
 			return (fileperms(__DIR__ . '/../../' . $file) & 0777) == 0777;

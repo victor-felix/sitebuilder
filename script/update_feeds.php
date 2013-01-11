@@ -13,3 +13,5 @@ $categories = Model::load('Categories')->all(array(
 foreach($categories as $category) {
     $category->updateArticles();
 }
+
+echo 'Updated feeds at ' . date('Y-m-d H:i:s');

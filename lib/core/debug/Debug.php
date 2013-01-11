@@ -14,7 +14,7 @@ class Debug {
     }
 
     public static function log($message) {
-        $log = KLogger::instance(Filesystem::path('log'));
+        $log = KLogger::instance(Filesystem::path('../log'));
         $log->logError($message);
     }
 

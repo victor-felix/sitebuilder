@@ -1,4 +1,4 @@
-set :output, File.expand_path('sitebuilder/log/whenever.log')
+set :output, File.expand_path('log/whenever.log')
 
 every 10.minutes do
   command "php #{File.expand_path 'sitebuilder/script/update_feeds.php'}"
