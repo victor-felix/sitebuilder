@@ -509,10 +509,10 @@ class Sites extends AppModel {
 
 	protected function checkForValidRss($data)
 	{
-		if (!trim($data['feed_url'])) return true;
+		if (!trim($this->feed_url())) return true;
 		$feed = new SimplePie();
 		$feed->enable_cache(false);
-		$feed->set_feed_url($data['feed_url']);
+		$feed->set_feed_url($this->feed_url());
 		$feed->init();
 
 		if ($feed->error()) {

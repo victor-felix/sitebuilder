@@ -9,13 +9,13 @@ set :git_enable_submodules, true
 set :use_sudo, false
 
 set :normalize_asset_timestamps, false
-set :shared_children, %w(public/uploads meu-site-builder/log)
+set :shared_children, %w(uploads log)
 
 set :php_env, 'production'
 
 namespace :deploy do
   task :permissions do
-    run "chmod -Rf 777 #{release_path}/meu-site-builder/tmp"
+    run "chmod -Rf 777 #{release_path}/tmp"
   end
 
   task :shared do
@@ -31,8 +31,8 @@ namespace :deploy do
   end
 
   task :environment do
-    run "chmod -Rf 777 #{shared_path}/meu-site-builder/log"
-    run "chmod -Rf 777 #{shared_path}/public/uploads"
+    run "chmod -Rf 777 #{shared_path}/log"
+    run "chmod -Rf 777 #{shared_path}/uploads"
     put php_env, "#{shared_path}/environment"
   end
 
@@ -46,12 +46,12 @@ namespace :deploy do
   end
 
   task :platform_check do
-    run "php #{release_path}/meu-site-builder/script/check_platform.php"
+    run "php #{release_path}/sitebuilder/script/check_platform.php"
   end
 
   namespace :db do
     task :migrate do
-      run "php #{release_path}/meu-site-builder/script/migrate.php"
+      run "php #{release_path}/sitebuilder/script/migrate.php"
     end
   end
 end
