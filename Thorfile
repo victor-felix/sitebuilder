@@ -172,8 +172,8 @@ Config::write('Segment', array(
       options[:user_password] = ask "user's password:"
       options[:root] = ask "root category title:"
       options[:primary_color] = ask "primary color:"
-      options[:hide_categories] = yes?("hide categories? (y/n)") ? 1 : 0
-      options[:enable_signup] = yes?("enable signup? (y/n)") ? 1 : 0
+      options[:hide_categories] = yes?("hide categories? (y/n)").to_s
+      options[:enable_signup] = yes?("enable signup? (y/n)").to_s
       options[:item_types] = ask "item types (separated by spaces):"
       options[:extensions] = ask "extensions (separated by spaces):"
       options[:item_types] = options[:item_types].split(" ").join("', '")

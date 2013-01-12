@@ -5,9 +5,9 @@ require_once 'lib/geocoding/GoogleGeocoding.php';
 require_once 'lib/sitemanager/SiteManager.php';
 
 class Sites extends AppModel {
-	protected $getters = array('feed_url', 'feed_title', 'custom_domain', );
+	protected $getters = array('feed_url', 'feed_title', 'custom_domain');
 	protected $beforeSave = array(
-		'setHideCategories', 'getLatLng', 'saveDomain', 'updateSiteManager',
+		'getLatLng', 'saveDomain', 'updateSiteManager',
 	);
 	protected $afterSave = array(
 		'saveLogo', 'createRootCategory', 'createNewsCategory', 'updateFeed',
@@ -58,35 +58,36 @@ class Sites extends AppModel {
 		),
 	);
 
-	public function __construct($data = array()) {
-		parent::__construct ( $data );
+	public function __construct($data = array())
+	{
+		parent::__construct($data);
 
-		if (! isset ( $this->data ['timezone'] ) or ! $this->data ['timezone']) {
+		if (!isset($this->data['timezone']) or !$this->data['timezone']) {
 			$this->timezone = 'America/Sao_Paulo';
 		}
 	}
 
-	public function newsCategory() {
-		return Model::load ( 'Categories' )->first ( array ('conditions' => array ('site_id' => $this->id, 'visibility' => - 1 ) ) );
+	public function newsCategory()
+	{
+		return Model::load('Categories')->first(array(
+			'conditions' => array('site_id' => $this->id, 'visibility' => -1)
+		));
 	}
 
-	public function feed_url() {
-		$category = $this->newsCategory ();
-
-		if ($category) {
-			return $category->feed_url;
-		}
+	public function feed_url()
+	{
+		$category = $this->newsCategory();
+		if ($category) return $category->feed_url;
 	}
 
-	public function feed_title() {
-		$category = $this->newsCategory ();
-
-		if ($category) {
-			return $category->title;
-		}
+	public function feed_title()
+	{
+		$category = $this->newsCategory();
+		if ($category) return $category->title;
 	}
 
-	public function defaultDomain() {
+	public function defaultDomain()
+	{
 		return $this->slug . '.' . MeuMobi::domain();
 	}
 
@@ -137,13 +138,6 @@ class Sites extends AppModel {
 		return 'http://' . $this->domain;
 	}
 
-	/**
-	 * Get country name or code by country_id
-	 *
-	 * @param int $id The country id, optional.
-	 * @param bollean $code if true return country code instead
-	 * @return string
-	 */
 	public function country($id = false, $code = false) {
 		$id = $id ? $id : $this->country_id;
 
@@ -153,12 +147,6 @@ class Sites extends AppModel {
 		return $code ? $country->tld : $country->name;
 	}
 
-	/**
-	 * Get state name by state_id
-	 *
-	 * @param int $id The state id, optional
-	 * @return string
-	 */
 	public function state($id = false) {
 		$id = $id ? $id : $this->state_id;
 
@@ -174,9 +162,9 @@ class Sites extends AppModel {
 
 	public function categories() {
 		return Model::load('Categories')->all(array(
-				'conditions' => array ('site_id' => $this->id, 'visibility >' => - 1),
-				'order' => '`order`'
-				));
+			'conditions' => array ('site_id' => $this->id, 'visibility >' => - 1),
+			'order' => '`order`'
+		));
 	}
 
 	public function userRole() {
@@ -223,20 +211,19 @@ class Sites extends AppModel {
 		}
 	}
 
-	public function itemTypes() {
+	public function itemTypes()
+	{
 		return MeuMobi::currentSegment()->items;
 	}
 
-	public function hasManyTypes() {
-		return is_array ( $this->itemTypes () );
+	public function hasManyTypes()
+	{
+		return is_array($this->itemTypes());
 	}
 
 	public function firstBySlug($slug) {
-		$site = $this->first ( array ('conditions' => compact ( 'slug' ) ) );
-
-		if (! $site)
-			throw new Exception ( 'Missing slug' );
-
+		$site = $this->first(array('conditions' => compact('slug')));
+		if (!$site) throw new Exception('Missing slug');
 		return $site;
 	}
 
@@ -394,11 +381,6 @@ class Sites extends AppModel {
 			));
 		}
 	}
-	protected function setHideCategories($data) {
-		$segment = MeuMobi::currentSegment();
-		$data['hide_categories'] = $segment->hideCategories;
-		return $data;
-	}
 
 	protected function getLatLng($data) {
 		if (array_key_exists('street', $data)) {
@@ -431,19 +413,31 @@ class Sites extends AppModel {
 		return $data;
 	}
 
-	protected function createNewsCategory($created) {
+	protected function createNewsCategory($created)
+	{
 		if ($created) {
-			$parent_id = Model::load ( 'Categories' )->firstBySiteIdAndParentId ( $this->id, 0 )->id;
-			$category = new Categories ( array ('site_id' => $this->id, 'parent_id' => $parent_id, 'type' => 'articles', 'title' => 'News', 'visibility' => - 1, 'populate' => 'auto' ) );
-			$category->save ();
+			$parent_id = Model::load('Categories')->firstBySiteIdAndParentId($this->id, 0)->id;
+			$category = new Categories(array(
+				'site_id' => $this->id,
+				'parent_id' => $parent_id,
+				'type' => 'articles',
+				'title' => 'News',
+				'visibility' => - 1,
+				'populate' => 'auto'
+			));
+			$category->save();
 		}
 	}
 
-	protected function updateFeed($created) {
-		if (isset ( $this->data ['feed_url'] )) {
-			$category = $this->newsCategory ();
-			$category->updateAttributes ( array ('title' => $this->data ['feed_title'], 'feed' => $this->data ['feed_url'] ) );
-			$category->save ();
+	protected function updateFeed($created)
+	{
+		if (isset($this->data['feed_url'])) {
+			$category = $this->newsCategory();
+			$category->updateAttributes(array(
+				'title' => $this->data ['feed_title'],
+				'feed_url' => $this->data ['feed_url']
+			));
+			$category->save();
 		}
 	}
 

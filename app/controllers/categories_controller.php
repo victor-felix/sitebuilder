@@ -4,7 +4,7 @@ class CategoriesController extends AppController
 {
 	protected function beforeFilter()
 	{
-		if ($this->getCurrentSite()->hide_categories) {
+		if (MeuMobi::currentSegment()->hideCategories) {
 			$this->redirect('/sites/business_info');
 		}
 

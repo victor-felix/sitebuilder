@@ -23,7 +23,7 @@ class Segments
 
 	public function isSignupEnabled()
 	{
-		return $this->enableSignUp;
+		return $this->enableSignup;
 	}
 
 	public function sitePreviewUrl()
@@ -47,7 +47,7 @@ class Segments
 	}
 
 	public static function listItemTypesFor($segment) {
-		$segment = self::firstById($segment);
+		$segment = self::current();
 		$types = (array) $segment->items;
 		$type_list = array();
 
