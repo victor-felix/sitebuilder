@@ -35,16 +35,14 @@ class UsersController extends AppController
 			if ($user) {
 				Auth::login($user, (bool) $this->data['remember']);
 				if (!$user->hasSiteInSegment(MeuMobi::segment())) {
-					$user->registerNewSite();
-					$this->redirect('/sites/register');
-					Session::write('Users.registering', '/sites/register');
+					$this->redirect('/create_site/theme');
 				}
 				if ($location = Session::read('Auth.redirect')) {
 					Session::delete('Auth.redirect');
 				} else {
 					$location = '/categories';
 				}
-				$this->redirect ($location);
+				$this->redirect($location);
 			} else {
 				Session::writeFlash('error', s('Invalid username or password'));
 			}

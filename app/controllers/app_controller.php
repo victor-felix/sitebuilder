@@ -5,29 +5,25 @@ require 'lib/core/storage/Session.php';
 require 'lib/utils/Auth.php';
 
 class AppController extends Controller {
-	protected function beforeFilter() {
+	protected function beforeFilter()
+	{
 		if ($this->isXhr()) {
 			$this->autoLayout = false;
 		}
 	}
 
-	public function getCurrentSite() {
-		if(Auth::loggedIn()) {
-			if ($site = Auth::user()->site()) {
-				return $site;
-			} else {
-				Auth::user()->registerNewSite ();
-				$this->redirect ( '/sites/register' );
-				Session::write ( 'Users.registering', '/sites/register' );
-			}
-		}
-		else {
+	public function getCurrentSite()
+	{
+		if (Auth::loggedIn()) {
+			return Auth::user()->site();
+		} else {
 			Session::write('Auth.redirect', Mapper::here());
 			$this->redirect('/users/login');
 		}
 	}
 
-	public function getSegment() {
+	public function getSegment()
+	{
 		return MeuMobi::currentSegment();
 	}
 
