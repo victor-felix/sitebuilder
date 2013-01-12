@@ -1,6 +1,8 @@
 <?php
 
-//ini_set('error_reporting', 0);
+ini_set('error_reporting', 0);
+ini_set('display_errors', 'Off');
+
 Config::write('Yaml.cache', true);
 
 Config::write('Themes.url', 'http://meu-cloud-db.int-meumobilesite.com/configs.json');
