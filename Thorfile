@@ -189,7 +189,7 @@ Config::write('Segment', array(
 
       create_link "segments/#{name}/public/uploads", "../../../uploads"
 
-      create_file "segments/#{name}/strings.yml"
+      create_file "segments/#{name}/strings.yaml"
       create_file "segments/#{name}/config.php", SegmentTemplate % options
 
       run "php #{self.class.source_root}/sitebuilder/script/create_user.php '#{options[:user_first]}' '#{options[:user_last]}' '#{options[:user_email]}' '#{options[:user_password]}'"
