@@ -1,1 +1,1 @@
-meu-site-builder/Rakefile
+sitebuilder/Rakefile

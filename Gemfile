@@ -1,1 +1,1 @@
-meu-site-builder/Gemfile
+sitebuilder/Gemfile

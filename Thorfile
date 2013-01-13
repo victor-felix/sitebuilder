@@ -1,1 +1,1 @@
-meu-site-builder/Thorfile
+sitebuilder/Thorfile
