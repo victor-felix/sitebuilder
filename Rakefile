@@ -8,9 +8,9 @@ namespace :meumobi do
   end
 
   task :update do
-    unless `git diff meu-site-builder`.empty?
-      rev = `env GIT_DIR=meu-site-builder/.git git rev-parse HEAD`.chomp
-      sh "git commit meu-site-builder -m 'Updated meu-site-builder to #{rev}'"
+    unless `git diff sitebuilder`.empty?
+      rev = `env GIT_DIR=sitebuilder/.git git rev-parse HEAD`.chomp
+      sh "git commit sitebuilder -m 'Updated meu-site-builder to #{rev}'"
     else
       puts 'Nothing to update'
     end
