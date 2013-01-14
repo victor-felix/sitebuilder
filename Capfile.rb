@@ -31,6 +31,8 @@ namespace :deploy do
   end
 
   task :environment do
+    run "chmod -Rf 777 #{shared_path}/log"
+    run "chmod -Rf 777 #{shared_path}/uploads"
     put php_env, "#{shared_path}/environment"
   end
 
