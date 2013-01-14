@@ -1,1 +1,1 @@
-../meu-site-builder/schedule.rb
+../sitebuilder/config/schedule.rb
