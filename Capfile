@@ -2,12 +2,12 @@ load 'deploy' if respond_to?(:namespace)
 load 'sitebuilder/Capfile'
 
 #bonita
-#role :app, 'bonita.ipanemax.com'
-#set :deploy_to, '/home/meumobi/PROJECTS/partners.meumobilesite.com'
+role :app, 'bonita.ipanemax.com'
+set :deploy_to, '/home/meumobi/PROJECTS/partners.meumobilesite.com'
 
 #elefante
-set :deploy_to, '/home/meumobi/PROJECTS/partners.meumobilesite.com'
-role :app, 'elefante.ipanemax.com'
+#set :deploy_to, '/home/meumobi/PROJECTS/partners.meumobilesite.com'
+#role :app, 'elefante.ipanemax.com'
 
 
 set :repository, 'git@repos.ipanemax.com:partners.meumobi.git'
