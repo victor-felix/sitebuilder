@@ -6,9 +6,9 @@ $mysql = array(
     'production' => array(
         'driver' => 'MySql',
         'host' => 'localhost',
-        'user' => 'meumobi',
-        'password' => 'q1T10Cr',
-        'database' => 'partners.meumobi',
+        'user' => 'root',
+        'password' => 'ipanemax2010',
+        'database' => 'meumobi_partners',
         'prefix' => ''
     ),
     'integration' => array(
@@ -16,7 +16,7 @@ $mysql = array(
         'host' => 'localhost',
         'user' => 'imax',
         'password' => 'q1T10Cr',
-        'database' => 'partners.meumobi',
+        'database' => 'meumobi_partners',
         'prefix' => ''
     )
 );
@@ -25,12 +25,12 @@ $mongodb = array(
     'production' => array(
         'type' => 'MongoDb',
         'host' => 'localhost',
-        'database' => 'partners_meumobi'
+        'database' => 'meumobi_partners'
     ),
     'integration' => array(
         'type' => 'MongoDb',
         'host' => 'localhost',
-        'database' => 'partners_meumobi'
+        'database' => 'meumobi_partners'
     )
 );
 
