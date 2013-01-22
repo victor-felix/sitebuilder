@@ -62,7 +62,41 @@ class ApiController extends \lithium\action\Controller {
 			return $record->toJSON();
 		}
 	}
-
+	
+	public function postConditions($data, $operators = '', $exclusive = false) {
+		$conditions = array();
+		
+		$opIsArray = is_array($operators);
+		foreach ($data as $field => $value) {
+			$fieldOperator = $operators;
+			if ($opIsArray) {
+				if (array_key_exists($field, $operators)) {
+					$fieldOperator = $operators[$field];
+				} else {
+					$fieldOperator = false;
+				}
+			}
+			
+			if ($exclusive && $fieldOperator === false) {
+				continue;
+			}
+			
+			$fieldOperator = trim($fieldOperator);
+			
+			//change value if LIKE operator 
+			if ($fieldOperator == 'like') {
+				$value =  "/$value/iu";
+			} 
+			
+			if ($fieldOperator && $fieldOperator != '=') {
+				$value = array($fieldOperator => $value);
+			}
+			
+			$conditions[$field] = $value;
+		}
+		return $conditions;
+	}
+	
 	protected function checkSite() {
 		$this->site = $this->site();
 		if(!$this->site) {

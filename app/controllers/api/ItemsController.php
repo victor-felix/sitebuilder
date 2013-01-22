@@ -154,22 +154,23 @@ class ItemsController extends ApiController {
 	}
 
 	public function search() {
-		$category_id = $this->request->params['category_id'];
-		$category = Model::load('Categories')->firstById($category_id);
-		$keyword = "/{$this->request->query['keyword']}/iu";
-		$conditions = array(
-			'site_id' => $this->site()->id,
-			'parent_id' => $category->id,
-			'title' => array('like' => $keyword)
-		);
-
-		$classname = '\app\models\items\\' . Inflector::camelize($category->type);
-		$items = $classname::find('all', array(
+		$params = $this->request->query;
+		$conditions = $this->postConditions($params, array('title'=> 'like', 'description' => 'like'));
+		$conditions['site_id'] = $this->site()->id;
+		
+		$result = \app\models\Items::find('all',array(
 			'conditions' => $conditions,
 			'limit' => $this->param('limit', 20),
 			'page' => $this->param('page', 1)
 		));
-
+		
+		$items = array();
+		foreach ($result as $item) {
+			$classname = '\app\models\items\\' . Inflector::camelize($item->type);
+			$items[] = $classname::create($item->to('array'));
+		}
+		unset($result);
+		
 		return $this->toJSON($items);
 	}
 

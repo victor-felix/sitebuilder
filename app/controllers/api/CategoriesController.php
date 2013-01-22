@@ -5,6 +5,9 @@ namespace app\controllers\api;
 use app\presenters\CategoryPresenter;
 use meumobi\sitebuilder\Category;
 use meumobi\sitebuilder\Site;
+use app\models\Items;
+use Model;
+use Inflector;
 
 class CategoriesController extends ApiController
 {
@@ -84,5 +87,25 @@ class CategoriesController extends ApiController
 		$this->requireUserAuth();
 		Model::load('Categories')->delete($this->param('id'));
 		$this->response->status(200);
+	}
+	
+	public function search() {
+		$category_id = $this->request->params['category_id'];
+		$category = Model::load('Categories')->firstById($category_id);
+		$keyword = "/{$this->request->query['keyword']}/iu";
+		$conditions = array(
+				'site_id' => $this->site()->id,
+				'parent_id' => $category->id,
+				'title' => array('like' => $keyword)
+		);
+	
+		$classname = '\app\models\items\\' . Inflector::camelize($category->type);
+		$items = $classname::find('all', array(
+				'conditions' => $conditions,
+				'limit' => $this->param('limit', 20),
+				'page' => $this->param('page', 1)
+		));
+	
+		return $this->toJSON($items);
 	}
 }

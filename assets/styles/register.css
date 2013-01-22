@@ -17,7 +17,7 @@ body {
 #header {
 	margin: 0 auto;
 	padding: 50px 0 0px;
-	border-top: 10px solid #2F3E6E;
+	border-top: 10px solid #42537e;
 }
 
 #header .logo {
@@ -44,7 +44,7 @@ body {
 	margin-top: -10px;
 	width: 390px;
 	border: none;
-	color: #2F3E6E;
+	color: #42537e;
 }
 
 #header .head .steps {
@@ -62,7 +62,7 @@ body {
 }
 
 #header .head .steps li.current {
-	color: #2F3E6E;
+	color: #42537e;
 }
 
 #header .head .steps li h3 {
