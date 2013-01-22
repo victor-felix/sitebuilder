@@ -4,9 +4,8 @@ $checks = array(
 	'php_version' => function() {
 		$result = true;
 		$result = $result && PHP_MAJOR_VERSION == 5;
-		$result = $result && PHP_MINOR_VERSION == 3;
-		$result = $result && PHP_RELEASE_VERSION > 1;
-		return array($result, '> 5.3.1', phpversion());
+		$result = $result && PHP_MINOR_VERSION > 3;
+		return array($result, '> 5.3', phpversion());
 	},
 	'short_open_tag' => function() {
 		$ini = ini_get('short_open_tag');
@@ -29,12 +28,12 @@ $checks = array(
 	},
 	'mongo' => function() {
 		$version = phpversion('mongo');
-		$result = preg_match('/^1\.2.(\d)+/', $version);
+		$result = preg_match('/^1\.[2-3].(\d)+/', $version);
 		return array($result, '> 1.2.10', $version);
 	},
 	'imagick' => function() {
 		$version = phpversion('imagick');
-		$result = preg_match('/^3\.0/', $version);
+		$result = preg_match('/^3\.[0-9]/', $version);
 		return array($result, '> 3.0.0', $version);
 	},
 	'gd' => function() {
