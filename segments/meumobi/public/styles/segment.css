@@ -22,11 +22,6 @@
 	color: #2f3e6e;
 }
 
-
-.form-edit fieldset h2 {
-	color: #2f3e6e;
-}
-
 .form-edit .fieldset-expand {
 	border-bottom: 1px solid #DDD;
 	color: #2f3e6e;
@@ -58,7 +53,7 @@
 }
 
 .form-register fieldset h2 {
-	color: #2f3e6e;
+	color: #333;
 }
 
 .form-register .fieldset-expand {
