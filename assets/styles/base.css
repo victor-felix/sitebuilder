@@ -166,7 +166,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 
 #header .contextual-navbar .dropdown li ul a:hover, .dropdown li ul a:hover {
 	background-color: #F5F5F5;
-	color: #2F3E6E;
+	color: #42537e;
 	border-bottom: 1px solid #DDD;
 	text-shadow: 0 1px 1px #fff;
 }
@@ -175,7 +175,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 *global navbar
 */
 .global-navbar {
-	background: #2F3E6E;
+	background: #42537e;
 	min-height: 30px;
 	color: #fff;
 }
@@ -204,7 +204,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 
 .global-navbar .dropdown:hover > li > p {
 	background: url("/images/shared/markitup/icon-nav-open.png") no-repeat 89% 50% white;
-	color: #2F3E6E;
+	color: #42537e;
 }
 
 .global-navbar .dropdown > li {
@@ -393,7 +393,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	z-index: 3;
 }
 #header .navigation .user a {
-	color: #2F3E6E;
+	color: #42537e;
 	display: block;
 	float: left;
 	font-weight: bold;
