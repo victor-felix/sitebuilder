@@ -7,7 +7,7 @@ Config::write('Segment', array(
 	'root' => 'Index',
 	'email' => array('no-reply@ipanemax.com' => 'ipanemax'),
 	'extensions' =>array('store-locator', 'rss'),
-	'hideCategories' => 0,
-	'enableSignUp' => 1,
+	'hideCategories' => false,
+	'enableSignup' => true,
 	'sitePreviewUrl' => 'http://placeholder.int-meumobi.com'
 ));
