@@ -1,5 +1,5 @@
 <?php
-
+Config::write('App.encoding', 'utf-8');
 Config::write('App.environment', trim(Filesystem::read(__DIR__ . '/ENVIRONMENT')));
 Config::write('Security.salt', 'a5d5d5be3c69dbc8b49e3342db0f8952f6328abd67076bf65d7c3c67a1fbfcab4946aa0fbd6b506db958449ac5e81637d0f5b8ee88e4d0760909cabe2e78137c');
 Config::write('Mailer.transport', 'mail');
