@@ -1,55 +1,55 @@
 ::selection {
-    background:#2f3e6e;
+    background:#42537e;
     color:#fff;
 }
 
 ::-moz-selection {
-    background:#2f3e6e;
+    background:#42537e;
     color:#fff;
 }
 
 #header .contextual-navbar ul li a:hover {
-	background-color: #2f3e6e;
-	border-color: #2f3e6e;
+	background-color: #42537e;
+	border-color: #42537e;
 }
 
 #header .navigation .user a:hover {
-	background: #2f3e6e;
+	background: #42537e;
 }
 
 
 .businessitems-list li .info a {
-	color: #2f3e6e;
+	color: #42537e;
 }
 
 .form-edit .fieldset-expand {
 	border-bottom: 1px solid #DDD;
-	color: #2f3e6e;
+	color: #42537e;
 }
 
 .theme-picker ul li.selected a img {
-	border-color: #2f3e6e;
+	border-color: #42537e;
 }
 
 .skin-picker ul li.selected a {
-	border-color: #2f3e6e;
+	border-color: #42537e;
 }
 
 #header p.login a {
-	color: #2f3e6e;
+	color: #42537e;
 }
 
 .features li p.title {
-	color: #2f3e6e;
+	color: #42537e;
 }
 
 #login-window p a {
-	color: #2f3e6e;
+	color: #42537e;
 }
 
 #login-window .cancel,
 #login-window .forgot-password {
-	color: #2f3e6e;
+	color: #42537e;
 }
 
 .form-register fieldset h2 {
@@ -57,38 +57,38 @@
 }
 
 .form-register .fieldset-expand {
-	color: #2f3e6e;
+	color: #42537e;
 }
 
 .theme-picker ul li.selected a img {
-	border-color: #2f3e6e;
+	border-color: #42537e;
 }
 
 .skin-picker ul li.selected a {
-	border-color: #2f3e6e;
+	border-color: #42537e;
 }
 
 .registration-finished h2 a {
-	color: #2f3e6e;
+	color: #42537e;
 }
 
 .registration-finished .next-steps ul li a {
-	color: #2f3e6e;
+	color: #42537e;
 }
 
 .tip-register a {
-  color: #2f3e6e;
+  color: #42537e;
 }
 .ui-button {
-	color: #2f3e6e;
+	color: #42537e;
 }
 .ui-button.red {
-	background-color: #2f3e6e;
-	border-color: #2f3e6e;
+	background-color: #687598;
+	border-color: #687598;
 }
 .ui-button.red:hover {
-	background-color: #2f3e6e;
-	border-color: #2f3e6e;
+	background-color: #687598;
+	border-color: #687598;
 }
 
 
