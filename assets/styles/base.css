@@ -108,7 +108,7 @@ a img {
 }
 
 .tip-big {
-	
+	margin: 0 10px 0 15px;
 }
 
 /**
@@ -646,7 +646,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 .picture-upload-container .default .icon_upload {
     width: 54px;
     height: 38px;
-    background: url('/images/shared/register/bt_upload_picture.png') #1070A0;
+    background: url('/images/shared/register/bt_upload_picture.png') #42537e;
     margin: auto auto 5px auto;
 }
 

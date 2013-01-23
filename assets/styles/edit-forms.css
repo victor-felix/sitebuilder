@@ -12,6 +12,7 @@
 .default-form fieldset.actions {
 	border: 0;
 	padding: 25px;
+	padding-left: 35px;
 }
 
 .default-form fieldset.actions button {
@@ -30,7 +31,7 @@
 
 .default-form .tip {
 	border-top: none;
-	padding: 35px 25px 25px
+	padding: 35px 25px 25px 35px;
 }
 
 .default-form .tip h2 {
