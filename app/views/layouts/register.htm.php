@@ -16,7 +16,7 @@
                 'class' => 'logo'
             )) ?>
             
-            <?php  if($this->selectedTab == 0): ?>
+            <?php  if(!Auth::loggedIn()): ?>
             <p class="login right">
 	            <?php echo s('Already have an account?');?>
 	            <?php 
