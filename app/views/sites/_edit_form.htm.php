@@ -48,7 +48,7 @@
 					'label' => s('Description of business'),
 					'type' => 'textarea',
 					'class' => 'ui-textarea large greater',
-					'maxlength' => 20
+					'maxlength' => 500
 				)) ?>
 				<small><?php echo s('Give the users a brief description of what your business is, what it does, when it was founded, what your main services or products are, and so on.') ?></small>
 			</div>
