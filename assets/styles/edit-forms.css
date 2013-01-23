@@ -39,15 +39,16 @@
 }
 
 .default-form .tip h2.greater {
-	font-size: 30px;
-	line-height: 29px;
+	font-size: 32px;
+	line-height: 32px;
 }
 
 .default-form .tip p {
-	font-size: 14px;
+	font-size: 16px;
 	line-height: 18px;
-	padding-right: 30px;
+	padding-right: 35px;
 	color: #999;
+	margin-top: 5px;
 }
 
 .default-form .tip p img.icon {
@@ -62,6 +63,8 @@
 
 .default-form .tip small {
 	clear: both;
+	font-size: 12px;
+	line-height: 15px;
 }
 
 .default-form .field-group {
@@ -117,6 +120,10 @@
 	right: 0;
 	font-size: 11px;
 	font-style: italic;
+}
+
+.default-form .optional.red{
+	color: red;	
 }
 
 .default-form p.error {

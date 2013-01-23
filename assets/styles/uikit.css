@@ -131,6 +131,12 @@
 		font-size: 21px;
 	}
 	
+	.ui-textarea.greater {
+		font-size: 17px;
+		padding: 10px;
+		width: 436px;
+	}
+	
 	.ui-text.disabled,
 	.ui-text.disabled:hover,
 	.ui-text.disabled:active,

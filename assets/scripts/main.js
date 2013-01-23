@@ -524,9 +524,14 @@ $(function() {
 		});
 	
 	//Implement bussiness description counter
-	$('#form-edit-site-info #businessDescription').keyup(function(){
-		var remainVal = $(this).attr('maxlenght') - $(this).val().length;
+	$('#businessDescription').keyup(function(){
+		var remainVal = $(this).attr('maxlength') - $(this).val().length;
 		$('#businessCounter').html(remainVal);
+		if (remainVal < 10) {
+			$('#businessCounter').parent().addClass('red');
+		} else {
+			$('#businessCounter').parent().removeClass('red');
+		}
 	});
 	
 	$('#form-edit-site-info #businessDescription').keyup();
