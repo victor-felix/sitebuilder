@@ -9,9 +9,9 @@
 			</div>
 			<div class="pull-right">
 				<div class="slider ">
-				<p><img alt="" src="/images/shared/home/en/slide-01.png"></p>
-				<p><img alt="" src="/images/shared/home/en/slide-02.png"></p>
-				<p><img alt="" src="/images/shared/home/en/slide-03.png"></p>
+				<p><img alt="" src="/images/home/slides/slide-01.png"></p>
+				<p><img alt="" src="/images/home/slides/slide-02.png"></p>
+				<p><img alt="" src="/images/home/slides/slide-03.png"></p>
 				</div>
 				<div class="pagination"></div>
 			</div>
@@ -103,7 +103,7 @@
 					</div>
 					<div class="span4">
 						<div class="phone">
-							<img alt="" src="/images/shared/home/icon-phone-mini.png">
+							<img alt="" src="/images/shared/home/icon-phone-rss.png">
 						</div>
 					</div>
 				</div>

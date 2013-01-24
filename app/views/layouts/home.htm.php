@@ -11,7 +11,7 @@
 	<body>
 		<div class="header container">
 			<h1 class="pull-left">
-				<img alt="MeuMobi" src="/images/shared/home/logo.png" />
+				<img alt="MeuMobi" src="/images/home/logo.png" />
 				<span class="border"></span>
 			</h1>
 			<div class="pull-right">
