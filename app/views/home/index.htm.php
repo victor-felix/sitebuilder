@@ -116,25 +116,25 @@
 		<h3><?php echo s('Our plans and prices.')?></h3>
 		<div class="row">
 			<div class="span6">
-				<h2><span><?php echo s('Basic')?> </span><?php echo s('BRL <b>19,90/mo</b>')?></h2>
+				<h2><span><?php echo s('Basic')?> </span><?php echo s('$ <b>9,90/mo</b>')?></h2>
 				<p><?php echo s('for professionals and small business')?></p>
 				
 				<ul>
 					<li><span class="icon"></span><?php echo s('click-to-call, map & direction, RSS news')?></li>
-					<li><span class="icon"></span><?php echo s('<b>up to 10</b> products, articles and locations')?></li>
-					<li><span class="icon"></span><?php echo s('<b>up to 3 extensions:</b> store locator and RSS feed')?></li>
+					<li><span class="icon"></span><?php echo s('<b>up to 10 items:</b> products, articles, locations')?></li>
+					<li><span class="icon"></span><?php echo s('<b>up to 3 items with extensions:</b> store locator and RSS feed')?></li>
 					<li><span class="icon"></span><?php echo s('custom domain - <b>m.yourbusiness.com</b>')?></li>
 					<li class="uncheck"><span class="icon"></span><?php echo s('more features? checkout Pro')?> ›</li>
 				</ul>
 			</div>
 			<div class="span6">
-				<h2><span><?php echo s('Pro')?> </span><?php echo s('BRL <b>39,90/mo</b>')?></h2>
+				<h2><span><?php echo s('Pro')?> </span><?php echo s('$ <b>19,90/mo</b>')?></h2>
 				<p><?php echo s('for medium, multiple location business and online publishers')?></p>
 				
 				<ul>
 					<li><span class="icon"></span><?php echo s('click-to-call, map & direction, RSS news')?></li>
-					<li><span class="icon"></span><?php echo s('<b>up to 100</b> products, articles and locations ')?></li>
-					<li><span class="icon"></span><?php echo s('<b>up to 10 extensions:</b> store locator and RSS feed')?></li>
+					<li><span class="icon"></span><?php echo s('<b>up to 100 items:</b> products, articles, locations')?></li>
+					<li><span class="icon"></span><?php echo s('<b>up to 10 items with extensions:</b> store locator and RSS feed')?></li>
 					<li><span class="icon"></span><?php echo s('custom domain - <b>m.yourbusiness.com</b>')?></li>
 					<li><span class="icon"></span><?php echo s('<b>web analytics</b> and more very soon!')?></li>
 				</ul>
@@ -166,21 +166,21 @@
 							<p>
 								<?php echo s('<b>Users expect their mobile experience to be as good as their desktop experience.</b> 66%% of users says: "I\'m disappointed if the mobile site is a bad experience."') ?>
 							</p>
-							<p class="author"><?php echo s('-- Google Research, 2012') ?></p>
+							<p class="author"><?php echo s('— Google Research, 2012') ?></p>
 						</div>
 						
 						<div>
 							<p>
 								<?php echo s('<b>A bad mobile experience can cost you customers.</b> 61%% of users who don\'t see what they\'re looking for on a mobile site, they\'ll quikly move to another site.'); ?>
 							</p>
-							<p class="author"><?php echo s('-- Google Research, 2012') ?></p>
+							<p class="author"><?php echo s('— Google Research, 2012') ?></p>
 						</div>
 						
 						<div>
 							<p>
 								<?php echo s('Having a mobile optimized site is critical to <b>engage consumers across the multiple paths to purchase.</b>')?>
 							</p>
-							<p class="author"><?php echo s('-- Google Research, 2012') ?></p>
+							<p class="author"><?php echo s('— Google Research, 2012') ?></p>
 						</div>
 					</div>
 					<div class="pagination"></div>
@@ -197,7 +197,7 @@
 								<span class="icon right"></span>
 								<?php echo s('The platform is very versatile and can be customized according to the needs of each segment. It\'s a complete solution!')?>
 							</p>
-							<p class="author"><?php echo s('-- IMAginal Architecture')?></p>
+							<p class="author"><?php echo s('— IMAginal Architecture')?></p>
 						</div>
 					</div>
 					
@@ -208,7 +208,7 @@
 								<span class="icon right"></span>
 								<?php echo s('MeuMobi provides a very innovative mobile marketing solution to businesses and media companies. They\'re very professional.')?>
 							</p>
-							<p class="author"><?php echo s('-- DMM Digital Agency')?></p>
+							<p class="author"><?php echo s('— DMM Digital Agency')?></p>
 						</div>
 					</div>
 				</div>

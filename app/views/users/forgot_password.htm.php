@@ -12,7 +12,7 @@
     <div class="field-group">
         <div class="form-grid-220 first">
             <?php echo $this->form->input('email', array(
-                'label' => s('E-Mail'),
+                'label' => s('E-mail'),
                 'class' => 'ui-text'
             )) ?>
         </div>

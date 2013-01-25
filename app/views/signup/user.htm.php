@@ -1,5 +1,5 @@
 <?php $this->selectedTab = 0 ?>
-<?php $this->pageTitle = s('Create your Mobi') ?>
+<?php $this->pageTitle = s('Create your mobile site') ?>
 
 <?php echo $this->form->create(null, array(
 	'id' => 'form-register-personal-info',
@@ -54,7 +54,7 @@
 
 			<div class="form-grid-220 first">
 				<?php echo $this->form->input('confirm_password', array(
-					'label' => s('Confirm your password'),
+					'label' => s('Confirm password'),
 					'type' => 'password',
 					'class' => 'ui-text'
 				)) ?>

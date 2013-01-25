@@ -17,7 +17,7 @@
     <div class="field-group">
         <div class="form-grid-220 first">
             <?php echo $this->form->input('firstname', array(
-                'label' => s('Firstname'),
+                'label' => s('First Name'),
                 'type' => 'text',
                 'class' => 'ui-text'
             )) ?>
@@ -25,7 +25,7 @@
         
         <div class="form-grid-220">
             <?php echo $this->form->input('lastname', array(
-                'label' => s('Lastname'),
+                'label' => s('Last Name'),
                 'type' => 'text',
                 'class' => 'ui-text'
             )) ?>
@@ -51,7 +51,7 @@
         
         <div class="form-grid-220 first">
             <?php echo $this->form->input('confirm_password', array(
-                'label' => s('Confirm your password'),
+                'label' => s('Confirm password'),
                 'type' => 'password',
                 'class' => 'ui-text'
             )) ?>

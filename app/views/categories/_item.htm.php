@@ -10,7 +10,7 @@
     </span>
 
     <div class="controls">
-    	<?php echo $this->html->link(s('Down'), '/categories/movedown/' . $category->id, array(
+    	<?php echo $this->html->link(s('down'), '/categories/movedown/' . $category->id, array(
                 'class' => 'ui-button highlight'
          )) ?>
     	<?php echo $this->html->link(s('Up'), '/categories/moveup/' . $category->id, array(

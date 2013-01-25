@@ -17,7 +17,7 @@
 		<div class="field-group">
 			<div class="form-grid-460 first">
 				<?php echo $this->form->input('title', array(
-					'label' => s('Company Name'),
+					'label' => s('Business Name'),
 					'type' => 'text',
 					'class' => 'ui-text large greater'
 				)) ?>
@@ -84,11 +84,11 @@
 			<p>
 				<img class="icon" src="/images/shared/sites/icon-location.png" />
 				<span>
-					<?php echo s('Add a map of your location to your mobile site') ?>
+					<?php echo s('Add a map of your business location to your mobile site') ?>
 				</span>
 				<?php if(1 || $action == 'register'): ?>
 				<br>
-				<small><?php echo s('If your company has multiple offices or addresses, you will be able to add the other in the admin panel') ?></small>
+				<small><?php echo s('A map integrated with Google Maps will appear on your mobile site, allowing customers to easily find the address.<br/><br/>If your business has multiple locations, you´ll be able to add all addresses as items in a category.') ?></small>
 				<?php endif ?>
 			</p>
 		</div>
@@ -182,7 +182,7 @@
 			<p>
 				<img class="icon" src="/images/shared/sites/icon-call.png" />
 				<span>
-					<?php echo s('Add a click to call button on your mobile site') ?>
+					<?php echo s('Add a click-to-call button on your mobile site') ?>
 				</span>
 			</p>
 		</div>
@@ -193,7 +193,7 @@
 			<div class="form-grid-220 first">
 				<span class="optional"><?php echo s('Optional') ?></span>
 				<?php echo $this->form->input('phone', array(
-					'label' => s('Commercial telephone'),
+					'label' => s('Phone number'),
 					'type' => 'text',
 					'class' => 'ui-text'
 				)) ?>
@@ -203,7 +203,7 @@
 			<div class="form-grid-460 first">
 				<span class="optional"><?php echo s('Optional') ?></span>
 				<?php echo $this->form->input('email', array(
-					'label' => s('Commercial email address'),
+					'label' => s('E-mail address'),
 					'type' => 'text',
 					'class' => 'ui-text large'
 				)) ?>

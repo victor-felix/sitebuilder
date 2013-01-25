@@ -32,7 +32,7 @@ class SitesController extends AppController
 						$record->save();
 					}
 				}
-				Session::writeFlash('success', s('Configuration successfully saved.'));
+				Session::writeFlash('success', s('Configuration successfully saved'));
 				$this->redirect('/categories');
 			}
 		}
@@ -60,7 +60,7 @@ class SitesController extends AppController
 			$site->updateAttributes($this->data);
 			if ($site->validateTheme()) {
 				$site->save();
-				Session::writeFlash('success', s('Configuration successfully saved.'));
+				Session::writeFlash('success', s('Configuration successfully saved'));
 				$this->redirect('/categories');
 			}
 		}

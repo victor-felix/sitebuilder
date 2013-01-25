@@ -83,7 +83,7 @@
 						<li>
 							<p><?php echo s('content')?><span class="arrow"></span></p>
 							<ul>
-								<li><?php echo $this->html->link(s('Company Info'), '/sites/business_info') ?></li>
+								<li><?php echo $this->html->link(s('Basic Info'), '/sites/business_info') ?></li>
 								<li><?php echo $this->html->link(s('News'), '/sites/news') ?></li>
 							</ul>
 						</li>

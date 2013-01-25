@@ -1,5 +1,5 @@
 <?php $this->selectedTab = 2 ?>
-<?php $this->pageTitle = s('Create your Mobi') ?>
+<?php $this->pageTitle = s('Create your mobile site') ?>
 
 <?php echo $this->form->create(null, array(
 	'id' => 'form-register-site-info',
