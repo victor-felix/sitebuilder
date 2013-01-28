@@ -10,5 +10,6 @@ Config::write('Segment', array(
   'hideCategories' => false,
   'enableSignup' => 1,
   'fullOptions' => false,
-  'primaryColor' => '#ccc'
+  'primaryColor' => '#ccc',
+  'themeTag' => 'meumobi'
 ));
