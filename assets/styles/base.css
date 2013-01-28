@@ -758,7 +758,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	height: 20px;
 	margin-left: 0;
 	text-indent: -99px;
-	background: url("/images/shared/home/logo-mini.png") no-repeat 0 0;
+	background: url("/images/home/logo-mini.png") no-repeat 0 0;
 	display: inline-block;
 	overflow: hidden;
 }
