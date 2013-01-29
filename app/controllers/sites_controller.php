@@ -127,11 +127,11 @@ class SitesController extends AppController
 	}
 	
 	//TODO  Need to create a script, not a action, to perform this
-	public function regenerate_domains($previusDomainToBeReplaced = false)
+	public function regenerate_domains($previusDomainToBeReplaced = false, $segment = false)
 	{
-		
+		$segment = $segment ? $segment : MeuMobi::segment();
 		$sites = Model::load('Sites')->toList(array(
-				'conditions' => array('segment' => MeuMobi::segment()),
+				'conditions' => array('segment' => $segment),
 				));
 		
 		$sitesIds = array_keys($sites);
