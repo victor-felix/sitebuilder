@@ -2,7 +2,7 @@
     <div id="slide-container">
     <div class="slide-elem" rel="/categories">
 <?php endif ?>
-<?php $this->pageTitle = s('Site users') ?>
+<?php $this->pageTitle = s('Users') ?>
 <div class="page-heading">
     <div class="grid-4 first">&nbsp;</div>
     <div class="grid-8">
@@ -15,7 +15,7 @@
     <div class="grid-4 first">
         <div class="tip">
             <h4><?php echo s('Tip') ?></h4>
-            <p><?php echo s('Use panel on right of screen to manage site users. You can invinte new ones and remove users from your site') ?></p>
+            <p><?php echo s('Use this panel to invite and remove users that can access your mobile site.') ?></p>
         </div>
     </div>
     <div class="grid-8">

@@ -81,7 +81,7 @@
 							<li><?php echo $this->html->link(e($currentSite->rootCategory()->title), '/categories') ?></li>
 						<?php endif ?>
 						<li>
-							<p><?php echo s('content')?><span class="arrow"></span></p>
+							<p><?php echo s('About Business')?><span class="arrow"></span></p>
 							<ul>
 								<li><?php echo $this->html->link(s('Basic Info'), '/sites/business_info') ?></li>
 								<li><?php echo $this->html->link(s('News'), '/sites/news') ?></li>

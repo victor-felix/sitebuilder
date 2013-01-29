@@ -4,7 +4,7 @@
     <div class="grid-4 first">
         <div class="tip">
             <h2><?php echo s('Extensions') ?></h2>
-            <p><?php echo s('yout can enable extensions to add custom functionality to this category. the availability of extensions change according to the content type of the category') ?></p>
+            <p><?php echo s('you can enable extensions to add custom functionality to this category. The availability of extensions change according to the content type of the category.') ?></p>
         </div>
     </div>
     <div class="grid-8">
