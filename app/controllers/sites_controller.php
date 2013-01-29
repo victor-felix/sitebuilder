@@ -125,10 +125,39 @@ class SitesController extends AppController
 			echo $doc->saveHTML();
 		}
 	}
-
-	public function regenerate_domains()
+	
+	//TODO  Need to create a script, not a action, to perform this
+	public function regenerate_domains($previusDomainToBeReplaced = false)
 	{
-		$domains = Model::load('SitesDomains')->toList(array('displayField'=>'domain'));
+		
+		$sites = Model::load('Sites')->toList(array(
+				'conditions' => array('segment' => MeuMobi::segment()),
+				));
+		
+		$sitesIds = array_keys($sites);
+		
+		//replace previus domains
+		//very descriptive var
+		if ($previusDomainToBeReplaced) {
+			$domains = Model::load('SitesDomains')->all(array(
+					'conditions' => array(
+							'site_id' => $sitesIds,
+							'domain LIKE' =>  "%$previusDomainToBeReplaced",
+					),
+			));
+				
+			foreach ($domains as $item) {
+			$item->domain = str_replace($previusDomainToBeReplaced, MeuMobi::domain(), $item->domain);
+			$item->save();
+			}
+		}
+		
+		
+		$domains = Model::load('SitesDomains')->toList(array(
+			'displayField'=>'domain',
+			'conditions' => array('site_id' => $sitesIds),
+		));
+
 		$sucess = SiteManager::regenerate($domains, MeuMobi::instance());
 		if ($sucess) {
 			Session::writeFlash('success', s('Domains was successfully regenerated'));
