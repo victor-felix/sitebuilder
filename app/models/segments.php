@@ -37,12 +37,12 @@ class Segments
 
 	public function themeTag()
 	{
-		if (array_key_exists('themeTag', $this->themeTag)) {
+		if (Config::read('Themes.ignoreTag')) return false;
+
+		if (array_key_exists('themeTag', $this->attr)) {
 			return $this->attr['themeTag'];
-		} else if(!Config::read('Themes.ignoreTag')) {
-			return $this->id;
 		} else {
-			return false;
+			return $this->id;
 		}
 	}
 

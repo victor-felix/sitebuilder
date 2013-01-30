@@ -4,7 +4,7 @@ class Themes {
 	public function all()
 	{
 		if (Config::read('Themes.url')) {
-			if ($tag = MeuMobi::currentSegment()->themeTag) {
+			if ($tag = MeuMobi::currentSegment()->themeTag()) {
 				$url = sprintf('%s?tags[]=%s', Config::read('Themes.url'), $tag);
 			} else {
 				$url = Config::read('Themes.url');

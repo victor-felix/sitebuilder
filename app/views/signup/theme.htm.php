@@ -16,9 +16,9 @@
 
 	<fieldset class="actions">
 		<?php echo $this->html->link(s('‹ back'), '/signup/user', array(
-	        'class' => 'ui-button large',
-	        'style' => ''
-	    )) ?>
+			'class' => 'ui-button large',
+			'style' => ''
+		)) ?>
 		<?php echo $this->form->submit(s('next step ›'), array(
 			'class' => 'ui-button red larger',
 			'style' => 'margin-left: 280px'
