@@ -1,19 +1,19 @@
 <?php
 
-use app\models\Extensions;
-
 require_once 'lib/simplepie/SimplePie.php';
 require_once 'lib/utils/Works/Import.php';
 require_once 'lib/utils/FileUpload.php';
 
-use app\models\Items, app\models\items\Articles, utils\Import as Import;
+use app\models\Extensions;
+use app\models\Items;
+use app\models\items\Articles;
+use utils\Import;
 
 class Categories extends AppModel {
 	const MAX_IMPORTFILE_SIZE = 300;
 	protected $beforeSave = array('setOrder', 'getItemType', 'checkItems');
 	protected $afterSave = array('importItems', 'updateParentTimestamps');
 	protected $beforeDelete = array('deleteChildren', 'updateOrders', 'updateParentTimestampsWhenDeleted');
-	protected $beforeValidate = array('checkForValidRss');
 	protected $defaultScope = array(
 		'order' => '`order` ASC'
 	);
@@ -496,12 +496,12 @@ class Categories extends AppModel {
 		return $id;
 	}
 
-	public function checkForValidRss($data)
+	public function checkForValidRss($url)
 	{
-		if (!trim($data['feed'])) return true;
+		if (!trim($url)) return true;
 		$feed = new SimplePie();
 		$feed->enable_cache(false);
-		$feed->set_feed_url($data['feed']);
+		$feed->set_feed_url($url);
 		$feed->init();
 
 		if ($feed->error()) {
@@ -509,6 +509,6 @@ class Categories extends AppModel {
 			return false;
 		}
 
-		return $data;
+		return true;
 	}
 }

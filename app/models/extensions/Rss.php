@@ -1,8 +1,8 @@
 <?php
+
 namespace app\models\extensions;
 
 use lithium\util\Validator;
-
 use app\models\Extensions;
 
 class Rss extends Extensions
@@ -47,7 +47,7 @@ class Rss extends Extensions
 	{
 		$category = self::category($extension);
 		$category->populate = 'auto';
-		$category->feed = $extension->url;
+		$category->feed_url = $extension->url;
 		$category->save();
 		$category->updateArticles();
 	}
@@ -56,7 +56,7 @@ class Rss extends Extensions
 	{
 		$category = self::category($extension);
 		$category->populate = 'manual';
-		$category->feed = '';
+		$category->feed_url = '';
 		$category->save();
 		$category->removeItems();
 	}
@@ -82,9 +82,7 @@ class Rss extends Extensions
 }
 
 \lithium\util\Validator::add('validRss', function($value) {
-	return (bool) \Model::load('Categories')->checkForValidRss(array(
-		'feed' => $value
-	));
+	return (bool) \Model::load('Categories')->checkForValidRss($value);
 });
 
 Rss::applyFilter('save', function($self, $params, $chain) {

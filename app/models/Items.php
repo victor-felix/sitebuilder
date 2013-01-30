@@ -1,10 +1,18 @@
 <?php
+
 namespace app\models;
+
 require_once 'lib/utils/Works/Geocode.php';
 require_once 'lib/bbcode/Decoda.php';
+
 use lithium\data\Connections;
-use Config, Inflector, Model, GoogleGeocoding, Decoda,
-	lithium\util\Collection, utils\Geocode as Geocode;
+use Config;
+use Inflector;
+use Model;
+use GoogleGeocoding;
+use Decoda;
+use lithium\util\Collection;
+use utils\Geocode;
 
 Collection::formats('lithium\net\http\Media');
 
