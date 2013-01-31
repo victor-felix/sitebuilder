@@ -146,8 +146,14 @@ class Articles extends \app\models\Items {
 
 	protected static function getArticleImages($item) {
 		$images = static::getEnclosureImages($item);
-		if(empty($images)) {
-			$images = static::getContentImages($item);
+		$imagesAreInvalid = empty($images) || (is_array($images) && count($images) == 1 && !$images[0]);
+
+		if($imagesAreInvalid) {
+			if ($image = $item->get_item_tags(SIMPLEPIE_NAMESPACE_RSS_20, 'image')) {
+				$images = (array)$image[0]['data'];
+			} else {
+				$images = static::getContentImages($item);
+			}
 		}
 
 		foreach($images as $k => $image) {
