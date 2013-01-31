@@ -9,7 +9,11 @@ set_time_limit(60 * 20);
 require dirname(dirname(__DIR__)) . '/config/bootstrap.php';
 require 'config/settings.php';
 require 'config/connections.php';
-require 'app/models/users.php';
+require 'app/models/sites.php';
+
+ini_set('error_reporting', 1);
+ini_set('display_errors', 'On');
+Config::write('Debug.showErrors', true);
 
 //get log instance
 $log = \KLogger::instance(\Filesystem::path('log'));
@@ -31,7 +35,11 @@ function regenerate($model, $images) {
 	}
 	$count = 0;
 	foreach ($images as $image) {
-		$image->regenerate($model);
+		try {
+			$image->regenerate($model);
+		} catch (Exception $e){
+			$log->logError($e->getMessage());
+		}
 		$count++;
 	}
 	$log->logInfo("total regenerated : $count");
