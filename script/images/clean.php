@@ -81,9 +81,9 @@ class Cleaner {
 	
 	protected function recoverBackup() {
 		echo "restoring backup images\n";
-		$uploadsPath = APP_ROOT . '/' . '/uploads';
-		
-		exec("mv {$this->tmp_dir}/uploads/* $uploadsPath");
+		$uploadsPath = APP_ROOT . '/uploads';
+
+		exec("mv {$this->tmp_dir}uploads/* $uploadsPath");
 	}
 }
 
