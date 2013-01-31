@@ -59,7 +59,7 @@ class Articles extends \app\models\Items {
 			'parent_id' => $feed->id,
 			'guid' => static::filterGuid($item->get_id()),
 			'link' => $item->get_link(),
-			'title' => $item->get_title(),
+			'title' => strip_tags($item->get_title()),
 			'description' => static::cleanupHtml($item),
 			'pubdate' => gmdate('Y-m-d H:i:s', $item->get_date('U')),
 			'author' => $author ? $author->get_name() : '',
