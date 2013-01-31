@@ -70,7 +70,7 @@ class Yaml {
     }
 
     protected function cachePath($filename) {
-        return 'tmp/cache/yaml/' . md5($filename);
+        return '../tmp/cache/yaml/' . md5($filename);
     }
 
     protected function isCacheUpToDate($filename) {
