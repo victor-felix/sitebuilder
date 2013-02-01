@@ -27,18 +27,6 @@ class Business extends \app\models\Items {
             'title' => 'Phone',
             'type' => 'string'
         ),
-        'activity' => array(
-            'title' => 'Activity',
-            'type' => 'string'
-        ),
-        'web' => array(
-            'title' => 'Web',
-            'type' => 'string'
-        ),
-        'mail' => array(
-            'title' => 'Mail',
-            'type' => 'string'
-        )
     );
 
     public static function __init() {
@@ -52,9 +40,6 @@ class Business extends \app\models\Items {
             'description'  => array('type' => 'string', 'default' => ''),
             'address'  => array('type' => 'string', 'default' => ''),
             'phone'  => array('type' => 'string', 'default' => ''),
-            'activity'  => array('type' => 'string', 'default' => ''),
-            'web'  => array('type' => 'string', 'default' => ''),
-            'mail'  => array('type' => 'string', 'default' => '')
         );
     }
 }
