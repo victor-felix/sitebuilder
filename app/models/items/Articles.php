@@ -59,7 +59,7 @@ class Articles extends \app\models\Items {
 			'parent_id' => $feed->id,
 			'guid' => static::filterGuid($item->get_id()),
 			'link' => $item->get_link(),
-			'title' => $item->get_title(),
+			'title' => strip_tags($item->get_title()),
 			'description' => static::cleanupHtml($item),
 			'pubdate' => gmdate('Y-m-d H:i:s', $item->get_date('U')),
 			'author' => $author ? $author->get_name() : '',
@@ -146,8 +146,14 @@ class Articles extends \app\models\Items {
 
 	protected static function getArticleImages($item) {
 		$images = static::getEnclosureImages($item);
-		if(empty($images)) {
-			$images = static::getContentImages($item);
+		$imagesAreInvalid = empty($images) || (is_array($images) && count($images) == 1 && !$images[0]);
+
+		if($imagesAreInvalid) {
+			if ($image = $item->get_item_tags(SIMPLEPIE_NAMESPACE_RSS_20, 'image')) {
+				$images = (array)$image[0]['data'];
+			} else {
+				$images = static::getContentImages($item);
+			}
 		}
 
 		foreach($images as $k => $image) {
