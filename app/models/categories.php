@@ -1,17 +1,15 @@
 <?php
 
-require_once 'lib/simplepie/SimplePie.php';
 require_once 'lib/utils/Works/Import.php';
 require_once 'lib/utils/FileUpload.php';
 
 use app\models\Extensions;
 use app\models\Items;
-use app\models\items\Articles;
 use utils\Import;
 
 class Categories extends AppModel {
 	const MAX_IMPORTFILE_SIZE = 300;
-	protected $beforeSave = array('setOrder', 'getItemType', 'checkItems');
+	protected $beforeSave = array('setOrder', 'getItemType');
 	protected $afterSave = array('importItems', 'updateParentTimestamps');
 	protected $beforeDelete = array('deleteChildren', 'updateOrders', 'updateParentTimestampsWhenDeleted');
 	protected $defaultScope = array(
@@ -116,50 +114,6 @@ class Categories extends AppModel {
 				'id' => $id
 			)
 		));
-	}
-
-	public function updateArticles()
-	{
-		$feed = $this->getFeed();
-		$items = $feed->get_items();
-
-		foreach($items as $item) {
-			$count = Articles::find('count', array('conditions' => array(
-				'parent_id' => $this->id,
-				'guid' => $item->get_id()
-			)));
-			if(!$count) {
-				Articles::addToFeed($this, $item);
-			}
-		}
-
-		$this->cleanup();
-
-		$this->updateAttributes(array(
-			'updated' => date('Y-m-d H:i:s')
-		));
-		$this->save();
-	}
-
-	public function cleanup() {
-		$conditions = array(
-			'site_id' => $this->site_id,
-			'parent_id' => $this->id
-		);
-
-		$count = Articles::find('count', array('conditions' => $conditions));
-
-		if($count > 50) {
-			$ids = Articles::find('list', array(
-				'conditions' => $conditions,
-				'limit' => $count - 50,
-				'order' => array('pubdate' => 'ASC')
-			));
-			$ids = array_keys($ids);
-			if ($ids) {
-				Articles::remove(array('_id' => $ids));
-			}
-		}
 	}
 
 	public function moveUp($steps = 1) {
@@ -302,15 +256,6 @@ class Categories extends AppModel {
 		return $id;
 	}
 
-	protected function getFeed() {
-		$feed = new SimplePie();
-		$feed->enable_cache(false);
-		$feed->set_feed_url($this->feed_url);
-		$feed->init();
-
-		return $feed;
-	}
-
 	protected function getItemType($data) {
 		if(is_null($this->id)) {
 			$site = Model::load('Sites')->firstById($this->site_id);
@@ -318,24 +263,6 @@ class Categories extends AppModel {
 
 			if(!array_key_exists('type', $data) || !in_array($data['type'], $items)) {
 				$data['type'] = $items[0];
-			}
-		}
-
-		return $data;
-	}
-
-	protected function checkItems($data) {
-		if(!is_null($this->id)) {
-			$original = $this->firstById($this->id);
-
-			if($original->type != $data['type']) {
-				$this->removeItems();
-			}
-
-			if ($original->type != $data['type']) {
-				Extensions::remove(array(
-					'category_id' => $this->id
-				));
 			}
 		}
 
@@ -481,21 +408,5 @@ class Categories extends AppModel {
 		));
 
 		return $id;
-	}
-
-	public function checkForValidRss($url)
-	{
-		if (!trim($url)) return true;
-		$feed = new SimplePie();
-		$feed->enable_cache(false);
-		$feed->set_feed_url($url);
-		$feed->init();
-
-		if ($feed->error()) {
-			$this->errors['feed'] = $feed->error();
-			return false;
-		}
-
-		return true;
 	}
 }

@@ -1,8 +1,8 @@
 <?php
 
 require dirname(__DIR__) . '/config/bootstrap.php';
-require 'config/settings.php';
-require 'config/connections.php';
+
+use app\models\extensions\Rss;
 
 set_time_limit(60 * 20);
 
@@ -18,16 +18,17 @@ file_put_contents($pidfile, getmypid());
 
 echo date('Y-m-d H:i:s') . ': Updating feeds...' . PHP_EOL;
 
-$categories = Model::load('Categories')->all(array(
+$extensions = Rss::find('all', array(
 	'conditions' => array(
-		'feed_url IS NOT NULL AND feed_url != ""'
+		'extension' => 'rss',
+		'enabled' => 1
 	)
 ));
 
-foreach($categories as $category) {
+foreach ($extensions as $extension) {
 	try {
-		$category->updateArticles();
-	} catch(Exception $e) {}
+		$extension->updateArticles();
+	} catch (Exception $e) {}
 }
 
 $categories = Model::load('Categories')->all(array(

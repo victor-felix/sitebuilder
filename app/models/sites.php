@@ -7,21 +7,14 @@ require_once 'lib/sitemanager/SiteManager.php';
 class Sites extends AppModel
 {
 	protected $getters = array('feed_url', 'feed_title', 'custom_domain');
-	protected $beforeSave = array(
-		'getLatLng', 'saveDomain', 'updateSiteManager',
-	);
+	protected $beforeSave = array('getLatLng', 'saveDomain');
 	protected $afterSave = array(
 		'saveLogo', 'createNewsCategory', 'updateFeed',
 		'saveDomains', 'createRelation'
 	);
 	protected $beforeDelete = array(
-		'deleteImages',
-		'deleteCategories',
-		'deleteLogo',
-		'removeUsers',
-		'removeFromSiteManager'
+		'deleteImages', 'deleteCategories', 'deleteLogo', 'removeUsers', 'removeFromSiteManager'
 	);
-	protected $beforeValidate = array('checkForValidRss');
 	protected $validates = array(
 		'slug' => array(
 			array(
@@ -75,16 +68,26 @@ class Sites extends AppModel
 		));
 	}
 
-	public function feed_url()
+	public function newsExtension()
 	{
 		$category = $this->newsCategory();
-		if ($category) return $category->feed_url;
+		return \app\models\extensions\Rss::find('first', array(
+			'conditions' => array('category_id' => $category->id)
+		));
+	}
+
+	public function feed_url()
+	{
+		if ($extension = $this->newsExtension()) {
+			return $extension->url;
+		}
 	}
 
 	public function feed_title()
 	{
-		$category = $this->newsCategory();
-		if ($category) return $category->title;
+		if ($category = $this->newsCategory()) {
+			return $category->title;
+		}
 	}
 
 	public function defaultDomain()
@@ -416,35 +419,39 @@ class Sites extends AppModel
 
 	protected function createNewsCategory($created)
 	{
-		if ($created) {
-			$parent_id = Model::load('Categories')->firstBySiteIdAndParentId($this->id, 0)->id;
-			$category = new Categories(array(
-				'site_id' => $this->id,
-				'parent_id' => $parent_id,
-				'type' => 'articles',
-				'title' => 'News',
-				'visibility' => - 1,
-				'populate' => 'auto'
-			));
-			$category->save();
-		}
+		if (!$created) return;
+
+		$category = new Categories(array(
+			'site_id' => $this->id,
+			'parent_id' => null,
+			'type' => 'articles',
+			'title' => 'News',
+			'visibility' => -1,
+			'populate' => 'auto',
+		));
+		$category->save();
+
+		$extension = \app\models\extensions\Rss::create();
+		$extension->set(array(
+			'site_id' => $this->id,
+			'category_id' => $category->id,
+			'enabled' => 0
+		));
+		$extension->save();
 	}
 
 	protected function updateFeed($created)
 	{
-		if (isset($this->data['feed_url'])) {
-			$category = $this->newsCategory();
-			$category->updateAttributes(array(
-				'title' => $this->data ['feed_title'],
-				'feed_url' => $this->data ['feed_url']
-			));
-			$category->save();
-		}
-	}
+		if (!isset($this->data['feed_url'])) return;
 
-	protected function updateSiteManager($data)
-	{
-		return $data;
+		$category = $this->newsCategory();
+		$category->title = $this->data['feed_title'];
+		$category->save();
+
+		$extension = $this->newsExtension();
+		$extension->url = $this->data['feed_url'];
+		$extension->enabled = (int) !empty($this->data['feed_url']);
+		$extension->save();
 	}
 
 	protected function deleteLogo($id) {
@@ -494,22 +501,6 @@ class Sites extends AppModel
 	protected function blacklist($value) {
 		$blacklist = Config::read ( 'Sites.blacklist' );
 		return ! in_array ( $value, $blacklist );
-	}
-
-	protected function checkForValidRss($data)
-	{
-		if (!trim($this->feed_url())) return true;
-		$feed = new SimplePie();
-		$feed->enable_cache(false);
-		$feed->set_feed_url($this->feed_url());
-		$feed->init();
-
-		if ($feed->error()) {
-			$this->errors['feed_url'] = $feed->error();
-			return false;
-		}
-
-		return $data;
 	}
 }
 
