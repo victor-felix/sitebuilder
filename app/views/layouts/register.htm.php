@@ -7,7 +7,7 @@
         <?php echo $this->html->stylesheet('shared/base', 'shared/register', 'shared/edit-forms', 'shared/uikit', 'shared/themes','segment') ?>
     </head>
     
-    <body>
+    <body class="register">
     	<div class="wrapper">
         <div id="header">
             <?php echo $this->html->imagelink('layout/logo.png', '/', array(

@@ -69,7 +69,7 @@
 		-moz-border-radius: 3px;
 		-webkit-border-radius: 3px;
 		background-color: #b22623;
-		background-image: url(/images/layout/ui-button-highlight.png);
+		background-image: none;
 		color: #FFF;
 		border-color: #b22623;
 	}
@@ -80,7 +80,7 @@
 	}
 	
 	.ui-button.red:active {
-		background-image: url(/images/layout/ui-button-red-highlight.png);
+
 	}
 	
 	.ui-button.disabled,
