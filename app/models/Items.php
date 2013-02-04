@@ -32,14 +32,14 @@ class Items extends \lithium\data\Model {
 	);
 
 	protected $_schema = array(
-		'_id'  => array('type' => 'id'),
+		'_id' => array('type' => 'id'),
 		'site_id' => array('type' => 'integer', 'null' => false),
 		'parent_id' => array('type' => 'integer', 'null' => false),
 		'order' => array('type' => 'integer', 'default' => 0),
-		'created'  => array('type' => 'date', 'default' => 0),
-		'modified'	=> array('type' => 'date', 'default' => 0),
-		'type'	=> array('type' => 'string', 'null' => false),
-		'title'  => array('type' => 'string', 'null' => false)
+		'created' => array('type' => 'date', 'default' => 0),
+		'modified' => array('type' => 'date', 'default' => 0),
+		'type' => array('type' => 'string', 'null' => false),
+		'title' => array('type' => 'string', 'null' => false)
 	);
 
 	public function breadcrumbs($entity, $category_id) {
@@ -514,8 +514,8 @@ class Items extends \lithium\data\Model {
 				if($format == 'csv') {
 					$toCsv($itemArray);
 				}
-			}/* end foreach loop*/
-		}/* end for loop*/
+			}
+		}
 	}
 }
 

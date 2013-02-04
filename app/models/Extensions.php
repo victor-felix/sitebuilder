@@ -2,11 +2,11 @@
 
 namespace app\models;
 
-use meumobi\sitebuilder\Extension, Inflector;
+use meumobi\sitebuilder\Extension;
+use Inflector;
 
 class Extensions extends \lithium\data\Model
 {
-	protected $type = 'extension';
 	protected $specification;
 	protected $fields;
 
@@ -22,12 +22,12 @@ class Extensions extends \lithium\data\Model
 	);
 
 	protected $_schema = array(
-		'_id'  => array('type' => 'id'),
+		'_id' => array('type' => 'id'),
 		'extension' => array('type' => 'string', 'null' => false),
 		'site_id' => array('type' => 'integer', 'null' => false),
 		'category_id' => array('type' => 'integer', 'null' => false),
-        'created'  => array('type' => 'date', 'default' => 0),
-        'modified'  => array('type' => 'date', 'default' => 0),
+		'created' => array('type' => 'date', 'default' => 0),
+		'modified' => array('type' => 'date', 'default' => 0),
 		'enabled'=> array('type' => 'integer', 'default' => 0),
 	);
 
@@ -61,26 +61,26 @@ class Extensions extends \lithium\data\Model
 			return $this->specification[$field];
 		}
 	}
-	
+
 	public function parent($entity) {
 		return \Model::load('Categories')->firstById($entity->category_id);
 	}
 
 	public static function addTimestampsAndType($self, $params, $chain)
 	{
-		$item = $params['entity'];
+		$extension = $params['entity'];
 		$date = date('Y-m-d H:i:s');
-		$category = $item->parent();
+		$category = $extension->parent();
 
-		if (!$item->id()) {
-			$item->created = $date;
+		if (!$extension->id()) {
+			$extension->created = $date;
 		}
 
-		$item->modified = $date;
+		$extension->modified = $date;
 		$category->modified = $date;
 		$category->save();
 
-		$item->extension = $item->specification('type');
+		$extension->extension = $extension->specification('type');
 
 		return $chain->next($self, $params, $chain);
 	}
@@ -89,7 +89,6 @@ class Extensions extends \lithium\data\Model
 	{
 		$result = $chain->next($self, $params, $chain)->rewind();
 		$classname = '\app\models\extensions\\' . Inflector::camelize($result->extension);
-
 		return $classname::find('first', $params['options']);
 	}
 
@@ -99,19 +98,16 @@ class Extensions extends \lithium\data\Model
 		$availableExtensions = array();
 
 		if ($segment->extensions) {
-			$allExtensions = (array)$segment->extensions;
+			$allExtensions = (array) $segment->extensions;
 
 			//loop all the segment allowed extension types
 			foreach ($allExtensions as $extensionName) {
-				$extension = null;
 				$classname = '\app\models\extensions\\' . Inflector::camelize($extensionName);
 				$extension = $classname::create();
+				$allowed = $extension->specification('allowed-items');
 
 				//check if allowed-item is set, if so, check id item type is allowed
-				if ($extension->specification('allowed-items')
-					&& !in_array($categoryType, $extension->specification('allowed-items'))) {
-					continue;
-				}
+				if ($allowed && !in_array($categoryType, $allowed)) continue;
 
 				//if has a category,check a extension for this category exists
 				if ($category_id) {
@@ -120,9 +116,7 @@ class Extensions extends \lithium\data\Model
 						'extension' => $extensionName,
 					)));
 
-					if ($item) {
-						$extension = $item;
-					}
+					if ($item) $extension = $item;
 				}
 
 				$availableExtensions[] = $extension;
@@ -130,23 +124,22 @@ class Extensions extends \lithium\data\Model
 		}
 		return $availableExtensions;
 	}
-	
+
 	public static function beforeRemove($extension) {
-		
+
 	}
 }
 
 Extensions::applyFilter('remove', function($self, $params, $chain) {
-		
 	$items = Extensions::find('all', array(
 		'conditions' => $params['conditions']
 	));
-	
+
 	foreach($items as $item) {
 		$classname = '\app\models\extensions\\' . Inflector::camelize($item->extension);
 		$classname::beforeRemove($item);
 	}
-	
+
 	return $chain->next($self, $params, $chain);
 });
 

@@ -5,7 +5,7 @@ use meumobi\sitebuilder\Site;
 
 class ExtensionsController extends AppController {
 	protected $uses = array('Categories');
-		
+
 	public function add($extension, $category_id = null) {
 		$site = $this->getCurrentSite();
 		if (!$category_id || !$category = Model::load('Categories')->firstById($category_id)) {
@@ -20,12 +20,12 @@ class ExtensionsController extends AppController {
 		}
 		$classname = '\app\models\extensions\\' . Inflector::camelize($extension);
 		$extension = $classname::create();
-		
+
 		if(!empty($this->data)) {
 			$extension->set($this->data);
 			$extension->category_id = $category->id;
 			$extension->site_id = $site->id;
-			
+
 			if($extension->validates() && $extension->save()) {
 				$message = s('Extension successfully added.');
 				if($this->isXhr()) {
@@ -42,7 +42,7 @@ class ExtensionsController extends AppController {
 				}
 			}
 		}
-		$this->set(compact('extension','category'));
+		$this->set(compact('extension', 'category'));
 	}
 
 	public function edit($id = null) {
@@ -51,9 +51,9 @@ class ExtensionsController extends AppController {
 			'_id' => $id,
 			'site_id' => $site->id(),
 		)));
-		
+
 		$category = Model::load('Categories')->firstById($extension->category_id);
-		
+
 		if(!empty($this->data)) {
 			$extension->set($this->data);
 			if($extension->validates() && $extension->save()) {
@@ -81,13 +81,13 @@ class ExtensionsController extends AppController {
 				'_id' => $id,
 				'site_id' => $site->id(),
 		)));
-		
+
 		$extension->enabled = $extension->enabled ? 0 : 1;
 		if($extension->save()) {
-			$message = $extension->enabled 
-			? s('Extension successfully enabled') 
+			$message = $extension->enabled
+			? s('Extension successfully enabled')
 			: s('Extension successfully disabled');
-			
+
 			if($this->isXhr()) {
 				$json = array(
 						'success'=>$message,
@@ -101,17 +101,17 @@ class ExtensionsController extends AppController {
 				$this->redirect('/categories/edit/' . $extension->category_id);
 			}
 		}
-		
+
 		$this->set(compact('extension','category'));
 	}
-	
+
 	public function delete($id = null) {
 		$extension = Items::find('type', array('conditions' => array(
 			'_id' => $id
 		)));
-		
+
 		$category_id = $extension->category_id;
-		
+
 		$extension->delete();
 		$message = s('Item successfully deleted.');
 
