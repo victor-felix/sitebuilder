@@ -8,6 +8,6 @@ Config::write('Segment', array(
   'root' => 'Index',
   'email' => array('no-reply@ageisobar.com.br' => 'Ageisobar'),
   'hideCategories' => false,
-  'enableSignup' => 1,
+  'enableSignup' => 0,
   'primaryColor' => ''
 ));
