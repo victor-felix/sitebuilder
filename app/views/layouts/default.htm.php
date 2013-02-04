@@ -78,7 +78,7 @@
 					</div>
 					<ul class="dropdown">
 						<?php if(!MeuMobi::currentSegment()->hideCategories): ?>
-							<li><?php echo $this->html->link(e($currentSite->rootCategory()->title), '/categories') ?></li>
+							<li><?php echo $this->html->link(MeuMobi::currentSegment()->root, '/categories') ?></li>
 						<?php endif ?>
 						<li>
 							<p><?php echo s('About Business')?><span class="arrow"></span></p>

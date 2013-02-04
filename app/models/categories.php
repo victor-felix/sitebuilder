@@ -39,20 +39,6 @@ class Categories extends AppModel {
 		}
 	}
 
-	public function createRoot($site) {
-		$root = MeuMobi::currentSegment()->root;
-		$this->id = null;
-		$this->save(array(
-			'title' => __($root),
-			'site_id' => $site->id,
-			'parent_id' => 0
-		));
-	}
-
-	public function getRoot($site_id) {
-		return $this->firstBySiteIdAndParentId($site_id, 0);
-	}
-
 	public function childrenItems($limit = null) {
 		$type = Inflector::underscore($this->type);
 		$classname = '\app\models\items\\' . Inflector::camelize($type);
@@ -86,8 +72,9 @@ class Categories extends AppModel {
 		return array_reverse($breadcrumbs);
 	}
 
-	public function parent() {
-		if($this->parent_id) {
+	public function parent()
+	{
+		if ($this->parent_id) {
 			return $this->firstById($this->parent_id);
 		}
 	}

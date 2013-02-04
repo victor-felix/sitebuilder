@@ -4,13 +4,14 @@ require_once 'lib/simplepie/SimplePie.php';
 require_once 'lib/geocoding/GoogleGeocoding.php';
 require_once 'lib/sitemanager/SiteManager.php';
 
-class Sites extends AppModel {
+class Sites extends AppModel
+{
 	protected $getters = array('feed_url', 'feed_title', 'custom_domain');
 	protected $beforeSave = array(
 		'getLatLng', 'saveDomain', 'updateSiteManager',
 	);
 	protected $afterSave = array(
-		'saveLogo', 'createRootCategory', 'createNewsCategory', 'updateFeed',
+		'saveLogo', 'createNewsCategory', 'updateFeed',
 		'saveDomains', 'createRelation'
 	);
 	protected $beforeDelete = array(
@@ -158,10 +159,6 @@ class Sites extends AppModel {
 			return '';
 
 		return $state->name;
-	}
-
-	public function rootCategory() {
-		return Model::load ( 'Categories' )->getRoot ( $this->id );
 	}
 
 	public function categories() {
@@ -459,9 +456,9 @@ class Sites extends AppModel {
 	}
 
 	protected function deleteCategories($id) {
-		$model = Model::load ( 'Categories' );
-		$root = $model->getRoot ( $id );
-		$model->forceDelete ( $root->id );
+		$this->deleteSet($model, $model->all(array(
+			'conditions' => array('site_id' => $this->id, 'parent_id' => null)
+		)));
 
 		return $id;
 	}
@@ -491,12 +488,6 @@ class Sites extends AppModel {
 					Model::load ( 'Images' )->upload ( new SitePhotos ( $this->id ), $photo );
 				}
 			}
-		}
-	}
-
-	protected function createRootCategory($created) {
-		if ($created) {
-			Model::load ( 'Categories' )->createRoot ( $this );
 		}
 	}
 

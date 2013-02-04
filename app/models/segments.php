@@ -35,6 +35,15 @@ class Segments
 		}
 	}
 
+	public function fullOptions()
+	{
+		if (array_key_exists('fullOptions', $this->attr)) {
+			return $this->attr['fullOptions'];
+		} else {
+			return true;
+		}
+	}
+
 	public function themeTag()
 	{
 		if (Config::read('Themes.ignoreTag')) return false;
