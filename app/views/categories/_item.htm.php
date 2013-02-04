@@ -1,6 +1,6 @@
 <li class="level-<?php echo $level ?>" data-catid="<?php echo $category->id ?>" data-parentid="<?php echo $category->parent_id ?>">
     <?php if($level == 1): ?>
-        <?php echo $this->html->imagelink('categories/add-subcat.png', '/categories/add/' . $category->id, array(), array(
+        <?php echo $this->html->link('','/categories/add/' . $category->id, array(
             'class' => 'ui-button ui-button-add highlight push-scene'
         )) ?>
     <?php endif ?>

@@ -35,16 +35,11 @@
 	padding: 0;
 	top: 9px;
 	left: 10px;
+	background: url(/images/shared/layout/ui-button-add.png) no-repeat 0 0 #c02926;
 } 
 
 	.categories-list li:hover .ui-button-add {
 		display: block;
-	}
-
-	.categories-list li:hover .ui-button-add img {
-		position: absolute;
-		top: 7px;
-		left: 8px;
 	}
 
 .categories-list li .controls {

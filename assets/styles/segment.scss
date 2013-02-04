@@ -119,15 +119,16 @@ body {
 }
 .ui-button.red {
 	@include gradient_button($button-base-color);
-	border-color: darken($main-color, 10%);
+	border-color: darken($button-base-color, 10%);
 }
 .ui-button.red:hover {
 	@include gradient_button_active($button-base-color);
-	border-color: $main-color;
+	border-color: $button-base-color;
 }
 
 .support,
 .global-navbar,
+.categories-list .ui-button-add,
 .picture-upload-container .default .icon_upload {
 	background-color: $main-color;
 }
