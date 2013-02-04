@@ -37,13 +37,6 @@ class Site
 		return Category::find($categoryId, $scope);
 	}
 
-	public function findRootCategory()
-	{
-		$scope = (object) array('root' => true);
-		$categories = Category::findBySite($this->attr['id'], $scope);
-		return $categories[0];
-	}
-
 	public function buildCategory($attr = array())
 	{
 		$attr['site_id'] = $this->attr['id'];

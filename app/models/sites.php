@@ -3,6 +3,7 @@
 require_once 'lib/simplepie/SimplePie.php';
 require_once 'lib/geocoding/GoogleGeocoding.php';
 require_once 'lib/sitemanager/SiteManager.php';
+require_once 'app/models/categories.php';
 
 class Sites extends AppModel
 {
