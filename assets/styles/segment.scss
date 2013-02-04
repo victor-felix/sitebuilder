@@ -1,0 +1,138 @@
+@import "colors";
+
+@mixin gradient_button($color) {
+	background: $color; /* Old browsers */
+    background: -webkit-linear-gradient(top, lighten($color,15%) 0%,lighten($color,20%) 50%,lighten($color,11%) 51%,$color 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, lighten($color,15%) 0%,lighten($color,20%) 50%,lighten($color,11%) 51%,$color 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, lighten($color,15%) 0%,lighten($color,20%) 50%,lighten($color,11%) 51%,$color 100%); /* IE10+ */
+    background: linear-gradient(to bottom, lighten($color,15%) 0%,lighten($color,20%) 50%,lighten($color,11%) 51%,$color 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='lighten($color,20%)', endColorstr='$color',GradientType=0 ); /* IE6-9 */;
+}
+
+@mixin gradient_button_active($color){
+	background: -webkit-linear-gradient(top, $color 0%, lighten($color,11%) 50%, lighten($color,20%) 51%, lighten($color,15%) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, $color 0%, lighten($color,11%) 50%, lighten($color,20%) 51%, lighten($color,15%) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, $color 0%, lighten($color,11%) 50%, lighten($color,20%) 51%, lighten($color,15%) 100%); /* IE10+ */
+    background: linear-gradient(to bottom, $color 0%, lighten($color,11%) 50%, lighten($color,20%) 51%, lighten($color,15%) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$color', endColorstr='lighten($color,20%)',GradientType=0 ); /* IE6-9 */;
+}
+
+::selection {
+    background:$main-color;
+    color:$background-color;
+}
+
+::-moz-selection {
+    background:$main-color;
+    color:$background-color;
+}
+
+body {
+	background-color: $background-color;
+}
+
+.login #header, .register #header {
+	border-top-color: $main-color;
+}
+
+#header .contextual-navbar ul li a:hover {
+	background-color: $main-color;
+	border-color: $main-color;
+}
+
+#header .navigation .user a:hover {
+	background: $main-color;
+}
+
+#header .head h1,
+#header .head .steps li.current {
+	color: $main-color;
+}
+
+.businessitems-list li .info a {
+	color: $main-color;
+}
+
+.form-edit .fieldset-expand {
+	border-bottom: 1px solid #ddd;
+	color: $main-color;
+}
+
+.theme-picker ul li.selected a img {
+	border-color: $main-color;
+}
+
+.skin-picker ul li.selected a {
+	border-color: $main-color;
+}
+
+#header p.login a {
+	color: $main-color;
+}
+
+.features li p.title {
+	color: $main-color;
+}
+
+#login-window p a {
+	color: $main-color;
+}
+
+#login-window .cancel,
+#login-window .forgot-password {
+	color: $main-color;
+}
+
+.form-register fieldset h2 {
+	color: $main-color
+}
+
+.form-register .fieldset-expand,
+#FormLogin .forgot-password, #FormLogin .no-account {
+	color: $main-color;
+}
+
+.theme-picker ul li.selected a img {
+	border-color: $main-color;
+}
+
+.skin-picker ul li.selected a {
+	border-color: $main-color;
+}
+
+.registration-finished h2 a {
+	color: $main-color;
+}
+
+.registration-finished .next-steps ul li a {
+	color: $main-color;
+}
+
+.tip-register a {
+  color: $main-color;
+}
+.ui-button, 
+#header .contextual-navbar .dropdown li ul a:hover, 
+.dropdown li ul a:hover, 
+.global-navbar .dropdown:hover > li > p {
+	color: $main-color;
+}
+.ui-button.red {
+	@include gradient_button($button-base-color);
+	border-color: darken($main-color, 10%);
+}
+.ui-button.red:hover {
+	@include gradient_button_active($button-base-color);
+	border-color: $main-color;
+}
+
+.support,
+.global-navbar,
+.picture-upload-container .default .icon_upload {
+	background-color: $main-color;
+}
+
+div.theme-picker > ul > li.selected {
+	box-shadow: 0 0 0 3px $main-color inset;
+}
+
