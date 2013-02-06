@@ -8,5 +8,5 @@ Config::write('Segment', array(
   'root' => 'Index',
   'email' => array('no-reply@fbiz.com.br' => 'f.biz'),
   'hideCategories' => false,
-  'enableSignup' => 1,
+  'enableSignup' => false,
 ));
