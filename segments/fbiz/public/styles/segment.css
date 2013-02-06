@@ -1,0 +1,115 @@
+::selection {
+  background: black;
+  color: white; }
+
+::-moz-selection {
+  background: black;
+  color: white; }
+
+body {
+  background-color: white; }
+
+.login #header, .register #header {
+  border-top-color: black; }
+
+#header .contextual-navbar ul li a:hover {
+  background-color: black;
+  border-color: black; }
+
+#header .navigation .user a:hover {
+  background: black; }
+
+#header .head h1,
+#header .head .steps li.current {
+  color: black; }
+
+.businessitems-list li .info a {
+  color: black; }
+
+.form-edit .fieldset-expand {
+  border-bottom: 1px solid #dddddd;
+  color: black; }
+
+.theme-picker ul li.selected a img {
+  border-color: black; }
+
+.skin-picker ul li.selected a {
+  border-color: black; }
+
+#header p.login a {
+  color: black; }
+
+.features li p.title {
+  color: black; }
+
+#login-window p a {
+  color: black; }
+
+#login-window .cancel,
+#login-window .forgot-password {
+  color: black; }
+
+.form-register fieldset h2 {
+  color: black; }
+
+.form-register .fieldset-expand,
+#FormLogin .forgot-password, #FormLogin .no-account {
+  color: black; }
+
+.theme-picker ul li.selected a img {
+  border-color: black; }
+
+.skin-picker ul li.selected a {
+  border-color: black; }
+
+.registration-finished h2 a {
+  color: black; }
+
+.registration-finished .next-steps ul li a {
+  color: black; }
+
+.tip-register a {
+  color: black; }
+
+.ui-button,
+#header .contextual-navbar .dropdown li ul a:hover,
+.dropdown li ul a:hover,
+.global-navbar .dropdown:hover > li > p {
+  color: black; }
+
+.ui-button.red {
+  background: black;
+  /* Old browsers */
+  background: -webkit-linear-gradient(top, #262626 0%, #333333 50%, #1c1c1c 51%, black 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #262626 0%, #333333 50%, #1c1c1c 51%, black 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #262626 0%, #333333 50%, #1c1c1c 51%, black 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #262626 0%, #333333 50%, #1c1c1c 51%, black 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='lighten($color,20%)', endColorstr='$color',GradientType=0 );
+  /* IE6-9 */
+  border-color: black; }
+
+.ui-button.red:hover {
+  background: -webkit-linear-gradient(top, black 0%, #1c1c1c 50%, #333333 51%, #262626 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, black 0%, #1c1c1c 50%, #333333 51%, #262626 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, black 0%, #1c1c1c 50%, #333333 51%, #262626 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, black 0%, #1c1c1c 50%, #333333 51%, #262626 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color', endColorstr='lighten($color,20%)',GradientType=0 );
+  /* IE6-9 */
+  border-color: black; }
+
+.support,
+.global-navbar,
+.categories-list .ui-button-add,
+.picture-upload-container .default .icon_upload {
+  background-color: black; }
+
+div.theme-picker > ul > li.selected {
+  box-shadow: 0 0 0 3px black inset; }
