@@ -29,6 +29,7 @@
 			)) ?>
 			<label for="FormRemember" class="checkbox"><?php echo s('Remember me') ?></label>
 		</div>
+		<?php if (MeuMobi::currentSegment()->isSignupEnabled()):?>
 		<div class="form-grid-220 first">
 			<?php
 				echo $this->html->link(s('Don\'t have account? Click here to register'), '/signup/user', array(
@@ -36,6 +37,7 @@
 				));
 			?>
 		</div>
+		<?php endif;?>
 	</div>
 </fieldset>
 
