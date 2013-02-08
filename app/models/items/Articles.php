@@ -177,8 +177,8 @@ class Articles extends \app\models\Items {
 	protected static function getContentImages($item) {
 		//$content = str_get_html($item->get_content());
 		//$links = $content->find('a[rel*=lightbox]');
-		$dom = new \DOMDocument();
-		@$dom->loadHtml($item->get_content());
+		$dom = new \DOMDocument('1.0', 'UTF-8');
+		@$dom->loadHtml('<?xml encoding="UTF-8">' . $item->get_content());
 		$xpath = new \DOMXPath($dom);
 		$images = array();
 
