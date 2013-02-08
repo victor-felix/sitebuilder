@@ -19,7 +19,9 @@ $categories = Model::load('Categories')->all(array(
 ));
 
 foreach($categories as $category) {
-	$category->updateArticles();
+	try {
+		$category->updateArticles();
+	} catch(Exception $e) {}
 }
 
 $categories = Model::load('Categories')->all(array(
@@ -29,8 +31,10 @@ $categories = Model::load('Categories')->all(array(
 ));
 
 foreach($categories as $category) {
-	$category->removeItems();
-	$category->save();
+	try {
+		$category->removeItems();
+		$category->save();
+	} catch(Exception $e) {}
 }
 
 echo date('Y-m-d H:i:s') . ': Finished updating feeds.' . PHP_EOL;
