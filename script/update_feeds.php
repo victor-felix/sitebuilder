@@ -4,6 +4,12 @@ require dirname(__DIR__) . '/config/bootstrap.php';
 require 'config/settings.php';
 require 'config/connections.php';
 
+set_time_limit(60 * 20);
+
+ini_set('error_reporting', 1);
+ini_set('display_errors', 'On');
+Config::write('Debug.showErrors', true);
+
 echo date('Y-m-d H:i:s') . ': Updating feeds...' . PHP_EOL;
 
 $categories = Model::load('Categories')->all(array(
@@ -27,12 +33,4 @@ foreach($categories as $category) {
 	$category->save();
 }
 
-$categories = Model::load('Categories')->all(array(
-    'conditions' => array(
-        'visibility = -1 AND (feed_url = "" OR feed_url IS NULL)'
-    )
-));
-
-foreach($categories as $category) {
-    $category->removeItems();
-}
+echo date('Y-m-d H:i:s') . ': Finished updating feeds.' . PHP_EOL;
