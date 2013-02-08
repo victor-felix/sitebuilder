@@ -72,9 +72,15 @@ class Articles extends \app\models\Items {
 
 		$images = static::getArticleImages($item);
 		foreach($images as $image) {
+			$imageAlt = '';
+			if (is_array($image)) {
+				$imageAlt = $image['alt'];
+				$image = $image['src'];
+			}
 			$image = static::getImageUrl($image, $article['guid']);
 			$result = Model::load('Images')->download($article, $image, array(
 				'url' => $image,
+				'title' => $imageAlt,
 				'visible' => 1
 			));
 
@@ -157,6 +163,9 @@ class Articles extends \app\models\Items {
 		}
 
 		foreach($images as $k => $image) {
+			if (is_array($image)) {
+				$image = $image['src'];
+			}
 			if(static::isBlackListed($image)) {
 				unset($images[$k]);
 			}
@@ -166,13 +175,28 @@ class Articles extends \app\models\Items {
 	}
 
 	protected static function getContentImages($item) {
-		$content = str_get_html($item->get_content());
-		$links = $content->find('a[rel*=lightbox]');
-
+		//$content = str_get_html($item->get_content());
+		//$links = $content->find('a[rel*=lightbox]');
+		$dom = new \DOMDocument();
+		@$dom->loadHtml($item->get_content());
+		$xpath = new \DOMXPath($dom);
 		$images = array();
 
-		foreach($links as $link) {
-			$images []= $link->href;
+		$nodes = $xpath->query('//a[@rel="lightbox"]');
+		if ($nodes->length) {
+			foreach ($nodes as $img) {
+				$images []= $img->getAttribute('src');
+			}
+		}
+
+		$nodes = $xpath->query('//img[contains(@class, "wp-image")]');
+		if ($nodes->length) {
+			foreach ($nodes as $img) {
+				$images []= array( 
+					'src' => $img->getAttribute('src'),  
+					'alt' => $img->getAttribute('alt')
+				);
+			}
 		}
 
 		return $images;
