@@ -15,3 +15,13 @@ $categories = Model::load('Categories')->all(array(
 foreach($categories as $category) {
     $category->updateArticles();
 }
+
+$categories = Model::load('Categories')->all(array(
+    'conditions' => array(
+        'visibility = -1 AND (feed_url = "" OR feed_url IS NULL)'
+    )
+));
+
+foreach($categories as $category) {
+    $category->removeItems();
+}
