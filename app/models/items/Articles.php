@@ -52,6 +52,14 @@ class Articles extends \app\models\Items {
 
 	public static function addToFeed($feed, $item) {
 		//$log = KLogger::instance(Filesystem::path('log'));
+		$images = static::getArticleImages($item);
+		//remove captions from description
+		$remove = array();
+		foreach ($images as $img) {
+			if (is_array($img) && $img['alt']) {
+				$remove[] = "<p>{$img['alt']}</p>";
+			}
+		}
 
 		$author = $item->get_author();
 		$article = array(
@@ -60,7 +68,7 @@ class Articles extends \app\models\Items {
 			'guid' => static::filterGuid($item->get_id()),
 			'link' => $item->get_link(),
 			'title' => strip_tags($item->get_title()),
-			'description' => static::cleanupHtml($item),
+			'description' => static::cleanupHtml($item, $remove),
 			'pubdate' => gmdate('Y-m-d H:i:s', $item->get_date('U')),
 			'author' => $author ? $author->get_name() : '',
 			'format' => 'html',
@@ -70,7 +78,6 @@ class Articles extends \app\models\Items {
 		$article = static::create($article);
 		$article->save();
 
-		$images = static::getArticleImages($item);
 		foreach($images as $image) {
 			$imageAlt = '';
 			if (is_array($image)) {
@@ -111,11 +118,15 @@ class Articles extends \app\models\Items {
 		return new HTMLPurifier($config);
 	}
 
-	protected static function cleanupHtml($item) {
+	protected static function cleanupHtml($item, $strToRemove = false) {
 		$html = $item->get_content();
 		$purifier = static::getPurifier();
 		$html = $purifier->purify($html);
 		$html = mb_convert_encoding($html, 'ISO-8859-1', mb_detect_encoding($html));
+
+		if ($strToRemove) {
+			$html = str_replace($strToRemove, '', (string)$html);
+		}
 
 		if(!empty($html)) {
 			$doc = new DOMDocument();
