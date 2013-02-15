@@ -4,6 +4,7 @@ class UsersController extends AppController
 {
 	public function edit()
 	{
+		$this->getCurrentSite();
 		$user = Auth::user();
 		if (!empty($this->data)) {
 			$user->updateAttributes($this->data);
@@ -90,6 +91,7 @@ class UsersController extends AppController
 
 	public function change_site($id = null)
 	{
+		$this->getCurrentSite();
 		Auth::user()->site($id);
 		$this->redirect('/categories');
 	}
