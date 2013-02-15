@@ -2,9 +2,19 @@
 
 class UsersController extends AppController
 {
+	protected $allowedActions = array('reset_password', 'forgot_password',
+		'login', 'confirm');
+
+	protected function beforeFilter()
+	{
+		$allowed = in_array($this->param('action'), $this->allowedActions);
+		if (!$allowed) $this->redirectIfUnauthenticated();
+
+		parent::beforeFilter();
+	}
+
 	public function edit()
 	{
-		$this->getCurrentSite();
 		$user = Auth::user();
 		if (!empty($this->data)) {
 			$user->updateAttributes($this->data);
@@ -91,7 +101,6 @@ class UsersController extends AppController
 
 	public function change_site($id = null)
 	{
-		$this->getCurrentSite();
 		Auth::user()->site($id);
 		$this->redirect('/categories');
 	}
@@ -100,7 +109,6 @@ class UsersController extends AppController
 	{
 		if (Users::ROLE_ADMIN != $this->getCurrentSite()->role) {
 			$this->redirect('/');
-			return;
 		}
 		if (isset($this->data['emails'])) {
 			Auth::user()->invite($this->data['emails']);

@@ -13,6 +13,8 @@ class SitesController extends AppController
 			Session::writeFlash('error', s('Sorry, you are not allowed to do this'));
 			$this->redirect('/categories');
 		}
+
+		parent::beforeFilter();
 	}
 
 	public function business_info()

@@ -14,12 +14,17 @@ class AppController extends Controller {
 
 	public function getCurrentSite()
 	{
-		if (Auth::loggedIn()) {
+		if (!$this->redirectIfUnauthenticated()) {
 			return Auth::user()->site();
-		} else {
-			Session::write('Auth.redirect', Mapper::here());
-			$this->redirect('/users/login');
 		}
+	}
+
+	public function redirectIfUnauthenticated()
+	{
+		if (Auth::loggedIn()) return false;
+
+		Session::write('Auth.redirect', Mapper::here());
+		$this->redirect('/users/login');
 	}
 
 	public function getSegment()
