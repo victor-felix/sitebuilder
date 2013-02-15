@@ -181,12 +181,10 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 }
 
 .global-navbar .dash {
-	font-size: 13px;
-	padding-top: 6px;
+	margin: 8px 10px 0 0;
 }
 
 .global-navbar .sites, .global-navbar .user {
-	margin-left: 20px;
 	font-size: 14px;
 	width: 300px;
 }

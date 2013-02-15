@@ -15,7 +15,7 @@
 		<div class="wrapper">
 			<div class="global-navbar">
 				<div class="container">
-					<p class="dash left">meumobi<b>enterprise</b></p>
+					<p class="dash left"><img src="/images/shared/layout/meumobi-icon.png"/></p>
 					<ul class="sites dropdown left">
 						<li>
 							<p><?php echo e($currentSite->title) ?></p>
