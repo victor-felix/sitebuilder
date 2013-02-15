@@ -1,137 +1,115 @@
 ::selection {
-	background:#f74902;
-	color:#fff;
-}
+  background: #f74902;
+  color: #ededed; }
 
 ::-moz-selection {
-	background:#f74902;
-	color:#fff;
-}
+  background: #f74902;
+  color: #ededed; }
 
 body {
-	background: #ededed;
-}
-
-#header .menu ul li a:hover {
-	background-color: #f74902;
-	border-color: #f74902;
-}
+  background-color: #ededed; }
 
 .login #header, .register #header {
-	border-top: 10px solid #f74902;
-}
+  border-top-color: #f74902; }
+
+#header .contextual-navbar ul li a:hover {
+  background-color: #f74902;
+  border-color: #f74902; }
 
 #header .navigation .user a:hover {
-	background: #f74902;
-}
+  background: #f74902; }
+
+#header .head h1,
+#header .head .steps li.current {
+  color: #f74902; }
 
 .businessitems-list li .info a {
-	color: #f74902;
-}
-
-
-.form-edit fieldset h2 {
-	color: #f74902;
-}
+  color: #f74902; }
 
 .form-edit .fieldset-expand {
-	border-bottom: 1px solid #DDD;
-	color: #f74902;
-}
+  border-bottom: 1px solid #dddddd;
+  color: #f74902; }
 
 .theme-picker ul li.selected a img {
-	border-color: #f74902;
-}
+  border-color: #f74902; }
 
 .skin-picker ul li.selected a {
-	border-color: #f74902;
-}
+  border-color: #f74902; }
 
 #header p.login a {
-	color: #f74902;
-}
+  color: #f74902; }
 
 .features li p.title {
-	color: #f74902;
-}
+  color: #f74902; }
 
 #login-window p a {
-	color: #f74902;
-}
+  color: #f74902; }
 
 #login-window .cancel,
 #login-window .forgot-password {
-	color: #f74902;
-}
-
-#content .head {
-	background: #f74902;
-}
+  color: #f74902; }
 
 .form-register fieldset h2 {
-	color: #f74902;
-}
+  color: #f74902; }
 
-.form-register .fieldset-expand {
-	color: #f74902;
-}
+.form-register .fieldset-expand,
+#FormLogin .forgot-password, #FormLogin .no-account {
+  color: #f74902; }
 
 .theme-picker ul li.selected a img {
-	border-color: #f74902;
-}
+  border-color: #f74902; }
 
 .skin-picker ul li.selected a {
-	border-color: #f74902;
-}
+  border-color: #f74902; }
 
 .registration-finished h2 a {
-	color: #f74902;
-}
+  color: #f74902; }
 
 .registration-finished .next-steps ul li a {
-	color: #f74902;
-}
+  color: #f74902; }
 
 .tip-register a {
-	color: #f74902;
-}
-.ui-button {
-	color: #f74902;
-}
+  color: #f74902; }
+
+.ui-button,
+#header .contextual-navbar .dropdown li ul a:hover,
+.dropdown li ul a:hover,
+.global-navbar .dropdown:hover > li > p {
+  color: #f74902; }
+
 .ui-button.red {
-	background-color: #f74902;
-	border-color: #f74902;
-}
+  background: #f74902;
+  /* Old browsers */
+  background: -webkit-linear-gradient(top, #fe7d48 0%, #fe8f61 50%, #fd6e34 51%, #f74902 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #fe7d48 0%, #fe8f61 50%, #fd6e34 51%, #f74902 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #fe7d48 0%, #fe8f61 50%, #fd6e34 51%, #f74902 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #fe7d48 0%, #fe8f61 50%, #fd6e34 51%, #f74902 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='lighten($color,20%)', endColorstr='$color',GradientType=0 );
+  /* IE6-9 */
+  border-color: #c43a02; }
+
 .ui-button.red:hover {
-	background-color: #f74902;
-	border-color: #f74902;
-}
+  background: -webkit-linear-gradient(top, #f74902 0%, #fd6e34 50%, #fe8f61 51%, #fe7d48 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #f74902 0%, #fd6e34 50%, #fe8f61 51%, #fe7d48 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #f74902 0%, #fd6e34 50%, #fe8f61 51%, #fe7d48 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #f74902 0%, #fd6e34 50%, #fe8f61 51%, #fe7d48 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color', endColorstr='lighten($color,20%)',GradientType=0 );
+  /* IE6-9 */
+  border-color: #f74902; }
 
-.global-navbar {
-	background: #f74902;
-}
-
-#FormLogin .forgot-password, #FormLogin .no-account {
-	color: #000;
-}
+.support,
+.global-navbar,
+.categories-list .ui-button-add,
 .picture-upload-container .default .icon_upload {
-	background-color: #f74902
-}
+  background-color: #f74902; }
 
-#header .contextual-navbar > ul > li > a:hover {
-	background-color: #f74902;
-	border-color: #000;
-	color: #fff;
-}
-
-#header .contextual-navbar .dropdown li ul a:hover, .dropdown li ul a:hover {		
-	color: #000;
-}
-
-#header .head h1, #header .head .steps li.current, .global-navbar .dropdown:hover > li > p {
-	color: #f74902;
-}
-
-.theme-picker > ul > li.selected {
-	box-shadow: inset 0 0 0 3px #f74902;
-}
+div.theme-picker > ul > li.selected {
+  box-shadow: 0 0 0 3px #f74902 inset; }

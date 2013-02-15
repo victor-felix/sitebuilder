@@ -1,115 +1,115 @@
 ::selection {
-    background:#7665A9;
-    color:#fff;
-}
+  background: #7665a9;
+  color: #ededed; }
 
 ::-moz-selection {
-    background:#7665A9;
-    color:#fff;
-}
+  background: #7665a9;
+  color: #ededed; }
 
-#header {
-	border-color: #7665A9;
-}
+body {
+  background-color: #ededed; }
+
+.login #header, .register #header {
+  border-top-color: #7665a9; }
 
 #header .contextual-navbar ul li a:hover {
-	background-color: #7665A9;
-	border-color: #7665A9;
-}
-
-.global-navbar {
-	background-color: #7665A9;
-}
-
-.login #header {
-	border-top: 10px solid #7665A9;
-}
+  background-color: #7665a9;
+  border-color: #7665a9; }
 
 #header .navigation .user a:hover {
-	background: #7665A9;
-}
+  background: #7665a9; }
 
+#header .head h1,
+#header .head .steps li.current {
+  color: #7665a9; }
 
 .businessitems-list li .info a {
-	color: #7665A9;
-}
-
-
-.form-edit fieldset h2 {
-	color: #7665A9;
-}
+  color: #7665a9; }
 
 .form-edit .fieldset-expand {
-	border-bottom: 1px solid #DDD;
-	color: #7665A9;
-}
+  border-bottom: 1px solid #dddddd;
+  color: #7665a9; }
 
 .theme-picker ul li.selected a img {
-	border-color: #7665A9;
-}
+  border-color: #7665a9; }
 
 .skin-picker ul li.selected a {
-	border-color: #7665A9;
-}
+  border-color: #7665a9; }
 
 #header p.login a {
-	color: #7665A9;
-}
+  color: #7665a9; }
 
 .features li p.title {
-	color: #7665A9;
-}
+  color: #7665a9; }
 
 #login-window p a {
-	color: #7665A9;
-}
+  color: #7665a9; }
 
 #login-window .cancel,
 #login-window .forgot-password {
-	color: #7665A9;
-}
-
-#header .head h1, #header .head .steps li.current {
-	color: #7665A9;
-}
+  color: #7665a9; }
 
 .form-register fieldset h2 {
-	color: #7665A9;
-}
+  color: #7665a9; }
 
-.form-register .fieldset-expand {
-	color: #7665A9;
-}
+.form-register .fieldset-expand,
+#FormLogin .forgot-password, #FormLogin .no-account {
+  color: #7665a9; }
 
 .theme-picker ul li.selected a img {
-	border-color: #7665A9;
-}
+  border-color: #7665a9; }
 
 .skin-picker ul li.selected a {
-	border-color: #7665A9;
-}
+  border-color: #7665a9; }
 
 .registration-finished h2 a {
-	color: #7665A9;
-}
+  color: #7665a9; }
 
 .registration-finished .next-steps ul li a {
-	color: #7665A9;
-}
+  color: #7665a9; }
 
 .tip-register a {
-  color: #7665A9;
-}
-.ui-button {
-	color: #7665A9;
-}
+  color: #7665a9; }
+
+.ui-button,
+#header .contextual-navbar .dropdown li ul a:hover,
+.dropdown li ul a:hover,
+.global-navbar .dropdown:hover > li > p {
+  color: #7665a9; }
+
 .ui-button.red {
-	background-color: #7665A9;
-	border-color: #7665A9;
-}
+  background: #7665a9;
+  /* Old browsers */
+  background: -webkit-linear-gradient(top, #a296c4 0%, #b0a6ce 50%, #9689bd 51%, #7665a9 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #a296c4 0%, #b0a6ce 50%, #9689bd 51%, #7665a9 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #a296c4 0%, #b0a6ce 50%, #9689bd 51%, #7665a9 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #a296c4 0%, #b0a6ce 50%, #9689bd 51%, #7665a9 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='lighten($color,20%)', endColorstr='$color',GradientType=0 );
+  /* IE6-9 */
+  border-color: #5e4e8d; }
+
 .ui-button.red:hover {
-	background-color: #7665A9;
-	border-color: #7665A9;
-}
+  background: -webkit-linear-gradient(top, #7665a9 0%, #9689bd 50%, #b0a6ce 51%, #a296c4 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #7665a9 0%, #9689bd 50%, #b0a6ce 51%, #a296c4 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #7665a9 0%, #9689bd 50%, #b0a6ce 51%, #a296c4 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #7665a9 0%, #9689bd 50%, #b0a6ce 51%, #a296c4 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color', endColorstr='lighten($color,20%)',GradientType=0 );
+  /* IE6-9 */
+  border-color: #7665a9; }
 
+.support,
+.global-navbar,
+.categories-list .ui-button-add,
+.picture-upload-container .default .icon_upload {
+  background-color: #7665a9; }
 
+div.theme-picker > ul > li.selected {
+  box-shadow: 0 0 0 3px #7665a9 inset; }
