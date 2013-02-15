@@ -12,6 +12,10 @@ class ExtensionsController extends AppController {
 			$data = $_GET;
 			$category = new Categories($data);
 			$category->site_id = $site->id;
+			if (!$data || !$category->validate()) {
+				Session::writeFlash('error', s('The category title is required'));
+				$this->redirect('/categories/add/' . $category->parent_id);
+			}
 			$category->save();
 		}
 		$classname = '\app\models\extensions\\' . Inflector::camelize($extension);

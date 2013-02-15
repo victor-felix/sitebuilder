@@ -358,7 +358,7 @@ $.extend($.easing, {
 	});
 	
 	//handle extension save on new category
-	slider.delegate('.js-extension-list a', 'click', function(e) {
+	content.delegate('.js-extension-list a', 'click', function(e) {
 		var obj = $(this);
 		var formData = obj.parents('form:first').serialize();
 		var newHref = obj.attr('href') + '?' + formData;
