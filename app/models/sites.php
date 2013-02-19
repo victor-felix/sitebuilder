@@ -105,11 +105,15 @@ class Sites extends AppModel {
 		}
 	}
 
-	public function firstByDomain($domain) {
-		$siteDomain = Model::load ( 'SitesDomains' )->firstByDomain($domain);
-		if ($siteDomain) {
-			return self::firstById($siteDomain->site_id);
-		}
+	public function firstByDomain($domain)
+	{
+		$sql = 'SELECT s.* FROM sites s
+			INNER JOIN sites_domains d ON s.id = d.site_id
+			WHERE d.domain = ?';
+		$query = $this->connection()->query($sql, array($domain));
+		$site = $query->fetch(PDO::FETCH_ASSOC);
+
+		if ($site) return new Sites($site);
 	}
 
 	public function domains() {

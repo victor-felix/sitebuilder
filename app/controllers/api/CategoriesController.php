@@ -20,8 +20,7 @@ class CategoriesController extends ApiController
 
 	protected function site()
 	{
-		$domain = $this->request->params['slug'];
-		return Site::findByDomain($domain);
+		return Site::findByDomain($this->request->params['slug']);
 	}
 
 	public function index()

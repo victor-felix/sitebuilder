@@ -2,6 +2,8 @@
 
 namespace app\controllers\api;
 
+require_once 'app/models/sites.php';
+
 use lithium\action\Dispatcher;
 use lithium\util\Inflector;
 use meumobi\sitebuilder\Site;
@@ -97,9 +99,9 @@ class ApiController extends \lithium\action\Controller {
 		return $conditions;
 	}
 	
-	protected function checkSite() {
-		$this->site = $this->site();
-		if(!$this->site) {
+	protected function checkSite()
+	{
+		if (!$this->site()) {
 			throw new \app\models\sites\MissingSiteException();
 		}
 	}
@@ -114,9 +116,9 @@ class ApiController extends \lithium\action\Controller {
 	}
 
 	protected function site() {
+		if ($this->site) return $this->site;
 		$domain = $this->request->params['slug'];
-		return \Model::load('Sites')->firstByDomain($domain);
-		return Site::findByDomain($domain);
+		return $this->site = Model::load('Sites')->firstByDomain($domain);
 	}
 
 	protected function log() {
