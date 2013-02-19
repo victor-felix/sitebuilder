@@ -180,12 +180,27 @@ class ItemsController extends ApiController {
 			'site_id' => $this->site()->id
 		)));
 
-		$etag = $this->etag($item);
-		$self = $this;
+		return $item->toJSON();
+	}
 
-		return $this->whenStale($etag, function() use($item, $self) {
+	public function latest()
+	{
+		$conditions = array('site_id' => $this->site()->id);
+
+		if ($this->param('parent_id')) $conditions['parent_id'] = $this->param('parent_id');
+
+		$items = Items::find('all', array(
+			'conditions' => $conditions,
+			'order' => array('created' => 'DESC'),
+			'limit' => $this->param('limit', 20),
+			'page' => $this->param('page', 1),
+		))->to('array');
+
+		return array_map(function($item) {
+			$classname = '\app\models\items\\' . Inflector::camelize($item['type']);
+			$item = $classname::create($item);
 			return $item->toJSON();
-		});
+		}, $items);
 	}
 
 	public function by_category() {
