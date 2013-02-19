@@ -9,21 +9,12 @@ set :git_enable_submodules, true
 set :use_sudo, false
 
 set :normalize_asset_timestamps, false
-set :shared_children, %w(uploads log)
+set :shared_children, %w(uploads log tmp/cache/yaml)
+set :shared_links, %w(uploads log tmp)
 
 set :php_env, 'production'
 
 namespace :deploy do
-  task :permissions do
-    run "chmod -Rf 777 #{release_path}/tmp"
-  end
-
-  task :shared do
-    shared_children.map { |d|
-      run "rm -rf #{release_path}/#{d} && ln -fs #{shared_path}/#{d} #{release_path}/#{d}"
-    }
-  end
-
   task :shared_setup do
     shared_children.map { |d|
       run "mkdir -p #{shared_path}/#{d}"
@@ -31,9 +22,19 @@ namespace :deploy do
   end
 
   task :environment do
-    run "chmod -Rf 777 #{shared_path}/log"
-    run "chmod -Rf 777 #{shared_path}/uploads"
     put php_env, "#{shared_path}/environment"
+  end
+
+  task :permissions do
+    shared_children.map { |d|
+      run "chmod 777 #{release_path}/#{d}"
+    }
+  end
+
+  task :shared do
+    shared_links.map { |d|
+      run "rm -rf #{release_path}/#{d} && ln -fs #{shared_path}/#{d} #{release_path}/#{d}"
+    }
   end
 
   task :symlinks do
@@ -58,9 +59,9 @@ end
 
 after 'deploy:setup', 'deploy:shared_setup'
 after 'deploy:setup', 'deploy:environment'
+after 'deploy:setup', 'deploy:permissions'
 after 'deploy:update_code', 'deploy:shared'
 after 'deploy:update_code', 'deploy:symlinks'
-after 'deploy:update_code', 'deploy:permissions'
 after 'deploy:update_code', 'deploy:cronfile'
 after 'deploy:update_code', 'deploy:db:migrate'
 after 'deploy:update_code', 'deploy:platform_check'
