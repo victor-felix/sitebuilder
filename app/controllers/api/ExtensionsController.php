@@ -17,20 +17,14 @@ class ExtensionsController extends ApiController
 
 	protected function site()
 	{
-		$domain = $this->request->params['slug'];
-		return Site::findByDomain($domain);
+		return Site::findByDomain($this->request->params['slug']);
 	}
 
 	public function index()
 	{
 		$extensions = $this->site()->extensions();
 
-		$self = $this;
-		$etag = $this->etag($extensions);
-
-		return $this->whenStale($etag, function() use($extensions, $self) {
-			return $self->toJSON($extensions);
-		});
+		return $this->toJSON($extensions);
 	}
 
 	public function show()
@@ -38,11 +32,7 @@ class ExtensionsController extends ApiController
 		$extension = $this->site()->findExtension($this->request->params['id']);
 		$extension = new ExtensionPresenter($extension);
 
-		$etag = $this->etag($extension);
-
-		return $this->whenStale($etag, function() use($extension) {
-			return $extension->toJSON();
-		});
+		return $extension->toJSON();
 	}
 
 	public function create()

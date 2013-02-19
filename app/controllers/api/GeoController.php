@@ -23,21 +23,16 @@ class GeoController extends ApiController {
 				'page' => $page,
 		));
 
-		if($items->count() < $limit)
+		if($items->count() < $limit) {
 			$items = $classname::getNotGeocoded($classname, $items, $conditions, $limit, $page);
-
-		$type = $category->type;
-		$etag = $this->etag($items);
-		$self = $this;
+		}
 
 		$items = $this->toJSON($items);
 		if(is_hash($items) && !empty($items)) {
 			$items = array($items);
 		}
 
-		return $this->whenStale($etag, function() use($items) {
-			return $items;
-		});
+		return $items;
 	}
 
 	public function inside() {
@@ -57,17 +52,11 @@ class GeoController extends ApiController {
 			'page' => $this->param('page', 1)
 		));
 
-		$type = $category->type;
-		$etag = $this->etag($items);
-		$self = $this;
-
 		$items = $this->toJSON($items);
 		if(is_hash($items) && !empty($items)) {
 			$items = array($items);
 		}
 
-		return $this->whenStale($etag, function() use($items) {
-			return $items;
-		});
+		return $items;
 	}
 }

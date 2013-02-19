@@ -16,21 +16,13 @@ class NewsController extends ApiController {
 				'limit' => $this->param('limit', 10),
 				'order' => array('pubdate' => 'DESC'),
 		));
-		$etag = $this->etag($items);
-		$self = $this;
 
-		return $this->whenStale($etag, function() use($items, $self) {
-			return $self->toJSON($items);
-		});
+		return $this->toJSON($items);
 	}
 
 	public function category($slug = null) {
 		$category = $this->site->newsCategory();
-		$etag = $this->etag($category);
-		$self = $this;
-		
-		return $this->whenStale($etag, function() use($category, $self) {
-			return $self->toJSON($category);
-		});
+
+		return $this->toJSON($category);
 	}
 }

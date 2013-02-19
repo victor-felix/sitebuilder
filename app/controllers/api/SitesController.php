@@ -15,11 +15,6 @@ class SitesController extends ApiController {
 			$site = $this->site;
 		}
 
-		$etag = $this->etag($site);
-		$self = $this;
-
-		return $this->whenStale($etag, function() use($site, $self) {
-			return $self->toJSON($site);
-		});
+		return $this->toJSON($site);
 	}
 }
