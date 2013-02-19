@@ -110,7 +110,7 @@ class Items extends \lithium\data\Model {
 		$self = $entity->to('array');
 
 		foreach ($this->fields as $code => $field) {
-			if ($field['type'] == 'richtext' 
+			if ($field['type'] == 'richtext'
 				&& !(isset($self['format']) && $self['format'] == 'html')) {
 				$allowedTagsConvertion = array('b', 'i', 'color', 'url', 'big', 'small');
 				$parser = new Decoda($self[$code], $allowedTagsConvertion);
@@ -138,7 +138,7 @@ class Items extends \lithium\data\Model {
 			return false;
 		}
 	}
-	
+
 	public function getFirst($entity) {
 		return self::find('first', array(
 			'conditions' => array(
@@ -147,7 +147,7 @@ class Items extends \lithium\data\Model {
 			'order' => array('order' => 'ASC')
 		));
 	}
-	
+
 	public function getLast($entity) {
 		return self::find('first', array(
 				'conditions' => array(
@@ -156,37 +156,37 @@ class Items extends \lithium\data\Model {
 				'order' => array('order' => 'DESC')
 		));
 	}
-	
+
 	public function moveUp($entity, $steps = 1) {
 		$oldOrder = $entity->order;
 		$previus = $this->findByOrder($entity, $oldOrder - $steps);
-		
+
 		if (!$previus) {
 			return false;
 		}
-		
+
 		$entity->order = $previus->order;
 		$previus->order = $oldOrder;
 		if ($entity->save() && $previus->save()) {
 			return $entity->order;
 		}
 	}
-	
+
 	public function moveDown($entity, $steps = 1) {
 		$oldOrder = $entity->order;
 		$previus = $this->findByOrder($entity, $oldOrder + $steps);
-	
+
 		if (!$previus) {
 			return false;
 		}
-	
+
 		$entity->order = $previus->order;
 		$previus->order = $oldOrder;
 		if ($entity->save() && $previus->save()) {
 			return $entity->order;
 		}
 	}
-	
+
 	public function findByOrder($entity, $order) {
 		if (!(int)$order) {
 			return false;
@@ -196,29 +196,29 @@ class Items extends \lithium\data\Model {
 				'order' => $order,
 				'parent_id' => $entity->parent_id,
 		)));
-		
+
 		if (!$item) {
 			$conditions = array(
 					'parent_id' => $entity->parent_id,
 			);
-			
+
 			if ($order > 0) {
 				$conditions['order'] = array('>' => $order);
 			} else {
 				$conditions['order'] = array('<' => $order);
 			}
-			
+
 			$item = Items::find('first', compact('conditions'));
 		}
 		return $item;
 	}
-	
+
 	/**
 	 * set the order value with the last order plus 1
 	 */
 	public static function addOrder($self, $params, $chain) {
 		$item = $params['entity'];
-	
+
 		if(!$item->id()) {
 			$last = $item->getLast();
 			if ($last) {
@@ -230,7 +230,7 @@ class Items extends \lithium\data\Model {
 
 		return $chain->next($self, $params, $chain);
 	}
-	
+
 	public static function resetItemsOrdering($parentId)
 	{
 		$orderMethod = "
@@ -250,12 +250,12 @@ class Items extends \lithium\data\Model {
 
 		$db = Items::connection()->connection;
 		$response = $db->execute($orderMethod, (array)$parentId);
-		
-		if (isset($response['retval'])) { 
+
+		if (isset($response['retval'])) {
 			return $response['retval'];
 		}
 	}
-	
+
 	/**
 	 * Update item ordering after remove item
 	 */
@@ -272,7 +272,7 @@ class Items extends \lithium\data\Model {
 					'site_id'
 				)
 			));
-			
+
 			if ($item) {
 				$conditions = array(
 					'order' => array('>' => $item->order),
@@ -282,10 +282,10 @@ class Items extends \lithium\data\Model {
 				$values = array(
 						'$inc' => array('order' => -1),
 						);
-				
+
 				static::update($values, $conditions);
 			}
-			
+
 		}
 		return $chain->next($self, $params, $chain);
 	}
@@ -403,7 +403,8 @@ class Items extends \lithium\data\Model {
 		return $chain->next($self, $params, $chain);
 	}
 
-	public static function typeFinder($self, $params, $chain) {
+	public static function typeFinder($self, $params, $chain)
+	{
 		$result = $chain->next($self, $params, $chain)->rewind();
 		$classname = '\app\models\items\\' . Inflector::camelize($result->type);
 
@@ -411,18 +412,12 @@ class Items extends \lithium\data\Model {
 	}
 
 	public static function nearestFinder($self, $params, $chain) {
-		$EARTH = 6378; // both in km
-		$DISTANCE = 10;
-
 		$lat = (float) array_unset($params['options']['conditions'], 'lat');
 		$lng = (float) array_unset($params['options']['conditions'], 'lng');
-		$geo = array(
-			'$near' => array($lng, $lat),
-			//'$nearSphere' => array($lng, $lat),
-			//'$maxDistance' => $DISTANCE / $EARTH
-		);
 
-		$params['options']['conditions']['geo'] = $geo;
+		$params['options']['conditions']['geo'] = array(
+			'$near' => array($lng, $lat),
+		);
 
 		return $chain->next($self, $params, $chain);
 	}
@@ -436,11 +431,9 @@ class Items extends \lithium\data\Model {
 		$lower_left = array($sw_lng, $sw_lat);
 		$upper_right = array($ne_lng, $ne_lat);
 
-		$geo = array(
+		$params['options']['conditions']['geo'] = array(
 			'$within' => array('$box' => array($lower_left, $upper_right))
 		);
-
-		$params['options']['conditions']['geo'] = $geo;
 
 		return $chain->next($self, $params, $chain);
 	}
@@ -451,28 +444,28 @@ class Items extends \lithium\data\Model {
 			'page'	=> 1,
 			'conditions' => array(),
 		);
-		
+
 		$params = array_merge($defaults, $params);
 		$total = static::count(array('conditions' => $params['conditions']));
 		$pages = $params['limit'] ? ceil($total / $params['limit']) : 1;
-		
+
 		if(($params['limit'] * $params['page']) > $total){
 			$params['page'] = $pages;
 		}
-		
+
 		$items = static::find('all', $params);
 
 		if(!$items){
 			return array();
 		}
-		
+
 		$paginate = (object)$params;
 		$paginate->total = $total;
 		$paginate->pages = $pages;
 		$paginate->class = get_called_class();
 		return compact('items', 'paginate');
 	}
-	
+
 	public static function exportTo($format = 'csv', $conditions = array()) {
 		$total = static::count( array('conditions' => $conditions) );
 		$pages = ceil($total / static::EXPORT_LIMIT);
@@ -480,14 +473,14 @@ class Items extends \lithium\data\Model {
 		$fields = array_filter(static::create()->fields(), function($field) {
 			return !is_array($field['type']);
 		});
-	
+
 		$toCsv = function($item) {
 			echo '"' . implode('","', $item) . '"' . "\n";
 			flush();
 		};
-		
+
 		$toCsv(array_merge(array('id','type'), $fields));
-	
+
 		/** parse all items by chunks */
 		for($page = 1; $page <= $pages; $page++) {
 			$items = static::all( array(
@@ -524,7 +517,6 @@ class Items extends \lithium\data\Model {
 			}/* end foreach loop*/
 		}/* end for loop*/
 	}
-	
 }
 
 Items::applyFilter('remove', function($self, $params, $chain) {

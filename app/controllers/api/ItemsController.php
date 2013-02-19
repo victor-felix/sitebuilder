@@ -22,14 +22,13 @@ class ItemsController extends ApiController {
 			$category = Model::load('Categories')->firstById($category_id);
 			$conditions['parent_id'] = $category->id;
 			$type = $conditions['type'] = $category->type;
-			
+
 			//order by news by pubdate
 			if ($category->visibility == -1) {
 				$order = array('pubdate' => 'DESC');
 			}
 		}
-		
-		
+
 		$classname = '\app\models\items\\' . Inflector::camelize($type);
 		$items = $classname::find('all', array(
 			'conditions' => $conditions,
@@ -37,12 +36,8 @@ class ItemsController extends ApiController {
 			'page' => $this->param('page', 1),
 			'order' => $order,
 		));
-		$etag = $this->etag($items);
-		$self = $this;
 
-		return $this->whenStale($etag, function() use($type, $items, $self) {
-			return $self->toJSON($items);
-		});
+		return $this->toJSON($items);
 	}
 
 	protected function _prepareAdd($data) {
@@ -59,11 +54,6 @@ class ItemsController extends ApiController {
 		}
 		return $data;
 	}
-
-	/**
-	 * Add new item related to another item
-	 * @return array|multitype:NULL
-	 */
 
 	public function add() {
 		$this->requireUserAuth();
@@ -145,36 +135,32 @@ class ItemsController extends ApiController {
 			$related = array();
 		}
 
-		$etag = $this->etag($related);
-		$self = $this;
-
-		return $this->whenStale($etag, function() use($related, $self) {
-			return $self->toJSON($related);
-		});
+		return $this->toJSON($related);
 	}
 
 	public function search() {
 		$params = $this->request->query;
 		$conditions = $this->postConditions($params, array('title'=> 'like', 'description' => 'like'));
 		$conditions['site_id'] = $this->site()->id;
-		
+
 		$result = \app\models\Items::find('all',array(
 			'conditions' => $conditions,
 			'limit' => $this->param('limit', 20),
 			'page' => $this->param('page', 1)
 		));
-		
+
 		$items = array();
 		foreach ($result as $item) {
 			$classname = '\app\models\items\\' . Inflector::camelize($item->type);
 			$items[] = $classname::create($item->to('array'));
 		}
 		unset($result);
-		
+
 		return $this->toJSON($items);
 	}
 
-	public function show() {
+	public function show()
+	{
 		$item = Items::find('type', array('conditions' => array(
 			'_id' => $this->request->params['id'],
 			'site_id' => $this->site()->id
@@ -207,18 +193,12 @@ class ItemsController extends ApiController {
 		$categories = Model::load('Categories')->allBySiteIdAndVisibility($this->site()->id, 1);
 		$items = array();
 
-		$etag = '';
 		foreach($categories as $category) {
 			$current_items = $category->childrenItems($this->param('limit', 20));
 			$items[$category->id] = $current_items->to('array');
-			$etag .= $this->etag($current_items);
 		}
 
-		$self = $this;
-
-		return $this->whenStale($etag, function() use($items, $self) {
-			return $items;
-		});
+		return $items;
 	}
 
 	public function create() {
