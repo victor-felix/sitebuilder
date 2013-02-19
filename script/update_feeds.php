@@ -10,6 +10,12 @@ ini_set('error_reporting', 1);
 ini_set('display_errors', 'On');
 Config::write('Debug.showErrors', true);
 
+$pidfile = APP_ROOT . '/tmp/update_feeds.pid';
+
+if (file_exists($pidfile)) exit();
+
+file_put_contents($pidfile, getmypid());
+
 echo date('Y-m-d H:i:s') . ': Updating feeds...' . PHP_EOL;
 
 $categories = Model::load('Categories')->all(array(
@@ -38,3 +44,5 @@ foreach($categories as $category) {
 }
 
 echo date('Y-m-d H:i:s') . ': Finished updating feeds.' . PHP_EOL;
+
+unlink($pidfile);
