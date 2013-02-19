@@ -10,6 +10,8 @@ class Auth {
 	const SESSION_KEY = 'Auth.user';
 	
 	public static function login($user, $remember = false) {
+		//start the session, can't find another way
+		Session::read('');
 		session_regenerate_id();
 		
 		if($remember) {

@@ -52,7 +52,6 @@ class CategoriesController extends AppController
 				}
 				else {
 					Session::writeFlash('error', s('Sorry, we can\'t save the category'));
-					$this->redirect('/categories/add/' . $parent_id);
 				}
 			}
 		}
