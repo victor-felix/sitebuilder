@@ -16,23 +16,27 @@ $_ = array_shift($argv);
 
 class Cleaner {
 	protected $connection;
-	protected $tmp_dir;
-	protected $img_folders;
+	protected $tmpDir;
+	protected $rssPidfile;
+	protected $imgFolders;
 	protected $params;
 
 	public function __construct($params = array()) {
 		$this->params = $params;
 		$this->params['forced'] = in_array('-f', $this->params);
-
 		$this->connection = Connection::get('default');
-		$this->tmp_dir = APP_ROOT . '/tmp/img_backup/';
-		$this->img_folders = array('uploads/items', 'uploads/site_photos', 'uploads/site_logos');
+		$this->tmpDir = APP_ROOT . '/tmp/img_backup/';
+		$this->rssPidfile = APP_ROOT . '/tmp/update_feeds.pid';
+		$this->imgFolders = array('uploads/items', 'uploads/site_photos', 'uploads/site_logos');
 	}
 
 	public function clean() {
 		try {
-			$oldumask = umask(0);
 			echo date('Y-m-d H:i:s'), " cleaning images\n";
+			if (!$this->canClean()) {
+				return;
+			}
+			$oldumask = umask(0);
 			$imgsCopied = $this->copyAllImages();
 			$backup = $this->createBackup();
 			if ($backup && $imgsCopied) {
@@ -41,6 +45,7 @@ class Cleaner {
 				$this->recreateThumbs();
 			}
 			umask($oldumask);
+			$this->endCleaning();
 			echo date('Y-m-d H:i:s')," cleaned\n";
 		} catch (Exception $e) {
 			echo $e->getMessage(), "\n", "Can't clean images\n";
@@ -48,12 +53,24 @@ class Cleaner {
 
 	}
 
+	protected function canClean() {
+		if (file_exists($this->rssPidfile)){
+			echo "Can't clean, the rss update is running\n";
+			return false;
+		}
+		return file_put_contents($this->rssPidfile, getmypid());
+	}
+	
+	protected function endCleaning() {
+		unlink($this->rssPidfile);
+	}
+
 	protected function createBackup() {
 		$backupFolder = APP_ROOT . '/tmp/imgs_backup_' .date('YmdHis');
 		echo "Creating backup folder in $backupFolder\n";
 		
 		mkdir("$backupFolder/uploads",0777,true);
-		foreach ($this->img_folders as $orgPath) {
+		foreach ($this->imgFolders as $orgPath) {
 			echo "Moving $orgPath folder to $backupFolder\n";
 			$path = APP_ROOT .'/'. $orgPath;
 			$moved = system("mv $path {$backupFolder}/{$orgPath}");
@@ -74,11 +91,11 @@ class Cleaner {
 		echo "Copying Images\n";
 		$query = 'select id, foreign_key, path from images';
 		//remove previus backup folder
-		exec("rm -rf $this->tmp_dir");
+		exec("rm -rf $this->tmpDir");
 
 		//create back folder
-		foreach ($this->img_folders as $dir) {
-			mkdir($this->tmp_dir . $dir, 0777, true);
+		foreach ($this->imgFolders as $dir) {
+			mkdir($this->tmpDir . $dir, 0777, true);
 		}
 		$result = $this->connection->query($query);
 		if (!$result) {
@@ -105,7 +122,7 @@ class Cleaner {
 	
 	protected function copyItemImage($item) {
 		$filepath = APP_ROOT .'/'. $item['path'];
-		$copied = copy($filepath, $this->tmp_dir . $item['path']);
+		$copied = copy($filepath, $this->tmpDir . $item['path']);
 		if (!$copied) {
 			if (!$this->params['forced']) {
 			throw new Exception("Can't copy file: $filepath");
@@ -117,7 +134,7 @@ class Cleaner {
 
 	protected function removeImages() {
 		echo "Removing Images\n";
-		foreach ($this->img_folders as $dir) {
+		foreach ($this->imgFolders as $dir) {
 			$path = APP_ROOT . '/' . $dir;
 			exec("rm -rf $path");
 		}
@@ -128,7 +145,7 @@ class Cleaner {
 		echo "restoring images\n";
 		$uploadsPath = APP_ROOT . '/uploads';
 
-		exec("mv {$this->tmp_dir}uploads/* $uploadsPath");
+		exec("mv {$this->tmpDir}uploads/* $uploadsPath");
 	}
 }
 
