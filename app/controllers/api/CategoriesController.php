@@ -42,9 +42,9 @@ class CategoriesController extends ApiController
 	public function children()
 	{
 		if (isset($this->request->params['id'])) {
-			$category = $this->site->findCategory($this->request->params['id']);
+			$category = $this->site()->findCategory($this->request->params['id']);
 		} else {
-			$category = $this->site->findRootCategory();
+			$category = $this->site()->findRootCategory();
 		}
 
 		$categories = $category->children(array('depth' => $this->param('depth', 0)));
