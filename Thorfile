@@ -157,6 +157,7 @@ Config::write('Segment', array(
   'email' => array('%{email}' => '%{title}'),
   'hideCategories' => %{hide_categories},
   'enableSignup' => %{enable_signup},
+  'fullOptions' => %{full_options},
 ));
     TEMPLATE
 
@@ -182,6 +183,7 @@ $button-base-color: %{button_color};
       options[:button_color] = ask "action button color:"
       options[:hide_categories] = yes?("hide categories? (y/n)").to_s
       options[:enable_signup] = yes?("enable signup? (y/n)").to_s
+      options[:full_options] = yes?("advanced category options? (y/n)").to_s
       options[:item_types] = ask "item types (separated by spaces):"
       options[:extensions] = ask "extensions (separated by spaces):"
       options[:item_types] = options[:item_types].split(" ").join("', '")
