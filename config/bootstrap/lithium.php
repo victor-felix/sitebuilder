@@ -9,11 +9,14 @@ use lithium\core\Libraries;
 
 Libraries::add('lithium');
 Libraries::add('jazz', array(
-    'path' => LIB_ROOT . '/lib/jazz'
+	'path' => LIB_ROOT . '/lib/jazz'
 ));
 Libraries::add('app', array(
-    'path' => LIB_ROOT . '/app'
+	'path' => LIB_ROOT . '/app',
+	'transform' => function($class, $config) {
+		return str_replace('\\', '/', $class) . '.php';
+	}
 ));
 Libraries::add('meumobi', array(
-    'path' => LIB_ROOT . '/lib/meumobi'
+	'path' => LIB_ROOT . '/lib/meumobi'
 ));

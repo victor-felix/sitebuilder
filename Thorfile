@@ -272,10 +272,10 @@ class %{type} extends Items {
         ),
     TEMPLATE
 
-    SchemaTemplate = "'%s' => array('type' => '%s', default => %s)"
+    SchemaTemplate = "'%s' => array('type' => '%s', 'default' => %s)"
 
-    desc "create TYPENAME FIELD=TYPE...", "creates a new type"
-    def create(type=nil, *args)
+    desc "create TYPENAME FIELD:TYPE...", "creates a new type"
+    def create(typename, *args)
       fields = args.map { |i|
         name, type = i.split ":"
         { name: name, title: name.humanize, type: type }
@@ -294,11 +294,19 @@ class %{type} extends Items {
         schema << [field[:name], field[:type], "''"]
       end
 
-      options = { type: type.camelize }
+      options = { type: typename.camelize }
       options[:fields] = fields.map { |f| FieldTemplate % f }.join "\n"
       options[:schema] = schemas.map { |s| SchemaTemplate % s }.join "\n"
 
-      create_file "sitebuilder/app/models/items/#{type.underscore}.php", ItemTemplate % options
+      if yes?("use namespace? (y/n)")
+        namespace = ask "namespace:"
+        typename = options[:type] = namespace.humanize + typename.humanize
+        path = "app/models/items/#{typename}.php"
+      else
+        path = "sitebuilder/app/models/items/#{typename}.php"
+      end
+
+      create_file path, ItemTemplate % options
       say "Don't forget to enable this item type in a segment!"
 
     end
