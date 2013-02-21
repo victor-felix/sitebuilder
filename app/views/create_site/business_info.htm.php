@@ -22,7 +22,7 @@
 	        'style' => ''
 	    )) ?>
 		<?php echo $this->form->submit(s('finish ›'), array(
-			'class' => 'ui-button red larger',
+			'class' => 'ui-button red greater',
 			'style' => 'margin-left: 280px'
 		)) ?>
 	</fieldset>

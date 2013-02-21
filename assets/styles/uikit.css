@@ -33,6 +33,13 @@
 	}
 
 	.ui-button.larger {
+		font-size: 24px;
+		padding: 8px 12px;
+		letter-spacing: -1px;
+		text-transform: lowercase;
+	}
+
+	.ui-button.greater {
 		font-size: 28px;
 		padding: 7px 14px;
 		letter-spacing: -2px;
@@ -65,9 +72,9 @@
 	}
 	
 	.ui-button.red {
-		border-radius: 3px;
-		-moz-border-radius: 3px;
-		-webkit-border-radius: 3px;
+		border-radius: 2px;
+		-moz-border-radius: 2px;
+		-webkit-border-radius: 2px;
 		background-color: #b22623;
 		background-image: none;
 		color: #FFF;

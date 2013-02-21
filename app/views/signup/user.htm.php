@@ -64,7 +64,7 @@
 
 	<fieldset class="actions">
 		<?php echo $this->form->submit(s('next step ›'), array(
-			'class' => 'ui-button red larger'
+			'class' => 'ui-button red greater'
 		)) ?>
 	</fieldset>
 
