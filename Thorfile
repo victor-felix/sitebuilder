@@ -164,7 +164,7 @@ Config::write('Segment', array(
     SegmentColorsTemplate = <<-TEMPLATE
 $background-color: %{background_color};
 $main-color: %{main_color};
-$button-base-color: %{button_color}; 
+$button-base-color: %{main_color}; 
     TEMPLATE
 
 
@@ -179,8 +179,7 @@ $button-base-color: %{button_color};
       options[:user_password] = ask "user's password:"
       options[:root] = ask "root category title:"
       options[:background_color] = ask "background color:"
-      options[:main_color] = ask "main color:"
-      options[:button_color] = ask "action button color:"
+      options[:main_color] = ask "main color, use a darker color:"
       options[:hide_categories] = yes?("hide categories? (y/n)").to_s
       options[:enable_signup] = yes?("enable signup? (y/n)").to_s
       options[:full_options] = yes?("advanced category options? (y/n)").to_s
