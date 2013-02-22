@@ -11,3 +11,7 @@ end
 every 1.hour do
   command "php #{File.expand_path 'sitebuilder/script/run_geocode.php'}"
 end
+
+every 15.days, :at => '1am' do
+  command "php #{File.expand_path 'sitebuilder/script/images/clean.php'}"
+end
