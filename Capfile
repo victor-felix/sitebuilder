@@ -12,6 +12,6 @@ role :app, 'elefante.ipanemax.com'
 task :integration do
   # where will INT be now?
   set :php_env, 'integration'
-  set :deploy_to, '/home/meumobi/PROJECTS/partners.meumobilesite.com'
-  role :app, 'bonita.ipanemax.com'
+  set :deploy_to, '/home/meumobi/PROJECTS/partners.int-meumobilesite.com'
+  role :app, 'laguna.ipanemax.com'
 end
