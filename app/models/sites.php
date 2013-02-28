@@ -292,6 +292,19 @@ class Sites extends AppModel
 		return $data;
 	}
 
+	public function addDefaultPhotos() {
+		$imagesDir = APP_ROOT . '/segments/' 
+					. MeuMobi::segment() . '/public/images/placeholder/';
+		$images = glob($imagesDir . '{*.jpg,*.gif,*.png}', GLOB_BRACE);
+
+		foreach ($images as $img) {
+			$img = Mapper::url('/images/placeholder/' . basename($img), true);
+			$image = Model::load('Images')->download(new SitePhotos ( $this->id ), $img, array(
+					'visible' => 1
+			));
+		}
+	}
+
 	protected function removeUsers($id) {
 		Model::load ( 'UsersSites' )->onDeleteSite ( $this );
 		return $id;

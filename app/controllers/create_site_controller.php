@@ -68,6 +68,7 @@ class CreateSiteController extends AppController
 
 			if ($site->validate()) {
 				$site->save();
+				$site->addDefaultPhotos();
 				Session::delete('CreateSite');
 				Session::writeFlash('success', s('Congratulations! Your mobile site is ready!'));
 				$this->redirect('/categories');
