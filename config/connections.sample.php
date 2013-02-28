@@ -16,7 +16,7 @@ $mysql = array(
         'host' => 'localhost',
         'user' => 'imax',
         'password' => 'q1T10Cr',
-        'database' => 'meumobi_partners',
+        'database' => 'int_partners',
         'prefix' => ''
     )
 );
@@ -30,7 +30,7 @@ $mongodb = array(
     'integration' => array(
         'type' => 'MongoDb',
         'host' => 'localhost',
-        'database' => 'meumobi_partners'
+        'database' => 'int_partners'
     )
 );
 
