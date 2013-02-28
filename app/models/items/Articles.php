@@ -257,7 +257,7 @@ Articles::applyFilter('remove', function($self, $params, $chain) {
 	return Items::updateOrdering($self, $params, $chain);
 });
 
-Items::applyFilter('remove', function($self, $params, $chain) {
+Articles::applyFilter('remove', function($self, $params, $chain) {
 	return Items::removeImages($self, $params, $chain);
 });
 

@@ -92,6 +92,7 @@ class SignupController extends AppController
 			if ($site->validate()) {
 				$user->save();
 				$site->save();
+				$site->addDefaultPhotos();
 				Session::delete('Signup');
 				Session::writeFlash('success', s('Congratulations! Your mobile site is ready!'));
 				$this->redirect('/categories');
