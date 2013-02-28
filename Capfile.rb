@@ -26,7 +26,7 @@ namespace :deploy do
   end
 
   task :permissions do
-    shared_children.map { |d|
+    shared_links.map { |d|
       run "chmod 777 #{shared_path}/#{d}"
     }
   end
