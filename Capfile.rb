@@ -27,7 +27,7 @@ namespace :deploy do
 
   task :permissions do
     shared_children.map { |d|
-      run "chmod 777 #{release_path}/#{d}"
+      run "chmod 777 #{shared_path}/#{d}"
     }
   end
 
