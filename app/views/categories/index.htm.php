@@ -21,7 +21,7 @@
 
 	<div class="grid-8">
 		<ul class="categories-list">
-			<?php foreach($categories[null] as $category): ?>
+			<?php if(isset($categories[null])) foreach($categories[null] as $category): ?>
 				<?php echo $this->element('categories/item', array(
 					'level' => 1,
 					'category' => $category,

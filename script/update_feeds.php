@@ -28,20 +28,9 @@ $extensions = Rss::find('all', array(
 foreach ($extensions as $extension) {
 	try {
 		$extension->updateArticles();
-	} catch (Exception $e) {}
-}
-
-$categories = Model::load('Categories')->all(array(
-	'conditions' => array(
-		'visibility = -1 AND (feed_url = "" OR feed_url IS NULL)'
-	)
-));
-
-foreach($categories as $category) {
-	try {
-		$category->removeItems();
-		$category->save();
-	} catch(Exception $e) {}
+	} catch (Exception $e) {
+		echo $e->message . PHP_EOL;
+	}
 }
 
 echo date('Y-m-d H:i:s') . ': Finished updating feeds.' . PHP_EOL;

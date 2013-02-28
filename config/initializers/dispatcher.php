@@ -134,6 +134,15 @@ Router::connect(new Route(array(
 
 Router::connect(new Route(array(
 	'method' => 'GET',
+	'template' => '/api/{:slug}/performance',
+	'params' => array(
+		'action' => 'performance',
+		'controller' => 'sites'
+	) + $defaults['params']
+)));
+
+Router::connect(new Route(array(
+	'method' => 'GET',
 	'template' => '/api/{:slug}',
 	'params' => array(
 		'action' => 'show',

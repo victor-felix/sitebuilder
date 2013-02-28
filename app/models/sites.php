@@ -77,6 +77,20 @@ class Sites extends AppModel
 		));
 	}
 
+	public function news()
+	{
+		$category = $this->newsCategory();
+
+		return \app\models\items\Articles::find('all', array(
+			'conditions' => array(
+				'site_id' => $this->id,
+				'parent_id' => $category->id
+			),
+			'limit' => 10,
+			'order' => array('pubdate' => 'DESC')
+		));
+	}
+
 	public function feed_url()
 	{
 		if ($extension = $this->newsExtension()) {
@@ -131,43 +145,58 @@ class Sites extends AppModel
 		return $domains;
 	}
 
-	public function photos() {
-		return Model::load ( 'Images' )->allByRecord ( 'SitePhotos', $this->id );
+	public function photos()
+	{
+		return Model::load('Images')->allByRecord('SitePhotos', $this->id);
 	}
 
-	public function photo() {
-		return Model::load ( 'Images' )->firstByRecord ( 'SitePhotos', $this->id );
+	public function photo()
+	{
+		return Model::load('Images')->firstByRecord('SitePhotos', $this->id);
 	}
 
-	public function logo() {
-		return Model::load ( 'Images' )->firstByRecord ( 'SiteLogos', $this->id );
+	public function logo()
+	{
+		return Model::load('Images')->firstByRecord('SiteLogos', $this->id);
 	}
 
-	public function link() {
+	public function link()
+	{
 		return 'http://' . $this->domain;
 	}
 
-	public function country($id = false, $code = false) {
+	public function country($id = false, $code = false)
+	{
 		$id = $id ? $id : $this->country_id;
 
-		if (! $country = Model::load ( 'Countries' )->firstById ( ( int ) $id ))
-			return '';
+		if (!$id) return;
+		if (!$country = Model::load('Countries')->firstById($id)) return;
 
 		return $code ? $country->tld : $country->name;
 	}
 
-	public function state($id = false) {
+	public function state($id = false)
+	{
 		$id = $id ? $id : $this->state_id;
 
-		if (! $state = Model::load ( 'States' )->firstById ( ( int ) $id ))
-			return '';
+		if (!$id) return;
+		if (!$state = Model::load('States')->firstById($id)) return;
 
 		return $state->name;
 	}
 
-	public function categories() {
+	public function categories()
+	{
 		return Model::load('Categories')->all(array(
-			'conditions' => array ('site_id' => $this->id, 'visibility >' => - 1),
+			'conditions' => array('site_id' => $this->id, 'visibility >' => -1),
+			'order' => '`order`'
+		));
+	}
+
+	public function visibleCategories()
+	{
+		return Model::load('Categories')->all(array(
+			'conditions' => array('site_id' => $this->id, 'visibility' => 1),
 			'order' => '`order`'
 		));
 	}
@@ -261,33 +290,30 @@ class Sites extends AppModel
 		return $this->theme && $this->skin;
 	}
 
-	public function toJSON() {
-		$data = array_merge ( $this->data, array ('logo' => null, 'photos' => array (), 'timezone' => $this->timezone () ) );
+	public function toJSON()
+	{
+		$exportFields = array('id', 'segment', 'theme', 'skin', 'date_format',
+			'title', 'description');
+		$data = array_intersect_key($this->data, array_flip($exportFields));
 
-		if ($logo = $this->logo ()) {
-			$data ['logo'] = $logo->link ();
-		}
+		// app
+		$data['created_at'] = $this->created;
+		$data['updated_at'] = $this->modified;
+		$data['timezone'] = $this->timezone();
 
-		$photos = $this->photos ();
-		foreach ( $photos as $photo ) {
-			$data ['photos'] [] = $photo->toJSON ();
-		}
-
-		if ($this->country_id) {
-			$country = Model::load ( 'Countries' )->firstById ( $this->country_id )->name;
-			$data ['country'] = $country;
+		if ($logo = $this->logo()) {
+			$data['logo'] = $logo->link();
 		} else {
-			$data ['country'] = '';
+			$data['logo'] = null;
 		}
 
-		if ($this->state_id) {
-			$state = Model::load ( 'States' )->firstById ( $this->state_id )->name;
-			$data ['state'] = $state;
-		} else {
-			$data ['state'] = '';
+		$data['photos'] = array();
+		$photos = $this->photos();
+		foreach ($photos as $photo) {
+			$data['photos'] []= $photo->toJSON();
 		}
 
-		$data ['description'] = nl2br ( $data ['description'] );
+		$data['description'] = nl2br($data['description']);
 
 		return $data;
 	}
