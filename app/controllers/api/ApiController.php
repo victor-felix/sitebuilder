@@ -102,7 +102,7 @@ class ApiController extends \lithium\action\Controller {
 	protected function checkSite()
 	{
 		if (!$this->site()) {
-			throw new \app\models\sites\MissingSiteException();
+			throw new \app\models\sites\MissingSiteException('site not found');
 		}
 	}
 
@@ -163,7 +163,6 @@ class ApiController extends \lithium\action\Controller {
 		}
 	}
 
-	// fuck you lithium
 	public function render(array $options = array()) {
 		$media = $this->_classes['media'];
 		$class = get_class($this);
@@ -175,10 +174,10 @@ class ApiController extends \lithium\action\Controller {
 			unset($options['data']);
 		}
 		$defaults = array(
-			'status'	 => null,
-			'location'	 => false,
-			'data'		 => null,
-			'head'		 => false,
+			'status' => null,
+			'location' => false,
+			'data' => null,
+			'head' => false,
 			'controller' => Inflector::underscore($name)
 		);
 		$options += $this->_render + $defaults;
@@ -208,11 +207,7 @@ class ApiController extends \lithium\action\Controller {
 		$token = $this->request->env('HTTP_X_AUTHENTICATION_TOKEN');
 
 		if (!Model::load('UsersSites')->isUserAuthenticatedOnSite($this->site()->id, $token)) {
-			throw new NotAuthenticatedException();
+			throw new NotAuthenticatedException('authentication required');
 		}
 	}
-}
-
-class NotAuthenticatedException extends \Exception {
-    protected $message = 'authentication required';
 }

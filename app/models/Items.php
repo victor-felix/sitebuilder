@@ -406,9 +406,13 @@ class Items extends \lithium\data\Model {
 	public static function typeFinder($self, $params, $chain)
 	{
 		$result = $chain->next($self, $params, $chain)->rewind();
-		$classname = '\app\models\items\\' . Inflector::camelize($result->type);
 
-		return $classname::find('first', $params['options']);
+		if ($result) {
+			$classname = '\app\models\items\\' . Inflector::camelize($result->type);
+			return $classname::find('first', $params['options']);
+		} else {
+			throw new \app\models\items\ItemNotFoundException('item not found');
+		}
 	}
 
 	public static function nearestFinder($self, $params, $chain) {
