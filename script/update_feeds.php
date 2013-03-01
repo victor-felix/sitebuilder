@@ -10,11 +10,12 @@ ini_set('error_reporting', 1);
 ini_set('display_errors', 'On');
 Config::write('Debug.showErrors', true);
 
-$pidfile = APP_ROOT . '/tmp/update_feeds.pid';
+$pidpath = APP_ROOT . '/tmp/update_feeds.pid';
+$pidfile = fopen($pidpath, 'w+');
 
-if (file_exists($pidfile)) exit();
+if (!flock($pidfile, LOCK_EX | LOCK_NB)) exit();
 
-file_put_contents($pidfile, getmypid());
+fwrite($pidfile, getmypid());
 
 echo date('Y-m-d H:i:s') . ': Updating feeds...' . PHP_EOL;
 
@@ -29,10 +30,11 @@ foreach ($extensions as $extension) {
 	try {
 		$extension->updateArticles();
 	} catch (Exception $e) {
-		echo $e->message . PHP_EOL;
+		echo $e->message() . PHP_EOL;
 	}
 }
 
 echo date('Y-m-d H:i:s') . ': Finished updating feeds.' . PHP_EOL;
 
-unlink($pidfile);
+fclose($pidfile);
+unlink($pidpath);
