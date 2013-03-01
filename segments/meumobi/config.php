@@ -7,7 +7,7 @@ Config::write('Segment', array(
   'extensions' => array('rss','store-locator'),
   'root' => 'Index',
   'email' => array('no-reply@meumobi.com' => 'MeuMobi'),
-  'hideCategories' => false,
+  'hideCategories' => true,
   'enableSignup' => 1,
   'fullOptions' => false,
   'primaryColor' => '#ccc'
