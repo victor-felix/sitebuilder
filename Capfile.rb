@@ -9,7 +9,7 @@ set :git_enable_submodules, true
 set :use_sudo, false
 
 set :normalize_asset_timestamps, false
-set :shared_children, %w(uploads log tmp/cache/yaml)
+set :shared_children, %w(uploads log tmp/cache/yaml tmp/cache/html_purifier)
 set :shared_links, %w(uploads log tmp)
 
 set :php_env, 'production'

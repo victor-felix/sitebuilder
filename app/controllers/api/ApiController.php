@@ -64,10 +64,10 @@ class ApiController extends \lithium\action\Controller {
 			return $record->toJSON();
 		}
 	}
-	
+
 	public function postConditions($data, $operators = '', $exclusive = false) {
 		$conditions = array();
-		
+
 		$opIsArray = is_array($operators);
 		foreach ($data as $field => $value) {
 			$fieldOperator = $operators;
@@ -78,27 +78,27 @@ class ApiController extends \lithium\action\Controller {
 					$fieldOperator = false;
 				}
 			}
-			
+
 			if ($exclusive && $fieldOperator === false) {
 				continue;
 			}
-			
+
 			$fieldOperator = trim($fieldOperator);
-			
-			//change value if LIKE operator 
+
+			//change value if LIKE operator
 			if ($fieldOperator == 'like') {
 				$value =  "/$value/iu";
-			} 
-			
+			}
+
 			if ($fieldOperator && $fieldOperator != '=') {
 				$value = array($fieldOperator => $value);
 			}
-			
+
 			$conditions[$field] = $value;
 		}
 		return $conditions;
 	}
-	
+
 	protected function checkSite()
 	{
 		if (!$this->site()) {
@@ -122,7 +122,7 @@ class ApiController extends \lithium\action\Controller {
 	}
 
 	protected function log() {
-		$log = \KLogger::instance(\Filesystem::path('log'));
+		$log = \KLogger::instance(\Filesystem::path(APP_ROOT . '/log'));
 		$log->logInfo('%s %s', $this->request->env('REQUEST_METHOD'), $this->request->url);
 		$log->logInfo('Request Data:\n%s', print_r($this->request->data, true));
 	}
