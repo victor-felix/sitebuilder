@@ -290,7 +290,7 @@ class Sites extends AppModel
 		return $this->theme && $this->skin;
 	}
 
-	public function toJSON()
+	public function toJSONPerformance()
 	{
 		$exportFields = array('id', 'segment', 'theme', 'skin', 'date_format',
 			'title', 'description');
@@ -314,6 +314,37 @@ class Sites extends AppModel
 		}
 
 		$data['description'] = nl2br($data['description']);
+
+		return $data;
+	}
+
+	public function toJSON() {
+		$data = array_merge ( $this->data, array ('logo' => null, 'photos' => array (), 'timezone' => $this->timezone () ) );
+
+		if ($logo = $this->logo ()) {
+			$data ['logo'] = $logo->link ();
+		}
+
+		$photos = $this->photos ();
+		foreach ( $photos as $photo ) {
+			$data ['photos'] [] = $photo->toJSON ();
+		}
+
+		if ($this->country_id) {
+			$country = Model::load ( 'Countries' )->firstById ( $this->country_id )->name;
+			$data ['country'] = $country;
+		} else {
+			$data ['country'] = '';
+		}
+
+		if ($this->state_id) {
+			$state = Model::load ( 'States' )->firstById ( $this->state_id )->name;
+			$data ['state'] = $state;
+		} else {
+			$data ['state'] = '';
+		}
+
+		$data ['description'] = nl2br ( $data ['description'] );
 
 		return $data;
 	}

@@ -11,7 +11,7 @@ class SitesController extends ApiController
 
 	public function performance()
 	{
-		$site = $this->site()->toJSON();
+		$site = $this->site()->toJSONPerformance();
 
 		$addressKeys = array('city', 'complement', 'zip', 'zone', 'street',
 			'latitude', 'longitude', 'number');

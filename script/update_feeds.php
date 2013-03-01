@@ -30,7 +30,7 @@ foreach ($extensions as $extension) {
 	try {
 		$extension->updateArticles();
 	} catch (Exception $e) {
-		echo $e->message() . PHP_EOL;
+		echo $e->getMessage() . PHP_EOL;
 	}
 }
 
