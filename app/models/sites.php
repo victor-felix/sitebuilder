@@ -223,13 +223,14 @@ class Sites extends AppModel
 	}
 
 
-	public function users($removeCurrent = false) {
+	public function users($removeCurrent = false)
+	{
 		$usersIds = Model::load('UsersSites')->getAllUsers($this);
 		$users = Model::load('Users')->allById($usersIds);
 
 		if ($removeCurrent) {
 			$current = Auth::user();
-			foreach ( $users as $key => $user ) {
+			foreach ($users as $key => $user) {
 				if ($current->id == $user->id) {
 					unset($users[$key]);
 				}
@@ -239,8 +240,9 @@ class Sites extends AppModel
 		return $users;
 	}
 
-	public function removeUser($userId) {
-		if($user = Model::load('Users')->firstById($userId)) {
+	public function removeUser($userId)
+	{
+		if ($user = Model::load('Users')->firstById($userId)) {
 			return Model::load('UsersSites')->remove($user, $this);
 		}
 	}
