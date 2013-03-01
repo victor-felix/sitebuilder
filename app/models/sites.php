@@ -350,14 +350,14 @@ class Sites extends AppModel
 	}
 
 	public function addDefaultPhotos() {
-		$imagesDir = APP_ROOT . '/segments/' 
-					. MeuMobi::segment() . '/public/images/placeholder/';
+		$imagesDir = APP_ROOT . '/sitebuilder/assets/images/placeholder/';
 		$images = glob($imagesDir . '{*.jpg,*.gif,*.png}', GLOB_BRACE);
-
 		foreach ($images as $img) {
-			$img = Mapper::url('/images/placeholder/' . basename($img), true);
+			$img = Mapper::url('/images/shared/placeholder/' . basename($img), true);
 			$image = Model::load('Images')->download(new SitePhotos ( $this->id ), $img, array(
-					'visible' => 1
+				'visible' => 1,
+				'title' => 'edit legend',
+				'description' => 'edit legend',
 			));
 		}
 	}
