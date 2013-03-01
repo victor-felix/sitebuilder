@@ -35,6 +35,15 @@ class Segments
 		}
 	}
 
+	public function enableMultiUsers()
+	{
+		if (array_key_exists('enableMultiUsers', $this->attr)) {
+			return $this->attr['enableMultiUsers'];
+		} else {
+			return true;
+		}
+	}
+
 	public function fullOptions()
 	{
 		if (array_key_exists('fullOptions', $this->attr)) {

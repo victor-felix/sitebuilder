@@ -107,20 +107,18 @@ class UsersController extends AppController
 
 	public function invite()
 	{
-		if (Users::ROLE_ADMIN != $this->getCurrentSite()->role) {
-			$this->redirect('/');
-		}
+		if (Users::ROLE_ADMIN != $this->getCurrentSite()->role ||
+			!MeuMobi::currentSegment()->enableMultiUsers()) $this->redirect('/');
+
 		if (isset($this->data['emails'])) {
 			Auth::user()->invite($this->data['emails']);
 
 			$message = s('Users invited successfully');
-			if ($this->isXhr()) {
-				$json = array(
+				$this->respondToJSON(array(
 					'success' => $message,
 					'go_back' => true,
 					'refresh' => '/sites/users'
-				);
-				$this->respondToJSON($json);
+				));
 			} else {
 				Session::writeFlash('success', $message);
 				$this->redirect('/sites/users');

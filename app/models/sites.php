@@ -223,13 +223,14 @@ class Sites extends AppModel
 	}
 
 
-	public function users($removeCurrent = false) {
+	public function users($removeCurrent = false)
+	{
 		$usersIds = Model::load('UsersSites')->getAllUsers($this);
 		$users = Model::load('Users')->allById($usersIds);
 
 		if ($removeCurrent) {
 			$current = Auth::user();
-			foreach ( $users as $key => $user ) {
+			foreach ($users as $key => $user) {
 				if ($current->id == $user->id) {
 					unset($users[$key]);
 				}
@@ -239,8 +240,9 @@ class Sites extends AppModel
 		return $users;
 	}
 
-	public function removeUser($userId) {
-		if($user = Model::load('Users')->firstById($userId)) {
+	public function removeUser($userId)
+	{
+		if ($user = Model::load('Users')->firstById($userId)) {
 			return Model::load('UsersSites')->remove($user, $this);
 		}
 	}
@@ -276,13 +278,14 @@ class Sites extends AppModel
 		return $options;
 	}
 
-	public function timezone() {
-		$tz_site = new DateTimeZone ( $this->timezone );
-		$tz_server = new DateTimeZone ( date_default_timezone_get () );
-		$time_site = new DateTime ( 'now', $tz_site );
-		$time_server = new DateTime ( 'now', $tz_server );
+	public function timezone()
+	{
+		$tz_site = new DateTimeZone($this->timezone);
+		$tz_server = new DateTimeZone(date_default_timezone_get());
+		$time_site = new DateTime('now', $tz_site);
+		$time_server = new DateTime('now', $tz_server);
 
-		return $tz_server->getOffset ( $time_site ) / 3600;
+		return $tz_server->getOffset($time_site) / 3600;
 	}
 
 	public function validateTheme()
@@ -293,13 +296,13 @@ class Sites extends AppModel
 	public function toJSONPerformance()
 	{
 		$exportFields = array('id', 'segment', 'theme', 'skin', 'date_format',
-			'title', 'description');
+			'title', 'description', 'timezone');
 		$data = array_intersect_key($this->data, array_flip($exportFields));
 
-		// app
 		$data['created_at'] = $this->created;
 		$data['updated_at'] = $this->modified;
-		$data['timezone'] = $this->timezone();
+		$data['description'] = nl2br($data['description']);
+		$data['webputty_token'] = $this->css_token;
 
 		if ($logo = $this->logo()) {
 			$data['logo'] = $logo->link();
@@ -312,8 +315,6 @@ class Sites extends AppModel
 		foreach ($photos as $photo) {
 			$data['photos'] []= $photo->toJSON();
 		}
-
-		$data['description'] = nl2br($data['description']);
 
 		return $data;
 	}

@@ -9,25 +9,19 @@ use Model;
 use Inflector;
 
 class ItemsController extends ApiController {
-	public function index() {
-		$conditions = array(
-			'site_id' => $this->site()->id
-		);
+	public function index()
+	{
+		$conditions = array('site_id' => $this->site()->id);
 		$order = array('order' => 'ASC');
-		if(isset($this->request->query['type'])) {
-			$type = $conditions['type'] = $this->request->query['type'];
-		}
-		else if(isset($this->request->query['category'])) {
-			$category_id = $this->request->query['category'];
-			$category = Model::load('Categories')->firstById($category_id);
-			$conditions['parent_id'] = $category->id;
-			$type = $conditions['type'] = $category->type;
 
-			//order by news by pubdate
-			if ($category->visibility == -1) {
-				$order = array('pubdate' => 'DESC');
-			}
+		if (!isset($this->request->query['category'])) {
+			throw new InvalidArgumentException('category id required');
 		}
+
+		$category_id = $this->request->query['category'];
+		$category = Model::load('Categories')->firstById($category_id);
+		$conditions['parent_id'] = $category_id;
+		$type = $conditions['type'] = $category->type;
 
 		$classname = '\app\models\items\\' . Inflector::camelize($type);
 		$items = $classname::find('all', array(
@@ -40,88 +34,85 @@ class ItemsController extends ApiController {
 		return $this->toJSON($items);
 	}
 
-	protected function _prepareAdd($data) {
-		$need		= array('type','parent_id');
-		$discard	= array('created','updated','geo');
+	protected function _prepareAdd($data)
+	{
+		$need = array('type','parent_id');
+		$discard = array('created','updated','geo');
 
-		foreach ($discard as $field){
-			if(array_key_exists($field, $data))
-				unset($data[$field]);
+		foreach ($discard as $field) {
+			if (array_key_exists($field, $data)) unset($data[$field]);
 		}
-		foreach ($need as $field){
-			if(!array_key_exists($field,$data))
-				throw new \Exception('need more params: '.$field);
+
+		foreach ($need as $field) {
+			if (!array_key_exists($field,$data)) throw new \Exception('need more params: '. $field);
 		}
+
 		return $data;
 	}
 
-	public function add() {
+	public function add()
+	{
 		$this->requireUserAuth();
 
-		try{
-			$data = $this->_prepareAdd( $this->request->data );
+		try {
+			$data = $this->_prepareAdd($this->request->data);
 
 			$images = isset($data['images']) ? $data['images']: false;
 
 			$item = Items::find('first', array('conditions' => array(
-					'_id' => $this->request->params['id'],
-					'site_id' => $this->site()->id
+				'_id' => $this->request->params['id'],
+				'site_id' => $this->site()->id
 			)));
 
-			if(!$item){
-				throw new \Exception('invalid item');
-			}
-			$classname = '\app\models\items\\' . Inflector::camelize($data['type']);
+			if (!$item) throw new \Exception('invalid item');
 
+			$classname = '\app\models\items\\' . Inflector::camelize($data['type']);
 			$newItem = $classname::create();
 			$newItem->set($data);
 			$newItem->site_id = $this->site()->id;
 
-			/** if not saved stop right here */
-			if(!$newItem->save()){
+			if (!$newItem->save()) {
 				$this->response->status(422);
 				return;
 			}
 
-			/** add to related and save */
-			if($item->related instanceof \lithium\core\Object){
+			if ($item->related instanceof \lithium\core\Object) {
 				$related = $item->related->to('array');
-				$related[] =  $newItem->id();
-
+				$related []= $newItem->id();
 			} else {
-				$related[] = $newItem->id();
+				$related []= $newItem->id();
 			}
 
 			$item->related = $related;
 			$item->save();
 
-			/** if images, update and save*/
-			if($images){
-				foreach($images as	$id => $image) {
-					if(!is_numeric($id)) continue;
+			if ($images) {
+				foreach ($images as $id => $image) {
+					if (!is_numeric($id)) continue;
 					$record = Model::load('Images')->firstById($id);
-					if(!$record)continue;
-					$record->title			= $image['title'];
-					$record->foreign_key	= $newItem->id();
+					$record->title = $image['title'];
+					$record->foreign_key = $newItem->id();
 					$record->save();
 				}
 			}
 
 			$this->response->status(201);
 			return $this->toJSON($newItem);
-
-		} catch (\Exception $e){
+		} catch (\Exception $e) {
 			$this->response->status(422);
 		}
 	}
 
-	public function related() {
+	public function related()
+	{
 		$item = Items::find('first', array('conditions' => array(
 			'_id' => $this->request->params['id'],
 			'site_id' => $this->site()->id
 		)));
 
-		if($item->related) {
+		if (!$item) throw new \app\models\items\ItemNotFoundException('item not found');
+
+		if ($item->related) {
 			$classname = '\app\models\items\\' . Inflector::camelize($item->type);
 			$related = $classname::find('all', array(
 				'conditions' => array(
@@ -131,32 +122,32 @@ class ItemsController extends ApiController {
 				'limit' => $this->param('limit', 20),
 				'page' => $this->param('page', 1)
 			));
-		}else{
+		} else {
 			$related = array();
 		}
 
 		return $this->toJSON($related);
 	}
 
-	public function search() {
+	public function search()
+	{
 		$params = $this->request->query;
-		$conditions = $this->postConditions($params, array('title'=> 'like', 'description' => 'like'));
+		$conditions = $this->postConditions($params, array(
+			'title' => 'like',
+			'description' => 'like'
+		));
 		$conditions['site_id'] = $this->site()->id;
 
-		$result = \app\models\Items::find('all',array(
+		$result = Items::find('all',array(
 			'conditions' => $conditions,
 			'limit' => $this->param('limit', 20),
 			'page' => $this->param('page', 1)
-		));
+		))->to('array');
 
-		$items = array();
-		foreach ($result as $item) {
-			$classname = '\app\models\items\\' . Inflector::camelize($item->type);
-			$items[] = $classname::create($item->to('array'));
-		}
-		unset($result);
-
-		return $this->toJSON($items);
+		return array_map(function($item) {
+			$classname = '\app\models\items\\' . Inflector::camelize($item['type']);
+			return $classname::create($item)->toJSON();
+		}, $items);
 	}
 
 	public function show()
@@ -184,12 +175,12 @@ class ItemsController extends ApiController {
 
 		return array_map(function($item) {
 			$classname = '\app\models\items\\' . Inflector::camelize($item['type']);
-			$item = $classname::create($item);
-			return $item->toJSON();
+			return $classname::create($item)->toJSON();
 		}, $items);
 	}
 
-	public function by_category() {
+	public function by_category()
+	{
 		$categories = Model::load('Categories')->allBySiteIdAndVisibility($this->site()->id, 1);
 		$items = array();
 
@@ -201,7 +192,8 @@ class ItemsController extends ApiController {
 		return $items;
 	}
 
-	public function create() {
+	public function create()
+	{
 		$this->requireUserAuth();
 
 		$category_id = $this->request->data['parent_id'];
@@ -212,16 +204,16 @@ class ItemsController extends ApiController {
 		$item->site_id = $this->site()->id;
 		$item->type = $category->type;
 
-		if($item->save()) {
+		if ($item->save()) {
 			$this->response->status(201);
 			return $item->toJSON();
-		}
-		else {
+		} else {
 			$this->response->status(422);
 		}
 	}
 
-	public function update() {
+	public function update()
+	{
 		$this->requireUserAuth();
 
 		$item = Items::find('first', array('conditions' => array(
@@ -229,21 +221,24 @@ class ItemsController extends ApiController {
 			'site_id' => $this->site()->id
 		)));
 
+		if (!$item) throw new \app\models\items\ItemNotFoundException('item not found');
+
 		$item->set(array(
 			'site_id' => $this->site()->id
 		) + $this->request->data);
 
-		if($item->save()) {
+		if ($item->save()) {
 			$this->response->status(200);
 			return $item->toJSON();
-		}
-		else {
+		} else {
 			$this->response->status(422);
 		}
 	}
 
-	public function destroy() {
+	public function destroy()
+	{
 		$this->requireUserAuth();
+
 		Items::remove(array('_id' => $this->request->params['id']));
 		$this->response->status(200);
 	}

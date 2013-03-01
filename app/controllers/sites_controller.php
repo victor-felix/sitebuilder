@@ -81,7 +81,7 @@ class SitesController extends AppController
 		}
 
 		$sucess = false;
-		
+
 		//remove site only if has more than one
 		if (count(Auth::User()->sites()) > 1) {
 			$sucess = $site->delete($site->id);
@@ -127,7 +127,7 @@ class SitesController extends AppController
 			echo $doc->saveHTML();
 		}
 	}
-	
+
 	//TODO  Need to create a script, not a action, to perform this
 	public function regenerate_domains($previusDomainToBeReplaced = false, $segment = false)
 	{
@@ -135,9 +135,9 @@ class SitesController extends AppController
 		$sites = Model::load('Sites')->toList(array(
 				'conditions' => array('segment' => $segment),
 				));
-		
+
 		$sitesIds = array_keys($sites);
-		
+
 		//replace previus domains
 		//very descriptive var
 		if ($previusDomainToBeReplaced) {
@@ -147,16 +147,15 @@ class SitesController extends AppController
 							'domain LIKE' =>  "%$previusDomainToBeReplaced",
 					),
 			));
-				
+
 			foreach ($domains as $item) {
 			$item->domain = str_replace($previusDomainToBeReplaced, MeuMobi::domain(), $item->domain);
 			$item->save();
 			}
 		}
-		
-		
+
 		$domains = Model::load('SitesDomains')->toList(array(
-			'displayField'=>'domain',
+			'displayField' => 'domain',
 			'conditions' => array('site_id' => $sitesIds),
 		));
 
@@ -173,15 +172,13 @@ class SitesController extends AppController
 	public function general()
 	{
 		$site = $this->getCurrentSite();
-		if(!empty($this->data)) {
+		if (!empty($this->data)) {
 			$site->updateAttributes($this->data);
-			if($site->validate() && $site->save()) {
+			if ($site->validate() && $site->save()) {
 				Session::writeFlash('success', s('Configuration successfully saved'));
 			}
 		}
-		$this->set(array(
-			'site' => $site,
-		));
+		$this->set(compact('site'));
 	}
 
 	public function custom_domain()
@@ -205,6 +202,10 @@ class SitesController extends AppController
 
 	public function users()
 	{
+		if (!MeuMobi::currentSegment()->enableMultiUsers()) {
+			$this->redirect('/');
+		}
+
 		$users = $this->getCurrentSite()->users(true);
 		$site = $this->getCurrentSite();
 		$invites = \app\models\Invites::find('all', array('conditions' => array(
@@ -214,9 +215,13 @@ class SitesController extends AppController
 		$this->set(compact('users', 'invites'));
 	}
 
-	public function remove_user($userId)
+	public function remove_user($user_id)
 	{
-		if ($this->getCurrentSite()->removeUser((int) $userId)) {
+		if (!MeuMobi::currentSegment()->enableMultiUsers()) {
+			$this->redirect('/');
+		}
+
+		if ($this->getCurrentSite()->removeUser($user_id)) {
 			Session::writeFlash('success', s('User successfully removed.'));
 		} else {
 			Session::writeFlash('error', s('Sorry, can\'t remove user.'));
