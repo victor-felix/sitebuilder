@@ -1,10 +1,12 @@
 $(function() {
 	var reloadPreview = function(theme, skin) {
 		var frame = $('#theme-frame');
-		var url = frame.data('url');
+		var url = frame.data('url') + '?';
+
 		if (theme && skin) {
-			url += "?theme=" + theme + "&skin=" + skin;
+			url += "theme=" + theme + "&skin=" + skin;
 		}
+		url += '&' + (new Date()).getTime();
 		$('.theme-preview .wrapp .load').fadeIn(300, function(){
 			frame.attr('src', url);
 		});
