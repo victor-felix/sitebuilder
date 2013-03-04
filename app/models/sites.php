@@ -357,7 +357,7 @@ class Sites extends AppModel
 			$img = Mapper::url('/images/shared/placeholder/' . basename($img), true);
 			$image = Model::load('Images')->download(new SitePhotos ( $this->id ), $img, array(
 				'visible' => 1,
-				'title' => 'edit legend',
+				//'title' => 'edit legend',
 				'description' => 'edit legend',
 			));
 		}
