@@ -153,6 +153,7 @@ Config::write('Segment', array(
   'title' => '%{title}',
   'items' => array('%{item_types}'),
   'extensions' => array('%{extensions}'),
+  'root' => '%{root}',
   'email' => array('%{email}' => '%{title}'),
   'hideCategories' => %{hide_categories},
   'enableSignup' => %{enable_signup},
@@ -175,6 +176,7 @@ $button-base-color: %{main_color};
       options[:user_last] = ask "user's last name:"
       options[:user_email] = ask "user's email:"
       options[:user_password] = ask "user's password:"
+      options[:root] = ask "root category title:"
       options[:background_color] = ask "background color, use #fff or #efefef:"
       options[:main_color] = ask "main color, use a darker color:"
       options[:hide_categories] = yes?("hide categories? (y/n)").to_s

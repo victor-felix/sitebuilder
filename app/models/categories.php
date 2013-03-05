@@ -107,15 +107,6 @@ class Categories extends AppModel {
 		return $data;
 	}
 
-	public function forceDelete($id) {
-		$this->deleteChildren($id, true);
-		$this->deleteAll(array(
-			'conditions' => array(
-				'id' => $id
-			)
-		));
-	}
-
 	public function moveUp($steps = 1) {
 		$oldOrder = $this->order;
 		$previus = $this->findByOrder($oldOrder - $steps);
@@ -234,7 +225,8 @@ class Categories extends AppModel {
 		return $data;
 	}
 
-	protected function updateOrders($id, $force = false) {
+	protected function updateOrders($id)
+	{
 		$self = $this->firstById($id);
 		if ($self->parent_id && $self->visibility > -1) {
 			$conditions = array(
@@ -245,7 +237,7 @@ class Categories extends AppModel {
 			);
 
 			$all = $this->all(compact('conditions'));
-			//TODO use update instead of looping all items
+			// TODO use update instead of looping all items
 			if ($all) {
 				foreach ($all as $item) {
 					$item->order = $item->order - 1;
@@ -390,13 +382,9 @@ class Categories extends AppModel {
 		}
 	}
 
-	protected function deleteChildren($id, $force = false)
+	protected function deleteChildren($id)
 	{
 		$self = $this->firstById($id);
-
-		if ($self->parent_id == 0 && !$force) {
-			return false;
-		}
 
 		$categories = $this->allByParentId($id);
 		$this->deleteSet(Model::load('Categories'), $categories);
