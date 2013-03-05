@@ -114,6 +114,7 @@ class UsersController extends AppController
 			Auth::user()->invite($this->data['emails']);
 
 			$message = s('Users invited successfully');
+			if ($this->isXhr()) {
 				$this->respondToJSON(array(
 					'success' => $message,
 					'go_back' => true,
