@@ -1,0 +1,79 @@
+.dashboard {
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica,arial,sans-serif;
+	color: #333;
+	overflow: hidden;
+}
+
+.dashboard > .wrapp {
+	width: 560px;
+	float: left;
+}
+
+.dashboard .tip-big {
+	margin: 0;
+}
+
+.dashboard .tip-big h2 {
+	font-size: 30px;
+}
+
+.dashboard .tip-big p {
+	font-size: 22px;
+	font-weight: lighter;
+	color: #888;
+}
+
+.dashboard .list {
+	margin: 30px 0;
+	border-bottom: 1px solid #DDD;
+}
+
+.dashboard .list li {
+	border-top: 1px solid #DDD;
+	padding: 20px 0;
+	list-style: none;
+	position: relative;
+}
+.dashboard .list li:hover {
+	background: url(/images/shared/layout/ui-button-white.png)  center repeat-x;
+}
+.dashboard .list li a {
+	text-decoration: none;
+}
+
+.dashboard .list li .arrow {
+	background: url(/images/shared/dashboard/arrow.png) no-repeat 0 -30px;
+	width: 20px;
+	height: 26px;
+	display: block;
+	position: absolute;
+	right: 10px;
+	top: 27px;
+}
+
+.dashboard .list li:hover .arrow {
+	background-position: 0 0;
+}
+
+.dashboard .list li a h3 {
+	color: #c02926;
+	font-size: 22px;
+	font-weight: lighter;
+}
+
+.dashboard .list li a small {
+	color: #888;
+	display: block;
+	font-size: 12px;
+	line-height: 12px;
+}
+
+.dashboard .domain {
+	font-size: 17px;
+	text-align: center;
+}
+
+.dashboard .domain a {
+	color: #c02926;
+	font-size: 22px;
+}

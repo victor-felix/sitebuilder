@@ -7,7 +7,7 @@
 		<link rel="shortcut icon" href="<?php echo Mapper::url('/images/layout/favicon.png') ?>" type="image/png" />
 		<?php echo $this->html->stylesheet('shared/base', 'shared/uikit', 'shared/categories',
 			'shared/edit-forms', 'shared/businessitems', 'segment', 'shared/markitup.simple',
-			'shared/markitup.xbbcode', 'shared/chosen', 'shared/themes') ?>
+			'shared/markitup.xbbcode', 'shared/chosen', 'shared/themes', 'shared/dashboard') ?>
 		<?php echo $this->html->stylesForLayout ?>
 	</head>
 
@@ -133,7 +133,7 @@
 			<a id="support-link" href="#"><?php echo s('support') ?></a>
 		</div>
 		
-		<?php echo $this->html->script('shared/jquery', 'shared/support_chat', 'shared/jquery.formrestrict', 'shared/jquery.alphanumeric', 'shared/modernizr.custom.placeholder.js','shared/main', 'shared/markitup', 'shared/async_upload', 'shared/jquery.chosen', 'shared/themes') ?>
+		<?php echo $this->html->script('shared/jquery', 'shared/jquery.formrestrict', 'shared/jquery.alphanumeric', 'shared/modernizr.custom.placeholder.js','shared/main', 'shared/markitup', 'shared/async_upload', 'shared/jquery.chosen', 'shared/themes') ?>
 		<?php echo $this->html->scriptsForLayout ?>
 	</body>
 </html>

@@ -1,20 +1,12 @@
 <?php
-require_once 'lib/google/Analytics.php';
 
 class DashboardController extends AppController 
 {
     protected $uses = array();
-    protected $analytics;
-
-    protected function beforeFilter()
-    {
-        $this->analytics =  google\Analytics::load($this->getCurrentSite());
-    }
 
     public function index()
     {
-        $this->analytics->authenticate();
-        $this->set(array('analytics' => $this->analytics));
+    	
     }
 
     public function analytics_report()
