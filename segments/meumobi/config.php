@@ -5,10 +5,11 @@ Config::write('Segment', array(
   'title' => 'MeuMobi',
   'items' => array('articles', 'business', 'users'),
   'extensions' => array('rss','store-locator'),
-  'root' => 'Index',
   'email' => array('no-reply@meumobi.com' => 'MeuMobi'),
   'hideCategories' => true,
   'enableSignup' => 1,
+  'hideCategories' => true,
+  'enableSignup' => true,
   'fullOptions' => false,
-  'primaryColor' => '#ccc'
+  'enableMultiUsers' => false
 ));
