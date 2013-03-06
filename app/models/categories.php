@@ -382,6 +382,14 @@ class Categories extends AppModel {
 		}
 	}
 
+	public function enabledExtensions()
+	{
+		return Extensions::find('all', array('conditions' => array(
+			'category_id' => $this->id,
+			'enabled' => 1
+		)));
+	}
+
 	protected function deleteChildren($id)
 	{
 		$self = $this->firstById($id);

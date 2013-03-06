@@ -16,7 +16,7 @@ class StoreLocator extends Extensions {
 		'language' => array(
 			'title' => 'Default language',
 			'type' => 'select',
-			'options' => array('en' => 'English', 'pt'=>'Português'),
+			'options' => array('en' => 'English', 'pt' => 'Português'),
 		),
 		'itemLimit' => array(
 			'title' => 'Limit of items per page',
