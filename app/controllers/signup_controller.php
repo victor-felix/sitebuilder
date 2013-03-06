@@ -12,7 +12,7 @@ class SignupController extends AppController
 	protected function beforeFilter()
 	{
 		if (Auth::loggedIn()) {
-			$this->redirect('/categories');
+			$this->redirect('/dashboard');
 		}
 
 		if (!MeuMobi::currentSegment()->isSignupEnabled()) {
@@ -95,7 +95,7 @@ class SignupController extends AppController
 				$site->addDefaultPhotos();
 				Session::delete('Signup');
 				Session::writeFlash('success', s('Congratulations! Your mobile site is ready!'));
-				$this->redirect('/categories');
+				$this->redirect('/dashboard');
 			}
 		}
 

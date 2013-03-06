@@ -18,7 +18,7 @@ class AcceptInviteController extends AppController
 				Auth::login($user, (bool) $this->data['remember']);
 				if ($user->confirmInvite($token)) {
 					Session::writeFlash('success', s('Congratulations, your invitation was confirmed'));
-					$this->redirect('/categories');
+					$this->redirect('/dashboard');
 				} else {
 					Session::writeFlash('error', s('Sorry, your invitation can\'t de confirmed'));
 					Auth::logout();
@@ -45,7 +45,7 @@ class AcceptInviteController extends AppController
 				$user->save();
 				$user->confirmInvite($token);
 				Session::writeFlash('success', s('Congratulations, your invitation was confirmed'));
-				$this->redirect('/categories');
+				$this->redirect('/dashboard');
 			}
 		}
 

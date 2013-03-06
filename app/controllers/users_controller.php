@@ -35,7 +35,7 @@ class UsersController extends AppController
 				Auth::login($user);
 			}
 			Session::writeFlash('success', s('Account successfully created'));
-			$this->redirect('/categories');
+			$this->redirect('/dashboard');
 		}
 	}
 
@@ -51,7 +51,7 @@ class UsersController extends AppController
 				if ($location = Session::read('Auth.redirect')) {
 					Session::delete('Auth.redirect');
 				} else {
-					$location = '/categories';
+					$location = '/dashboard';
 				}
 				$this->redirect($location);
 			} else {
@@ -102,7 +102,7 @@ class UsersController extends AppController
 	public function change_site($id = null)
 	{
 		Auth::user()->site($id);
-		$this->redirect('/categories');
+		$this->redirect('/dashboard');
 	}
 
 	public function invite()

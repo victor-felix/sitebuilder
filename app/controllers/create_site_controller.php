@@ -17,7 +17,7 @@ class CreateSiteController extends AppController
 
 		if ($this->getCurrentSite()->userRole() != Users::ROLE_ADMIN) {
 			Session::writeFlash('error', s('Sorry, you are not allowed to do this'));
-			$this->redirect('/categories');
+			$this->redirect('/dashboard');
 		}
 
 		if ($session = Session::read('CreateSite')) {
@@ -71,7 +71,7 @@ class CreateSiteController extends AppController
 				$site->addDefaultPhotos();
 				Session::delete('CreateSite');
 				Session::writeFlash('success', s('Congratulations! Your mobile site is ready!'));
-				$this->redirect('/categories');
+				$this->redirect('/dashboard');
 			}
 		}
 
