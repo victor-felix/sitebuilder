@@ -10,7 +10,7 @@
 		</div>
 		<ul class="list">
 			<li id="photos">
-				<a href="dashboard/photos">
+				<a href="<?php echo Mapper::url('/sites/business_info#business-photos') ?>">
 					<span class="icon"></span>
 					<h3><?php echo s('add photos of your company')?></h3>
 					<small><?php echo s('let your customers see what your business looks like')?></small>
@@ -18,7 +18,7 @@
 				</a>
 			</li>
 			<li id="social">
-				<a href="dashboard/social">
+				<a href="<?php echo Mapper::url('/sites/business_info#business-social') ?>">
 					<span class="icon"></span>
 					<h3><?php echo s('your social links')?></h3>
 					<small><?php echo s('facebook page, twitter, website address')?></small>
@@ -26,7 +26,7 @@
 				</a>
 			</li>
 			<li id="address">
-				<a href="dashboard/address">
+				<a href="<?php echo Mapper::url('/sites/business_info#business-address') ?>">
 					<span class="icon"></span>
 					<h3><?php echo s('your address')?></h3>
 					<small><?php echo s('full address adds a map on your mobile site')?></small>
@@ -34,7 +34,7 @@
 				</a>
 			</li>
 			<li id="contact">
-				<a href="dashboard/contact">
+				<a href="<?php echo Mapper::url('/sites/business_info#business-contact') ?>">
 					<span class="icon"></span>
 					<h3><?php echo s('your contacts')?></h3>
 					<small><?php echo s('phone numbers and email address')?></small>
@@ -42,7 +42,7 @@
 				</a>
 			</li>
 			<li id="feed">
-				<a href="dashboard/feed">
+				<a href="<?php echo Mapper::url('/sites/news') ?>">
 					<span class="icon"></span>
 					<h3><?php echo s('add a news feed')?></h3>
 					<small><?php echo s('use your website RSS to display news')?></small>
@@ -50,7 +50,7 @@
 				</a>
 			</li>
 			<li id="categories">
-				<a href="categories/">
+				<a href="<?php echo Mapper::url('/categories') ?>">
 					<span class="icon"></span>
 					<h3><?php echo s('manage other content')?></h3>
 					<small><?php echo s('you can add other content such as products and events')?></small>

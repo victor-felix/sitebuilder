@@ -77,7 +77,7 @@
 	</div>
 </fieldset>
 
-<fieldset>
+<fieldset id="business-address">
 	<div class="grid-4 first">
         <div class="tip">
 			<h2><?php echo s('Location') ?></h2>
@@ -175,7 +175,7 @@
 	</div>
 </fieldset>
 
-<fieldset>
+<fieldset id="business-contact">
 	<div class="grid-4 first">
         <div class="tip">
 			<h2><?php echo s('Contact Information') ?></h2>
@@ -236,7 +236,7 @@
 	</div>
 </fieldset>
 
-<fieldset>
+<fieldset id="business-social">
 	<div class="grid-4 first">
         <div class="tip">
 			<h2><?php echo s('Your links on web') ?></h2>
@@ -278,7 +278,7 @@
 	</div>
 </fieldset>
 
-<fieldset>
+<fieldset id="business-photos">
 	<div class="grid-4 first">
         <div class="tip">
 			<h2><?php echo s('Your business photos') ?></h2>
