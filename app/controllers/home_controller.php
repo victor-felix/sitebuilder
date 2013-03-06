@@ -8,7 +8,7 @@ class HomeController extends AppController
 	protected function beforeFilter()
 	{
 		if (Auth::loggedIn()) {
-			$this->redirect('/categories');
+			$this->redirect('/dashboard');
 		}
 
 		if (!MeuMobi::currentSegment()->isSignupEnabled()) {

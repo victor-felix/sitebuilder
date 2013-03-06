@@ -57,7 +57,7 @@
 			</div>
 			<div id="header">
 				<div class="logo">
-					<?php echo $this->html->imagelink('layout/logo.png', '/categories', array(
+					<?php echo $this->html->imagelink('layout/logo.png', '/dashboard', array(
 						'alt' => $this->controller->getSegment()->title
 					), array(
 						'class' => 'logo'

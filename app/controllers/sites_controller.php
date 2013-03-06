@@ -11,7 +11,7 @@ class SitesController extends AppController
 		$isProtected = in_array($this->param('action'), $this->protectedActions);
 		if (!$isAdmin && $isProtected) {
 			Session::writeFlash('error', s('Sorry, you are not allowed to do this'));
-			$this->redirect('/categories');
+			$this->redirect('/dashboard');
 		}
 
 		parent::beforeFilter();
@@ -35,7 +35,7 @@ class SitesController extends AppController
 					}
 				}
 				Session::writeFlash('success', s('Configuration successfully saved'));
-				$this->redirect('/categories');
+				$this->redirect('/dashboard');
 			}
 		}
 
@@ -63,7 +63,7 @@ class SitesController extends AppController
 			if ($site->validateTheme()) {
 				$site->save();
 				Session::writeFlash('success', s('Configuration successfully saved'));
-				$this->redirect('/categories');
+				$this->redirect('/dashboard');
 			}
 		}
 
