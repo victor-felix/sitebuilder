@@ -113,3 +113,11 @@ body {
 
 div.theme-picker > ul > li.selected {
   box-shadow: 0 0 0 3px #42537e inset; }
+
+.dashboard .list li a .icon {
+	background-color: #42537e;
+}
+
+.dashboard .list li a h3, .dashboard .domain a {
+	color: #42537e;
+}
