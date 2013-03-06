@@ -35,6 +35,8 @@
 .dashboard .list li {
 	border-top: 1px solid #DDD;
 	list-style: none;
+	border-left: 1px solid #fff;
+	border-right: 1px solid #fff;
 	position: relative;
 }
 .dashboard .list li:hover {
@@ -49,7 +51,7 @@
 }
 
 .dashboard .list li a .icon {
-	background: none no-repeat 0 0 #c02926;
+	background: url(/images/shared/dashboard/icons.png) no-repeat 0 0 #c02926;
 	width: 51px;
 	height: 51px;
 	display: block;
@@ -59,55 +61,55 @@
 }
 
 .dashboard .list li#photos a .icon{
-	background-image: url(/images/shared/dashboard/icon-photo.png);
+	background-position: 0 -1013px;
 }
 
 .dashboard .list li#social a .icon {
-	background-image: url(/images/shared/dashboard/icon-face.png);
+	background-position: 0 -205px;
 }
 
 .dashboard .list li#address a .icon {
-	background-image: url(/images/shared/dashboard/icon-marker.png);
+	background-position: 0 -609px;
 }
 
 .dashboard .list li#contact a .icon {
-	background-image: url(/images/shared/dashboard/icon-phone.png);
+	background-position: 0 -811px;
 }
 
 .dashboard .list li#feed a .icon{
-	background-image: url(/images/shared/dashboard/icon-rss.png);
+	background-position: 0 -1215px;
 }
 
 .dashboard .list li#categories a .icon {
-	background-image: url(/images/shared/dashboard/icon-file.png);
+	background-position: 0 -407px;
 }
 
 .dashboard .list li#photos:hover a .icon{
-	background-image: url(/images/shared/dashboard/icon-photo-on.png);
+	background-position: 0 -912px;
 }
 
 .dashboard .list li#social:hover a .icon {
-	background-image: url(/images/shared/dashboard/icon-face-on.png);
+	background-position: 0 -104px;
 }
 
 .dashboard .list li#address:hover a .icon {
-	background-image: url(/images/shared/dashboard/icon-marker-on.png);
+	background-position: 0 -508px;
 }
 
 .dashboard .list li#contact:hover a .icon {
-	background-image: url(/images/shared/dashboard/icon-phone-on.png);
+	background-position: 0 -710px;
 }
 
 .dashboard .list li#feed:hover a .icon{
-	background-image: url(/images/shared/dashboard/icon-rss-on.png);
+	background-position: 0 -1114px;
 }
 
 .dashboard .list li#categories:hover a .icon {
-	background-image: url(/images/shared/dashboard/icon-file-on.png);
+	background-position: 0 -306px;
 }
 
 .dashboard .list li .arrow {
-	background: url(/images/shared/dashboard/arrow.png) no-repeat 0 -30px;
+	background: url(/images/shared/dashboard/icons.png) no-repeat 0 -30px;
 	width: 15px;
 	height: 26px;
 	display: block;
