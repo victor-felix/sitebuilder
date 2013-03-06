@@ -2,6 +2,13 @@
 	$currentSite = Auth::user()->site();
 	$this->pageTitle = s('Dashboard');
 ?>
+<div class="page-heading">
+	<div class="grid-4 first">&nbsp;</div>
+	<div class="grid-8">
+		<h1><?php echo $this->pageTitle ?></h1>
+	</div>
+	<div class="clear"></div>
+</div>
 <div class="dashboard">
 	<div class="wrapp">
 		<div class="tip-big">
@@ -67,4 +74,5 @@
 		'site' => $currentSite,
 		'autoload' => true
 	)) ?>
+	<p class="clear"></p>
 </div>

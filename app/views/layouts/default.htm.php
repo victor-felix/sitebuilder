@@ -77,13 +77,14 @@
 						</p>
 					</div>
 					<ul class="dropdown">
-						<?php if(!MeuMobi::currentSegment()->hideCategories): ?>
-							<li><?php echo $this->html->link(MeuMobi::currentSegment()->root, '/categories') ?></li>
-						<?php endif ?>
+						<li><?php echo $this->html->link(s('dashboard'), '/dashboard') ?></li>
 						<li>
 							<p><?php echo s('About Business')?><span class="arrow"></span></p>
 							<ul>
 								<li><?php echo $this->html->link(s('Basic Info'), '/sites/business_info') ?></li>
+								<?php if(!MeuMobi::currentSegment()->hideCategories): ?>
+									<li><?php echo $this->html->link(MeuMobi::currentSegment()->root, '/categories') ?></li>
+								<?php endif ?>
 								<li><?php echo $this->html->link(s('News'), '/sites/news') ?></li>
 							</ul>
 						</li>
