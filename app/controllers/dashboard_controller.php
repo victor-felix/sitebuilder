@@ -6,7 +6,7 @@ class DashboardController extends AppController
 
     public function index()
     {
-    	
+    	$site = $this->getCurrentSite();
     }
 
     public function analytics_report()
