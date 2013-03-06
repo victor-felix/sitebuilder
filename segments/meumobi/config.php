@@ -7,7 +7,7 @@ Config::write('Segment', array(
   'items' => array('articles', 'business', 'users'),
   'extensions' => array('rss','store-locator'),
   'email' => array('no-reply@meumobi.com' => 'MeuMobi'),
-  'hideCategories' => true,
+  'hideCategories' => false,
   'enableSignup' => true,
   'fullOptions' => false,
   'enableMultiUsers' => false
