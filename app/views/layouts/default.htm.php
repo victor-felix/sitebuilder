@@ -79,7 +79,7 @@
 					<ul class="dropdown">
 						<li><?php echo $this->html->link(s('dashboard'), '/dashboard') ?></li>
 						<li>
-							<p><?php echo s('Content')?><span class="arrow"></span></p>
+							<p><?php echo s('content')?><span class="arrow"></span></p>
 							<ul>
 								<li><?php echo $this->html->link(s('About Business'), '/sites/business_info') ?></li>
 								<?php if(!MeuMobi::currentSegment()->hideCategories): ?>
@@ -134,7 +134,7 @@
 			<a id="support-link" href="#"><?php echo s('support') ?></a>
 		</div>
 		
-		<?php echo $this->html->script('shared/jquery', 'shared/jquery.formrestrict', 'shared/jquery.alphanumeric', 'shared/modernizr.custom.placeholder.js','shared/main', 'shared/markitup', 'shared/async_upload', 'shared/jquery.chosen', 'shared/themes') ?>
+		<?php echo $this->html->script('shared/jquery', 'shared/jquery.formrestrict', 'shared/jquery.alphanumeric', 'shared/modernizr.custom.placeholder.js', 'shared/support_chat', 'shared/main', 'shared/markitup', 'shared/async_upload', 'shared/jquery.chosen', 'shared/themes') ?>
 		<?php echo $this->html->scriptsForLayout ?>
 	</body>
 </html>
