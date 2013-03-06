@@ -118,6 +118,6 @@ div.dashboard .list li a .icon {
 	background-color: #42537e;
 }
 
-div.dashboard .list li a h3, .dashboard .domain a {
+div.dashboard .list li a h3, div.dashboard .domain a {
 	color: #42537e;
 }
