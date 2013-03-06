@@ -114,7 +114,7 @@ body {
 div.theme-picker > ul > li.selected {
   box-shadow: 0 0 0 3px #42537e inset; }
 
-div.dashboard .list li a .icon {
+div.dashboard .list li a .icon, div.dashboard .list li:hover .arrow {
 	background-color: #42537e;
 }
 
