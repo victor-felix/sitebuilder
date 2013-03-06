@@ -30,7 +30,6 @@
 
 .dashboard .list li {
 	border-top: 1px solid #DDD;
-	padding: 20px 0;
 	list-style: none;
 	position: relative;
 }
@@ -38,7 +37,67 @@
 	background: url(/images/shared/layout/ui-button-white.png)  center repeat-x;
 }
 .dashboard .list li a {
+	padding: 20px 0 20px 73px;
+	display:block;
 	text-decoration: none;
+}
+
+.dashboard .list li a .icon {
+	background: none no-repeat 0 0 #c02926;
+	width: 51px;
+	height: 51px;
+	display: block;
+	position: absolute;
+	left: 10px;
+	top: 13px;
+}
+
+.dashboard .list li#photos a .icon{
+	background-image: url(/images/shared/dashboard/icon-photo.png);
+}
+
+.dashboard .list li#social a .icon {
+	background-image: url(/images/shared/dashboard/icon-face.png);
+}
+
+.dashboard .list li#address a .icon {
+	background-image: url(/images/shared/dashboard/icon-marker.png);
+}
+
+.dashboard .list li#contact a .icon {
+	background-image: url(/images/shared/dashboard/icon-phone.png);
+}
+
+.dashboard .list li#feed a .icon{
+	background-image: url(/images/shared/dashboard/icon-rss.png);
+}
+
+.dashboard .list li#categories a .icon {
+	background-image: url(/images/shared/dashboard/icon-file-on.png);
+}
+
+.dashboard .list li#photos:hover a .icon{
+	background-image: url(/images/shared/dashboard/icon-photo-on.png);
+}
+
+.dashboard .list li#social:hover a .icon {
+	background-image: url(/images/shared/dashboard/icon-face-on.png);
+}
+
+.dashboard .list li#address:hover a .icon {
+	background-image: url(/images/shared/dashboard/icon-marker-on.png);
+}
+
+.dashboard .list li#contact:hover a .icon {
+	background-image: url(/images/shared/dashboard/icon-phone-on.png);
+}
+
+.dashboard .list li#feed:hover a .icon{
+	background-image: url(/images/shared/dashboard/icon-rss-on.png);
+}
+
+.dashboard .list li#categories:hover a .icon {
+	background-image: url(/images/shared/dashboard/icon-file-on.png);
 }
 
 .dashboard .list li .arrow {
