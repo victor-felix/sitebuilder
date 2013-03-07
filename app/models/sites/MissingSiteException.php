@@ -3,5 +3,5 @@
 namespace app\models\sites;
 
 class MissingSiteException extends \Exception {
-    protected $status = 404;
+    public $status = 404;
 }
