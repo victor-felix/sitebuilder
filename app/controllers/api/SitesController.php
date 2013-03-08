@@ -58,6 +58,9 @@ class SitesController extends ApiController
 			return $json;
 		}, $this->site()->news()->to('array'));
 
-		return compact('site', 'business', 'categories', 'news');
+		$newsCategory = $this->site->newsCategory();
+		$newsCategory = array('title' => $newsCategory->title);
+
+		return compact('site', 'business', 'categories', 'news', 'newsCategory');
 	}
 }
