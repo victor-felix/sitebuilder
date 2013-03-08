@@ -2,6 +2,7 @@
 
 require_once 'lib/sitemanager/SiteManager.php';
 require_once 'app/models/categories.php';
+require_once 'lib/geocoding/GoogleGeocoding.php';
 
 class Sites extends AppModel
 {
