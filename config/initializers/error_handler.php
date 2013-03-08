@@ -5,7 +5,7 @@ use lithium\core\ErrorHandler;
 ErrorHandler::apply(array('lithium\action\Dispatcher', 'run'),
 	array('type' => array(
 		'app\models\sites\MissingSiteException',
-		'app\models\items\ItemNotFoundException',
+		'app\models\RecordNotFoundException',
 		'app\controllers\api\NotAuthenticatedException',
 		'app\controllers\api\InvalidArgumentException',
 	)),

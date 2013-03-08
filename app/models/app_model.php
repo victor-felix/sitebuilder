@@ -25,7 +25,7 @@ class AppModel extends Model {
 
         if(is_null($first)) {
             $class = get_class($this);
-            throw new Exception("{$class} with with id={$id} not found");
+            throw new \app\models\RecordNotFoundException("{$class} with with id={$id} not found");
         }
         else {
             return $first;

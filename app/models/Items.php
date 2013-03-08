@@ -411,7 +411,7 @@ class Items extends \lithium\data\Model {
 			$classname = '\app\models\items\\' . Inflector::camelize($result->type);
 			return $classname::find('first', $params['options']);
 		} else {
-			throw new \app\models\items\ItemNotFoundException('item not found');
+			throw new \app\models\RecordNotFoundException('item not found');
 		}
 	}
 

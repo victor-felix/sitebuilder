@@ -110,7 +110,7 @@ class ItemsController extends ApiController {
 			'site_id' => $this->site()->id
 		)));
 
-		if (!$item) throw new \app\models\items\ItemNotFoundException('item not found');
+		if (!$item) throw new \app\models\RecordNotFoundException('item not found');
 
 		if ($item->related) {
 			$classname = '\app\models\items\\' . Inflector::camelize($item->type);
@@ -221,7 +221,7 @@ class ItemsController extends ApiController {
 			'site_id' => $this->site()->id
 		)));
 
-		if (!$item) throw new \app\models\items\ItemNotFoundException('item not found');
+		if (!$item) throw new \app\models\RecordNotFoundException('item not found');
 
 		$item->set(array(
 			'site_id' => $this->site()->id
