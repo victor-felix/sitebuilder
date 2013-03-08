@@ -1,7 +1,8 @@
 <?php
 use lithium\storage\Session, lithium\util\Validator;
 
-class Users extends AppModel {
+class Users extends AppModel
+{
 	const CURRENT_SITE = 'User.site';
 
 	const ROLE_ADMIN = 1;
@@ -12,60 +13,60 @@ class Users extends AppModel {
 	protected $beforeSave = array('hashPassword', 'createToken', 'joinName');
 	protected $beforeDelete = array('removeSites');
 	protected $afterSave = array('authenticate', 'sendConfirmationMail');
-	protected $validates = array (
-		'firstname' => array (
+	protected $validates = array(
+		'firstname' => array(
 			'rule' => 'notEmpty',
 			'message' => 'You must fill in all fields'
 		),
-		'lastname' => array (
+		'lastname' => array(
 			'rule' => 'notEmpty',
 			'message' => 'You must fill in all fields'
 		),
-		'email' => array (
-			array (
+		'email' => array(
+			array(
 				'rule' => 'notEmpty',
 				'message' => 'You must fill in all fields'
 			),
-			array (
+			array(
 				'rule' => 'email',
 				'message' => 'Please enter a valid email address.'
 			),
-			array (
-				'rule' => array ('unique', 'email' ),
+			array(
+				'rule' => array('unique', 'email'),
 				'message' => 'There is an existing account associated with this email address.'
 			)
 		),
-		'password' => array (
-			array (
-				'rule' => array ('minLength', 6 ),
+		'password' => array(
+			array(
+				'rule' => array('minLength', 6),
 				'message' => 'The password should contain at least 6 characters.',
 				'allowEmpty' => true
 			),
-			array (
-				'rule' => array ('minLength', 6 ),
+			array(
+				'rule' => array('minLength', 6),
 				'message' => 'The password should contain at least 6 characters.',
 				'on' => 'create'
 			)
 		),
-		'confirm_password' => array (
-				'rule' => array ('confirmField', 'password' ),
-				'message' => 'Passwords do not match'
+		'confirm_password' => array(
+			'rule' => array('confirmField', 'password'),
+			'message' => 'Passwords do not match'
 		)
 	);
 
 	public function firstname()
 	{
-		if (array_key_exists ( 'name', $this->data )) {
-			preg_match ( '/([^,]+),([^,]+)/', $this->data ['name'], $name );
-			return $name [1];
+		if (array_key_exists('name', $this->data)) {
+			preg_match('/([^,]+),([^,]+)/', $this->data ['name'], $name);
+			return $name[1];
 		}
 	}
 
 	public function lastname()
 	{
-		if (array_key_exists ( 'name', $this->data )) {
-			preg_match ( '/([^,]+),([^,]+)/', $this->data ['name'], $name );
-			return $name [2];
+		if (array_key_exists('name', $this->data)) {
+			preg_match('/([^,]+),([^,]+)/', $this->data['name'], $name);
+			return $name[2];
 		}
 	}
 
@@ -107,33 +108,38 @@ class Users extends AppModel {
 
 	public function sites($removeCurrent = false)
 	{
-		$sitesIds = Model::load ( 'UsersSites' )->getAllSites ( $this );
-		$sites = Model::load ( 'Sites' )->allById ( $sitesIds );
+		$sitesIds = Model::load ('UsersSites')->getAllSites($this);
+		$sites = Model::load('Sites')->allById($sitesIds);
 
 		if ($removeCurrent) {
-			$current = $this->site ();
-			foreach ( $sites as $key => $site ) {
-				if ($current->id == $site->id)
-					unset ( $sites [$key] );
+			$current = $this->site();
+			foreach ($sites as $key => $site) {
+				if ($current->id == $site->id) unset($sites[$key]);
 			}
 		}
 
 		return $sites;
 	}
 
-	public function hasSiteInSegment($segment) {
-		return Model::load ( 'UsersSites' )->exists ( array ('user_id' => $this->id, 'segment' => $segment ) );
+	public function hasSiteInSegment($segment)
+	{
+		return Model::load('UsersSites')->exists(array(
+			'user_id' => $this->id,
+			'segment' => $segment
+		));
 	}
 
-	public function hasSiteAsAdmin() {
-		return Model::load ( 'UsersSites' )->exists (array(
+	public function hasSiteAsAdmin()
+	{
+		return Model::load('UsersSites')->exists(array(
 			'user_id' => $this->id,
 			'role' => self::ROLE_ADMIN,
 			'segment' => MeuMobi::segment()
 		));
 	}
 
-	public function registerNewSite() {
+	public function registerNewSite()
+	{
 		$this->createSite();
 		$this->authenticate(true);
 	}
@@ -151,25 +157,25 @@ class Users extends AppModel {
 
 	public function requestForNewPassword($email)
 	{
-		if (! empty ( $email )) {
-			$user = $this->firstByEmail ( $email );
+		if (!empty($email)) {
+			$user = $this->firstByEmail($email);
 			if ($user) {
-				$user->sendForgottenPasswordMail ();
+				$user->sendForgottenPasswordMail();
 			} else {
-				$this->errors ['email'] = 'The e-mail is not registered in MeuMobi';
+				$this->errors['email'] = 'The e-mail is not registered in MeuMobi';
 			}
 		} else {
-			$this->errors ['email'] = 'You need to provide your e-mail';
+			$this->errors['email'] = 'You need to provide your e-mail';
 		}
 
-		return empty ( $this->errors );
+		return empty($this->errors);
 	}
 
 	public function resetPassword()
 	{
-		if ($this->validate ()) {
-			$this->token = $this->newToken ();
-			$this->save ();
+		if ($this->validate()) {
+			$this->token = $this->newToken();
+			$this->save();
 
 			return true;
 		} else {
@@ -272,8 +278,8 @@ class Users extends AppModel {
 
 	protected function createToken($data)
 	{
-		if (is_null ( $this->id )) {
-			$data ['token'] = $this->newToken ();
+		if (is_null($this->id)) {
+			$data['token'] = $this->newToken();
 		}
 
 		return $data;
@@ -281,12 +287,12 @@ class Users extends AppModel {
 
 	protected function newToken()
 	{
-		return Security::hash ( time (), 'sha1' );
+		return Security::hash(time(), 'sha1');
 	}
 
 	protected function removeSites()
 	{
-		return Model::load ( 'UsersSites' )->onDeleteUser ( $this );
+		return Model::load('UsersSites')->onDeleteUser($this);
 	}
 
 	protected function createSite()
@@ -306,16 +312,16 @@ class Users extends AppModel {
 			$segment = MeuMobi::currentSegment();
 
 			$mailer = new Mailer ( array (
-						'from' => $segment->email,
-						'to' => array ($this->email => $this->fullname () ),
-						'subject' => s ( '[MeuMobi] Account Confirmation' ),
-						'views' => array ('text/html' => 'users/confirm_mail.htm' ),
-						'layout' => 'mail',
-						'data' => array (
-								'user' => $this,
-								'title' => s ( '[MeuMobi] Account Confirmation' )
-								)
-					));
+				'from' => $segment->email,
+				'to' => array ($this->email => $this->fullname () ),
+				'subject' => s ( '[MeuMobi] Account Confirmation' ),
+				'views' => array ('text/html' => 'users/confirm_mail.htm' ),
+				'layout' => 'mail',
+				'data' => array (
+					'user' => $this,
+					'title' => s ( '[MeuMobi] Account Confirmation' )
+				)
+			));
 			$mailer->send ();
 		}
 	}
@@ -335,8 +341,8 @@ class Users extends AppModel {
 				'data' => array (
 					'user' => $this,
 					'title' => s ( '[MeuMobi] Reset Password Request' )
-					)
-				) );
+				)
+			) );
 			$mailer->send ();
 		}
 	}
@@ -347,15 +353,15 @@ class Users extends AppModel {
 			require_once 'lib/mailer/Mailer.php';
 			$segment = MeuMobi::currentSegment();
 			$mailer = new Mailer(array(
-						'from' => $segment->email,
-						'to' => $to,
-						'subject' => $title,
-						'views' => array('text/html' => $template ),
-						'layout' => 'mail',
-						'data' =>  $data,
-					));
+				'from' => $segment->email,
+				'to' => $to,
+				'subject' => $title,
+				'views' => array('text/html' => $template ),
+				'layout' => 'mail',
+				'data' =>  $data,
+			));
 
-		 return $mailer->send();
+			return $mailer->send();
 		}
 	}
 

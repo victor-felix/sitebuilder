@@ -1,18 +1,25 @@
 <?php
 
+require_once 'lib/utils/FileUpload.php';
+require_once 'lib/utils/FileDownload.php';
+require_once 'lib/phpthumb/ThumbLib.inc.php';
+
 class Images extends AppModel {
 	protected $afterSave = array('fillFields');
 	protected $beforeDelete = array('deleteFile', 'updateTimestamps');
 
-	public function upload($model, $image, $attr = array()) {
+	public function upload($model, $image, $attr = array())
+	{
 		return $this->saveImage('uploadFile', $model, $image, $attr);
 	}
 
-	public function download($model, $image, $attr = array()) {
+	public function download($model, $image, $attr = array())
+	{
 		return $this->saveImage('downloadFile', $model, $image, $attr);
 	}
 
-	public function allByRecord($model, $fk) {
+	public function allByRecord($model, $fk)
+	{
 		return $this->all(array(
 			'conditions' => array(
 				'model' => $model,
@@ -22,7 +29,8 @@ class Images extends AppModel {
 		));
 	}
 
-	public function firstByRecord($model, $fk) {
+	public function firstByRecord($model, $fk)
+	{
 		return $this->first(array(
 			'conditions' => array(
 				'model' => $model,
@@ -32,7 +40,8 @@ class Images extends AppModel {
 		));
 	}
 
-	public function link($size = null) {
+	public function link($size = null)
+	{
 		$path = String::insert('/:path/:size:filename', array(
 			'model' => Inflector::underscore($this->model),
 			'filename' => basename($this->path),
@@ -42,25 +51,27 @@ class Images extends AppModel {
 		return $path;
 	}
 
-	public function regenerate($model) {
+	public function regenerate($model)
+	{
 		$fileInfo = pathinfo($this->path);
 		$path = $fileInfo['dirname'];
 		$filename = $fileInfo['basename'];
 		$this->resizeImage($model, $path, $filename);
 	}
 
-	public function toJSON() {
+	public function toJSON()
+	{
 		$data = $this->data;
 		$data['path'] = '/' . $data['path'];
 		return $data;
 	}
 
-	protected function saveImage($method, $model, $image, $attr) {
-		if(!$this->transactionStarted()) {
+	protected function saveImage($method, $model, $image, $attr)
+	{
+		if (!$this->transactionStarted()) {
 			$transaction = true;
 			$this->begin();
-		}
-		else {
+		} else {
 			$transaction = false;
 		}
 
@@ -98,36 +109,33 @@ class Images extends AppModel {
 			}
 
 			return $self;
-		}
-		catch(Exception $e) {
-			if($transaction) {
+		} catch (Exception $e) {
+			if ($transaction) {
 				$this->rollback();
-			}
-			else {
+			} else {
 				$this->delete($self->id);
 			}
 		}
 	}
 
-	protected function uploadFile($model, $image) {
-		require_once 'lib/utils/FileUpload.php';
-
+	protected function uploadFile($model, $image)
+	{
 		$uploader = new FileUpload();
 		$uploader->path = APP_ROOT . '/' . $this->getPath($model);
 
 		return $uploader->upload($image, ':original_name');
 	}
 
-	protected function downloadFile($model, $image) {
-		require_once 'lib/utils/FileDownload.php';
-
+	protected function downloadFile($model, $image)
+	{
 		$downloader = new FileDownload();
 		$downloader->path = APP_ROOT . '/' . $this->getPath($model);
 
 		return $downloader->download($image, ':original_name');
 	}
 
-	protected function renameTempImage($info) {
+	protected function renameTempImage($info)
+	{
 		$types = array(
 			'image/jpeg' => 'jpg',
 			'image/png' => 'png',
@@ -142,8 +150,8 @@ class Images extends AppModel {
 		return $destination;
 	}
 
-	protected function resizeImage($model, $path, $filename) {
-		require_once 'lib/phpthumb/ThumbLib.inc.php';
+	protected function resizeImage($model, $path, $filename)
+	{
 		$fullpath = Filesystem::path(APP_ROOT . '/' . $path . '/' . $filename);
 		$resizes = $model->resizes();
 		$modes = array(
@@ -152,7 +160,7 @@ class Images extends AppModel {
 			'!' => 'cropFromCenter'
 		);
 
-		foreach($resizes as $resize) {
+		foreach ($resizes as $resize) {
 			$image = PhpThumbFactory::create($fullpath);
 
 			extract($this->parseResizeValue($resize)); // extracts $resize, $w, $h, $mode
@@ -164,16 +172,17 @@ class Images extends AppModel {
 				'w' => $w,
 				'h' => $h
 			));
-			
+
 			$image->save($resisedFile);
 			chmod($resisedFile, 0777);
 		}
 	}
 
-	protected function deleteFile($id) {
+	protected function deleteFile($id)
+	{
 		$self = $this->firstById($id);
 
-		if(!is_null($self->path)) {
+		if (!is_null($self->path)) {
 			Filesystem::delete(String::insert(APP_ROOT . '/:filename', array(
 				'filename' => $self->path
 			)));
@@ -184,7 +193,8 @@ class Images extends AppModel {
 		return $id;
 	}
 
-	protected function updateTimestamps($id) {
+	protected function updateTimestamps($id)
+	{
 		$self = $this->firstById($id);
 
 		if ($self->model == 'Items' && $self->foreign_key) {
@@ -198,17 +208,17 @@ class Images extends AppModel {
 		return $id;
 	}
 
-	protected function deleteResizedFiles($model, $filename) {
-		if($model == 'Items') {
+	protected function deleteResizedFiles($model, $filename)
+	{
+		if ($model == 'Items') {
 			$model = new \app\models\Items;
 			$resizes = $model->resizes();
-		}
-		else {
+		} else {
 			$model = Model::load($model);
 			$resizes = $model->resizes();
 		}
 
-		foreach($resizes as $resize) {
+		foreach ($resizes as $resize) {
 			$values = $this->parseResizeValue($resize);
 			Filesystem::delete(String::insert(':path/:wx:h_:filename', array(
 				'path' => Filesystem::path(APP_ROOT . '/' . dirname($filename)),
@@ -219,13 +229,15 @@ class Images extends AppModel {
 		}
 	}
 
-	protected function parseResizeValue($value) {
+	protected function parseResizeValue($value)
+	{
 		preg_match('/^(\d+)x(\d+)(#|!|>|)$/', $value, $options);
 		$keys = array('resize', 'w', 'h', 'mode');
 		return array_combine($keys, $options);
 	}
 
-	protected function getImageInfo($path, $filename) {
+	protected function getImageInfo($path, $filename)
+	{
 		$filepath = Filesystem::path(APP_ROOT . '/' . $path . '/' . $filename);
 		$image = new Imagick($filepath);
 		$size = $image->getImageLength();
@@ -238,8 +250,9 @@ class Images extends AppModel {
 		);
 	}
 
-	protected function getPath($model) {
-		if(!is_string($model)) {
+	protected function getPath($model)
+	{
+		if (!is_string($model)) {
 			$model = $model->imageModel();
 		}
 
@@ -248,17 +261,19 @@ class Images extends AppModel {
 		));
 	}
 
-	protected function fillFields() {
+	protected function fillFields()
+	{
 		$schema = array_keys($this->schema());
 		$self = array_keys($this->data);
 		$diff = array_diff($schema, $self);
 
-		foreach($diff as $i) {
+		foreach ($diff as $i) {
 			$this->data[$i] = null;
 		}
 	}
 
-	public function __toString() {
+	public function __toString()
+	{
 		return $this->path;
 	}
 }

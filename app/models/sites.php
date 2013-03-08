@@ -1,7 +1,5 @@
 <?php
 
-require_once 'lib/simplepie/SimplePie.php';
-require_once 'lib/geocoding/GoogleGeocoding.php';
 require_once 'lib/sitemanager/SiteManager.php';
 require_once 'app/models/categories.php';
 
@@ -14,7 +12,8 @@ class Sites extends AppModel
 		'saveDomains', 'createRelation'
 	);
 	protected $beforeDelete = array(
-		'deleteImages', 'deleteCategories', 'deleteLogo', 'removeUsers', 'removeFromSiteManager'
+		'deleteImages', 'deleteCategories', 'deleteLogo', 'removeUsers',
+		'removeFromSiteManager'
 	);
 	protected $validates = array(
 		'slug' => array(
@@ -110,9 +109,10 @@ class Sites extends AppModel
 		return $this->slug . '.' . MeuMobi::domain();
 	}
 
-	public function custom_domain() {
+	public function custom_domain()
+	{
 		try {
-			$domain = Model::load ( 'SitesDomains' )->first(array(
+			$domain = Model::load('SitesDomains')->first(array(
 				'conditions' => array(
 					'site_id' => $this->id,
 					'domain !=' =>  $this->slug . '.' . MeuMobi::domain(),
@@ -135,9 +135,10 @@ class Sites extends AppModel
 		if ($site) return new Sites($site);
 	}
 
-	public function domains() {
+	public function domains()
+	{
 		$domains = array();
-		if ($siteDomains = Model::load ( 'SitesDomains' )->allBySiteId ( $this->id )) {
+		if ($siteDomains = Model::load('SitesDomains')->allBySiteId($this->id)) {
 			foreach ($siteDomains as $item) {
 				$domains[$item->id] = $item->domain;
 			}
@@ -201,7 +202,8 @@ class Sites extends AppModel
 		));
 	}
 
-	public function userRole() {
+	public function userRole()
+	{
 		try {
 			if ($this->role) {
 				return $this->role;
@@ -257,22 +259,19 @@ class Sites extends AppModel
 		return is_array($this->itemTypes());
 	}
 
-	public function firstBySlug($slug) {
-		$site = $this->first(array('conditions' => compact('slug')));
-		if (!$site) throw new Exception('Missing slug');
-		return $site;
+	public function dateFormats()
+	{
+		return array('d/m/Y' => 'DD/MM/YYYY', 'm/d/Y' => 'MM/DD/YYYY',
+			'Y-m-d' => 'YYYY-MM-DD');
 	}
 
-	public function dateFormats() {
-		return array ('d/m/Y' => 'DD/MM/YYYY', 'm/d/Y' => 'MM/DD/YYYY', 'Y-m-d' => 'YYYY-MM-DD' );
-	}
+	public function timezones()
+	{
+		$timezones = DateTimeZone::listIdentifiers();
+		$options = array();
 
-	public function timezones() {
-		$timezones = DateTimeZone::listIdentifiers ();
-		$options = array ();
-
-		foreach ( $timezones as $tz ) {
-			$options [$tz] = str_replace ( '_', ' ', $tz );
+		foreach ($timezones as $tz) {
+			$options [$tz] = str_replace('_', ' ', $tz);
 		}
 
 		return $options;
@@ -319,52 +318,58 @@ class Sites extends AppModel
 		return $data;
 	}
 
-	public function toJSON() {
-		$data = array_merge ( $this->data, array ('logo' => null, 'photos' => array (), 'timezone' => $this->timezone () ) );
+	public function toJSON()
+	{
+		$data = array_merge($this->data, array(
+			'logo' => null,
+			'photos' => array(),
+			'timezone' => $this->timezone()
+		));
 
-		if ($logo = $this->logo ()) {
-			$data ['logo'] = $logo->link ();
+		if ($logo = $this->logo()) {
+			$data['logo'] = $logo->link();
 		}
 
-		$photos = $this->photos ();
-		foreach ( $photos as $photo ) {
-			$data ['photos'] [] = $photo->toJSON ();
+		$photos = $this->photos();
+		foreach ($photos as $photo) {
+			$data['photos'] []= $photo->toJSON();
 		}
 
 		if ($this->country_id) {
-			$country = Model::load ( 'Countries' )->firstById ( $this->country_id )->name;
-			$data ['country'] = $country;
+			$country = Model::load('Countries')->firstById($this->country_id)->name;
+			$data['country'] = $country;
 		} else {
-			$data ['country'] = '';
+			$data['country'] = '';
 		}
 
 		if ($this->state_id) {
-			$state = Model::load ( 'States' )->firstById ( $this->state_id )->name;
-			$data ['state'] = $state;
+			$state = Model::load('States')->firstById($this->state_id)->name;
+			$data['state'] = $state;
 		} else {
-			$data ['state'] = '';
+			$data['state'] = '';
 		}
 
-		$data ['description'] = nl2br ( $data ['description'] );
+		$data ['description'] = nl2br($data ['description']);
 
 		return $data;
 	}
 
-	public function addDefaultPhotos() {
+	public function addDefaultPhotos()
+	{
 		$imagesDir = APP_ROOT . '/sitebuilder/assets/images/placeholder/';
 		$images = glob($imagesDir . '{*.jpg,*.gif,*.png}', GLOB_BRACE);
 		foreach ($images as $img) {
 			$img = Mapper::url('/images/shared/placeholder/' . basename($img), true);
-			$image = Model::load('Images')->download(new SitePhotos ( $this->id ), $img, array(
+			$image = Model::load('Images')->download(new SitePhotos($this->id), $img, array(
 				'visible' => 1,
-				//'title' => 'edit legend',
 				'description' => 'edit legend',
 			));
 		}
 	}
 
-	protected function removeUsers($id) {
-		Model::load ( 'UsersSites' )->onDeleteSite ( $this );
+	protected function removeUsers($id)
+	{
+		Model::load('UsersSites')->onDeleteSite($this);
 		return $id;
 	}
 
@@ -398,22 +403,22 @@ class Sites extends AppModel
 		} catch (Exception $e) {
 			return $created;
 		}
-		
+
 		foreach ($domains as $id => $domain) {
 			$previous = '';
-			
+
 			//check if is changing the domain value
 			if ($siteDomain = Model::load('SitesDomains')->firstByIdAndSiteId($id, $this->id)) {
 				$previous = $siteDomain->domain;
 			} else {
 				$siteDomain = new SitesDomains();
 			}
-			
+
 			//check if domain exist in the site
 			if ($domain && $domainExists = Model::load('SitesDomains')->check($domain)) {
 				if ($domainExists->site_id != $this->id) {
 					Session::writeFlash('error', s('The domain %s is not available', $domain));
-					
+
 					//delete if change the domain to a existent domain
 				} else if ($previous && $siteDomain->id != $domainExists->id) {
 					SiteManager::delete($siteDomain->domain);
@@ -421,7 +426,7 @@ class Sites extends AppModel
 				}
 				continue;
 			}
-			
+
 			//if old domain is empty, removes it
 			if (!$domain) {
 				if ($previous) {
@@ -442,23 +447,24 @@ class Sites extends AppModel
 				}
 			}
 		}
-		
+
 		//set site domain field
 		$defaultDomain = $this->data['slug'] . '.' . MeuMobi::domain();
 		$custom = $this->custom_domain();
 		$domain = $custom ? $custom : $defaultDomain;
-		
+
 		//update only if different
 		if ($this->data['domain'] != $domain) {
 			$this->update(array(
-					'conditions' => array('id' => $this->id)
+				'conditions' => array('id' => $this->id)
 			), array(
-					'domain' => $domain,
+				'domain' => $domain,
 			));
 		}
 	}
 
-	protected function getLatLng($data) {
+	protected function getLatLng($data)
+	{
 		if (array_key_exists('street', $data)) {
 			if ($this->id) {
 				$original = $this->firstById($this->id);
@@ -469,19 +475,25 @@ class Sites extends AppModel
 			}
 
 			if (empty($data['street'])) {
-				$data ['latitude'] = $data ['longitude'] = null;
+				$data['latitude'] = $data['longitude'] = null;
 			} else {
 				try {
-					$address = String::insert ( ':street, :number, :city - :state, :country', array ('street' => $data ['street'], 'number' => $data ['number'], 'city' => $data ['city'], 'state' => $this->state ( $data ['state_id'] ), 'country' => $this->country ( $data ['country_id'] ) ) );
+					$address = String::insert(':street, :number, :city - :state, :country', array(
+						'street' => $data['street'],
+						'number' => $data['number'],
+						'city' => $data['city'],
+						'state' => $this->state($data['state_id']),
+						'country' => $this->country($data['country_id'])
+					));
 
-					$region = $this->country ( $data ['country_id'], true );
+					$region = $this->country($data['country_id'], true);
 
-					$geocode = GoogleGeocoding::geocode ( $address, $region );
-					$location = $geocode->results [0]->geometry->location;
-					$data ['latitude'] = $location->lat;
-					$data ['longitude'] = $location->lng;
-				} catch ( Exception $e ) {
-					$data ['latitude'] = $data ['longitude'] = null;
+					$geocode = GoogleGeocoding::geocode($address, $region);
+					$location = $geocode->results[0]->geometry->location;
+					$data['latitude'] = $location->lat;
+					$data['longitude'] = $location->lng;
+				} catch (Exception $e) {
+					$data['latitude'] = $data['longitude'] = null;
 				}
 			}
 		}
@@ -526,15 +538,17 @@ class Sites extends AppModel
 		$extension->save();
 	}
 
-	protected function deleteLogo($id) {
-		$model = Model::load ( 'Images' );
-		$images = $model->allByRecord ( 'SiteLogos', $id );
-		$this->deleteSet ( $model, $images );
+	protected function deleteLogo($id)
+	{
+		$model = Model::load('Images');
+		$images = $model->allByRecord('SiteLogos', $id);
+		$this->deleteSet($model, $images);
 
 		return $id;
 	}
 
-	protected function deleteCategories($id) {
+	protected function deleteCategories($id)
+	{
 		$this->deleteSet($model, $model->all(array(
 			'conditions' => array('site_id' => $this->id, 'parent_id' => null)
 		)));
@@ -542,10 +556,11 @@ class Sites extends AppModel
 		return $id;
 	}
 
-	protected function createRelation($created) {
+	protected function createRelation($created)
+	{
 		if ($created) {
-			Model::load ( 'UsersSites' )->add ( Auth::user (), $this );
-			Auth::user ()->site ( $this->id );
+			Model::load('UsersSites')->add(Auth::user(), $this);
+			Auth::user()->site($this->id);
 		}
 	}
 
@@ -556,76 +571,90 @@ class Sites extends AppModel
 				Model::load('Images')->delete($logo->id);
 			}
 
-			Model::load('Images')->upload(new SiteLogos($this->id), $this->data['logo'], array('visible' => 1));
+			Model::load('Images')->upload(new SiteLogos($this->id), $this->data['logo'],
+				array('visible' => 1));
 		}
 	}
 
-	protected function savePhoto() {
-		if (array_key_exists ( 'photo', $this->data )) {
-			foreach ( $this->data ['photo'] as $photo ) {
-				if ($photo ['error'] == 0) {
-					Model::load ( 'Images' )->upload ( new SitePhotos ( $this->id ), $photo );
+	protected function savePhoto()
+	{
+		if (array_key_exists('photo', $this->data)) {
+			foreach ($this->data['photo'] as $photo) {
+				if ($photo['error'] == 0) {
+					Model::load('Images')->upload(new SitePhotos($this->id), $photo);
 				}
 			}
 		}
 	}
 
-	protected function blacklist($value) {
-		$blacklist = Config::read ( 'Sites.blacklist' );
-		return ! in_array ( $value, $blacklist );
+	protected function blacklist($value)
+	{
+		$blacklist = Config::read('Sites.blacklist');
+		return !in_array($value, $blacklist);
 	}
 }
 
-class SiteLogos {
+class SiteLogos
+{
 	public $id;
 
-	public function __construct($id = null) {
+	public function __construct($id = null)
+	{
 		$this->id = $id;
 	}
 
-	public function resizes() {
-		$config = Config::read ( 'SiteLogos.resizes' );
-		if (is_null ( $config )) {
-			$config = array ();
+	public function resizes()
+	{
+		$config = Config::read('SiteLogos.resizes');
+		if (is_null($config)) {
+			$config = array();
 		}
 
 		return $config;
 	}
 
-	public function imageModel() {
+	public function imageModel()
+	{
 		return 'SiteLogos';
 	}
 
-	public function id() {
+	public function id()
+	{
 		return $this->id;
 	}
 }
 
-class SitePhotos {
+class SitePhotos
+{
 	public $id;
 
-	public function __construct($id = null) {
+	public function __construct($id = null)
+	{
 		$this->id = $id;
 	}
 
-	public function resizes() {
-		$config = Config::read ( 'SitePhotos.resizes' );
-		if (is_null ( $config )) {
-			$config = array ();
+	public function resizes()
+	{
+		$config = Config::read('SitePhotos.resizes');
+		if (is_null($config)) {
+			$config = array();
 		}
 
 		return $config;
 	}
 
-	public function imageModel() {
+	public function imageModel()
+	{
 		return 'SitePhotos';
 	}
 
-	public function firstById($id) {
-		return new self ( $id );
+	public function firstById($id)
+	{
+		return new self($id);
 	}
 
-	public function id() {
+	public function id()
+	{
 		return $this->id;
 	}
 }
