@@ -12,6 +12,8 @@ use SimplePie;
 
 class Rss extends Extensions
 {
+	const ARTICLES_TO_KEEP = 50;
+
 	protected $specification = array(
 		'title' => 'News feed - RSS',
 		'description' => 'Import content automatically from a RSS feed',
@@ -77,6 +79,11 @@ class Rss extends Extensions
 	public function updateArticles($entity)
 	{
 		$category = self::category($entity);
+		$stats = array(
+			'total_articles' => 0,
+			'total_images' => 0,
+			'failed_images' => 0,
+		);
 		$feed = $entity->getFeed();
 		$items = $feed->get_items();
 
@@ -85,16 +92,29 @@ class Rss extends Extensions
 				'parent_id' => $entity->category_id,
 				'guid' => $item->get_id()
 			)));
-			if (!$count) Articles::addToFeed($category, $item);
+			if (!$count) {
+				$article_stats = Articles::addToFeed($category, $item);
+				$stats['total_images'] += $article_stats['total_images'];
+				$stats['failed_images'] += $article_stats['failed_images'];
+				$stats['total_articles'] += 1;
+			}
 		}
 
-		$entity->cleanup();
+		$cleanup_stats = $entity->cleanup();
+		$stats['removed_articles'] = $cleanup_stats['removed_articles'];
 
 		$category->updated = date('Y-m-d H:i:s');
 		$category->save();
+
+		return $stats;
 	}
 
-	public function cleanup($entity) {
+	public function cleanup($entity)
+	{
+		$stats = array(
+			'removed_articles' => 0
+		);
+
 		$conditions = array(
 			'site_id' => $entity->site_id,
 			'parent_id' => $entity->category_id
@@ -102,17 +122,24 @@ class Rss extends Extensions
 
 		$count = Articles::find('count', array('conditions' => $conditions));
 
-		if ($count > 50) {
+		if ($count > self::ARTICLES_TO_KEEP) {
 			$ids = array_keys(Articles::find('list', array(
 				'conditions' => $conditions,
-				'limit' => $count - 50,
+				'limit' => $count - self::ARTICLES_TO_KEEP,
 				'order' => array('pubdate' => 'ASC')
 			)));
-			if ($ids) Articles::remove(array('_id' => $ids));
+
+			if ($ids) {
+				Articles::remove(array('_id' => $ids));
+				$stats['removed_articles'] = count($ids);
+			}
 		}
+
+		return $stats;
 	}
 
-	public function getFeed($entity) {
+	public function getFeed($entity)
+	{
 		$feed = new SimplePie();
 		$feed->enable_cache(false);
 		$feed->set_feed_url($entity->url);

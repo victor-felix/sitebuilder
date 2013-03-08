@@ -13,7 +13,8 @@ use HTMLPurifier_Config;
 use Filesystem;
 use app\models\Items;
 
-class Articles extends \app\models\Items {
+class Articles extends \app\models\Items
+{
 	protected $type = 'Article';
 
 	protected $fields = array(
@@ -35,24 +36,30 @@ class Articles extends \app\models\Items {
 		'gravatar.com'
 	);
 
-	public static function __init() {
+	public static function __init()
+	{
 		parent::__init();
 
 		$self = static::_object();
 		$parent = parent::_object();
 
 		$self->_schema = $parent->_schema + array(
-			'guid'  => array('type' => 'string', 'default' => ''),
-			'link'  => array('type' => 'string', 'default' => ''),
-			'pubdate'  => array('type' => 'date', 'default' => 0),
-			'description'  => array('type' => 'string', 'default' => ''),
-			'author'  => array('type' => 'string', 'default' => ''),
+			'guid' => array('type' => 'string', 'default' => ''),
+			'link' => array('type' => 'string', 'default' => ''),
+			'pubdate' => array('type' => 'date', 'default' => 0),
+			'description' => array('type' => 'string', 'default' => ''),
+			'author' => array('type' => 'string', 'default' => ''),
 		);
 	}
 
-	public static function addToFeed($feed, $item) {
-		//$log = KLogger::instance(Filesystem::path('log'));
+	public static function addToFeed($feed, $item)
+	{
 		$images = static::getArticleImages($item);
+		$stats = array(
+			'total_images' => 0,
+			'failed_images' => 0
+		);
+
 		//remove captions from description
 		$remove = array();
 		foreach ($images as $img) {
@@ -78,7 +85,7 @@ class Articles extends \app\models\Items {
 		$article = static::create($article);
 		$article->save();
 
-		foreach($images as $image) {
+		foreach ($images as $image) {
 			$imageAlt = '';
 			if (is_array($image)) {
 				$imageAlt = $image['alt'];
@@ -91,14 +98,11 @@ class Articles extends \app\models\Items {
 				'visible' => 1
 			));
 
-			if($result) {
-				//$log->logInfo('Downloaded image "%s" to "%s"', $image, $result);
-			}
-			else {
-				//$log->logInfo('Image "%s" could not be found', $image, $result);
-			}
+			if ($result) $stats['total_images'] += 1;
+			else $stats['failed_images'] += 1;
 		}
-		//$log->logInfo('Imported article "%s"', $article['guid']);
+
+		return $stats;
 	}
 
 	protected static function filterGuid($guid) {
