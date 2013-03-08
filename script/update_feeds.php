@@ -56,7 +56,7 @@ echo date('Y-m-d H:i:s') . ': Imported articles: ' . $stats['total_articles'] . 
 echo date('Y-m-d H:i:s') . ': Downloaded images: ' . $stats['total_images'] . PHP_EOL;
 echo date('Y-m-d H:i:s') . ': Removed articles: ' . $stats['removed_articles'] . PHP_EOL;
 echo date('Y-m-d H:i:s') . ': Failed image downloads: ' . $stats['failed_images'] . PHP_EOL;
-echo date('Y-m-d H:i:s') . ': Time (ms): ' . ($stats['end_time'] - $stats['start_time']) . PHP_EOL;
+echo date('Y-m-d H:i:s') . ': Time (s): ' . ($stats['end_time'] - $stats['start_time']) . PHP_EOL;
 
 fclose($pidfile);
 unlink($pidpath);
