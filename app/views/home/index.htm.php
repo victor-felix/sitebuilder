@@ -126,13 +126,13 @@
 				</ul>
 			</div>
 			<div class="span6">
-				<h2><span><?php echo s('Pro')?> </span><?php echo s('U$D <b>34/mo</b>')?></h2>
-				<p><?php echo s('for medium, multiple location business and online publishers')?></p>
+				<h2><span><?php echo s('Store Locator')?> </span><?php echo s('U$D <b>34/mo</b>')?></h2>
+				<p><?php echo s('for businesses with multiple locations')?></p>
 				
 				<ul>
 					<li><span class="icon"></span><?php echo s('<b>Basic information:</b><br>contacts, address, photos, social links, news via RSS')?></li>
 					<li><span class="icon"></span><?php echo s('additional content such as <b>menus, products, services</b>, etc.')?></li>
-					<li><span class="icon"></span><?php echo s('create a <b>store locator</b>, showing the locations nearest to your customer - up to 25 stores')?></li>
+					<li><span class="icon"></span><?php echo s('create a <b>store locator</b>, showing the locations nearest to your customer - <small>up to 25 stores</small>')?></li>
 				</ul>
 			</div>
 		</div>
