@@ -56,6 +56,16 @@ namespace :deploy do
     end
   end
 
+  namespace :cron do
+    task :start do
+      invoke_command "/etc/init.d/cron start", via: run_method
+    end
+
+    task :stop do
+      invoke_command "/etc/init.d/cron stop", via: run_method
+    end
+  end
+
   namespace :server do
     task :start do
       invoke_command "/etc/init.d/apache2 start", via: run_method
@@ -65,11 +75,17 @@ namespace :deploy do
       invoke_command "/etc/init.d/apache2 stop", via: run_method
     end
   end
+
+  task :wait do
+    run "flock -x #{shared_path}/tmp/update_feeds.pid -c echo"
+  end
 end
 
 after 'deploy:setup', 'deploy:shared_setup'
 after 'deploy:setup', 'deploy:environment'
 after 'deploy:setup', 'deploy:permissions'
+before 'deploy:update_code', 'deploy:cron:stop'
+before 'deploy:update_code', 'deploy:wait'
 before 'deploy:update_code', 'deploy:server:stop'
 after 'deploy:update_code', 'deploy:shared'
 after 'deploy:update_code', 'deploy:symlinks'
@@ -77,3 +93,4 @@ after 'deploy:update_code', 'deploy:cronfile'
 after 'deploy:update_code', 'deploy:db:migrate'
 after 'deploy:update_code', 'deploy:platform_check'
 after 'deploy:update_code', 'deploy:server:start'
+after 'deploy:update_code', 'deploy:cron:start'
