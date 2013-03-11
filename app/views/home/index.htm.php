@@ -116,27 +116,23 @@
 		<h3><?php echo s('Our plans and prices.')?></h3>
 		<div class="row">
 			<div class="span6">
-				<h2><span><?php echo s('Basic')?> </span><?php echo s('$ <b>9,90/mo</b>')?></h2>
-				<p><?php echo s('for professionals and small business')?></p>
+				<h2><span><?php echo s('Basic')?> </span><?php echo s('U$D <b>9/mo</b>')?></h2>
+				<p><?php echo s('create a mobile presence')?></p>
 				
 				<ul>
-					<li><span class="icon"></span><?php echo s('click-to-call, map & direction, RSS news')?></li>
-					<li><span class="icon"></span><?php echo s('<b>up to 10 items:</b> products, articles, locations')?></li>
-					<li><span class="icon"></span><?php echo s('<b>up to 3 items with extensions:</b> store locator and RSS feed')?></li>
-					<li><span class="icon"></span><?php echo s('custom domain - <b>m.yourbusiness.com</b>')?></li>
-					<li class="uncheck"><span class="icon"></span><?php echo s('more features? checkout Pro')?> ›</li>
+					<li><span class="icon"></span><?php echo s('<b>Basic information:</b><br>contacts, address, photos, social links, news via RSS')?></li>
+					<li><span class="icon"></span><?php echo s('additional content such as <b>menus, products, services</b>, etc.')?></li>
+					<li class="uncheck"><span class="icon"></span><?php echo s('add more location? get a Store Locator')?> ›</li>
 				</ul>
 			</div>
 			<div class="span6">
-				<h2><span><?php echo s('Pro')?> </span><?php echo s('$ <b>19,90/mo</b>')?></h2>
+				<h2><span><?php echo s('Pro')?> </span><?php echo s('U$D <b>34/mo</b>')?></h2>
 				<p><?php echo s('for medium, multiple location business and online publishers')?></p>
 				
 				<ul>
-					<li><span class="icon"></span><?php echo s('click-to-call, map & direction, RSS news')?></li>
-					<li><span class="icon"></span><?php echo s('<b>up to 100 items:</b> products, articles, locations')?></li>
-					<li><span class="icon"></span><?php echo s('<b>up to 10 items with extensions:</b> store locator and RSS feed')?></li>
-					<li><span class="icon"></span><?php echo s('custom domain - <b>m.yourbusiness.com</b>')?></li>
-					<li><span class="icon"></span><?php echo s('<b>web analytics</b> and more very soon!')?></li>
+					<li><span class="icon"></span><?php echo s('<b>Basic information:</b><br>contacts, address, photos, social links, news via RSS')?></li>
+					<li><span class="icon"></span><?php echo s('additional content such as <b>menus, products, services</b>, etc.')?></li>
+					<li><span class="icon"></span><?php echo s('create a <b>store locator</b>, showing the locations nearest to your customer - up to 25 stores')?></li>
 				</ul>
 			</div>
 		</div>

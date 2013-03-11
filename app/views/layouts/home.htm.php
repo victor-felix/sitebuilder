@@ -17,7 +17,7 @@
 			<div class="pull-right">
 				<p class="call pull-left">
 					<span><?php echo s('need convincing? call us')?></span>
-					<b><?php echo s('+55 21 4042.7270')?></b>
+					<b><?php echo s('+55 21 2499.3744')?></b>
 				</p>
 				<p class="login pull-left">
 					<?php echo $this->html->link(s('sign up now'), '/signup/user', array(

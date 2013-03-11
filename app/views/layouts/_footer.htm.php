@@ -17,7 +17,7 @@
 			</p>
 
 			<p>
-				<span><?php echo s('+55 21 4042.7270')?></span>	
+				<span><?php echo s('+55 21 2499.3744')?></span>	
 			</p>
 			</div>
 		</div>

@@ -88,7 +88,7 @@
 				</span>
 				<?php if(1 || $action == 'register'): ?>
 				<br>
-				<small><?php echo s('A map integrated with Google Maps will appear on your mobile site, allowing customers to easily find the address.<br/><br/>If your business has multiple locations, you´ll be able to add all addresses as items in a category.') ?></small>
+				<small><?php echo s('A map integrated with Google Maps will appear on your mobile site, allowing customers to easily find the address.<br/><br/>If your business has multiple locations, you\'ll be able to add all addresses as items in a category.') ?></small>
 				<?php endif ?>
 			</p>
 		</div>
