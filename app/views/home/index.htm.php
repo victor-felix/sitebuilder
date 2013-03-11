@@ -116,7 +116,7 @@
 		<h3><?php echo s('Our plans and prices.')?></h3>
 		<div class="row">
 			<div class="span6">
-				<h2><span><?php echo s('Basic')?> </span><?php echo s('U$D <b>9/mo</b>')?></h2>
+				<h2><span><?php echo s('Basic')?> </span><?php echo s('USD <b>9/mo</b>')?></h2>
 				<p><?php echo s('create a mobile presence')?></p>
 				
 				<ul>
@@ -126,7 +126,7 @@
 				</ul>
 			</div>
 			<div class="span6">
-				<h2><span><?php echo s('Store Locator')?> </span><?php echo s('U$D <b>34/mo</b>')?></h2>
+				<h2><span><?php echo s('Store Locator')?> </span><?php echo s('USD <b>34/mo</b>')?></h2>
 				<p><?php echo s('for businesses with multiple locations')?></p>
 				
 				<ul>

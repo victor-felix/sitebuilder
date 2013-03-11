@@ -16,7 +16,7 @@
                         <?php echo $this->form->input('image['.$image->id.'][title]', array(
                             'label' => false,
                             'class' => 'ui-text large',
-                        	'placeholder' => s('edit legend'),
+                        	'placeholder' => s('edit subtitle'),
                             'value' => $image->title
                         )) ?>
                     </div>
@@ -42,7 +42,7 @@
                 <?php echo $this->form->input('image[ID][title]', array(
                     'label' => false,
                     'class' => 'ui-text large',
-                	'placeholder' => s('edit legend'),
+                	'placeholder' => s('edit subtitle'),
                 )) ?>
             </div> 
 

@@ -295,7 +295,7 @@
 						)) ?>
 						<?php echo $this->form->input('image['.$image->id.'][title]', array(
 							'label' => false,
-							'placeholder' => s('edit legend'),
+							'placeholder' => s('edit subtitle'),
 							'class' => 'ui-text large',
 							'value' => $image->title
 						)) ?>
@@ -321,7 +321,7 @@
 				)) ?>
 				<?php echo $this->form->input('image[ID][title]', array(
 					'label' => false,
-					'placeholder' => s('edit legend'),
+					'placeholder' => s('edit subtitle'),
 					'class' => 'ui-text large'
 				)) ?>
 			</div>

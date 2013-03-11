@@ -60,7 +60,7 @@
 				<a href="<?php echo Mapper::url('/categories') ?>">
 					<span class="icon"></span>
 					<h3><?php echo s('manage other content')?></h3>
-					<small><?php echo s('you can add other content such as products and events')?></small>
+					<small><?php echo s('you can add a restaurant menu, products, services, etc')?></small>
 					<span class="arrow"></span>
 				</a>
 			</li>
