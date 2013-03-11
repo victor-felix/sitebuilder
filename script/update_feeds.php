@@ -16,6 +16,7 @@ $pidfile = fopen($pidpath, 'w+');
 if (!flock($pidfile, LOCK_EX | LOCK_NB)) exit();
 
 fwrite($pidfile, getmypid());
+fflush($pidfile);
 
 echo date('Y-m-d H:i:s') . ': Updating feeds...' . PHP_EOL;
 
