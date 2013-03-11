@@ -126,7 +126,7 @@
 				</ul>
 			</div>
 			<div class="span6">
-				<h2><span><?php echo s('Store Locator')?> </span><?php echo s('USD <b>34/mo</b>')?></h2>
+				<h2><span><?php echo s('Locator')?> </span><?php echo s('USD <b>34/mo</b>')?></h2>
 				<p><?php echo s('for businesses with multiple locations')?></p>
 				
 				<ul>
