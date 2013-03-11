@@ -1,6 +1,6 @@
 <fieldset>
 	<div class="grid-4 first">
-        <div class="tip">
+				<div class="tip">
 			<h2 class="greater"><?php echo s('Your business description') ?></h2>
 			<p>
 				<?php echo s('We need some basic information about your business to start shaping up your mobile website') ?>
@@ -11,9 +11,9 @@
 				<?php endif ?>
 			</p>
 		</div>
-    </div>
-    
-    <div class="grid-8"> 
+		</div>
+		
+		<div class="grid-8"> 
 		<div class="field-group">
 			<div class="form-grid-460 first">
 				<?php echo $this->form->input('title', array(
@@ -24,22 +24,22 @@
 			</div>
 			
 			<div class="form-grid-460 first">
-		        <?php if($site->logo()): ?>
-		            <?php echo $this->html->image($site->logo()->link('200x200'), array(
-		                'class' => 'logo'
-		            )) ?>
-		            <?php echo $this->html->link(s('delete logo'), '/images/delete/' . $site->logo()->id) ?>
-		        <?php endif ?>
-		        <div class="form-grid-460 first">
-		            <span class="optional"><?php echo s('Optional') ?></span>
-		            <?php echo $this->form->input('logo', array(
-		                'label' => s('Logo'),
-		                'type' => 'file',
-		                'class' => 'ui-text large'
-		            )) ?>
-		            <small><?php echo s('To improve appearence of logo on your mobi site, we recommend to use an image on GIF or PNG with transparent background. Max size 50kb') ?></small>
-		        </div>
-		    </div>
+						<?php if($site->logo()): ?>
+								<?php echo $this->html->image($site->logo()->link('200x200'), array(
+										'class' => 'logo'
+								)) ?>
+								<?php echo $this->html->link(s('delete logo'), '/images/delete/' . $site->logo()->id) ?>
+						<?php endif ?>
+						<div class="form-grid-460 first">
+								<span class="optional"><?php echo s('Optional') ?></span>
+								<?php echo $this->form->input('logo', array(
+										'label' => s('Logo'),
+										'type' => 'file',
+										'class' => 'ui-text large'
+								)) ?>
+								<small><?php echo s('To improve appearence of logo on your mobi site, we recommend to use an image on GIF or PNG with transparent background. Max size 50kb') ?></small>
+						</div>
+				</div>
 			
 			<div class="form-grid-460">
 				<span class="optional"><?php echo s('<span id="businessCounter" >500</span> left') ?></span>
@@ -79,7 +79,7 @@
 
 <fieldset id="business-address">
 	<div class="grid-4 first">
-        <div class="tip">
+				<div class="tip">
 			<h2><?php echo s('Location') ?></h2>
 			<p>
 				<img class="icon" src="/images/shared/sites/icon-location.png" />
@@ -92,10 +92,10 @@
 				<?php endif ?>
 			</p>
 		</div>
-    </div>
-    
-    <div class="grid-8">
-    	<div class="field-group">
+		</div>
+		
+		<div class="grid-8">
+			<div class="field-group">
 			<div class="form-grid-460 first">
 				<span class="optional"><?php echo s('Optional') ?></span>
 				<?php echo $this->form->input('street', array(
@@ -177,7 +177,7 @@
 
 <fieldset id="business-contact">
 	<div class="grid-4 first">
-        <div class="tip">
+				<div class="tip">
 			<h2><?php echo s('Contact Information') ?></h2>
 			<p>
 				<img class="icon" src="/images/shared/sites/icon-call.png" />
@@ -186,10 +186,10 @@
 				</span>
 			</p>
 		</div>
-    </div>
-    
-    <div class="grid-8"> 
-	    <div class="field-group">
+		</div>
+		
+		<div class="grid-8"> 
+			<div class="field-group">
 			<div class="form-grid-220 first">
 				<span class="optional"><?php echo s('Optional') ?></span>
 				<?php echo $this->form->input('phone', array(
@@ -217,12 +217,12 @@
 
 <fieldset>
 	<div class="grid-4 first">
-        <div class="tip">
+				<div class="tip">
 			<h2><?php echo s('Open hours') ?></h2>
 		</div>
-    </div>
-    
-    <div class="grid-8">
+		</div>
+		
+		<div class="grid-8">
 		<div class="field-group">
 			<div class="form-grid-460 first">
 				<span class="optional"><?php echo s('Optional') ?></span>
@@ -238,12 +238,12 @@
 
 <fieldset id="business-social">
 	<div class="grid-4 first">
-        <div class="tip">
+				<div class="tip">
 			<h2><?php echo s('Your links on web') ?></h2>
 		</div>
-    </div>
-    
-    <div class="grid-8">
+		</div>
+		
+		<div class="grid-8">
 		<div class="field-group">
 			<div class="form-grid-460 first">
 				<span class="optional"><?php echo s('Optional') ?></span>
@@ -280,12 +280,12 @@
 
 <fieldset id="business-photos">
 	<div class="grid-4 first">
-        <div class="tip">
+				<div class="tip">
 			<h2><?php echo s('Your business photos') ?></h2>
 		</div>
-    </div>
-    
-    <div class="grid-8">
+		</div>
+		
+		<div class="grid-8">
 		<div class="field-group">
 			<?php if($site->id && $images = $site->photos()): ?>
 				<?php foreach($images as $i => $image): $class = $i % 3 ? '' : 'first' ?>
