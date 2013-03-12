@@ -303,6 +303,7 @@ class Sites extends AppModel
 		$data['updated_at'] = $this->modified;
 		$data['description'] = nl2br($data['description']);
 		$data['webputty_token'] = $this->css_token;
+		$data['analytics_token'] = $this->google_analytics;
 
 		if ($logo = $this->logo()) {
 			$data['logo'] = $logo->link();
