@@ -38,8 +38,12 @@ class ValueParser {
 
                     list($field, $operator) = $field;
                     if(!is_array($param)):
-                        $sql []= $field . ' '. $operator . ' ?';
-                        $values []= $param;
+                        if(is_null($param) && $operator == '='):
+                            $sql []= $field . ' IS NULL';
+                        else:
+                            $sql []= $field . ' '. $operator . ' ?';
+                            $values []= $param;
+                        endif;
                     else:
                         $repeat = rtrim(str_repeat('?,', count($param)), ',');
                         $sql []= $field . ' IN(' . $repeat . ')';
@@ -50,10 +54,10 @@ class ValueParser {
                 $sql []= $param;
             endif;
         endforeach;
-        
+
         $logical = ' ' . strtoupper($logical) . ' ';
         $sql = implode($logical, $sql);
-       
+
         return array($values, $sql);
     }
     protected function field($field) {

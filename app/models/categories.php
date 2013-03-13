@@ -11,7 +11,7 @@ class Categories extends AppModel {
 	const MAX_IMPORTFILE_SIZE = 300;
 	protected $beforeSave = array('setOrder', 'getItemType');
 	protected $afterSave = array('importItems', 'updateParentTimestamps');
-	protected $beforeDelete = array('deleteChildren', 'updateOrders', 'updateParentTimestampsWhenDeleted');
+	protected $beforeDelete = array('deleteChildren', 'updateParentTimestampsWhenDeleted');
 	protected $defaultScope = array(
 		'order' => '`order` ASC'
 	);
@@ -107,96 +107,68 @@ class Categories extends AppModel {
 		return $data;
 	}
 
-	public function moveUp($steps = 1) {
-		$oldOrder = $this->order;
-		$previus = $this->findByOrder($oldOrder - $steps);
-
-		if (!$previus) {
-			return false;
-		}
-
-		$this->order = $previus->order;
-		$previus->order = $oldOrder;
-		if ($this->save() && $previus->save()) {
-			return $this->order;
-		}
+	public function moveUp()
+	{
+		$this->move('up');
 	}
 
-	public function moveDown($steps = 1) {
-		$oldOrder = $this->order;
-		$previus = $this->findByOrder($oldOrder + $steps);
-
-		if (!$previus) {
-			return false;
-		}
-
-		$this->order = $previus->order;
-		$previus->order = $oldOrder;
-		if ($this->save() && $previus->save()) {
-			return $this->order;
-		}
+	public function moveDown()
+	{
+		$this->move('down');
 	}
 
-	public function getFirst($parent_id = null, $site_id = null) {
-		$parent_id = $parent_id ? $parent_id : $this->parent_id;
-		$site_id = $site_id ? $site_id : $this->site_id;
+	protected function move($direction)
+	{
+		if ($direction == 'down') {
+			$conditionOrderField = '`order` >';
+			$order = '`order` ASC';
+			$factor = 1;
+		} elseif ($direction == 'up') {
+			$conditionOrderField = '`order` <';
+			$order = '`order` DESC';
+			$factor = -1;
+		}
 
-		$conditions = array(
-			'parent_id' => $parent_id,
-			'site_id' => $site_id,
-			'visibility >' => -1
-		);
-
-		return $this->first(array(
-			'conditions' => $conditions,
-			'order' => '`order` ASC',
+		$previous = $this->first(array(
+			'conditions' => array(
+				'parent_id' => $this->parent_id,
+				'site_id' => $this->site_id,
+				'visibility >' => -1,
+				$conditionOrderField => $this->order
+			),
+			'order' => $order
 		));
+
+		if ($previous) {
+			$this->order += $factor;
+			$previous->order = $this->order + ($factor * -1);
+			$this->save();
+			$previous->save();
+		}
 	}
 
-	public function getLast($parent_id = null, $site_id = null) {
-		$parent_id = $parent_id ? $parent_id : $this->parent_id;
-		$site_id = $site_id ? $site_id : $this->site_id;
-
-		$conditions = array(
+	protected function getHighestOrder($parent_id, $site_id)
+	{
+		$query = $this->connection()->read(array(
+			'table' => 'categories',
+			'conditions' => array(
 				'parent_id' => $parent_id,
 				'site_id' => $site_id,
 				'visibility >' => -1
-		);
+			),
+			'fields' => 'MAX(`order`) AS highest_order'
+		))->fetch();
+		$highest = (int) $query['highest_order'];
 
-		return $this->first(array(
-					'conditions' => $conditions,
-					'order' => '`order` DESC',
-				));
-	}
-
-	public function findByOrder($order) {
-		if (!(int)$order) {
-			return false;
-		}
-
-		$conditions = array(
-			'`order`' => $order,
-			'parent_id' => $this->parent_id,
-			'site_id' => $this->site_id,
-			'visibility >' => -1
-		);
-
-		return $this->first(array(
-					'conditions' => $conditions,
-					'order' => '`order` DESC',
-				));
+		return $highest + 1;
 	}
 
 	protected function setOrder($data)
 	{
 		if (!$this->id) {
-			$last = $this->getLast();
-			if ($last) {
-				$data['order'] = $last->order + 1;
-			} else {
-				$data['order'] = 1;
-			}
+			$data['order'] = $this->getHighestOrder($data['parent_id'], $data['site_id']);
 		}
+
 		return $data;
 	}
 
