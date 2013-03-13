@@ -456,7 +456,7 @@ class Sites extends AppModel
 		$domain = $custom ? $custom : $defaultDomain;
 
 		//update only if different
-		if ($this->data['domain'] != $domain) {
+		if (!isset($this->data['domain']) || $this->data['domain'] != $domain) {
 			$this->update(array(
 				'conditions' => array('id' => $this->id)
 			), array(
