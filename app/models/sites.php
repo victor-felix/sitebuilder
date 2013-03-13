@@ -569,7 +569,7 @@ class Sites extends AppModel
 
 	protected function saveLogo()
 	{
-		if (array_key_exists('logo', $this->data) && !$this->data['logo']['error']) {
+		if (isset($this->data['logo']) && !$this->data['logo']['error']) {
 			if ($logo = $this->logo()) {
 				Model::load('Images')->delete($logo->id);
 			}

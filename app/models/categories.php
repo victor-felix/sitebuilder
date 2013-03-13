@@ -137,45 +137,19 @@ class Categories extends AppModel {
 		}
 	}
 
-	public function resetOrder($siteId) {
-		$all = $this->all(array(
-				'conditions' => array (
-					'site_id' => $siteId,
-					'visibility >' => -1),
-				'order' => 'created'
-				) );
-
-		$foreignKeys = array();
-
-		foreach ($all as $item) {
-			if (!$item->parent_id) continue;
-			$foreignKeys[$item->parent_id][] = $item;
-		}
-
-		//TODO update all at once, not per item
-		foreach ($foreignKeys as $items) {
-			for ($i = 0; $i < count($items); $i++) {
-				$item = $items[$i];
-				$item->order = $i + 1;
-				$item->save();
-			}
-		}
-		return true;
-	}
-
 	public function getFirst($parent_id = null, $site_id = null) {
 		$parent_id = $parent_id ? $parent_id : $this->parent_id;
 		$site_id = $site_id ? $site_id : $this->site_id;
 
 		$conditions = array(
-				'parent_id' => $parent_id,
-				'site_id' => $site_id,
-				'visibility >' => -1
+			'parent_id' => $parent_id,
+			'site_id' => $site_id,
+			'visibility >' => -1
 		);
 
 		return $this->first(array(
-				'conditions' => $conditions,
-				'order' => '`order` ASC',
+			'conditions' => $conditions,
+			'order' => '`order` ASC',
 		));
 	}
 
@@ -213,7 +187,8 @@ class Categories extends AppModel {
 				));
 	}
 
-	protected function setOrder($data) {
+	protected function setOrder($data)
+	{
 		if (!$this->id) {
 			$last = $this->getLast();
 			if ($last) {
@@ -223,29 +198,6 @@ class Categories extends AppModel {
 			}
 		}
 		return $data;
-	}
-
-	protected function updateOrders($id)
-	{
-		$self = $this->firstById($id);
-		if ($self->parent_id && $self->visibility > -1) {
-			$conditions = array(
-				'`order` >' => $self->order,
-				'parent_id' => $self->parent_id,
-				'site_id' => $self->site_id,
-				'visibility >' => -1
-			);
-
-			$all = $this->all(compact('conditions'));
-			// TODO use update instead of looping all items
-			if ($all) {
-				foreach ($all as $item) {
-					$item->order = $item->order - 1;
-					$item->save();
-				}
-			}
-		}
-		return $id;
 	}
 
 	protected function getItemType($data) {
