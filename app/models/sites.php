@@ -551,6 +551,7 @@ class Sites extends AppModel
 
 	protected function deleteCategories($id)
 	{
+		$model = Model::load('Categories');
 		$this->deleteSet($model, $model->all(array(
 			'conditions' => array('site_id' => $this->id, 'parent_id' => null)
 		)));
