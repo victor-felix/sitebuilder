@@ -1,3 +1,3 @@
 [submodule "sitebuilder"]
 	path = sitebuilder
-	url = git@repos.ipanemax.com:meu-site-builder.git
+	url = git@git-repos.ipanemax.com:meu-site-builder.git
