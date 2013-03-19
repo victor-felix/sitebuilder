@@ -1,7 +1,7 @@
 load 'deploy' if respond_to?(:namespace)
 load 'sitebuilder/Capfile'
 
-set :repository, 'git@repos.ipanemax.com:partners.meumobi.git'
+set :repository, 'git@git-repos.ipanemax.com:partners.meumobi.git'
 set :user, 'meumobi'
 
 # production settings. do not change unless PROD env moves. if you need to
