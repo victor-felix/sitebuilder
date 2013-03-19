@@ -227,14 +227,16 @@ use GoogleGeocoding;
 
 use app\\models\\Items;
 
-class %{type} extends Items {
+class %{type} extends Items
+{
     protected $type = '%{type}';
 
     protected $fields = array(
       %{fields}
     );
 
-    public static function __init() {
+    public static function __init()
+    {
         parent::__init();
 
         $self = static::_object();
@@ -299,14 +301,68 @@ class %{type} extends Items {
       if yes?("use namespace? (y/n)")
         namespace = ask "namespace:"
         typename = options[:type] = namespace.humanize + typename.humanize
-        path = "app/models/items/#{typename}.php"
+        path = "app/models/items/#{typename.camelize}.php"
       else
-        path = "sitebuilder/app/models/items/#{typename}.php"
+        path = "sitebuilder/app/models/items/#{typename.camelize}.php"
       end
 
       create_file path, ItemTemplate % options
       say "Don't forget to enable this item type in a segment!"
 
+    end
+  end
+
+  class Extension < Thor
+    include Thor::Actions
+
+    ExtensionTemplate = <<-TEMPLATE
+<?php
+
+namespace app\\models\\extensions;
+
+use app\\models\\Extensions;
+
+class %{type} extends Extensions
+{
+  protected $specification = array(
+    'title' => '%{type}',
+    'description' => '',
+    'type' => '%{type}',
+    'allowed-items' => array('articles'),
+  );
+
+  protected $fields = array(
+    // put fields here
+    // 'url' => array(
+    //   'title' => 'Feed URL',
+    //   'type' => 'string'
+    // ),
+  );
+
+  public static function __init()
+  {
+    parent::__init();
+    $self = static::_object();
+    $parent = parent::_object();
+
+    $self->_schema = $parent->_schema + array(
+      // put fields here
+      // 'url' => array('type' => 'string', 'default' => ''),
+    );
+  }
+}
+
+%{type}::applyFilter('save', function($self, $params, $chain) {
+  return StoreLocator::addTimestampsAndType($self, $params, $chain);
+});
+    TEMPLATE
+
+    desc "create TYPENAME", "creates a new extension"
+    def create(typename)
+      path = "sitebuilder/app/models/extensions/#{typename.camelize}.php"
+      options = { type: typename.camelize }
+
+      create_file path, ExtensionTemplate % options
     end
   end
 end
