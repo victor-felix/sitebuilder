@@ -55,6 +55,7 @@ class MerchantProducts extends Items
 			'availability' => array('type' => 'string', 'default' => ''),
 			'link' => array('type' => 'string', 'default' => ''),
 			'product_type' => array('type' => 'string', 'default' => ''),
+			'product_id' => array('type' => 'string', 'default' => ''),
 		);
 	}
 }
