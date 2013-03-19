@@ -48,13 +48,13 @@ class MerchantProducts extends Items
 		$parent = parent::_object();
 
 		$self->_schema = $parent->_schema + array(
-			'title' => array('type' => 'string', 'default' => '')
-			'brand' => array('type' => 'string', 'default' => '')
-			'description' => array('type' => 'string', 'default' => '')
-			'price' => array('type' => 'string', 'default' => '')
-			'availability' => array('type' => 'string', 'default' => '')
-			'link' => array('type' => 'string', 'default' => '')
-			'product_type' => array('type' => 'string', 'default' => '')
+			'title' => array('type' => 'string', 'default' => ''),
+			'brand' => array('type' => 'string', 'default' => ''),
+			'description' => array('type' => 'string', 'default' => ''),
+			'price' => array('type' => 'string', 'default' => ''),
+			'availability' => array('type' => 'string', 'default' => ''),
+			'link' => array('type' => 'string', 'default' => ''),
+			'product_type' => array('type' => 'string', 'default' => ''),
 		);
 	}
 }
