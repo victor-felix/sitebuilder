@@ -16,14 +16,14 @@ class Rss extends Extensions
 
 	protected $specification = array(
 		'title' => 'News feed - RSS',
-		'description' => 'Import content automatically from a RSS feed',
+		'description' => 'Import content automatically from a news feed',
 		'type' => 'rss',
 		'allowed-items' => array('articles'),
 	);
 
 	protected $fields = array(
 		'url' => array(
-			'title' => 'URL of the RSS feed',
+			'title' => 'Feed URL',
 			'type' => 'string'
 		)
 	);
@@ -37,11 +37,6 @@ class Rss extends Extensions
 		$self->_schema = $parent->_schema + array(
 			'url' => array('type' => 'string', 'default' => ''),
 		);
-	}
-
-	public static function category($extension)
-	{
-		return Model::load('Categories')->firstById($extension->category_id);
 	}
 
 	public static function enable($extension)
@@ -59,7 +54,7 @@ class Rss extends Extensions
 		$category->save();
 	}
 
-	public static function saveRssCategory($self, $params, $chain)
+	public static function switchEnabledStatus($self, $params, $chain)
 	{
 		$extension = $params['entity'];
 		if ($extension->enabled) {
@@ -149,7 +144,7 @@ class Rss extends Extensions
 }
 
 Rss::applyFilter('save', function($self, $params, $chain) {
-	return Rss::saveRssCategory($self, $params, $chain);
+	return Rss::switchEnabledStatus($self, $params, $chain);
 });
 
 Rss::applyFilter('save', function($self, $params, $chain) {

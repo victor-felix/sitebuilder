@@ -1,13 +1,14 @@
 <?php
+
 namespace app\models\extensions;
 
 use app\models\Extensions;
 
-class StoreLocator extends Extensions {
-
+class StoreLocator extends Extensions
+{
 	protected $specification = array(
 		'title' => 'Store Locator',
-		'description' => 'a map interface for address listing',
+		'description' => 'A map interface for address listing',
 		'type' => 'store-locator',
 		'allowed-items' => array('business', 'stores', 'events'),
 	);
@@ -24,7 +25,8 @@ class StoreLocator extends Extensions {
 		)
 	);
 
-	public static function __init() {
+	public static function __init()
+	{
 		parent::__init();
 		$self = static::_object();
 		$parent = parent::_object();
