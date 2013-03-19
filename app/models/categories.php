@@ -176,7 +176,8 @@ class Categories extends AppModel
 	protected function setOrder($data)
 	{
 		if (!$this->id) {
-			$data['order'] = $this->getHighestOrder($data['parent_id'], $data['site_id']);
+			$parent_id = isset($data['parent_id']) ? $data['parent_id'] : null;
+			$data['order'] = $this->getHighestOrder($parent_id, $data['site_id']);
 		}
 
 		return $data;
