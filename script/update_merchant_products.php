@@ -50,49 +50,53 @@ if ($result['ok']) {
 	$feeds = $result['result'];
 
 	foreach ($feeds as $feed) {
-		$xml = new \SimpleXMLElement(file_get_contents($feed['_id']));
-		$xml->registerXPathNamespace('g', 'http://base.google.com/ns/1.0');
-		$products = $xml->xpath('channel/item');
+		try {
+			$xml = new \SimpleXMLElement(file_get_contents($feed['_id']));
+			$xml->registerXPathNamespace('g', 'http://base.google.com/ns/1.0');
+			$products = $xml->xpath('channel/item');
 
-		$categories = array_unique(array_map(function($category) {
-			return $category['category_id'];
-		}, $feed['categories']));
+			$categories = array_unique(array_map(function($category) {
+				return $category['category_id'];
+			}, $feed['categories']));
 
-		foreach ($categories as $category) {
-			\Model::load('Categories')->firstById($category)->removeItems();
-		}
+			foreach ($categories as $category) {
+				\Model::load('Categories')->firstById($category)->removeItems();
+			}
 
-		$categories = array_reduce($feed['categories'], function($categories, $category) {
-			$categories[$category['product_type']] []= $category['category_id'];
-			return $categories;
-		}, array());
+			$categories = array_reduce($feed['categories'], function($categories, $category) {
+				$categories[$category['product_type']] []= $category['category_id'];
+				return $categories;
+			}, array());
 
-		foreach ($products as $product) {
-			$type = (string) $product->xpath('g:product_type')[0];
+			foreach ($products as $product) {
+				$type = (string) $product->xpath('g:product_type')[0];
 
-			if (isset($categories[$type])) {
-				$attr = array(
-					'title' => (string) $product->xpath('title')[0],
-					'brand' => (string) $product->xpath('g:brand')[0],
-					'description' => (string) $product->xpath('description')[0],
-					'price' => (string) $product->xpath('g:price')[0],
-					'availability' => (string) $product->xpath('g:availability')[0],
-					'link' => (string) $product->xpath('link')[0],
-					'product_id' => (string) $product->xpath('g:mpn')[0],
-					'product_type' => $type
-				);
+				if (isset($categories[$type])) {
+					$attr = array(
+						'title' => (string) $product->xpath('title')[0],
+						'brand' => (string) $product->xpath('g:brand')[0],
+						'description' => (string) $product->xpath('description')[0],
+						'price' => (string) $product->xpath('g:price')[0],
+						'availability' => (string) $product->xpath('g:availability')[0],
+						'link' => (string) $product->xpath('link')[0],
+						'product_id' => (string) $product->xpath('g:mpn')[0],
+						'product_type' => $type
+					);
 
-				foreach ($categories[$type] as $category_id) {
-					$attr['parent_id'] = $category_id;
-					$obj = MerchantProducts::create($attr);
-					$obj->save();
+					foreach ($categories[$type] as $category_id) {
+						$attr['parent_id'] = $category_id;
+						$obj = MerchantProducts::create($attr);
+						$obj->save();
 
-					$result = Model::load('Images')->download($obj, (string) $product->xpath('g:image_link')[0], array(
-						'url' => (string) $product->xpath('g:image_link')[0],
-						'visible' => 1
-					));
+						$result = Model::load('Images')->download($obj, (string) $product->xpath('g:image_link')[0], array(
+							'url' => (string) $product->xpath('g:image_link')[0],
+							'visible' => 1
+						));
+					}
 				}
 			}
+		} catch (Exception $e) {
+			echo date('Y-m-d H:i:s') . ': Product update error: ' . $e->getMessage() . PHP_EOL;
 		}
 	}
 }
