@@ -123,7 +123,7 @@
 'Having a mobile optimized site is critical to <b>engage consumers across the multiple paths to purchase.</b>': '88%% dos usuários de smartphones do Brasil <b>procuram informações locais em seus celulares</b>.'
 'Hi, <b>%s</b>. <br/><br/>You have requested the reset of your MeuMobi password. In order to do that you should click on link below.': 'Oi, <b>%s>', <br/><br/>Você solicitou a recuperação da sua senha no MeuMobi. Para dar continuidade clique no link abaixo:
 'Hi, <b>%s</b>. <br/><br/>You''ve received this mail to confirm your MeuMobi Sign-up. Please click on link below to confirm your mail adress.': 'Oi, <b>%s>', <br/><br/>Você precisa confirmar seu cadastro no MeuMobi. Para dar continuidade clique no link abaixo para confirmar seu e-mail:'
-'A map integrated with Google Maps will appear on your mobile site, allowing customers to easily find the address.<br/><br/>If your business has multiple locations, you''ll be able to add all addresses as items in a category.': 'Um mapa integrado ao Google Maps aparecerá em seu site mobile, permitindo que seus clientes encontrem facilmente o endereço.<br><br>Se o seu negócio possui multiplas localidades, você poderá adicionar todos os endereços como itens de uma categoria.'
+'A map integrated with Google Maps will appear on your mobile site, allowing customers to easily find the address.<br /><br />If your business has multiple locations, you''ll be able to add all addresses as items in a category.': 'Um mapa integrado ao Google Maps aparecerá em seu site mobile, permitindo que seus clientes encontrem facilmente o endereço.<br><br>Se o seu negócio possui multiplas localidades, você poderá adicionar todos os endereços como itens de uma categoria.'
 'Import CSV file': 'Importar um arquivo CSV'
 'Import any content automatically from a RSS feed. Great for online publishers <b>(ex.: blogs, news site, online journals).</b>': 'Importe conteúdos de feeds RSS. Ideal para publicações online <b>(ex.: blogs, sites de notícias, jornais online, etc)</b>.'
 'Inclusive': 'Inclusivo'
@@ -316,3 +316,4 @@
 'manage other content': 'gerencie outros conteúdos'
 'you can add a restaurant menu, products, services, etc': 'você pode adicionar um cardápio, produtos, serviços, etc'
 'you can access anytime from your mobile phone': 'você pode acessar seu site através do endereço:'
+'dashboard': 'painel de controle'
