@@ -64,12 +64,15 @@ if ($result['ok']) {
 			}
 
 			$categories = array_reduce($feed['categories'], function($categories, $category) {
-				$categories[$category['product_type']] []= $category['category_id'];
+				$product_types = explode('|', mb_convert_case($category['product_type'], MB_CASE_LOWER, "UTF-8"));
+				foreach ($product_types as $product_type) {
+					$categories[$product_type] []= $category['category_id'];
+				}
 				return $categories;
 			}, array());
 
 			foreach ($products as $product) {
-				$type = (string) $product->xpath('g:product_type')[0];
+				$type = mb_convert_case((string) $product->xpath('g:product_type')[0], MB_CASE_LOWER, "UTF-8");
 
 				if (isset($categories[$type])) {
 					$attr = array(
