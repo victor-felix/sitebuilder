@@ -1,6 +1,7 @@
 <?php
 
 require dirname(__DIR__) . '/config/bootstrap.php';
+require dirname(__DIR__) . '/config/error_handler.php';
 
 use app\models\extensions\GoogleMerchantFeed;
 use app\models\items\MerchantProducts;
