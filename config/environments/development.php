@@ -1,8 +1,6 @@
 <?php
 
-set_error_handler(function($no, $str, $file, $line, $context) {
-	throw new Exception($str);
-}, -1);
+require dirname(dirname(__DIR__)) . '/sitebuilder/config/error_handler.php';
 
 ini_set('error_reporting', -1);
 ini_set('display_errors', 'On');
