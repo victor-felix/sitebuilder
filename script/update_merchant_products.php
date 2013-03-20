@@ -85,6 +85,8 @@ if ($result['ok']) {
 
 					foreach ($categories[$type] as $category_id) {
 						$attr['parent_id'] = $category_id;
+						$attr['site_id'] = Model::load('Categories')->firstById($category_id)->site_id;
+						$attr['type'] = 'merchant_products';
 						$obj = MerchantProducts::create($attr);
 						$obj->save();
 
