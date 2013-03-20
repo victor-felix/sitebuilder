@@ -25,12 +25,6 @@
 				<?php echo s($extension->specification('title'))?>
 				<span class="description"><?php echo s($extension->specification('description'))?></span>
 			</h3>
-			
-			<?php /* echo $this->form->input('enabled', array(
-				'type' => 'checkbox',
-				'label' => s('Enabled'),
-				'value' => 1
-			)) */?>
 		</div>
 	</div>
 </fieldset>

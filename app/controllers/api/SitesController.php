@@ -13,17 +13,9 @@ class SitesController extends ApiController
 	{
 		$site = $this->site()->toJSONPerformance();
 
-		$addressKeys = array('city', 'complement', 'zip', 'zone', 'street',
-			'latitude', 'longitude', 'number');
-		$address = array_intersect_key($this->site()->data, array_flip($addressKeys));
-		$address['country'] = $this->site()->country();
-		$address['state'] = $this->site()->state();
-
 		$businessKeys = array('email', 'facebook', 'twitter', 'phone',
-			'website', 'timetable');
+			'website', 'timetable', 'address', 'latitude', 'longitude');
 		$business = array_intersect_key($this->site()->data, array_flip($businessKeys));
-		if (array_filter($address)) $business['address'] = $address;
-		else $business['address'] = null;
 
 		$categoryKeys = array('id', 'title', 'type');
 		$extensionKeys = array('url', 'language', 'itemLimit', 'extension');

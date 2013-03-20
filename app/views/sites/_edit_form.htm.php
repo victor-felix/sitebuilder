@@ -101,77 +101,10 @@
 		<div class="field-group">
 			<div class="form-grid-460 first">
 				<span class="optional"><?php echo s('Optional') ?></span>
-				<?php echo $this->form->input('street', array(
-					'label' => s('Street'),
-					'type' => 'text',
-					'class' => 'ui-text large'
-				)) ?>
-			</div>
-
-			<div class="form-grid-220 first">
-				<span class="optional"><?php echo s('Optional') ?></span>
-				<?php echo $this->form->input('number', array(
-					'label' => s('Number'),
-					'type' => 'text',
-					'class' => 'ui-text'
-				)) ?>
-			</div>
-
-			<div class="form-grid-220">
-				<span class="optional"><?php echo s('Optional') ?></span>
-				<?php echo $this->form->input('complement', array(
-					'label' => s('Complement'),
-					'type' => 'text',
-					'class' => 'ui-text'
-				)) ?>
-			</div>
-
-			<div class="form-grid-460 first">
-				<span class="optional"><?php echo s('Optional') ?></span>
-				<?php echo $this->form->input('zone', array(
-					'label' => s('District'),
-					'type' => 'text',
-					'class' => 'ui-text large'
-				)) ?>
-			</div>
-
-			<div class="form-grid-220 first">
-				<span class="optional"><?php echo s('Optional') ?></span>
-				<?php echo $this->form->input('country_id', array(
-					'label' => s('Country'),
-					'type' => 'select',
-					'empty' => array(''),
-					'options' => $countries,
-					'class' => 'ui-select'
-				)) ?>
-			</div>
-
-			<div class="form-grid-220">
-				<span class="optional"><?php echo s('Optional') ?></span>
-				<?php echo $this->form->input('state_id', array(
-					'label' => s('State'),
-					'type' => 'select',
-					'class' => 'ui-select',
-					'options' => $states,
-					'empty' => array('')
-				)) ?>
-			</div>
-
-			<div class="form-grid-220 first">
-				<span class="optional"><?php echo s('Optional') ?></span>
-				<?php echo $this->form->input('city', array(
-					'label' => s('City'),
-					'type' => 'text',
-					'class' => 'ui-text'
-				)) ?>
-			</div>
-
-			<div class="form-grid-220">
-				<span class="optional"><?php echo s('Optional') ?></span>
-				<?php echo $this->form->input('zip', array(
-					'label' => s('zip'),
-					'type' => 'text',
-					'class' => 'ui-text'
+				<?php echo $this->form->input('address', array(
+					'label' => s('Address'),
+					'type' => 'textarea',
+					'class' => 'ui-textarea large'
 				)) ?>
 			</div>
 		</div>

@@ -167,26 +167,6 @@ class Sites extends AppModel
 		return 'http://' . $this->domain;
 	}
 
-	public function country($id = false, $code = false)
-	{
-		$id = $id ? $id : $this->country_id;
-
-		if (!$id) return;
-		if (!$country = Model::load('Countries')->firstById($id)) return;
-
-		return $code ? $country->tld : $country->name;
-	}
-
-	public function state($id = false)
-	{
-		$id = $id ? $id : $this->state_id;
-
-		if (!$id) return;
-		if (!$state = Model::load('States')->firstById($id)) return;
-
-		return $state->name;
-	}
-
 	public function categories()
 	{
 		return Model::load('Categories')->all(array(
@@ -337,20 +317,6 @@ class Sites extends AppModel
 			$data['photos'] []= $photo->toJSON();
 		}
 
-		if ($this->country_id) {
-			$country = Model::load('Countries')->firstById($this->country_id)->name;
-			$data['country'] = $country;
-		} else {
-			$data['country'] = '';
-		}
-
-		if ($this->state_id) {
-			$state = Model::load('States')->firstById($this->state_id)->name;
-			$data['state'] = $state;
-		} else {
-			$data['state'] = '';
-		}
-
 		$data ['description'] = nl2br($data ['description']);
 
 		return $data;
@@ -467,34 +433,24 @@ class Sites extends AppModel
 
 	protected function getLatLng($data)
 	{
-		if (array_key_exists('street', $data)) {
+		if (array_key_exists('address', $data)) {
 			if ($this->id) {
 				$original = $this->firstById($this->id);
 
-				if ($original->street == $data['street']) {
+				if ($original->address == $data['address']) {
 					return $data;
 				}
 			}
 
-			if (empty($data['street'])) {
+			if (empty($data['address'])) {
 				$data['latitude'] = $data['longitude'] = null;
 			} else {
 				try {
-					$address = String::insert(':street, :number, :city - :state, :country', array(
-						'street' => $data['street'],
-						'number' => $data['number'],
-						'city' => $data['city'],
-						'state' => $this->state($data['state_id']),
-						'country' => $this->country($data['country_id'])
-					));
-
-					$region = $this->country($data['country_id'], true);
-
-					$geocode = GoogleGeocoding::geocode($address, $region);
+					$geocode = GoogleGeocoding::geocode($data['address']);
 					$location = $geocode->results[0]->geometry->location;
 					$data['latitude'] = $location->lat;
 					$data['longitude'] = $location->lng;
-				} catch (Exception $e) {
+				} catch (GeocodingException $e) {
 					$data['latitude'] = $data['longitude'] = null;
 				}
 			}

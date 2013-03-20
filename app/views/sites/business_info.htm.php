@@ -15,9 +15,7 @@
 
 	<?php echo $this->element('sites/edit_form', array(
 		'action' => 'edit',
-		'site' => $site,
-		'countries' => $countries,
-		'states' => $states
+		'site' => $site
 	)) ?>
 
 	<?php echo $this->element('sites/extended_form', array(

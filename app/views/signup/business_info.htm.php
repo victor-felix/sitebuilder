@@ -10,9 +10,7 @@
 
 	<?php echo $this->element('sites/edit_form', array(
 		'action' => 'register',
-		'site' => $site,
-		'countries' => $countries,
-		'states' => $states
+		'site' => $site
 	)) ?>
 
 	<fieldset class="actions">

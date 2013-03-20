@@ -1,76 +1,79 @@
 <?php
 
-class GoogleGeocoding {
-    const REGION = 'br';
-    const FORMAT = 'json';
-    const LANGUAGE = 'pt-BR';
-    const SENSOR = 'false';
-	static $CURRENT_URL = 0;
-    
-    public static function geocode($address,$region = self::REGION) {
-        $query = http_build_query(array(
-            'region' => $region,
-            //'language' => self::LANGUAGE,
-            'sensor' => self::SENSOR,
-            'address' => $address
-        ));
-        $url = self::geocodeUrl() . '/maps/api/geocode/' . self::FORMAT . '?' . $query;
+class GoogleGeocoding
+{
+	const REGION = 'br';
+	const LANGUAGE = 'pt-BR';
+	const SENSOR = 'false';
 
-        $log = \KLogger::instance(\Filesystem::path('log'));
-        $log->logInfo('Geocode Request: %s', $url);
-		
-        $request = self::request($url);
-        if ($request->status == 'OVER_QUERY_LIMIT' && self::geocodeUrl(true)) {
-        	$request = self::geocode($address, $region);
-        }
-        return $request;
-    }
-	
-    protected static function geocodeUrl($goNext = null)
-    {
-    	$urls = Config::read('Geocode.urls');
-    	
-    	if ($urls) {
-    		$urls = (array) $urls;
-    		//set new url
-    		if ($goNext) { 
-    			$next = self::$CURRENT_URL + 1;
-    			if (isset($urls[$next])) {
-    				self::$CURRENT_URL = $next;
-    				
-    				$log = \KLogger::instance(\Filesystem::path('log'));
-    				$log->logInfo('Change geocode url to: %s', $urls[self::$CURRENT_URL]);
-    				
-    			} else {
-    				return false;
-    			}
-    		}
-    		
-    		$url = $urls[self::$CURRENT_URL];
-    	} else if ($goNext) {
-    		return false;
-    	} else {
-    		$url = 'http://maps.googleapis.com';
-    	}
-    	
-    	return $url;
-    }
-    
-    protected static function request($url) {
-        $remote = curl_init($url);
-        curl_setopt($remote, CURLOPT_HEADER, 0);
-        curl_setopt($remote, CURLOPT_RETURNTRANSFER, true);
-        $data = curl_exec($remote);
-        curl_close($remote);
+	protected static $geocodeUrls;
+	protected static $currentUrl = 0;
 
-        $log = \KLogger::instance(\Filesystem::path('log'));
-        $log->logInfo('Geocode Response: %s', $data);
+	public static function geocode($address, $region = self::REGION, $try_again = true)
+	{
+		$query = http_build_query(array(
+			'region' => $region,
+			'language' => self::LANGUAGE,
+			'sensor' => self::SENSOR,
+			'address' => $address
+		));
 
-        $json = json_decode($data);
-        /*if($json->status != 'OK' || empty($json->results)) {
-            throw new Exception('could not find results');
-        }*/
+		try {
+			return self::request(self::geocodeUrl() . '/maps/api/geocode/json?' . $query);
+		} catch (OverQueryLimitException $e) {
+			if ($try_again) {
+				self::updateGeocodeUrl();
+				return self::geocode($address, $region, false);
+			} else {
+				throw new GeocodingException('query timed out');
+			}
+		}
+	}
 
-        return $json;
-    }
+	protected static function updateGeocodeUrl()
+	{
+		self::$currentUrl = (self::$currentUrl + 1) % count(self::$geocodeUrls);
+		$log = \KLogger::instance(\Filesystem::path('log'));
+		$log->logInfo('Change geocode url to: %s', self::geocodeUrl());
+	}
+
+	protected static function geocodeUrl($goNext = null)
+	{
+		if (!self::$geocodeUrls) {
+			self::$geocodeUrls = (array) Config::read('Geocode.urls');
+		}
+
+		if (empty(self::$geocodeUrls)) {
+			self::$geocodeUrls []= 'http://maps.googleapis.com';
+		}
+
+		return self::$geocodeUrls[self::$currentUrl];
+	}
+
+	protected static function request($url)
+	{
+		$remote = curl_init($url);
+		curl_setopt($remote, CURLOPT_HEADER, 0);
+		curl_setopt($remote, CURLOPT_RETURNTRANSFER, true);
+		$data = curl_exec($remote);
+		curl_close($remote);
+
+		$log = \KLogger::instance(\Filesystem::path('log'));
+		$log->logInfo('Geocode Request: %s', $url);
+		$log->logInfo('Geocode Response: %s', $data);
+
+		$json = json_decode($data);
+
+		if ($json->status == 'OK' && !empty($json->results)) {
+			return $json;
+		} elseif ($json->status == 'OVER_QUERY_LIMIT') {
+			throw new OverQueryLimitException('query limit exceeded');
+		} else {
+			throw new GeocodingException('could not find results');
+		}
+	}
 }
+
+class OverQueryLimitException extends Exception {}
+
+class GeocodingException extends Exception {}
