@@ -18,7 +18,6 @@ Config::write('SiteLogos.resizes', array('200x200'));
 Config::write('SitePhotos.resizes', array('139x139#', '314x220'));
 Config::write('BusinessItems.resizes', array('80x60#', '80x80#', '139x139#', '314x220'));
 
-Config::write('multiInstances', 1);
 $dir = new GlobIterator(__DIR__ . '/segments/*.php');
 foreach($dir as $file) {
     if($file->isFile()) {
