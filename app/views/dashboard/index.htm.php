@@ -1,6 +1,6 @@
 <?php 
 	$currentSite = Auth::user()->site();
-	$this->pageTitle = s('Dashboard');
+	$this->pageTitle = s('dashboard');
 ?>
 <div class="page-heading">
 	<div class="grid-4 first">&nbsp;</div>

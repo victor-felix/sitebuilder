@@ -96,38 +96,6 @@ class SitesController extends AppController
 		$this->redirect('/');
 	}
 
-	public function preview($theme = '', $skin = '')
-	{
-		$this->autoRender = false;
-		$site = $this->getCurrentSite();
-		$url = 'http://santacasajf.meumobi.com';
-
-		//check if has params, if not use the current site
-		if (!$theme || !$skin) {
-			$theme = $site->theme;
-			$skin = $site->skin;
-		}
-
-		$opts = array(
-			'http' => array(
-				'method' => 'GET',
-				'user_agent' => $_SERVER['HTTP_USER_AGENT'],
-				'header' => "Accept-language: {$_SERVER['HTTP_ACCEPT_LANGUAGE']}"
-			)
-		);
-
-		if ($source = file_get_contents($url, false, stream_context_create($opts))) {
-			$doc = new DOMDocument();
-			$doc->loadHTML($source);
-			$headTag = $doc->getElementsByTagName('head')->item(0);
-			$baseTag = $doc->createElement("base");
-			$baseTag->setAttribute('href', $url);
-			$baseTag->setAttribute('target', '_blank');
-			$headTag->insertBefore($baseTag, $headTag->firstChild);
-			echo $doc->saveHTML();
-		}
-	}
-
 	//TODO  Need to create a script, not a action, to perform this
 	public function regenerate_domains($previusDomainToBeReplaced = false, $segment = false)
 	{

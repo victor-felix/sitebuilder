@@ -119,20 +119,6 @@ class CategoriesController extends AppController
 		}
 	}
 
-	public function reorder()
-	{
-		Model::load('Categories')->resetOrder($this->getCurrentSite()->id);
-		$status = 'success';
-		$message = s('Categories were reordered successfully');
-		if ($this->isXhr()) {
-			$json = array($status => $message);
-			$this->respondToJSON($json);
-		} else {
-			Session::writeFlash($status, $message);
-			$this->redirect('/categories');
-		}
-	}
-
 	public function moveup($id = null)
 	{
 		Model::load('Categories')->firstById($id)->moveUp();

@@ -3,6 +3,7 @@
 namespace app\models;
 
 use meumobi\sitebuilder\Extension;
+use Model;
 use Inflector;
 
 class Extensions extends \lithium\data\Model
@@ -63,7 +64,12 @@ class Extensions extends \lithium\data\Model
 	}
 
 	public function parent($entity) {
-		return \Model::load('Categories')->firstById($entity->category_id);
+		return Model::load('Categories')->firstById($entity->category_id);
+	}
+
+	public static function category($extension)
+	{
+		return Model::load('Categories')->firstById($extension->category_id);
 	}
 
 	public static function addTimestampsAndType($self, $params, $chain)

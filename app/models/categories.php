@@ -2,16 +2,19 @@
 
 require_once 'lib/utils/Works/Import.php';
 require_once 'lib/utils/FileUpload.php';
+require_once 'lib/mailer/Mailer.php';
 
 use app\models\Extensions;
 use app\models\Items;
 use utils\Import;
 
-class Categories extends AppModel {
+class Categories extends AppModel
+{
 	const MAX_IMPORTFILE_SIZE = 300;
 	protected $beforeSave = array('setOrder', 'getItemType');
 	protected $afterSave = array('importItems', 'updateParentTimestamps');
-	protected $beforeDelete = array('deleteChildren', 'updateOrders', 'updateParentTimestampsWhenDeleted');
+	protected $beforeDelete = array('deleteChildren',
+		'updateParentTimestampsWhenDeleted');
 	protected $defaultScope = array(
 		'order' => '`order` ASC'
 	);
@@ -28,16 +31,18 @@ class Categories extends AppModel {
 		),
 	);
 
-	public function __construct($data = array()) {
+	public function __construct($data = array())
+	{
 		parent::__construct($data);
 
-		if(is_null($this->id) && !isset($this->data['visibility'])) {
+		if (is_null($this->id) && !isset($this->data['visibility'])) {
 			$this->data['visibility'] = true;
 			$this->data['populate'] = 'manual';
 		}
 	}
 
-	public function childrenItems($limit = null) {
+	public function childrenItems($limit = null)
+	{
 		$type = Inflector::underscore($this->type);
 		$classname = '\app\models\items\\' . Inflector::camelize($type);
 
@@ -51,17 +56,19 @@ class Categories extends AppModel {
 		return $this->populate == 'auto';
 	}
 
-	public function childrenCount() {
+	public function childrenCount()
+	{
 		return Items::find('count', array('conditions' => array(
 			'parent_id' => $this->id
 		)));
 	}
 
-	public function breadcrumbs() {
+	public function breadcrumbs()
+	{
 		$parent_id = $this->parent_id;
 		$breadcrumbs = array($this);
 
-		while($parent_id > 0) {
+		while ($parent_id > 0) {
 			$category = $this->firstById($parent_id);
 			$breadcrumbs []= $category;
 			$parent_id = $category->parent_id;
@@ -77,10 +84,11 @@ class Categories extends AppModel {
 		}
 	}
 
-	public function recursiveById($id, $depth) {
+	public function recursiveById($id, $depth)
+	{
 		$results = array($this->firstById($id));
 
-		if($depth > 0) {
+		if ($depth > 0) {
 			$children = $this->recursiveByParentId($id, $depth - 1);
 			$results = array_merge($results, $children);
 		}
@@ -88,11 +96,12 @@ class Categories extends AppModel {
 		return $results;
 	}
 
-	public function recursiveByParentId($parent_id, $depth) {
+	public function recursiveByParentId($parent_id, $depth)
+	{
 		$results = $this->allByParentIdAndVisibility($parent_id, 1);
 
-		if($depth > 0) {
-			foreach($results as $result) {
+		if ($depth > 0) {
+			foreach ($results as $result) {
 				$children = $this->recursiveByParentId($result->id, $depth - 1);
 				$results = array_merge($results, $children);
 			}
@@ -101,159 +110,86 @@ class Categories extends AppModel {
 		return $results;
 	}
 
-	public function toJSON() {
+	public function toJSON()
+	{
 		$data = $this->data;
 		$data['items_count'] = $this->childrenCount();
 		return $data;
 	}
 
-	public function moveUp($steps = 1) {
-		$oldOrder = $this->order;
-		$previus = $this->findByOrder($oldOrder - $steps);
-
-		if (!$previus) {
-			return false;
-		}
-
-		$this->order = $previus->order;
-		$previus->order = $oldOrder;
-		if ($this->save() && $previus->save()) {
-			return $this->order;
-		}
+	public function moveUp()
+	{
+		$this->move('up');
 	}
 
-	public function moveDown($steps = 1) {
-		$oldOrder = $this->order;
-		$previus = $this->findByOrder($oldOrder + $steps);
-
-		if (!$previus) {
-			return false;
-		}
-
-		$this->order = $previus->order;
-		$previus->order = $oldOrder;
-		if ($this->save() && $previus->save()) {
-			return $this->order;
-		}
+	public function moveDown()
+	{
+		$this->move('down');
 	}
 
-	public function resetOrder($siteId) {
-		$all = $this->all(array(
-				'conditions' => array (
-					'site_id' => $siteId,
-					'visibility >' => -1),
-				'order' => 'created'
-				) );
-
-		$foreignKeys = array();
-
-		foreach ($all as $item) {
-			if (!$item->parent_id) continue;
-			$foreignKeys[$item->parent_id][] = $item;
+	protected function move($direction)
+	{
+		if ($direction == 'down') {
+			$conditionOrderField = '`order` >';
+			$order = '`order` ASC';
+			$factor = 1;
+		} elseif ($direction == 'up') {
+			$conditionOrderField = '`order` <';
+			$order = '`order` DESC';
+			$factor = -1;
 		}
 
-		//TODO update all at once, not per item
-		foreach ($foreignKeys as $items) {
-			for ($i = 0; $i < count($items); $i++) {
-				$item = $items[$i];
-				$item->order = $i + 1;
-				$item->save();
-			}
-		}
-		return true;
-	}
-
-	public function getFirst($parent_id = null, $site_id = null) {
-		$parent_id = $parent_id ? $parent_id : $this->parent_id;
-		$site_id = $site_id ? $site_id : $this->site_id;
-
-		$conditions = array(
-				'parent_id' => $parent_id,
-				'site_id' => $site_id,
-				'visibility >' => -1
-		);
-
-		return $this->first(array(
-				'conditions' => $conditions,
-				'order' => '`order` ASC',
+		$previous = $this->first(array(
+			'conditions' => array(
+				'parent_id' => $this->parent_id,
+				'site_id' => $this->site_id,
+				'visibility >' => -1,
+				$conditionOrderField => $this->order
+			),
+			'order' => $order
 		));
+
+		if ($previous) {
+			$this->order += $factor;
+			$previous->order = $this->order + ($factor * -1);
+			$this->save();
+			$previous->save();
+		}
 	}
 
-	public function getLast($parent_id = null, $site_id = null) {
-		$parent_id = $parent_id ? $parent_id : $this->parent_id;
-		$site_id = $site_id ? $site_id : $this->site_id;
-
-		$conditions = array(
+	protected function getHighestOrder($parent_id, $site_id)
+	{
+		$query = $this->connection()->read(array(
+			'table' => 'categories',
+			'conditions' => array(
 				'parent_id' => $parent_id,
 				'site_id' => $site_id,
 				'visibility >' => -1
-		);
+			),
+			'fields' => 'MAX(`order`) AS highest_order'
+		))->fetch();
+		$highest = (int) $query['highest_order'];
 
-		return $this->first(array(
-					'conditions' => $conditions,
-					'order' => '`order` DESC',
-				));
+		return $highest + 1;
 	}
 
-	public function findByOrder($order) {
-		if (!(int)$order) {
-			return false;
-		}
-
-		$conditions = array(
-			'`order`' => $order,
-			'parent_id' => $this->parent_id,
-			'site_id' => $this->site_id,
-			'visibility >' => -1
-		);
-
-		return $this->first(array(
-					'conditions' => $conditions,
-					'order' => '`order` DESC',
-				));
-	}
-
-	protected function setOrder($data) {
+	protected function setOrder($data)
+	{
 		if (!$this->id) {
-			$last = $this->getLast();
-			if ($last) {
-				$data['order'] = $last->order + 1;
-			} else {
-				$data['order'] = 1;
-			}
+			$parent_id = isset($data['parent_id']) ? $data['parent_id'] : null;
+			$data['order'] = $this->getHighestOrder($parent_id, $data['site_id']);
 		}
+
 		return $data;
 	}
 
-	protected function updateOrders($id)
+	protected function getItemType($data)
 	{
-		$self = $this->firstById($id);
-		if ($self->parent_id && $self->visibility > -1) {
-			$conditions = array(
-				'`order` >' => $self->order,
-				'parent_id' => $self->parent_id,
-				'site_id' => $self->site_id,
-				'visibility >' => -1
-			);
-
-			$all = $this->all(compact('conditions'));
-			// TODO use update instead of looping all items
-			if ($all) {
-				foreach ($all as $item) {
-					$item->order = $item->order - 1;
-					$item->save();
-				}
-			}
-		}
-		return $id;
-	}
-
-	protected function getItemType($data) {
-		if(is_null($this->id)) {
+		if (is_null($this->id)) {
 			$site = Model::load('Sites')->firstById($this->site_id);
 			$items = (array) $site->itemTypes();
 
-			if(!array_key_exists('type', $data) || !in_array($data['type'], $items)) {
+			if (!array_key_exists('type', $data) || !in_array($data['type'], $items)) {
 				$data['type'] = $items[0];
 			}
 		}
@@ -261,10 +197,11 @@ class Categories extends AppModel {
 		return $data;
 	}
 
-	protected function importItems($created) {
+	protected function importItems($created)
+	{
 		if (isset($this->data['import']) && is_uploaded_file($this->data['import']['tmp_name'])) {
 			$fileSize = $this->data['import']['size'];
-			if($fileSize && self::MAX_IMPORTFILE_SIZE < ($fileSize / 1024)
+			if ($fileSize && self::MAX_IMPORTFILE_SIZE < ($fileSize / 1024)
 				&& $this->scheduleImport()) {
 					return $this->save();
 			}
@@ -279,11 +216,11 @@ class Categories extends AppModel {
 
 	protected function scheduleImport()
 	{
-		if (!Import::check('import')) {
-			return false;
-		}
+		if (!Import::check('import')) return false;
+
 		$uploader = new FileUpload();
 		$uploader->path = APP_ROOT . '/public/uploads/imports';
+
 		try {
 			$importFile = $uploader->upload($this->data['import'], Security::hash(time()) . '_:original_name');
 
@@ -305,17 +242,16 @@ class Categories extends AppModel {
 			} else {
 				throw new Exception('Can\'t import file');
 			}
-
 		} catch (Exception $e) {
 			Session::writeFlash('error', s('Sorry, can\'t import category'.$e->getMessage()));
 			return false;
 		}
 	}
 
-	protected function sendImportMail($params = array()) {
-		if (!Config::read ( 'Mail.preventSending' )) {
-			require_once 'lib/mailer/Mailer.php';
-			$segment = Model::load ( 'Segments' )->firstById (MeuMobi::segment());
+	protected function sendImportMail($params = array())
+	{
+		if (!Config::read('Mail.preventSending')) {
+			$segment = Model::load('Segments')->firstById(MeuMobi::segment());
 			$user = Auth::user();
 			$default = array(
 				'user' => $user,
@@ -324,15 +260,15 @@ class Categories extends AppModel {
 			);
 			$data = array_merge($default, $params);
 
-			$mailer = new Mailer (array (
+			$mailer = new Mailer(array (
 				'from' => $segment->email,
-				'to' => array($user->email => $user->fullname ()),
+				'to' => array($user->email => $user->fullname()),
 				'subject' => $data['title'],
-				'views' => array ('text/html' => 'categories/confirm_import_mail.htm'),
+				'views' => array('text/html' => 'categories/confirm_import_mail.htm'),
 				'layout' => 'mail',
 				'data' => $data,
 			));
-			return $mailer->send ();
+			return $mailer->send();
 		}
 	}
 
@@ -377,7 +313,7 @@ class Categories extends AppModel {
 			'parent_id' => $id
 		)));
 
-		foreach($items as $item) {
+		foreach ($items as $item) {
 			Items::remove(array('_id' => $item->id()));
 		}
 	}

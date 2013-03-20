@@ -303,6 +303,7 @@ class Sites extends AppModel
 		$data['updated_at'] = $this->modified;
 		$data['description'] = nl2br($data['description']);
 		$data['webputty_token'] = $this->css_token;
+		$data['analytics_token'] = $this->google_analytics;
 
 		if ($logo = $this->logo()) {
 			$data['logo'] = $logo->link();
@@ -455,7 +456,7 @@ class Sites extends AppModel
 		$domain = $custom ? $custom : $defaultDomain;
 
 		//update only if different
-		if ($this->data['domain'] != $domain) {
+		if (!isset($this->data['domain']) || $this->data['domain'] != $domain) {
 			$this->update(array(
 				'conditions' => array('id' => $this->id)
 			), array(
@@ -510,7 +511,7 @@ class Sites extends AppModel
 			'site_id' => $this->id,
 			'parent_id' => null,
 			'type' => 'articles',
-			'title' => 'News',
+			'title' => '',
 			'visibility' => -1,
 			'populate' => 'auto',
 		));
@@ -550,6 +551,7 @@ class Sites extends AppModel
 
 	protected function deleteCategories($id)
 	{
+		$model = Model::load('Categories');
 		$this->deleteSet($model, $model->all(array(
 			'conditions' => array('site_id' => $this->id, 'parent_id' => null)
 		)));
@@ -567,7 +569,7 @@ class Sites extends AppModel
 
 	protected function saveLogo()
 	{
-		if (array_key_exists('logo', $this->data) && !$this->data['logo']['error']) {
+		if (isset($this->data['logo']) && !$this->data['logo']['error']) {
 			if ($logo = $this->logo()) {
 				Model::load('Images')->delete($logo->id);
 			}
