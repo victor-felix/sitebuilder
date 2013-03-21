@@ -138,7 +138,7 @@ class ItemsController extends ApiController {
 		));
 		$conditions['site_id'] = $this->site()->id;
 
-		$result = Items::find('all',array(
+		$items = Items::find('all',array(
 			'conditions' => $conditions,
 			'limit' => $this->param('limit', 20),
 			'page' => $this->param('page', 1)
