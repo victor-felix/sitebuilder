@@ -33,7 +33,7 @@
                 	<?php echo $this->html->link(s('down'), '/business_items/move_down/' . $bi->id(), array('class' => 'move-down')) ?>
                 </span>
                 
-                <p><?php echo $bi->description ?></p>
+                <p><?php echo $this->bbcode->strip($bi->description) ?></p>
             </div>
         </li>
         <?php endforeach ?>
