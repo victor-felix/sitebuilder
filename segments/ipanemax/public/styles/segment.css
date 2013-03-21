@@ -1,139 +1,121 @@
-body {
-	background: #fff !important; 
-}
-
 ::selection {
-    background:#74D500;
-    color:#fff;
-}
+  background: #74d500;
+  color: white; }
 
 ::-moz-selection {
-    background:#74D500;
-    color:#fff;
-}
+  background: #74d500;
+  color: white; }
 
-#header {
-	border-color: #74D500;
-}
+body {
+  background-color: white; }
+
+.login #header, .register #header {
+  border-top-color: #74d500; }
 
 #header .contextual-navbar ul li a:hover {
-	background-color: #74D500;
-	border-color: #74D500;
-}
-
-.global-navbar {
-	background:#74D500;
-}
-
-#header .menu ul li a:hover {
-	background-color: #74D500;
-	border-color: #74D500;
-}
-
-.login #header {
-	border-top: 15px solid #74D500;
-}
-
-#header .logo {
-	color: #74D500;
-}
+  background-color: #74d500;
+  border-color: #74d500; }
 
 #header .navigation .user a:hover {
-	background: #74D500;
-}
+  background: #74d500; }
 
+#header .head h1,
+#header .head .steps li.current {
+  color: #74d500; }
 
 .businessitems-list li .info a {
-	color: #74D500;
-}
-
-
-.form-edit fieldset h2 {
-	color: #74D500;
-}
+  color: #74d500; }
 
 .form-edit .fieldset-expand {
-	border-bottom: 1px solid #DDD;
-	color: #74D500;
-}
+  border-bottom: 1px solid #dddddd;
+  color: #74d500; }
 
 .theme-picker ul li.selected a img {
-	border-color: #74D500;
-}
+  border-color: #74d500; }
 
 .skin-picker ul li.selected a {
-	border-color: #74D500;
-}
+  border-color: #74d500; }
 
 #header p.login a {
-	color: #74D500;
-}
+  color: #74d500; }
 
 .features li p.title {
-	color: #74D500;
-}
+  color: #74d500; }
 
 #login-window p a {
-	color: #74D500;
-}
+  color: #74d500; }
 
 #login-window .cancel,
 #login-window .forgot-password {
-	color: #74D500;
-}
-
-#header .head h1, #header .head .steps li.current {
-	color: #74D500;
-}
+  color: #74d500; }
 
 .form-register fieldset h2 {
-	color: #74D500;
-}
+  color: #74d500; }
 
-.form-register .fieldset-expand {
-	color: #74D500;
-}
+.form-register .fieldset-expand,
+#FormLogin .forgot-password, #FormLogin .no-account {
+  color: #74d500; }
 
 .theme-picker ul li.selected a img {
-	border-color: #74D500;
-}
+  border-color: #74d500; }
 
 .skin-picker ul li.selected a {
-	border-color: #74D500;
-}
+  border-color: #74d500; }
 
 .registration-finished h2 a {
-	color: #74D500;
-}
+  color: #74d500; }
 
 .registration-finished .next-steps ul li a {
-	color: #74D500;
-}
+  color: #74d500; }
 
 .tip-register a {
-  color: #74D500;
-}
-.ui-button {
-	color: #74D500;
-}
+  color: #74d500; }
+
+.ui-button,
+#header .contextual-navbar .dropdown li ul a:hover,
+.dropdown li ul a:hover,
+.global-navbar .dropdown:hover > li > p {
+  color: #74d500; }
+
 .ui-button.red {
-	background-color: #74D500;
-	border-color: #74D500;
-}
+  background: #74d500;
+  /* Old browsers */
+  background: -webkit-linear-gradient(top, #87f900 0%, #8fff09 50%, #82ef00 51%, #74d500 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #87f900 0%, #8fff09 50%, #82ef00 51%, #74d500 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #87f900 0%, #8fff09 50%, #82ef00 51%, #74d500 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #87f900 0%, #8fff09 50%, #82ef00 51%, #74d500 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='lighten($color,10%)', endColorstr='$color',GradientType=0 );
+  /* IE6-9 */
+  border-color: #58a200; }
+
 .ui-button.red:hover {
-	background-color: #74D500;
-	border-color: #74D500;
-}
-.picture-upload-container .default .icon_upload{background-color:#74D500;} 
+  background: -webkit-linear-gradient(top, #74d500 0%, #82ef00 50%, #8fff09 51%, #87f900 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #74d500 0%, #82ef00 50%, #8fff09 51%, #87f900 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #74d500 0%, #82ef00 50%, #8fff09 51%, #87f900 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #74d500 0%, #82ef00 50%, #8fff09 51%, #87f900 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color', endColorstr='lighten($color,10%)',GradientType=0 );
+  /* IE6-9 */
+  border-color: #74d500; }
 
-#FormLogin .forgot-password, #FormLogin .no-account {
-	color: #74D500;
-}
+.support,
+.global-navbar,
+.categories-list .ui-button-add,
+.picture-upload-container .default .icon_upload {
+  background-color: #74d500; }
 
-#header .navigation .user a {
-	color: #74D500;
-}
+div.theme-picker > ul > li.selected {
+  box-shadow: 0 0 0 3px #74d500 inset; }
 
-#header .navigation .sites .site-switcher li.new a {
-	color: #74D500;
-}
+div.dashboard .list li a .icon, div.dashboard .list li:hover .arrow {
+  background-color: #74d500; }
+
+div.dashboard .list li a h3, div.dashboard .domain a {
+  color: #74d500; }

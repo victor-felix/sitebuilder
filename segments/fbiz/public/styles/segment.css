@@ -80,28 +80,28 @@ body {
 .ui-button.red {
   background: black;
   /* Old browsers */
-  background: -webkit-linear-gradient(top, #262626 0%, #333333 50%, #1c1c1c 51%, black 100%);
+  background: -webkit-linear-gradient(top, #121212 0%, #1a1a1a 50%, #0d0d0d 51%, black 100%);
   /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, #262626 0%, #333333 50%, #1c1c1c 51%, black 100%);
+  background: -o-linear-gradient(top, #121212 0%, #1a1a1a 50%, #0d0d0d 51%, black 100%);
   /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, #262626 0%, #333333 50%, #1c1c1c 51%, black 100%);
+  background: -ms-linear-gradient(top, #121212 0%, #1a1a1a 50%, #0d0d0d 51%, black 100%);
   /* IE10+ */
-  background: linear-gradient(to bottom, #262626 0%, #333333 50%, #1c1c1c 51%, black 100%);
+  background: linear-gradient(to bottom, #121212 0%, #1a1a1a 50%, #0d0d0d 51%, black 100%);
   /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='lighten($color,20%)', endColorstr='$color',GradientType=0 );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='lighten($color,10%)', endColorstr='$color',GradientType=0 );
   /* IE6-9 */
   border-color: black; }
 
 .ui-button.red:hover {
-  background: -webkit-linear-gradient(top, black 0%, #1c1c1c 50%, #333333 51%, #262626 100%);
+  background: -webkit-linear-gradient(top, black 0%, #0d0d0d 50%, #1a1a1a 51%, #121212 100%);
   /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, black 0%, #1c1c1c 50%, #333333 51%, #262626 100%);
+  background: -o-linear-gradient(top, black 0%, #0d0d0d 50%, #1a1a1a 51%, #121212 100%);
   /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, black 0%, #1c1c1c 50%, #333333 51%, #262626 100%);
+  background: -ms-linear-gradient(top, black 0%, #0d0d0d 50%, #1a1a1a 51%, #121212 100%);
   /* IE10+ */
-  background: linear-gradient(to bottom, black 0%, #1c1c1c 50%, #333333 51%, #262626 100%);
+  background: linear-gradient(to bottom, black 0%, #0d0d0d 50%, #1a1a1a 51%, #121212 100%);
   /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color', endColorstr='lighten($color,20%)',GradientType=0 );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color', endColorstr='lighten($color,10%)',GradientType=0 );
   /* IE6-9 */
   border-color: black; }
 
@@ -113,3 +113,9 @@ body {
 
 div.theme-picker > ul > li.selected {
   box-shadow: 0 0 0 3px black inset; }
+
+div.dashboard .list li a .icon, div.dashboard .list li:hover .arrow {
+  background-color: black; }
+
+div.dashboard .list li a h3, div.dashboard .domain a {
+  color: black; }

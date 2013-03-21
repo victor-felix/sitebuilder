@@ -1,132 +1,121 @@
-body {
-	
-}
-
 ::selection {
-    background:#54579A;
-    color:#fff;
-}
+  background: #54579a;
+  color: #efefef; }
 
 ::-moz-selection {
-    background:#54579A;
-    color:#fff;
-}
+  background: #54579a;
+  color: #efefef; }
 
-#header {
-	border-color: #54579A;
-}
+body {
+  background-color: #efefef; }
+
+.login #header, .register #header {
+  border-top-color: #54579a; }
 
 #header .contextual-navbar ul li a:hover {
-	background-color: #54579A;
-	border-color: #54579A;
-}
-
-.global-navbar {
-	background-color: #54579A;
-}
-
-.login #header {
-	border-top: 10px solid #54579A;
-}
+  background-color: #54579a;
+  border-color: #54579a; }
 
 #header .navigation .user a:hover {
-	background: #54579A;
-}
+  background: #54579a; }
 
-#header .navigation .user a {
-	color: #54579A;
-}
+#header .head h1,
+#header .head .steps li.current {
+  color: #54579a; }
 
 .businessitems-list li .info a {
-	color: #54579A;
-}
-
-
-.form-edit fieldset h2 {
-	color: #54579A;
-}
+  color: #54579a; }
 
 .form-edit .fieldset-expand {
-	border-bottom: 1px solid #DDD;
-	color: #54579A;
-}
+  border-bottom: 1px solid #dddddd;
+  color: #54579a; }
 
 .theme-picker ul li.selected a img {
-	border-color: #54579A;
-}
+  border-color: #54579a; }
 
 .skin-picker ul li.selected a {
-	border-color: #54579A;
-}
+  border-color: #54579a; }
 
 #header p.login a {
-	color: #54579A;
-}
+  color: #54579a; }
 
 .features li p.title {
-	color: #54579A;
-}
+  color: #54579a; }
 
 #login-window p a {
-	color: #54579A;
-}
+  color: #54579a; }
 
 #login-window .cancel,
 #login-window .forgot-password {
-	color: #54579A;
-}
-
-#content .head {
-	background: #54579A;
-}
+  color: #54579a; }
 
 .form-register fieldset h2 {
-	color: #54579A;
-}
+  color: #54579a; }
 
-.form-register .fieldset-expand {
-	color: #54579A;
-}
+.form-register .fieldset-expand,
+#FormLogin .forgot-password, #FormLogin .no-account {
+  color: #54579a; }
 
 .theme-picker ul li.selected a img {
-	border-color: #54579A;
-}
+  border-color: #54579a; }
 
 .skin-picker ul li.selected a {
-	border-color: #54579A;
-}
+  border-color: #54579a; }
 
 .registration-finished h2 a {
-	color: #54579A;
-}
+  color: #54579a; }
 
 .registration-finished .next-steps ul li a {
-	color: #54579A;
-}
+  color: #54579a; }
 
 .tip-register a {
-  color: #54579A;
-}
-.ui-button {
-	color: #54579A;
-}
+  color: #54579a; }
+
+.ui-button,
+#header .contextual-navbar .dropdown li ul a:hover,
+.dropdown li ul a:hover,
+.global-navbar .dropdown:hover > li > p {
+  color: #54579a; }
+
 .ui-button.red {
-	background-color: #54579A;
-	border-color: #54579A;
-}
+  background: #54579a;
+  /* Old browsers */
+  background: -webkit-linear-gradient(top, #6669ac 0%, #7073b1 50%, #6063a8 51%, #54579a 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #6669ac 0%, #7073b1 50%, #6063a8 51%, #54579a 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #6669ac 0%, #7073b1 50%, #6063a8 51%, #54579a 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #6669ac 0%, #7073b1 50%, #6063a8 51%, #54579a 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='lighten($color,10%)', endColorstr='$color',GradientType=0 );
+  /* IE6-9 */
+  border-color: #424479; }
+
 .ui-button.red:hover {
-	background-color: #54579A;
-	border-color: #54579A;
-}
+  background: -webkit-linear-gradient(top, #54579a 0%, #6063a8 50%, #7073b1 51%, #6669ac 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #54579a 0%, #6063a8 50%, #7073b1 51%, #6669ac 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #54579a 0%, #6063a8 50%, #7073b1 51%, #6669ac 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #54579a 0%, #6063a8 50%, #7073b1 51%, #6669ac 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color', endColorstr='lighten($color,10%)',GradientType=0 );
+  /* IE6-9 */
+  border-color: #54579a; }
 
-.picture-upload-container .default .icon_upload{
-	background-color:#54579A;
-} 
+.support,
+.global-navbar,
+.categories-list .ui-button-add,
+.picture-upload-container .default .icon_upload {
+  background-color: #54579a; }
 
-#FormLogin .forgot-password, #FormLogin .no-account {
-	color: #54579A;
-}
+div.theme-picker > ul > li.selected {
+  box-shadow: 0 0 0 3px #54579a inset; }
 
-#header .navigation .sites .site-switcher li.new a {
-	color: #54579A;
-}
+div.dashboard .list li a .icon, div.dashboard .list li:hover .arrow {
+  background-color: #54579a; }
+
+div.dashboard .list li a h3, div.dashboard .domain a {
+  color: #54579a; }

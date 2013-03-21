@@ -80,28 +80,28 @@ body {
 .ui-button.red {
   background: #7665a9;
   /* Old browsers */
-  background: -webkit-linear-gradient(top, #a296c4 0%, #b0a6ce 50%, #9689bd 51%, #7665a9 100%);
+  background: -webkit-linear-gradient(top, #8a7cb6 0%, #9386bb 50%, #8575b2 51%, #7665a9 100%);
   /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, #a296c4 0%, #b0a6ce 50%, #9689bd 51%, #7665a9 100%);
+  background: -o-linear-gradient(top, #8a7cb6 0%, #9386bb 50%, #8575b2 51%, #7665a9 100%);
   /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, #a296c4 0%, #b0a6ce 50%, #9689bd 51%, #7665a9 100%);
+  background: -ms-linear-gradient(top, #8a7cb6 0%, #9386bb 50%, #8575b2 51%, #7665a9 100%);
   /* IE10+ */
-  background: linear-gradient(to bottom, #a296c4 0%, #b0a6ce 50%, #9689bd 51%, #7665a9 100%);
+  background: linear-gradient(to bottom, #8a7cb6 0%, #9386bb 50%, #8575b2 51%, #7665a9 100%);
   /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='lighten($color,20%)', endColorstr='$color',GradientType=0 );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='lighten($color,10%)', endColorstr='$color',GradientType=0 );
   /* IE6-9 */
   border-color: #5e4e8d; }
 
 .ui-button.red:hover {
-  background: -webkit-linear-gradient(top, #7665a9 0%, #9689bd 50%, #b0a6ce 51%, #a296c4 100%);
+  background: -webkit-linear-gradient(top, #7665a9 0%, #8575b2 50%, #9386bb 51%, #8a7cb6 100%);
   /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, #7665a9 0%, #9689bd 50%, #b0a6ce 51%, #a296c4 100%);
+  background: -o-linear-gradient(top, #7665a9 0%, #8575b2 50%, #9386bb 51%, #8a7cb6 100%);
   /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, #7665a9 0%, #9689bd 50%, #b0a6ce 51%, #a296c4 100%);
+  background: -ms-linear-gradient(top, #7665a9 0%, #8575b2 50%, #9386bb 51%, #8a7cb6 100%);
   /* IE10+ */
-  background: linear-gradient(to bottom, #7665a9 0%, #9689bd 50%, #b0a6ce 51%, #a296c4 100%);
+  background: linear-gradient(to bottom, #7665a9 0%, #8575b2 50%, #9386bb 51%, #8a7cb6 100%);
   /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color', endColorstr='lighten($color,20%)',GradientType=0 );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color', endColorstr='lighten($color,10%)',GradientType=0 );
   /* IE6-9 */
   border-color: #7665a9; }
 
@@ -113,3 +113,9 @@ body {
 
 div.theme-picker > ul > li.selected {
   box-shadow: 0 0 0 3px #7665a9 inset; }
+
+div.dashboard .list li a .icon, div.dashboard .list li:hover .arrow {
+  background-color: #7665a9; }
+
+div.dashboard .list li a h3, div.dashboard .domain a {
+  color: #7665a9; }

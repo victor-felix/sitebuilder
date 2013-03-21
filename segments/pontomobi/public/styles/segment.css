@@ -1,134 +1,121 @@
 ::selection {
-    background:#000;
-    color:#fff;
-}
+  background: black;
+  color: white; }
 
 ::-moz-selection {
-    background:#000;
-    color:#fff;
-}
+  background: black;
+  color: white; }
 
 body {
-	background:#fff;
-}
+  background-color: white; }
 
-#header .menu ul li a:hover {
-	background-color: #000;
-	border-color: #000;
-}
+.login #header, .register #header {
+  border-top-color: black; }
 
-.login #header {
-	border-top: 10px solid #000;
-}
+#header .contextual-navbar ul li a:hover {
+  background-color: black;
+  border-color: black; }
 
 #header .navigation .user a:hover {
-	background: #000;
-}
+  background: black; }
 
+#header .head h1,
+#header .head .steps li.current {
+  color: black; }
 
 .businessitems-list li .info a {
-	color: #000;
-}
-
-
-.form-edit fieldset h2 {
-	color: #000;
-}
+  color: black; }
 
 .form-edit .fieldset-expand {
-	border-bottom: 1px solid #DDD;
-	color: #000;
-}
+  border-bottom: 1px solid #dddddd;
+  color: black; }
 
 .theme-picker ul li.selected a img {
-	border-color: #000;
-}
+  border-color: black; }
 
 .skin-picker ul li.selected a {
-	border-color: #000;
-}
+  border-color: black; }
 
 #header p.login a {
-	color: #000;
-}
+  color: black; }
 
 .features li p.title {
-	color: #000;
-}
+  color: black; }
 
 #login-window p a {
-	color: #000;
-}
+  color: black; }
 
 #login-window .cancel,
 #login-window .forgot-password {
-	color: #000;
-}
-
-#content .head {
-	background: #000;
-}
+  color: black; }
 
 .form-register fieldset h2 {
-	color: #000;
-}
+  color: black; }
 
-.form-register .fieldset-expand {
-	color: #000;
-}
+.form-register .fieldset-expand,
+#FormLogin .forgot-password, #FormLogin .no-account {
+  color: black; }
 
 .theme-picker ul li.selected a img {
-	border-color: #000;
-}
+  border-color: black; }
 
 .skin-picker ul li.selected a {
-	border-color: #000;
-}
+  border-color: black; }
 
 .registration-finished h2 a {
-	color: #000;
-}
+  color: black; }
 
 .registration-finished .next-steps ul li a {
-	color: #c1c1c1;
-}
+  color: black; }
 
 .tip-register a {
-  color:#c1c1c1;
-}
-.ui-button {
-	color: #000;
-}
+  color: black; }
+
+.ui-button,
+#header .contextual-navbar .dropdown li ul a:hover,
+.dropdown li ul a:hover,
+.global-navbar .dropdown:hover > li > p {
+  color: black; }
+
 .ui-button.red {
-	background-color: #000;
-	border-color: #000;
-}
+  background: black;
+  /* Old browsers */
+  background: -webkit-linear-gradient(top, #121212 0%, #1a1a1a 50%, #0d0d0d 51%, black 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #121212 0%, #1a1a1a 50%, #0d0d0d 51%, black 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #121212 0%, #1a1a1a 50%, #0d0d0d 51%, black 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #121212 0%, #1a1a1a 50%, #0d0d0d 51%, black 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='lighten($color,10%)', endColorstr='$color',GradientType=0 );
+  /* IE6-9 */
+  border-color: black; }
+
 .ui-button.red:hover {
-	background-color: #000;
-	border-color: #000;
-}
+  background: -webkit-linear-gradient(top, black 0%, #0d0d0d 50%, #1a1a1a 51%, #121212 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, black 0%, #0d0d0d 50%, #1a1a1a 51%, #121212 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, black 0%, #0d0d0d 50%, #1a1a1a 51%, #121212 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, black 0%, #0d0d0d 50%, #1a1a1a 51%, #121212 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color', endColorstr='lighten($color,10%)',GradientType=0 );
+  /* IE6-9 */
+  border-color: black; }
 
-.global-navbar {
-	background: #000;
-}
-
-#FormLogin .forgot-password, #FormLogin .no-account {
-	color: #000;
-}
+.support,
+.global-navbar,
+.categories-list .ui-button-add,
 .picture-upload-container .default .icon_upload {
-	background-color: #000;
-}
+  background-color: black; }
 
-#header .contextual-navbar > ul > li > a:hover {
-	background-color: #000;¬                                                      
-	border-color: #000;
-	color: #fff;
-}
+div.theme-picker > ul > li.selected {
+  box-shadow: 0 0 0 3px black inset; }
 
-#header .contextual-navbar .dropdown li ul a:hover, .dropdown li ul a:hover {
-	color: #000;
-}
+div.dashboard .list li a .icon, div.dashboard .list li:hover .arrow {
+  background-color: black; }
 
-#header .head h1, #header .head .steps li.current, .global-navbar .dropdown > li > p:hover {
-	color: #000;
-}
+div.dashboard .list li a h3, div.dashboard .domain a {
+  color: black; }

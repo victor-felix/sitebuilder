@@ -1,128 +1,121 @@
-body {
-	background: #fff !important; 
-}
-
 ::selection {
-    background:#C2CB1E;
-    color:#fff;
-}
+  background: #c2cb1e;
+  color: white; }
 
 ::-moz-selection {
-    background:#C2CB1E;
-    color:#fff;
-}
+  background: #c2cb1e;
+  color: white; }
+
+body {
+  background-color: white; }
+
+.login #header, .register #header {
+  border-top-color: #c2cb1e; }
 
 #header .contextual-navbar ul li a:hover {
-	background-color: #C2CB1E;
-	border-color: #516C24;
-}
-
-.global-navbar {
-	background-color: #C2CB1E;
-}
+  background-color: #c2cb1e;
+  border-color: #c2cb1e; }
 
 #header .navigation .user a:hover {
-	background: #C2CB1E;
-}
+  background: #c2cb1e; }
 
-#header .navigation .user a {
-	color: #516C24;
-}
+#header .head h1,
+#header .head .steps li.current {
+  color: #c2cb1e; }
 
 .businessitems-list li .info a {
-	color: #516C24;
-}
-
-
-.form-edit fieldset h2 {
-	color: #516C24;
-}
+  color: #c2cb1e; }
 
 .form-edit .fieldset-expand {
-	border-bottom: 1px solid #DDD;
-	color: #516C24;
-}
+  border-bottom: 1px solid #dddddd;
+  color: #c2cb1e; }
 
 .theme-picker ul li.selected a img {
-	border-color: #C2CB1E;
-}
+  border-color: #c2cb1e; }
 
 .skin-picker ul li.selected a {
-	border-color: #C2CB1E;
-}
-
-
-.login #header {
-	border-top: 10px solid #C2CB1E;
-}
+  border-color: #c2cb1e; }
 
 #header p.login a {
-	color: #516C24;
-}
+  color: #c2cb1e; }
 
 .features li p.title {
-	color: #516C24;
-}
+  color: #c2cb1e; }
 
 #login-window p a {
-	color: #516C24;
-}
+  color: #c2cb1e; }
 
 #login-window .cancel,
 #login-window .forgot-password {
-	color: #516C24;
-}
-
-#header .head h1, #header .head .steps li.current {
-	color: #516C24;
-}
+  color: #c2cb1e; }
 
 .form-register fieldset h2 {
-	color: #516C24;
-}
+  color: #c2cb1e; }
 
-.form-register .fieldset-expand {
-	color: #516C24;
-}
+.form-register .fieldset-expand,
+#FormLogin .forgot-password, #FormLogin .no-account {
+  color: #c2cb1e; }
 
 .theme-picker ul li.selected a img {
-	border-color: #C2CB1E;
-}
+  border-color: #c2cb1e; }
 
 .skin-picker ul li.selected a {
-	border-color: #C2CB1E;
-}
+  border-color: #c2cb1e; }
 
 .registration-finished h2 a {
-	color: #516C24;
-}
+  color: #c2cb1e; }
 
 .registration-finished .next-steps ul li a {
-	color: #516C24;
-}
+  color: #c2cb1e; }
 
 .tip-register a {
-  color: #516C24;
-}
-.ui-button {
-	color: #516C24;
-}
+  color: #c2cb1e; }
+
+.ui-button,
+#header .contextual-navbar .dropdown li ul a:hover,
+.dropdown li ul a:hover,
+.global-navbar .dropdown:hover > li > p {
+  color: #c2cb1e; }
+
 .ui-button.red {
-	background-color: #C2CB1E;
-	border-color: #C2CB1E;
-}
+  background: #c2cb1e;
+  /* Old browsers */
+  background: -webkit-linear-gradient(top, #d7e02d 0%, #d9e23a 50%, #d5df24 51%, #c2cb1e 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #d7e02d 0%, #d9e23a 50%, #d5df24 51%, #c2cb1e 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #d7e02d 0%, #d9e23a 50%, #d5df24 51%, #c2cb1e 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #d7e02d 0%, #d9e23a 50%, #d5df24 51%, #c2cb1e 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='lighten($color,10%)', endColorstr='$color',GradientType=0 );
+  /* IE6-9 */
+  border-color: #989f17; }
+
 .ui-button.red:hover {
-	background-color: #C2CB1E;
-	border-color: #C2CB1E;
-}
-.picture-upload-container .default .icon_upload{
-	background-color:#C2CB1E;
-} 
+  background: -webkit-linear-gradient(top, #c2cb1e 0%, #d5df24 50%, #d9e23a 51%, #d7e02d 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #c2cb1e 0%, #d5df24 50%, #d9e23a 51%, #d7e02d 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #c2cb1e 0%, #d5df24 50%, #d9e23a 51%, #d7e02d 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #c2cb1e 0%, #d5df24 50%, #d9e23a 51%, #d7e02d 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color', endColorstr='lighten($color,10%)',GradientType=0 );
+  /* IE6-9 */
+  border-color: #c2cb1e; }
 
-#FormLogin .forgot-password, #FormLogin .no-account {
-	color: #516C24;
-}
+.support,
+.global-navbar,
+.categories-list .ui-button-add,
+.picture-upload-container .default .icon_upload {
+  background-color: #c2cb1e; }
 
-#header .navigation .sites .site-switcher li.new a {
-	color: #516C24;
-}
+div.theme-picker > ul > li.selected {
+  box-shadow: 0 0 0 3px #c2cb1e inset; }
+
+div.dashboard .list li a .icon, div.dashboard .list li:hover .arrow {
+  background-color: #c2cb1e; }
+
+div.dashboard .list li a h3, div.dashboard .domain a {
+  color: #c2cb1e; }
