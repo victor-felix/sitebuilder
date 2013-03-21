@@ -1,8 +1,6 @@
 <fieldset>
 	<div class="grid-4 first">
-        <div class="tip">
-			<h2><?php echo s('extension status') ?></h2>
-		</div>
+		<h2><?php echo s('extension status') ?></h2>
     </div>
 	<div class="grid-8">
 		<div class="form-grid-570">
