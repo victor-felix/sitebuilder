@@ -7,7 +7,7 @@ require_once 'lib/geocoding/GoogleGeocoding.php';
 class Sites extends AppModel
 {
 	protected $getters = array('feed_url', 'feed_title', 'custom_domain');
-	protected $beforeSave = array('getLatLng', 'saveDomain');
+	protected $beforeSave = array('getLatLng', 'saveDomain', 'trimFields');
 	protected $afterSave = array(
 		'saveLogo', 'createNewsCategory', 'updateFeed',
 		'saveDomains', 'createRelation'
@@ -357,6 +357,19 @@ class Sites extends AppModel
 			|| isset($data['domains'])) {
 			$defaultDomain = $data['slug'] . '.' . MeuMobi::domain();
 			$data['domains'][] = $defaultDomain;
+		}
+
+		return $data;
+	}
+
+	protected function trimFields($data)
+	{
+		$fieldsToTrim = array('description', 'timetable', 'address', 'email',
+			'phone', 'website', 'google_analytics', 'css_token', 'facebook',
+			'twitter');
+
+		foreach ($fieldsToTrim as $field) {
+			$data[$field] = trim($data[$field]);
 		}
 
 		return $data;
