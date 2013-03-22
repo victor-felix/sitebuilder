@@ -104,7 +104,7 @@
 				<?php echo $this->form->input('address', array(
 					'label' => s('Address'),
 					'type' => 'textarea',
-					'class' => 'ui-textarea large'
+					'class' => 'ui-textarea large greater'
 				)) ?>
 			</div>
 		</div>
