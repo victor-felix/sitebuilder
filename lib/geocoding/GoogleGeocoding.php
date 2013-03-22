@@ -33,7 +33,7 @@ class GoogleGeocoding
 	protected static function updateGeocodeUrl()
 	{
 		self::$currentUrl = (self::$currentUrl + 1) % count(self::$geocodeUrls);
-		$log = \KLogger::instance(\Filesystem::path('log'));
+		$log = \KLogger::instance(\Filesystem::path(APP_ROOT . '/log'));
 		$log->logInfo('Change geocode url to: %s', self::geocodeUrl());
 	}
 
@@ -58,7 +58,7 @@ class GoogleGeocoding
 		$data = curl_exec($remote);
 		curl_close($remote);
 
-		$log = \KLogger::instance(\Filesystem::path('log'));
+		$log = \KLogger::instance(\Filesystem::path(APP_ROOT . '/log'));
 		$log->logInfo('Geocode Request: %s', $url);
 		$log->logInfo('Geocode Response: %s', $data);
 
