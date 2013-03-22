@@ -88,11 +88,10 @@ body {
   /* IE10+ */
   background: linear-gradient(to bottom, #6669ac 0%, #7073b1 50%, #6063a8 51%, #54579a 100%);
   /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='lighten($color,10%)', endColorstr='$color',GradientType=0 );
-  /* IE6-9 */
   border-color: #424479; }
 
 .ui-button.red:hover {
+  background: #6669ac;
   background: -webkit-linear-gradient(top, #54579a 0%, #6063a8 50%, #7073b1 51%, #6669ac 100%);
   /* Chrome10+,Safari5.1+ */
   background: -o-linear-gradient(top, #54579a 0%, #6063a8 50%, #7073b1 51%, #6669ac 100%);
@@ -101,8 +100,6 @@ body {
   /* IE10+ */
   background: linear-gradient(to bottom, #54579a 0%, #6063a8 50%, #7073b1 51%, #6669ac 100%);
   /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color', endColorstr='lighten($color,10%)',GradientType=0 );
-  /* IE6-9 */
   border-color: #54579a; }
 
 .support,

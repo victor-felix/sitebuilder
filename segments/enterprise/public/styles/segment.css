@@ -80,29 +80,26 @@ body {
 .ui-button.red {
   background: #42537e;
   /* Old browsers */
-  background: -webkit-linear-gradient(top, #6176ac 0%, #7184b5 50%, #556ba3 51%, #42537e 100%);
+  background: -webkit-linear-gradient(top, #4e6295 0%, #54699f 50%, #4b5e8f 51%, #42537e 100%);
   /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, #6176ac 0%, #7184b5 50%, #556ba3 51%, #42537e 100%);
+  background: -o-linear-gradient(top, #4e6295 0%, #54699f 50%, #4b5e8f 51%, #42537e 100%);
   /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, #6176ac 0%, #7184b5 50%, #556ba3 51%, #42537e 100%);
+  background: -ms-linear-gradient(top, #4e6295 0%, #54699f 50%, #4b5e8f 51%, #42537e 100%);
   /* IE10+ */
-  background: linear-gradient(to bottom, #6176ac 0%, #7184b5 50%, #556ba3 51%, #42537e 100%);
+  background: linear-gradient(to bottom, #4e6295 0%, #54699f 50%, #4b5e8f 51%, #42537e 100%);
   /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='lighten($color,20%)', endColorstr='$color',GradientType=0 );
-  /* IE6-9 */
   border-color: #303d5d; }
 
 .ui-button.red:hover {
-  background: -webkit-linear-gradient(top, #42537e 0%, #556ba3 50%, #7184b5 51%, #6176ac 100%);
+  background: #4e6295;
+  background: -webkit-linear-gradient(top, #42537e 0%, #4b5e8f 50%, #54699f 51%, #4e6295 100%);
   /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, #42537e 0%, #556ba3 50%, #7184b5 51%, #6176ac 100%);
+  background: -o-linear-gradient(top, #42537e 0%, #4b5e8f 50%, #54699f 51%, #4e6295 100%);
   /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, #42537e 0%, #556ba3 50%, #7184b5 51%, #6176ac 100%);
+  background: -ms-linear-gradient(top, #42537e 0%, #4b5e8f 50%, #54699f 51%, #4e6295 100%);
   /* IE10+ */
-  background: linear-gradient(to bottom, #42537e 0%, #556ba3 50%, #7184b5 51%, #6176ac 100%);
+  background: linear-gradient(to bottom, #42537e 0%, #4b5e8f 50%, #54699f 51%, #4e6295 100%);
   /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color', endColorstr='lighten($color,20%)',GradientType=0 );
-  /* IE6-9 */
   border-color: #42537e; }
 
 .support,
@@ -115,9 +112,7 @@ div.theme-picker > ul > li.selected {
   box-shadow: 0 0 0 3px #42537e inset; }
 
 div.dashboard .list li a .icon, div.dashboard .list li:hover .arrow {
-	background-color: #42537e;
-}
+  background-color: #42537e; }
 
 div.dashboard .list li a h3, div.dashboard .domain a {
-	color: #42537e;
-}
+  color: #42537e; }
