@@ -88,11 +88,10 @@ body {
   /* IE10+ */
   background: linear-gradient(to bottom, #d73633 0%, #d94340 50%, #d52e2b 51%, #c02926 100%);
   /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='lighten($color,10%)', endColorstr='$color',GradientType=0 );
-  /* IE6-9 */
   border-color: #95201e; }
 
 .ui-button.red:hover {
+  background: #d73633;
   background: -webkit-linear-gradient(top, #c02926 0%, #d52e2b 50%, #d94340 51%, #d73633 100%);
   /* Chrome10+,Safari5.1+ */
   background: -o-linear-gradient(top, #c02926 0%, #d52e2b 50%, #d94340 51%, #d73633 100%);
@@ -101,8 +100,6 @@ body {
   /* IE10+ */
   background: linear-gradient(to bottom, #c02926 0%, #d52e2b 50%, #d94340 51%, #d73633 100%);
   /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color', endColorstr='lighten($color,10%)',GradientType=0 );
-  /* IE6-9 */
   border-color: #c02926; }
 
 .support,
@@ -113,3 +110,9 @@ body {
 
 div.theme-picker > ul > li.selected {
   box-shadow: 0 0 0 3px #c02926 inset; }
+
+div.dashboard .list li a .icon, div.dashboard .list li:hover .arrow {
+  background-color: #c02926; }
+
+div.dashboard .list li a h3, div.dashboard .domain a {
+  color: #c02926; }
