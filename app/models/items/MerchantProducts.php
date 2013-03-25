@@ -63,3 +63,7 @@ class MerchantProducts extends Items
 MerchantProducts::applyFilter('save', function($self, $params, $chain) {
 	return Items::addTimestamps($self, $params, $chain);
 });
+
+MerchantProducts::applyFilter('remove', function($self, $params, $chain) {
+	return Items::removeImages($self, $params, $chain);
+});

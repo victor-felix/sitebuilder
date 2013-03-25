@@ -13,17 +13,9 @@ class SitesController extends ApiController
 	{
 		$site = $this->site()->toJSONPerformance();
 
-		$addressKeys = array('city', 'complement', 'zip', 'zone', 'street',
-			'latitude', 'longitude', 'number');
-		$address = array_intersect_key($this->site()->data, array_flip($addressKeys));
-		$address['country'] = $this->site()->country();
-		$address['state'] = $this->site()->state();
-
 		$businessKeys = array('email', 'facebook', 'twitter', 'phone',
-			'website', 'timetable');
+			'website', 'timetable', 'address', 'latitude', 'longitude');
 		$business = array_intersect_key($this->site()->data, array_flip($businessKeys));
-		if (array_filter($address)) $business['address'] = $address;
-		else $business['address'] = null;
 
 		$categoryKeys = array('id', 'title', 'type');
 		$extensionKeys = array('url', 'language', 'itemLimit', 'extension');
@@ -51,9 +43,7 @@ class SitesController extends ApiController
 			$json['updated_at'] = date('Y-m-d H:i:s', $article['modified']);
 			$json['published_at'] = date('Y-m-d H:i:s', $article['pubdate']);
 			$json['images'] = array_map(function($image) use ($imageKeys) {
-				$data = $image->data;
-				$json = array_intersect_key($data, array_flip($imageKeys));
-				return $json;
+				return $image->toJSONPerformance();
 			}, \Model::load('Images')->allByRecord('Items', $article['_id']));
 			return $json;
 		}, $this->site()->news()->to('array'));

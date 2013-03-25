@@ -6,15 +6,14 @@
     background: -o-linear-gradient(top, lighten($color,7%) 0%,lighten($color,10%) 50%,lighten($color,5%) 51%,$color 100%); /* Opera 11.10+ */
     background: -ms-linear-gradient(top, lighten($color,7%) 0%,lighten($color,10%) 50%,lighten($color,5%) 51%,$color 100%); /* IE10+ */
     background: linear-gradient(to bottom, lighten($color,7%) 0%,lighten($color,10%) 50%,lighten($color,5%) 51%,$color 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='lighten($color,10%)', endColorstr='$color',GradientType=0 ); /* IE6-9 */;
 }
 
 @mixin gradient_button_active($color){
+	background: lighten($color, 7%);
 	background: -webkit-linear-gradient(top, $color 0%, lighten($color,5%) 50%, lighten($color,10%) 51%, lighten($color,7%) 100%); /* Chrome10+,Safari5.1+ */
 	background: -o-linear-gradient(top, $color 0%, lighten($color,5%) 50%, lighten($color,10%) 51%, lighten($color,7%) 100%); /* Opera 11.10+ */
     background: -ms-linear-gradient(top, $color 0%, lighten($color,5%) 50%, lighten($color,10%) 51%, lighten($color,7%) 100%); /* IE10+ */
     background: linear-gradient(to bottom, $color 0%, lighten($color,5%) 50%, lighten($color,10%) 51%, lighten($color,7%) 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$color', endColorstr='lighten($color,10%)',GradientType=0 ); /* IE6-9 */;
 }
 
 ::selection {
@@ -137,3 +136,10 @@ div.theme-picker > ul > li.selected {
 	box-shadow: 0 0 0 3px $main-color inset;
 }
 
+div.dashboard .list li a .icon, div.dashboard .list li:hover .arrow {
+	background-color: $main-color;
+}
+
+div.dashboard .list li a h3, div.dashboard .domain a {
+	color: $main-color;
+}

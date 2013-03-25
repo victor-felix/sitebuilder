@@ -1,8 +1,6 @@
 <fieldset>
 	<div class="grid-4 first">
-        <div class="tip">
-			<h2><?php echo s('extension status') ?></h2>
-		</div>
+		<h2><?php echo s('extension status') ?></h2>
     </div>
 	<div class="grid-8">
 		<div class="form-grid-570">
@@ -25,12 +23,6 @@
 				<?php echo s($extension->specification('title'))?>
 				<span class="description"><?php echo s($extension->specification('description'))?></span>
 			</h3>
-			
-			<?php /* echo $this->form->input('enabled', array(
-				'type' => 'checkbox',
-				'label' => s('Enabled'),
-				'value' => 1
-			)) */?>
 		</div>
 	</div>
 </fieldset>

@@ -39,19 +39,7 @@ class SitesController extends AppController
 			}
 		}
 
-		if ($site->state_id) {
-			$states = Model::load('States')->toListByCountryId($site->country_id, array(
-				'order' => 'name ASC'
-			));
-		} else {
-			$states = array();
-		}
-
-		$countries = Model::load('Countries')->toList(array(
-			'order' => 'name ASC'
-		));
-
-		$this->set(compact('site', 'countries', 'states'));
+		$this->set(compact('site'));
 	}
 
 	public function theme()

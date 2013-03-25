@@ -41,10 +41,10 @@ class SiteManager
 
 	protected static function request($method, $domain, $data = null)
 	{
-		if (!Config::read('multiInstances')) {
-			return true;
-		}
 		$base = Config::read('SiteManager.url');
+
+		if (!$base) return;
+
 		$url = "{$base}/domain/{$domain}";
 
 		$remote = curl_init($url);
