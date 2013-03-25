@@ -59,6 +59,14 @@ class Images extends AppModel {
 		$this->resizeImage($model, $path, $filename);
 	}
 
+	public function toJSONPerformance()
+	{
+		$imageKeys = array('path', 'title', 'description', 'id');
+		$data = $this->data;
+		$data['path'] = '/' . $data['path'];
+		return array_intersect_key($data, array_flip($imageKeys));
+	}
+
 	public function toJSON()
 	{
 		$data = $this->data;

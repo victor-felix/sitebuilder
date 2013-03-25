@@ -43,9 +43,7 @@ class SitesController extends ApiController
 			$json['updated_at'] = date('Y-m-d H:i:s', $article['modified']);
 			$json['published_at'] = date('Y-m-d H:i:s', $article['pubdate']);
 			$json['images'] = array_map(function($image) use ($imageKeys) {
-				$data = $image->data;
-				$json = array_intersect_key($data, array_flip($imageKeys));
-				return $json;
+				return $image->toJSONPerformance();
 			}, \Model::load('Images')->allByRecord('Items', $article['_id']));
 			return $json;
 		}, $this->site()->news()->to('array'));
