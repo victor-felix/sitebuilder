@@ -38,27 +38,7 @@ CREATE TABLE `categories` (
   `updated` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `by_parent` (`site_id`,`parent_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `countries`
---
-
-DROP TABLE IF EXISTS `countries`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `countries` (
-  `id` int(12) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `iso2` varchar(5) NOT NULL,
-  `iso3` varchar(5) NOT NULL,
-  `tld` varchar(5) NOT NULL,
-  `idd` varchar(10) NOT NULL,
-  `region` varchar(255) NOT NULL,
-  `capital` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=203 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -85,7 +65,7 @@ CREATE TABLE `images` (
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `by_foreign_key` (`foreign_key`,`model`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -110,25 +90,15 @@ DROP TABLE IF EXISTS `sites`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sites` (
   `id` int(12) NOT NULL AUTO_INCREMENT,
-  `user_id` int(12) DEFAULT NULL,
   `segment` varchar(64) DEFAULT NULL,
   `theme` varchar(64) DEFAULT NULL,
   `skin` varchar(255) DEFAULT NULL,
-  `widget_id` int(12) DEFAULT NULL,
-  `hide_categories` tinyint(1) DEFAULT '1',
   `slug` varchar(255) NOT NULL,
   `domain` varchar(255) DEFAULT NULL,
   `title` varchar(255) NOT NULL,
   `description` text,
   `timetable` text,
-  `street` varchar(255) DEFAULT NULL,
-  `number` varchar(12) DEFAULT NULL,
-  `zip` varchar(12) DEFAULT NULL,
-  `complement` varchar(128) DEFAULT NULL,
-  `zone` varchar(128) DEFAULT NULL,
-  `city` varchar(128) DEFAULT NULL,
-  `state_id` int(12) DEFAULT NULL,
-  `country_id` int(12) DEFAULT NULL,
+  `address` text,
   `email` varchar(255) DEFAULT NULL,
   `phone` varchar(255) DEFAULT NULL,
   `website` varchar(255) DEFAULT NULL,
@@ -144,7 +114,7 @@ CREATE TABLE `sites` (
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `by_domain` (`slug`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -161,22 +131,7 @@ CREATE TABLE `sites_domains` (
   PRIMARY KEY (`id`),
   KEY `domain_site_id` (`site_id`),
   CONSTRAINT `sites_domains_ibfk_2` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `states`
---
-
-DROP TABLE IF EXISTS `states`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `states` (
-  `id` int(12) NOT NULL AUTO_INCREMENT,
-  `country_id` int(12) DEFAULT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3697 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -197,7 +152,7 @@ CREATE TABLE `users` (
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -217,7 +172,7 @@ CREATE TABLE `users_sites` (
   `created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_site_unique` (`user_id`,`site_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -229,4 +184,4 @@ CREATE TABLE `users_sites` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-03-20 16:10:57
+-- Dump completed on 2013-03-25 18:37:33
