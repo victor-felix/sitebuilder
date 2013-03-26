@@ -3,16 +3,14 @@ namespace utils;
 
 abstract class Work
 {
-    protected $log;
+	protected $log;
+	abstract public function init();
+	abstract public function run();
 
-    abstract public function init();
-    abstract public function run();
-
-    public function start()
-    {
-        $this->log = \KLogger::instance(\Filesystem::path('log'));
-            $this->init();
-            $this->run();
-        
-    }
+	public function start()
+	{
+		$this->log = \KLogger::instance(\Filesystem::path('log'));
+		$this->init();
+		$this->run();
+	}
 }
