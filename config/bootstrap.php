@@ -18,6 +18,10 @@ require 'app/models/app_model.php';
 require 'app/controllers/app_controller.php';
 require 'app/models/meu_mobi.php';
 
+define('ERROR_LOG', dirname(dirname(__DIR__)) . '/log/php.log');
+
+ini_set('error_log', ERROR_LOG);
+
 return function($segment) {
 	require 'segments/' . $segment . '/config.php';
 
