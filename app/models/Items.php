@@ -319,21 +319,29 @@ class Items extends \lithium\data\Model {
 		return $chain->next($self, $params, $chain);
 	}
 
-	public static function getNotGeocoded($classname, $collection, $conditions = array(), $limit = 20, $page = 1) {
-		/** total of items successfully geocoded */
-		$count = $classname::find('count', array(
-			'conditions' => $conditions + array('geo' => array('$ne' => 0))
+	public static function getNotGeocoded($self, $collection, $params) {
+		$limit = $params['limit'];
+		$page = $params['page'];
+		$conditions = $params['conditions'];
+
+		if (!$limit || !$page || $collection->count() >= $limit) {
+			return $collection;
+		}
+		$conditions['geo'] = array('$size' => 2);
+		// total of items successfully geocoded
+		$count = $self::find('count', array(
+			'conditions' => $conditions
 		));
 
-		/** calculate last page with geocoded items and prevent division by 0 */
-		if($count && $count > $limit) {
-			$lastPg = (int) ($count / $limit) + 1;
-		}
-		else {
+		// calculate last page with geocoded items and prevent division by 0
+		if($count > $limit) {
+			$lastPg = ($count / $limit) + 1;
+			$lastPg = floor($lastPg);
+		} else {
 			$lastPg = 1;
 		}
 
-		/** current page of not geocoded items */
+		// current page of not geocoded items
 		$currPg = $page - $lastPg;
 		$rest = ($limit * $lastPg) - $count;
 
@@ -345,8 +353,9 @@ class Items extends \lithium\data\Model {
 			$limit = $rest;
 		}
 
-		$itemsLost = $classname::find('all', array(
-			'conditions' => $conditions + array('geo' => 0),
+		$conditions['geo'] = 0;
+		$itemsLost = $self::find('all', array(
+			'conditions' => $conditions,
 			'limit' => $limit,
 			'offset' => $offset
 		));
@@ -410,7 +419,8 @@ class Items extends \lithium\data\Model {
 			'$near' => array($lng, $lat),
 		);
 
-		return $chain->next($self, $params, $chain);
+		$result = $chain->next($self, $params, $chain);
+		return static::getNotGeocoded($self, $result, $params['options']);
 	}
 
 	public static function withinFinder($self, $params, $chain) {

@@ -23,10 +23,6 @@ class GeoController extends ApiController {
 				'page' => $page,
 		));
 
-		if($items->count() < $limit) {
-			$items = $classname::getNotGeocoded($classname, $items, $conditions, $limit, $page);
-		}
-
 		$items = $this->toJSON($items);
 		if(is_hash($items) && !empty($items)) {
 			$items = array($items);
