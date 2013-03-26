@@ -216,10 +216,8 @@ class Categories extends AppModel
 
 	protected function scheduleImport()
 	{
-		if (!Import::check('import')) return false;
-
 		$uploader = new FileUpload();
-		$uploader->path = APP_ROOT . '/public/uploads/imports';
+		$uploader->path = APP_ROOT . '/uploads/imports';
 
 		try {
 			$importFile = $uploader->upload($this->data['import'], Security::hash(time()) . '_:original_name');

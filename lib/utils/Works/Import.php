@@ -9,7 +9,7 @@ class Import extends Work
 
 	protected $category;
 	protected $job;
-	protected $fileDir = '/public/uploads/imports/';
+	protected $fileDir = '/uploads/imports/';
 	protected $file;
 	protected $fields;
 	protected $isJob = true;
