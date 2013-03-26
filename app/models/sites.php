@@ -317,7 +317,9 @@ class Sites extends AppModel
 			$data['photos'] []= $photo->toJSON();
 		}
 
-		$data ['description'] = nl2br($data ['description']);
+		$data['description'] = nl2br($data['description']);
+		$data['address'] = nl2br($data['address']);
+		$data['timetable'] = nl2br($data['timetable']);
 
 		return $data;
 	}
