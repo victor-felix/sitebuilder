@@ -93,7 +93,7 @@ class UsersController extends AppController
 			$user->updateAttributes($this->data);
 			if ($user->resetPassword()) {
 				Session::writeFlash('success', s('Password successfully reseted'));
-				$this->redirect('/login');
+				$this->redirect('/users/login');
 			}
 		}
 		$this->set(array('user' => $user));

@@ -93,9 +93,8 @@ class View {
         return $this->blocks[$name];
     }
     public static function path($request) {
-        if(is_null($request['extension'])) {
-            $request['extension'] = 'htm';
-        }
-        return $request['controller'] . '/' . $request['action'] . '.' . $request['extension'];
+        $controller = $request->get('params:controller');
+        $action = $request->get('params:action');
+        return $controller . '/' . $action . '.htm';
     }
 }

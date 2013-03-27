@@ -69,10 +69,9 @@ class Controller {
     }
 
     public static function hasViewForAction($request) {
-        if(is_null($request['extension'])) {
-            $request['extension'] = 'htm';
-        }
-        return Filesystem::exists('app/views/' . $request['controller'] . '/' . $request['action'] . '.' . $request['extension'] . '.php');
+        $controller = $request->get('params:controller');
+        $action = $request->get('params:action');
+        return Filesystem::exists('app/views/' . $controller . '/' . $action . '.htm.php');
     }
 
     public function name() {
@@ -83,13 +82,13 @@ class Controller {
     }
 
     public function callAction($request) {
-        if($this->hasAction($request['action']) || Controller::hasViewForAction($request)) {
+        if($this->hasAction($request->get('params:action')) || Controller::hasViewForAction($request)) {
             return $this->dispatch($request);
         }
         else {
             throw new MissingActionException(array(
-                'controller' => $request['controller'],
-                'action' => $request['action']
+                'controller' => $request->get('params:controller'),
+                'action' => $request->get('params:action')
             ));
         }
     }
@@ -106,12 +105,13 @@ class Controller {
     }
 
     protected function dispatch($request) {
-        $this->params = $request;
+        $this->params = $request->params;
         $this->beforeFilter();
         $view = View::path($request);
+        $action = $request->get('params:action');
 
-        if($this->hasAction($request['action'])) {
-            call_user_func_array(array($this, $request['action']), $request['params']);
+        if($this->hasAction($action)) {
+            call_user_func_array(array($this, $action), (array) $request->get('params:args'));
             $view = null;
         }
 
@@ -233,10 +233,7 @@ class Controller {
     }
 
     public function param($key, $default = null) {
-        if(array_key_exists($key, $this->params['named'])) {
-            return $this->params['named'][$key];
-        }
-        elseif(in_array($key, array_keys($this->params))) {
+        if(in_array($key, array_keys($this->params))) {
             return $this->params[$key];
         }
         else {

@@ -10,33 +10,43 @@ class AppController extends Controller
 
 	protected function beforeFilter()
 	{
-		$this->setLanguage();
+		$this->detectLanguage();
 
 		if ($this->isXhr()) {
 			$this->autoLayout = false;
 		}
 	}
 
-	protected function setLanguage()
+	protected function detectLanguage()
 	{
-		I18n::path(APP_ROOT . '/config/locales');
-
 		if (Auth::loggedIn()) {
-			return $this->language = I18n::locale(Auth::user()->language);
+			$this->setLanguage(Auth::user()->language);
+		} elseif ($language = $this->param('locale')) {
+			$this->setLanguage($language);
+		} else {
+			$this->setLanguage($this->detectBrowserLanguage());
 		}
+	}
 
+	protected function detectBrowserLanguage()
+	{
 		if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
 			$languages = strstr($_SERVER['HTTP_ACCEPT_LANGUAGE'], ';', true);
 			$languages = explode(',', $languages);
 
 			foreach ($languages as $language) {
 				if ($this->languageExists($language)) {
-					return $this->language = I18n::locale($language);
+					return $language;
 				}
 			}
 		}
 
-		$this->language = I18n::locale('en');
+		return 'en';
+	}
+
+	protected function setLanguage($language)
+	{
+		return $this->language = I18n::locale($language);
 	}
 
 	protected function languageExists($language)

@@ -156,19 +156,47 @@ Router::resources('items', $defaults);
 Router::resources('news', array('only' => 'index') + $defaults);
 Router::resources('images', $defaults);
 
+$locales = I18n::availableLanguages();
+Router::connect('/{:locale:' . join('|', $locales) . '}/{:args}', array(
+	'controller' => 'home',
+	'extension' => 'htm'
+), array('continue' => true));
+
+Router::connect(new Route(array(
+	'template' => '/{:controller}/{:action}/{:args}.{:extension}',
+	'params' => array(
+		'controller' => 'home',
+		'extension' => 'htm'
+	)
+)));
+
+Router::connect(new Route(array(
+	'template' => '/{:controller}/{:action}/{:args}',
+	'params' => array(
+		'controller' => 'home',
+		'extension' => 'htm'
+	)
+)));
+
 Dispatcher::applyFilter('run', function($self, $params, $chain) {
-	if($route = Router::parse($params['request'])) {
-		return $chain->next($self, $params, $chain);
-	}
-	else {
-		echo \Dispatcher::dispatch(null, $params['request']);
+	if ($route = Router::parse($params['request'])) {
+		if ($route->get('params:api')) {
+			return $chain->next($self, $params, $chain);
+		} else {
+			$class = Inflector::camelize($route->get('params:controller')) . 'Controller';
+			$controller = Controller::load($class, true);
+			$controller->request = $params['request'];
+			echo $controller->callAction($params['request']);
+		}
+	} else {
+		die();
 	}
 });
 
 Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
 	$controller = $chain->next($self, $params, $chain);
 
-	if($controller->beforeFilter() === false) {
+	if ($controller->beforeFilter() === false) {
 		echo $controller->response;
 		die();
 	};
