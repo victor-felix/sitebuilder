@@ -7,14 +7,14 @@ class SitesController extends AppController
 
 	protected function beforeFilter()
 	{
+		parent::beforeFilter();
+
 		$isAdmin = $this->getCurrentSite()->userRole() == Users::ROLE_ADMIN;
 		$isProtected = in_array($this->param('action'), $this->protectedActions);
 		if (!$isAdmin && $isProtected) {
 			Session::writeFlash('error', s('Sorry, you are not allowed to do this'));
 			$this->redirect('/dashboard');
 		}
-
-		parent::beforeFilter();
 	}
 
 	public function business_info()

@@ -11,6 +11,8 @@ class CreateSiteController extends AppController
 
 	protected function beforeFilter()
 	{
+		parent::beforeFilter();
+
 		if (!Auth::loggedIn()) {
 			$this->redirect('/users/login');
 		}

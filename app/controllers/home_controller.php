@@ -7,6 +7,8 @@ class HomeController extends AppController
 
 	protected function beforeFilter()
 	{
+		parent::beforeFilter();
+
 		if (Auth::loggedIn()) {
 			$this->redirect('/dashboard');
 		}

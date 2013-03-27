@@ -4,11 +4,11 @@ class CategoriesController extends AppController
 {
 	protected function beforeFilter()
 	{
+		parent::beforeFilter();
+
 		if (MeuMobi::currentSegment()->hideCategories) {
 			$this->redirect('/sites/business_info');
 		}
-
-		parent::beforeFilter();
 	}
 
 	public function index()

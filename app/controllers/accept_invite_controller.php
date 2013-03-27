@@ -20,7 +20,7 @@ class AcceptInviteController extends AppController
 					Session::writeFlash('success', s('Congratulations, your invitation was confirmed'));
 					$this->redirect('/dashboard');
 				} else {
-					Session::writeFlash('error', s('Sorry, your invitation can\'t de confirmed'));
+					Session::writeFlash('error', s('Sorry, your invitation can\'t be confirmed'));
 					Auth::logout();
 				}
 			} else {
@@ -38,6 +38,7 @@ class AcceptInviteController extends AppController
 		}
 
 		$user = new Users();
+		$user->language = $this->language;
 
 		if (!empty($this->data)) {
 			$user->updateAttributes($this->data);

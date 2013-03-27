@@ -7,10 +7,10 @@ class UsersController extends AppController
 
 	protected function beforeFilter()
 	{
+		parent::beforeFilter();
+
 		$allowed = in_array($this->param('action'), $this->allowedActions);
 		if (!$allowed) $this->redirectIfUnauthenticated();
-
-		parent::beforeFilter();
 	}
 
 	public function edit()
