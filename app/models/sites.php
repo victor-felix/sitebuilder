@@ -317,7 +317,9 @@ class Sites extends AppModel
 			$data['photos'] []= $photo->toJSON();
 		}
 
-		$data ['description'] = nl2br($data ['description']);
+		$data['description'] = nl2br($data['description']);
+		$data['address'] = nl2br($data['address']);
+		$data['timetable'] = nl2br($data['timetable']);
 
 		return $data;
 	}
@@ -480,7 +482,7 @@ class Sites extends AppModel
 			'site_id' => $this->id,
 			'parent_id' => null,
 			'type' => 'articles',
-			'title' => '',
+			'title' => s('NEWS'),
 			'visibility' => -1,
 			'populate' => 'auto',
 		));

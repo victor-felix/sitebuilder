@@ -5,39 +5,40 @@ namespace app\controllers\api;
 use Model;
 use Inflector;
 use app\models\Items;
-class GeoController extends ApiController {
-	public function nearest() {
+class GeoController extends ApiController
+{
+	public function nearest()
+	{
 		$category = Model::load('Categories')->firstById($this->request->params['category_id']);
 		$classname = '\app\models\items\\' . Inflector::camelize($category->type);
-		$conditions = array('site_id' => $this->site()->id, 'parent_id' => $category->id,);
+		$conditions = array(
+			'site_id' => $this->site()->id,
+			'parent_id' => $category->id,
+		);
 
-		$limit 	= $this->param('limit', 20);
-		$page 	=  $this->param('page', 1);
+		$limit = $this->param('limit', 20);
+		$page = $this->param('page', 1);
 
 		$items = $classname::find('nearest', array(
-				'conditions' => $conditions + array(
-						'lat' => $this->request->query['lat'],
-						'lng' => $this->request->query['lng']
-				),
-				'limit' => $limit,
-				'page' => $page,
+			'conditions' => $conditions + array(
+				'lat' => $this->request->query['lat'],
+				'lng' => $this->request->query['lng']
+			),
+			'limit' => $limit,
+			'page' => $page,
 		));
 
-		if($items->count() < $limit) {
-			$items = $classname::getNotGeocoded($classname, $items, $conditions, $limit, $page);
-		}
-
 		$items = $this->toJSON($items);
-		if(is_hash($items) && !empty($items)) {
+		if (is_hash($items) && !empty($items)) {
 			$items = array($items);
 		}
 
 		return $items;
 	}
 
-	public function inside() {
+	public function inside()
+	{
 		$category = Model::load('Categories')->firstById($this->request->params['category_id']);
-
 		$classname = '\app\models\items\\' . Inflector::camelize($category->type);
 		$items = $classname::find('within', array(
 			'conditions' => array(
@@ -53,7 +54,7 @@ class GeoController extends ApiController {
 		));
 
 		$items = $this->toJSON($items);
-		if(is_hash($items) && !empty($items)) {
+		if (is_hash($items) && !empty($items)) {
 			$items = array($items);
 		}
 

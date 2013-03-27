@@ -319,83 +319,80 @@ class Items extends \lithium\data\Model {
 		return $chain->next($self, $params, $chain);
 	}
 
-	public static function getNotGeocoded($classname, $collection, $conditions = array(), $limit = 20, $page = 1) {
-		/** total of items successfully geocoded */
-		$count = $classname::find('count', array(
-			'conditions' => $conditions + array('geo' => array('$ne' => 0))
+	public static function getNotGeocoded($self, $collection, $params)
+	{
+		$limit = $params['limit'];
+		$page = $params['page'];
+		$conditions = $params['conditions'];
+
+		if (!$limit || !$page || $collection->count() >= $limit) {
+			return $collection;
+		}
+
+		$conditions['geo'] = array('$size' => 2);
+		//total of items successfully geocoded
+		$count = $self::find('count', array(
+			'conditions' => $conditions
 		));
 
-		/** calculate last page with geocoded items and prevent division by 0 */
-		if($count && $count > $limit) {
-			$lastPg = (int) ($count / $limit) + 1;
-		}
-		else {
-			$lastPg = 1;
+		//calculate last page with geocoded items and prevent division by 0
+		if ($count > $limit) {
+			$lastPage = ($count / $limit) + 1;
+			$lastPage = floor($lastPage);
+		} else {
+			$lastPage = 1;
 		}
 
-		/** current page of not geocoded items */
-		$currPg = $page - $lastPg;
-		$rest = ($limit * $lastPg) - $count;
+		//current page of not geocoded items
+		$currentPage = $page - $lastPage;
+		$rest = ($limit * $lastPage) - $count;
 
-		if($currPg) {
-			$offset = ($limit * ($currPg - 1)) + $rest;
-		}
-		else {
+		if ($currentPage) {
+			$offset = ($limit * ($currentPage - 1)) + $rest;
+		} else {
 			$offset = 0;
 			$limit = $rest;
 		}
 
-		$itemsLost = $classname::find('all', array(
-			'conditions' => $conditions + array('geo' => 0),
+		$conditions['geo'] = 0;
+		$itemsLost = $self::find('all', array(
+			'conditions' => $conditions,
 			'limit' => $limit,
 			'offset' => $offset
 		));
 
-		if(!$collection->count()) {
+		if (!$collection->count()) {
 			return $itemsLost;
 		}
 
-		/** add items to existing collection */
-		while($item = $itemsLost->next()) {
+		//add items to existing collection
+		while ($item = $itemsLost->next()) {
 			$collection->append($item);
 		}
 
 		return $collection;
 	}
 
-	public static function addGeocode($self, $params, $chain) {
+	public static function addGeocode($self, $params, $chain) 
+	{
 		$item = $params['entity'];
-
 		if(isset($item->latitude) && isset($item->longitude)) {
 			$item->geo = array((float) $item->longitude, (float) $item->latitude);
 			unset($item->latitude);
 			unset($item->longitude);
 		} else if($item->changed('address') && !empty($item->address)) {
-			if(Geocode::check('geocode')) {
-				$result = $chain->next($self, $params, $chain);
-				$job = \app\models\Jobs::create();
-				$data = array(
-						'type' => 'geocode',
-						'params' => array(
-								'item_id' => (string) $item->_id,
-								'type' => $item->type,
-						),
-				);
-				$job->set($data);
-				$job->save();
-				return $result;
-			} else {
-				try {
-					$geocode = GoogleGeocoding::geocode($item->address);
-					if($geocode->status == 'OK') {
-						$location = $geocode->results[0]->geometry->location;
-						$item->geo = array($location->lng, $location->lat);
-					}
-				}
-				catch(\Exception $e) {
-					$item->geo = 0;
-				}
-			}
+			$result = $chain->next($self, $params, $chain);
+			$job = \app\models\Jobs::create();
+			$data = array(
+				'type' => 'geocode',
+				'params' => array(
+					'item_id' => (string) $item->_id,
+					'type' => $item->type,
+				),
+			);
+			$job->set($data);
+			$job->save();
+			return $result;
 		} else if(empty($item->address)) {
 			$item->geo = 0;
 		}
@@ -415,7 +412,8 @@ class Items extends \lithium\data\Model {
 		}
 	}
 
-	public static function nearestFinder($self, $params, $chain) {
+	public static function nearestFinder($self, $params, $chain)
+	{
 		$lat = (float) array_unset($params['options']['conditions'], 'lat');
 		$lng = (float) array_unset($params['options']['conditions'], 'lng');
 
@@ -423,10 +421,12 @@ class Items extends \lithium\data\Model {
 			'$near' => array($lng, $lat),
 		);
 
-		return $chain->next($self, $params, $chain);
+		$result = $chain->next($self, $params, $chain);
+		return static::getNotGeocoded($self, $result, $params['options']);
 	}
 
-	public static function withinFinder($self, $params, $chain) {
+	public static function withinFinder($self, $params, $chain)
+	{
 		$ne_lat = (float) array_unset($params['options']['conditions'], 'ne_lat');
 		$ne_lng = (float) array_unset($params['options']['conditions'], 'ne_lng');
 		$sw_lat = (float) array_unset($params['options']['conditions'], 'sw_lat');

@@ -16,6 +16,8 @@ class SitesController extends ApiController
 		$businessKeys = array('email', 'facebook', 'twitter', 'phone',
 			'website', 'timetable', 'address', 'latitude', 'longitude');
 		$business = array_intersect_key($this->site()->data, array_flip($businessKeys));
+		$business['address'] = nl2br($business['address']);
+		$business['timetable'] = nl2br($business['timetable']);
 
 		$categoryKeys = array('id', 'title', 'type');
 		$extensionKeys = array('url', 'language', 'itemLimit', 'extension');
