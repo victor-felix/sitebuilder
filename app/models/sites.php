@@ -482,7 +482,7 @@ class Sites extends AppModel
 			'site_id' => $this->id,
 			'parent_id' => null,
 			'type' => 'articles',
-			'title' => '',
+			'title' => s('NEWS'),
 			'visibility' => -1,
 			'populate' => 'auto',
 		));
