@@ -156,12 +156,6 @@ Router::resources('items', $defaults);
 Router::resources('news', array('only' => 'index') + $defaults);
 Router::resources('images', $defaults);
 
-$locales = I18n::availableLanguages();
-Router::connect('/{:locale:' . join('|', $locales) . '}/{:args}', array(
-	'controller' => 'home',
-	'extension' => 'htm'
-), array('continue' => true));
-
 Router::connect(new Route(array(
 	'template' => '/{:controller}/{:action}/{:args}.{:extension}',
 	'params' => array(
@@ -170,8 +164,10 @@ Router::connect(new Route(array(
 	)
 )));
 
+$locales = I18n::availableLanguages();
+
 Router::connect(new Route(array(
-	'template' => '/{:controller}/{:action}/{:args}',
+	'template' => '(/{:locale:' . join('|', $locales) . '})?/{:controller}/{:action}/{:args}',
 	'params' => array(
 		'controller' => 'home',
 		'extension' => 'htm'

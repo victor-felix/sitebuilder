@@ -14,14 +14,14 @@
 				'class' => 'ui-text'
 			)) ?>
 		</div>
-		
+
 		<div class="form-grid-220 first">
 			<?php echo $this->form->input('password', array(
 				'label' => s('Password'),
 				'class' => 'ui-text'
 			)) ?>
 		</div>
-		
+
 		<div class="form-grid-220 first">
 			<?php echo $this->form->input('remember', array(
 				'label' => false,
@@ -29,15 +29,13 @@
 			)) ?>
 			<label for="FormRemember" class="checkbox"><?php echo s('Remember me') ?></label>
 		</div>
-		<?php if (MeuMobi::currentSegment()->isSignupEnabled()):?>
-		<div class="form-grid-220 first">
-			<?php
-				echo $this->html->link(s('Don\'t have account? Click here to register'), '/signup/user', array(
-					'class' => 'no-account'
-				));
-			?>
-		</div>
-		<?php endif;?>
+		<?php if (MeuMobi::currentSegment()->isSignupEnabled()): ?>
+			<div class="form-grid-220 first">
+				<?php echo $this->language->link(s('Don\'t have account? Click here to register'), '/signup/user', array(
+						'class' => 'no-account'
+				)) ?>
+			</div>
+		<?php endif ?>
 	</div>
 </fieldset>
 
@@ -46,8 +44,8 @@
 		'class' => 'ui-button large',
 		'style' => 'float: left'
 	))?>
-	
-	 <?php echo $this->html->link(s('Forgot password?'), '/users/forgot_password', array(
+
+	 <?php echo $this->language->link(s('Forgot password?'), '/users/forgot_password', array(
 		'class' => 'forgot-password'
 	)) ?>
 </fieldset>

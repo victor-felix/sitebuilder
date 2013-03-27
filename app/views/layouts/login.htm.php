@@ -9,22 +9,20 @@
 	<body class="login">
 		<div class="wrapper">
 			<div id="header">
-				<?php echo $this->html->imagelink('layout/logo.png', '/', array(
+				<?php echo $this->language->imagelink('layout/logo.png', '/', array(
 					'alt' => $this->controller->getSegment()->title,
 					'title' =>  $this->controller->getSegment()->title
-				), array(
-					'class' => 'logo'
-				)) ?>
+				), array('class' => 'logo')) ?>
 			</div>
-	
+
 			<?php echo $this->element('layouts/flash') ?>
-			
+
 			<div class="content-wrapp">
 				<div id="content">
 					<?php echo $this->contentForLayout ?>
 				</div>
 			</div>
-			
+
 			<?php echo $this->element('layouts/footer') ?>
 		</div>
 		<?php echo $this->html->script('shared/jquery', 'shared/support_chat', 'shared/main') ?>

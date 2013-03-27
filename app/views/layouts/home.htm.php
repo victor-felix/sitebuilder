@@ -15,26 +15,27 @@
 				<span class="border"></span>
 			</h1>
 			<div class="pull-right">
+				<div class="pull-left">
+					<?php echo $this->element('common/language') ?>
+				</div>
 				<p class="call pull-left">
 					<span><?php echo s('need convincing? call us')?></span>
 					<b><?php echo s('+55 21 2499.3744')?></b>
 				</p>
 				<p class="login pull-left">
-					<?php echo $this->html->link(s('sign up now'), '/signup/user', array(
+					<?php echo $this->language->link(s('sign up now'), '/signup/user', array(
 							'class' => 'active'
-						)) ?>
-						<?php echo s('or')?>
-					<?php echo $this->html->link( s('Sign in ›'), '/users/login', array(
-						'class' => ''
 					)) ?>
+					<?php echo s('or')?>
+					<?php echo $this->language->link( s('Sign in ›'), '/users/login') ?>
 				</p>
 			</div>
 		</div>
 
 		<?php echo $this->contentForLayout ?>
-		
+
 		<?php echo $this->element('layouts/footer') ?>
-		
+
 		<?php echo $this->html->script('shared/jquery', 'shared/support_chat', 'shared/jquery.carouFredSel-6.1.0-packed','shared/jquery.touchSwipe.min', 'shared/jquery.ba-throttle-debounce.min', 'shared/home') ?>
 		<?php echo $this->html->scriptsForLayout ?>
 	</body>
