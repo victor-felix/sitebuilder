@@ -43,12 +43,12 @@ small {
 }
 
 .header > div {
-	margin-top: 30px;
 }
 
 .header .call {
 	text-align: right;
 	font-size: 20px;
+	margin-top: 10px;
 }
 
 .header .call span {
@@ -57,7 +57,7 @@ small {
 }
 
 .header .login {
-	margin: 20px 0 0 25px;
+	margin: 57px 0 0 25px;
 	font-size: 18px;
 	text-transform: lowercase;
 	letter-spacing: -1px;
@@ -82,6 +82,21 @@ small {
 	text-decoration: none;
 }
 
+.dropdown {
+	font-size: 14px;
+}
+.dropdown > li > p {
+	min-width: 120px;
+}
+
+.dropdown ul {
+	margin: 0;
+	text-align: left;
+}
+
+ul.dropdown li ul {
+	min-width: 220px;
+}
 /* hero */
 .hero.outer.wrapp {
 	background-color: #202729;

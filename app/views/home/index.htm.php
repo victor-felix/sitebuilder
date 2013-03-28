@@ -4,14 +4,16 @@
 			<div class="block pull-left">
 				<h3><?php echo s('Create a mobile website for your business.')?></h3>
 				<p><?php echo s('Works with over 6000 cellphones and smartphones.')?></p>
-				<a class="btn big" href="/signup/user"><?php echo s('start your free trial ›')?></a>
+				<?php echo $this->language->link(s('start your free trial ›'), '/signup/user', array(
+					'class' => 'btn big'
+				)) ?>
 				<p class="trial"><small><b><?php echo s('NO')?></b> <?php echo s('Credit card required.')?><br> <?php echo s('30-day, fully functional trial.')?></small></p>
 			</div>
 			<div class="pull-right">
 				<div class="slider ">
-				<p><img alt="" src="/images/home/slides/slide-01.png"></p>
-				<p><img alt="" src="/images/home/slides/slide-02.png"></p>
-				<p><img alt="" src="/images/home/slides/slide-03.png"></p>
+					<p><img alt="" src="/images/home/slides/slide-01.png"></p>
+					<p><img alt="" src="/images/home/slides/slide-02.png"></p>
+					<p><img alt="" src="/images/home/slides/slide-03.png"></p>
 				</div>
 				<div class="pagination"></div>
 			</div>
@@ -118,7 +120,7 @@
 			<div class="span6">
 				<h2><span><?php echo s('Basic')?> </span><?php echo s('USD <b>9/mo</b>')?></h2>
 				<p><?php echo s('create a mobile presence')?></p>
-				
+
 				<ul>
 					<li><span class="icon"></span><?php echo s('<b>Basic information:</b><br>contacts, address, photos, social links, news via RSS')?></li>
 					<li><span class="icon"></span><?php echo s('additional content such as <b>menus, products, services</b>, etc.')?></li>
@@ -128,7 +130,7 @@
 			<div class="span6">
 				<h2><span><?php echo s('Locator')?> </span><?php echo s('USD <b>34/mo</b>')?></h2>
 				<p><?php echo s('for businesses with multiple locations')?></p>
-				
+
 				<ul>
 					<li><span class="icon"></span><?php echo s('<b>Basic information:</b><br>contacts, address, photos, social links, news via RSS')?></li>
 					<li><span class="icon"></span><?php echo s('additional content such as <b>menus, products, services</b>, etc.')?></li>
@@ -136,9 +138,11 @@
 				</ul>
 			</div>
 		</div>
-		
+
 		<p class="action">
-			<a class="btn big" href="/signup/user"><?php echo s('start your free trial now!')?></a>
+			<?php echo $this->language->link(s('start your free trial now!'), '/signup/user', array(
+				'class' => 'btn big'
+			)) ?>
 			<br>
 			<span class="trial">
 				<small>
@@ -156,7 +160,7 @@
 			<div class=" span4 ">
 				<div class="insights">
 					<h3><?php echo s('<b>get mobile.</b><br> a few insights on the mobile market.')?></h3>
-					
+
 					<div class="slider">
 						<div>
 							<p>
@@ -164,14 +168,14 @@
 							</p>
 							<p class="author"><?php echo s('— Google Research, 2012') ?></p>
 						</div>
-						
+
 						<div>
 							<p>
 								<?php echo s('<b>A bad mobile experience can cost you customers.</b> 61%% of users who don\'t see what they\'re looking for on a mobile site, they\'ll quikly move to another site.'); ?>
 							</p>
 							<p class="author"><?php echo s('— Google Research, 2012') ?></p>
 						</div>
-						
+
 						<div>
 							<p>
 								<?php echo s('Having a mobile optimized site is critical to <b>engage consumers across the multiple paths to purchase.</b>')?>
@@ -187,7 +191,7 @@
 				<div class="row">
 					<div class="span4">
 						<div class="quote">
-							
+
 							<p>
 								<span class="icon left"></span>
 								<span class="icon right"></span>
@@ -196,7 +200,7 @@
 							<p class="author"><?php echo s('— IMAginal Architecture')?></p>
 						</div>
 					</div>
-					
+
 					<div class="span4">
 						<div class="quote">
 							<p>

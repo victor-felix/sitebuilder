@@ -7,10 +7,10 @@ class UsersController extends AppController
 
 	protected function beforeFilter()
 	{
+		parent::beforeFilter();
+
 		$allowed = in_array($this->param('action'), $this->allowedActions);
 		if (!$allowed) $this->redirectIfUnauthenticated();
-
-		parent::beforeFilter();
 	}
 
 	public function edit()
@@ -93,7 +93,7 @@ class UsersController extends AppController
 			$user->updateAttributes($this->data);
 			if ($user->resetPassword()) {
 				Session::writeFlash('success', s('Password successfully reseted'));
-				$this->redirect('/login');
+				$this->redirect('/users/login');
 			}
 		}
 		$this->set(array('user' => $user));

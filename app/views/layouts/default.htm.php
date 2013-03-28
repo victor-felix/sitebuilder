@@ -98,8 +98,8 @@
 						<li>
 							<p><?php echo s('settings')?><span class="arrow"></span></p>
 							<ul>
-								<li><?php echo $this->html->link(s('General'), '/settings/general') ?></li>
-								<li><?php echo $this->html->link(s('Custom Domain'), '/settings/custom_domain') ?></li>
+								<li><?php echo $this->html->link(s('General'), '/sites/general') ?></li>
+								<li><?php echo $this->html->link(s('Custom Domain'), '/sites/custom_domain') ?></li>
 								<?php if (MeuMobi::currentSegment()->enableMultiUsers()): ?>
 								<li><?php echo $this->html->link(s('Users'), '/sites/users') ?></li>
 								<?php endif ?>

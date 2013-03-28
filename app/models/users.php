@@ -1,5 +1,9 @@
 <?php
-use lithium\storage\Session, lithium\util\Validator;
+
+use lithium\storage\Session;
+use lithium\util\Validator;
+
+require_once 'lib/mailer/Mailer.php';
 
 class Users extends AppModel
 {
@@ -51,6 +55,10 @@ class Users extends AppModel
 		'confirm_password' => array(
 			'rule' => array('confirmField', 'password'),
 			'message' => 'Passwords do not match'
+		),
+		'language' => array(
+			'rule' => 'validLanguage',
+			'message' => 'You need to choose a valid language'
 		)
 	);
 
@@ -136,12 +144,6 @@ class Users extends AppModel
 			'role' => self::ROLE_ADMIN,
 			'segment' => MeuMobi::segment()
 		));
-	}
-
-	public function registerNewSite()
-	{
-		$this->createSite();
-		$this->authenticate(true);
 	}
 
 	public function confirm($token)
@@ -266,11 +268,11 @@ class Users extends AppModel
 	protected function hashPassword($data)
 	{
 		if (array_key_exists('password', $data) && array_key_exists('confirm_password', $data)) {
-			$password = array_unset ($data, 'password');
+			$password = array_unset($data, 'password');
 			if (!empty($password)) {
 				$data['password'] = Security::hash($password, 'sha1');
 			}
-			unset($data ['confirm_password']);
+			unset($data['confirm_password']);
 		}
 
 		return $data;
@@ -295,54 +297,42 @@ class Users extends AppModel
 		return Model::load('UsersSites')->onDeleteUser($this);
 	}
 
-	protected function createSite()
-	{
-		$model = Model::load('Sites');
-		$model->save(array(
-			'segment' => MeuMobi::segment(),
-			'slug' => '',
-			'title' => ''
-		));
-	}
-
 	protected function sendConfirmationMail($created)
 	{
-		if ($created && ! Config::read ( 'Mail.preventSending' )) {
-			require_once 'lib/mailer/Mailer.php';
+		if ($created && !Config::read('Mail.preventSending')) {
 			$segment = MeuMobi::currentSegment();
 
-			$mailer = new Mailer ( array (
+			$mailer = new Mailer(array(
 				'from' => $segment->email,
-				'to' => array ($this->email => $this->fullname () ),
-				'subject' => s ( '[MeuMobi] Account Confirmation' ),
-				'views' => array ('text/html' => 'users/confirm_mail.htm' ),
+				'to' => array($this->email => $this->fullname()),
+				'subject' => s('[MeuMobi] Account Confirmation'),
+				'views' => array('text/html' => 'users/confirm_mail.htm'),
 				'layout' => 'mail',
-				'data' => array (
+				'data' => array(
 					'user' => $this,
-					'title' => s ( '[MeuMobi] Account Confirmation' )
+					'title' => s('[MeuMobi] Account Confirmation')
 				)
 			));
-			$mailer->send ();
+			$mailer->send();
 		}
 	}
 
 	protected function sendForgottenPasswordMail()
 	{
-		if (!Config::read ( 'Mail.preventSending' )) {
-			require_once 'lib/mailer/Mailer.php';
+		if (!Config::read('Mail.preventSending')) {
 			$segment = MeuMobi::currentSegment();
 
-			$mailer = new Mailer ( array (
+			$mailer = new Mailer(array(
 				'from' => $segment->email,
-				'to' => array ($this->email => $this->fullname () ),
-				'subject' => s ( '[MeuMobi] Reset Password Request' ),
-				'views' => array ('text/html' => 'users/forgot_password_mail.htm' ),
+				'to' => array($this->email => $this->fullname()),
+				'subject' => s('[MeuMobi] Reset Password Request'),
+				'views' => array('text/html' => 'users/forgot_password_mail.htm'),
 				'layout' => 'mail',
-				'data' => array (
+				'data' => array(
 					'user' => $this,
-					'title' => s ( '[MeuMobi] Reset Password Request' )
+					'title' => s('[MeuMobi] Reset Password Request')
 				)
-			) );
+			));
 			$mailer->send ();
 		}
 	}
@@ -350,13 +340,12 @@ class Users extends AppModel
 	protected function sendInviteEmail($to, $title, $data = array(), $template = 'users/invite_mail.htm')
 	{
 		if (!Config::read('Mail.preventSending')) {
-			require_once 'lib/mailer/Mailer.php';
 			$segment = MeuMobi::currentSegment();
 			$mailer = new Mailer(array(
 				'from' => $segment->email,
 				'to' => $to,
 				'subject' => $title,
-				'views' => array('text/html' => $template ),
+				'views' => array('text/html' => $template),
 				'layout' => 'mail',
 				'data' =>  $data,
 			));
@@ -367,17 +356,22 @@ class Users extends AppModel
 
 	protected function authenticate($created)
 	{
-		if ($created || Auth::loggedIn ()) {
-			Auth::login ( $this );
+		if ($created || Auth::loggedIn()) {
+			Auth::login($this);
 		}
 	}
 
 	protected function joinName($data)
 	{
-		if (array_key_exists ( 'firstname', $data ) && array_key_exists ( 'lastname', $data )) {
-			$data ['name'] = $data ['firstname'] . ',' . $data ['lastname'];
+		if (array_key_exists('firstname', $data) && array_key_exists('lastname', $data)) {
+			$data['name'] = $data['firstname'] . ',' . $data['lastname'];
 		}
 
 		return $data;
+	}
+
+	protected function validLanguage($language)
+	{
+		return in_array($language, I18n::availableLanguages());
 	}
 }

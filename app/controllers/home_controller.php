@@ -7,6 +7,8 @@ class HomeController extends AppController
 
 	protected function beforeFilter()
 	{
+		parent::beforeFilter();
+
 		if (Auth::loggedIn()) {
 			$this->redirect('/dashboard');
 		}
@@ -14,5 +16,11 @@ class HomeController extends AppController
 		if (!MeuMobi::currentSegment()->isSignupEnabled()) {
 			$this->redirect('/users/login');
 		}
+	}
+	
+	public function index()
+	{
+		$language = $this->param('locale') ? $this->param('locale') : $this->detectBrowserLanguage();
+		$this->set(compact('language'));
 	}
 }

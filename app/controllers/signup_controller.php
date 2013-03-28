@@ -11,6 +11,8 @@ class SignupController extends AppController
 
 	protected function beforeFilter()
 	{
+		parent::beforeFilter();
+
 		if (Auth::loggedIn()) {
 			$this->redirect('/dashboard');
 		}
@@ -33,6 +35,7 @@ class SignupController extends AppController
 		$session = Session::read('Signup');
 
 		$user = new Users();
+		$user->language = $this->language;
 
 		if ($session && array_key_exists('user', $session)) {
 			$user->updateAttributes($session['user']);
