@@ -271,7 +271,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 }
 
 .global-navbar .user > li > p .icon {
-	background: url("/images/shared/layout/icon-user.png") no-repeat;
+	background: url("/images/shared/layout/icon-user.png") no-repeat ;
 	display: block;
 	width: 11px;
 	height: 10px;

@@ -1,0 +1,108 @@
+/**
+ *dropdown
+ */
+.dropdown p{
+	margin: 0;
+}
+ 
+.dropdown li {
+ 	margin: 0;
+ 	list-style: none;
+}
+ 
+.dropdown li ul {
+	display: none;
+	width: 100%;
+	position: absolute;
+	left: 0;
+	background-color: #fff;
+}
+
+.dropdown > li {
+	position: relative;
+	z-index: 3;
+	height: 30px;
+}
+
+.dropdown li:hover > ul {
+	display: block;
+}
+
+.dropdown ul li {
+	position: relative;
+}
+
+.dropdown ul ul {
+	left: 100%; 
+	top:0;
+}
+
+.dropdown li ul {
+	border: 1px solid #ddd;
+	border-top: none;
+	border-radius: 0 0 2px 2px;
+}
+
+/* dropdow custon layout */
+ul.dropdown li ul a, ul.dropdown li ul .current {
+	margin: 0;
+	display: block;
+	padding: 6px 8px;
+	border-bottom: 1px solid #DDD;
+	font-size: 14px;
+}
+
+.dropdown ul li, .dropdown ul li a {
+	font-size: 14px;
+	font-weight: bold;
+	color: #444;
+	text-decoration: none;
+}
+
+.dropdown li ul a:hover {
+	background-color: #F5F5F5;
+	color: #42537e;
+	border-bottom: 1px solid #DDD;
+	text-shadow: 0 1px 1px #fff;
+}
+
+.dropdown ul li small {
+	font-weight: normal;
+	font-style: italic;
+	text-transform: lowercase;
+	padding: 20px 10px 10px;
+	display: block;
+	color: #999;
+	border-bottom: 1px solid #DDD;
+}
+
+.dropdown li ul .current {
+	color: #999;
+	font-style: italic;
+}
+
+ul.dropdown li ul .current span {
+	font-weight: lighter;
+	text-transform: uppercase;
+	font-size: 10px;
+	float: right;
+	color: #777;
+}
+
+.dropdown ul li a, ul.dropdown li ul .current {
+
+}
+
+.dropdown > li > p {
+	padding: 7px 30px 12px 15px;
+	background: url("/images/shared/markitup/icon-nav-close.png") no-repeat 91% 46%;
+	display: inline-block;
+	border-radius: 2px 2px 0 0;
+}
+
+.dropdown:hover > li > p {
+	background: url("/images/shared/markitup/icon-nav-open.png") no-repeat 91% 46% white;
+	border: 1px solid #ddd;
+	border-bottom: none;
+	
+}

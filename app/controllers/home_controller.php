@@ -17,4 +17,10 @@ class HomeController extends AppController
 			$this->redirect('/users/login');
 		}
 	}
+	
+	public function index()
+	{
+		$language = $this->param('locale') ? $this->param('locale') : $this->detectBrowserLanguage();
+		$this->set(compact('language'));
+	}
 }
