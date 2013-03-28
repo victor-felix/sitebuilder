@@ -84,6 +84,7 @@ small {
 
 .dropdown {
 	font-size: 14px;
+	margin: 0;
 }
 .dropdown > li > p {
 	min-width: 120px;
@@ -97,7 +98,9 @@ small {
 ul.dropdown li ul {
 	min-width: 220px;
 }
+
 /* hero */
+
 .hero.outer.wrapp {
 	background-color: #202729;
 	padding: 0;
