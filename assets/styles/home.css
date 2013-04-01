@@ -29,6 +29,7 @@ small {
 }
 
 /* header */
+
 .header .logo {
 	margin: 25px 0 0 0;
 	line-height: normal;
@@ -255,10 +256,6 @@ div.wrapp.presentation {
 	padding: 6px 10px;
 }
 
-.features .store-locator .icon {
-	
-}
-
 .features .call .icon {
 	padding: 7px 10px;
 }
@@ -463,6 +460,7 @@ div.wrapp.prices {
 	right: -15px;
 	background-position: -58px 0px;
 }
+
 /* custom-solution */
 
 .custom-solution {
@@ -548,10 +546,6 @@ div.wrapp.prices {
 
 .footer .contact > div {
 	padding-top: 1px;
-}
-
-.footer .contact .upper {
-	
 }
 
 .footer .contact p {

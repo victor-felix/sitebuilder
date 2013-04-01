@@ -1,6 +1,4 @@
-/*
-*Theme picker
-*/
+/* Theme picker */
 .themes {
 	float: left;
 	padding: 40px 0 0 25px;
@@ -114,9 +112,7 @@
 	width: 15px;
 }
 
-/**
-*Theme Preview
-*/
+/* Theme Preview */
 .theme-preview {
 	background: url(/images/shared/themes/iphone.png) no-repeat 0 0;
 	position: relative;
@@ -154,12 +150,7 @@
 	top: 28px;
 }
 
-/**
-*Live Preview
-*/
-.live-preview {
-	
-}
+/* Live Preview */
 
 .live-preview .show-action {
 	position: fixed;
