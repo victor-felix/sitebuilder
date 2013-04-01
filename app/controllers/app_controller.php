@@ -46,7 +46,9 @@ class AppController extends Controller
 
 	protected function setLanguage($language)
 	{
-		return $this->language = I18n::locale($language);
+		$this->language = I18n::locale($language);
+		$this->set(array('language' => $this->language));
+		return $this->language;
 	}
 
 	protected function languageExists($language)
