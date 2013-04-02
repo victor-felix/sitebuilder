@@ -14,8 +14,8 @@ class Worker
 	{
 		set_time_limit(0);
 		$this->process = $process;
-		$this->tmpDir = dirname( dirname( dirname(__FILE__) ) ) . '/tmp/';
-		$this->log = \KLogger::instance(\Filesystem::path('log'));
+		$this->tmpDir = dirname(dirname(dirname(__DIR__))) . '/tmp/';
+		$this->log = \KLogger::instance(\Filesystem::path(APP_ROOT . '/log'));
 	}
 
 	public function canRun()

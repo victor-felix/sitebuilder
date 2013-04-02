@@ -5,11 +5,11 @@ every 1.minute do
 end
 
 every 10.minutes do
-  command "php #{File.expand_path 'sitebuilder/script/run_import.php'}"
+  command "php #{File.expand_path 'sitebuilder/script/run_works.php import'}"
 end
 
 every 1.hour do
-  command "php #{File.expand_path 'sitebuilder/script/run_geocode.php'}"
+  command "php #{File.expand_path 'sitebuilder/script/run_works.php geocode'}"
 end
 
 every 1.day do
