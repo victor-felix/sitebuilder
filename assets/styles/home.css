@@ -29,20 +29,19 @@ small {
 }
 
 /* header */
-.header h1 {
+
+.header .logo {
 	margin: 25px 0 0 0;
 	line-height: normal;
+	font-size: 38px;
 }
 
-.header h1 span.border {
+.header .logo span.border {
 	background-color: #C02926;
 	display: block;
 	width: 62px;
 	height: 5px;
 	margin-top: 10px;
-}
-
-.header > div {
 }
 
 .header .call {
@@ -119,7 +118,7 @@ ul.dropdown li ul {
 	padding-top: 15px;
 }
 
-.hero.outer.wrapp .hero-unit .block h3 {
+.hero.outer.wrapp .hero-unit .block h1 {
 	font-weight: bold;
 	font-size: 48px;
 	line-height: 44px;
@@ -127,11 +126,12 @@ ul.dropdown li ul {
 	font-family: "HelveticaNeueBold", "HelveticaNeue-Bold", "Helvetica Neue Bold", Arial;	
 }
 
-.hero.outer.wrapp .hero-unit .block p {
+.hero.outer.wrapp .hero-unit .block h2 {
 	font-size: 24px;
 	margin: 26px 0 40px;
 	line-height: 24px;
 	color: #506064;
+	font-weight: lighter;
 }
 
 .hero.outer.wrapp .hero-unit .block .trial {
@@ -144,6 +144,7 @@ ul.dropdown li ul {
 	color: #B9B9B9;
 	font-size: 24px;
 	font-weight: normal;
+	line-height: normal;
 }
 
 .hero-unit .slider {
@@ -191,11 +192,12 @@ div.wrapp.presentation {
 	box-shadow: none;
 }
 
-.presentation .thumbnail h3 {
+.presentation .thumbnail h2 {
 	font-size: 22px;
 	font-weight: lighter;
 	color: #444;
 	margin-top: 5px;
+	line-height: normal;
 }
 
 .presentation .thumbnail p.img {
@@ -203,9 +205,11 @@ div.wrapp.presentation {
 	margin: 0;
 }
 
-.presentation .thumbnail p {
+.presentation .thumbnail h3 {
 	color: #999;
 	line-height: 17px;
+	font-size: 14px;
+	font-weight: normal;
 }
 
 /* features */
@@ -214,7 +218,7 @@ div.wrapp.presentation {
 	border-bottom: 1px solid #DDD;
 }
 
-.features h2 {
+.features h3 {
 	color: #C81713;
 	font-size: 32px;
 	letter-spacing: -1px;
@@ -252,16 +256,13 @@ div.wrapp.presentation {
 	padding: 6px 10px;
 }
 
-.features .store-locator .icon {
-	
-}
-
 .features .call .icon {
 	padding: 7px 10px;
 }
 
-.features .block p {
+.features .block h4 {
 	font-size: 12px;
+	font-weight: normal;
 	line-height: 17px;
 	width: 93%;
 	color: #999;
@@ -459,6 +460,7 @@ div.wrapp.prices {
 	right: -15px;
 	background-position: -58px 0px;
 }
+
 /* custom-solution */
 
 .custom-solution {
@@ -544,10 +546,6 @@ div.wrapp.prices {
 
 .footer .contact > div {
 	padding-top: 1px;
-}
-
-.footer .contact .upper {
-	
 }
 
 .footer .contact p {

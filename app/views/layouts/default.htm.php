@@ -1,6 +1,6 @@
 <?php $currentSite = Auth::user()->site() ?>
 <!DOCTYPE html>
-<html>
+<html lang="<?php echo $language ?>">
 	<head>
 		<?php echo $this->html->charset() ?>
 		<title><?php echo $this->controller->getSegment()->title, ' - ' ,  $this->pageTitle ?></title>
