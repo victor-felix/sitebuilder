@@ -28,29 +28,29 @@
 			<li class="span3">
 			<div class="thumbnail">
 				<p class="img"><img src="/images/shared/home/en/icon-middle-01.png" alt=""></p>
-				<h2><?php echo s('Choose themes designed by experts')?></h2>
-				<h3><?php echo s('Get your the right look with professional themes that fit your business segment. Whether it\'s a restaurant or an hospital.')?></h3>
+				<h3><?php echo s('Choose themes designed by experts')?></h3>
+				<p><?php echo s('Get your the right look with professional themes that fit your business segment. Whether it\'s a restaurant or an hospital.')?></p>
 			</div>
 			</li>
 			<li class="span3">
 			<div class="thumbnail">
 				<p class="img"><img src="/images/shared/home/en/icon-middle-02.png" alt=""></p>
-				<h2><?php echo s('Fill in the information of your business')?></h2>
-				<h3><?php echo s('Business description, location, contacts, social links, pictures, logo, and more!')?></h3>
+				<h3><?php echo s('Fill in the information of your business')?></h3>
+				<p><?php echo s('Business description, location, contacts, social links, pictures, logo, and more!')?></p>
 			</div>
 			</li>
 			<li class="span3">
 			<div class="thumbnail">
 				<p class="img"><img src="/images/shared/home/en/icon-middle-03.png" alt=""></p>
-				<h2><?php echo s('Add products, services or menus')?></h2>
-				<h3><?php echo s('Your mobile website has space for your restaurant menu, your products, services, all with descriptions and photos.')?></h3>
+				<h3><?php echo s('Add products, services or menus')?></h3>
+				<p><?php echo s('Your mobile website has space for your restaurant menu, your products, services, all with descriptions and photos.')?></p>
 			</div>
 			</li>
 			<li class="span3">
 			<div class="thumbnail">
 				<p class="img"><img src="/images/shared/home/en/icon-middle-04.png" alt=""></p>
-				<h2><?php echo s('Provide your site for over 6000 devices')?></h2>
-				<h3><?php echo s('From the cutting-edge smartphones to the oldest and cheapest cell phones. Your mobile website is for everyone!')?></h3>
+				<h3><?php echo s('Provide your site for over 6000 devices')?></h3>
+				<p><?php echo s('From the cutting-edge smartphones to the oldest and cheapest cell phones. Your mobile website is for everyone!')?></p>
 			</div>
 			</li>
 		</ul>
@@ -64,16 +64,16 @@
 				<div class="call block">
 					<span class="icon"><img alt="" src="/images/shared/home/fone.png"></span>
 					<h3><?php echo s('Click-to-call')?></h3>
-					<h4>
+					<p>
 						<?php echo s('Add a phone number on mobile site to make it easy for your customers to contact your business, whenever they need it.')?>
-					</h4>
+					</p>
 				</div>
 				<div class="map block">
 					<span class="icon"><img alt="" src="/images/shared/home/marker.png"></span>
 					<h3><?php echo s('Map & direction')?></h3>
-					<h4>
+					<p>
 						<?php echo s('Add a map integrated with Google Maps to your mobile site, with the location and direction of your business.')?>
-					</h4>
+					</p>
 				</div>
 			</div>
 			<div class="span8">
@@ -82,18 +82,18 @@
 						<div class="store-locator block">
 							<span class="icon"><img alt="" src="/images/shared/home/lupa.png"></span>
 							<h3><?php echo s('Store locator')?></h3>
-							<h4>
+							<p>
 								<?php echo s('A mobile map interface with geolocated address <b>(ex.: stores, atms, gas stations, tourist spots).</b>')?>
-							</h4>
+							</p>
 						</div>
 					</div>
 					<div class="span4">
 						<div class="rss block">
 							<span class="icon"><img alt="" src="/images/shared/home/rss.png"></span>
 							<h3><?php echo s('RSS feed')?></h3>
-							<h4>
+							<p>
 								<?php echo s('Import any content automatically from a RSS feed. Great for online publishers <b>(ex.: blogs, news site, online journals).</b>')?>
-							</h4>
+							</p>
 						</div>
 					</div>
 				</div>

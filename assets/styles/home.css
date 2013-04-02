@@ -192,7 +192,7 @@ div.wrapp.presentation {
 	box-shadow: none;
 }
 
-.presentation .thumbnail h2 {
+.presentation .thumbnail h3 {
 	font-size: 22px;
 	font-weight: lighter;
 	color: #444;
@@ -205,7 +205,7 @@ div.wrapp.presentation {
 	margin: 0;
 }
 
-.presentation .thumbnail h3 {
+.presentation .thumbnail p {
 	color: #999;
 	line-height: 17px;
 	font-size: 14px;
@@ -260,7 +260,7 @@ div.wrapp.presentation {
 	padding: 7px 10px;
 }
 
-.features .block h4 {
+.features .block p {
 	font-size: 12px;
 	font-weight: normal;
 	line-height: 17px;

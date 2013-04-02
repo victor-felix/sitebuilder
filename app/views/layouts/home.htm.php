@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<?php echo $language ?>">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $language ?>" lang="<?php echo $language ?>">
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">

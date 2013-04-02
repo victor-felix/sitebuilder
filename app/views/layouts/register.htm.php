@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<?php echo $language ?>">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $language ?>" lang="<?php echo $language ?>">
 	<head>
 		<?php echo $this->html->charset() ?>
 		<title><?php echo $this->controller->getSegment()->title, ' - ' , $this->pageTitle ?></title>
