@@ -14,14 +14,14 @@ class Worker
 	{
 		set_time_limit(0);
 		$this->process = $process;
-		$this->tmpDir = dirname(dirname(dirname(__DIR__))) . '/tmp/';
+		$this->tmpDir = dirname(dirname(dirname(__DIR__))) . '/tmp';
 		$this->log = \KLogger::instance(\Filesystem::path(APP_ROOT . '/log'));
 	}
 
 	public function canRun()
 	{
 		if (!$this->file) {
-			$this->file = fopen($this->tmpDir . $this->process . '.pid', 'w+');
+			$this->file = fopen($this->tmpDir . '/' . $this->process . '.pid', 'w+');
 			if ($this->file && flock($this->file, LOCK_EX | LOCK_NB)) {
 				return fwrite($this->file, getmypid());
 			}
@@ -56,7 +56,7 @@ class Worker
 	{
 		if ($this->file) {
 			fclose($this->file);
-			unlink($this->tmpDir . $this->process . '.pid');
+			unlink($this->tmpDir . '/' . $this->process . '.pid');
 		}
 	}
 }

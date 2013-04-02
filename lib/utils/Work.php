@@ -1,4 +1,5 @@
 <?php
+
 namespace utils;
 
 abstract class Work
@@ -9,7 +10,7 @@ abstract class Work
 
 	public function start()
 	{
-		$this->log = \KLogger::instance(\Filesystem::path('log'));
+		$this->log = \KLogger::instance(\Filesystem::path(APP_ROOT . '/log'));
 		$this->init();
 		$this->run();
 	}
