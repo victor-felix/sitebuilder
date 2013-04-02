@@ -67,6 +67,7 @@ class GoogleGeocoding
 		if ($json->status == 'OK' && !empty($json->results)) {
 			return $json;
 		} elseif ($json->status == 'OVER_QUERY_LIMIT') {
+			$log->logInfo('Geocode: over query limit');
 			throw new OverQueryLimitException('query limit exceeded');
 		} else {
 			throw new GeocodingException('could not find results');

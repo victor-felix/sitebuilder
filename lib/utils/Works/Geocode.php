@@ -2,6 +2,9 @@
 
 namespace utils;
 
+use \GeocodingException;
+use \app\models\RecordNotFoundException;
+
 require_once 'lib/utils/Work.php';
 require_once 'lib/geocoding/GoogleGeocoding.php';
 
@@ -27,20 +30,18 @@ class Geocode extends Work
 				continue;
 			}
 
-			$geocode = \GoogleGeocoding::geocode($item->address);
-			switch ($geocode->status) {
-				case 'OK':
-					$location = $geocode->results[0]->geometry->location;
-					$item->geo = array($location->lng, $location->lat);
-					$item->save();
-					$this->log->logInfo("Geocode work: item {$item->_id} geocoded");
-					break;
-				case 'OVER_QUERY_LIMIT':
-					$this->log->logError('Geocode work: reached geocode limit');
-					break;
-				default:
-					$this->log->logError("cant geocode item {$item->_id}");
+			try {
+				$geocode = \GoogleGeocoding::geocode($item->address);
+				$location = $geocode->results[0]->geometry->location;
+				$item->geo = array($location->lng, $location->lat);
+				$item->save();
+				$this->log->logInfo("Geocode work: item {$item->_id} geocoded");
+			} catch (GeocodingException $e) {
+				$this->log->logError("cant geocode item {$item->_id}");
+			} catch (RecordNotFoundException $e) {
+				$this->log->logError('geocode error: %s', $e->getMessage());
 			}
+
 			$job->delete();
 			usleep(self::DELAY_TIME);
 		}

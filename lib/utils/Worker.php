@@ -2,6 +2,8 @@
 
 namespace utils;
 
+use \Exception;
+
 class Worker
 {
 	public $file;
@@ -26,15 +28,14 @@ class Worker
 				return fwrite($this->file, getmypid());
 			}
 		}
-		$this->log->logNotice('%s work: can\'t init worker', $this->process);
+		$this->log->logNotice('%s work: can\'t init worker. already in progress', $this->process);
 		return false;
 	}
 
 	public function run()
 	{
-		if (!$this->canRun()) {
-			return false;
-		}
+		if (!$this->canRun()) return false;
+
 		try {
 			$workClass = $this->getWorkClass();
 			$work = new $workClass();
@@ -42,6 +43,7 @@ class Worker
 		} catch (Exception $e) {
 			$this->log->logError('%s work: %s', $this->process, $e->getMessage());
 		}
+
 		$this->stop();
 	}
 
