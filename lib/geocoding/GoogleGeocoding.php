@@ -25,7 +25,7 @@ class GoogleGeocoding
 				self::updateGeocodeUrl();
 				return self::geocode($address, $region, false);
 			} else {
-				throw new GeocodingException('query timed out');
+				throw $e;
 			}
 		}
 	}
@@ -75,6 +75,6 @@ class GoogleGeocoding
 	}
 }
 
-class OverQueryLimitException extends Exception {}
+class OverQueryLimitException extends GeocodingException {}
 
 class GeocodingException extends Exception {}

@@ -10,6 +10,8 @@ use Config;
 use Inflector;
 use Model;
 use GoogleGeocoding;
+use GeocodingException;
+use OverQueryLimitException;
 use Decoda;
 use lithium\util\Collection;
 use utils\Geocode;
@@ -129,10 +131,10 @@ class Items extends \lithium\data\Model {
 
 	public function changed($entity, $field) {
 		$export = $entity->export();
-		if(!$export['exists']) {
-			return true;
-		}
-		if(isset($export['update'][$field])) {
+
+		if (!$export['exists']) return true;
+
+		if (isset($export['update'][$field])) {
 			return $export['data'][$field] != $export['update'][$field];
 		} else {
 			return false;
@@ -373,27 +375,35 @@ class Items extends \lithium\data\Model {
 		return $collection;
 	}
 
-	public static function addGeocode($self, $params, $chain) 
+	public static function addGeocode($self, $params, $chain)
 	{
 		$item = $params['entity'];
-		if(isset($item->latitude) && isset($item->longitude)) {
+
+		if (isset($item->latitude) && isset($item->longitude)) {
 			$item->geo = array((float) $item->longitude, (float) $item->latitude);
 			unset($item->latitude);
 			unset($item->longitude);
-		} else if($item->changed('address') && !empty($item->address)) {
-			$result = $chain->next($self, $params, $chain);
-			$job = \app\models\Jobs::create();
-			$data = array(
-				'type' => 'geocode',
-				'params' => array(
-					'item_id' => (string) $item->_id,
-					'type' => $item->type,
-				),
-			);
-			$job->set($data);
-			$job->save();
+		} elseif ($item->changed('address') && !empty($item->address)) {
+			try {
+				$geocode = GoogleGeocoding::geocode($item->address, GoogleGeocoding::REGION, false);
+				$location = $geocode->results[0]->geometry->location;
+				$item->geo = array((float) $location->lng, (float) $location->lat);
+			} catch (OverQueryLimitException $e) {
+				$job = \app\models\Jobs::create();
+				$data = array(
+					'type' => 'geocode',
+					'params' => array(
+						'item_id' => (string) $item->_id,
+						'type' => $item->type,
+					),
+				);
+				$job->set($data);
+				$job->save();
+			} catch (GeocodingException $e) {
+				$item->geo = 0;
+			}
 			return $result;
-		} else if(empty($item->address)) {
+		} elseif (empty($item->address)) {
 			$item->geo = 0;
 		}
 
