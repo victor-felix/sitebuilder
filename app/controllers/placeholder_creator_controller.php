@@ -44,7 +44,7 @@ class PlaceholderCreatorController extends AppController
 
 		$classname = '\app\models\items\\' . Inflector::camelize($options['type']);
 		$item = $classname::create(array(
-			'type' => $type,
+			'type' => $options['type'],
 			'site_id' => $this->getCurrentSite()->id,
 			'parent_id' => $category->id,
 			'title' => s($options['item'])
