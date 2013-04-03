@@ -1,0 +1,9 @@
+User-agent: *
+Sitemap: http://fbiz.meumobilesite.com/pt/sitemap.xml
+Disallow: /users/forgot_password
+Disallow: /forgot_password 
+Disallow: /signup
+Disallow: /scripts
+Disallow: /images
+Disallow: /styles
+Disallow: /uploads
