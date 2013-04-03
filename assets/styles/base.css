@@ -324,6 +324,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	border-bottom: 1px solid #D3D3D3;
 	padding-top: 30px;
 	position: relative;
+	height: 79px;
 }
 
 #header .navigation .user p {
@@ -331,7 +332,6 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	background-position: right center;
 	background-repeat: no-repeat;
 }
-
 
 #header .navigation .business-name {
 	font-size: 30px;
