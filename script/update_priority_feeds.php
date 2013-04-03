@@ -10,7 +10,7 @@ ini_set('error_reporting', -1);
 ini_set('display_errors', 'On');
 Config::write('Debug.showErrors', true);
 
-$pidpath = APP_ROOT . '/tmp/update_feeds.pid';
+$pidpath = APP_ROOT . '/tmp/update_priority_feeds.pid';
 $pidfile = fopen($pidpath, 'w+');
 
 if (!flock($pidfile, LOCK_EX | LOCK_NB)) exit();
@@ -18,7 +18,7 @@ if (!flock($pidfile, LOCK_EX | LOCK_NB)) exit();
 fwrite($pidfile, getmypid());
 fflush($pidfile);
 
-echo date('Y-m-d H:i:s') . ': Updating feeds...' . PHP_EOL;
+echo date('Y-m-d H:i:s') . ': Updating priority feeds...' . PHP_EOL;
 
 $stats = array(
 	'total_feeds' => 0,
@@ -52,7 +52,7 @@ foreach ($extensions as $extension) {
 
 $stats['end_time'] = microtime(true);
 
-echo date('Y-m-d H:i:s') . ': Finished updating feeds.' . PHP_EOL;
+echo date('Y-m-d H:i:s') . ': Finished updating priority feeds.' . PHP_EOL;
 echo date('Y-m-d H:i:s') . ': Updated feeds: ' . $stats['total_feeds'] . PHP_EOL;
 echo date('Y-m-d H:i:s') . ': Imported articles: ' . $stats['total_articles'] . PHP_EOL;
 echo date('Y-m-d H:i:s') . ': Downloaded images: ' . $stats['total_images'] . PHP_EOL;
