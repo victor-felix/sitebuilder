@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $language ?>" lang="<?php echo $language ?>">
 	<head>
 		<?php echo $this->html->charset() ?>
-		<title><?php echo $this->controller->getSegment()->title, ' - ' ,  $this->pageTitle ?></title>
+		<title><?php echo $this->pageTitle . ' | ' . $this->controller->getSegment()->title; ?></title>
 		<link rel="shortcut icon" href="<?php echo Mapper::url('/images/layout/favicon.png') ?>" type="image/png" />
 		<?php echo $this->html->stylesheet('shared/base', 'shared/uikit', 'shared/categories',
 			'shared/edit-forms', 'shared/businessitems', 'shared/dashboard', 'segment', 'shared/markitup.simple',
