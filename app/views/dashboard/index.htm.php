@@ -1,7 +1,5 @@
-<?php 
-	$currentSite = Auth::user()->site();
-	$this->pageTitle = s('dashboard');
-?>
+<?php $this->pageTitle = s('dashboard') ?>
+
 <div class="page-heading">
 	<div class="grid-4 first">&nbsp;</div>
 	<div class="grid-8">
@@ -59,19 +57,30 @@
 			<li id="categories">
 				<a href="<?php echo Mapper::url('/categories') ?>">
 					<span class="icon"></span>
-					<h3><?php echo s('manage other content')?></h3>
-					<small><?php echo s('you can add a restaurant menu, products, services, etc')?></small>
+					<h3><?php echo s('manage other content') ?></h3>
+					<small><?php echo s('you can add a restaurant menu, products, services, etc') ?></small>
 					<span class="arrow"></span>
 				</a>
+				<?php if ($category): ?>
+					<?php echo $this->html->link(s('Edit your %s', $category->title), '/categories') ?>
+				<?php else: ?>
+					<?php echo s('Create a %s, list of your %s, %s or %s.',
+						$this->html->link(s('menu'), '/placeholder_creator/menu'),
+						$this->html->link(s('services'), '/placeholder_creator/services'),
+						$this->html->link(s('products'), '/placeholder_creator/products'),
+						$this->html->link(s('news'), '/placeholder_creator/news')
+					) ?>
+				<?php endif ?>
 			</li>
 		</ul>
 		<div class="domain">
 			<p><?php echo s('you can access anytime from your mobile phone')?></p>
-			<?php echo $this->html->link('http://' . e($currentSite->domain), 'http://' . e($currentSite->domain), array('target'=>"blank")) ?>
+			<?php echo $this->html->link('http://' . e($site->domain),
+				'http://' . e($site->domain), array('target' => 'blank')) ?>
 		</div>
 	</div>
 	<?php echo $this->element('sites/theme_preview', array(
-		'site' => $currentSite,
+		'site' => $site,
 		'autoload' => true
 	)) ?>
 	<p class="clear"></p>

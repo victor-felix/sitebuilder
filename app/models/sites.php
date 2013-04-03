@@ -53,6 +53,8 @@ class Sites extends AppModel
 		),
 	);
 
+	protected $categories;
+
 	public function __construct($data = array())
 	{
 		parent::__construct($data);
@@ -169,7 +171,9 @@ class Sites extends AppModel
 
 	public function categories()
 	{
-		return Model::load('Categories')->all(array(
+		if ($this->categories) return $this->categories;
+
+		return $this->categories = Model::load('Categories')->all(array(
 			'conditions' => array('site_id' => $this->id, 'visibility >' => -1),
 			'order' => '`order`'
 		));
