@@ -15,15 +15,6 @@ class PlaceholderCreatorController extends AppController
 		));
 	}
 
-	public function services()
-	{
-		$this->createPlaceholder(array(
-			'category' => 'Services',
-			'item' => 'Lorem Ipsum',
-			'type' => 'products'
-		));
-	}
-
 	public function products()
 	{
 		$this->createPlaceholder(array(

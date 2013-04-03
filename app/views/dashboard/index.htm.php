@@ -64,9 +64,8 @@
 				<?php if ($category): ?>
 					<?php echo $this->html->link(s('Edit your %s', $category->title), '/categories') ?>
 				<?php else: ?>
-					<?php echo s('Create a %s, list of your %s, %s or %s.',
+					<?php echo s('Create a %s, %s or %s.',
 						$this->html->link(s('menu'), '/placeholder_creator/menu'),
-						$this->html->link(s('services'), '/placeholder_creator/services'),
 						$this->html->link(s('products'), '/placeholder_creator/products'),
 						$this->html->link(s('news'), '/placeholder_creator/news')
 					) ?>
