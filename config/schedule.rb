@@ -4,6 +4,10 @@ every 1.minute do
   command "php #{File.expand_path 'sitebuilder/script/update_feeds.php'}"
 end
 
+every 1.minute do
+  command "php #{File.expand_path 'sitebuilder/script/update_priority_feeds.php'}"
+end
+
 every 10.minutes do
   command "php #{File.expand_path 'sitebuilder/script/run_works.php import'}"
 end

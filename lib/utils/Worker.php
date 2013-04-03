@@ -2,7 +2,7 @@
 
 namespace utils;
 
-use \Exception;
+use Exception;
 
 class Worker
 {

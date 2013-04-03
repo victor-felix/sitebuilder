@@ -33,7 +33,7 @@ $extensions = Rss::find('all', array(
 	'conditions' => array(
 		'extension' => 'rss',
 		'enabled' => 1,
-		'priority' => array('$exists' => false)
+		'priority' => array('$gte' => 1)
 	)
 ));
 

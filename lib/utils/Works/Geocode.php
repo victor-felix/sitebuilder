@@ -2,8 +2,8 @@
 
 namespace utils;
 
-use \GeocodingException;
-use \app\models\RecordNotFoundException;
+use GeocodingException;
+use app\models\RecordNotFoundException;
 
 require_once 'lib/utils/Work.php';
 require_once 'lib/geocoding/GoogleGeocoding.php';
