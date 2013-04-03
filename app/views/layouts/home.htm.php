@@ -12,10 +12,10 @@
 
 	<body>
 		<div class="header container">
-			<h2 class="logo pull-left">
+			<p class="logo pull-left">
 				<img alt="MeuMobi" src="/images/layout/logo.png" />
 				<span class="border"></span>
-			</h2>
+			</p>
 			<div class="pull-right">
 				<div class="call pull-left">
 					<span><?php echo s('need convincing? call us')?></span>
