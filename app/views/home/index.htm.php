@@ -7,7 +7,7 @@
 				<?php echo $this->language->link(s('start your free trial ›'), '/signup/user', array(
 					'class' => 'btn big'
 				)) ?>
-				<p class="trial"><small><b><?php echo s('NO')?></b> <?php echo s('Credit card required.')?><br> <?php echo s('30-day, fully functional trial.')?></small></p>
+				<p class="trial"><small><strong><?php echo s('NO')?></strong> <?php echo s('Credit card required.')?><br> <?php echo s('30-day, fully functional trial.')?></small></p>
 			</div>
 			<div class="pull-right">
 				<div class="slider ">
@@ -35,7 +35,7 @@
 </div>
 <div class="presentation outer wrapp">
 	<div class="container">
-		<h2 class="title"><?php echo s('Everything you need to create a <br>professional <b>mobile site</b>.')?></h2>
+		<h2 class="title"><?php echo s('Everything you need to create a <br>professional <strong>mobile site</strong>.')?></h2>
 		<ul class="thumbnails">
 			<li class="span3">
 			<div class="thumbnail">
@@ -83,7 +83,7 @@
 </div>
 <div class="features outer wrapp">
 	<div class="container">
-		<h2 class="title"><?php echo s('Allow your <b>customers to connect your business</b> easily. <br>Add <b>extensions</b> for businesses with multiple locations <br>and online publishers.')?></h2>
+		<h2 class="title"><?php echo s('Allow your <strong>customers to connect your business</strong> easily. <br>Add <strong>extensions</strong> for businesses with multiple locations <br>and online publishers.')?></h2>
 		<div class="row">
 			<div class="span4">
 				<div class="call block">
@@ -120,7 +120,7 @@
 							</span>
 							<h3><?php echo s('Store locator') ?></h3>
 							<p>
-								<?php echo s('A mobile map interface with geolocated address <b>(ex.: stores, atms, gas stations, tourist spots).</b>')?>
+								<?php echo s('A mobile map interface with geolocated address <strong>(ex.: stores, atms, gas stations, tourist spots).</strong>')?>
 							</p>
 						</div>
 					</div>
@@ -133,7 +133,7 @@
 							</span>
 							<h3><?php echo s('RSS feed') ?></h3>
 							<p>
-								<?php echo s('Import any content automatically from a RSS feed. Great for online publishers <b>(ex.: blogs, news site, online journals).</b>')?>
+								<?php echo s('Import any content automatically from a RSS feed. Great for online publishers <strong>(ex.: blogs, news site, online journals).</strong>')?>
 							</p>
 						</div>
 					</div>
@@ -163,21 +163,21 @@
 		<h3><?php echo s('Our plans and prices.')?></h3>
 		<div class="row">
 			<div class="span6">
-				<h2><span><?php echo s('Basic')?> </span><?php echo s('USD <b>9/mo</b>')?></h2>
-				<p><?php echo s('create a mobile presence')?></p>
+				<p class="price"><span><?php echo s('Basic')?> </span><?php echo s('USD <strong>9/mo</strong>')?></p>
+				<p class="price-label"><?php echo s('create a mobile presence')?></p>
 				<ul>
-					<li><span class="icon"></span><?php echo s('<b>Basic information:</b><br>contacts, address, photos, social links, news via RSS')?></li>
-					<li><span class="icon"></span><?php echo s('additional content such as <b>menus, products, services</b>, etc.')?></li>
+					<li><span class="icon"></span><?php echo s('<strong>Basic information:</strong><br>contacts, address, photos, social links, news via RSS')?></li>
+					<li><span class="icon"></span><?php echo s('additional content such as <strong>menus, products, services</strong>, etc.')?></li>
 					<li class="uncheck"><span class="icon"></span><?php echo s('add more location? get a Store Locator')?> ›</li>
 				</ul>
 			</div>
 			<div class="span6">
-				<h2><span><?php echo s('Locator')?> </span><?php echo s('USD <b>34/mo</b>')?></h2>
-				<p><?php echo s('for businesses with multiple locations')?></p>
+				<p class="price"><span><?php echo s('Locator')?> </span><?php echo s('USD <strong>34/mo</strong>')?></p>
+				<p class="price-label"><?php echo s('for businesses with multiple locations')?></p>
 				<ul>
-					<li><span class="icon"></span><?php echo s('<b>Basic information:</b><br>contacts, address, photos, social links, news via RSS')?></li>
-					<li><span class="icon"></span><?php echo s('additional content such as <b>menus, products, services</b>, etc.')?></li>
-					<li><span class="icon"></span><?php echo s('create a <b>store locator</b>, showing the locations nearest to your customer - <small>up to 25 stores</small>')?></li>
+					<li><span class="icon"></span><?php echo s('<strong>Basic information:</strong><br>contacts, address, photos, social links, news via RSS')?></li>
+					<li><span class="icon"></span><?php echo s('additional content such as <strong>menus, products, services</strong>, etc.')?></li>
+					<li><span class="icon"></span><?php echo s('create a <strong>store locator</strong>, showing the locations nearest to your customer - <small>up to 25 stores</small>')?></li>
 				</ul>
 			</div>
 		</div>
@@ -189,7 +189,7 @@
 			<br>
 			<span class="trial">
 				<small>
-				<?php echo s('NO')?> <b><?php echo s('credit card required!')?></b>
+				<?php echo s('NO')?> <strong><?php echo s('credit card required!')?></strong>
 				<br>
 				<?php echo s('you´ll be able to choose a plan after the trial.')?>
 				</small>
@@ -202,26 +202,26 @@
 		<div class="row">
 			<div class=" span4 ">
 				<div class="insights">
-					<h3><?php echo s('<b>get mobile.</b><br> a few insights on the mobile market.')?></h3>
+					<h3><?php echo s('<strong>get mobile.</strong><br> a few insights on the mobile market.')?></h3>
 
 					<div class="slider">
 						<div>
 							<p>
-								<?php echo s('<b>Users expect their mobile experience to be as good as their desktop experience.</b> 66%% of users says: "I\'m disappointed if the mobile site is a bad experience."') ?>
+								<?php echo s('<strong>Users expect their mobile experience to be as good as their desktop experience.</strong> 66%% of users says: "I\'m disappointed if the mobile site is a bad experience."') ?>
 							</p>
 							<p class="author"><?php echo s('— Google Research, 2012') ?></p>
 						</div>
 
 						<div>
 							<p>
-								<?php echo s('<b>A bad mobile experience can cost you customers.</b> 61%% of users who don\'t see what they\'re looking for on a mobile site, they\'ll quikly move to another site.'); ?>
+								<?php echo s('<strong>A bad mobile experience can cost you customers.</strong> 61%% of users who don\'t see what they\'re looking for on a mobile site, they\'ll quikly move to another site.'); ?>
 							</p>
 							<p class="author"><?php echo s('— Google Research, 2012') ?></p>
 						</div>
 
 						<div>
 							<p>
-								<?php echo s('Having a mobile optimized site is critical to <b>engage consumers across the multiple paths to purchase.</b>')?>
+								<?php echo s('Having a mobile optimized site is critical to <strong>engage consumers across the multiple paths to purchase.</strong>')?>
 							</p>
 							<p class="author"><?php echo s('— Google Research, 2012') ?></p>
 						</div>
@@ -263,7 +263,7 @@
 		<h3><?php echo s('need custom solutions?')?></h3>
 		<p>
 		<?php echo s('Creating custom layout, open API, white label solution for agencies, mobile site resale for digital partners. Any custom solution!')?>
-		<b class="mail" >enterprise@meumobi.com</b>
+		<b class="mail" >enterprise@meumobi.com</strong>
 		</p>
 	</div>
 </div>
