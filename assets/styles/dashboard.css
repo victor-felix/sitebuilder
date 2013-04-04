@@ -170,31 +170,14 @@
 }
 
 .placeholder-links a {
-	background: url(/images/shared/dashboard/icons.png) no-repeat;
 	color: #6e6e6e;
 	text-decoration: none;
 	font-size: 17px;
-	height: 18px;
-	overflow: hidden;
-	width: 80px;
-	padding: 52px 0 0 0;
 	display: inline-block;
 	text-align: center;
 	margin: 0 10px;
 }
 
-.placeholder-links a#menu {
-	background-position: 0 -1113px;
-}
-
-.placeholder-links a#stores {
-	background-position: 11px -1326px;
-}
-
-.placeholder-links a#products {
-	background-position: 9px -1255px;
-}
-
-.placeholder-links a#news {
-	background-position: 18px -1183px;
+.placeholder-links a img {
+	background-color: #c02926;
 }

@@ -58,8 +58,8 @@
 			<li id="categories">
 				<a class="link" href="<?php echo Mapper::url('/categories') ?>">
 					<span class="icon"></span>
-					<h3><?php echo s('you can edit any content added') ?></h3>
-					<small><?php echo s('you can add a restaurant menu, products, services, etc') ?></small>
+					<h3><?php echo s('Edit content') ?></h3>
+					<small><?php echo s('you can edit any content added') ?></small>
 					<span class="arrow"></span>
 				</a>
 			</li>
@@ -72,10 +72,37 @@
 					<span class="arrow open"></span>
 				</div>
 				<p class="placeholder-links">
-					<?php echo $this->html->link(s('menu'), '/placeholder_creator/menu', array('id' => 'menu')) ?>
-					<?php echo $this->html->link(s('stores'), '/placeholder_creator/stores', array('id' => 'stores')) ?>
-					<?php echo $this->html->link(s('products'), '/placeholder_creator/products', array('id' => 'products')) ?>
-					<?php echo $this->html->link(s('news'), '/placeholder_creator/news', array('id' => 'news')) ?>
+					<a href="<?php echo Mapper::url('/placeholder_creator/menu') ?>">
+						<?php echo $this->html->image('/images/shared/dashboard/icon-menu.png', array(
+							'alt' => s('menu')
+						)) ?>
+						<br />
+						<?php echo s('menu') ?>
+					</a>
+
+					<a href="<?php echo Mapper::url('/placeholder_creator/stores') ?>">
+						<?php echo $this->html->image('/images/shared/dashboard/icon-stores.png', array(
+							'alt' => s('stores')
+						)) ?>
+						<br />
+						<?php echo s('stores') ?>
+					</a>
+
+					<a href="<?php echo Mapper::url('/placeholder_creator/products') ?>">
+						<?php echo $this->html->image('/images/shared/dashboard/icon-products.png', array(
+							'alt' => s('products')
+						)) ?>
+						<br />
+						<?php echo s('products') ?>
+					</a>
+
+					<a href="<?php echo Mapper::url('/placeholder_creator/news') ?>">
+						<?php echo $this->html->image('/images/shared/dashboard/icon-news.png', array(
+							'alt' => s('news')
+						)) ?>
+						<br />
+						<?php echo s('news') ?>
+					</a>
 				</p>
 			</li>
 		</ul>
