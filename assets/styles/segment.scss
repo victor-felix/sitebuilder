@@ -136,10 +136,12 @@ div.theme-picker > ul > li.selected {
 	box-shadow: 0 0 0 3px $main-color inset;
 }
 
-div.dashboard .list li a .icon, div.dashboard .list li:hover .arrow {
+div.dashboard .list li .link .icon 
+,div.dashboard .list li:hover .arrow
+,.placeholder-links a img  {
 	background-color: $main-color;
 }
 
-div.dashboard .list li a h3, div.dashboard .domain a {
+div.dashboard .list li .link h3, div.dashboard .domain a {
 	color: $main-color;
 }

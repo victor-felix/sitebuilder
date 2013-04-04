@@ -10,70 +10,100 @@
 <div class="dashboard">
 	<div class="wrapp">
 		<div class="tip-big">
-			<h2><?php echo s('welcome to your mobile site')?></h2>
+			<h2><?php echo s('welcome to your mobile site') ?></h2>
 			<p><?php echo s('use the tools below to keep improving your mobile site') ?></p>
 		</div>
 		<ul class="list">
 			<li id="photos">
-				<a href="<?php echo Mapper::url('/sites/business_info#business-photos') ?>">
+				<a class="link" href="<?php echo Mapper::url('/sites/business_info#business-photos') ?>">
 					<span class="icon"></span>
-					<h3><?php echo s('add photos of your company')?></h3>
-					<small><?php echo s('let your customers see what your business looks like')?></small>
+					<h3><?php echo s('add photos of your company') ?></h3>
+					<small><?php echo s('let your customers see what your business looks like') ?></small>
 					<span class="arrow"></span>
 				</a>
 			</li>
 			<li id="social">
-				<a href="<?php echo Mapper::url('/sites/business_info#business-social') ?>">
+				<a class="link" href="<?php echo Mapper::url('/sites/business_info#business-social') ?>">
 					<span class="icon"></span>
-					<h3><?php echo s('your social links')?></h3>
-					<small><?php echo s('facebook page, twitter, website address')?></small>
+					<h3><?php echo s('your social links') ?></h3>
+					<small><?php echo s('facebook page, twitter, website address') ?></small>
 					<span class="arrow"></span>
 				</a>
 			</li>
 			<li id="address">
-				<a href="<?php echo Mapper::url('/sites/business_info#business-address') ?>">
+				<a class="link" href="<?php echo Mapper::url('/sites/business_info#business-address') ?>">
 					<span class="icon"></span>
-					<h3><?php echo s('your address')?></h3>
-					<small><?php echo s('full address adds a map on your mobile site')?></small>
+					<h3><?php echo s('your address') ?></h3>
+					<small><?php echo s('full address adds a map on your mobile site') ?></small>
 					<span class="arrow"></span>
 				</a>
 			</li>
 			<li id="contact">
-				<a href="<?php echo Mapper::url('/sites/business_info#business-contact') ?>">
+				<a class="link" href="<?php echo Mapper::url('/sites/business_info#business-contact') ?>">
 					<span class="icon"></span>
-					<h3><?php echo s('your contacts')?></h3>
-					<small><?php echo s('phone numbers and email address')?></small>
+					<h3><?php echo s('your contacts') ?></h3>
+					<small><?php echo s('phone numbers and email address') ?></small>
 					<span class="arrow"></span>
 				</a>
 			</li>
 			<li id="feed">
-				<a href="<?php echo Mapper::url('/sites/news') ?>">
+				<a class="link" href="<?php echo Mapper::url('/sites/news') ?>">
 					<span class="icon"></span>
-					<h3><?php echo s('add a news feed')?></h3>
-					<small><?php echo s('use your website RSS to display news')?></small>
+					<h3><?php echo s('add a news feed') ?></h3>
+					<small><?php echo s('use your website RSS to display news') ?></small>
 					<span class="arrow"></span>
 				</a>
 			</li>
+			<?php if ($category): ?>
 			<li id="categories">
-				<a href="<?php echo Mapper::url('/categories') ?>">
+				<a class="link" href="<?php echo Mapper::url('/categories') ?>">
 					<span class="icon"></span>
-					<h3><?php echo s('manage other content') ?></h3>
-					<small><?php echo s('you can add a restaurant menu, products, services, etc') ?></small>
+					<h3><?php echo s('Edit content') ?></h3>
+					<small><?php echo s('to be more attractive, add photos, description, address, etc.') ?></small>
 					<span class="arrow"></span>
 				</a>
-				<?php if ($category): ?>
-					<?php echo $this->html->link(s('Edit your %s', $category->title), '/categories') ?>
-				<?php else: ?>
-					<?php echo s('Create a %s, %s or %s.',
-						$this->html->link(s('menu'), '/placeholder_creator/menu'),
-						$this->html->link(s('products'), '/placeholder_creator/products'),
-						$this->html->link(s('news'), '/placeholder_creator/news')
-					) ?>
-				<?php endif ?>
+			</li>
+			<?php endif; ?>
+			<li id="add-content">
+				<div class="link">
+					<span class="icon"></span>
+					<h3><?php echo s('create new content') ?></h3>
+					<small><?php echo s('you can add a restaurant menu, products, services, etc') ?></small>
+					<span class="arrow open"></span>
+				</div>
+				<p class="placeholder-links">
+					<a href="<?php echo Mapper::url('/placeholder_creator/menu') ?>">
+						<?php echo $this->html->image('/images/shared/dashboard/icon-menu.png', array(
+							'alt' => s('menu')
+						)) ?>
+						<?php echo s('menu') ?>
+					</a>
+
+					<a href="<?php echo Mapper::url('/placeholder_creator/stores') ?>">
+						<?php echo $this->html->image('/images/shared/dashboard/icon-stores.png', array(
+							'alt' => s('stores')
+						)) ?>
+						<?php echo s('stores') ?>
+					</a>
+
+					<a href="<?php echo Mapper::url('/placeholder_creator/products') ?>">
+						<?php echo $this->html->image('/images/shared/dashboard/icon-products.png', array(
+							'alt' => s('products')
+						)) ?>
+						<?php echo s('products') ?>
+					</a>
+
+					<a href="<?php echo Mapper::url('/placeholder_creator/news') ?>">
+						<?php echo $this->html->image('/images/shared/dashboard/icon-news.png', array(
+							'alt' => s('news')
+						)) ?>
+						<?php echo s('news') ?>
+					</a>
+				</p>
 			</li>
 		</ul>
 		<div class="domain">
-			<p><?php echo s('you can access anytime from your mobile phone')?></p>
+			<p><?php echo s('you can access anytime from your mobile phone') ?></p>
 			<?php echo $this->html->link('http://' . e($site->domain),
 				'http://' . e($site->domain), array('target' => 'blank')) ?>
 		</div>

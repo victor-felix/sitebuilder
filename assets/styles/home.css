@@ -286,18 +286,19 @@ div.wrapp.prices {
 	padding-bottom: 20px;
 }
 
-.prices h2 {
+.prices .price {
 	color: #C3C3C3;
 	font-weight: normal;
 	font-size: 44px;
-	margin-bottom: 0;
+	line-height: 40px;
+	margin: 10px 0 0;
 }
 
-.prices h2 span {
+.prices .price span {
 	color: #C81713;
 }
 
-.prices .row p {
+.prices .row .price-label {
 	font-size: 20px;
 	font-style: italic;
 	color: #adadad;

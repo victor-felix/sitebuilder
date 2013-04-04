@@ -8,7 +8,6 @@
 )) ?>
 
 <fieldset>
-    <!--h2><?php echo s('Retrieve your Password') ?></h2 -->
     <div class="field-group">
         <div class="form-grid-220 first">
             <?php echo $this->form->input('email', array(

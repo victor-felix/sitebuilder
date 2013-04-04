@@ -9,27 +9,40 @@ class PlaceholderCreatorController extends AppController
 	public function menu()
 	{
 		$this->createPlaceholder(array(
-			'category' => 'Menu',
-			'item' => 'Lorem Ipsum',
-			'type' => 'products'
+			'category' => s('Menu'),
+			'item' => s('Lorem Ipsum'),
+			'type' => 'products',
+			'image' => 'menu.png'
 		));
 	}
 
 	public function products()
 	{
 		$this->createPlaceholder(array(
-			'category' => 'Products',
-			'item' => 'Lorem Ipsum',
-			'type' => 'products'
+			'category' => s('Products'),
+			'item' => s('Lorem Ipsum'),
+			'type' => 'products',
+			'image' => 'products.png'
+		));
+	}
+
+	public function stores()
+	{
+		$this->createPlaceholder(array(
+			'category' => s('Stores'),
+			'item' => s('Lorem Ipsum'),
+			'type' => 'business',
+			'image' => 'news.png'
 		));
 	}
 
 	public function news()
 	{
 		$this->createPlaceholder(array(
-			'category' => 'News',
-			'item' => 'Lorem Ipsum',
-			'type' => 'articles'
+			'category' => s('News'),
+			'item' => s('Lorem Ipsum'),
+			'type' => 'articles',
+			'image' => 'news.png'
 		));
 	}
 
@@ -37,7 +50,7 @@ class PlaceholderCreatorController extends AppController
 	{
 		$category = new Categories(array(
 			'site_id' => $this->getCurrentSite()->id,
-			'title' => s($options['category']),
+			'title' => $options['category'],
 			'type' => $options['type']
 		));
 		$category->save();
@@ -47,9 +60,16 @@ class PlaceholderCreatorController extends AppController
 			'type' => $options['type'],
 			'site_id' => $this->getCurrentSite()->id,
 			'parent_id' => $category->id,
-			'title' => s($options['item'])
+			'title' => $options['item']
 		));
 		$item->save();
+
+		if ($options['image']) {
+			$image = Mapper::url('/images/shared/item_placeholders/' . $options['image'], true);
+			$image = Model::load('Images')->download($item, $image, array(
+				'visible' => 1
+			));
+		}
 
 		$this->redirect('/business_items/index/' . $category->id);
 	}
