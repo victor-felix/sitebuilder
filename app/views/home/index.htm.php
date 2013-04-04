@@ -11,9 +11,21 @@
 			</div>
 			<div class="pull-right">
 				<div class="slider ">
-					<p><img alt="<?php echo s('best User Experience on all devices') ?>" src="/images/home/slides/slide-01.png"></p>
-					<p><img alt="<?php echo s('large number of professional templates') ?>" src="/images/home/slides/slide-02.png"></p>
-					<p><img alt="<?php echo s('Add advanced features on your mobile website like RSS auto import and store-locator') ?>" src="/images/home/slides/slide-03.png"></p>
+					<p>
+						<?php echo $this->html->image('/images/home/slides/slide-01.png', array(
+							'alt' => s('best User Experience on all mobile phones and tablets, like iphone and ipad')
+						)) ?>
+					</p>
+					<p>
+						<?php echo $this->html->image('/images/home/slides/slide-02.png', array(
+							'alt' => s('create a mobile web page for all small and medium sized businesses, such as restaurants, medical, automotive services, hotels, events, and others')
+						)) ?>
+					</p>
+					<p>
+						<?php echo $this->html->image('/images/home/slides/slide-03.png', array(
+							'alt' => s('Create a mobile website for news portal or stores chain')
+						)) ?>
+					</p>
 				</div>
 				<div class="pagination"></div>
 			</div>
@@ -27,28 +39,41 @@
 		<ul class="thumbnails">
 			<li class="span3">
 			<div class="thumbnail">
-				<p class="img"><img src="/images/shared/home/en/themes.png" alt="<?php echo s('large number of professional templates') ?>"></p>
+				<p class="img">
+					<?php echo $this->html->image('/images/shared/home/en/themes.png', array(
+						'alt' => s('professional templates designed for internet mobile')
+					)) ?>
+				</p>
 				<h3><?php echo s('Choose themes designed by experts')?></h3>
 				<p><?php echo s('Get your the right look with professional themes that fit your business segment. Whether it\'s a restaurant or an hospital.')?></p>
 			</div>
 			</li>
 			<li class="span3">
 			<div class="thumbnail">
-				<p class="img"><img src="/images/shared/home/en/add+info.png" alt="<?php echo s('setup your business details through a friendly interface') ?>"></p>
+				<p class="img">
+					<?php echo $this->html->image('/images/shared/home/en/add+info.png', array(
+						'alt' => s('friendly interface to setup your business details')
+					)) ?>
 				<h3><?php echo s('Fill in the information of your business')?></h3>
 				<p><?php echo s('Business description, location, contacts, social links, pictures, logo, and more!')?></p>
 			</div>
 			</li>
 			<li class="span3">
 			<div class="thumbnail">
-				<p class="img"><img src="/images/shared/home/en/add+product.png" alt="<?php echo s('add your menu, services, portfolio') ?>"></p>
+				<p class="img">
+					<?php echo $this->html->image('/images/shared/home/en/add+product.png', array(
+						'alt' => s('you will create a website with restaurant menu,  products of your shop, services of your company and multiple location for your chain store')
+					)) ?>
 				<h3><?php echo s('Add products, services or menus')?></h3>
 				<p><?php echo s('Your mobile website has space for your restaurant menu, your products, services, all with descriptions and photos.')?></p>
 			</div>
 			</li>
 			<li class="span3">
 			<div class="thumbnail">
-				<p class="img"><img src="/images/shared/home/en/all+devices.png" alt="<?php echo s('best User Experience on all devices') ?>"></p>
+				<p class="img">
+					<?php echo $this->html->image('/images/shared/home/en/all+devices.png', array(
+						'alt' => s('the mobile site of your company on all phones and tablets: iphone, android, nokia, samsung, blackberry, lg, motorola, ipad, etc.')
+					)) ?>
 				<h3><?php echo s('Provide your site for over 6000 devices')?></h3>
 				<p><?php echo s('From the cutting-edge smartphones to the oldest and cheapest cell phones. Your mobile website is for everyone!')?></p>
 			</div>
@@ -62,14 +87,22 @@
 		<div class="row">
 			<div class="span4">
 				<div class="call block">
-					<span class="icon"><img alt="<?php echo s('phone') ?>" src="/images/shared/home/phone.png"></span>
+					<span class="icon">
+						<?php echo $this->html->image('/images/shared/home/phone.png', array(
+							'alt' => s('Click-to-call')
+						)) ?>
+					</span>
 					<h3><?php echo s('Click-to-call')?></h3>
 					<p>
 						<?php echo s('Add a phone number on mobile site to make it easy for your customers to contact your business, whenever they need it.')?>
 					</p>
 				</div>
 				<div class="map block">
-					<span class="icon"><img alt="<?php echo s('marker') ?>" src="/images/shared/home/marker.png"></span>
+					<span class="icon">
+						<?php echo $this->html->image('/images/shared/home/marker.png', array(
+							'alt' => s('Map & direction')
+						)) ?>
+					</span>
 					<h3><?php echo s('Map & direction')?></h3>
 					<p>
 						<?php echo s('Add a map integrated with Google Maps to your mobile site, with the location and direction of your business.')?>
@@ -80,8 +113,12 @@
 				<div class="row">
 					<div class="span4">
 						<div class="store-locator block">
-							<span class="icon"><img alt="<?php echo s('magnifier') ?>" src="/images/shared/home/magnifier.png"></span>
-							<h3><?php echo s('Store locator')?></h3>
+							<span class="icon">
+								<?php echo $this->html->image('/images/shared/home/magnifier.png', array(
+									'alt' => s('Store locator')
+								)) ?>
+							</span>
+							<h3><?php echo s('Store locator') ?></h3>
 							<p>
 								<?php echo s('A mobile map interface with geolocated address <b>(ex.: stores, atms, gas stations, tourist spots).</b>')?>
 							</p>
@@ -89,8 +126,12 @@
 					</div>
 					<div class="span4">
 						<div class="rss block">
-							<span class="icon"><img alt="<?php echo s('rss') ?>" src="/images/shared/home/rss.png"></span>
-							<h3><?php echo s('RSS feed')?></h3>
+							<span class="icon">
+								<?php echo $this->html->image('/images/shared/home/rss.png', array(
+									'alt' => s('RSS feed')
+								)) ?>
+							</span>
+							<h3><?php echo s('RSS feed') ?></h3>
 							<p>
 								<?php echo s('Import any content automatically from a RSS feed. Great for online publishers <b>(ex.: blogs, news site, online journals).</b>')?>
 							</p>
@@ -100,12 +141,16 @@
 				<div class="row">
 					<div class="span4">
 						<div class="phone">
-							<img alt="<?php echo s('use our store locator to allow customers to reach you') ?>" src="/images/shared/home/icon-phone-mini.png">
+							<?php echo $this->html->image('/images/shared/home/icon-phone-mini.png', array(
+								'alt' => s('make a mobile web for your network or franchise stores using our store locator')
+							)) ?>
 						</div>
 					</div>
 					<div class="span4">
 						<div class="phone">
-							<img alt="<?php echo s('auto import content on RSS and Google Merchant formats') ?>" src="/images/shared/home/icon-phone-rss.png">
+							<?php echo $this->html->image('/images/shared/home/icon-phone-rss.png', array(
+								'alt' => s('import the content of your blog, news site, wordpress site through a RSS')
+							)) ?>
 						</div>
 					</div>
 				</div>
@@ -120,7 +165,6 @@
 			<div class="span6">
 				<h2><span><?php echo s('Basic')?> </span><?php echo s('USD <b>9/mo</b>')?></h2>
 				<p><?php echo s('create a mobile presence')?></p>
-
 				<ul>
 					<li><span class="icon"></span><?php echo s('<b>Basic information:</b><br>contacts, address, photos, social links, news via RSS')?></li>
 					<li><span class="icon"></span><?php echo s('additional content such as <b>menus, products, services</b>, etc.')?></li>
@@ -130,7 +174,6 @@
 			<div class="span6">
 				<h2><span><?php echo s('Locator')?> </span><?php echo s('USD <b>34/mo</b>')?></h2>
 				<p><?php echo s('for businesses with multiple locations')?></p>
-
 				<ul>
 					<li><span class="icon"></span><?php echo s('<b>Basic information:</b><br>contacts, address, photos, social links, news via RSS')?></li>
 					<li><span class="icon"></span><?php echo s('additional content such as <b>menus, products, services</b>, etc.')?></li>
@@ -191,7 +234,6 @@
 				<div class="row">
 					<div class="span4">
 						<div class="quote">
-
 							<p>
 								<span class="icon left"></span>
 								<span class="icon right"></span>
