@@ -17,7 +17,7 @@
 		
 		<div class="form-grid-220 first">
 			<?php echo $this->form->input('password', array(
-				'label' => s('Senha'),
+				'label' => s('Password'),
 				'class' => 'ui-text'
 			)) ?>
 		</div>
