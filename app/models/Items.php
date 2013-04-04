@@ -416,7 +416,6 @@ class Items extends \lithium\data\Model {
 			} catch (GeocodingException $e) {
 				$item->geo = 0;
 			}
-			return $result;
 		} elseif (empty($item->address)) {
 			$item->geo = 0;
 		}
