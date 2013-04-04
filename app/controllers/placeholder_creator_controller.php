@@ -26,6 +26,16 @@ class PlaceholderCreatorController extends AppController
 		));
 	}
 
+	public function stores()
+	{
+		$this->createPlaceholder(array(
+			'category' => 'Stores',
+			'item' => 'Lorem Ipsum',
+			'type' => 'business',
+			'image' => 'news.png'
+		));
+	}
+
 	public function news()
 	{
 		$this->createPlaceholder(array(
