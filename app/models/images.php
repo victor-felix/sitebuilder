@@ -211,6 +211,15 @@ class Images extends AppModel {
 			)));
 			$item->modified = date('Y-m-d H:i:s');
 			$item->save();
+		} else {
+			if ($self->model == 'SitePhotos' || $self->model == 'SiteLogos') {
+				$model = 'Sites';
+			} else {
+				$model = $self->model;
+			}
+			$object = Model::load($model)->firstById($self->foreign_key);
+			$object->modified = date('Y-m-d H:i:s');
+			$object->save();
 		}
 
 		return $id;

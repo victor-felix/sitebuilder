@@ -304,6 +304,20 @@ class Items extends \lithium\data\Model {
 		return $chain->next($self, $params, $chain);
 	}
 
+	public static function updateTimestamps($self, $params, $chain)
+	{
+		$id = $params['conditions']['_id'];
+		$item = static::find('first', array('conditions' => array(
+			'_id' => $id
+		)));
+		$date = date('Y-m-d H:i:s');
+		$category = $item->parent();
+		$category->modified = $date;
+		$category->save();
+
+		return $chain->next($self, $params, $chain);
+	}
+
 	public static function addTimestamps($self, $params, $chain)
 	{
 		$item = $params['entity'];
@@ -555,6 +569,10 @@ Items::applyFilter('remove', function($self, $params, $chain) {
 
 Items::applyFilter('remove', function($self, $params, $chain) {
 	return Items::removeImages($self, $params, $chain);
+});
+
+Items::applyFilter('remove', function($self, $params, $chain) {
+	return Items::updateTimestamps($self, $params, $chain);
 });
 
 Items::applyFilter('save', function($self, $params, $chain) {
