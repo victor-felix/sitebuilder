@@ -11,7 +11,8 @@ class PlaceholderCreatorController extends AppController
 		$this->createPlaceholder(array(
 			'category' => 'Menu',
 			'item' => 'Lorem Ipsum',
-			'type' => 'products'
+			'type' => 'products',
+			'image' => 'menu.png'
 		));
 	}
 
@@ -20,7 +21,8 @@ class PlaceholderCreatorController extends AppController
 		$this->createPlaceholder(array(
 			'category' => 'Products',
 			'item' => 'Lorem Ipsum',
-			'type' => 'products'
+			'type' => 'products',
+			'image' => 'products.png'
 		));
 	}
 
@@ -29,7 +31,8 @@ class PlaceholderCreatorController extends AppController
 		$this->createPlaceholder(array(
 			'category' => 'News',
 			'item' => 'Lorem Ipsum',
-			'type' => 'articles'
+			'type' => 'articles',
+			'image' => 'news.png'
 		));
 	}
 
@@ -50,6 +53,13 @@ class PlaceholderCreatorController extends AppController
 			'title' => s($options['item'])
 		));
 		$item->save();
+
+		if ($options['image']) {
+			$image = Mapper::url('/images/shared/item_placeholders/' . $options['image'], true);
+			$image = Model::load('Images')->download($item, $image, array(
+				'visible' => 1
+			));
+		}
 
 		$this->redirect('/business_items/index/' . $category->id);
 	}
