@@ -2,6 +2,8 @@
 
 namespace utils;
 
+use Exception;
+
 class Worker
 {
 	public $file;
@@ -14,27 +16,26 @@ class Worker
 	{
 		set_time_limit(0);
 		$this->process = $process;
-		$this->tmpDir = dirname( dirname( dirname(__FILE__) ) ) . '/tmp/';
-		$this->log = \KLogger::instance(\Filesystem::path('log'));
+		$this->tmpDir = dirname(dirname(dirname(__DIR__))) . '/tmp';
+		$this->log = \KLogger::instance(\Filesystem::path(APP_ROOT . '/log'));
 	}
 
 	public function canRun()
 	{
 		if (!$this->file) {
-			$this->file = fopen($this->tmpDir . $this->process . '.pid', 'w+');
+			$this->file = fopen($this->tmpDir . '/' . $this->process . '.pid', 'w+');
 			if ($this->file && flock($this->file, LOCK_EX | LOCK_NB)) {
 				return fwrite($this->file, getmypid());
 			}
 		}
-		$this->log->logNotice('%s work: can\'t init worker', $this->process);
+		$this->log->logNotice('%s work: can\'t init worker. already in progress', $this->process);
 		return false;
 	}
 
 	public function run()
 	{
-		if (!$this->canRun()) {
-			return false;
-		}
+		if (!$this->canRun()) return false;
+
 		try {
 			$workClass = $this->getWorkClass();
 			$work = new $workClass();
@@ -42,6 +43,7 @@ class Worker
 		} catch (Exception $e) {
 			$this->log->logError('%s work: %s', $this->process, $e->getMessage());
 		}
+
 		$this->stop();
 	}
 
@@ -56,7 +58,7 @@ class Worker
 	{
 		if ($this->file) {
 			fclose($this->file);
-			unlink($this->tmpDir . $this->process . '.pid');
+			unlink($this->tmpDir . '/' . $this->process . '.pid');
 		}
 	}
 }

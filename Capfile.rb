@@ -52,7 +52,7 @@ namespace :deploy do
 
   namespace :db do
     task :migrate do
-      run "flock -x #{shared_path}/tmp/update_feeds.pid -c 'php #{release_path}/sitebuilder/script/migrate.php'"
+      run "php #{release_path}/sitebuilder/script/migrate.php"
     end
   end
 
@@ -78,6 +78,7 @@ namespace :deploy do
 
   task :wait do
     run "flock -x #{shared_path}/tmp/update_feeds.pid -c echo"
+    run "flock -x #{shared_path}/tmp/update_priority_feeds.pid -c echo"
   end
 end
 

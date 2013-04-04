@@ -144,7 +144,14 @@ class SitesController extends AppController
 
 	public function news()
 	{
-		$this->general();
+		$site = $this->getCurrentSite();
+		if (!empty($this->data)) {
+			$site->updateAttributes($this->data);
+			if ($site->validate() && $site->save()) {
+				Session::writeFlash('success', s('Your feed is being processed and will be available shortly.'));
+			}
+		}
+		$this->set(compact('site'));
 	}
 
 	public function verify_slug($slug = null)

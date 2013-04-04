@@ -2,31 +2,35 @@
 
 use app\models\Items;
 
-class BusinessItemsController extends AppController {
-	protected $uses = array('Categories');
+class BusinessItemsController extends AppController
+{
+	protected $uses = array();
 
-	public function index($parent_id = null) {
-		$category = $this->Categories->firstById($parent_id);
+	public function index($parent_id = null)
+	{
+		$category = Model::load('Categories')->firstById($parent_id);
 
 		$classname = '\app\models\items\\' . Inflector::camelize($category->type);
-		
+
 		$params = array(
-				'conditions' => array( 'parent_id' => $category->id),
-				'limit' => $this->param('limit', 10),
-				'page' => $this->param('page',1),
-				'order' => $this->param('order', array('order','title')),
-				);
+			'conditions' => array( 'parent_id' => $category->id),
+			'limit' => $this->param('limit', 10),
+			'page' => $this->param('page',1),
+			'order' => $this->param('order', array('order','title')),
+		);
+
 		$this->set(compact('category') + $classname::paginate($params));
 	}
 
-	public function add($parent_id = null) {
+	public function add($parent_id = null)
+	{
 		$site = $this->getCurrentSite();
 		$parent = Model::load('Categories')->firstById($parent_id);
 		$classname = '\app\models\items\\' . Inflector::camelize($parent->type);
 		$item = $classname::create();
 		$item->type = $parent->type;
 
-		if(!empty($this->data)) {
+		if (!empty($this->data)) {
 			$images = array_unset($this->data, 'image');
 			$images = $this->request->data['image'];
 			$item->set($this->data);
@@ -34,26 +38,29 @@ class BusinessItemsController extends AppController {
 			$item->site_id = $site->id;
 			$item->type = $parent->type;
 
-			if($item->save()) {
-				foreach($images as  $id => $image) {
-					if(is_numeric($id)) {
+			if ($item->save()) {
+				foreach ($images as  $id => $image) {
+					if (is_numeric($id)) {
 						$record = Model::load('Images')->firstById($id);
-						if(!$record)continue;
+						if (!$record) continue;
 						$record->title = $image['title'];
 						$record->foreign_key = $item->id();
 						$record->save();
 					}
 				}
-				$message = s('Item successfully added.');
-				if($this->isXhr()) {
-					$json = array(
-						'success'=>$message,
-						'go_back'=>true,
-						'refresh'=>'/business_items/index/' . $parent_id
-					);
-					$this->respondToJSON($json);
+
+				if (isset($item->geo) && !$item->geo) {
+					$message = s('Your items are being processed and will appear on the map shortly.');
+				} else {
+					$message = s('Item successfully added.');
 				}
-				else {
+				if ($this->isXhr()) {
+					$this->respondToJSON(array(
+						'success' => $message,
+						'go_back' => true,
+						'refresh' => '/business_items/index/' . $parent_id
+					));
+				} else {
 					Session::writeFlash('success', $message);
 					$this->redirect('/business_items/index/' . $item->parent_id);
 				}
@@ -66,36 +73,34 @@ class BusinessItemsController extends AppController {
 		));
 	}
 
-	public function edit($id = null) {
+	public function edit($id = null)
+	{
 		$site = $this->getCurrentSite();
 		$item = Items::find('type', array('conditions' => array(
 			'_id' => $id
 		)));
 
-		if(!empty($this->data)) {
+		if (!empty($this->data)) {
 			$images = array_unset($this->data, 'image');
 			$item->set($this->data);
 			$item->site_id = $site->id;
 
-			if($item->save()) {
-				foreach($images as $id => $image) {
-					if(is_numeric($id)) {
+			if ($item->save()) {
+				foreach ($images as $id => $image) {
+					if (is_numeric($id)) {
 						$record = Model::load('Images')->firstById($id);
 						$record->title = $image['title'];
 						$record->save();
 					}
 				}
 				$message = s('Item successfully updated.');
-				if($this->isXhr()) {
-					$json = array(
-						'success'=>$message,
-						'go_back'=>true,
-						'refresh'=>'/business_items/index/' . $item->parent_id
-					);
-					$this->respondToJSON($json);
-					//$this->setAction('index', $item->parent_id);
-				}
-				else {
+				if ($this->isXhr()) {
+					$this->respondToJSON(array(
+						'success' => $message,
+						'go_back' => true,
+						'refresh' => '/business_items/index/' . $item->parent_id
+					));
+				} else {
 					Session::writeFlash('success', s('Item successfully updated.'));
 					$this->redirect('/business_items/index/' . $item->parent_id);
 				}
@@ -108,7 +113,8 @@ class BusinessItemsController extends AppController {
 		));
 	}
 
-	public function delete($id = null) {
+	public function delete($id = null)
+	{
 		$item = Items::find('first', array('conditions' => array(
 			'_id' => $id
 		)));
@@ -116,30 +122,25 @@ class BusinessItemsController extends AppController {
 		Items::remove(array('_id' => $id));
 		$message = s('Item successfully deleted.');
 
-		if($this->isXhr()) {
-			$json = array(
-				'success'=>$message,
-				'go_back'=>true,
-				'refresh'=>'/business_items/index/' . $parent_id
-			);
-			$this->respondToJSON($json);
-		}
-		else {
+		if ($this->isXhr()) {
+			$this->respondToJSON(array(
+				'success' => $message,
+				'go_back' => true,
+				'refresh' => '/business_items/index/' . $parent_id
+			));
+		} else {
 			Session::writeFlash('success', $message);
 			$this->redirect('/business_items/index/' . $item->parent_id);
 		}
 	}
 
-	public function reorder() {
-		$this->autoRender = false;
-	}
-	
-	public function move_up($id) {
+	public function move_up($id)
+	{
 		$item = Items::find('first', array('conditions' => array(
-				'_id' => $id
+			'_id' => $id
 		)));
-		$currentOrder = $item->order; 
-		
+		$currentOrder = $item->order;
+
 		if (($currentOrder - 1) == $item->moveUp()) {
 			$status = 'success';
 			$message = s('Item successfully moved up');
@@ -147,28 +148,26 @@ class BusinessItemsController extends AppController {
 			$status = 'error';
 			$message = s('Item not moved up');
 		}
-		
-		if($this->isXhr()) {
-			$json = array(
+
+		if ($this->isXhr()) {
+			$this->respondToJSON(array(
 				$status => $message,
-				'go_back'=>true,
-				'refresh'=>'/business_items/index/' . $item->parent_id
-			);
-			
-			$this->respondToJSON($json);
-		}
-		else {
+				'go_back' => true,
+				'refresh' => '/business_items/index/' . $item->parent_id
+			));
+		} else {
 			Session::writeFlash($status, $message);
 			$this->redirect('/business_items/index/' . $item->parent_id);
 		}
 	}
-	
-	public function move_down($id) {
+
+	public function move_down($id)
+	{
 		$item = Items::find('first', array('conditions' => array(
-				'_id' => $id
+			'_id' => $id
 		)));
 		$currentOrder = $item->order;
-		
+
 		if (($currentOrder + 1) == $item->moveDown()) {
 			$status = 'success';
 			$message = s('Item successfully moved down');
@@ -176,17 +175,14 @@ class BusinessItemsController extends AppController {
 			$status = 'error';
 			$message = s('Item not moved down');
 		}
-		
-		if($this->isXhr()) {
-			$json = array(
-					$status => $message,
-					'go_back'=>true,
-					'refresh'=>'/business_items/index/' . $item->parent_id
-			);
-				
-			$this->respondToJSON($json);
-		}
-		else {
+
+		if ($this->isXhr()) {
+			$this->respondToJSON(array(
+				$status => $message,
+				'go_back' => true,
+				'refresh' => '/business_items/index/' . $item->parent_id
+			));
+		} else {
 			Session::writeFlash($status, $message);
 			$this->redirect('/business_items/index/' . $item->parent_id);
 		}

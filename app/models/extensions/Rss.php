@@ -9,10 +9,14 @@ use app\models\Extensions;
 use app\models\items\Articles;
 use Model;
 use SimplePie;
+use Exception;
 
 class Rss extends Extensions
 {
 	const ARTICLES_TO_KEEP = 50;
+	const PRIORITY_HIGH = 2;
+	const PRIORITY_MEDIUM = 1;
+	const PRIORITY_LOW = 0;
 
 	protected $specification = array(
 		'title' => 'News feed - RSS',
@@ -41,6 +45,7 @@ class Rss extends Extensions
 
 	public static function enable($extension)
 	{
+		$extension->priority = self::PRIORITY_HIGH;
 		$category = self::category($extension);
 		$category->populate = 'auto';
 		$category->save();
@@ -57,10 +62,12 @@ class Rss extends Extensions
 	public static function switchEnabledStatus($self, $params, $chain)
 	{
 		$extension = $params['entity'];
-		if ($extension->enabled) {
-			self::enable($extension);
-		} else {
-			self::disable($extension);
+		if ($extension->changed('enabled')) {
+			if ($extension->enabled) {
+				self::enable($extension);
+			} else {
+				self::disable($extension);
+			}
 		}
 
 		return $chain->next($self, $params, $chain);
@@ -79,20 +86,25 @@ class Rss extends Extensions
 			'total_images' => 0,
 			'failed_images' => 0,
 		);
-		$feed = $entity->getFeed();
-		$items = $feed->get_items();
 
-		foreach ($items as $item) {
-			$count = Articles::find('count', array('conditions' => array(
-				'parent_id' => $entity->category_id,
-				'guid' => $item->get_id()
-			)));
-			if (!$count) {
-				$article_stats = Articles::addToFeed($category, $item);
-				$stats['total_images'] += $article_stats['total_images'];
-				$stats['failed_images'] += $article_stats['failed_images'];
-				$stats['total_articles'] += 1;
+		try {
+			$feed = $entity->getFeed();
+			$items = $feed->get_items();
+
+			foreach ($items as $item) {
+				$count = Articles::find('count', array('conditions' => array(
+					'parent_id' => $entity->category_id,
+					'guid' => $item->get_id()
+				)));
+				if (!$count) {
+					$article_stats = Articles::addToFeed($category, $item);
+					$stats['total_images'] += $article_stats['total_images'];
+					$stats['failed_images'] += $article_stats['failed_images'];
+					$stats['total_articles'] += 1;
+				}
 			}
+		} catch(Exception $e) {
+			// do nothing if the feed fails for any reason
 		}
 
 		$cleanup_stats = $entity->cleanup();
@@ -100,6 +112,14 @@ class Rss extends Extensions
 
 		$category->updated = date('Y-m-d H:i:s');
 		$category->save();
+
+		$entity->priority = $entity->priority % 2;
+
+		if (!$entity->priority) {
+			unset($entity->priority);
+		}
+
+		$entity->save();
 
 		return $stats;
 	}

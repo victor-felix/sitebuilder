@@ -39,6 +39,18 @@ class Extensions extends \lithium\data\Model
 		}
 	}
 
+	public function changed($entity, $field) {
+		$export = $entity->export();
+		if(!$export['exists']) {
+			return true;
+		}
+		if(isset($export['update'][$field])) {
+			return $export['data'][$field] != $export['update'][$field];
+		} else {
+			return false;
+		}
+	}
+
 	public function hasAttribute($entity, $attr)
 	{
 		return !is_null($entity->{$attr});
