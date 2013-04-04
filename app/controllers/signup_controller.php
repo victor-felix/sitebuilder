@@ -48,7 +48,7 @@ class SignupController extends AppController
 					'step' => 'theme',
 					'user' => $user->data
 				));
-				$this->redirect('/signup/theme');
+				$this->redirect("/{$this->language}/signup/theme");
 			}
 		}
 
@@ -73,7 +73,7 @@ class SignupController extends AppController
 					'user' => $session['user'],
 					'site' => $site->data
 				));
-				$this->redirect('/signup/business_info');
+				$this->redirect("/{$this->language}/signup/business_info");
 			}
 		}
 
