@@ -9,8 +9,8 @@ class PlaceholderCreatorController extends AppController
 	public function menu()
 	{
 		$this->createPlaceholder(array(
-			'category' => 'Menu',
-			'item' => 'Lorem Ipsum',
+			'category' => s('Menu'),
+			'item' => s('Lorem Ipsum'),
 			'type' => 'products',
 			'image' => 'menu.png'
 		));
@@ -19,8 +19,8 @@ class PlaceholderCreatorController extends AppController
 	public function products()
 	{
 		$this->createPlaceholder(array(
-			'category' => 'Products',
-			'item' => 'Lorem Ipsum',
+			'category' => s('Products'),
+			'item' => s('Lorem Ipsum'),
 			'type' => 'products',
 			'image' => 'products.png'
 		));
@@ -29,8 +29,8 @@ class PlaceholderCreatorController extends AppController
 	public function stores()
 	{
 		$this->createPlaceholder(array(
-			'category' => 'Stores',
-			'item' => 'Lorem Ipsum',
+			'category' => s('Stores'),
+			'item' => s('Lorem Ipsum'),
 			'type' => 'business',
 			'image' => 'news.png'
 		));
@@ -39,8 +39,8 @@ class PlaceholderCreatorController extends AppController
 	public function news()
 	{
 		$this->createPlaceholder(array(
-			'category' => 'News',
-			'item' => 'Lorem Ipsum',
+			'category' => s('News'),
+			'item' => s('Lorem Ipsum'),
 			'type' => 'articles',
 			'image' => 'news.png'
 		));
@@ -50,7 +50,7 @@ class PlaceholderCreatorController extends AppController
 	{
 		$category = new Categories(array(
 			'site_id' => $this->getCurrentSite()->id,
-			'title' => s($options['category']),
+			'title' => $options['category'],
 			'type' => $options['type']
 		));
 		$category->save();
@@ -60,7 +60,7 @@ class PlaceholderCreatorController extends AppController
 			'type' => $options['type'],
 			'site_id' => $this->getCurrentSite()->id,
 			'parent_id' => $category->id,
-			'title' => s($options['item'])
+			'title' => $options['item']
 		));
 		$item->save();
 
