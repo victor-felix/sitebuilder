@@ -1,5 +1,5 @@
 .dashboard {
-	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica,arial,sans-serif;
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, arial, sans-serif;
 	color: #333;
 	border-top: 1px solid #ddd;
 	padding: 25px 0 75px;
@@ -42,15 +42,22 @@
 .dashboard .list li:hover {
 	border-left: 1px solid #EFEFEF;
 	border-right: 1px solid #EFEFEF;
-	background: url(/images/shared/layout/ui-button-white.png)  center repeat-x;
+	background: url(/images/shared/layout/ui-button-white.png) center repeat-x;
 }
-.dashboard .list li a {
+
+.dashboard .list li#add-content:hover {
+	background: none;
+	border-left: 1px solid #fff;
+	border-right: 1px solid #fff;
+}
+
+.dashboard .list li .link {
 	padding: 17px 0 24px 80px;
-	display:block;
+	display: block;
 	text-decoration: none;
 }
 
-.dashboard .list li a .icon {
+.dashboard .list li .link .icon {
 	background: url(/images/shared/dashboard/icons.png) no-repeat 0 0 #c02926;
 	width: 51px;
 	height: 51px;
@@ -60,56 +67,60 @@
 	top: 13px;
 }
 
-.dashboard .list li#photos a .icon{
-	background-position: 0 -1013px;
+.dashboard .list li#photos .icon {
+	background-position: 0 -900px;
 }
 
-.dashboard .list li#social a .icon {
-	background-position: 0 -205px;
+.dashboard .list li#social .icon {
+	background-position: 0 -332px;
 }
 
-.dashboard .list li#address a .icon {
-	background-position: 0 -609px;
+.dashboard .list li#address .icon {
+	background-position: 0 -616px;
 }
 
-.dashboard .list li#contact a .icon {
-	background-position: 0 -811px;
+.dashboard .list li#contact .icon {
+	background-position: 0 -758px;
 }
 
-.dashboard .list li#feed a .icon{
-	background-position: 0 -1215px;
+.dashboard .list li#feed .icon {
+	background-position: 0 -1042px;
 }
 
-.dashboard .list li#categories a .icon {
-	background-position: 0 -407px;
+.dashboard .list li#categories .icon {
+	background-position: 0 -190px;
 }
 
-.dashboard .list li#photos:hover a .icon{
-	background-position: 0 -912px;
+.dashboard .list li#add-content .icon {
+	background-position: 0 -474px;
 }
 
-.dashboard .list li#social:hover a .icon {
-	background-position: 0 -104px;
+.dashboard .list li#photos:hover .icon {
+	background-position: 0 -829px;
 }
 
-.dashboard .list li#address:hover a .icon {
-	background-position: 0 -508px;
+.dashboard .list li#social:hover .icon {
+	background-position: 0 -261px;
 }
 
-.dashboard .list li#contact:hover a .icon {
-	background-position: 0 -710px;
+.dashboard .list li#address:hover .icon {
+	background-position: 0 -545px;
 }
 
-.dashboard .list li#feed:hover a .icon{
-	background-position: 0 -1114px;
+.dashboard .list li#contact:hover .icon {
+	background-position: 0 -687px;
 }
 
-.dashboard .list li#categories:hover a .icon {
-	background-position: 0 -306px;
+.dashboard .list li#feed:hover .icon {
+	background-position: 0 -971px;
+}
+
+.dashboard .list li#categories:hover .icon {
+	background-position: 0 -119px;
 }
 
 .dashboard .list li .arrow {
-	background: url(/images/shared/dashboard/icons.png) no-repeat 0 -30px;
+	background: url(/images/shared/dashboard/icons.png) no-repeat 0 -74px;
 	width: 15px;
 	height: 26px;
 	display: block;
@@ -119,17 +130,24 @@
 }
 
 .dashboard .list li:hover .arrow {
-	background-position: 0 0;
+	background-position: 0 -45px;
 	background-color: #c02926;
 }
 
-.dashboard .list li a h3 {
+.dashboard .list li .arrow.open, .dashboard .list li:hover .arrow.open {
+	background-position: 0 0;
+	width: 28px;
+	background-color: #fff;
+	right: 6px;
+}
+
+.dashboard .list li .link h3 {
 	color: #c02926;
 	font-size: 22px;
 	font-weight: lighter;
 }
 
-.dashboard .list li a small {
+.dashboard .list li .link small {
 	color: #888;
 	display: block;
 	font-size: 12px;
@@ -145,4 +163,38 @@
 .dashboard .domain a {
 	color: #c02926;
 	font-size: 28px;
+}
+
+.placeholder-links {
+	margin: 0 0 25px 80px;
+}
+
+.placeholder-links a {
+	background: url(/images/shared/dashboard/icons.png) no-repeat;
+	color: #6e6e6e;
+	text-decoration: none;
+	font-size: 17px;
+	height: 18px;
+	overflow: hidden;
+	width: 80px;
+	padding: 52px 0 0 0;
+	display: inline-block;
+	text-align: center;
+	margin: 0 10px;
+}
+
+.placeholder-links a#menu {
+	background-position: 0 -1113px;
+}
+
+.placeholder-links a#stores {
+	background-position: 11px -1326px;
+}
+
+.placeholder-links a#products {
+	background-position: 9px -1255px;
+}
+
+.placeholder-links a#news {
+	background-position: 18px -1183px;
 }

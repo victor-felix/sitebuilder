@@ -54,6 +54,7 @@
 					<?php echo $this->html->image('/images/shared/home/en/add+info.png', array(
 						'alt' => s('friendly interface to setup your business details')
 					)) ?>
+				</p>
 				<h3><?php echo s('Fill in the information of your business')?></h3>
 				<p><?php echo s('Business description, location, contacts, social links, pictures, logo, and more!')?></p>
 			</div>
@@ -64,6 +65,7 @@
 					<?php echo $this->html->image('/images/shared/home/en/add+product.png', array(
 						'alt' => s('you will create a website with restaurant menu,  products of your shop, services of your company and multiple location for your chain store')
 					)) ?>
+				</p>
 				<h3><?php echo s('Add products, services or menus')?></h3>
 				<p><?php echo s('Your mobile website has space for your restaurant menu, your products, services, all with descriptions and photos.')?></p>
 			</div>
@@ -74,6 +76,7 @@
 					<?php echo $this->html->image('/images/shared/home/en/all+devices.png', array(
 						'alt' => s('the mobile site of your company on all phones and tablets: iphone, android, nokia, samsung, blackberry, lg, motorola, ipad, etc.')
 					)) ?>
+				</p>
 				<h3><?php echo s('Provide your site for over 6000 devices')?></h3>
 				<p><?php echo s('From the cutting-edge smartphones to the oldest and cheapest cell phones. Your mobile website is for everyone!')?></p>
 			</div>
