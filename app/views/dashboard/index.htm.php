@@ -10,47 +10,47 @@
 <div class="dashboard">
 	<div class="wrapp">
 		<div class="tip-big">
-			<h2><?php echo s('welcome to your mobile site')?></h2>
+			<h2><?php echo s('welcome to your mobile site') ?></h2>
 			<p><?php echo s('use the tools below to keep improving your mobile site') ?></p>
 		</div>
 		<ul class="list">
 			<li id="photos">
 				<a class="link" href="<?php echo Mapper::url('/sites/business_info#business-photos') ?>">
 					<span class="icon"></span>
-					<h3><?php echo s('add photos of your company')?></h3>
-					<small><?php echo s('let your customers see what your business looks like')?></small>
+					<h3><?php echo s('add photos of your company') ?></h3>
+					<small><?php echo s('let your customers see what your business looks like') ?></small>
 					<span class="arrow"></span>
 				</a>
 			</li>
 			<li id="social">
 				<a class="link" href="<?php echo Mapper::url('/sites/business_info#business-social') ?>">
 					<span class="icon"></span>
-					<h3><?php echo s('your social links')?></h3>
-					<small><?php echo s('facebook page, twitter, website address')?></small>
+					<h3><?php echo s('your social links') ?></h3>
+					<small><?php echo s('facebook page, twitter, website address') ?></small>
 					<span class="arrow"></span>
 				</a>
 			</li>
 			<li id="address">
 				<a class="link" href="<?php echo Mapper::url('/sites/business_info#business-address') ?>">
 					<span class="icon"></span>
-					<h3><?php echo s('your address')?></h3>
-					<small><?php echo s('full address adds a map on your mobile site')?></small>
+					<h3><?php echo s('your address') ?></h3>
+					<small><?php echo s('full address adds a map on your mobile site') ?></small>
 					<span class="arrow"></span>
 				</a>
 			</li>
 			<li id="contact">
 				<a class="link" href="<?php echo Mapper::url('/sites/business_info#business-contact') ?>">
 					<span class="icon"></span>
-					<h3><?php echo s('your contacts')?></h3>
-					<small><?php echo s('phone numbers and email address')?></small>
+					<h3><?php echo s('your contacts') ?></h3>
+					<small><?php echo s('phone numbers and email address') ?></small>
 					<span class="arrow"></span>
 				</a>
 			</li>
 			<li id="feed">
 				<a class="link" href="<?php echo Mapper::url('/sites/news') ?>">
 					<span class="icon"></span>
-					<h3><?php echo s('add a news feed')?></h3>
-					<small><?php echo s('use your website RSS to display news')?></small>
+					<h3><?php echo s('add a news feed') ?></h3>
+					<small><?php echo s('use your website RSS to display news') ?></small>
 					<span class="arrow"></span>
 				</a>
 			</li>
@@ -76,7 +76,6 @@
 						<?php echo $this->html->image('/images/shared/dashboard/icon-menu.png', array(
 							'alt' => s('menu')
 						)) ?>
-						<br />
 						<?php echo s('menu') ?>
 					</a>
 
@@ -84,7 +83,6 @@
 						<?php echo $this->html->image('/images/shared/dashboard/icon-stores.png', array(
 							'alt' => s('stores')
 						)) ?>
-						<br />
 						<?php echo s('stores') ?>
 					</a>
 
@@ -92,7 +90,6 @@
 						<?php echo $this->html->image('/images/shared/dashboard/icon-products.png', array(
 							'alt' => s('products')
 						)) ?>
-						<br />
 						<?php echo s('products') ?>
 					</a>
 
@@ -100,14 +97,13 @@
 						<?php echo $this->html->image('/images/shared/dashboard/icon-news.png', array(
 							'alt' => s('news')
 						)) ?>
-						<br />
 						<?php echo s('news') ?>
 					</a>
 				</p>
 			</li>
 		</ul>
 		<div class="domain">
-			<p><?php echo s('you can access anytime from your mobile phone')?></p>
+			<p><?php echo s('you can access anytime from your mobile phone') ?></p>
 			<?php echo $this->html->link('http://' . e($site->domain),
 				'http://' . e($site->domain), array('target' => 'blank')) ?>
 		</div>

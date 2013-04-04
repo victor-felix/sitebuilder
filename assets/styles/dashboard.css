@@ -180,4 +180,6 @@
 
 .placeholder-links a img {
 	background-color: #c02926;
+	display: block;
+	margin: 0 auto 10px;
 }
