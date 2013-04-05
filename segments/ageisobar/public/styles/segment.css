@@ -27,7 +27,7 @@ body {
   color: #f74902; }
 
 .form-edit .fieldset-expand {
-  border-bottom: 1px solid #dddddd;
+  border-bottom: 1px solid #ddd;
   color: #f74902; }
 
 .theme-picker ul li.selected a img {
@@ -88,11 +88,10 @@ body {
   /* IE10+ */
   background: linear-gradient(to bottom, #fd6020 0%, #fd6b2f 50%, #fd5915 51%, #f74902 100%);
   /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='lighten($color,10%)', endColorstr='$color',GradientType=0 );
-  /* IE6-9 */
   border-color: #c43a02; }
 
 .ui-button.red:hover {
+  background: #fd6020;
   background: -webkit-linear-gradient(top, #f74902 0%, #fd5915 50%, #fd6b2f 51%, #fd6020 100%);
   /* Chrome10+,Safari5.1+ */
   background: -o-linear-gradient(top, #f74902 0%, #fd5915 50%, #fd6b2f 51%, #fd6020 100%);
@@ -101,8 +100,6 @@ body {
   /* IE10+ */
   background: linear-gradient(to bottom, #f74902 0%, #fd5915 50%, #fd6b2f 51%, #fd6020 100%);
   /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color', endColorstr='lighten($color,10%)',GradientType=0 );
-  /* IE6-9 */
   border-color: #f74902; }
 
 .support,
@@ -114,8 +111,10 @@ body {
 div.theme-picker > ul > li.selected {
   box-shadow: 0 0 0 3px #f74902 inset; }
 
-div.dashboard .list li a .icon, div.dashboard .list li:hover .arrow {
+div.dashboard .list li .link .icon
+, div.dashboard .list li:hover .arrow
+, .placeholder-links a img {
   background-color: #f74902; }
 
-div.dashboard .list li a h3, div.dashboard .domain a {
+div.dashboard .list li .link h3, div.dashboard .domain a {
   color: #f74902; }
