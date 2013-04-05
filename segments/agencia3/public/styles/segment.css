@@ -27,7 +27,7 @@ body {
   color: #c2cb1e; }
 
 .form-edit .fieldset-expand {
-  border-bottom: 1px solid #dddddd;
+  border-bottom: 1px solid #ddd;
   color: #c2cb1e; }
 
 .theme-picker ul li.selected a img {
@@ -111,8 +111,10 @@ body {
 div.theme-picker > ul > li.selected {
   box-shadow: 0 0 0 3px #c2cb1e inset; }
 
-div.dashboard .list li a .icon, div.dashboard .list li:hover .arrow {
+div.dashboard .list li .link .icon
+, div.dashboard .list li:hover .arrow
+, .placeholder-links a img {
   background-color: #c2cb1e; }
 
-div.dashboard .list li a h3, div.dashboard .domain a {
+div.dashboard .list li .link h3, div.dashboard .domain a {
   color: #c2cb1e; }
