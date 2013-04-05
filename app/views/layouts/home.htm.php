@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="description" content="<?php echo s('Create professional websites for all mobile devices easily. Bring more customers to your business and increase your sales.')?>" />
+		<meta name="description" content="<?php echo s('Create professional websites for all mobile devices easily. Advanced features such as store locator for your chain stores.')?>" />
 		<meta name="keywords" content="<?php echo s('mobile website, mobilize website, design mobile website, create mobile website, build mobile website, business, menu, restaurant') ?>" />
 		<title><?php echo s('Create a mobile website easily') . ' | ' . $this->controller->getSegment()->title; ?></title>
 		<link rel="shortcut icon" href="<?php echo Mapper::url("/images/layout/favicon.png") ?>" type="image/png" />
