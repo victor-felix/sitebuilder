@@ -22,7 +22,7 @@ body {
 
 #header .logo {
 	font-size: 28px;
-    text-decoration: none;
+	text-decoration: none;
 }
 
 #content {
@@ -86,14 +86,14 @@ body {
 }
 
 .tip-register {
-  color: #333;
-  background: #ffc;
-  line-height: 1.4em;
-  padding: 10px 15px;
+	color: #333;
+	background: #ffc;
+	line-height: 1.4em;
+	padding: 10px 15px;
 }
 
 .tip-register a {
-  color: #c02926;
+	color: #c02926;
 }
 
 /*
@@ -106,7 +106,8 @@ body {
 /*
 * register finished
 */
-.registration-finished {}
+.registration-finished {
+}
 
 .registration-finished img {
 	margin: 50px 0 30px 182px;
@@ -129,9 +130,9 @@ body {
 	text-decoration: none;
 }
 
-	.registration-finished h2 a:hover {
-		text-decoration: underline;
-	}
+.registration-finished h2 a:hover {
+	text-decoration: underline;
+}
 
 .registration-finished a {
 	display: block;
@@ -176,7 +177,7 @@ body {
 	text-decoration: underline;
 }
 
-.login #header{
+.login #header {
 	width: 340px;
 	background-color: #fff;
 	border-radius: 3px 3px 0 0;
@@ -201,7 +202,7 @@ body {
 	-webkit-box-shadow: 0 2px 2px #CCCCCC;
 	-moz-box-shadow: 0 2px 2px #CCCCCC;
 	border-left: 1px solid #CCCCCC;
-	border-right	: 1px solid #CCCCCC;
+	border-right: 1px solid #CCCCCC;
 }
 
 .login #success-feedback, #error-feedback {
@@ -210,10 +211,10 @@ body {
 }
 
 .login #header .logo {
-    text-decoration: none;
-    max-width: 235px;
-    font-size: 28px;
-    display: inline-block;
+	text-decoration: none;
+	max-width: 235px;
+	font-size: 28px;
+	display: inline-block;
 }
 
 .login #header .logo img {
@@ -227,8 +228,8 @@ body {
 .login .form-register .field-group {
 	float: none;
 	margin: 0 auto;
-    width: 300px;
-    padding-top: 25px;
+	width: 300px;
+	padding-top: 25px;
 }
 
 .login .form-register .form-grid-220 {

@@ -18,10 +18,10 @@
 
 #FormLogin .no-account {
 	display: block;
-    float: none;
-    margin-bottom: 10px;
+	float: none;
+	margin-bottom: 10px;
 }
 
-#FormLogin .forgot-password:hover , #FormLogin .no-account:hover{
+#FormLogin .forgot-password:hover , #FormLogin .no-account:hover {
 	text-decoration: underline;
 }
