@@ -183,3 +183,7 @@
 	display: block;
 	margin: 0 auto 10px;
 }
+
+.placeholder-links a#products img {
+	margin: 0 0 10px;
+}
