@@ -3,7 +3,7 @@
 		<div class="hero-unit clearfix">
 			<div class="block pull-left">
 				<h1><?php echo s('Create a mobile website for your business.') ?></h1>
-				<h2><?php echo s('Works with over 6000 cellphones and smartphones.') ?></h2>
+				<h2><?php echo s('Works with all cellphones and smartphones.') ?></h2>
 				<?php echo $this->language->link(s('start your free trial ›'), '/signup/user', array(
 					'class' => 'btn big'
 				)) ?>
@@ -44,7 +44,7 @@
 						'alt' => s('professional templates designed for internet mobile')
 					)) ?>
 				</p>
-				<h3><?php echo s('Choose themes designed by experts') ?></h3>
+				<h3><?php echo s('Choose templates designed by experts') ?></h3>
 				<p><?php echo s('Get your the right look with professional themes that fit your business segment. Whether it\'s a restaurant or an hospital.') ?></p>
 			</div>
 			</li>
@@ -55,7 +55,7 @@
 						'alt' => s('friendly interface to setup your business details')
 					)) ?>
 				</p>
-				<h3><?php echo s('Fill in the information of your business') ?></h3>
+				<h3><?php echo s('Edit all informations of your business') ?></h3>
 				<p><?php echo s('Business description, location, contacts, social links, pictures, logo, and more!') ?></p>
 			</div>
 			</li>
@@ -66,7 +66,7 @@
 						'alt' => s('you will create a website with restaurant menu,  products of your shop, services of your company and multiple location for your chain store')
 					)) ?>
 				</p>
-				<h3><?php echo s('Add products, services or menus') ?></h3>
+				<h3><?php echo s('Add menu, products and services') ?></h3>
 				<p><?php echo s('Your mobile website has space for your restaurant menu, your products, services, all with descriptions and photos.') ?></p>
 			</div>
 			</li>
@@ -77,7 +77,7 @@
 						'alt' => s('the mobile site of your company on all phones and tablets: iphone, android, nokia, samsung, blackberry, lg, motorola, ipad, etc.')
 					)) ?>
 				</p>
-				<h3><?php echo s('Provide your site for over 6000 devices') ?></h3>
+				<h3><?php echo s('Publish your site on all mobile devices') ?></h3>
 				<p><?php echo s('From the cutting-edge smartphones to the oldest and cheapest cell phones. Your mobile website is for everyone!') ?></p>
 			</div>
 			</li>
