@@ -163,7 +163,7 @@
 </div>
 <div class="prices outer wrapp">
 	<div class="container">
-		<h3><?php echo s('Our plans and prices.') ?></h3>
+		<p class="main-title"><?php echo s('Our plans and prices.') ?></p>
 		<div class="row">
 			<div class="span6">
 				<p class="price"><span><?php echo s('Basic') ?> </span><?php echo s('USD <strong>9/mo</strong>') ?></p>
@@ -205,7 +205,7 @@
 		<div class="row">
 			<div class=" span4 ">
 				<div class="insights">
-					<h3><?php echo s('<strong>get mobile.</strong><br> a few insights on the mobile market.') ?></h3>
+					<p class="main-title"><?php echo s('<strong>get mobile.</strong><br> a few insights on the mobile market.') ?></p>
 
 					<div class="slider">
 						<div>
@@ -233,7 +233,7 @@
 				</div>
 			</div>
 			<div class="about span8">
-				<h3><?php echo s('what our clients, partners and press say about us') ?></h3>
+				<p class="main-title"><?php echo s('what our clients, partners and press say about us') ?></p>
 				<div class="row">
 					<div class="span4">
 						<div class="quote">
@@ -263,7 +263,7 @@
 </div>
 <div class="container ">
 	<div class="custom-solution">
-		<h3><?php echo s('need custom solutions?') ?></h3>
+		<p class="main-title"><?php echo s('need custom solutions?') ?></p>
 		<p>
 		<?php echo s('Creating custom layout, open API, white label solution for agencies, mobile site resale for digital partners. Any custom solution!') ?>
 		<b class="mail" >enterprise@meumobi.com</strong>
