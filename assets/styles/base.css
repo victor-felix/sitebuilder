@@ -83,7 +83,7 @@ a img {
 	font-size: 12px;
 	font-style: italic;
 	display: block;
-	color: #999
+	color: #999;
 }
 
 .tip {
@@ -385,6 +385,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	cursor: pointer;
 	z-index: 3;
 }
+
 #header .navigation .user a {
 	color: #42537e;
 	display: block;
@@ -399,6 +400,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 #header .navigation .user:hover ul {
 	display: block;
 }
+
 #header .navigation .user ul {
 	position: absolute;
 	width: 200px;
@@ -409,10 +411,12 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	z-index: 3;
 	list-style: none;
 }
+
 #header .navigation .user li {
 	width: 100%;
 	margin-left: 0;
 }
+
 #header .navigation .user li a {
 	display: block;
 	width: 100%;
@@ -421,6 +425,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	margin: 0;
 	text-indent: 10px;
 }
+
 #header .navigation .user a:hover {
 	background: #C02926;
 	color: #FFF;
@@ -508,6 +513,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	position: relative;
 	width: 940px;
 }
+
 #content .slide-elem {
 	width: 940px;
 	float: left;
@@ -759,10 +765,6 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	padding-top: 1px;
 }
 
-.footer .contact .upper {
-
-}
-
 .footer .contact p {
 	font-size: 11px;
 	margin: 0;
@@ -799,9 +801,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 .support {
 	position: fixed;
 	top: 390px;
-	left: -26px;/*
-	 width: 40px;
-	 height: 90px;*/
+	left: -26px;
 	overflow: hidden;
 	-webkit-border-radius: 0 0 3px 3px;
 	-moz-border-radius: 0 0 3px 3px;

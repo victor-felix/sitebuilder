@@ -39,6 +39,7 @@
 	border-right: 1px solid #fff;
 	position: relative;
 }
+
 .dashboard .list li:hover {
 	border-left: 1px solid #EFEFEF;
 	border-right: 1px solid #EFEFEF;
