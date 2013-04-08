@@ -76,7 +76,7 @@ small {
 	font-size: 16px;
 }
 
-.header .login a.active:hover{
+.header .login a.active:hover {
 	background-color: #FF4E00;
 	text-decoration: none;
 }
@@ -85,6 +85,7 @@ small {
 	font-size: 14px;
 	margin: 0;
 }
+
 .dropdown > li > p {
 	min-width: 120px;
 }
@@ -123,7 +124,7 @@ ul.dropdown li ul {
 	font-size: 48px;
 	line-height: 44px;
 	letter-spacing: -3px;
-	font-family: "HelveticaNeueBold", "HelveticaNeue-Bold", "Helvetica Neue Bold", Arial;	
+	font-family: "HelveticaNeueBold", "HelveticaNeue-Bold", "Helvetica Neue Bold", Arial;
 }
 
 .hero.outer.wrapp .hero-unit .block h2 {
@@ -136,7 +137,7 @@ ul.dropdown li ul {
 
 .hero.outer.wrapp .hero-unit .block .trial {
 	line-height: 12px;
-	margin: 10px 0 0 ;
+	margin: 10px 0 0;
 	color: #fff;
 }
 
@@ -153,13 +154,14 @@ ul.dropdown li ul {
 
 .hero-unit .slider p {
 	width: 485px;
-	height: 370px;	
+	height: 370px;
 	text-align: center;
 }
 
 .pagination {
 	text-align: center;
 }
+
 .pagination a {
 	background: #595959;
 	width: 10px;
@@ -232,7 +234,7 @@ div.wrapp.presentation {
 .features .block {
 	padding: 0px 0px 0px 50px;
 	position: relative;
-	min-height: 110px
+	min-height: 110px;
 }
 
 .features .block.store-locator, .features .block.rss {
@@ -280,10 +282,12 @@ div.wrapp.prices {
 	box-shadow: inset 0px 1px 3px 0px #777;
 }
 
-.prices h3 {
+.prices .main-title {
 	color: #222;
 	font-size: 32px;
 	padding-bottom: 20px;
+	font-weight: bold;
+	line-height: normal;
 }
 
 .prices .price {
@@ -371,8 +375,9 @@ div.wrapp.prices {
 	background: url("/images/shared/home/glob-watermark.png") no-repeat right 10px;
 }
 
-.quotes .insights h3 {
+.quotes .insights .main-title {
 	font-weight: normal;
+	margin: 10px 0;
 	font-size: 30px;
 	line-height: 30px;
 	color: #444;
@@ -410,7 +415,7 @@ div.wrapp.prices {
 	background: #444444;
 }
 
-.quotes .about h3 {
+.quotes .about .main-title {
 	padding: 0 25% 30px;
 	font-size: 24px;
 	font-weight: bolder;
@@ -423,7 +428,6 @@ div.wrapp.prices {
 	color: #666;
 	padding: 0 15px;
 	text-align: center;
-	
 }
 
 .quotes .about .quote p {
@@ -448,7 +452,6 @@ div.wrapp.prices {
 	width: 52px;
 	display: block;
 	position: absolute;
-	
 }
 
 .quotes .about .quote .icon.left {
@@ -472,9 +475,12 @@ div.wrapp.prices {
 	margin: 30px auto 40px;
 }
 
-.custom-solution h3 {
+.custom-solution .main-title {
 	color: #C81713;
 	font-size: 28px;
+	font-style: normal;
+	font-weight: bold;
+	line-height: normal;
 }
 
 .custom-solution p {

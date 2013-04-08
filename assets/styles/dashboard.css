@@ -39,6 +39,7 @@
 	border-right: 1px solid #fff;
 	position: relative;
 }
+
 .dashboard .list li:hover {
 	border-left: 1px solid #EFEFEF;
 	border-right: 1px solid #EFEFEF;
@@ -182,4 +183,8 @@
 	background-color: #c02926;
 	display: block;
 	margin: 0 auto 10px;
+}
+
+.placeholder-links a#products img {
+	margin: 0 0 10px;
 }

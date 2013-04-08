@@ -375,7 +375,9 @@ class Sites extends AppModel
 			'twitter');
 
 		foreach ($fieldsToTrim as $field) {
-			$data[$field] = trim($data[$field]);
+			if (isset($data[$field])) {
+				$data[$field] = trim($data[$field]);
+			}
 		}
 
 		return $data;

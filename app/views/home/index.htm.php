@@ -3,7 +3,7 @@
 		<div class="hero-unit clearfix">
 			<div class="block pull-left">
 				<h1><?php echo s('Create a mobile website for your business.') ?></h1>
-				<h2><?php echo s('Works with over 6000 cellphones and smartphones.') ?></h2>
+				<h2><?php echo s('Works with all cellphones and smartphones.') ?></h2>
 				<?php echo $this->language->link(s('start your free trial ›'), '/signup/user', array(
 					'class' => 'btn big'
 				)) ?>
@@ -44,7 +44,7 @@
 						'alt' => s('professional templates designed for internet mobile')
 					)) ?>
 				</p>
-				<h3><?php echo s('Choose themes designed by experts') ?></h3>
+				<h3><?php echo s('Choose templates designed by experts') ?></h3>
 				<p><?php echo s('Get your the right look with professional themes that fit your business segment. Whether it\'s a restaurant or an hospital.') ?></p>
 			</div>
 			</li>
@@ -55,7 +55,7 @@
 						'alt' => s('friendly interface to setup your business details')
 					)) ?>
 				</p>
-				<h3><?php echo s('Fill in the information of your business') ?></h3>
+				<h3><?php echo s('Edit all informations of your business') ?></h3>
 				<p><?php echo s('Business description, location, contacts, social links, pictures, logo, and more!') ?></p>
 			</div>
 			</li>
@@ -66,7 +66,7 @@
 						'alt' => s('you will create a website with restaurant menu,  products of your shop, services of your company and multiple location for your chain store')
 					)) ?>
 				</p>
-				<h3><?php echo s('Add products, services or menus') ?></h3>
+				<h3><?php echo s('Add menu, products and services') ?></h3>
 				<p><?php echo s('Your mobile website has space for your restaurant menu, your products, services, all with descriptions and photos.') ?></p>
 			</div>
 			</li>
@@ -77,7 +77,7 @@
 						'alt' => s('the mobile site of your company on all phones and tablets: iphone, android, nokia, samsung, blackberry, lg, motorola, ipad, etc.')
 					)) ?>
 				</p>
-				<h3><?php echo s('Provide your site for over 6000 devices') ?></h3>
+				<h3><?php echo s('Publish your site on all mobile devices') ?></h3>
 				<p><?php echo s('From the cutting-edge smartphones to the oldest and cheapest cell phones. Your mobile website is for everyone!') ?></p>
 			</div>
 			</li>
@@ -163,7 +163,7 @@
 </div>
 <div class="prices outer wrapp">
 	<div class="container">
-		<h3><?php echo s('Our plans and prices.') ?></h3>
+		<p class="main-title"><?php echo s('Our plans and prices.') ?></p>
 		<div class="row">
 			<div class="span6">
 				<p class="price"><span><?php echo s('Basic') ?> </span><?php echo s('USD <strong>9/mo</strong>') ?></p>
@@ -205,7 +205,7 @@
 		<div class="row">
 			<div class=" span4 ">
 				<div class="insights">
-					<h3><?php echo s('<strong>get mobile.</strong><br> a few insights on the mobile market.') ?></h3>
+					<p class="main-title"><?php echo s('<strong>get mobile.</strong><br> a few insights on the mobile market.') ?></p>
 
 					<div class="slider">
 						<div>
@@ -233,7 +233,7 @@
 				</div>
 			</div>
 			<div class="about span8">
-				<h3><?php echo s('what our clients, partners and press say about us') ?></h3>
+				<p class="main-title"><?php echo s('what our clients, partners and press say about us') ?></p>
 				<div class="row">
 					<div class="span4">
 						<div class="quote">
@@ -263,10 +263,10 @@
 </div>
 <div class="container ">
 	<div class="custom-solution">
-		<h3><?php echo s('need custom solutions?') ?></h3>
+		<p class="main-title"><?php echo s('need custom solutions?') ?></p>
 		<p>
 		<?php echo s('Creating custom layout, open API, white label solution for agencies, mobile site resale for digital partners. Any custom solution!') ?>
-		<b class="mail" >enterprise@meumobi.com</strong>
+		<strong class="mail" >enterprise@meumobi.com</strong>
 		</p>
 	</div>
 </div>

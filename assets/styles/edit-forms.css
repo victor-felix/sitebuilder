@@ -123,8 +123,8 @@
 	font-style: italic;
 }
 
-.default-form .optional.red{
-	color: red;	
+.default-form .optional.red {
+	color: red;
 }
 
 .default-form p.error {
@@ -143,25 +143,25 @@
 	padding: 30px 25px;
 }
 
-	.default-form .fieldset-expand:hover {
-		background: url(/images/shared/layout/ui-button-white.png) center repeat-x;
-		border-bottom-color: #CCC;
-		-moz-box-shadow: 0 1px 0px #EEE;
-		-webkit-box-shadow: 0 1px 0px #EEE;
-	}
-	
-	.default-form .fieldset-expand:active {
-		background: url(/images/shared/layout/ui-button-white-active.png) center repeat-x;
-	}
-	
-	.default-form .fieldset-expand span {
-		background: url(/images/shared/register/arrow-expand-fieldset.png) right no-repeat;
-		float: right;
-		padding-right: 40px;
-		text-indent: -9999px;
-		width: 30px;
-	}
-	
+.default-form .fieldset-expand:hover {
+	background: url(/images/shared/layout/ui-button-white.png) center repeat-x;
+	border-bottom-color: #CCC;
+	-moz-box-shadow: 0 1px 0px #EEE;
+	-webkit-box-shadow: 0 1px 0px #EEE;
+}
+
+.default-form .fieldset-expand:active {
+	background: url(/images/shared/layout/ui-button-white-active.png) center repeat-x;
+}
+
+.default-form .fieldset-expand span {
+	background: url(/images/shared/register/arrow-expand-fieldset.png) right no-repeat;
+	float: right;
+	padding-right: 40px;
+	text-indent: -9999px;
+	width: 30px;
+}
+
 .default-form .domains {
 	padding: 25px 0;
 	clear: both;
@@ -233,13 +233,14 @@
 	left: 7px;
 }
 
-.populate-fields  {
-	overflow:hidden;
+.populate-fields {
+	overflow: hidden;
 }
+
 .populate-fields fieldset {
-	border-bottom:none;
-	margin:0;
-	padding:10px 0 0;
+	border-bottom: none;
+	margin: 0;
+	padding: 10px 0 0;
 }
 
 .import_method {
@@ -247,14 +248,13 @@
 }
 
 .import_method fieldset {
-	border-bottom:none;
+	border-bottom: none;
 }
 
 .default-form div.input.checkbox input {
-	margin-top:5px;
+	margin-top: 5px;
 }
 
 .default-form label.checkbox {
-	margin:-1.2em 0 0 20px;
-	
+	margin: -1.2em 0 0 20px;
 }

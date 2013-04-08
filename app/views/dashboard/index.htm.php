@@ -58,7 +58,7 @@
 			<li id="categories">
 				<a class="link" href="<?php echo Mapper::url('/categories') ?>">
 					<span class="icon"></span>
-					<h3><?php echo s('Edit content') ?></h3>
+					<h3><?php echo s('edit content') ?></h3>
 					<small><?php echo s('to be more attractive, add photos, description, address, etc.') ?></small>
 					<span class="arrow"></span>
 				</a>
@@ -86,7 +86,7 @@
 						<?php echo s('stores') ?>
 					</a>
 
-					<a href="<?php echo Mapper::url('/placeholder_creator/products') ?>">
+					<a id="products" href="<?php echo Mapper::url('/placeholder_creator/products') ?>">
 						<?php echo $this->html->image('/images/shared/dashboard/icon-products.png', array(
 							'alt' => s('products')
 						)) ?>

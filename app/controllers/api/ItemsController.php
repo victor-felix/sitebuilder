@@ -144,10 +144,11 @@ class ItemsController extends ApiController {
 			'page' => $this->param('page', 1)
 		))->to('array');
 
-		return array_map(function($item) {
+		return array_reduce($items, function($items, $item) {
 			$classname = '\app\models\items\\' . Inflector::camelize($item['type']);
-			return $classname::create($item)->toJSON();
-		}, $items);
+			$items[$item['type']] []= $classname::create($item)->toJSON();
+			return $items;
+		}, array());
 	}
 
 	public function show()
