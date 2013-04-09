@@ -309,6 +309,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 
 #header div.logo img {
 	max-width: 100%;
+	max-height: 90%;
 }
 
 #header .contextual-navbar {
