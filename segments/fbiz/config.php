@@ -9,4 +9,5 @@ Config::write('Segment', array(
 	'email' => array('no-reply@fbiz.com.br' => 'f.biz'),
 	'hideCategories' => false,
 	'enableSignup' => false,
+	'analytics' => 'UA-22519238-5',
 ));
