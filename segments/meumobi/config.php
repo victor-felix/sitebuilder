@@ -10,5 +10,6 @@ Config::write('Segment', array(
   'hideCategories' => false,
   'enableSignup' => true,
   'fullOptions' => false,
-  'enableMultiUsers' => false
+  'enableMultiUsers' => false,
+  'analytics' => 'UA-22519238-3',
 ));

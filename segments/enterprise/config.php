@@ -9,5 +9,6 @@ Config::write('Segment', array(
   'email' => array('no-reply@meumobi.com' => 'MeuMobi Enterprise'),
   'hideCategories' => false,
   'enableSignup' => false,
-  'primaryColor' => '#000'
+  'primaryColor' => '#000',
+  'analytics' => 'UA-22519238-3'
 ));
