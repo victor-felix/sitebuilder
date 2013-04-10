@@ -4,6 +4,7 @@
 	<head>
 		<?php echo $this->html->charset() ?>
 		<title><?php echo $this->pageTitle . ' | ' . $this->controller->getSegment()->title; ?></title>
+		<meta name="robots" content="noindex, nofollow">
 		<link rel="shortcut icon" href="<?php echo Mapper::url('/images/layout/favicon.png') ?>" type="image/png" />
 		<?php echo $this->html->stylesheet('shared/base', 'shared/uikit', 'shared/categories',
 			'shared/edit-forms', 'shared/businessitems', 'shared/dashboard', 'segment', 'shared/markitup.simple',
