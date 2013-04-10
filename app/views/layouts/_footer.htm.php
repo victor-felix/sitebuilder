@@ -28,10 +28,10 @@
 		</div>
 	</div>
 </div>
-		
+<?php if (Config::read('App.environment') == 'production' && MeuMobi::currentSegment()->analytics): ?>
 <script type="text/javascript">
 	var _gaq = _gaq || [];
-	_gaq.push(['_setAccount', 'UA-22519238-3']);
+	_gaq.push(['_setAccount', '<?php echo MeuMobi::currentSegment()->analytics ?>']);
 	_gaq.push(['_setDomainName', '.meumobi.com']);
 	_gaq.push(['_trackPageview']);
 
@@ -41,3 +41,4 @@
 		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	})();
 </script>
+<?php endif; ?>
