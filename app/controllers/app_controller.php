@@ -95,6 +95,17 @@ class AppController extends Controller
 		echo json_encode($this->toJSON($record));
 		$this->stop();
 	}
+
+	public function param($key, $default = null)
+	{
+		if(in_array($key, array_keys($this->params))) {
+			return $this->params[$key];
+		} else if (in_array($key, array_keys( $this->request->query))) {
+			return $this->request->query[$key];
+		} else {
+			return $default;
+		}
+	}
 }
 
 function __($key) {
