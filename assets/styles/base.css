@@ -351,12 +351,29 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 
 #header .navigation .site-url {
 	position: absolute;
-	right: 0;
+	right: 52px;
 	bottom: 0;
 	max-width: 300px;
 	max-height: 35px;
 	text-align: right;
 	color: #999;
+	line-height: 25px;
+}
+
+#header .share-link {
+	position: absolute;
+	right: 0;
+	bottom: 9px;
+}
+
+#header .share-link a {
+	text-decoration: none;
+	background-color: #ddd;
+	color: #707070;
+	padding: 2px 4px;
+	border-radius: 2px;
+	text-transform: uppercase;
+	font-size: 9px;
 }
 
 #header .navigation .user {

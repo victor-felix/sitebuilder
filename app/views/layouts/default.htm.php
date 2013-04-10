@@ -70,11 +70,14 @@
 							<span><?php echo s('You\'re currently editing')?></span>
 							<?php echo e($currentSite->title) ?>
 						</p>
-	
+
 						<p class="site-url dynamic-text" data-max-font-size="36">
 							<span>
 								http://<?php echo e($currentSite->domain) ?>
 							</span>
+						</p>
+						<p class="share-link">
+							<a id="share" href="#"><?php echo s('share'); ?> &#8250;</a>
 						</p>
 					</div>
 					<ul class="dropdown">
