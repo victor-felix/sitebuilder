@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url>
-  <loc>http://meumobi.com</loc>
-</url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+	<url>
+		<loc>http://meumobi.com</loc>
+		<xhtml:link
+			rel="alternate"
+			hreflang="pt"
+			href="http://meumobi.com/pt" />
+	</url>
+	<url>
+		<loc>http://meumobi.com/pt</loc>
+		<xhtml:link
+			rel="alternate"
+			hreflang="en"
+			href="http://meumobi.com" />
+	</url>
 </urlset>
