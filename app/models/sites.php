@@ -313,12 +313,17 @@ class Sites extends AppModel
 	{
 		$data = array_merge($this->data, array(
 			'logo' => null,
+			'apple_touch_icon' => null,
 			'photos' => array(),
 			'timezone' => $this->timezone()
 		));
 
 		if ($logo = $this->logo()) {
 			$data['logo'] = $logo->link();
+		}
+
+		if ($appleTouchIcon = $this->appleTouchIcon()) {
+			$data['apple_touch_icon'] = $appleTouchIcon->link();
 		}
 
 		$photos = $this->photos();
