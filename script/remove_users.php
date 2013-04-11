@@ -10,11 +10,11 @@ Config::write('Debug.showErrors', true);
 
 $_ = array_shift($argv);
 
-$Sites = Model::load('Sites');
+$Users = Model::load('Users');
 
-foreach ($argv as $site_id) {
+foreach ($argv as $user_id) {
 	try {
-		$Sites->delete($site_id);
+		$Users->delete($user_id);
 	} catch (Exception $e) {
 		echo $e;
 	}

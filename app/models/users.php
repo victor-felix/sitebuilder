@@ -292,9 +292,22 @@ class Users extends AppModel
 		return Security::hash(time(), 'sha1');
 	}
 
-	protected function removeSites()
+	protected function removeSites($id)
 	{
-		return Model::load('UsersSites')->onDeleteUser($this);
+		$site_ids = array_map(function($user_site) {
+			return $user_site->site_id;
+		}, Model::load('UsersSites')->allByUserId($id));
+		$sites = Model::load('Sites')->allById($site_ids);
+
+		foreach ($sites as $site) {
+			if (count($site->users()) > 1) {
+				Model::load('UsersSites')->onDeleteUser($this);
+			} else {
+				Model::load('Sites')->delete($site->id);
+			}
+		}
+
+		return $id;
 	}
 
 	protected function sendConfirmationMail($created)

@@ -343,7 +343,8 @@ class Sites extends AppModel
 
 	protected function removeUsers($id)
 	{
-		Model::load('UsersSites')->onDeleteSite($this);
+		Model::load('UsersSites')->removeSite($id);
+
 		return $id;
 	}
 
