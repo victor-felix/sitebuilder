@@ -4,6 +4,7 @@
 	<head>
 		<?php echo $this->html->charset() ?>
 		<title><?php echo $this->pageTitle . ' | ' . $this->controller->getSegment()->title; ?></title>
+		<meta name="robots" content="noindex, nofollow">
 		<link rel="shortcut icon" href="<?php echo Mapper::url('/images/layout/favicon.png') ?>" type="image/png" />
 		<?php echo $this->html->stylesheet('shared/base', 'shared/uikit', 'shared/categories',
 			'shared/edit-forms', 'shared/businessitems', 'shared/dashboard', 'segment', 'shared/markitup.simple',
@@ -69,11 +70,14 @@
 							<span><?php echo s('You\'re currently editing')?></span>
 							<?php echo e($currentSite->title) ?>
 						</p>
-	
+
 						<p class="site-url dynamic-text" data-max-font-size="36">
 							<span>
 								http://<?php echo e($currentSite->domain) ?>
 							</span>
+						</p>
+						<p class="share-link">
+							<a id="share" href="#"><?php echo s('share'); ?> &#8250;</a>
 						</p>
 					</div>
 					<ul class="dropdown">

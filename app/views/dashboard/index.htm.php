@@ -59,7 +59,7 @@
 				<a class="link" href="<?php echo Mapper::url('/categories') ?>">
 					<span class="icon"></span>
 					<h3><?php echo s('edit content') ?></h3>
-					<small><?php echo s('to be more attractive, add photos, description, address, etc.') ?></small>
+					<small><?php echo s('you can edit your menu, products, stores or news') ?></small>
 					<span class="arrow"></span>
 				</a>
 			</li>

@@ -27,7 +27,7 @@ class MeuMobi
 		$segment = self::currentSegment();
 		$domain = null;
 
-		if (property_exists($segment, 'domain')) {
+		if ($segment->domain) {
 			$domain = $segment->domain;
 		}
 

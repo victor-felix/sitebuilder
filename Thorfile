@@ -158,6 +158,7 @@ Config::write('Segment', array(
   'hideCategories' => %{hide_categories},
   'enableSignup' => %{enable_signup},
   'fullOptions' => %{full_options},
+  'analytics' => '%{analytics}',
 ));
     TEMPLATE
 
@@ -186,6 +187,7 @@ $button-base-color: %{main_color};
       options[:extensions] = ask "extensions (separated by spaces):"
       options[:item_types] = options[:item_types].split(" ").join("', '")
       options[:extensions] = options[:extensions].split(" ").join("', '")
+      options[:analytics] = ask "Google Analytics ID, leave empty to disable analytics:"
 
       directory "sitebuilder/segment", "segments/#{name}/public"
       empty_directory "segments/#{name}/public"
