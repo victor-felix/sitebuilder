@@ -1,2 +1,0 @@
-ALTER TABLE `images`
-    ADD COLUMN `visible` TINYINT(1) NOT NULL DEFAULT 1 AFTER `type`;

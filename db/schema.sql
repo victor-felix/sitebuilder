@@ -149,6 +149,7 @@ CREATE TABLE `users` (
   `active` tinyint(1) NOT NULL DEFAULT '0',
   `token` varchar(40) NOT NULL,
   `last_login` datetime DEFAULT NULL,
+  `language` varchar(255) NOT NULL DEFAULT 'pt-BR',
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
@@ -184,4 +185,4 @@ CREATE TABLE `users_sites` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-03-25 18:37:33
+-- Dump completed on 2013-04-11 12:04:49
