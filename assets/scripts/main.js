@@ -539,15 +539,6 @@ $(function() {
 });
 
 $(window).load(function(){
-		/* Fix broken images alt on webkits browsers */
-		//TODO check in server side
-		/*$('.logo img').each(function() {
-				if (!this.complete || (typeof this.naturalWidth == "undefined") || this.naturalWidth == 0) {
-						$(this).parent().html($(this).attr('alt'));
-						$(this).remove();
-				}		
-		});*/
-
 		if(!Modernizr.input.placeholder){
 			$('[placeholder]').focus(function() {
 			  var input = $(this);
@@ -571,4 +562,12 @@ $(window).load(function(){
 			  })
 			});
 		}
+
+		$('a.popup-link').click(function(){
+			$('.popup-wrapper').fadeIn('fast');
+		});
+
+		$('.popup-wrapper a.close').click(function(){
+			$('.popup-wrapper').fadeOut('fast');
+		});
 });

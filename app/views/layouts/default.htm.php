@@ -77,7 +77,7 @@
 							</span>
 						</p>
 						<p class="share-link">
-							<a id="share" href="#"><?php echo s('share'); ?> &#8250;</a>
+							<a id="share" class="popup-link" href="#"><?php echo s('share'); ?> &#8250;</a>
 						</p>
 					</div>
 					<ul class="dropdown">
@@ -114,7 +114,7 @@
 				</div>
 				<div class="clear"></div>
 			</div>
-	
+
 			<?php echo $this->element('layouts/flash') ?>
 			<div class="content-wrapp">
 				<div id="content">
@@ -122,7 +122,7 @@
 				</div>
 			</div>
 			<?php echo $this->element('layouts/footer') ?>
-		
+
 		</div>
 		<div class="live-preview">
 			<a href="#" class="show-action">
@@ -133,11 +133,33 @@
 				<?php echo $this->element('sites/theme_preview', array('site' => $currentSite))  ?>
 			</div>
 		</div>
-		
+
 		<div class="support">
 			<a id="support-link" href="#"><?php echo s('support') ?></a>
 		</div>
-		
+
+		<div class="popup-wrapper">
+			<div id="#share-links" class="popup share-links" >
+				<div class="header">
+					<h2><?php echo s('share') . ' ' .  MeuMobi::currentSegment()->title ?></h2>
+					<a href="#" class="close"><img src="/images/shared/themes/icon-close.png" alt="close" /></a>
+				</div>
+				<div class="links">
+					<p><?php echo s('Share with your friends and customers your mobile website through the links below:') ?></p>
+					<!-- AddThis Button BEGIN -->
+					<div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+					<a class="addthis_button_preferred_1"></a>
+					<a class="addthis_button_preferred_2"></a>
+					<a class="addthis_button_preferred_3"></a>
+					<a class="addthis_button_preferred_4"></a>
+					<a class="addthis_button_compact"></a>
+					<a class="addthis_counter addthis_bubble_style"></a>
+					</div>
+					<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=xa-51669ebc52cbd678"></script>
+					<!-- AddThis Button END -->
+				</div>
+			</div>
+		</div>
 		<?php echo $this->html->script('shared/jquery', 'shared/jquery.formrestrict', 'shared/jquery.alphanumeric', 'shared/modernizr.custom.placeholder.js', 'shared/support_chat', 'shared/main', 'shared/markitup', 'shared/async_upload', 'shared/jquery.chosen', 'shared/themes') ?>
 		<?php echo $this->html->scriptsForLayout ?>
 	</body>

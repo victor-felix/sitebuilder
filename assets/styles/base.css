@@ -847,3 +847,63 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	letter-spacing: 0px;
 	text-transform: uppercase;
 }
+
+.popup-wrapper {
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	box-sizing: border-box;         /* Opera/IE 8+ */
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	z-index: 2;
+	display: none;
+}
+
+.popup {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	height: 190px;
+	width: 640px;
+	margin-left: -320px;
+	margin-top: -95px;
+}
+
+.share-links {
+	background-color: #fff;
+	box-shadow: 0px 0px 10px 2px rgba(179, 179, 179, 0.8);
+	color: #777;
+
+}
+
+.share-links .header {
+	padding: 20px 25px;
+	border-bottom: 1px solid #D3D3D3;
+	position: relative;
+}
+
+.share-links .header h2 {
+	color: #888;
+	font: lighter 28px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, arial, sans-serif;
+	font-weight: lighter;
+}
+
+.share-links .header .close {
+	width: 17px;
+	height: 17px;
+	display: block;
+	position: absolute;
+	right: 15px;
+	top: 15px;
+}
+
+.share-links .links  {
+	padding: 25px
+}
+
+.share-links .links p {
+	margin-bottom: 12px;
+	margin-left: 1px;
+}
