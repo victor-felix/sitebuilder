@@ -66,19 +66,22 @@
 				</div>
 				<div class="contextual-navbar">
 					<div class="navigation" id="navbar">
-						<p class="business-name">
-							<span><?php echo s('You\'re currently editing')?></span>
-							<?php echo e($currentSite->title) ?>
-						</p>
-
-						<p class="site-url dynamic-text" data-max-font-size="36">
-							<span>
-								http://<?php echo e($currentSite->domain) ?>
-							</span>
-						</p>
-						<p class="share-link">
-							<a id="share" class="popup-link" href="#"><?php echo s('share'); ?> &#8250;</a>
-						</p>
+						<div class="navigation-wrapp">
+							<p class="business-name">
+								<span><?php echo s('You\'re currently editing')?></span>
+								<?php echo e($currentSite->title) ?>
+							</p>
+							<div class="right">
+								<p class="site-url dynamic-text" data-max-font-size="36">
+									<span>
+										http://<?php echo e($currentSite->domain) ?>
+									</span>
+								</p>
+								<p class="share-link">
+									<a id="share" class="popup-link" href="#"><?php echo s('share'); ?> &#8250;</a>
+								</p>
+							</div>
+						</div>
 					</div>
 					<ul class="dropdown">
 						<li><?php echo $this->html->link(s('dashboard'), '/dashboard') ?></li>

@@ -324,6 +324,19 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	height: 79px;
 }
 
+#header .contextual-navbar .navigation-wrapp {
+	bottom: 0;
+	left: 0;
+	position: absolute;
+	width: 100%;
+}
+
+#header .contextual-navbar .navigation-wrapp .right {
+	float: none;
+	bottom: 0;
+	right: 0;
+	position: absolute;
+}
 #header .navigation .user p {
 	background-image: url("/images/shared/markitup/menu.png");
 	background-position: right center;
@@ -334,7 +347,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	font-size: 30px;
 	font-weight: lighter;
 	letter-spacing: -1px;
-	display: inline;
+	display: inline-block;
 	padding-right: 8px;
 	color: #444;
 }
@@ -350,20 +363,18 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 }
 
 #header .navigation .site-url {
-	position: absolute;
-	right: 52px;
-	bottom: 0;
 	max-width: 300px;
 	max-height: 35px;
 	text-align: right;
 	color: #999;
 	line-height: 25px;
+	display: inline-block;
+	float: left;
 }
 
 #header .share-link {
-	position: absolute;
-	right: 0;
-	bottom: 9px;
+	display: inline-block;
+	margin: 7px 0 0 7px;
 }
 
 #header .share-link a {
@@ -489,7 +500,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	position: relative;
 }
 
-#header .contextual-navbar .dropdown  li:hover > p {
+#header .contextual-navbar .dropdown	li:hover > p {
 	border: none;
 }
 
@@ -850,8 +861,8 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 
 .popup-wrapper {
 	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
-	box-sizing: border-box;         /* Opera/IE 8+ */
+	-moz-box-sizing: border-box; /* Firefox, other Gecko */
+	box-sizing: border-box; /* Opera/IE 8+ */
 	position: fixed;
 	top: 0;
 	left: 0;
