@@ -15,6 +15,7 @@ Config::write('Geocode.urls', array(
 ));
 
 Config::write('SiteLogos.resizes', array('200x200'));
+Config::write('SiteAppleTouchIcon.resizes', array('57x57', '72x72'));
 Config::write('SitePhotos.resizes', array('139x139#', '314x220'));
 Config::write('BusinessItems.resizes', array('80x60#', '80x80#', '139x139#', '314x220'));
 
