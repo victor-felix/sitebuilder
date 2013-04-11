@@ -9,7 +9,7 @@ class Sites extends AppModel
 	protected $getters = array('feed_url', 'feed_title', 'custom_domain');
 	protected $beforeSave = array('getLatLng', 'saveDomain', 'trimFields');
 	protected $afterSave = array(
-		'saveLogo', 'createNewsCategory', 'updateFeed',
+		'saveLogoAndAppleTouchIcon', 'createNewsCategory', 'updateFeed',
 		'saveDomains', 'createRelation'
 	);
 	protected $beforeDelete = array(
@@ -157,6 +157,11 @@ class Sites extends AppModel
 	public function photo()
 	{
 		return Model::load('Images')->firstByRecord('SitePhotos', $this->id);
+	}
+
+	public function appleTouchIcon()
+	{
+		return Model::load('Images')->firstByRecord('SiteAppleTouchIcon', $this->id);
 	}
 
 	public function logo()
@@ -545,7 +550,7 @@ class Sites extends AppModel
 		}
 	}
 
-	protected function saveLogo()
+	protected function saveLogoAndAppleTouchIcon()
 	{
 		if (isset($this->data['logo']) && !$this->data['logo']['error']) {
 			if ($logo = $this->logo()) {
@@ -553,6 +558,15 @@ class Sites extends AppModel
 			}
 
 			Model::load('Images')->upload(new SiteLogos($this->id), $this->data['logo'],
+				array('visible' => 1));
+		}
+
+		if (isset($this->data['appleTouchIcon']) && !$this->data['appleTouchIcon']['error']) {
+			if ($appleTouchIcon = $this->appleTouchIcon()) {
+				Model::load('Images')->delete($appleTouchIcon->id);
+			}
+
+			Model::load('Images')->upload(new SiteAppleTouchIcon($this->id), $this->data['appleTouchIcon'],
 				array('visible' => 1));
 		}
 	}
@@ -597,6 +611,36 @@ class SiteLogos
 	public function imageModel()
 	{
 		return 'SiteLogos';
+	}
+
+	public function id()
+	{
+		return $this->id;
+	}
+}
+
+class SiteAppleTouchIcon
+{
+	public $id;
+
+	public function __construct($id = null)
+	{
+		$this->id = $id;
+	}
+
+	public function resizes()
+	{
+		$config = Config::read('SiteAppleTouchIcon.resizes');
+		if (is_null($config)) {
+			$config = array();
+		}
+
+		return $config;
+	}
+
+	public function imageModel()
+	{
+		return 'SiteAppleTouchIcon';
 	}
 
 	public function id()

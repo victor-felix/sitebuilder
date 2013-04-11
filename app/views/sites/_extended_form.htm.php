@@ -113,3 +113,33 @@
 		</div>
 	</div>
 </fieldset>
+
+<fieldset>
+	<div class="grid-4 first">
+		<div class="tip">
+			<h2><?php echo s('Apple touch icon') ?></h2>
+		</div>
+	</div>
+
+	<div class="grid-8">
+		<div class="field-group">
+			<div class="form-grid-460 first">
+				<?php if($site->appleTouchIcon()): ?>
+					<?php echo $this->html->image($site->appleTouchIcon()->link(), array(
+						'class' => 'logo'
+					)) ?>
+					<?php echo $this->html->link(s('delete icon'), '/images/delete/' . $site->appleTouchIcon()->id) ?>
+				<?php endif ?>
+				<div class="form-grid-460 first">
+					<span class="optional"><?php echo s('Optional') ?></span>
+					<?php echo $this->form->input('appleTouchIcon', array(
+						'label' => s('Apple Touch Icon'),
+						'type' => 'file',
+						'class' => 'ui-text large'
+					)) ?>
+					<small><?php echo s('To improve appearence of logo on your mobi site, we recommend to use an image on GIF or PNG with transparent background. Max size 50kb') ?></small>
+				</div>
+			</div>
+		</div>
+	</div>
+</fieldset>
