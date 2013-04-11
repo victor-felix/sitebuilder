@@ -6,7 +6,7 @@ class Segments
 
 	public static function current()
 	{
-		return new self(Config::read('Segment'));
+		return new self((array) Config::read('Segment'));
 	}
 
 	public function __construct($attr)
