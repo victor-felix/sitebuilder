@@ -117,7 +117,10 @@
 <fieldset>
 	<div class="grid-4 first">
 		<div class="tip">
-			<h2><?php echo s('Apple touch icon') ?></h2>
+			<h2><?php echo s('icon for IPhone') ?></h2>
+			<p>
+				<?php echo s('Allow your visitors to quickly retur to your site adding an app-like icon to their mobile phone home screens') ?>
+			</p>
 		</div>
 	</div>
 
@@ -133,11 +136,11 @@
 				<div class="form-grid-460 first">
 					<span class="optional"><?php echo s('Optional') ?></span>
 					<?php echo $this->form->input('appleTouchIcon', array(
-						'label' => s('Apple Touch Icon'),
+						'label' => s('icon for IPhone'),
 						'type' => 'file',
 						'class' => 'ui-text large'
 					)) ?>
-					<small><?php echo s('To improve appearence of logo on your mobi site, we recommend to use an image on GIF or PNG with transparent background. Max size 50kb') ?></small>
+					<small><?php echo s('The recommended dimensions for image are 124px height and 124px width') ?></small>
 				</div>
 			</div>
 		</div>
