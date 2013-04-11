@@ -335,6 +335,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	float: none;
 	bottom: 0;
 	right: 0;
+	padding-bottom: 5px;
 	position: absolute;
 }
 #header .navigation .user p {
@@ -367,9 +368,8 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	max-height: 35px;
 	text-align: right;
 	color: #999;
-	line-height: 25px;
+	line-height: 4px;
 	display: inline-block;
-	float: left;
 }
 
 #header .share-link {
