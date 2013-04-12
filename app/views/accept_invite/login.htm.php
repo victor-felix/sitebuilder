@@ -43,7 +43,7 @@
 	<?php echo $this->form->submit(s('Log in'), array(
 		'class' => 'ui-button large',
 		'style' => 'float: left'
-	))?>
+	)) ?>
 	
 	 <?php echo $this->html->link(s('Forgot password?'), '/users/forgot_password', array(
 		'class' => 'forgot-password'

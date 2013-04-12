@@ -22,7 +22,7 @@
     <?php echo $this->form->submit(s('Retrieve your Password'), array(
         'class' => 'ui-button large',
         'style' => 'float:none;'
-    ))?>
+    )) ?>
 </fieldset>
 
 <?php echo $this->form->close() ?>

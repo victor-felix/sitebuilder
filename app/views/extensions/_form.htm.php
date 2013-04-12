@@ -20,8 +20,8 @@
 			</div>
 			
 			<h3 class="title-3" >
-				<?php echo s($extension->specification('title'))?>
-				<span class="description"><?php echo s($extension->specification('description'))?></span>
+				<?php echo s($extension->specification('title')) ?>
+				<span class="description"><?php echo s($extension->specification('description')) ?></span>
 			</h3>
 		</div>
 	</div>

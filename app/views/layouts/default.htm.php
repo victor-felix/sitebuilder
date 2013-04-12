@@ -22,7 +22,7 @@
 							<p><?php echo e($currentSite->title) ?></p>
 							<ul>
 								<li>
-									<small><?php echo s('Select one site to edit it')?></small>
+									<small><?php echo s('Select one site to edit it') ?></small>
 								</li>
 								<?php foreach (Auth::user()->sites() as $site): ?>
 									<?php if ($site->id == $currentSite->id):?>
@@ -68,7 +68,7 @@
 					<div class="navigation" id="navbar">
 						<div class="navigation-wrapp">
 							<p class="business-name">
-								<span><?php echo s('You\'re currently editing')?></span>
+								<span><?php echo s('You\'re currently editing') ?></span>
 								<?php echo e($currentSite->title) ?>
 							</p>
 							<div class="right">
@@ -86,7 +86,7 @@
 					<ul class="dropdown">
 						<li><?php echo $this->html->link(s('dashboard'), '/dashboard') ?></li>
 						<li>
-							<p><?php echo s('content')?><span class="arrow"></span></p>
+							<p><?php echo s('content') ?><span class="arrow"></span></p>
 							<ul>
 								<li><?php echo $this->html->link(s('About Business'), '/sites/business_info') ?></li>
 								<?php if(!MeuMobi::currentSegment()->hideCategories): ?>
@@ -97,13 +97,13 @@
 						</li>
 						<?php if(Users::ROLE_ADMIN == $currentSite->role): ?>
 						<li>
-							<p><?php echo s('appearance')?><span class="arrow"></span></p>
+							<p><?php echo s('appearance') ?><span class="arrow"></span></p>
 							<ul>
 								<li><?php echo $this->html->link(s('themes'), '/sites/theme') ?></li>
 							</ul>
 						</li>
 						<li>
-							<p><?php echo s('settings')?><span class="arrow"></span></p>
+							<p><?php echo s('settings') ?><span class="arrow"></span></p>
 							<ul>
 								<li><?php echo $this->html->link(s('General'), '/sites/general') ?></li>
 								<li><?php echo $this->html->link(s('Custom Domain'), '/sites/custom_domain') ?></li>
@@ -129,7 +129,7 @@
 		</div>
 		<div class="live-preview">
 			<a href="#" class="show-action">
-				<?php echo s('LIVE PREVIEW')?>
+				<?php echo s('LIVE PREVIEW') ?>
 			</a>
 			<div class="live-wrapp">
 				<a class="close" href="#">close</a>
