@@ -28,7 +28,7 @@
 									<?php if ($site->id == $currentSite->id):?>
 									<li class="current">
 										<?php echo e($site->title) ?>
-										<span><?php echo s('Currently editing');?></span>
+										<span><?php echo s('Currently editing') ?></span>
 									</li>
 									<?php else: ?>
 									<li>
