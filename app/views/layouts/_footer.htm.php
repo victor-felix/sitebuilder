@@ -1,11 +1,11 @@
 <div class="footer">
 	<div class="container">
-		<div class="links" >
+		<div class="links">
 			<a class="logo" href="#"><?php echo s('MeuMobi') ?></a>
 			<a href="http://blog.meumobi.com/about" target="_blank"><?php echo s('About Us') ?></a>
 			<a href="http://blog.meumobi.com" target="_blank"><?php echo s('Our Blog') ?></a>
 			<p class="copy">
-				<span class="border" ></span>
+				<span class="border"></span>
 				<?php echo s('&copy;%s MeuMobi. All rights reserved',date("Y")) ?>
 			</p>
 		</div>

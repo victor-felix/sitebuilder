@@ -32,7 +32,7 @@
 									</li>
 									<?php else: ?>
 									<li>
-										<a href="<?php echo Mapper::url('/users/change_site/'.$site->id) ?>" >
+										<a href="<?php echo Mapper::url('/users/change_site/'.$site->id) ?>">
 											<?php echo e($site->title) ?>
 										</a>
 									</li>
@@ -142,7 +142,7 @@
 		</div>
 
 		<div class="popup-wrapper">
-			<div id="#share-links" class="popup share-links" >
+			<div id="#share-links" class="popup share-links">
 				<div class="header">
 					<h2><?php echo s('share') . ' ' .  MeuMobi::currentSegment()->title ?></h2>
 					<a href="#" class="close"><img src="/images/shared/themes/icon-close.png" alt="close" /></a>

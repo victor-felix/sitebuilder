@@ -7,19 +7,19 @@
 			<div class="ui-switch right <?php echo $extension->enabled ? 'enabled' : '' ?>" data-target="#FormEnabled">
 				<p class="on">
 					<span><?php echo s('enabled') ?></span>
-					<a class="ui-button" ></a>
+					<a class="ui-button"></a>
 				</p>
 				
 				<p class="off">
 					<span><?php echo s('disabled') ?></span>
-					<a class="ui-button" ></a>
+					<a class="ui-button"></a>
 				</p>
 				<?php echo $this->form->input('enabled', array(
 				'type' => 'hidden',
 			)) ?>
 			</div>
 			
-			<h3 class="title-3" >
+			<h3 class="title-3">
 				<?php echo s($extension->specification('title')) ?>
 				<span class="description"><?php echo s($extension->specification('description')) ?></span>
 			</h3>

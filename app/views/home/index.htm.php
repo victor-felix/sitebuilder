@@ -266,7 +266,7 @@
 		<p class="main-title"><?php echo s('need custom solutions?') ?></p>
 		<p>
 		<?php echo s('Creating custom layout, open API, white label solution for agencies, mobile site resale for digital partners. Any custom solution!') ?>
-		<strong class="mail" >enterprise@meumobi.com</strong>
+		<strong class="mail">enterprise@meumobi.com</strong>
 		</p>
 	</div>
 </div>
