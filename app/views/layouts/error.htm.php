@@ -10,7 +10,7 @@
 
 	<body>
 		<div id="header">
-			<?php echo $this->html->link($this->html->image('layout/logo.png', array('alt'=> MeuMobi::currentSegment()->title)), '/', array('class'=>'logo')); ?>
+			<?php echo $this->html->link($this->html->image('layout/logo.png', array('alt'=> MeuMobi::currentSegment()->title)), '/', array('class'=>'logo')) ?>
 		</div>
 
 		<div id="content" style="background:none;-webkit-box-shadow: none;-moz-box-shadow: none;border: 0">

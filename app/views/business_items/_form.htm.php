@@ -28,12 +28,12 @@
 			<input type="hidden" name="image[foreign_key]" value="<?php echo $item->id() ?>" />
 			<input type="hidden" name="image[model]" value="Items" />
 			<a class="close"></a>
-			<iframe src="about:blank" id="iframe_<?php echo time(); ?>"></iframe>
+			<iframe src="about:blank" id="iframe_<?php echo time() ?>"></iframe>
 			<div class="default">
 				<div class="icon_upload"></div>
-				<?php echo s('add photo'); ?>
+				<?php echo s('add photo') ?>
 			</div>
-			<div class="wait"><?php echo s('uploading photo...'); ?></div>
+			<div class="wait"><?php echo s('uploading photo...') ?></div>
 			<?php echo $this->form->input('image[photo]', array(
 				'label' => false,
 				'type' => 'file',

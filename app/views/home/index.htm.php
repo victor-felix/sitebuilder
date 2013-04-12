@@ -217,7 +217,7 @@
 
 						<div>
 							<p>
-								<?php echo s('<strong>A bad mobile experience can cost you customers.</strong> 61%% of users who don\'t see what they\'re looking for on a mobile site, they\'ll quikly move to another site.'); ?>
+								<?php echo s('<strong>A bad mobile experience can cost you customers.</strong> 61%% of users who don\'t see what they\'re looking for on a mobile site, they\'ll quikly move to another site.') ?>
 							</p>
 							<p class="author"><?php echo s('— Google Research, 2012') ?></p>
 						</div>

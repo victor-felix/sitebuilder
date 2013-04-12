@@ -78,7 +78,7 @@
 									</span>
 								</p>
 								<p class="share-link">
-									<a id="share" class="popup-link" href="#"><?php echo s('share'); ?> &#8250;</a>
+									<a id="share" class="popup-link" href="#"><?php echo s('share') ?> &#8250;</a>
 								</p>
 							</div>
 						</div>
