@@ -21,7 +21,7 @@
 				$href = sprintf('/extensions/add/%s/%s', $extension->specification('type'), $category->id);
 			}
 			?>
-			<li class="level-0"><a href="<?php echo $href ?>" class="">
+			<li class="level-0"><a href="<?php echo $href ?>">
 				<p class="title">
 					<span class="accessory-label"> <span><?php echo s('%s', $extension->enabled ? 'enabled' : 'disabled' ) ?>
 					</span> <span class="arrow">›</span>
@@ -41,7 +41,7 @@
 			<?php
 			$href = sprintf('/extensions/add/%s/%s', $extension->specification('type'), 0);
 			?>
-			<li class="level-0"><a href="<?php echo $href ?>" class="">
+			<li class="level-0"><a href="<?php echo $href ?>">
 				<p class="title">
 					<span class="accessory-label"> <span><?php echo s('disabled' ) ?>
 					</span> <span class="arrow">›</span>
