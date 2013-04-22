@@ -1,7 +1,10 @@
 <?php
+require_once 'lib/sitemanager/SiteManager.php';
 
 class SitesDomains extends AppModel
 {
+	protected $beforeDelete = array('deleteFromSiteManager');
+
 	protected $validates = array(
 		'domain' => array(
 			'rule' => array('unique', 'domain'),
@@ -38,5 +41,12 @@ class SitesDomains extends AppModel
 				)
 			);
 		}
+	}
+
+	public function deleteFromSiteManager($id)
+	{
+		$self = $this->firstById($id);
+		SiteManager::delete($self->domain);
+		return $id;
 	}
 }
