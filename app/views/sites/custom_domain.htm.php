@@ -46,7 +46,7 @@
 							'class' => 'ui-text large',
 							'value' =>  $domain,
 						)) ?>
-						<?php echo $this->html->link(s('delete'), "/domains/delete/$id") ?>
+						<?php echo $this->html->link(s('delete domain'), "/domains/delete/$id") ?>
 						<small><?php echo s('Ex.: m.yourcompany.com') ?></small>
 					</p>
 					<?php 
