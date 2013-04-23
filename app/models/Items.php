@@ -5,7 +5,6 @@ namespace app\models;
 require_once 'lib/utils/Works/Geocode.php';
 require_once 'lib/bbcode/Decoda.php';
 
-use lithium\data\Connections;
 use Config;
 use Inflector;
 use Model;

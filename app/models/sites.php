@@ -284,7 +284,7 @@ class Sites extends AppModel
 
 	public function toJSONPerformance()
 	{
-		$exportFields = array('id', 'segment', 'theme', 'skin', 'date_format',
+		$exportFields = array('id', 'segment', 'skin', 'date_format',
 			'title', 'description', 'timezone');
 		$data = array_intersect_key($this->data, array_flip($exportFields));
 

@@ -2,6 +2,8 @@
 
 namespace app\controllers\api;
 
+use meumobi\sitebuilder\repositories\SkinsRepository;
+
 class SitesController extends ApiController
 {
 	public function show()
@@ -52,6 +54,14 @@ class SitesController extends ApiController
 
 		$newsCategory = $this->site->newsCategory();
 		$newsCategory = array('title' => $newsCategory->title);
+
+		$skinsRepo = new SkinsRepository();
+		$skin = $skinsRepo->find(array_unset($site, 'skin'));
+		$site['theme'] = array(
+			'theme' => $skin->themeId(),
+			'colors' => $skin->colors(),
+			'assets' => $skin->assets(),
+		);
 
 		return compact('site', 'business', 'categories', 'news', 'newsCategory');
 	}

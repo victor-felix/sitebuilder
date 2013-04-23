@@ -2,7 +2,6 @@
 
 namespace app\models;
 
-use meumobi\sitebuilder\Extension;
 use Model;
 use Inflector;
 

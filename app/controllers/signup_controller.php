@@ -3,6 +3,8 @@
 require_once 'app/models/sites.php';
 require_once 'app/models/users.php';
 
+use meumobi\sitebuilder\repositories\ThemesRepository;
+
 class SignupController extends AppController
 {
 	protected $uses = array();
@@ -77,7 +79,8 @@ class SignupController extends AppController
 			}
 		}
 
-		$themes = Model::load('Themes')->all();
+		$themesRepo = new ThemesRepository();
+		$themes = $themesRepo->bySegment(MeuMobi::segment());
 
 		$this->set(compact('site', 'themes'));
 	}
