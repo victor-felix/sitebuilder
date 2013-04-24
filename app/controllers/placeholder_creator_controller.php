@@ -27,7 +27,7 @@ class PlaceholderCreatorController extends AppController
 			'item' => array(
 				'title' => s('Nikon COOLPIX L810 16.1 MP Digital Camera'),
 				'description' => s('The Model L810 is capable of taking pictures in three dimensions, giving a greater sense of reality more than a simple camera, the Nikon Coolpix model carries up your eyes a whole new world through its NIKKOR ED glass lens with images simply perfect!'),
-				'price' => s('USD 899,00'),
+				'price' => s('US$ 899,00'),
 				'images' => array('products-01.jpg', 'products-02.jpg')
 			),
 		));
