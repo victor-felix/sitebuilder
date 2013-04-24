@@ -24,11 +24,23 @@ class UpdateThemes
 		$sites = Model::load('Sites')->all();
 
 		foreach ($sites as $site) {
-			$site->theme = $themes[$site->theme];
-			$site->skin = Connections::get('default')->connection->skins->findOne(array(
-				'theme_id' => $site->theme,
-				'main_color' => $site->skin
-			))['_id']->{'$id'};
+			if (isset($themes[$site->theme])) {
+				$skin = Connections::get('default')->connection->skins->findOne(array(
+					'theme_id' => $site->theme,
+					'main_color' => $site->skin
+				));
+
+				if ($skin) {
+					$site->theme = $themes[$site->theme];
+					$site->skin = $skin['_id']->{'$id'};
+				} else {
+					$site->theme = null;
+					$site->skin = null;
+				}
+			} else {
+				$site->theme = null;
+				$site->skin = null;
+			}
 			$site->save();
 		}
 	}
