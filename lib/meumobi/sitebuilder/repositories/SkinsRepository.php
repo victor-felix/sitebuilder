@@ -14,7 +14,7 @@ class SkinsRepository
 
 	public function all()
 	{
-		return $this->collection()->find();
+		return iterator_to_array($this->collection()->find(), false);
 	}
 
 	public function find($id)
@@ -32,7 +32,7 @@ class SkinsRepository
 	{
 		return array_map(function($theme) {
 			return $this->hydrate($theme);
-		}, iterator_to_array($this->collection()->find(['theme_id' => $id])));
+		}, iterator_to_array($this->collection()->find(['theme_id' => $id]), false));
 	}
 
 	protected function connection()
