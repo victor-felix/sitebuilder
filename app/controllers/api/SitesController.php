@@ -58,7 +58,7 @@ class SitesController extends ApiController
 		$skinsRepo = new SkinsRepository();
 		$skin = $skinsRepo->find(array_unset($site, 'skin'));
 		$site['theme'] = array(
-			'name' => $skin->themeId(),
+			'theme_id' => $skin->themeId(),
 			'colors' => $skin->colors(),
 			'assets' => $skin->assets(),
 		);
@@ -71,7 +71,7 @@ class SitesController extends ApiController
 		$skinsRepo = new SkinsRepository();
 		$skin = $skinsRepo->find($this->site()->skin);
 		$theme = array(
-			'name' => $skin->themeId(),
+			'theme_id' => $skin->themeId(),
 			'colors' => $skin->colors(),
 			'assets' => $skin->assets(),
 		);

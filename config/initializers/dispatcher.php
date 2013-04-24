@@ -195,7 +195,6 @@ Router::connect(new Route(array(
 	) + $defaults['params']
 )));
 
-
 Router::connect(new Route(array(
 	'method' => 'GET',
 	'template' => '/api/{:slug}',
