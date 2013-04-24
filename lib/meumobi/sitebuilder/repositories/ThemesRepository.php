@@ -2,8 +2,11 @@
 
 namespace meumobi\sitebuilder\repositories;
 
+require_once 'app/models/segments.php';
+
 use meumobi\sitebuilder\entities\Theme;
 use Config;
+use Segments;
 
 class ThemesRepository
 {
@@ -16,7 +19,16 @@ class ThemesRepository
 
 	public function bySegment($segment)
 	{
-		return $this->all();
+		$theme_ids = Segments::current()->themes();
+		$themes = $this->all();
+
+		if (empty($theme_ids)) {
+			return $themes;
+		} else {
+			return array_filter($themes, function($theme) use ($theme_ids) {
+				return in_array($theme->id(), $theme_ids);
+			});
+		}
 	}
 
 	public function find($id)

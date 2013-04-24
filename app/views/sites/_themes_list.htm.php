@@ -10,32 +10,31 @@
 	</div>
 	<div class="theme-picker">
 		<ul>
-			<?php foreach ($themes as $i => $theme): ?>
-				<li class="<?php if($theme->id() == $currentTheme) echo 'selected'?>" data-theme="<?php echo $theme->id() ?>">
-					<p class="thumbs">
-						<?php foreach ($theme->thumbnails() as $thumbnail): ?>
-							<?php echo $this->html->image($thumbnail) ?>
-						<?php endforeach ?>
-					</p>
-					<span class="title"><?php echo $theme->name() ?></span>
+			<?php foreach (array_chunk($themes, 3) as $theme_line): ?>
+				<?php foreach ($theme_line as $theme): ?>
+					<li class="<?php if($theme->id() == $currentTheme) echo 'selected'?>" data-theme="<?php echo $theme->id() ?>">
+						<p class="thumbs">
+							<?php foreach ($theme->thumbnails() as $thumbnail): ?>
+								<?php echo $this->html->image($thumbnail) ?>
+							<?php endforeach ?>
+						</p>
+						<span class="title"><?php echo $theme->name() ?></span>
 
-					<ul class="skin-picker">
-						<?php $currentThemeSkin = $currentTheme == $theme->id()
-							? $currentSkin
-							: null
-						?>
+						<ul class="skin-picker">
+							<?php $currentThemeSkin = $currentTheme == $theme->id()
+								? $currentSkin
+								: null
+							?>
 
-						<?php foreach($theme->skins() as $skin): ?>
-							<li class="<?php if($skin->id() == $currentThemeSkin) echo 'selected' ?>" data-skin="<?php echo $skin->id() ?>">
-								<span style="background-color: #<?php echo $skin->mainColor() ?>"></span>
-							</li>
-						<?php endforeach ?>
-					</ul>
-				</li>
-
-				<?php if (($i + 1) % 3 == 0): ?>
-					<li class="clear"></li>
-				<?php endif ?>
+							<?php foreach($theme->skins() as $skin): ?>
+								<li class="<?php if($skin->id() == $currentThemeSkin) echo 'selected' ?>" data-skin="<?php echo $skin->id() ?>">
+									<span style="background-color: #<?php echo $skin->mainColor() ?>"></span>
+								</li>
+							<?php endforeach ?>
+						</ul>
+					</li>
+				<?php endforeach ?>
+				<li class="clear"></li>
 			<?php endforeach ?>
 		</ul>
 		<div class="clear"></div>

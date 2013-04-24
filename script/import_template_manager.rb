@@ -1,3 +1,7 @@
+# Check your environment below, just uncomment the lines you need
+# To run, execute:
+# $ bundle exec ruby sitebuilder/script/import_template_manager.rb
+
 require 'json'
 require 'open-uri'
 require 'mongo'
