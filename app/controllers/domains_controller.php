@@ -8,6 +8,7 @@ class DomainsController extends AppController
 	public function delete($id)
 	{
 		Model::load('SitesDomains')->delete($id);
+		$this->getCurrentSite()->save();
 		$message = s('Domain successfully deleted.');
 		if ($this->isXhr()) {
 			$this->respondToJSON(array(
