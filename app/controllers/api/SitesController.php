@@ -58,11 +58,24 @@ class SitesController extends ApiController
 		$skinsRepo = new SkinsRepository();
 		$skin = $skinsRepo->find(array_unset($site, 'skin'));
 		$site['theme'] = array(
-			'theme' => $skin->themeId(),
+			'name' => $skin->themeId(),
 			'colors' => $skin->colors(),
 			'assets' => $skin->assets(),
 		);
 
 		return compact('site', 'business', 'categories', 'news', 'newsCategory');
+	}
+
+	public function theme()
+	{
+		$skinsRepo = new SkinsRepository();
+		$skin = $skinsRepo->find($this->site()->skin);
+		$theme = array(
+			'name' => $skin->themeId(),
+			'colors' => $skin->colors(),
+			'assets' => $skin->assets(),
+		);
+
+		return compact('theme');
 	}
 }
