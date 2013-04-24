@@ -11,7 +11,7 @@
 	<div class="wrapp">
 		<div class="tip-big">
 			<h2><?php echo s('welcome to your mobile site') ?></h2>
-			<p><?php echo s('use the tools below to keep improving your mobile site') ?></p>
+			<p><?php echo s('keep improving your mobile site') ?></p>
 			<p id="qr-code"><img src="http://api.qrserver.com/v1/create-qr-code/?size=100x100&data=http://<?php echo e($site->domain) ?>" /></p>
 		</div>
 		<ul class="list">

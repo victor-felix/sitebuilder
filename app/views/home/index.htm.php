@@ -166,7 +166,7 @@
 		<p class="main-title"><?php echo s('Our plans and prices.') ?></p>
 		<div class="row">
 			<div class="span6">
-				<p class="price"><span><?php echo s('Basic') ?> </span><?php echo s('USD <strong>9/mo</strong>') ?></p>
+				<p class="price"><span><?php echo s('Basic') ?> </span><?php echo s('US$ <strong>9/mo</strong>') ?></p>
 				<p class="price-label"><?php echo s('create a mobile presence') ?></p>
 				<ul>
 					<li><span class="icon"></span><?php echo s('<strong>Basic information:</strong><br>contacts, address, photos, social links, news via RSS') ?></li>
@@ -175,7 +175,7 @@
 				</ul>
 			</div>
 			<div class="span6">
-				<p class="price"><span><?php echo s('Locator') ?> </span><?php echo s('USD <strong>34/mo</strong>') ?></p>
+				<p class="price"><span><?php echo s('Locator') ?> </span><?php echo s('US$ <strong>34/mo</strong>') ?></p>
 				<p class="price-label"><?php echo s('for businesses with multiple locations') ?></p>
 				<ul>
 					<li><span class="icon"></span><?php echo s('<strong>Basic information:</strong><br>contacts, address, photos, social links, news via RSS') ?></li>
