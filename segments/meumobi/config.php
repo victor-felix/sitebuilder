@@ -12,4 +12,5 @@ Config::write('Segment', array(
   'fullOptions' => false,
   'enableMultiUsers' => false,
   'analytics' => 'UA-22519238-3',
+  'themes' => array('paraty', 'posto9', 'leblon')
 ));
