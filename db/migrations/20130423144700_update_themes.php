@@ -26,7 +26,7 @@ class UpdateThemes
 		foreach ($sites as $site) {
 			if (isset($themes[$site->theme])) {
 				$skin = Connections::get('default')->connection->skins->findOne(array(
-					'theme_id' => $site->theme,
+					'theme_id' => $themes[$site->theme],
 					'main_color' => $site->skin
 				));
 
