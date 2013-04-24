@@ -76,6 +76,6 @@ class SitesController extends ApiController
 			'assets' => $skin->assets(),
 		);
 
-		return compact('theme');
+		return $theme;
 	}
 }

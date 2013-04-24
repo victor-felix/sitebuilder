@@ -14,7 +14,7 @@ class SkinsRepository
 
 	public function all()
 	{
-		return iterator_to_array($this->collection()->find(), false);
+		return $this->hydrateSet($this->collection()->find());
 	}
 
 	public function find($id)
@@ -30,9 +30,27 @@ class SkinsRepository
 
 	public function findByThemeId($id)
 	{
-		return array_map(function($theme) {
-			return $this->hydrate($theme);
-		}, iterator_to_array($this->collection()->find(['theme_id' => $id]), false));
+		return $this->hydrateSet($this->collection()->find(['theme_id' => $id]));
+	}
+
+	public function create($skin)
+	{
+		$data = $this->dehydrate($skin);
+		$result = $this->collection()->insert($data);
+		$skin->setId($data['_id']);
+		return $result;
+	}
+
+	public function update($skin)
+	{
+		$data = $this->dehydrate($skin);
+		$criteria = ['_id' => new MongoId($skin->id())];
+		return $this->collection()->update($criteria, $data);
+	}
+
+	public function destroy($skin)
+	{
+		return $this->collection()->remove(['_id' => new MongoId($skin->id())]);
 	}
 
 	protected function connection()
@@ -54,7 +72,19 @@ class SkinsRepository
 		return new Skin($data);
 	}
 
-	public function firstByEmail($email)
+	protected function dehydrate($object)
 	{
+		return [
+			'theme_id' => $object->themeId(),
+			'colors' => $object->colors(),
+			'assets' => $object->assets()
+		];
+	}
+
+	protected function hydrateSet($set)
+	{
+		return array_map(function($data) {
+			return $this->hydrate($data);
+		}, iterator_to_array($set, false));
 	}
 }

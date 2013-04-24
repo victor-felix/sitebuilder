@@ -35,6 +35,15 @@ Router::connect(new Route(array(
 
 Router::connect(new Route(array(
 	'method' => 'GET',
+	'template' => '/api/{:slug}/theme',
+	'params' => array(
+		'action' => 'theme',
+		'controller' => 'sites'
+	) + $defaults['params']
+)));
+
+Router::connect(new Route(array(
+	'method' => 'GET',
 	'template' => '/api/{:slug}/items/{:id}/related',
 	'params' => array(
 		'action' => 'related',
@@ -140,6 +149,52 @@ Router::connect(new Route(array(
 		'controller' => 'sites'
 	) + $defaults['params']
 )));
+
+Router::connect(new Route(array(
+	'method' => 'GET',
+	'template' => '/api/skins',
+	'params' => array(
+		'action' => 'index',
+		'controller' => 'skins'
+	) + $defaults['params']
+)));
+
+Router::connect(new Route(array(
+	'method' => 'GET',
+	'template' => '/api/skins/{:id}',
+	'params' => array(
+		'action' => 'show',
+		'controller' => 'skins'
+	) + $defaults['params']
+)));
+
+Router::connect(new Route(array(
+	'method' => 'PUT',
+	'template' => '/api/skins/{:id}',
+	'params' => array(
+		'action' => 'update',
+		'controller' => 'skins'
+	) + $defaults['params']
+)));
+
+Router::connect(new Route(array(
+	'method' => 'DELETE',
+	'template' => '/api/skins/{:id}',
+	'params' => array(
+		'action' => 'destroy',
+		'controller' => 'skins'
+	) + $defaults['params']
+)));
+
+Router::connect(new Route(array(
+	'method' => 'POST',
+	'template' => '/api/skins',
+	'params' => array(
+		'action' => 'create',
+		'controller' => 'skins'
+	) + $defaults['params']
+)));
+
 
 Router::connect(new Route(array(
 	'method' => 'GET',

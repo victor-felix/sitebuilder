@@ -98,9 +98,9 @@ class AppController extends Controller
 
 	public function param($key, $default = null)
 	{
-		if(in_array($key, array_keys($this->params))) {
+		if (in_array($key, array_keys($this->params))) {
 			return $this->params[$key];
-		} else if (in_array($key, array_keys( $this->request->query))) {
+		} else if (in_array($key, array_keys($this->request->query))) {
 			return $this->request->query[$key];
 		} else {
 			return $default;

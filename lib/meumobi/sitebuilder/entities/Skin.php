@@ -3,6 +3,7 @@
 namespace meumobi\sitebuilder\entities;
 
 use lithium\util\Inflector;
+use MongoId;
 
 class Skin
 {
@@ -12,7 +13,12 @@ class Skin
 	protected $assets;
 	protected $colors;
 
-	public function __construct($attrs = array())
+	public function __construct(array $attrs = array())
+	{
+		$this->setAttributes($attrs);
+	}
+
+	public function setAttributes(array $attrs)
 	{
 		foreach ($attrs as $key => $value) {
 			$key = Inflector::camelize($key, false);
@@ -25,6 +31,11 @@ class Skin
 	public function id()
 	{
 		return $this->id->{'$id'};
+	}
+
+	public function setId(MongoId $id)
+	{
+		$this->id = $id;
 	}
 
 	public function themeId()

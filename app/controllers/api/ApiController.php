@@ -4,7 +4,6 @@ namespace app\controllers\api;
 
 require_once 'app/models/sites.php';
 
-use lithium\action\Dispatcher;
 use lithium\util\Inflector;
 use meumobi\sitebuilder\Site;
 use DateTime;
