@@ -69,7 +69,7 @@
 						<div class="navigation-wrapp">
 							<p class="business-name">
 								<span><?php echo s('You\'re currently editing') ?></span>
-								<?php echo e($currentSite->title) ?>
+								<?php echo $this->string->truncate(e($currentSite->title), 15); ?>
 							</p>
 							<div class="right">
 								<p class="site-url dynamic-text" data-max-font-size="36">
