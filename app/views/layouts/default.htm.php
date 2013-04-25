@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $language ?>" lang="<?php echo $language ?>">
 	<head>
 		<?php echo $this->html->charset() ?>
-		<title><?php echo $this->pageTitle . ' | ' . $this->controller->getSegment()->title; ?></title>
+		<title><?php echo $this->pageTitle . ' | ' . $this->controller->getSegment()->title ?></title>
 		<meta name="robots" content="noindex, nofollow">
 		<link rel="shortcut icon" href="<?php echo Mapper::url('/images/layout/favicon.png') ?>" type="image/png" />
 		<?php echo $this->html->stylesheet('shared/base', 'shared/uikit', 'shared/categories',
@@ -69,7 +69,7 @@
 						<div class="navigation-wrapp">
 							<p class="business-name">
 								<span><?php echo s('You\'re currently editing') ?></span>
-								<?php echo $this->string->truncate(e($currentSite->title), 15); ?>
+								<?php echo $this->string->truncate(e($currentSite->title), 15) ?>
 							</p>
 							<div class="right">
 								<p class="site-url dynamic-text" data-max-font-size="36">
