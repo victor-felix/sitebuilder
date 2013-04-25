@@ -364,11 +364,12 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 }
 
 #header .navigation .site-url {
-	max-width: 360px;
+	max-width: 285px;
 	max-height: 35px;
 	text-align: right;
 	color: #999;
-	line-height: 4px;
+	line-height: 17px;
+	white-space: nowrap;
 	display: inline-block;
 }
 
