@@ -9,7 +9,7 @@
 body {
   background-color: #efefef; }
 
-.login #header, .register #header {
+#header {
   border-top-color: #42537e; }
 
 #header .contextual-navbar ul li a:hover {
@@ -53,7 +53,8 @@ body {
   color: #42537e; }
 
 .form-register .fieldset-expand,
-#FormLogin .forgot-password, #FormLogin .no-account {
+#FormLogin .forgot-password,
+#FormLogin .no-account {
   color: #42537e; }
 
 .theme-picker ul li.selected a img {
@@ -116,5 +117,6 @@ div.dashboard .list li .link .icon
 , .placeholder-links a img {
   background-color: #42537e; }
 
-div.dashboard .list li .link h3, div.dashboard .domain a {
+div.dashboard .list li .link h3,
+div.dashboard .domain a {
   color: #42537e; }

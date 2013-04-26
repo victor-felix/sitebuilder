@@ -9,7 +9,7 @@
 body {
   background-color: white; }
 
-.login #header, .register #header {
+#header {
   border-top-color: #74d500; }
 
 #header .contextual-navbar ul li a:hover {
@@ -27,7 +27,7 @@ body {
   color: #74d500; }
 
 .form-edit .fieldset-expand {
-  border-bottom: 1px solid #dddddd;
+  border-bottom: 1px solid #ddd;
   color: #74d500; }
 
 .theme-picker ul li.selected a img {
@@ -53,7 +53,8 @@ body {
   color: #74d500; }
 
 .form-register .fieldset-expand,
-#FormLogin .forgot-password, #FormLogin .no-account {
+#FormLogin .forgot-password,
+#FormLogin .no-account {
   color: #74d500; }
 
 .theme-picker ul li.selected a img {
@@ -111,8 +112,11 @@ body {
 div.theme-picker > ul > li.selected {
   box-shadow: 0 0 0 3px #74d500 inset; }
 
-div.dashboard .list li a .icon, div.dashboard .list li:hover .arrow {
+div.dashboard .list li .link .icon
+, div.dashboard .list li:hover .arrow
+, .placeholder-links a img {
   background-color: #74d500; }
 
-div.dashboard .list li a h3, div.dashboard .domain a {
+div.dashboard .list li .link h3,
+div.dashboard .domain a {
   color: #74d500; }
