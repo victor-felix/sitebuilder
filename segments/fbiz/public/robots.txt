@@ -1,6 +1,6 @@
 User-agent: *
 Sitemap: http://fbiz.meumobilesite.com/sitemap.xml
-Disallow: /users/forgot_password
+Disallow: /users
 Disallow: /forgot_password 
 Disallow: /signup
 Disallow: /scripts
