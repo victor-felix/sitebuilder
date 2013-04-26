@@ -103,8 +103,12 @@
 /*
 * register finished
 */
+.registration-finished {
+	text-align: center;
+	padding-bottom: 10px;
+}
 .registration-finished img {
-	margin: 50px 0 30px 182px;
+	margin: 50px 0 0 0;
 }
 
 .registration-finished h2 {

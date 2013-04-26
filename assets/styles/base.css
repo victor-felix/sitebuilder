@@ -535,6 +535,10 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	padding-bottom: 150px;
 }
 
+.error .content-wrapp {
+	margin-top: 30px;
+}
+
 #content {
 	background: #FFF;
 	clear: both;

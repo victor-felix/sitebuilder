@@ -2,35 +2,35 @@
 
 @mixin gradient_button($color) {
 	background: $color; /* Old browsers */
-    background: -webkit-linear-gradient(top, lighten($color,7%) 0%,lighten($color,10%) 50%,lighten($color,5%) 51%,$color 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, lighten($color,7%) 0%,lighten($color,10%) 50%,lighten($color,5%) 51%,$color 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, lighten($color,7%) 0%,lighten($color,10%) 50%,lighten($color,5%) 51%,$color 100%); /* IE10+ */
-    background: linear-gradient(to bottom, lighten($color,7%) 0%,lighten($color,10%) 50%,lighten($color,5%) 51%,$color 100%); /* W3C */
+	background: -webkit-linear-gradient(top, lighten($color,7%) 0%,lighten($color,10%) 50%,lighten($color,5%) 51%,$color 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, lighten($color,7%) 0%,lighten($color,10%) 50%,lighten($color,5%) 51%,$color 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, lighten($color,7%) 0%,lighten($color,10%) 50%,lighten($color,5%) 51%,$color 100%); /* IE10+ */
+	background: linear-gradient(to bottom, lighten($color,7%) 0%,lighten($color,10%) 50%,lighten($color,5%) 51%,$color 100%); /* W3C */
 }
 
 @mixin gradient_button_active($color){
 	background: lighten($color, 7%);
 	background: -webkit-linear-gradient(top, $color 0%, lighten($color,5%) 50%, lighten($color,10%) 51%, lighten($color,7%) 100%); /* Chrome10+,Safari5.1+ */
 	background: -o-linear-gradient(top, $color 0%, lighten($color,5%) 50%, lighten($color,10%) 51%, lighten($color,7%) 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, $color 0%, lighten($color,5%) 50%, lighten($color,10%) 51%, lighten($color,7%) 100%); /* IE10+ */
-    background: linear-gradient(to bottom, $color 0%, lighten($color,5%) 50%, lighten($color,10%) 51%, lighten($color,7%) 100%); /* W3C */
+	background: -ms-linear-gradient(top, $color 0%, lighten($color,5%) 50%, lighten($color,10%) 51%, lighten($color,7%) 100%); /* IE10+ */
+	background: linear-gradient(to bottom, $color 0%, lighten($color,5%) 50%, lighten($color,10%) 51%, lighten($color,7%) 100%); /* W3C */
 }
 
 ::selection {
-    background:$main-color;
-    color:$background-color;
+	background:$main-color;
+	color:$background-color;
 }
 
 ::-moz-selection {
-    background:$main-color;
-    color:$background-color;
+	background:$main-color;
+	color:$background-color;
 }
 
 body {
 	background-color: $background-color;
 }
 
-.login #header, .register #header {
+#header {
 	border-top-color: $main-color;
 }
 
@@ -87,7 +87,8 @@ body {
 }
 
 .form-register .fieldset-expand,
-#FormLogin .forgot-password, #FormLogin .no-account {
+#FormLogin .forgot-password,
+#FormLogin .no-account {
 	color: $main-color;
 }
 
@@ -108,11 +109,11 @@ body {
 }
 
 .tip-register a {
-  color: $main-color;
+	color: $main-color;
 }
-.ui-button, 
-#header .contextual-navbar .dropdown li ul a:hover, 
-.dropdown li ul a:hover, 
+.ui-button,
+#header .contextual-navbar .dropdown li ul a:hover,
+.dropdown li ul a:hover,
 .global-navbar .dropdown:hover > li > p {
 	color: $main-color;
 }
@@ -136,12 +137,13 @@ div.theme-picker > ul > li.selected {
 	box-shadow: 0 0 0 3px $main-color inset;
 }
 
-div.dashboard .list li .link .icon 
+div.dashboard .list li .link .icon
 ,div.dashboard .list li:hover .arrow
-,.placeholder-links a img  {
+,.placeholder-links a img {
 	background-color: $main-color;
 }
 
-div.dashboard .list li .link h3, div.dashboard .domain a {
+div.dashboard .list li .link h3,
+div.dashboard .domain a {
 	color: $main-color;
 }
