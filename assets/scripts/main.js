@@ -266,7 +266,7 @@ $.extend($.easing, {
 	// request and triggers ajax:success event
 	content.delegate('.comfirm .ui-button', 'click', function(e) {
 		var self = $(this);
-		if(self.hasClass('delete')) {
+		if(self.hasClass('ajax-request')) {
 			if(!slider.length) {
 				return;
 			}
@@ -292,7 +292,7 @@ $.extend($.easing, {
 		}
 	});
 
-	content.delegate('.comfirm .ui-button', 'ajax:success', function(e, data) {
+	content.delegate('.comfirm .ui-button.ajax-request.go-back', 'ajax:success', function(e, data) {
 		$('.comfirm').fadeOut('fast');
 		$('.slide-elem:last').prev().html(data);
 		$('.slide-elem:last .ui-button.back').click();

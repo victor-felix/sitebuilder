@@ -163,7 +163,7 @@
 			<?php echo s('This will also delete all items and subcategories') ?>
 		</p>
 		<?php echo $this->html->link(s('Yes, delete'), '/categories/delete/' . $category->id, array(
-			'class' => 'ui-button delete highlight'
+			'class' => 'ui-button ajax-request go-back highlight'
 		)) ?>
 		<?php echo $this->html->link(s('No, I don\'t'), '#', array( 'class' => 'ui-button' )) ?>
 	</div>
@@ -175,7 +175,7 @@
 			<?php echo s('Really want to delete all items from <strong>%s</strong> category?', e($category->title)) ?>
 		</p>
 		<?php echo $this->html->link(s('Yes, delete'), '/categories/delete_all_items/' . $category->id, array(
-			'class' => 'ui-button delete highlight'
+			'class' => 'ui-button ajax-request go-back highlight'
 		)) ?>
 		<?php echo $this->html->link(s('No, I don\'t'), '#', array( 'class' => 'ui-button' )) ?>
 	</div>

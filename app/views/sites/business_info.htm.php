@@ -45,7 +45,7 @@
 				<?php echo s('This will also delete all items and categories') ?>
 			</p>
 			<?php echo $this->html->link(s('Yes, delete'), '/sites/remove/' . $site->id, array(
-				'class' => 'ui-button delete highlight'
+				'class' => 'ui-button ajax-request go-back highlight'
 			)) ?>
 			<?php echo $this->html->link(s('No, I don\'t'), '#', array('class' => 'ui-button')) ?>
 		</div>
