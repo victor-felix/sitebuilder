@@ -106,6 +106,12 @@
     box-shadow:  0px 0px 2px 2px #ccc;
 }
 
+.theme-picker > ul > li.selected .skin-picker li.custom span {
+	background-image: url(/images/shared/themes/icon-custom.png);
+	background-repeat: no-repeat;
+	background-position: center bottom;
+}
+
 .skin-picker li span {
 	display: block;
 	height: 15px;
@@ -209,7 +215,7 @@
 }
 
 .customize-theme .featured-list > li .icon {
-	background: url(/images/shared/themes/icon-customize.png) no-repeat 0 0 #c02926;
+	background-image: url(/images/shared/themes/icon-customize.png);
 }
 
 .customize-theme .title {

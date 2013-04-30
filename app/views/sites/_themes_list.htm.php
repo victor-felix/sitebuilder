@@ -27,7 +27,7 @@
 							?>
 
 							<?php foreach($theme->skins() as $skin): ?>
-								<li class="<?php if($skin->id() == $currentThemeSkin) echo 'selected' ?>" data-skin="<?php echo $skin->id() ?>">
+								<li class="<?php if($skin->id() == $currentThemeSkin) echo 'selected custom' ?>" data-skin="<?php echo $skin->id() ?>">
 									<span style="background-color: #<?php echo $skin->mainColor() ?>"></span>
 								</li>
 							<?php endforeach ?>
