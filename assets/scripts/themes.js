@@ -20,10 +20,9 @@ $(function() {
 	//handle theme selection
 	$('.theme-picker > ul > li').click(function(e) {
 		if ($(e.target).is('.customize-link a')) {
-			return;
+			return true;
 		}
 		e.preventDefault();
-		console.log(e.target);
 		var self = $(this);
 		var theme = self.data('theme');
 		var skin_picker = self.children('.skin-picker');
@@ -41,8 +40,16 @@ $(function() {
 
 	//handle skin selection
 	$('.skin-picker li').click(function(e) {
-		e.stopPropagation();
 		var self = $(this);
+		if ($('.skin-picker li.custom').length > 0 ) {
+			if (self.is('li.custom')) {
+				self.parent().next('.customize-link').children('a').trigger('click');
+			} else {
+				$('#confirm').fadeIn('fast');
+			}
+			return false;
+		}
+		e.stopPropagation();
 		var parentTheme = self.parents('li:first');
 		var skin = self.data('skin');
 		var theme = parentTheme.data('theme');

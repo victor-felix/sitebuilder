@@ -1,3 +1,3 @@
 <p>
-User comfirmed the invitation
+User confirmed the invitation
 </p>

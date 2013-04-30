@@ -155,7 +155,7 @@
 <?php echo $this->form->close() ?>
 
 <?php if($category->id): ?>
-<div id="delete-confirm" class="comfirm">
+<div id="delete-confirm" class="confirm">
 	<div class="wrapper">
 		<p>
 			<?php echo s('Really want to delete the <strong>%s</strong> category?', e($category->title)) ?>
@@ -169,7 +169,7 @@
 	</div>
 </div>
 
-<div id="delete-items-confirm" class="comfirm">
+<div id="delete-items-confirm" class="confirm">
 	<div class="wrapper">
 		<p>
 			<?php echo s('Really want to delete all items from <strong>%s</strong> category?', e($category->title)) ?>

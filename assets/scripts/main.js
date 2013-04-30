@@ -264,7 +264,7 @@ $.extend($.easing, {
 	// Handles the delete confirmation dialog buttons.
 	// When clicked cancel, closes the dialog. When clicked OK, makes the
 	// request and triggers ajax:success event
-	content.delegate('.comfirm .ui-button', 'click', function(e) {
+	content.delegate('.confirm .ui-button', 'click', function(e) {
 		var self = $(this);
 		if(self.hasClass('ajax-request')) {
 			if(!slider.length) {
@@ -292,8 +292,8 @@ $.extend($.easing, {
 		}
 	});
 
-	content.delegate('.comfirm .ui-button.ajax-request.go-back', 'ajax:success', function(e, data) {
-		$('.comfirm').fadeOut('fast');
+	content.delegate('.confirm .ui-button.ajax-request.go-back', 'ajax:success', function(e, data) {
+		$('.confirm').fadeOut('fast');
 		$('.slide-elem:last').prev().html(data);
 		$('.slide-elem:last .ui-button.back').click();
 	});
