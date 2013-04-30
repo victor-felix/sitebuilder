@@ -37,7 +37,7 @@
 
 	<div class="children-count"><?php echo $category->childrenCount() ?></div>
 
-	<div class="delete-confirm">
+	<div class="comfirm">
 		<div class="wrapper">
 			<p>
 				<?php echo s('Really want to delete <strong>%s</strong>?', e($category->title)) ?>

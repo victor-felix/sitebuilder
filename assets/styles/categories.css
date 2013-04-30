@@ -138,7 +138,7 @@
 	display: block;
 }
 
-.delete-confirm {
+.comfirm {
 	display: none;
 	background: url(/images/shared/categories/bg-delete.png) repeat;
 	position: fixed;
@@ -149,12 +149,12 @@
 	z-index: 2;
 }
 
-.delete-confirm .ui-button {
+.comfirm .ui-button {
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
 }
 
-.delete-confirm p {
+.comfirm p {
 	color: #FFF;
 	float: left;
 	height: 50px;
@@ -163,16 +163,16 @@
 	padding: 11px 0 0 12px;
 }
 
-.delete-confirm p small {
+.comfirm p small {
 	display: block;
 	font-size: 11px;
 }
 
-.delete-confirm .ui-button {
+.comfirm .ui-button {
 	margin-top: 12px;
 }
 
-.delete-confirm .wrapper {
+.comfirm .wrapper {
 	height: 50px;
 	width: 570px;
 	position: absolute;

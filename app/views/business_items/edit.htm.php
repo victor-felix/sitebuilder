@@ -38,7 +38,7 @@
 
 <?php echo $this->items->endform() ?>
 
-<div id="delete-confirm" class="delete-confirm">
+<div id="delete-confirm" class="comfirm">
 	<div class="wrapper">
 		<p>
 			<?php echo s('Really want to delete <strong>%s</strong>?', e($item->title)) ?>

@@ -8,7 +8,7 @@
 		'autoload' => true
 	)) ?>
 </fieldset>
-<div id="confirm" class="delete-confirm">
+<div id="confirm" class="comfirm">
 	<div class="wrapper">
 		<p>
 			<?php echo s('Really want to delete the <strong>%s</strong> category?', e($category->title)) ?>

@@ -37,7 +37,7 @@
 <?php echo $this->form->close() ?>
 
 <?php if (Users::ROLE_ADMIN == $site->role && count(Auth::user()->sites()) > 1): ?>
-	<div id="delete-confirm" class="delete-confirm">
+	<div id="delete-confirm" class="comfirm">
 		<div class="wrapper">
 			<p>
 				<?php echo s('Do you really want to delete this site?') ?>
