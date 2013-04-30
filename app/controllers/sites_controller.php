@@ -63,6 +63,11 @@ class SitesController extends AppController
 		$this->set(compact('site', 'themes'));
 	}
 
+	public function custom_theme()
+	{
+		$this->theme();
+	}
+
 	public function remove($id = null)
 	{
 		if ($id) {

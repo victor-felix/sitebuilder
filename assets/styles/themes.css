@@ -112,6 +112,12 @@
 	width: 15px;
 }
 
+.customize-link {
+	clear: both;
+	text-align: center;
+	padding-top: 10px;
+}
+
 /* Theme Preview */
 .theme-preview {
 	background: url(/images/shared/themes/iphone.png) no-repeat 0 0;
@@ -192,4 +198,62 @@
 	overflow: hidden;
 	display: block;
 	background: url(/images/shared/themes/icon-close.png) no-repeat 0 0;
+}
+
+.customize-theme {
+	min-height: 530px;
+}
+
+.customize-theme .featured-list {
+	border-bottom: none;
+}
+
+.customize-theme .featured-list > li .icon {
+	background: url(/images/shared/themes/icon-customize.png) no-repeat 0 0 #c02926;
+}
+
+.customize-theme .title {
+	font-size: 16px;
+	margin: 0 0 2px 2px;
+}
+
+.customize-theme .skin-picker {
+	width: 140px;
+	margin-bottom: 10px;
+	overflow: hidden;
+}
+
+.color-picker {
+	clear: both;
+	margin: 20px 0;
+}
+
+.color-picker > li {
+	background-color: #efefef;
+	list-style: none;
+	font-size: 16px;
+	margin: 10px 0;
+	padding: 10px 15px;
+	width: 240px;
+}
+
+.color-picker > li > span {
+	vertical-align: middle;
+	width: 167px;
+	display: inline-block;
+}
+
+.color-picker > li > .color {
+	display: inline-block;
+	width: 65px;
+	height: 25px;
+	border: 1px solid rgb(158, 158, 158);
+}
+
+.default-form fieldset.actions button.save-continue {
+	margin-left: 200px;
+}
+
+.default-form fieldset.actions button.save {
+	margin-left: 30px;
 }

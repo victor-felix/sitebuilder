@@ -32,6 +32,11 @@
 								</li>
 							<?php endforeach ?>
 						</ul>
+						<p class="customize-link">
+							<?php echo $this->html->link(s('Customize'), '/sites/custom_theme', array(
+								'class' => 'ui-button highlight push-scene'
+							)) ?>
+						</p>
 					</li>
 				<?php endforeach ?>
 				<li class="clear"></li>
