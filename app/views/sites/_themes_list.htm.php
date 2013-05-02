@@ -1,6 +1,6 @@
 <?php
-	$currentTheme = $site->theme ? $site->theme : $themes[0]->name();
-	$currentSkin = $site->skin ? $site->skin : $themes[0]->skins()[0]->id();
+	$currentTheme = $site->theme ? $site->theme : reset($themes)->name();
+	$currentSkin = $site->skin ? $site->skin : reset($themes)->skins()[0]->id();
 ?>
 
 <div class="themes">
@@ -21,12 +21,14 @@
 						<span class="title"><?php echo $theme->name() ?></span>
 
 						<ul class="skin-picker">
-							<?php $currentThemeSkin = $currentTheme == $theme->id()
+							<?php
+								$skins = $theme->skins();
+								$currentThemeSkin = ($currentTheme == $theme->id())
 								? $currentSkin
-								: null
+								: reset($skins)->id();
 							?>
 
-							<?php foreach($theme->skins() as $skin): ?>
+							<?php foreach($skins as $skin): ?>
 								<li class="<?php if($skin->id() == $currentThemeSkin) echo 'selected custom' ?>" data-skin="<?php echo $skin->id() ?>">
 									<span style="background-color: #<?php echo $skin->mainColor() ?>"></span>
 								</li>
