@@ -82,7 +82,7 @@ if ($result['ok']) {
 						'price' => (string) $product->xpath('g:price')[0],
 						'availability' => (string) $product->xpath('g:availability')[0],
 						'link' => (string) $product->xpath('link')[0],
-						'product_id' => (string) $product->xpath('g:mpn')[0],
+						'product_id' => (string) $product->xpath('g:id')[0],
 						'product_type' => $type
 					);
 

@@ -324,6 +324,20 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	height: 79px;
 }
 
+#header .contextual-navbar .navigation-wrapp {
+	bottom: 0;
+	left: 0;
+	position: absolute;
+	width: 100%;
+}
+
+#header .contextual-navbar .navigation-wrapp .right {
+	float: none;
+	bottom: 0;
+	right: 0;
+	padding-bottom: 5px;
+	position: absolute;
+}
 #header .navigation .user p {
 	background-image: url("/images/shared/markitup/menu.png");
 	background-position: right center;
@@ -334,7 +348,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	font-size: 30px;
 	font-weight: lighter;
 	letter-spacing: -1px;
-	display: inline;
+	display: inline-block;
 	padding-right: 8px;
 	color: #444;
 }
@@ -350,20 +364,18 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 }
 
 #header .navigation .site-url {
-	position: absolute;
-	right: 52px;
-	bottom: 0;
-	max-width: 300px;
+	max-width: 285px;
 	max-height: 35px;
 	text-align: right;
 	color: #999;
-	line-height: 25px;
+	line-height: 17px;
+	white-space: nowrap;
+	display: inline-block;
 }
 
 #header .share-link {
-	position: absolute;
-	right: 0;
-	bottom: 9px;
+	display: inline-block;
+	margin: 7px 0 0 7px;
 }
 
 #header .share-link a {
@@ -489,7 +501,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	position: relative;
 }
 
-#header .contextual-navbar .dropdown  li:hover > p {
+#header .contextual-navbar .dropdown	li:hover > p {
 	border: none;
 }
 
@@ -521,6 +533,10 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 
 .content-wrapp {
 	padding-bottom: 150px;
+}
+
+.error .content-wrapp {
+	margin-top: 30px;
 }
 
 #content {
@@ -820,6 +836,8 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	position: fixed;
 	top: 390px;
 	left: -26px;
+	/*fix for IE*/
+	left: -2px\9;
 	overflow: hidden;
 	-webkit-border-radius: 0 0 3px 3px;
 	-moz-border-radius: 0 0 3px 3px;
@@ -829,12 +847,11 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	-webkit-transform: rotate(-90deg);
 	/* Firefox */
 	-moz-transform: rotate(-90deg);
-	/* IE */
-	-ms-transform: rotate(-90deg);
 	/* Opera */
 	-o-transform: rotate(-90deg);
 	/* Internet Explorer */
-	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+	transform: rotate(-90deg);
 }
 
 .support a {
@@ -846,4 +863,64 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	font-weight: bold;
 	letter-spacing: 0px;
 	text-transform: uppercase;
+}
+
+.popup-wrapper {
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box; /* Firefox, other Gecko */
+	box-sizing: border-box; /* Opera/IE 8+ */
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	z-index: 2;
+	display: none;
+}
+
+.popup {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	height: 190px;
+	width: 640px;
+	margin-left: -320px;
+	margin-top: -95px;
+}
+
+.share-links {
+	background-color: #fff;
+	box-shadow: 0px 0px 10px 2px rgba(179, 179, 179, 0.8);
+	color: #777;
+
+}
+
+.share-links .header {
+	padding: 20px 25px;
+	border-bottom: 1px solid #D3D3D3;
+	position: relative;
+}
+
+.share-links .header h2 {
+	color: #888;
+	font: lighter 28px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, arial, sans-serif;
+	font-weight: lighter;
+}
+
+.share-links .header .close {
+	width: 17px;
+	height: 17px;
+	display: block;
+	position: absolute;
+	right: 15px;
+	top: 15px;
+}
+
+.share-links .links  {
+	padding: 25px
+}
+
+.share-links .links p {
+	margin-bottom: 12px;
+	margin-left: 1px;
 }

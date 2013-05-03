@@ -27,7 +27,7 @@
 				'class' => 'ui-button manage push-scene left-join'
 			)) ?>
 		<?php else: ?>
-			<em><?php echo s('auto category')?></em>
+			<em><?php echo s('auto category') ?></em>
 		<?php endif ?>
 
 		<?php echo $this->html->link(s('options'), '/categories/edit/' . $category->id, array(

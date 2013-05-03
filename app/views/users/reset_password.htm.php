@@ -32,7 +32,7 @@
     <?php echo $this->form->submit(s('Reset password'), array(
         'class' => 'ui-button red large',
         'style' => 'margin-right: 415px'
-    ))?>
+    )) ?>
 </fieldset>
 
 <?php echo $this->form->close() ?>

@@ -39,7 +39,7 @@
         <?php foreach ($invites as $invite): ?>
         <li  class="level-0">
             <span class="title"><?php echo $invite->email ?></span>
-            <div class="children-count" style="display: block;" ><?php echo s('Token %s',$invite->token) ?></div>
+            <div class="children-count" style="display: block;"><?php echo s('Token %s',$invite->token) ?></div>
         </li>
         <?php endforeach; ?>
     </ul>

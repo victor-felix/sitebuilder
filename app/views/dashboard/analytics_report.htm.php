@@ -13,12 +13,12 @@
 <!-- traffic -->
 <div class="traffic report-box" style="float:none; width:auto;">
     <ul>
-        <li><b><?php echo number_format($totals['ga:visits']); ?></b> <?php echo s('Visits') ?></li>
-        <li><b><?php echo number_format($totals['ga:pageviews']); ?></b> <?php echo s('Pageviews') ?></li>
+        <li><b><?php echo number_format($totals['ga:visits']) ?></b> <?php echo s('Visits') ?></li>
+        <li><b><?php echo number_format($totals['ga:pageviews']) ?></b> <?php echo s('Pageviews') ?></li>
     </ul>
     <ul>
-        <li><b><?php echo  date('H:i:s', (int)$totals['ga:avgTimeOnSite']); ?></b> <?php echo s('Avg. Time on site') ?></li>
-        <li><b><?php echo number_format($totals['ga:percentNewVisits'], 2); ?></b> <?php echo s('%% New Visits') ?></li>
+        <li><b><?php echo  date('H:i:s', (int)$totals['ga:avgTimeOnSite']) ?></b> <?php echo s('Avg. Time on site') ?></li>
+        <li><b><?php echo number_format($totals['ga:percentNewVisits'], 2) ?></b> <?php echo s('%% New Visits') ?></li>
     </ul>
 </div>
 <!-- traffic -->

@@ -20,9 +20,9 @@
 	)) ?>
 
 	<fieldset class="actions">
-	<?php echo $this->form->submit(s('Save'), array(
-		'class' => 'ui-button red larger'
-	)) ?>
+		<?php echo $this->form->submit(s('Save'), array(
+			'class' => 'ui-button red larger'
+		)) ?>
 	</fieldset>
 
 <?php echo $this->form->close() ?>

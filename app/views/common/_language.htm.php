@@ -9,7 +9,7 @@
 				<?php if ($language == $currentLanguage): ?>
 					<li class="current">
 						<?= s($language) ?>
-						<span><?= s('selected'); ?></span>
+						<span><?= s('selected') ?></span>
 					</li>
 				<?php else: ?>
 					<li><?= $this->html->link(s($language), '/' . $language) ?></li>

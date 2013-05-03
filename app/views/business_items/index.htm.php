@@ -47,7 +47,7 @@
         <?php echo $this->LithiumPagination->previous('<<') ?>
     </li>
     <li>
-        <?php echo $this->LithiumPagination->numbers(); ?>
+        <?php echo $this->LithiumPagination->numbers() ?>
     </li>
     <li>
         <?php echo $this->LithiumPagination->next('>>') ?>

@@ -166,7 +166,7 @@
 		<p class="main-title"><?php echo s('Our plans and prices.') ?></p>
 		<div class="row">
 			<div class="span6">
-				<p class="price"><span><?php echo s('Basic') ?> </span><?php echo s('USD <strong>9/mo</strong>') ?></p>
+				<p class="price"><span><?php echo s('Basic') ?> </span><?php echo s('US$ <strong>9/mo</strong>') ?></p>
 				<p class="price-label"><?php echo s('create a mobile presence') ?></p>
 				<ul>
 					<li><span class="icon"></span><?php echo s('<strong>Basic information:</strong><br>contacts, address, photos, social links, news via RSS') ?></li>
@@ -175,7 +175,7 @@
 				</ul>
 			</div>
 			<div class="span6">
-				<p class="price"><span><?php echo s('Locator') ?> </span><?php echo s('USD <strong>34/mo</strong>') ?></p>
+				<p class="price"><span><?php echo s('Locator') ?> </span><?php echo s('US$ <strong>34/mo</strong>') ?></p>
 				<p class="price-label"><?php echo s('for businesses with multiple locations') ?></p>
 				<ul>
 					<li><span class="icon"></span><?php echo s('<strong>Basic information:</strong><br>contacts, address, photos, social links, news via RSS') ?></li>
@@ -217,7 +217,7 @@
 
 						<div>
 							<p>
-								<?php echo s('<strong>A bad mobile experience can cost you customers.</strong> 61%% of users who don\'t see what they\'re looking for on a mobile site, they\'ll quikly move to another site.'); ?>
+								<?php echo s('<strong>A bad mobile experience can cost you customers.</strong> 61%% of users who don\'t see what they\'re looking for on a mobile site, they\'ll quikly move to another site.') ?>
 							</p>
 							<p class="author"><?php echo s('— Google Research, 2012') ?></p>
 						</div>
@@ -266,7 +266,7 @@
 		<p class="main-title"><?php echo s('need custom solutions?') ?></p>
 		<p>
 		<?php echo s('Creating custom layout, open API, white label solution for agencies, mobile site resale for digital partners. Any custom solution!') ?>
-		<strong class="mail" >enterprise@meumobi.com</strong>
+		<strong class="mail">enterprise@meumobi.com</strong>
 		</p>
 	</div>
 </div>

@@ -19,7 +19,7 @@
 
 			<?php if(!Auth::loggedIn()): ?>
 				<p class="login right">
-					<?php echo s('Already have an account?');?>
+					<?php echo s('Already have an account?') ?>
 					<?php echo $this->language->link(s('Sign in ›'), '/users/login') ?>
 				</p>
 			<?php endif ?>

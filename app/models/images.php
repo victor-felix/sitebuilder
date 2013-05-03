@@ -212,7 +212,9 @@ class Images extends AppModel {
 			$item->modified = date('Y-m-d H:i:s');
 			$item->save();
 		} else {
-			if ($self->model == 'SitePhotos' || $self->model == 'SiteLogos') {
+			if ($self->model == 'SitePhotos'
+				|| $self->model == 'SiteLogos'
+				|| $self->model == 'SiteAppleTouchIcon') {
 				$model = 'Sites';
 			} else {
 				$model = $self->model;

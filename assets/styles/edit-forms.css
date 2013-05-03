@@ -171,6 +171,10 @@
 	margin: 10px 0;
 }
 
+.default-form .domains p a{
+	float: right;
+}
+
 .default-form .custom-domain-setup {
 	margin: 5px 0;
 }

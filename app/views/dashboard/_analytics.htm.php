@@ -2,21 +2,21 @@
 $this->html->scriptsForLayout .= '<script type="text/javascript" src="https://www.google.com/jsapi"></script>'
                                . '<script type="text/javascript" src="/scripts/shared/dashboard.js"></script>';
 ?>
-<div class="analytics" >
+<div class="analytics">
 <?php if (!$analytics) : ?>
     <p>Analytics not is enabled</p>
 <?php else: ?>
     <?php if ($analytics->isAuthenticated()): ?>
         <?php  if ($analytics->profile_id): ?>
-            <div id="analytics_report" data-url="<?php echo Mapper::url('/dashboard/analytics_report')?>">
+            <div id="analytics_report" data-url="<?php echo Mapper::url('/dashboard/analytics_report') ?>">
                 <?php //echo $this->element('dashboard/analytics_report', compact('analytics')) ?> 
             </div>
         <?php else: ?>
             <?php if ($profiles = $analytics->getProfiles()):?>
             <!-- Select profile form -->
-                <form action="/dashboard/profile"  method="POST" >
+                <form action="/dashboard/profile" method="POST">
                 <p>Select analytics profile</p>
-                <select name="profile" >
+                <select name="profile">
                 <?php foreach($analytics->getProfiles() as $profile): ?>
                     <option value="<?php echo $profile['id'], ',', $profile['webPropertyId'] ?>"><?php echo $profile['name'] ?></option>
                 <?php endforeach; ?>

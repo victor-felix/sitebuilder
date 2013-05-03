@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $language ?>" lang="<?php echo $language ?>">
 	<head>
 		<?php echo $this->html->charset() ?>
-		<title><?php echo $this->pageTitle . ' | ' . $this->controller->getSegment()->title; ?></title>
+		<title><?php echo $this->pageTitle . ' | ' . $this->controller->getSegment()->title ?></title>
 		<meta name="robots" content="noindex, nofollow">
 		<link rel="shortcut icon" href="<?php echo Mapper::url('/images/layout/favicon.png') ?>" type="image/png" />
 		<?php echo $this->html->stylesheet('shared/base', 'shared/uikit', 'shared/categories',
@@ -22,17 +22,17 @@
 							<p><?php echo e($currentSite->title) ?></p>
 							<ul>
 								<li>
-									<small><?php echo s('Select one site to edit it')?></small>
+									<small><?php echo s('Select one site to edit it') ?></small>
 								</li>
 								<?php foreach (Auth::user()->sites() as $site): ?>
 									<?php if ($site->id == $currentSite->id):?>
 									<li class="current">
 										<?php echo e($site->title) ?>
-										<span><?php echo s('Currently editing');?></span>
+										<span><?php echo s('Currently editing') ?></span>
 									</li>
 									<?php else: ?>
 									<li>
-										<a href="<?php echo Mapper::url('/users/change_site/'.$site->id) ?>" >
+										<a href="<?php echo Mapper::url('/users/change_site/'.$site->id) ?>">
 											<?php echo e($site->title) ?>
 										</a>
 									</li>
@@ -66,24 +66,27 @@
 				</div>
 				<div class="contextual-navbar">
 					<div class="navigation" id="navbar">
-						<p class="business-name">
-							<span><?php echo s('You\'re currently editing')?></span>
-							<?php echo e($currentSite->title) ?>
-						</p>
-
-						<p class="site-url dynamic-text" data-max-font-size="36">
-							<span>
-								http://<?php echo e($currentSite->domain) ?>
-							</span>
-						</p>
-						<p class="share-link">
-							<a id="share" href="#"><?php echo s('share'); ?> &#8250;</a>
-						</p>
+						<div class="navigation-wrapp">
+							<p class="business-name">
+								<span><?php echo s('You\'re currently editing') ?></span>
+								<?php echo $this->string->truncate(e($currentSite->title), 15) ?>
+							</p>
+							<div class="right">
+								<p class="site-url dynamic-text" data-max-font-size="36">
+									<span>
+										http://<?php echo e($currentSite->domain) ?>
+									</span>
+								</p>
+								<p class="share-link">
+									<a id="share" class="popup-link" href="#"><?php echo s('share') ?> &#8250;</a>
+								</p>
+							</div>
+						</div>
 					</div>
 					<ul class="dropdown">
 						<li><?php echo $this->html->link(s('dashboard'), '/dashboard') ?></li>
 						<li>
-							<p><?php echo s('content')?><span class="arrow"></span></p>
+							<p><?php echo s('content') ?><span class="arrow"></span></p>
 							<ul>
 								<li><?php echo $this->html->link(s('About Business'), '/sites/business_info') ?></li>
 								<?php if(!MeuMobi::currentSegment()->hideCategories): ?>
@@ -94,13 +97,13 @@
 						</li>
 						<?php if(Users::ROLE_ADMIN == $currentSite->role): ?>
 						<li>
-							<p><?php echo s('appearance')?><span class="arrow"></span></p>
+							<p><?php echo s('appearance') ?><span class="arrow"></span></p>
 							<ul>
 								<li><?php echo $this->html->link(s('themes'), '/sites/theme') ?></li>
 							</ul>
 						</li>
 						<li>
-							<p><?php echo s('settings')?><span class="arrow"></span></p>
+							<p><?php echo s('settings') ?><span class="arrow"></span></p>
 							<ul>
 								<li><?php echo $this->html->link(s('General'), '/sites/general') ?></li>
 								<li><?php echo $this->html->link(s('Custom Domain'), '/sites/custom_domain') ?></li>
@@ -114,7 +117,7 @@
 				</div>
 				<div class="clear"></div>
 			</div>
-	
+
 			<?php echo $this->element('layouts/flash') ?>
 			<div class="content-wrapp">
 				<div id="content">
@@ -122,22 +125,44 @@
 				</div>
 			</div>
 			<?php echo $this->element('layouts/footer') ?>
-		
+
 		</div>
 		<div class="live-preview">
 			<a href="#" class="show-action">
-				<?php echo s('LIVE PREVIEW')?>
+				<?php echo s('LIVE PREVIEW') ?>
 			</a>
 			<div class="live-wrapp">
 				<a class="close" href="#">close</a>
 				<?php echo $this->element('sites/theme_preview', array('site' => $currentSite))  ?>
 			</div>
 		</div>
-		
+
 		<div class="support">
 			<a id="support-link" href="#"><?php echo s('support') ?></a>
 		</div>
-		
+
+		<div class="popup-wrapper">
+			<div id="#share-links" class="popup share-links">
+				<div class="header">
+					<h2><?php echo s('share') . ' ' .  MeuMobi::currentSegment()->title ?></h2>
+					<a href="#" class="close"><img src="/images/shared/themes/icon-close.png" alt="close" /></a>
+				</div>
+				<div class="links">
+					<p><?php echo s('Share with your friends and customers your mobile website through the links below:') ?></p>
+					<!-- AddThis Button BEGIN -->
+					<div class="addthis_toolbox addthis_default_style addthis_32x32_style" addthis:url="http://<?php echo e($currentSite->domain) ?>" addthis:title="<?php echo e($currentSite->title) ?>">
+					<a class="addthis_button_preferred_1"></a>
+					<a class="addthis_button_preferred_2"></a>
+					<a class="addthis_button_preferred_3"></a>
+					<a class="addthis_button_preferred_4"></a>
+					<a class="addthis_button_compact"></a>
+					<a class="addthis_counter addthis_bubble_style"></a>
+					</div>
+					<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=xa-51669ebc52cbd678"></script>
+					<!-- AddThis Button END -->
+				</div>
+			</div>
+		</div>
 		<?php echo $this->html->script('shared/jquery', 'shared/jquery.formrestrict', 'shared/jquery.alphanumeric', 'shared/modernizr.custom.placeholder.js', 'shared/support_chat', 'shared/main', 'shared/markitup', 'shared/async_upload', 'shared/jquery.chosen', 'shared/themes') ?>
 		<?php echo $this->html->scriptsForLayout ?>
 	</body>

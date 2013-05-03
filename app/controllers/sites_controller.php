@@ -1,5 +1,7 @@
 <?php
 
+use meumobi\sitebuilder\repositories\ThemesRepository;
+
 class SitesController extends AppController
 {
 	protected $protectedActions = array('remove', 'regenerate_domains', 'theme',
@@ -55,7 +57,8 @@ class SitesController extends AppController
 			}
 		}
 
-		$themes = Model::load('Themes')->all();
+		$themesRepo = new ThemesRepository();
+		$themes = $themesRepo->bySegment(MeuMobi::segment());
 
 		$this->set(compact('site', 'themes'));
 	}

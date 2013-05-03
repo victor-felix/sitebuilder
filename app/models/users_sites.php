@@ -82,22 +82,24 @@ class UsersSites extends AppModel  {
 		}
 	}
 
-	public function onDeleteUser($user) {
+	public function onDeleteUser($user)
+	{
 		if ($user->id) {
-			$this->deleteAll( array(
+			$this->deleteAll(array(
 				'conditions' => array(
-					'user_id' => $user->id)
-				));
+					'user_id' => $user->id
+				)
+			));
 		}
 	}
 
-	public function onDeleteSite($site) {
-		if ($site->id) {
-			$this->deleteAll( array(
-				'conditions' => array(
-					'site_id' => $site->id)
-				));
-		}
+	public function removeSite($site_id)
+	{
+		$this->deleteAll(array(
+			'conditions' => array(
+				'site_id' => $site_id
+			)
+		));
 	}
 
 }
