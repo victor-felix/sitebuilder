@@ -10,7 +10,6 @@
 	'id' => 'form-edit-customize',
 	'class' => 'form-edit default-form',
 	'method' => 'file',
-	'object' => $site
 )) ?>
 
 	<fieldset style="position: relative;">
@@ -28,70 +27,22 @@
 							<span class="arrow open"></span>
 						</div>
 						<div class="content">
-							<p class="title">Paraty</p>
+							<p class="title"><?php echo $theme->name() ?></p>
 	
 							<ul class="skin-picker">
-								<li class="" data-skin="517e6d01198b6623ad000031">
-									<span style="background-color: #405f9c"></span>
+								<?php foreach($theme->skins() as $themeSkin): ?>
+								<li class="<?php if ($skin->id() == $themeSkin->id()) echo 'selected' ?>" data-skin="<?php echo $themeSkin->id() ?>">
+									<span style="background-color: #<?php echo $themeSkin->mainColor() ?>"></span>
 								</li>
-								<li class="" data-skin="517e6d01198b6623ad000032">
-									<span style="background-color: #c66161"></span>
-								</li>
-								<li class="" data-skin="517e6d01198b6623ad000033">
-									<span style="background-color: #86d386"></span>
-								</li>
-								<li class="" data-skin="517e6d01198b6623ad000034">
-									<span style="background-color: #eded89"></span>
-								</li>
-								<li class="" data-skin="517e6d01198b6623ad000035">
-									<span style="background-color: #dfa1df"></span>
-								</li>
-								<li class="" data-skin="517e6d01198b6623ad000036">
-									<span style="background-color: #a0e1e1"></span>
-								</li>
-								<li class="" data-skin="517e6d01198b6623ad000037">
-									<span style="background-color: #0392CE"></span>
-								</li>
-								<li class="" data-skin="517e6d01198b6623ad000038">
-									<span style="background-color: #B61B1B"></span>
-								</li>
-								<li class="" data-skin="517e6d01198b6623ad000039">
-									<span style="background-color: #66B032"></span>
-								</li>
-								<li class="" data-skin="517e6d01198b6623ad00003a">
-									<span style="background-color: #FB9902"></span>
-								</li>
-								<li class="" data-skin="517e6d01198b6623ad00003b">
-									<span style="background-color: #8601AF"></span>
-								</li>
-								<li class="" data-skin="517e6d01198b6623ad00003c">
-									<span style="background-color: #8080c8"></span>
-								</li>
-								<li class="" data-skin="517e6d01198b6623ad00003d">
-									<span style="background-color: #3d3939"></span>
-								</li>
-								<li class="" data-skin="517e6d01198b6623ad00003e">
-									<span style="background-color: #a9a9a9"></span>
-								</li>
+								<?php endforeach ?>
 							</ul>
-							
 							<ul class="color-picker">
+								<?php foreach($skin->colors() as $name => $color): ?>
 								<li>
-									<span>color #01</span>
-									<span class="color" data-color="#8080c8" style="background-color: #8080c8"></span>
+									<span><?php echo $name; ?></span>
+									<span class="color" data-color="<?php echo $color ?>" style="background-color: <?php echo $color ?>"></span>
 								</li>
-								<li>
-									<span>color #02</span>
-									<span class="color" data-color="#0392CE" style="background-color: #0392CE"></span>
-								</li>
-								<li>
-									<span>color #03</span>
-									<span class="color" data-color="#a9a9a9" style="background-color: #a9a9a9"></span>
-								</li>
-								<li>
-									<span>color #04</span>
-									<span class="color" data-color="#66B032" style="background-color: #66B032"></span>
-								</li>
+								<?php endforeach ?>
 							</ul>
 						</div>
 					</li>

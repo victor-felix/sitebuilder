@@ -1,6 +1,7 @@
 <?php
 
 use meumobi\sitebuilder\repositories\ThemesRepository;
+use meumobi\sitebuilder\repositories\SkinsRepository;
 
 class SitesController extends AppController
 {
@@ -63,9 +64,21 @@ class SitesController extends AppController
 		$this->set(compact('site', 'themes'));
 	}
 
-	public function custom_theme()
+	public function custom_theme($skinId)
 	{
-		$this->theme();
+		$site = $this->getCurrentSite();
+		$themesRepo = new ThemesRepository();
+		$skinRepo = new SkinsRepository();
+
+		$skin = $skinRepo->find($skinId);
+		
+		$themes = $themesRepo->bySegment(MeuMobi::segment());
+		foreach ($themes as $item) {
+			if ($item->id() == $skin->themeId()) {
+				$theme = $item;
+			}
+		}
+		$this->set(compact('site', 'skin', 'theme'));
 	}
 
 	public function remove($id = null)

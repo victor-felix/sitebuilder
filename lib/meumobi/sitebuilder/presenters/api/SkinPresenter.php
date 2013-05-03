@@ -9,6 +9,7 @@ class SkinPresenter
 		return [
 			'id' => $object->id(),
 			'theme_id' => $object->themeId(),
+			'parent_id' => $object->parentId(),
 			'colors' => $object->colors(),
 			'assets' => $object->assets()
 		];

@@ -101,7 +101,7 @@
 	margin: 1px;
 }
 
-.skin-picker li:hover, .theme-picker > ul > li.selected .skin-picker li.selected{
+.skin-picker li:hover, .skin-picker li.selected{
 	-webkit-box-shadow:  0px 0px 2px 2px #ccc;
     box-shadow:  0px 0px 2px 2px #ccc;
 }
