@@ -563,11 +563,31 @@ $(window).load(function(){
 			});
 		}
 
-		$('a.popup-link').click(function(){
+		$('a.popup-link').click(function() {
 			$('.popup-wrapper').fadeIn('fast');
 		});
 
-		$('.popup-wrapper a.close').click(function(){
+		$('.popup-wrapper a.close').click(function() {
 			$('.popup-wrapper').fadeOut('fast');
 		});
+
+		var removeField = function(e) {
+			var self = $(this);
+			var href = self.attr('href') != '#' ? self.attr('href') : false;
+			if (href) {
+				return true;
+			} else {
+				self.parent().remove();
+			}
+			e.preventDefault();
+		};
+
+		$('#domains #add-new').click(function(e) {
+			e.preventDefault();
+			var field = $(this).prev().clone();
+			field.find('input').val('');
+			field.find('a').click(removeField);
+			field.show().insertBefore(this);
+		});
+		$('#domains .domain a').click(removeField);
 });
