@@ -9,4 +9,4 @@ Config::write('Api.ignoreAuth', true);
 Config::write('Preview.url', 'http://placeholder.meumobi.com');
 Config::write('Sites.domain', 'meumobi.com');
 
-Config::write('Themes.url', 'http://meu-template-manager.meumobi.com/themes.json');
+Config::write('Themes.url', 'http://meu-template-engine.meumobi.com/themes.json');
