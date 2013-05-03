@@ -24,9 +24,12 @@
 						<ul class="skin-picker">
 							<?php
 								$skins = $theme->skins();
-								$currentThemeSkin = $currentTheme == $theme->id()
-								? $currentSkin
-								: reset($skins)->id();
+								$currentThemeSkin = null;
+								if ($currentTheme == $theme->id()) {
+									$currentThemeSkin = $currentSkin;
+								} elseif(reset($skins)) {
+									$currentThemeSkin = reset($skins)->id();
+								}
 							?>
 
 							<?php foreach($skins as $skin): ?>
