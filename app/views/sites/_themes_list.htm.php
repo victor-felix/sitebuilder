@@ -1,6 +1,7 @@
 <?php
 	$currentTheme = $site->theme ? $site->theme : $themes[0]->name();
-	$currentSkin = $site->skin ? $site->skin : $themes[0]->skins()[0]->id();
+	$skins = $themes[0]->skins();
+	$currentSkin = $site->skin ? $site->skin : reset($skins)->id();
 ?>
 
 <div class="themes">
