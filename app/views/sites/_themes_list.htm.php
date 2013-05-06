@@ -1,6 +1,7 @@
 <?php
 	$currentTheme = $site->theme ? $site->theme : reset($themes)->name();
-	$currentSkin = $site->skin ? $site->skin : reset($themes)->skins()[0]->id();
+	$skins = reset($themes)->skins();
+	$currentSkin = $site->skin ? $site->skin : reset($skins)->id();
 ?>
 
 <div class="themes">
@@ -19,44 +20,10 @@
 							<?php endforeach ?>
 						</p>
 						<span class="title"><?php echo $theme->name() ?></span>
-
-						<ul class="skin-picker">
-							<?php
-								$skins = $theme->skins();
-								$customSkin = null;
-								if ($currentTheme == $theme->id()) {
-									$currentThemeSkin = $currentSkin;
-									foreach ($skins as $skin) {
-										if ($skin->parentId()) {
-											$customSkin = $skin->parentId();
-										}
-									}
-								} else {
-									$currentThemeSkin = reset($skins)->id();
-								}
-							?>
-
-							<?php foreach($skins as $skin): ?>
-								<?php
-									$class = '';
-									if ($skin->id() == $currentThemeSkin) {
-										$class .= 'selected';
-										if ($skin->id() == $customSkin) {
-											$class .= 'custom';
-										}
-									}
-								?>
-								<li class="<?php echo $class ?>" data-skin="<?php echo $skin->id() ?>">
-									<span style="background-color: #<?php echo $skin->mainColor() ?>"></span>
-								</li>
-							<?php endforeach ?>
-						</ul>
-						<p class="customize-link">
-							<?php echo $this->html->link(s('Customize'), '/sites/custom_theme/' . $currentThemeSkin, array(
-								'class' => 'ui-button highlight push-scene',
-								'data-link' => '/sites/custom_theme/'
-							)) ?>
-						</p>
+						<?php echo $this->element('sites/skins_list', array(
+							'skins' => $theme->skins(),
+							'currentSkin' => $theme->id() == $currentTheme ? $currentSkin : null,
+						)) ?>
 					</li>
 				<?php endforeach ?>
 				<li class="clear"></li>

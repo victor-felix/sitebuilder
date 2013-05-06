@@ -7,10 +7,18 @@ $(function() {
 			url += "theme=" + theme + "&skin=" + skin;
 		}
 		url += '&' + (new Date()).getTime();
-		$('.theme-preview .wrapp .load').fadeIn(300, function(){
+		$('.theme-preview .wrapp .load').fadeIn(300, function() {
 			frame.attr('src', url);
 		});
-	}
+	};
+
+	var updateColorFields = function(skin) {
+		$('#parent_id').val(skin);
+		$('.colors-wrap #color-picker-' + skin + ' .color').each(function() {
+			var color = $(this);
+			$('#' + color.data('color')).val(color.data('value'));
+		});
+	};
 
 	//frame loaded
 	$('#theme-frame').load(function() {
@@ -58,6 +66,12 @@ $(function() {
 		parentTheme.parent().children('li.selected').removeClass('selected');
 		parentTheme.addClass('selected');
 		$('#theme').val(theme);
+
+		//show color picker
+		$('.colors-wrap .color-picker').hide();
+		$('.colors-wrap #color-picker-' + skin).show();
+		updateColorFields(skin);
+
 		reloadPreview(theme, skin);
 	});
 
@@ -98,10 +112,10 @@ $(function() {
 		$('div.live-preview').remove();
 	}
 
-	$('.color-picker .color').each(function(){
+	$('.color-picker .color').each(function() {
 		var colorElement = $(this);
 		colorElement.ColorPicker({
-			color: colorElement.data('color'),
+			color: colorElement.data('value'),
 			onShow: function (colpkr) {
 				$(colpkr).fadeIn(500);
 				return false;
@@ -112,12 +126,17 @@ $(function() {
 			},
 			onChange: function (hsb, hex, rgb, element) {
 				colorElement.css('backgroundColor', '#' + hex);
+				colorElement.data('value', '#' + hex);
 			},
 			onSubmit: function(hsb, hex, rgb, el) {
 				colorElement.css('backgroundColor', '#' + hex);
+				colorElement.data('value', '#' + hex);
 				$(el).ColorPickerHide();
 			}
 		});
 	});
-
+	
+	$('#form-custom-theme').submit(function() {
+		updateColorFields($('.skin-picker li.selected').data('skin'));
+	});
 });

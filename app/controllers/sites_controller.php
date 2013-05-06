@@ -1,5 +1,5 @@
 <?php
-
+use meumobi\sitebuilder\entities\Skin;
 use meumobi\sitebuilder\repositories\ThemesRepository;
 use meumobi\sitebuilder\repositories\SkinsRepository;
 
@@ -64,14 +64,39 @@ class SitesController extends AppController
 		$this->set(compact('site', 'themes'));
 	}
 
-	public function custom_theme($skinId)
+	public function custom_theme($skinId = null)
 	{
 		$site = $this->getCurrentSite();
 		$themesRepo = new ThemesRepository();
 		$skinRepo = new SkinsRepository();
 
-		$skin = $skinRepo->find($skinId);
-		
+		if (!empty($this->data)) {
+			$parent = $skinRepo->find($this->data['parent_id']);
+			if ($parent->parentId()) {
+				$skin = $parent;
+				$skinData = array('colors' => $this->data['colors']);
+				$skin->setAttributes($skinData);
+				$skinRepo->update($skin);
+			} else {
+				$skinData = array(
+					'theme_id' => $parent->themeId(),
+					'parent_id' => $parent->id(),
+					'main_color' => $parent->mainColor(),
+					'colors' => $this->data['colors'],
+					'assets' => $parent->assets(),
+				);
+				$skin = new Skin($skinData);
+				$skinRepo->create($skin);
+			}
+			$site->theme = $skin->themeId();
+			$site->skin = $skin->id();
+			$site->save();
+			Session::writeFlash('success', s('Configuration successfully saved'));
+			$this->redirect('/sites/theme');
+		} else {
+			$skin = $skinRepo->find($skinId);
+		}
+
 		$themes = $themesRepo->bySegment(MeuMobi::segment());
 		foreach ($themes as $item) {
 			if ($item->id() == $skin->themeId()) {
