@@ -101,12 +101,12 @@
 	margin: 1px;
 }
 
-.skin-picker li:hover, .skin-picker li.selected{
+.skin-picker li:hover, li.selected .skin-picker li.selected, .customize-theme .skin-picker li.selected {
 	-webkit-box-shadow:  0px 0px 2px 2px #ccc;
-    box-shadow:  0px 0px 2px 2px #ccc;
+	box-shadow:  0px 0px 2px 2px #ccc;
 }
 
-.theme-picker > ul > li.selected .skin-picker li.custom span {
+.skin-picker li.custom span {
 	background-image: url(/images/shared/themes/icon-custom.png);
 	background-repeat: no-repeat;
 	background-position: center bottom;

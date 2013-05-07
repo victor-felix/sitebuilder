@@ -1,4 +1,6 @@
 <?php
+use meumobi\sitebuilder\entities\Skin;
+use meumobi\sitebuilder\repositories\SkinsRepository;
 
 require_once 'lib/sitemanager/SiteManager.php';
 require_once 'app/models/categories.php';
@@ -172,6 +174,14 @@ class Sites extends AppModel
 	public function link()
 	{
 		return 'http://' . $this->domain;
+	}
+
+	public function skin()
+	{
+		if ($this->skin) {
+			$skinRepo = new SkinsRepository();
+			return $skinRepo->find($this->skin);
+		}
 	}
 
 	public function categories()

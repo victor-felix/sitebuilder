@@ -44,7 +44,6 @@ $(function() {
 		if ($(e.target).is('.customize-link a')) {
 			window.location.href = $(e.target).data('link') + skin;
 			return;
-			//console.log($(e.target));
 		}
 		
 		reloadPreview(theme, skin);
@@ -139,4 +138,10 @@ $(function() {
 	$('#form-custom-theme').submit(function() {
 		updateColorFields($('.skin-picker li.selected').data('skin'));
 	});
+	/*
+	$('.save-continue').click(function(){
+		$('.confirm').fadeIn();
+		return false;
+	});
+	*/
 });

@@ -67,6 +67,7 @@ class SitesController extends AppController
 	public function custom_theme($skinId = null)
 	{
 		$site = $this->getCurrentSite();
+		$currentSkin = $site->skin();
 		$themesRepo = new ThemesRepository();
 		$skinRepo = new SkinsRepository();
 
@@ -87,6 +88,9 @@ class SitesController extends AppController
 				);
 				$skin = new Skin($skinData);
 				$skinRepo->create($skin);
+				if ($currentSkin->parentId()) {
+					$skinRepo->destroy($currentSkin);
+				}
 			}
 			$site->theme = $skin->themeId();
 			$site->skin = $skin->id();
@@ -103,7 +107,7 @@ class SitesController extends AppController
 				$theme = $item;
 			}
 		}
-		$this->set(compact('site', 'skin', 'theme'));
+		$this->set(compact('site', 'currentSkin', 'skin', 'theme'));
 	}
 
 	public function remove($id = null)

@@ -30,13 +30,32 @@
 							<p class="title"><?php echo $theme->name() ?></p>
 							<ul class="skin-picker">
 								<?php foreach ($skins as $themeSkin): ?>
-								<li class="<?php if ($skin->id() == $themeSkin->id()) echo 'selected' ?>" data-skin="<?php echo $themeSkin->id() ?>">
+								<?php
+									$class = '';
+									$skinId = $themeSkin->id();
+									if ($themeSkin->id() == $skin->id()) {
+										if ($themeSkin->parentId()) {
+											continue;
+										}
+										$class .= 'selected ';
+									}
+									if ($skin->parentId() == $themeSkin->id()) {
+										$class .= 'custom selected';
+										$skinId = $skin->id();
+									}
+								?>
+								<li class="<?php echo $class ?>" data-skin="<?php echo $skinId ?>">
 									<span style="background-color: #<?php echo $themeSkin->mainColor() ?>"></span>
 								</li>
 								<?php endforeach ?>
 							</ul>
 							<div class="colors-wrap">
 								<?php foreach ($skins as $themeSkin): ?>
+								<?php
+									if ($themeSkin->id() == $skin->parentId()) {
+										continue;
+									}
+								?>
 								<ul id="color-picker-<?php echo $themeSkin->id() ?>" class="color-picker <?php if ($skin->id() != $themeSkin->id()) echo 'hidden' ?>">
 									<?php foreach($themeSkin->colors() as $name => $color): ?>
 									<li>
@@ -83,3 +102,14 @@
 	</fieldset>
 
 <?php echo $this->form->close() ?>
+<div id="confirm-remove-skin" class="confirm">
+	<div class="wrapper">
+		<p>
+			<?php echo s('Selecting a different color palette will delete your customized one, Are you sure?') ?>
+		</p>
+		<?php echo $this->html->link(s('Yes, change'), '/skins/delete/' . $site->skin, array(
+			'class' => 'ui-button highlight ajax-request'
+		)) ?>
+		<?php echo $this->html->link(s('No, I don\'t'), '#', array( 'class' => 'ui-button' )) ?>
+	</div>
+</div>
