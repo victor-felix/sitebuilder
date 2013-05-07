@@ -28,27 +28,11 @@
 						</div>
 						<div class="content">
 							<p class="title"><?php echo $theme->name() ?></p>
-							<ul class="skin-picker">
-								<?php foreach ($skins as $themeSkin): ?>
-								<?php
-									$class = '';
-									$skinId = $themeSkin->id();
-									if ($themeSkin->id() == $skin->id()) {
-										if ($themeSkin->parentId()) {
-											continue;
-										}
-										$class .= 'selected ';
-									}
-									if ($skin->parentId() == $themeSkin->id()) {
-										$class .= 'custom selected';
-										$skinId = $skin->id();
-									}
-								?>
-								<li class="<?php echo $class ?>" data-skin="<?php echo $skinId ?>">
-									<span style="background-color: #<?php echo $themeSkin->mainColor() ?>"></span>
-								</li>
-								<?php endforeach ?>
-							</ul>
+							<?php echo $this->element('sites/skins_list', array(
+								'skins' => $skins,
+								'currentSkin' => $skin,
+								'customizeLink' => false,
+							)) ?>
 							<div class="colors-wrap">
 								<?php foreach ($skins as $themeSkin): ?>
 								<?php
@@ -56,10 +40,11 @@
 										continue;
 									}
 								?>
-								<ul id="color-picker-<?php echo $themeSkin->id() ?>" class="color-picker <?php if ($skin->id() != $themeSkin->id()) echo 'hidden' ?>">
+								<ul id="color-picker-<?php echo $themeSkin->parentId() ? $themeSkin->parentId() : $themeSkin->id() ?>" class="color-picker <?php if ($skin->id() != $themeSkin->id()) echo 'hidden' ?>">
+									<?php $colorCount = 1; ?>
 									<?php foreach($themeSkin->colors() as $name => $color): ?>
 									<li>
-										<span><?php echo $name; ?></span>
+										<span><?php echo s('color') . ' #' . $colorCount++; ?></span>
 										<span class="color" data-color="<?php echo $name ?>" data-value="<?php echo $color ?>" style="background-color: <?php echo $color ?>"></span>
 									</li>
 									<?php endforeach ?>
@@ -94,10 +79,14 @@
 	
 	<fieldset class="actions">
 		<?php echo $this->form->submit(s('Save and Continue'), array(
-			'class' => 'ui-button red larger save-continue'
+			'class' => 'ui-button red larger save-continue',
+			'name' => 'continue',
+			'value' => 1,
 		)) ?>
 		<?php echo $this->form->submit(s('Save'), array(
-			'class' => 'ui-button red larger save'
+			'class' => 'ui-button red larger save',
+			'name' => 'continue',
+			'value' => 0,
 		)) ?>
 	</fieldset>
 

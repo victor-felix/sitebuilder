@@ -88,15 +88,16 @@ class SitesController extends AppController
 				);
 				$skin = new Skin($skinData);
 				$skinRepo->create($skin);
-				if ($currentSkin->parentId()) {
-					$skinRepo->destroy($currentSkin);
-				}
 			}
 			$site->theme = $skin->themeId();
 			$site->skin = $skin->id();
 			$site->save();
 			Session::writeFlash('success', s('Configuration successfully saved'));
-			$this->redirect('/sites/theme');
+			if ($this->data['continue']) {
+				$this->redirect("/sites/custom_theme/{$skin->id()}");
+			} else {
+				$this->redirect('/');
+			}
 		} else {
 			$skin = $skinRepo->find($skinId);
 		}

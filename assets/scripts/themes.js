@@ -12,13 +12,28 @@ $(function() {
 		});
 	};
 
-	var updateColorFields = function(skin) {
-		$('#parent_id').val(skin);
+	var updateColorFields = function(skin, custom) {
+		if (!custom) {
+			$('#parent_id').val(skin);
+		}
 		$('.colors-wrap #color-picker-' + skin + ' .color').each(function() {
 			var color = $(this);
 			$('#' + color.data('color')).val(color.data('value'));
 		});
 	};
+
+	var confirmRemoveSkin = function() {
+		$('.confirm').fadeIn();
+	}
+
+	var removeSkin = function(href) {
+		$.get(href, function() {
+			var custom = $('.skin-picker li.custom');
+			custom.removeClass('custom');
+			$('input#parent_id').val(custom.data('skin'));
+			$('.confirm').fadeOut();
+		});
+	}
 
 	//frame loaded
 	$('#theme-frame').load(function() {
@@ -40,9 +55,17 @@ $(function() {
 		//change skin value to default skin
 		var skin = skin_picker.find('li.selected').data('skin');
 		$('#skin').val(skin);
-		
+
 		if ($(e.target).is('.customize-link a')) {
-			window.location.href = $(e.target).data('link') + skin;
+			if ($('.skin-picker li.custom').length) {
+				if (skin_picker.find('li.selected.custom').length) {
+					window.location.href = $(e.target).data('link') + skin_picker.find('li.selected').data('custom');
+				} else {
+					confirmRemoveSkin();
+				}
+			} else {
+				window.location.href = $(e.target).data('link') + skin_picker.find('li.selected').data('skin');
+			}
 			return;
 		}
 		
@@ -53,6 +76,10 @@ $(function() {
 	$('.skin-picker li').click(function(e) {
 		e.stopPropagation();
 		var self = $(this);
+		if ($('.skin-picker li.custom').length
+			&& !self.is('.custom')) {
+			return confirmRemoveSkin();
+		}
 		var parentTheme = self.parents('li:first');
 		var skin = self.data('skin');
 		var theme = parentTheme.data('theme');
@@ -67,9 +94,11 @@ $(function() {
 		$('#theme').val(theme);
 
 		//show color picker
-		$('.colors-wrap .color-picker').hide();
-		$('.colors-wrap #color-picker-' + skin).show();
-		updateColorFields(skin);
+		if (!self.is('.custom')) {
+			$('.colors-wrap .color-picker').hide();
+			$('.colors-wrap #color-picker-' + skin).show();
+			updateColorFields(skin);
+		}
 
 		reloadPreview(theme, skin);
 	});
@@ -136,12 +165,13 @@ $(function() {
 	});
 	
 	$('#form-custom-theme').submit(function() {
-		updateColorFields($('.skin-picker li.selected').data('skin'));
+		var skinElement = $('.skin-picker li.selected');
+		updateColorFields(skinElement.data('skin'), skinElement.is('.custom'));
 	});
-	/*
-	$('.save-continue').click(function(){
-		$('.confirm').fadeIn();
-		return false;
+
+	$('#confirm-remove-skin .ui-button.ajax-request').click(function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		removeSkin(this.href);
 	});
-	*/
 });
