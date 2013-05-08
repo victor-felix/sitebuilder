@@ -13,7 +13,7 @@
 					</li>
 				<?php else: ?>
 					<li><?= $this->html->link(s($language), '/' . $language) ?></li>
-				<?php endif; ?>
+				<?php endif ?>
 			<?php endforeach ?>
 		</ul>
 	</li>

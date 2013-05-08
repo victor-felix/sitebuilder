@@ -64,7 +64,7 @@
 					<span class="arrow"></span>
 				</a>
 			</li>
-			<?php endif; ?>
+			<?php endif ?>
 			<li id="add-content" class="open">
 				<div class="link">
 					<span class="icon"></span>

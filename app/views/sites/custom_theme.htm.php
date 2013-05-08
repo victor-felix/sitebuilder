@@ -42,11 +42,11 @@
 									}
 								?>
 								<ul id="color-picker-<?php echo $themeSkin->parentId() ? $themeSkin->parentId() : $themeSkin->id() ?>" class="color-picker <?php if ($skin->id() != $themeSkin->id()) echo 'hidden' ?>">
-									<?php $colorCount = 1; ?>
+									<?php $colorCount = 1 ?>
 									<?php foreach($themeSkin->colors() as $name => $color): ?>
 									<li>
-										<span><?php echo s('color') . ' #' . $colorCount++; ?></span>
-										<span class="color" data-color="<?php echo $name ?>" data-value="<?php echo strlen($color) == 4 ? '' : $color; ?>" style="background-color: <?php echo strlen($color) == 4 ? '' : $color; ?>"></span>
+										<span><?php echo s('color') . ' #' . $colorCount++ ?></span>
+										<span class="color" data-color="<?php echo $name ?>" data-value="<?php echo strlen($color) == 4 ? '' : $color ?>" style="background-color: <?php echo strlen($color) == 4 ? '' : $color ?>"></span>
 									</li>
 									<?php endforeach ?>
 								</ul>
