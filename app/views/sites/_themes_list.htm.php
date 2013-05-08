@@ -21,7 +21,7 @@
 						<?php echo $this->element('sites/skins_list', array(
 							'skins' => $theme->skins(),
 							'currentSkin' => $theme->id() == $site->theme ? $site->skin() : null,
-							'customizeLink' => true,
+							'customizeLink' => (bool)$site->theme,
 						)) ?>
 					</li>
 				<?php endforeach ?>
