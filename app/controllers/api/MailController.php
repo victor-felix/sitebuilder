@@ -14,16 +14,16 @@ class MailController extends ApiController
 
 		$site = $this->site();
 		$mailer = new Mailer(array(
-			'from' => array($this->param('mail') => $this->param('name')),
+			'from' => array($this->request->get('data:mail') => $this->request->get('data:name')),
 			'to' => array($site->email => $site->title),
 			'subject' => s('[MeuMobi] Contact Mail'),
 			'views' => array('text/html' => 'sites/contact_mail.htm'),
 			'layout' => 'mail',
 			'data' => array(
-				'name' => $this->param('name'),
-				'mail' => $this->param('mail'),
-				'phone' => $this->param('phone'),
-				'message' => $this->param('message'),
+				'name' => $this->request->get('data:name'),
+				'mail' => $this->request->get('data:mail'),
+				'phone' => $this->request->get('data:phone'),
+				'message' => $this->request->get('data:message'),
 			)
 		));
 		$mailer->send();
