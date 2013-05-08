@@ -3,8 +3,8 @@
 Config::write('Segment', array(
   'id' => 'enterprise',
   'title' => 'MeuMobi Enterprise',
-  'items' => array('articles', 'business', 'products'),
-  'extensions' => array('store-locator', 'rss'),
+  'items' => array('articles', 'business', 'products', 'merchant_products'),
+  'extensions' => array('store-locator', 'rss', 'google-merchant-feed'),
   'root' => 'Index',
   'email' => array('no-reply@meumobi.com' => 'MeuMobi Enterprise'),
   'hideCategories' => false,
