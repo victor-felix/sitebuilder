@@ -14,7 +14,7 @@ class MailController extends ApiController
 
 		if (!isset($this->request->data['name']) &&
 			!isset($this->request->data['mail']) &&
-			!isset($this->request->data['message']) {
+			!isset($this->request->data['message'])) {
 			return array('error' => 'missing parameters');
 		}
 
