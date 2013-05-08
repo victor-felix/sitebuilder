@@ -100,6 +100,7 @@
 							<p><?php echo s('appearance') ?><span class="arrow"></span></p>
 							<ul>
 								<li><?php echo $this->html->link(s('themes'), '/sites/theme') ?></li>
+								<li><?php echo $this->html->link(s('customization'), '/sites/custom_theme/' . $currentSite->skin ) ?></li>
 							</ul>
 						</li>
 						<li>
