@@ -77,7 +77,7 @@
 			'autoload' => true
 		)) ?>
 	</fieldset>
-	
+
 	<fieldset class="actions">
 		<?php echo $this->form->submit(s('Save and Continue'), array(
 			'class' => 'ui-button red larger save-continue',

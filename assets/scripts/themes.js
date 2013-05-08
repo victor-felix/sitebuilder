@@ -141,7 +141,7 @@ $(function() {
 
 	$('.color-picker .color').each(function() {
 		var colorElement = $(this);
-		colorElement.ColorPicker({
+		colorElement.ColorPicker( {
 			color: colorElement.data('value'),
 			onShow: function (colpkr) {
 				$(colpkr).fadeIn(500);
@@ -162,7 +162,7 @@ $(function() {
 			}
 		});
 	});
-	
+
 	$('#form-custom-theme').submit(function() {
 		var skinElement = $('.skin-picker li.selected');
 		updateColorFields(skinElement.data('skin'), skinElement.is('.custom'));
