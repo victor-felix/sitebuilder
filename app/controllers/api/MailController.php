@@ -10,9 +10,11 @@ class MailController extends ApiController
 {
 	public function index()
 	{
+		$this->requireUserAuth();
+
 		$site = $this->site();
 		$mailer = new Mailer(array(
-			'from' => array($this->param('email') => $this->param('name')),
+			'from' => array($this->param('mail') => $this->param('name')),
 			'to' => array($site->email => $site->title),
 			'subject' => s('[MeuMobi] Contact Mail'),
 			'views' => array('text/html' => 'sites/contact_mail.htm'),
