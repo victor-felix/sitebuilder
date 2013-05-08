@@ -570,4 +570,13 @@ $(window).load(function(){
 		$('.popup-wrapper a.close').click(function(){
 			$('.popup-wrapper').fadeOut('fast');
 		});
+
+		$('#domains #add-new').click(function(e) {
+			e.preventDefault();
+			var field = $(this).prev().clone();
+			field.find('input').val('');
+			field.find('a').click(removeField);
+			field.show().insertBefore(this);
+		});
+		$('#domains .domain a').click(removeField);
 });
