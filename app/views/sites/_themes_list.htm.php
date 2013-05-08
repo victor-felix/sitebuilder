@@ -1,3 +1,7 @@
+<?php
+	$currentTheme = $site->theme ? $site->theme : reset($themes)->id();
+	$currentSkin = $site->skin ? $site->skin() : reset(reset($themes)->skins());
+?>
 <div class="themes">
 	<div class="tip-big">
 		<h2><?php echo s('pick up a theme') ?></h2>
@@ -7,7 +11,7 @@
 		<ul>
 			<?php foreach (array_chunk($themes, 3) as $theme_line): ?>
 				<?php foreach ($theme_line as $theme): ?>
-					<li class="<?php if($theme->id() == $site->theme) echo 'selected'?>" data-theme="<?php echo $theme->id() ?>">
+					<li class="<?php if($theme->id() == $currentTheme) echo 'selected'?>" data-theme="<?php echo $theme->id() ?>">
 						<p class="thumbs">
 							<?php foreach ($theme->thumbnails() as $thumbnail): ?>
 								<?php echo $this->html->image($thumbnail) ?>
@@ -29,13 +33,13 @@
 
 	<?php echo $this->form->input('theme', array(
 		'type' => 'hidden',
-		'value' => $site->theme,
+		'value' => $currentTheme,
 		'id' => 'theme'
 	)) ?>
 
 	<?php echo $this->form->input('skin', array(
 		'type' => 'hidden',
-		'value' => $site->skin()->id(),
+		'value' => $currentSkin->id(),
 		'id' => 'skin'
 	)) ?>
 </div>
