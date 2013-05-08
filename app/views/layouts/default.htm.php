@@ -136,11 +136,12 @@
 				<?php echo $this->element('sites/theme_preview', array('site' => $currentSite))  ?>
 			</div>
 		</div>
-
+<?php if (Config::read('App.environment') == 'production'
+			&& Config::read('App.support')): ?>
 		<div class="support">
 			<a id="support-link" href="#"><?php echo s('support') ?></a>
 		</div>
-
+<?php endif ?>
 		<div class="popup-wrapper">
 			<div id="#share-links" class="popup share-links">
 				<div class="header">
