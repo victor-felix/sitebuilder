@@ -12,6 +12,12 @@ class MailController extends ApiController
 	{
 		$this->requireUserAuth();
 
+		if (!isset($this->request->data['name']) &&
+			!isset($this->request->data['mail']) &&
+			!isset($this->request->data['message']) {
+			return array('error' => 'missing parameters');
+		}
+
 		$site = $this->site();
 		$mailer = new Mailer(array(
 			'from' => array($this->request->get('data:mail') => $this->request->get('data:name')),
@@ -27,6 +33,8 @@ class MailController extends ApiController
 			)
 		));
 		$mailer->send();
+
+		return array('success' => true);
 	}
 
 	protected function requireUserAuth()
