@@ -47,28 +47,27 @@ $(function() {
 		var theme = self.data('theme');
 		var skin_picker = self.children('.skin-picker');
 
+		if ($('.skin-picker li.custom').length && 
+			skin_picker.find('li.selected.custom').length == 0) {
+			confirmRemoveSkin();
+			return;
+		}
 		//select theme
 		$('.theme-picker > ul > li.selected').removeClass('selected');
 		self.addClass('selected');
 		$('#theme').val(theme);
-
 		//change skin value to default skin
 		var skin = skin_picker.find('li.selected').data('skin');
 		$('#skin').val(skin);
 
 		if ($(e.target).is('.customize-link a')) {
-			if ($('.skin-picker li.custom').length) {
-				if (skin_picker.find('li.selected.custom').length) {
-					window.location.href = $(e.target).data('link') + skin_picker.find('li.selected').data('custom');
-				} else {
-					confirmRemoveSkin();
-				}
+			if (skin_picker.find('li.selected.custom').length) {
+				window.location.href = $(e.target).data('link') + skin_picker.find('li.selected.custom').data('custom');
 			} else {
 				window.location.href = $(e.target).data('link') + skin_picker.find('li.selected').data('skin');
 			}
 			return;
 		}
-		
 		reloadPreview(theme, skin);
 	});
 

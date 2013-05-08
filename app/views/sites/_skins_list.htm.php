@@ -8,10 +8,10 @@
 		<?php
 			$class = '';
 			$customSkinId = null;
+			if ($skin->parentId()) {
+				continue;
+			}
 			if ($skin->id() == $currentSkin->id()) {
-				if ($skin->parentId()) {
-					continue;
-				}
 				$class .= 'selected';
 			}
 			if ($currentSkin->parentId() == $skin->id()) {

@@ -36,7 +36,8 @@
 							<div class="colors-wrap">
 								<?php foreach ($skins as $themeSkin): ?>
 								<?php
-									if ($themeSkin->id() == $skin->parentId()) {
+									if ($themeSkin->id() == $skin->parentId() 
+										|| $themeSkin->parentId() && $themeSkin->id() != $skin->id()) {
 										continue;
 									}
 								?>
@@ -45,7 +46,7 @@
 									<?php foreach($themeSkin->colors() as $name => $color): ?>
 									<li>
 										<span><?php echo s('color') . ' #' . $colorCount++; ?></span>
-										<span class="color" data-color="<?php echo $name ?>" data-value="<?php echo $color ?>" style="background-color: <?php echo $color ?>"></span>
+										<span class="color" data-color="<?php echo $name ?>" data-value="<?php echo strlen($color) == 4 ? '' : $color; ?>" style="background-color: <?php echo strlen($color) == 4 ? '' : $color; ?>"></span>
 									</li>
 									<?php endforeach ?>
 								</ul>
