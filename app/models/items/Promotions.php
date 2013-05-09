@@ -4,9 +4,9 @@ namespace app\models\items;
 
 use app\models\Items;
 
-class Promotion extends Items
+class Promotions extends Items
 {
-	protected $type = 'Promotion';
+	protected $type = 'Promotions';
 
 	protected $fields = array(
 		'title' => array(
@@ -35,26 +35,26 @@ class Promotion extends Items
 		$parent = parent::_object();
 
 		$self->_schema = $parent->_schema + array(
-			'title' => array('type' => 'string', 'default' => '')
-			'start' => array('type' => 'datetime', 'default' => '')
-			'end' => array('type' => 'datetime', 'default' => '')
-			'link' => array('type' => 'string', 'default' => '')
+			'title' => array('type' => 'string', 'default' => ''),
+			'start' => array('type' => 'datetime', 'default' => ''),
+			'end' => array('type' => 'datetime', 'default' => ''),
+			'link' => array('type' => 'string', 'default' => ''),
 		);
 	}
 }
 
-Promotion::applyFilter('save', function($self, $params, $chain) {
+Promotions::applyFilter('save', function($self, $params, $chain) {
 	return Items::addTimestamps($self, $params, $chain);
 });
 
-Promotion::applyFilter('save', function($self, $params, $chain) {
+Promotions::applyFilter('save', function($self, $params, $chain) {
 	return Items::addGeocode($self, $params, $chain);
 });
 
-Promotion::finder('nearest', function($self, $params, $chain) {
+Promotions::finder('nearest', function($self, $params, $chain) {
 	return Items::nearestFinder($self, $params, $chain);
 });
 
-Promotion::finder('within', function($self, $params, $chain) {
+Promotions::finder('within', function($self, $params, $chain) {
 	return Items::withinFinder($self, $params, $chain);
 });
