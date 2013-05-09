@@ -238,17 +238,22 @@ class FormHelper extends Helper {
         return false;
     }
 
-    protected function value($name) {
-        if($model = $this->model()):
+    protected function value($name)
+    {
+    	$value = '';
+        if($model = $this->model()) {
             if($model->hasAttribute($name)) {
-                return $model->{$name};
+                $value = $model->{$name};
             }
             else if($model->hasGetter($name)) {
-                return $model->{$name}();
+                $value = $model->{$name}();
             }
-        endif;
+			if ($value instanceof MongoDate) {
+				$value = date('Y-m-d\TH:i:s', $value->sec);
+			}
+		}
 
-        return '';
+        return $value;
     }
 
     protected function error($name) {
