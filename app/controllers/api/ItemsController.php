@@ -273,4 +273,11 @@ class ItemsController extends ApiController {
 		Items::remove(array('_id' => $this->request->params['id']));
 		$this->response->status(200);
 	}
+
+	protected function checkEtag()
+	{
+		if ($this->request->params['action'] != 'promotions') {
+			parent::checkEtag();
+		}
+	}
 }
