@@ -198,6 +198,7 @@ class BusinessItemsController extends AppController
 			date_default_timezone_set($this->getCurrentSite()->timezoneId());
 			$data['start'] = strtotime($data['start']);
 			$data['end'] = strtotime($data['end']);
+			date_default_timezone_set($timezone);
 		}
 		return $data;
 	}

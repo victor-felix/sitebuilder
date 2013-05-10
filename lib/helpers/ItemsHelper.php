@@ -30,17 +30,16 @@ class ItemsHelper extends Helper
 	);
 	protected $item;
 
-	public function __construct ($view)
+	public function __construct($view)
 	{
 		parent::__construct($view);
-		$this->types['related'] = function  ($type) use( $view)
-		{
+		$this->types['related'] = function($type) use ($view) {
 			$classname = '\app\models\items\\' . $type[1];
 			$conditions = array(
 				'type' => Inflector::underscore($type[1]),
 				'site_id' => $view->controller->getCurrentSite()->id
 			);
-			$items = $classname::find('all', 
+			$items = $classname::find('all',
 				array(
 					'conditions' => $conditions,
 					'order' => 'title'
@@ -59,7 +58,7 @@ class ItemsHelper extends Helper
 		};
 	}
 
-	public function form ($url, $item, $attr)
+	public function form($url, $item, $attr)
 	{
 		$this->item = $item;
 		$attr += array(
@@ -69,12 +68,12 @@ class ItemsHelper extends Helper
 		return $this->form->create($url, $attr);
 	}
 
-	public function endform ()
+	public function endform()
 	{
 		return $this->form->close();
 	}
 
-	public function input ($name)
+	public function input($name)
 	{
 		$field = $this->item->field($name);
 		$defaults = array(
@@ -89,7 +88,7 @@ class ItemsHelper extends Helper
 		}
 		$params = (array) $field;
 		unset($params['type'], $params['title']);
-		$attr = array_merge($defaults, $this->types['default'], $type_attr, 
+		$attr = array_merge($defaults, $this->types['default'], $type_attr,
 			$params);
 		$attr['class'] .= ' large';
 		return $this->form->input($name, $attr);

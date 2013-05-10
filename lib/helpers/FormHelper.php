@@ -238,23 +238,26 @@ class FormHelper extends Helper {
         return false;
     }
 
-    protected function value($name)
-    {
-    	$value = '';
-        if($model = $this->model()) {
-            if($model->hasAttribute($name)) {
-                $value = $model->{$name};
-            }
-            else if($model->hasGetter($name)) {
-                $value = $model->{$name}();
-            }
+	protected function value($name)
+	{
+		$value = '';
+		if ($model = $this->model()) {
+			if ($model->hasAttribute($name)) {
+				$value = $model->{$name};
+			} else if ($model->hasGetter($name)) {
+				$value = $model->{$name}();
+			}
+
 			if ($value instanceof MongoDate) {
+				$timezone = date_default_timezone_get();
+				date_default_timezone_set($this->view->controller->getCurrentSite()->timezoneId());
 				$value = date('Y-m-d\TH:i', $value->sec);
+				date_default_timezone_set($timezone);
 			}
 		}
 
-        return $value;
-    }
+		return $value;
+	}
 
     protected function error($name) {
         if($model = $this->model()):
