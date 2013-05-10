@@ -31,6 +31,7 @@ class BusinessItemsController extends AppController
 		$item->type = $parent->type;
 
 		if (!empty($this->data)) {
+			$this->data = $this->prepareDates($this->data);
 			$images = array_unset($this->data, 'image');
 			$images = $this->request->data['image'];
 			$item->set($this->data);
@@ -81,6 +82,7 @@ class BusinessItemsController extends AppController
 		)));
 
 		if (!empty($this->data)) {
+			$this->data = $this->prepareDates($this->data);
 			$images = array_unset($this->data, 'image');
 			$item->set($this->data);
 			$item->site_id = $site->id;
@@ -186,5 +188,17 @@ class BusinessItemsController extends AppController
 			Session::writeFlash($status, $message);
 			$this->redirect('/business_items/index/' . $item->parent_id);
 		}
+	}
+
+	// this function should be refactored somewhere else. I could not find a way
+	// to intercept lithium's casting to add timezones to dates
+	protected function prepareDates($data) {
+		if (isset($data['start']) && isset($data['end'])) {
+			$timezone = date_default_timezone_get();
+			date_default_timezone_set($this->getCurrentSite()->timezoneId());
+			$data['start'] = strtotime($data['start']);
+			$data['end'] = strtotime($data['end']);
+		}
+		return $data;
 	}
 }
