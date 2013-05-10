@@ -249,7 +249,7 @@ class FormHelper extends Helper {
                 $value = $model->{$name}();
             }
 			if ($value instanceof MongoDate) {
-				$value = date('Y-m-d\TH:i:s', $value->sec);
+				$value = date('Y-m-d\TH:i', $value->sec);
 			}
 		}
 
