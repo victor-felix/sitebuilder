@@ -47,10 +47,6 @@ Promotions::applyFilter('save', function($self, $params, $chain) {
 	return Items::addTimestamps($self, $params, $chain);
 });
 
-Promotions::applyFilter('save', function($self, $params, $chain) {
-	return Items::addGeocode($self, $params, $chain);
-});
-
 Promotions::finder('nearest', function($self, $params, $chain) {
 	return Items::nearestFinder($self, $params, $chain);
 });
