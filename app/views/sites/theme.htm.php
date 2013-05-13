@@ -28,7 +28,7 @@
 <div id="confirm-remove-skin" class="confirm">
 	<div class="wrapper">
 		<p>
-			<?php echo s('Selecting a different color palette will delete your customized one, Are you sure?') ?>
+			<?php echo s('Selecting a different color palette will delete your customized one. Are you sure?') ?>
 		</p>
 		<?php echo $this->html->link(s('Yes, change'), '/skins/delete/' . $site->skin, array(
 			'class' => 'ui-button highlight ajax-request'

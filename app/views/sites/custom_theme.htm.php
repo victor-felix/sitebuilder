@@ -23,7 +23,7 @@
 						<div class="link">
 							<span class="icon"></span>
 							<h3><?php echo s('appearance') ?></h3>
-							<small><?php echo s('you can add a restaurant menu, products, services, etc') ?></small>
+							<small><?php echo s('Edit the colors of your mobile site.') ?></small>
 							<span class="arrow open"></span>
 						</div>
 						<div class="content">
@@ -95,7 +95,7 @@
 <div id="confirm-remove-skin" class="confirm">
 	<div class="wrapper">
 		<p>
-			<?php echo s('Selecting a different color palette will delete your customized one, Are you sure?') ?>
+			<?php echo s('Selecting a different color palette will delete your customized one. Are you sure?') ?>
 		</p>
 		<?php echo $this->html->link(s('Yes, change'), '/skins/delete/' . $site->skin, array(
 			'class' => 'ui-button highlight ajax-request'
