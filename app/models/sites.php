@@ -1,4 +1,6 @@
 <?php
+use meumobi\sitebuilder\entities\Skin;
+use meumobi\sitebuilder\repositories\SkinsRepository;
 
 require_once 'lib/sitemanager/SiteManager.php';
 require_once 'app/models/categories.php';
@@ -174,6 +176,14 @@ class Sites extends AppModel
 		return 'http://' . $this->domain;
 	}
 
+	public function skin()
+	{
+		if ($this->skin) {
+			$skinRepo = new SkinsRepository();
+			return $skinRepo->find($this->skin);
+		}
+	}
+
 	public function categories()
 	{
 		if ($this->categories) return $this->categories;
@@ -265,6 +275,14 @@ class Sites extends AppModel
 		}
 
 		return $options;
+	}
+
+	public function timezoneId() {
+		if (!empty($this->timezone)) {
+			return $this->timezone;
+		} else {
+			return 'America/Sao_Paulo';
+		}
 	}
 
 	public function timezone()

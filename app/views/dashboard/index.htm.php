@@ -14,7 +14,7 @@
 			<p><?php echo s('keep improving your mobile site') ?></p>
 			<p id="qr-code"><img src="http://api.qrserver.com/v1/create-qr-code/?size=100x100&data=http://<?php echo e($site->domain) ?>" /></p>
 		</div>
-		<ul class="list">
+		<ul class="featured-list">
 			<li id="photos">
 				<a class="link" href="<?php echo Mapper::url('/sites/business_info#business-photos') ?>">
 					<span class="icon"></span>
@@ -64,8 +64,8 @@
 					<span class="arrow"></span>
 				</a>
 			</li>
-			<?php endif; ?>
-			<li id="add-content">
+			<?php endif ?>
+			<li id="add-content" class="open">
 				<div class="link">
 					<span class="icon"></span>
 					<h3><?php echo s('create new content') ?></h3>

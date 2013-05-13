@@ -5,6 +5,7 @@ namespace app\controllers\api;
 use lithium\core\Object;
 
 use app\models\Items;
+use app\models\RecordNotFoundException;
 use Model;
 use Inflector;
 
@@ -29,6 +30,35 @@ class ItemsController extends ApiController {
 			'limit' => $this->param('limit', 20),
 			'page' => $this->param('page', 1),
 			'order' => $order,
+		));
+
+		return $this->toJSON($items);
+	}
+
+	public function promotions()
+	{
+		$category_id = $this->request->params['category_id'];
+		$category = Model::load('Categories')->firstByIdAndType($category_id, 'promotions');
+
+		if (!$category) {
+			throw new RecordNotFoundException('category does not have promotions');
+		}
+
+		$date = $this->request->get('query:time') ?: time();
+
+		$conditions = array(
+			'site_id' => $this->site()->id,
+			'parent_id' => $category_id,
+			'type' => 'promotions',
+			'start' => array('$lt' => $date),
+			'end' => array('$gt' => $date),
+		);
+
+		$items = \app\models\items\Promotions::find('all', array(
+			'conditions' => $conditions,
+			'limit' => $this->param('limit', 20),
+			'page' => $this->param('page', 1),
+			'order' => array('order' => 'ASC'),
 		));
 
 		return $this->toJSON($items);
@@ -242,5 +272,12 @@ class ItemsController extends ApiController {
 
 		Items::remove(array('_id' => $this->request->params['id']));
 		$this->response->status(200);
+	}
+
+	protected function checkEtag()
+	{
+		if ($this->request->params['action'] != 'promotions') {
+			parent::checkEtag();
+		}
 	}
 }

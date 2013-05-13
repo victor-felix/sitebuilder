@@ -274,7 +274,7 @@ class %{type} extends Items
         ),
     TEMPLATE
 
-    SchemaTemplate = "'%s' => array('type' => '%s', 'default' => %s)"
+    SchemaTemplate = "'%s' => array('type' => '%s', 'default' => %s),"
 
     desc "create TYPENAME FIELD:TYPE...", "creates a new type"
     def create(typename, *args)
@@ -284,7 +284,7 @@ class %{type} extends Items
       }
 
       schemas = fields.each_with_object([]) do |field, schema|
-        unless ['string', 'richtext', 'boolean', 'geo'].include? field[:type]
+        unless ['string', 'richtext', 'boolean', 'geo', 'datetime'].include? field[:type]
           raise ArgumentError, "Invalid type #{field[:type]}"
         end
 

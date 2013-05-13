@@ -38,13 +38,13 @@
 
 <?php echo $this->items->endform() ?>
 
-<div id="delete-confirm" class="delete-confirm">
+<div id="delete-confirm" class="confirm">
 	<div class="wrapper">
 		<p>
 			<?php echo s('Really want to delete <strong>%s</strong>?', e($item->title)) ?>
 		</p>
 		<?php echo $this->html->link(s('Yes, delete'), '/business_items/delete/' . $item->id(), array(
-			'class' => 'ui-button delete highlight'
+			'class' => 'ui-button ajax-request go-back highlight'
 		)) ?>
 		<?php echo $this->html->link(s('No, I don\'t'), '#', array('class' => 'ui-button')) ?>
 	</div>

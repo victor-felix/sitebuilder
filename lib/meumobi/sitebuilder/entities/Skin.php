@@ -9,6 +9,7 @@ class Skin
 {
 	protected $id;
 	protected $themeId;
+	protected $parentId;
 	protected $mainColor;
 	protected $assets;
 	protected $colors;
@@ -41,6 +42,11 @@ class Skin
 	public function themeId()
 	{
 		return $this->themeId;
+	}
+
+	public function parentId()
+	{
+		return $this->parentId;
 	}
 
 	public function mainColor()

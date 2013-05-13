@@ -8,7 +8,7 @@
 		<link rel="shortcut icon" href="<?php echo Mapper::url('/images/layout/favicon.png') ?>" type="image/png" />
 		<?php echo $this->html->stylesheet('shared/base', 'shared/uikit', 'shared/categories',
 			'shared/edit-forms', 'shared/businessitems', 'shared/dashboard', 'segment', 'shared/markitup.simple',
-			'shared/markitup.xbbcode', 'shared/chosen', 'shared/themes') ?>
+			'shared/markitup.xbbcode', 'shared/chosen', 'shared/themes', 'shared/colorpicker') ?>
 		<?php echo $this->html->stylesForLayout ?>
 	</head>
 
@@ -36,11 +36,11 @@
 											<?php echo e($site->title) ?>
 										</a>
 									</li>
-									<?php endif;?>
-								<?php endforeach; ?>
+									<?php endif ?>
+								<?php endforeach ?>
 								<?php if (Users::ROLE_ADMIN == $currentSite->role): ?>
 									<li class="new"><a href="<?php echo Mapper::url('/create_site/theme') ?>"><?php echo s('new mobile site...') ?></a></li>
-								<?php endif; ?>
+								<?php endif ?>
 							</ul>
 						</li>
 					</ul>
@@ -100,6 +100,7 @@
 							<p><?php echo s('appearance') ?><span class="arrow"></span></p>
 							<ul>
 								<li><?php echo $this->html->link(s('themes'), '/sites/theme') ?></li>
+								<!-- li><?php echo $this->html->link(s('customization'), '/sites/custom_theme/' . $currentSite->skin ) ?></li -->
 							</ul>
 						</li>
 						<li>
@@ -112,7 +113,7 @@
 								<?php endif ?>
 							</ul>
 						</li>
-						<?php endif; ?>
+						<?php endif ?>
 					</ul>
 				</div>
 				<div class="clear"></div>
@@ -136,11 +137,12 @@
 				<?php echo $this->element('sites/theme_preview', array('site' => $currentSite))  ?>
 			</div>
 		</div>
-
+<?php if (Config::read('App.environment') == 'production'
+			&& Config::read('App.support')): ?>
 		<div class="support">
 			<a id="support-link" href="#"><?php echo s('support') ?></a>
 		</div>
-
+<?php endif ?>
 		<div class="popup-wrapper">
 			<div id="#share-links" class="popup share-links">
 				<div class="header">
@@ -163,7 +165,7 @@
 				</div>
 			</div>
 		</div>
-		<?php echo $this->html->script('shared/jquery', 'shared/jquery.formrestrict', 'shared/jquery.alphanumeric', 'shared/modernizr.custom.placeholder.js', 'shared/support_chat', 'shared/main', 'shared/markitup', 'shared/async_upload', 'shared/jquery.chosen', 'shared/themes') ?>
+		<?php echo $this->html->script('shared/jquery', 'shared/jquery.formrestrict', 'shared/jquery.alphanumeric', 'shared/modernizr.custom.placeholder.js', 'shared/colorpicker', 'shared/main', 'shared/markitup', 'shared/async_upload', 'shared/jquery.chosen', 'shared/themes') ?>
 		<?php echo $this->html->scriptsForLayout ?>
 	</body>
 </html>

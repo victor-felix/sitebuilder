@@ -35,12 +35,12 @@
 	top: -17px;
 }
 
-.dashboard .list {
+.featured-list {
 	margin: 35px 0 40px;
 	border-bottom: 1px solid #DDD;
 }
 
-.dashboard .list li {
+.featured-list > li {
 	border-top: 1px solid #DDD;
 	list-style: none;
 	border-left: 1px solid #fff;
@@ -48,25 +48,25 @@
 	position: relative;
 }
 
-.dashboard .list li:hover {
+.featured-list > li:hover {
 	border-left: 1px solid #EFEFEF;
 	border-right: 1px solid #EFEFEF;
 	background: url(/images/shared/layout/ui-button-white.png) center repeat-x;
 }
 
-.dashboard .list li#add-content:hover {
+.featured-list > li.open:hover {
 	background: none;
 	border-left: 1px solid #fff;
 	border-right: 1px solid #fff;
 }
 
-.dashboard .list li .link {
+.featured-list > li .link {
 	padding: 17px 0 24px 80px;
 	display: block;
 	text-decoration: none;
 }
 
-.dashboard .list li .link .icon {
+.featured-list > li .link .icon {
 	background: url(/images/shared/dashboard/icons.png) no-repeat 0 0 #c02926;
 	width: 51px;
 	height: 51px;
@@ -76,59 +76,64 @@
 	top: 13px;
 }
 
-.dashboard .list li#photos .icon {
+.featured-list > li > .content {
+	padding: 0 0 10px 80px;
+	overflow: hidden;
+}
+
+.featured-list li#photos .icon {
 	background-position: 0 -900px;
 }
 
-.dashboard .list li#social .icon {
+.featured-list li#social .icon {
 	background-position: 0 -332px;
 }
 
-.dashboard .list li#address .icon {
+.featured-list li#address .icon {
 	background-position: 0 -616px;
 }
 
-.dashboard .list li#contact .icon {
+.featured-list li#contact .icon {
 	background-position: 0 -758px;
 }
 
-.dashboard .list li#feed .icon {
+.featured-list li#feed .icon {
 	background-position: 0 -1042px;
 }
 
-.dashboard .list li#categories .icon {
+.featured-list li#categories .icon {
 	background-position: 0 -190px;
 }
 
-.dashboard .list li#add-content .icon {
+.featured-list li#add-content .icon {
 	background-position: 0 -474px;
 }
 
-.dashboard .list li#photos:hover .icon {
+.featured-list li#photos:hover .icon {
 	background-position: 0 -829px;
 }
 
-.dashboard .list li#social:hover .icon {
+.featured-list li#social:hover .icon {
 	background-position: 0 -261px;
 }
 
-.dashboard .list li#address:hover .icon {
+.featured-list li#address:hover .icon {
 	background-position: 0 -545px;
 }
 
-.dashboard .list li#contact:hover .icon {
+.featured-list li#contact:hover .icon {
 	background-position: 0 -687px;
 }
 
-.dashboard .list li#feed:hover .icon {
+.featured-list li#feed:hover .icon {
 	background-position: 0 -971px;
 }
 
-.dashboard .list li#categories:hover .icon {
+.featured-list li#categories:hover .icon {
 	background-position: 0 -119px;
 }
 
-.dashboard .list li .arrow {
+.featured-list > li .arrow {
 	background: url(/images/shared/dashboard/icons.png) no-repeat 0 -74px;
 	width: 15px;
 	height: 26px;
@@ -138,25 +143,25 @@
 	top: 26px;
 }
 
-.dashboard .list li:hover .arrow {
+.featured-list > li:hover .arrow {
 	background-position: 0 -45px;
 	background-color: #c02926;
 }
 
-.dashboard .list li .arrow.open, .dashboard .list li:hover .arrow.open {
+.featured-list > li .arrow.open, .featured-list li:hover .arrow.open {
 	background-position: 0 0;
 	width: 28px;
 	background-color: #fff;
 	right: 6px;
 }
 
-.dashboard .list li .link h3 {
+.featured-list > li .link h3 {
 	color: #c02926;
 	font-size: 22px;
 	font-weight: lighter;
 }
 
-.dashboard .list li .link small {
+.featured-list > li .link small {
 	color: #888;
 	display: block;
 	font-size: 12px;

@@ -58,7 +58,7 @@ $.extend($.easing, {
 	}
 });
 
-(function($){
+(function($) {
 	var content = $('#content'),
 		slider = $('#slide-container'),
 		slideSize = parseInt(content.css('width').replace('px',''),10);
@@ -88,14 +88,14 @@ $.extend($.easing, {
 	// Function to add slide 'listItens' for
 	// don't break history slide, so do it when
 	// in slide category go slide business_items/add
-	var addSliderItens = function(urlRequest){
-		if(urlRequest.indexOf("/business_items/add/")!= -1){
-			if(!($('.slide-elem[rel*="index"]').is("*"))){
+	var addSliderItens = function(urlRequest) {
+		if(urlRequest.indexOf("/business_items/add/")!= -1) {
+			if(!($('.slide-elem[rel*="index"]').is("*"))) {
 				var urlRequestItens = urlRequest.replace("add", "index");
 				$.ajax({
 					url: urlRequestItens,
 					type: 'GET',
-					success: function(dataIndex){
+					success: function(dataIndex) {
 						$(slider).width($(slider).width()+slideSize);
 						$(slider).css('marginLeft', (parseInt(slider.css('marginLeft'),10)-slideSize)+'px');
 						$('.slide-elem:last').before('<div class="slide-elem" rel="'+urlRequestItens+'">'+dataIndex+'</div>');						
@@ -108,10 +108,10 @@ $.extend($.easing, {
 	// Functions that handle the animation
 	// Any link with the push-scene class will load in a new slide scene
 	// Any link with the pop-scene class will have it's href ignored and goes back one step on the navigation
-	function pushScene(){
+	function pushScene() {
 		slider.undelegate('.push-scene', 'click', pushScene);
 			var urlRequest = $(this).attr('href');
-			$.get(urlRequest, function(data){
+			$.get(urlRequest, function(data) {
 			slider.append('<div class="slide-elem" rel="'+urlRequest+'">'+data+'</div>');
 			resetSlide();		
 			slider.animate(
@@ -129,37 +129,37 @@ $.extend($.easing, {
 			);
 			});		
 	}
-	slider.delegate('.push-scene', 'click', function(e){e.preventDefault();});
+	slider.delegate('.push-scene', 'click', function(e) {e.preventDefault();});
 	slider.delegate('.push-scene', 'click', pushScene);
 
-	function popScene(){
+	function popScene() {
 		slider.undelegate('.pop-scene', 'click', popScene);
 		slider.animate(
 			{marginLeft:(parseInt(slider.css('marginLeft'),10)+slideSize)+'px'},
 			{duration:800,easing:'easeInOutCubic',
-			complete:function(){
+			complete:function() {
 				slider.delegate('.pop-scene', 'click', popScene);
 				resetSlide(true);
 			}
 		});		
 	}
-	slider.delegate('.pop-scene', 'click', function(e){e.preventDefault();});
+	slider.delegate('.pop-scene', 'click', function(e) {e.preventDefault();});
 	slider.delegate('.pop-scene', 'click', popScene);
 	
 	
 	// ajax error/success helper
 	var globalCallback = function(data,status) {
-		if(data && typeof data.refresh != 'undefined'){
+		if(data && typeof data.refresh != 'undefined') {
 			$.ajax({
 				url: data.refresh,
 				type: 'GET',
-				success: function(dataHTML){
+				success: function(dataHTML) {
 					var target = $('.slide-elem[rel="'+data.refresh+'"]');
 					target.html(dataHTML);
 				}
 			});
 		}
-		if(data && typeof data.go_back != 'undefined' && data.go_back){
+		if(data && typeof data.go_back != 'undefined' && data.go_back) {
 			$($('.slide-elem:last .ui-button.back')[0]).click();
 		}
 		var message=false;
@@ -173,7 +173,7 @@ $.extend($.easing, {
 		}
 		if(message) {
 			message.prependTo('#content').slideDown('fast');
-			message.delay(5000).slideUp('fast').delay(1000,function(){$(this).remove();});
+			message.delay(5000).slideUp('fast').delay(1000,function() {$(this).remove();});
 		}
 	};
 
@@ -186,7 +186,7 @@ $.extend($.easing, {
 			}
 			// jQuery status is not what we want, replace it
 			status = parseInt(xhr.status,10);
-			try{console.log('returned status ' + status);}catch(e){}
+			try{console.log('returned status ' + status);}catch(e) {}
 			globalCallback(data,status,xhr);
 			//func(data,status,xhr);
 		};
@@ -198,7 +198,7 @@ $.extend($.easing, {
 	// *** juliogreff says: added :not(.skip-slide) to prevent the event's prevention
 	// *** and submit the form normally. This will be kept until we're able to send
 	// *** images in an asynchronous manner
-	slider.delegate('form:not(.skip-slide)', 'submit', function(e){
+	slider.delegate('form:not(.skip-slide)', 'submit', function(e) {
 		e.preventDefault();
 		$(this).find('button[type=submit]').attr('disabled', 'disabled');
 		var url = this.action;
@@ -220,7 +220,7 @@ $.extend($.easing, {
 	var inPlace,
 		inPlaceValue = '';
 
-	slider.delegate('.edit-in-place','click',function(e){
+	slider.delegate('.edit-in-place','click',function(e) {
 		var t = $(e.target);
 		if(!t.is('span')) {
 			return;
@@ -241,7 +241,7 @@ $.extend($.easing, {
 
 	content.delegate('.edit-in-place input','blur',resetEdit);
 
-	content.delegate('.edit-in-place input','keypress',function(e){
+	content.delegate('.edit-in-place input','keypress',function(e) {
 		if (e.keyCode == 13) {
 			// ENTER key submits
 			var handler = dataWithCode(function(data,status) {
@@ -264,9 +264,9 @@ $.extend($.easing, {
 	// Handles the delete confirmation dialog buttons.
 	// When clicked cancel, closes the dialog. When clicked OK, makes the
 	// request and triggers ajax:success event
-	content.delegate('.delete-confirm .ui-button', 'click', function(e) {
+	content.delegate('.confirm .ui-button', 'click', function(e) {
 		var self = $(this);
-		if(self.hasClass('delete')) {
+		if(self.hasClass('ajax-request')) {
 			if(!slider.length) {
 				return;
 			}
@@ -286,14 +286,14 @@ $.extend($.easing, {
 	// Handles the item's deletion in items/edit
 	content.delegate('.ui-button.has-confirm', 'click', function(e) {
 		var confirmSelector = '';
-		if(confirmSelector = $(this).data('confirm')){
+		if(confirmSelector = $(this).data('confirm')) {
 			e.preventDefault();
 			$(confirmSelector).fadeIn('fast');
 		}
 	});
 
-	content.delegate('.delete-confirm .ui-button', 'ajax:success', function(e, data) {
-		$('.delete-confirm').fadeOut('fast');
+	content.delegate('.confirm .ui-button.ajax-request.go-back', 'ajax:success', function(e, data) {
+		$('.confirm').fadeOut('fast');
 		$('.slide-elem:last').prev().html(data);
 		$('.slide-elem:last .ui-button.back').click();
 	});
@@ -379,7 +379,7 @@ $.extend($.easing, {
 			var result = $(data).filter(this.settings.paginate_items_wrapp);
 			var controls = $(data).filter(this.settings.controls_wrapp);
 
-			$(this.settings.paginate_items_wrapp).slideUp('slow', function(){
+			$(this.settings.paginate_items_wrapp).slideUp('slow', function() {
 				$(this).html(result.html()).slideDown('slow');
 			});
 
@@ -390,11 +390,11 @@ $.extend($.easing, {
 
 		this.init = function() {
 			var paginate = this;
-			slider.delegate(this.settings.controls_wrapp+ ' a', 'click',function(){
+			slider.delegate(this.settings.controls_wrapp+ ' a', 'click',function() {
 				$.ajax({
 					url: $(this).attr('href'),
 					type: 'GET',
-					success: function(dataHTML){
+					success: function(dataHTML) {
 						paginate.refreshData(dataHTML);
 					}
 				});
@@ -427,7 +427,7 @@ $.extend($.easing, {
 	$('p.dynamic-text').textfill();
 	
 	//handle cunstom domain
-	var change_custom_domain = function(e){
+	var change_custom_domain = function(e) {
 		var self = $(this);
 		if (self.val()) {
 			$('.form-edit .current-custom-domain').html(self.val());
@@ -440,7 +440,7 @@ $.extend($.easing, {
 	//restrict to alphanumeric
 	try {
 		$('.domains .ui-text').alphanumeric({allow:".-_ "});
-		$('.domains .js-duplicate-previous').click(function(){
+		$('.domains .js-duplicate-previous').click(function() {
 			$('.domains .ui-text').alphanumeric({allow:".-_ "});
 		});
 	} catch(e) {}
@@ -464,8 +464,8 @@ $(function() {
 	// expand fieldsets in sites/edit
 	$('.fieldset-expand').click(function(e) {
 	var objThis = this;		 
-	$($('fieldset[style*="display: block"],fieldset[style=""]')).each(function(i , element){
-		if($(objThis).html() != $(element).prev().html()){
+	$($('fieldset[style*="display: block"],fieldset[style=""]')).each(function(i , element) {
+		if($(objThis).html() != $(element).prev().html()) {
 			$(element).slideToggle();
 			$(element).prev().slideToggle();
 		}
@@ -475,7 +475,7 @@ $(function() {
 		e.preventDefault();
 	});
 		
-	$('#form-edit-site-info > fieldset').click(function(e){
+	$('#form-edit-site-info > fieldset').click(function(e) {
 		if ($(this).prev().is('a.fieldset-expand')) {
 			if ($(e.target).hasClass('duplicate-previous')
 					|| $(e.target).parents('.picture-upload-container:first').length > 0
@@ -488,7 +488,7 @@ $(function() {
 		}
 	});
 	
-	$('#form-edit-site-info > fieldset .field-group').click(function(e){
+	$('#form-edit-site-info > fieldset .field-group').click(function(e) {
 		if ($(this).children('.picture-upload-container').length < 1) {
 			e.stopPropagation();
 		}
@@ -499,7 +499,7 @@ $(function() {
 		e.preventDefault();
 		$(this).slideUp('fast');
 	});
-	$('#success-feedback, #error-feedback').delay(5000).slideUp('fast').delay(1000,function(){$(this).remove();});
+	$('#success-feedback, #error-feedback').delay(5000).slideUp('fast').delay(1000,function() {$(this).remove();});
 
 	if($('.markitup').length) {
 		$('.markitup').markItUp(mySettings);
@@ -507,24 +507,24 @@ $(function() {
 	if($('.chosen').length) {
 		$('.chosen').chosen();
 	}
-	$('body').click(function(e){
+	$('body').click(function(e) {
 		$("#navbar .open").removeClass("open");
 	})
 	
 	$("#navbar")
-		.delegate(".business-name", 'click', function(e){
+		.delegate(".business-name", 'click', function(e) {
 			e.stopPropagation();
 			$(this).closest(".sites").toggleClass("open");
 			$("#navbar .user.open").removeClass("open")
 		})
-		.delegate(".user p", 'click', function(e){
+		.delegate(".user p", 'click', function(e) {
 			e.stopPropagation();
 			$(this).closest(".user").toggleClass("open");
 			$("#navbar .sites.open").removeClass("open")
 		});
 	
 	//Implement bussiness description counter
-	$('#businessDescription').keyup(function(){
+	$('#businessDescription').keyup(function() {
 		var remainVal = $(this).attr('maxlength') - $(this).val().length;
 		$('#businessCounter').html(remainVal);
 		if (remainVal < 10) {
@@ -538,8 +538,8 @@ $(function() {
 	
 });
 
-$(window).load(function(){
-		if(!Modernizr.input.placeholder){
+$(window).load(function() {
+		if(!Modernizr.input.placeholder) {
 			$('[placeholder]').focus(function() {
 			  var input = $(this);
 			  if (input.val() == input.attr('placeholder')) {
@@ -563,11 +563,30 @@ $(window).load(function(){
 			});
 		}
 
-		$('a.popup-link').click(function(){
+		$('a.popup-link').click(function() {
 			$('.popup-wrapper').fadeIn('fast');
 		});
 
-		$('.popup-wrapper a.close').click(function(){
+		$('.popup-wrapper a.close').click(function() {
 			$('.popup-wrapper').fadeOut('fast');
 		});
+		var removeField = function(e) {
+			var self = $(this);
+			var href = self.attr('href') != '#' ? self.attr('href') : false;
+			if (href) {
+			return true;
+			} else {
+			self.parent().remove();
+			}
+			e.preventDefault();
+		};
+
+		$('#domains #add-new').click(function(e) {
+			e.preventDefault();
+			var field = $(this).prev().clone();
+			field.find('input').val('');
+			field.find('a').click(removeField);
+			field.show().insertBefore(this);
+		});
+		$('#domains .domain a').click(removeField);
 });

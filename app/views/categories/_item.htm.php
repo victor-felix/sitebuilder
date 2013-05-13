@@ -37,14 +37,14 @@
 
 	<div class="children-count"><?php echo $category->childrenCount() ?></div>
 
-	<div class="delete-confirm">
+	<div class="confirm">
 		<div class="wrapper">
 			<p>
 				<?php echo s('Really want to delete <strong>%s</strong>?', e($category->title)) ?>
 				<small><?php echo s('All itens and sub-categories related will be deleted') ?></small>
 			</p>
 			<?php echo $this->html->link(s('Yes, delete'), '/categories/delete/' . $category->id, array(
-				'class' => 'ui-button delete highlight'
+				'class' => 'ui-button ajax-request go-back highlight'
 			)) ?>
 			<?php echo $this->html->link(s('No, I don\'t'), '#', array( 'class' => 'ui-button' )) ?>
 		</div>

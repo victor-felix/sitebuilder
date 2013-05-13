@@ -24,6 +24,15 @@ $defaults = array(
 );
 
 Router::connect(new Route(array(
+	'method' => 'POST',
+	'template' => '/api/{:slug}/mail',
+	'params' => array(
+		'action' => 'index',
+		'controller' => 'mail',
+	) + $defaults['params']
+)));
+
+Router::connect(new Route(array(
 	'method' => 'GET',
 	'template' => '/api/{:slug}/export/{:category_id}',
 	'params' => array(
@@ -75,6 +84,15 @@ Router::connect(new Route(array(
 	'params' => array(
 		'controller' => 'items',
 		'action' => 'search',
+	) + $defaults['params']
+)));
+
+Router::connect(new Route(array(
+	'method' => 'GET',
+	'template' => '/api/{:slug}/categories/{:category_id}/promotions',
+	'params' => array(
+		'action' => 'promotions',
+		'controller' => 'items'
 	) + $defaults['params']
 )));
 

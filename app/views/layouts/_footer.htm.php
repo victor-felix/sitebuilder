@@ -27,17 +27,39 @@
 		</div>
 	</div>
 </div>
-<?php if (Config::read('App.environment') == 'production' && MeuMobi::currentSegment()->analytics): ?>
-<script type="text/javascript">
-	var _gaq = _gaq || [];
-	_gaq.push(['_setAccount', '<?php echo MeuMobi::currentSegment()->analytics ?>']);
-	_gaq.push(['_setDomainName', '.meumobi.com']);
-	_gaq.push(['_trackPageview']);
-
-	(function() {
-		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-	})();
-</script>
+<?php if (Config::read('App.environment') == 'production'): ?>
+	<?php if (MeuMobi::currentSegment()->analytics): ?>
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', '<?php echo MeuMobi::currentSegment()->analytics ?>']);
+		_gaq.push(['_setDomainName', '.meumobi.com']);
+		_gaq.push(['_trackPageview']);
+	
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+	<?php endif ?>
+	<?php if (Config::read('App.support')): ?>
+	<script type="text/javascript">
+	/* Zopim Code */
+	window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
+	d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
+	_.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute('charset','utf-8');
+	$.src='//cdn.zopim.com/?<?php echo Config::read('App.support') ?>';z.t=+new Date;$.
+	type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
+	/* Zopim Code */
+	
+	//support link toggle
+	$(function() {
+		$zopim(function() {
+			$('#support-link, a#support').click(function(){
+				$zopim.livechat.window.toggle();
+			});
+		});
+	});
+	</script>
+	<?php endif ?>
 <?php endif ?>

@@ -1,9 +1,7 @@
 <?php
-	$currentTheme = $site->theme ? $site->theme : reset($themes)->name();
-	$skins = reset($themes)->skins();
-	$currentSkin = $site->skin ? $site->skin : reset($skins)->id();
+	$currentTheme = $site->theme ? $site->theme : reset($themes)->id();
+	$currentSkin = $site->skin ? $site->skin() : reset($themes)->skins()[0];
 ?>
-
 <div class="themes">
 	<div class="tip-big">
 		<h2><?php echo s('pick up a theme') ?></h2>
@@ -20,21 +18,11 @@
 							<?php endforeach ?>
 						</p>
 						<span class="title"><?php echo $theme->name() ?></span>
-
-						<ul class="skin-picker">
-							<?php
-								$skins = $theme->skins();
-								$currentThemeSkin = $currentTheme == $theme->id()
-								? $currentSkin
-								: reset($skins)->id();
-							?>
-
-							<?php foreach($skins as $skin): ?>
-								<li class="<?php if($skin->id() == $currentThemeSkin) echo 'selected' ?>" data-skin="<?php echo $skin->id() ?>">
-									<span style="background-color: #<?php echo $skin->mainColor() ?>"></span>
-								</li>
-							<?php endforeach ?>
-						</ul>
+						<?php echo $this->element('sites/skins_list', array(
+							'skins' => $theme->skins(),
+							'currentSkin' => $theme->id() == $site->theme ? $site->skin() : null,
+							'customizeLink' => (bool)$site->theme,
+						)) ?>
 					</li>
 				<?php endforeach ?>
 				<li class="clear"></li>
@@ -51,7 +39,7 @@
 
 	<?php echo $this->form->input('skin', array(
 		'type' => 'hidden',
-		'value' => $currentSkin,
+		'value' => $currentSkin->id(),
 		'id' => 'skin'
 	)) ?>
 </div>
