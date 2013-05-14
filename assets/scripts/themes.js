@@ -179,9 +179,6 @@ $(function() {
 
 	$('#form-custom-theme').submit(function() {
 		var skinElement = $('.skin-picker li.selected');
-		if (!validate(skinElement.data('skin'))) {
-			return false;
-		}
 		updateColorFields(skinElement.data('skin'), skinElement.is('.custom'));
 	});
 
