@@ -241,6 +241,7 @@
 	margin: 10px 0;
 	padding: 10px 15px;
 	width: 240px;
+	border: 1px solid transparent;
 }
 
 .color-picker > li > span {
@@ -262,4 +263,10 @@
 
 .default-form fieldset.actions button.save {
 	margin-left: 30px;
+}
+
+.color-picker li.error {
+	border-color: #F00;
+	-webkit-box-shadow: 0 0 4px #F00;
+	-moz-box-shadow: 0 0 4px #F00;
 }

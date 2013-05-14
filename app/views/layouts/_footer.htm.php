@@ -53,8 +53,8 @@
 	/* Zopim Code */
 	
 	//support link toggle
-	$(function() {
-		$zopim(function() {
+	$zopim(function() {
+		$(document).ready(function() {
 			$('#support-link, a#support').click(function(){
 				$zopim.livechat.window.toggle();
 			});

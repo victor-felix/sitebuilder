@@ -3,8 +3,8 @@ $(function() {
 		var frame = $('#theme-frame');
 		var url = frame.data('url') + '?';
 
-		if (theme && skin) {
-			url += "theme=" + theme + "&skin=" + skin;
+		if (skin) {
+			url += "skin=" + skin;
 		}
 		url += '&' + (new Date()).getTime();
 		$('.theme-preview .wrapp .load').fadeIn(300, function() {
@@ -21,6 +21,20 @@ $(function() {
 			$('#' + color.data('color')).val(color.data('value'));
 		});
 	};
+
+	var validate = function(skin) {
+		var valid = true;
+		$('.colors-wrap #color-picker-' + skin + ' li').removeClass('error');
+		$('.colors-wrap #color-picker-' + skin + ' .color').each(function() {
+			var color = $(this);
+			if (!color.data('value')) {
+				valid = false;
+				color.parent('li').addClass('error');
+			}
+		});
+		$('body').animate({scrollTop:$('.colors-wrap #color-picker-' + skin + ' li.error:first').offset().top}, 100);
+		return valid;
+	}
 
 	var confirmRemoveSkin = function() {
 		$('.confirm').fadeIn();
@@ -142,7 +156,7 @@ $(function() {
 	$('.color-picker .color').each(function() {
 		var colorElement = $(this);
 		colorElement.ColorPicker( {
-			color: colorElement.data('value'),
+			color: colorElement.data('value') ? colorElement.data('value') : 'ff0000',
 			onShow: function (colpkr) {
 				$(colpkr).fadeIn(500);
 				return false;

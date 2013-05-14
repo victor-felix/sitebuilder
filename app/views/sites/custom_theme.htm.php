@@ -46,7 +46,7 @@
 									<?php foreach($themeSkin->colors() as $name => $color): ?>
 									<li>
 										<span><?php echo s('color') . ' #' . $colorCount++ ?></span>
-										<span class="color" data-color="<?php echo $name ?>" data-value="<?php echo strlen($color) == 4 ? '' : $color ?>" style="background-color: <?php echo strlen($color) == 4 ? '' : $color ?>"></span>
+										<span class="color" data-color="<?php echo $name ?>" data-value="<?php echo $this->string->pad($color, 7, substr($color, -1)) ?>" style="<?php if ($color) echo "background-color:$color" ?>"></span>
 									</li>
 									<?php endforeach ?>
 								</ul>
