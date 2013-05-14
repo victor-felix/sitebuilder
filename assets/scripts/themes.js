@@ -22,6 +22,20 @@ $(function() {
 		});
 	};
 
+	var validate = function(skin) {
+		var valid = true;
+		$('.colors-wrap #color-picker-' + skin + ' li').removeClass('error');
+		$('.colors-wrap #color-picker-' + skin + ' .color').each(function() {
+			var color = $(this);
+			if (!color.data('value')) {
+				valid = false;
+				color.parent('li').addClass('error');
+			}
+		});
+		$('body').animate({scrollTop:$('.colors-wrap #color-picker-' + skin + ' li.error:first').offset().top}, 100);
+		return valid;
+	}
+
 	var confirmRemoveSkin = function() {
 		$('.confirm').fadeIn();
 	}
@@ -165,6 +179,9 @@ $(function() {
 
 	$('#form-custom-theme').submit(function() {
 		var skinElement = $('.skin-picker li.selected');
+		if (!validate(skinElement.data('skin'))) {
+			return false;
+		}
 		updateColorFields(skinElement.data('skin'), skinElement.is('.custom'));
 	});
 

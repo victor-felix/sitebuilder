@@ -24,7 +24,7 @@
 		</li>
 	<?php endforeach ?>
 </ul>
-<?php if (0 && $customizeLink): ?>
+<?php if ($customizeLink): ?>
 <p class="customize-link">
 	<?php echo $this->html->link(s('Customize'), '/sites/custom_theme/' . $currentSkin->id(), array(
 		'class' => 'ui-button highlight push-scene',
