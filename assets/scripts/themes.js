@@ -156,7 +156,7 @@ $(function() {
 	$('.color-picker .color').each(function() {
 		var colorElement = $(this);
 		colorElement.ColorPicker( {
-			color: colorElement.data('value'),
+			color: colorElement.data('value') ? colorElement.data('value') : 'ff0000',
 			onShow: function (colpkr) {
 				$(colpkr).fadeIn(500);
 				return false;
