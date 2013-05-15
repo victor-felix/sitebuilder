@@ -139,9 +139,16 @@ $(function() {
 
 	//autoload theme
 	if ($('#theme-frame').data('autoload')) {
+		var theme = null;
+		var skin = null;
 		var theme_picker = $('.theme-picker > ul > li.selected');
-		var theme = theme_picker.data('theme');
-		var skin = theme_picker.children('.skin-picker').find('li.selected').data('skin');
+		if (theme_picker.length) {
+			theme = theme_picker.data('theme');
+			skin = theme_picker.children('.skin-picker').find('li.selected').data('skin');
+		} else {
+			skin = $('.customize-theme .skin-picker > li.selected').data('skin');
+		}
+
 		reloadPreview(theme, skin);
 	}
 
