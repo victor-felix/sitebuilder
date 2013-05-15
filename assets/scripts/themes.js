@@ -146,7 +146,8 @@ $(function() {
 			theme = theme_picker.data('theme');
 			skin = theme_picker.children('.skin-picker').find('li.selected').data('skin');
 		} else {
-			skin = $('.customize-theme .skin-picker > li.selected').data('skin');
+			var skinElement = $('.customize-theme .skin-picker > li.selected');
+			skin = skinElement.is('.custom') ? skinElement.data('custom') : skinElement.data('skin');
 		}
 
 		reloadPreview(theme, skin);
