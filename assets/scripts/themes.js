@@ -111,6 +111,8 @@ $(function() {
 			$('.colors-wrap .color-picker').hide();
 			$('.colors-wrap #color-picker-' + skin).show();
 			updateColorFields(skin);
+		} else {
+			skin = self.data('custom');
 		}
 
 		reloadPreview(theme, skin);
