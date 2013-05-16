@@ -111,6 +111,8 @@ $(function() {
 			$('.colors-wrap .color-picker').hide();
 			$('.colors-wrap #color-picker-' + skin).show();
 			updateColorFields(skin);
+		} else {
+			skin = self.data('custom');
 		}
 
 		reloadPreview(theme, skin);
@@ -139,9 +141,17 @@ $(function() {
 
 	//autoload theme
 	if ($('#theme-frame').data('autoload')) {
+		var theme = null;
+		var skin = null;
 		var theme_picker = $('.theme-picker > ul > li.selected');
-		var theme = theme_picker.data('theme');
-		var skin = theme_picker.children('.skin-picker').find('li.selected').data('skin');
+		if (theme_picker.length) {
+			theme = theme_picker.data('theme');
+			skin = theme_picker.children('.skin-picker').find('li.selected').data('skin');
+		} else {
+			var skinElement = $('.customize-theme .skin-picker > li.selected');
+			skin = skinElement.is('.custom') ? skinElement.data('custom') : skinElement.data('skin');
+		}
+
 		reloadPreview(theme, skin);
 	}
 

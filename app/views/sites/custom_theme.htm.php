@@ -44,10 +44,12 @@
 								<ul id="color-picker-<?php echo $themeSkin->parentId() ? $themeSkin->parentId() : $themeSkin->id() ?>" class="color-picker <?php if ($skin->id() != $themeSkin->id()) echo 'hidden' ?>">
 									<?php $colorCount = 1 ?>
 									<?php foreach($themeSkin->colors() as $name => $color): ?>
-									<li>
-										<span><?php echo s('color') . ' #' . $colorCount++ ?></span>
-										<span class="color" data-color="<?php echo $name ?>" data-value="<?php echo $this->string->pad($color, 7, substr($color, -1)) ?>" style="<?php if ($color) echo "background-color:$color" ?>"></span>
-									</li>
+									<?php if ($color): ?>
+										<li>
+											<span><?php echo s('color') . ' #' . $colorCount++ ?></span>
+											<span class="color" data-color="<?php echo $name ?>" data-value="<?php echo $this->string->pad($color, 7, substr($color, -1)) ?>" style="background-color: <?php echo $color ?>"></span>
+										</li>
+									<?php endif ?>
 									<?php endforeach ?>
 								</ul>
 								<?php endforeach ?>
@@ -64,12 +66,14 @@
 			'id' => 'parent_id'
 		));
 
-		foreach ($skin->colors() as $name => $color) { 
-			echo $this->form->input("colors[$name]", array(
-				'type' => 'hidden',
-				'value' => $color,
-				'id' => $name
-			));
+		foreach ($skin->colors() as $name => $color) {
+			if ($color) {
+				echo $this->form->input("colors[$name]", array(
+					'type' => 'hidden',
+					'value' => $color,
+					'id' => $name
+				));
+			}
 		}
 		?>
 		<?php echo $this->element('sites/theme_preview', array(
