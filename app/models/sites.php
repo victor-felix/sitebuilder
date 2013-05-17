@@ -8,16 +8,35 @@ require_once 'lib/geocoding/GoogleGeocoding.php';
 
 class Sites extends AppModel
 {
-	protected $getters = array('feed_url', 'feed_title', 'custom_domain');
-	protected $beforeSave = array('getLatLng', 'saveDomain', 'trimFields');
+	protected $getters = array(
+		'feed_url',
+		'feed_title',
+		'custom_domain'
+	);
+
+	protected $beforeSave = array(
+		'getLatLng',
+		'saveDomain',
+		'trimFields'
+	);
+
 	protected $afterSave = array(
-		'saveLogoAndAppleTouchIcon', 'createNewsCategory', 'updateFeed',
-		'saveDomains', 'createRelation'
+		'saveLogoAndAppleTouchIcon',
+		'createNewsCategory',
+		'updateFeed',
+		'saveDomains',
+		'createRelation'
 	);
+
 	protected $beforeDelete = array(
-		'deleteImages', 'deleteCategories', 'deleteLogo', 'removeUsers',
-		'removeFromSiteManager'
+		'deleteImages',
+		'deleteCategories',
+		'deleteLogo',
+		'removeUsers',
+		'removeFromSiteManager',
+		'deleteCustomSkin'
 	);
+
 	protected $validates = array(
 		'slug' => array(
 			array(
@@ -562,6 +581,16 @@ class Sites extends AppModel
 			'conditions' => array('site_id' => $this->id, 'parent_id' => null)
 		)));
 
+		return $id;
+	}
+
+	protected function deleteCustomSkin($id)
+	{
+		$skin = $this->skin();
+		if ($skin->parentId()) {
+			$skinRepo = new SkinsRepository();
+			$skinRepo->destroy($skin);
+		}
 		return $id;
 	}
 
