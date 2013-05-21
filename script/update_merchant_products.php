@@ -20,6 +20,16 @@ if (!flock($pidfile, LOCK_EX | LOCK_NB)) exit();
 fwrite($pidfile, getmypid());
 fflush($pidfile);
 
+function get($product, $key) {
+	$value = $product->xpath($key);
+
+	if (isset($value[0])) {
+		return (string) $value[0];
+	} else {
+		return null;
+	}
+}
+
 echo date('Y-m-d H:i:s') . ': Updating products...' . PHP_EOL;
 
 $stats = array(
@@ -51,9 +61,11 @@ if ($result['ok']) {
 
 	foreach ($feeds as $feed) {
 		try {
+			echo date('Y-m-d H:i:s') . ': Downloading feed ' . $feed['_id'] . PHP_EOL;
 			$xml = new \SimpleXMLElement(file_get_contents($feed['_id']));
 			$xml->registerXPathNamespace('g', 'http://base.google.com/ns/1.0');
 			$products = $xml->xpath('channel/item');
+			echo date('Y-m-d H:i:s') . ': Finished downloading feed ' . PHP_EOL;
 
 			$categories = array_unique(array_map(function($category) {
 				return $category['category_id'];
@@ -61,6 +73,7 @@ if ($result['ok']) {
 
 			foreach ($categories as $category) {
 				\Model::load('Categories')->firstById($category)->removeItems();
+				echo date('Y-m-d H:i:s') . ': Cleaned category ' . $category . PHP_EOL;
 			}
 
 			$categories = array_reduce($feed['categories'], function($categories, $category) {
@@ -72,17 +85,17 @@ if ($result['ok']) {
 			}, array());
 
 			foreach ($products as $product) {
-				$type = mb_convert_case((string) $product->xpath('g:product_type')[0], MB_CASE_LOWER, "UTF-8");
+				$type = mb_convert_case(get($product, 'g:product_type'), MB_CASE_LOWER, "UTF-8");
 
 				if (isset($categories[$type])) {
 					$attr = array(
-						'title' => (string) $product->xpath('title')[0],
-						'brand' => (string) $product->xpath('g:brand')[0],
-						'description' => (string) $product->xpath('description')[0],
-						'price' => (string) $product->xpath('g:price')[0],
-						'availability' => (string) $product->xpath('g:availability')[0],
-						'link' => (string) $product->xpath('link')[0],
-						'product_id' => (string) $product->xpath('g:id')[0],
+						'title' => get($product, 'title'),
+						'brand' => get($product, 'g:brand'),
+						'description' => get($product, 'description'),
+						'price' => get($product, 'g:price'),
+						'availability' => get($product, 'g:availability'),
+						'link' => get($product, 'link'),
+						'product_id' => get($product, 'g:id'),
 						'product_type' => $type
 					);
 
@@ -90,18 +103,22 @@ if ($result['ok']) {
 						$attr['parent_id'] = $category_id;
 						$attr['site_id'] = Model::load('Categories')->firstById($category_id)->site_id;
 						$attr['type'] = 'merchant_products';
+						echo date('Y-m-d H:i:s') . ': Saving product ' . $attr['title'] . ' to category ' . $category_id . PHP_EOL;
 						$obj = MerchantProducts::create($attr);
 						$obj->save();
 
-						$result = Model::load('Images')->download($obj, (string) $product->xpath('g:image_link')[0], array(
-							'url' => (string) $product->xpath('g:image_link')[0],
+						echo date('Y-m-d H:i:s') . ': Downloading image ' . get($product, 'g:image_link') . PHP_EOL;
+						$result = Model::load('Images')->download($obj, get($product, 'g:image_link'), array(
+							'url' => get($product, 'g:image_link'),
 							'visible' => 1
 						));
 					}
 				}
 			}
+			echo date('Y-m-d H:i:s') . ': Finished feed ' . $feed['_id'] . PHP_EOL;
 		} catch (Exception $e) {
 			echo date('Y-m-d H:i:s') . ': Product update error: ' . $e->getMessage() . PHP_EOL;
+			echo $e;
 		}
 	}
 }
