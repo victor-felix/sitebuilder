@@ -12,6 +12,7 @@ class Theme
 	protected $assets;
 	protected $colors;
 	protected $thumbnails;
+	protected $defaults;
 
 	public function __construct($attrs = array())
 	{
@@ -42,5 +43,15 @@ class Theme
 	{
 		$skinsRepo = new SkinsRepository();
 		return $skinsRepo->findByThemeId($this->id);
+	}
+
+	public function assets()
+	{
+		return $this->assets;
+	}
+
+	public function defaults()
+	{
+		return $this->defaults;
 	}
 }

@@ -13,6 +13,8 @@ class ThemesRepository
 	public function all()
 	{
 		return array_map(function($theme) {
+			$theme->defaults = $theme->colors;
+			$theme->colors = array_keys((array) $theme->defaults);
 			return new Theme($theme);
 		}, json_decode(file_get_contents(Config::read('Themes.url'))));
 	}
@@ -33,6 +35,11 @@ class ThemesRepository
 
 	public function find($id)
 	{
+		foreach ($this->all() as $theme) {
+			if ($theme->id() == $id) {
+				return $theme;
+			}
+		}
 		throw new RecordNotFoundException("The theme '{$id}' was not found");
 	}
 }
