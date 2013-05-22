@@ -77,6 +77,7 @@ class SkinsRepository
 		return [
 			'theme_id' => $object->themeId(),
 			'parent_id' => $object->parentId(),
+			'main_color' => $object->mainColor(),
 			'colors' => $object->colors(),
 			'assets' => $object->assets()
 		];
