@@ -13,7 +13,8 @@ class ThemesRepository
 	public function all()
 	{
 		return array_map(function($theme) {
-			$theme->defaults = $theme->colors;
+			$theme->defaults['colors'] = $theme->colors;
+			$theme->defaults['main_color'] = $theme->main_color;
 			$theme->colors = array_keys((array) $theme->defaults);
 			return new Theme($theme);
 		}, json_decode(file_get_contents(Config::read('Themes.url'))));

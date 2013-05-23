@@ -50,8 +50,8 @@ class Theme
 		return $this->assets;
 	}
 
-	public function defaults()
+	public function defaults($key = 'colors')
 	{
-		return $this->defaults;
+		return $this->defaults[$key];
 	}
 }
