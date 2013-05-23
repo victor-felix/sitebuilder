@@ -142,16 +142,16 @@ $(function() {
 	//autoload theme
 	if ($('#theme-frame').data('autoload')) {
 		var theme = null;
+		var skinElement = null;
 		var skin = null;
 		var theme_picker = $('.theme-picker > ul > li.selected');
 		if (theme_picker.length) {
 			theme = theme_picker.data('theme');
-			skin = theme_picker.children('.skin-picker').find('li.selected').data('skin');
+			skinElement = theme_picker.children('.skin-picker').find('li.selected');
 		} else {
-			var skinElement = $('.customize-theme .skin-picker > li.selected');
-			skin = skinElement.is('.custom') ? skinElement.data('custom') : skinElement.data('skin');
+			skinElement = $('.customize-theme .skin-picker > li.selected');
 		}
-
+		skin = skinElement.is('.custom') ? skinElement.data('custom') : skinElement.data('skin');
 		reloadPreview(theme, skin);
 	}
 
