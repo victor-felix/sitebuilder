@@ -2,7 +2,7 @@ $(function() {
 	var reloadPreview = function(theme, skin) {
 		var frame = $('#theme-frame');
 		var url = frame.data('url') + '?';
-
+		skin = skin ? skin : frame.data('skin');
 		if (skin) {
 			url += "skin=" + skin;
 		}

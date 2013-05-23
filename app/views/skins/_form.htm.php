@@ -53,6 +53,7 @@
 		?>
 		<?php echo $this->element('sites/theme_preview', array(
 			'site' => $site,
-			'autoload' => true
+			'autoload' => true,
+			'skin' => $skin->id(),
 		)) ?>
 	</fieldset>
