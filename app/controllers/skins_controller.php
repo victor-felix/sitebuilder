@@ -7,12 +7,15 @@ use meumobi\sitebuilder\entities\Skin;
 
 class SkinsController extends AppController
 {
-	protected $uses = array();
+	protected $uses = array('users');
 	protected $themeRepo;
 	protected $skinRepo;
 
 	protected function beforeFilter()
 	{
+		if (Users::ROLE_ADMIN != $this->getCurrentSite()->role) {
+			$this->redirect('/');
+		}
 		$this->themeRepo = new ThemesRepository();
 		$this->skinRepo = new SkinsRepository();
 		$this->set(array(
