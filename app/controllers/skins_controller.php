@@ -24,18 +24,12 @@ class SkinsController extends AppController
 	{
 		$theme = $this->themeRepo->find($themeId);
 		$skinData = array(
-				'theme_id' => $theme->id(),
-				'parent_id' => 0,
-				'main_color' => '#ffffff',
-				'colors' => $theme->defaults(),
+			'theme_id' => $theme->id(),
+			'main_color' => $theme->defaults('main_color'),
+			'colors' => $theme->defaults(),
 		);
-		if (empty($this->data)) {
-			foreach ($theme->assets() as $asset) {
-				$assets[$asset] = '';
-			}
-			$skinData['assets'] = $assets;
-			$skin = new Skin($skinData);
-		} else {
+		if (!empty($this->data)) {
+			$this->data['main_color'] = substr($this->data['main_color'],1);
 			$skinData = array_merge($skinData, $this->data);
 			$skin = new Skin($skinData);
 			$this->skinRepo->create($skin);
@@ -45,6 +39,8 @@ class SkinsController extends AppController
 			} else {
 				$this->redirect('/');
 			}
+		} else {
+			$skin = new Skin($skinData);
 		}
 		$this->set(compact('theme', 'skin'));
 	}
@@ -54,6 +50,7 @@ class SkinsController extends AppController
 		$skin = $this->skinRepo->find($id);
 		$theme = $this->themeRepo->find($skin->themeId());
 		if (!empty($this->data)) {
+			$this->data['main_color'] = substr($this->data['main_color'],1);
 			$skin->setAttributes($this->data);
 			$this->skinRepo->update($skin);
 			Session::writeFlash('success', s('Configuration successfully saved'));
@@ -64,9 +61,18 @@ class SkinsController extends AppController
 		$this->set(compact('theme', 'skin'));
 	}
 
-	public function cloned($id)
+	public function copy($id)
 	{
 		$skin = $this->skinRepo->find($id);
+		$skinData = array(
+			'theme_id' => $skin->themeId(),
+			'main_color' => $skin->mainColor(),
+			'colors' => $skin->colors(),
+		);
+		$newSkin = new Skin($skinData);
+		$this->skinRepo->create($newSkin);
+		Session::writeFlash('success', s('Skin copied successfully.'));
+		$this->redirect("/skins/edit/{$newSkin->id()}");
 	}
 
 	public function delete($id)

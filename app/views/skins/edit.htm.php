@@ -10,9 +10,7 @@
 	'id' => 'form-custom-theme',
 	'class' => 'form-edit default-form',
 )) ?>
-
 	<?php echo $this->element('skins/form', compact('theme', 'skin', 'site')) ?>
-
 	<fieldset class="actions">
 		<?php echo $this->form->submit(s('Save and Continue'), array(
 			'class' => 'ui-button red larger save-continue',
@@ -25,5 +23,4 @@
 			'value' => 0,
 		)) ?>
 	</fieldset>
-
 <?php echo $this->form->close() ?>

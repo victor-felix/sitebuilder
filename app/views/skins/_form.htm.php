@@ -14,24 +14,11 @@
 						</div>
 						<div class="content">
 							<p class="title"><?php echo $theme->name() ?></p>
-							<?php foreach ($skin->assets() as $name => $asset): ?>
-							<div class="form-grid-460 first">
-							<?php 
-								echo $this->form->input("assets[$name]", array(
-									'type' => 'text',
-									'label' => s($name),
-									'value' => $asset,
-									'class' => 'ui-text',
-									'id' => $name
-								))
-							?>
-							</div>
-							<?php endforeach ?>
 							<div class="colors-wrap">
 								<ul id="color-picker" class="color-picker">
 									<li>
 										<span><?php echo s('Main Color') ?></span>
-										<span class="color" data-color="main-color" data-value="<?php echo $skin->mainColor() ?>" style="background-color: <?php echo $skin->mainColor() ?>"></span>
+										<span class="color" data-color="main_color" data-value="#<?php echo $skin->mainColor() ?>" style="background-color: #<?php echo $skin->mainColor() ?>"></span>
 									</li>
 									<?php foreach($skin->colors() as $name => $color): ?>
 									<?php if ($color): ?>
@@ -49,12 +36,11 @@
 			</div>
 		</div>
 		<?php
-		echo $this->form->input('main-color', array(
+		echo $this->form->input('main_color', array(
 				'type' => 'hidden',
-				'value' => $skin->mainColor(),
-				'id' => 'main-color'
+				'value' => '#' . $skin->mainColor(),
+				'id' => 'main_color'
 		));
-
 		foreach ($skin->colors() as $name => $color) {
 			if ($color) {
 				echo $this->form->input("colors[$name]", array(
