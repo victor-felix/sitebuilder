@@ -178,10 +178,12 @@ $(function() {
 			onChange: function (hsb, hex, rgb, element) {
 				colorElement.css('backgroundColor', '#' + hex);
 				colorElement.data('value', '#' + hex);
+				$('input#' + colorElement.data('color')).val('#' + hex);
 			},
 			onSubmit: function(hsb, hex, rgb, el) {
 				colorElement.css('backgroundColor', '#' + hex);
 				colorElement.data('value', '#' + hex);
+				$('input#' + colorElement.data('color')).val('#' + hex);
 				$(el).ColorPickerHide();
 			}
 		});
