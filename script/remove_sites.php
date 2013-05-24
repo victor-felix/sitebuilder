@@ -1,12 +1,6 @@
 <?php
 
-require dirname(__DIR__) . '/config/bootstrap.php';
-
-set_time_limit(60 * 20);
-
-ini_set('error_reporting', -1);
-ini_set('display_errors', 'On');
-Config::write('Debug.showErrors', true);
+require dirname(__DIR__) . '/config/cli.php';
 
 $_ = array_shift($argv);
 
