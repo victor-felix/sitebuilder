@@ -10,4 +10,4 @@ Config::write('Debug.showErrors', true);
 
 Config::write('Api.ignoreAuth', true);
 
-Config::write('Themes.url', dirname(dirname(__DIR__)) . '/sitebuilder/config/themes.json');
+Config::write('Themes.url', 'http://meu-template-engine.int-meumobi.com/themes.json');
