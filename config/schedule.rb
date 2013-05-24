@@ -1,11 +1,11 @@
 set :output, File.expand_path('log/whenever.log')
 
 every 1.minute do
-  command "php #{File.expand_path 'sitebuilder/script/update_feeds.php'}"
+  command "php #{File.expand_path 'sitebuilder/script/update_feeds.php'} low"
 end
 
 every 1.minute do
-  command "php #{File.expand_path 'sitebuilder/script/update_priority_feeds.php'}"
+  command "php #{File.expand_path 'sitebuilder/script/update_feeds.php'} high"
 end
 
 every 10.minutes do
