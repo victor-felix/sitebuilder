@@ -50,8 +50,10 @@ class UpdateFeedsService
 				$stats['failed_images'] += $feed_stats['failed_images'];
 				$stats['total_feeds'] += 1;
 			} catch (Exception $e) {
-				$this->logger->error('feed update error', [
-					'exception' => $e->getTraceAsString()]);
+				$this->logger->error('product update error', [
+					'exception' => get_class($e),
+					'message' => $e->getMessage(),
+					'trace' => $e->getTraceAsString()]);
 			}
 		}
 
@@ -80,7 +82,7 @@ class UpdateFeedsService
 			return $this->logger = $this->options['logger'];
 		}
 
-		$handler = new \Monolog\Handler\StreamHandler($this->loggerPath());
+		$handler = new \Monolog\Handler\RotatingFileHandler($this->loggerPath());
 		$logger = new \Monolog\Logger('sitebuilder.feeds', [$handler]);
 
 		return $this->logger = $logger;

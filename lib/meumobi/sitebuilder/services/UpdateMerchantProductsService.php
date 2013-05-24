@@ -126,7 +126,9 @@ class UpdateMerchantProductsService
 				$this->logger()->debug('finished feed', ['url' => $feed['_id']]);
 			} catch (Exception $e) {
 				$this->logger->error('product update error', [
-					'exception' => $e->getTraceAsString()]);
+					'exception' => get_class($e),
+					'message' => $e->getMessage(),
+					'trace' => $e->getTraceAsString()]);
 			}
 
 		}
@@ -156,7 +158,7 @@ class UpdateMerchantProductsService
 			return $this->logger = $this->options['logger'];
 		}
 
-		$handler = new \Monolog\Handler\StreamHandler($this->loggerPath());
+		$handler = new \Monolog\Handler\RotatingFileHandler($this->loggerPath());
 		$logger = new \Monolog\Logger('sitebuilder.merchant_products',
 			[$handler]);
 
