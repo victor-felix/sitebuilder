@@ -32,7 +32,7 @@ class Skin
 
 	public function id()
 	{
-		return $this->id->{'$id'};
+		return $this->id ? $this->id->{'$id'} : null;
 	}
 
 	public function setId(MongoId $id)
