@@ -1,0 +1,14 @@
+{
+    "name": "meumobi/sitebuilder",
+    "authors": [
+        {
+            "name": "ipanemax",
+            "email": "ipanemax@ipanemax.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "ext-mongo": ">=1.3.4",
+        "monolog/monolog": "1.4.0"
+    }
+}
