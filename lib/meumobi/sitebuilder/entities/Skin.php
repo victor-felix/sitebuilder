@@ -3,6 +3,7 @@
 namespace meumobi\sitebuilder\entities;
 
 use lithium\util\Inflector;
+
 use MongoId;
 
 class Skin
@@ -14,7 +15,7 @@ class Skin
 	protected $assets;
 	protected $colors;
 
-	public function __construct(array $attrs = array())
+	public function __construct(array $attrs = [])
 	{
 		$this->setAttributes($attrs);
 	}

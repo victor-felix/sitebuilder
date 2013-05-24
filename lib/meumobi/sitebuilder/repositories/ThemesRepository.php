@@ -5,6 +5,7 @@ namespace meumobi\sitebuilder\repositories;
 require_once 'app/models/segments.php';
 
 use meumobi\sitebuilder\entities\Theme;
+
 use Config;
 use Segments;
 

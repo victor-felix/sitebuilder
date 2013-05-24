@@ -13,7 +13,7 @@ class Theme
 	protected $colors;
 	protected $thumbnails;
 
-	public function __construct($attrs = array())
+	public function __construct($attrs = [])
 	{
 		foreach ($attrs as $key => $value) {
 			$key = Inflector::camelize($key, false);
