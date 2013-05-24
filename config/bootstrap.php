@@ -11,6 +11,9 @@ ini_set('error_log', ERROR_LOG);
 
 require 'vendor/autoload.php';
 
+require_once 'lib/htmlpurifier/HTMLPurifier/Bootstrap.php';
+spl_autoload_register(array('HTMLPurifier_Bootstrap', 'autoload'));
+
 require 'config/bootstrap/lithium.php';
 require 'config/bootstrap/spaghetti.php';
 require 'config/bootstrap/initializers.php';

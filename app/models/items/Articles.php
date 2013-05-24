@@ -2,7 +2,6 @@
 
 namespace app\models\items;
 
-require_once 'lib/htmlpurifier/HTMLPurifier.auto.php';
 require_once 'lib/dom/SimpleHtmlDom.php';
 
 use Model;
