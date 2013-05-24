@@ -35,14 +35,15 @@ class UpdateMerchantProductsService
 		$result = $db->extensions->aggregate([
 			['$match' => [
 				'extension' => 'google-merchant-feed',
-				'enabled' => 1
+				'enabled' => 1,
+				'priority' => $this->priorityCriteria()
 			]],
 			['$group' => [
 				'_id' => '$url',
 				'categories' => ['$addToSet' => [
 					'product_type' => '$product_type',
 					'category_id' => '$category_id'
-				]]
+				]],
 			]]
 		]);
 
@@ -116,11 +117,18 @@ class UpdateMerchantProductsService
 					}
 				}
 
+				$db->extensions->update([
+					'extension' => 'google-merchant-feed',
+					'enabled' => 1,
+					'url' => $feed['_id']
+				], ['$unset' => ['priority' => '']]);
+
 				$this->logger()->debug('finished feed', ['url' => $feed['_id']]);
 			} catch (Exception $e) {
 				$this->logger->error('product update error', [
 					'exception' => $e->getTraceAsString()]);
 			}
+
 		}
 
 		$stats['end_time'] = microtime(true);

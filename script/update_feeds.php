@@ -8,7 +8,7 @@ $priorities = ['high' => UpdateFeedsService::PRIORITY_HIGH,
 	'low' => UpdateFeedsService::PRIORITY_LOW];
 $priority = $priorities[$argv[1]];
 
-meumobi_lock('update_feeds', function() use ($priority) {
+meumobi_lock("update_feeds_{$priority}", function() use ($priority) {
 	$service = new UpdateFeedsService([
 		'priority' => $priority,
 		'logger_path' => 'log/feeds.log'

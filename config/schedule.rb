@@ -17,5 +17,9 @@ every 1.hour do
 end
 
 every 1.day do
-  command "php #{File.expand_path 'sitebuilder/script/update_merchant_products.php'}"
+  command "php #{File.expand_path 'sitebuilder/script/update_merchant_products.php'} low"
+end
+
+every 1.minute do
+  command "php #{File.expand_path 'sitebuilder/script/update_merchant_products.php'} high"
 end
