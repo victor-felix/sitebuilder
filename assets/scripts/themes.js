@@ -159,7 +159,7 @@ $(function() {
 	$('.theme-preview').parents('#content').css('overflow', 'visible');
 
 	//remove live preview on theme customization page
-	if ($('.themes div.theme-preview, .dashboard div.theme-preview').length > 0) {
+	if ($('div.theme-preview').not('.live-wrapp .theme-preview').length > 0) {
 		$('div.live-preview').remove();
 	}
 
