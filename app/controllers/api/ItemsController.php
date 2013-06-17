@@ -268,6 +268,26 @@ class ItemsController extends ApiController {
 		$this->response->status(200);
 	}
 
+	public function news()
+	{
+		$category = $this->site()->newsCategory();
+
+		$params = [
+			'order' => ['pubdate' => 'DESC'],
+			'conditions' => [
+				'site_id' => $this->site()->id,
+				'parent_id' => $category->id
+			],
+			'limit' => self::PAGE_LIMIT,
+			'page' => $this->param('page', 1)
+		];
+
+		$url = "/api/{$this->site()->domain}/news";
+		$url_params = [];
+
+		return $this->paginate($params, $url, $url_params);
+	}
+
 	protected function prepareAdd($data)
 	{
 		$need = array('type', 'parent_id');

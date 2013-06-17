@@ -20,12 +20,12 @@ class CategoriesController extends ApiController
 
 	protected function site()
 	{
-		return Site::findByDomain($this->request->params['slug']);
+		return Site::findByDomain($this->request->get('params:slug'));
 	}
 
 	public function index()
 	{
-		$scope = (object) array('visibility' => $this->query('visibility'));
+		$scope = (object) array('visibility' => $this->request->get('query:visibility'));
 		$categories = $this->site()->categories($scope);
 
 		return $this->toJSON($categories);
@@ -33,10 +33,15 @@ class CategoriesController extends ApiController
 
 	public function show()
 	{
-		$category = $this->site()->findCategory($this->request->params['id']);
+		$category = $this->site()->findCategory($this->request->get('params:id'));
 		$category = new CategoryPresenter($category);
 
 		return $category->toJSON();
+	}
+
+	public function showNewsCategory() {
+		$site = \Model::load('Sites')->firstByDomain($this->request->get('params:slug'));
+		return $this->toJSON($site->newsCategory());
 	}
 
 	public function children()
