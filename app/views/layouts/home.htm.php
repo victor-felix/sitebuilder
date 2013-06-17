@@ -36,7 +36,7 @@
 
 		<?php echo $this->element('layouts/footer') ?>
 
-		<?php echo $this->html->script('shared/jquery', 'shared/support_chat', 'shared/jquery.carouFredSel-6.1.0-packed','shared/jquery.touchSwipe.min', 'shared/jquery.ba-throttle-debounce.min', 'shared/home') ?>
+		<?php echo $this->html->script('shared/jquery', 'shared/jquery.carouFredSel-6.1.0-packed','shared/jquery.touchSwipe.min', 'shared/jquery.ba-throttle-debounce.min', 'shared/home') ?>
 		<?php echo $this->html->scriptsForLayout ?>
 	</body>
 </html>

@@ -26,7 +26,7 @@
 
 			<?php echo $this->element('layouts/footer') ?>
 		</div>
-		<?php echo $this->html->script('shared/jquery', 'shared/support_chat', 'shared/main') ?>
+		<?php echo $this->html->script('shared/jquery', 'shared/modernizr.custom.placeholder', 'shared/main') ?>
 		<?php echo $this->html->scriptsForLayout ?>
 	</body>
 </html>
