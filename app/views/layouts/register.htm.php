@@ -52,7 +52,7 @@
 
 		<?php echo $this->element('layouts/footer') ?>
 		</div>
-		<?php echo $this->html->script('shared/jquery', 'shared/support_chat', 'shared/jquery.formrestrict', 'shared/jquery.alphanumeric', 'shared/main',  'shared/async_upload', 'shared/themes') ?>
+		<?php echo $this->html->script('shared/jquery', 'shared/modernizr.custom.placeholder', 'shared/jquery.formrestrict', 'shared/jquery.alphanumeric', 'shared/main',  'shared/async_upload', 'shared/themes') ?>
 		<?php echo $this->html->scriptsForLayout ?>
 	</body>
 </html>
