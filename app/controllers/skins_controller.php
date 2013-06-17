@@ -21,6 +21,8 @@ class SkinsController extends AppController
 		$this->set(array(
 			'site' => $this->getCurrentSite()
 		));
+
+		parent::beforeFilter();
 	}
 
 	public function add($themeId)

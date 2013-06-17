@@ -39,6 +39,7 @@ class SkinsRepository
 		$data = $this->dehydrate($skin);
 		$result = $this->collection()->insert($data);
 		$skin->setId($data['_id']);
+		$this->updateSiteEtags($skin->id());
 		return $result;
 	}
 
@@ -46,6 +47,7 @@ class SkinsRepository
 	{
 		$data = $this->dehydrate($skin);
 		$criteria = ['_id' => new MongoId($skin->id())];
+		$this->updateSiteEtags($skin->id());
 		return $this->collection()->update($criteria, $data);
 	}
 
@@ -89,5 +91,15 @@ class SkinsRepository
 		return array_map(function($data) {
 			return $this->hydrate($data);
 		}, iterator_to_array($set, false));
+	}
+
+	protected function updateSiteEtags($skin_id)
+	{
+		$connection = \Connection::get('default');
+		$connection->update([
+			'table' => 'sites',
+			'conditions' => ['skin' => $skin_id],
+			'values' => ['modified' => date('Y-m-d H:i:s')]
+		]);
 	}
 }

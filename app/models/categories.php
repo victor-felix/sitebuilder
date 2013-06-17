@@ -281,7 +281,7 @@ class Categories extends AppModel
 		}
 
 		$site = Model::load('Sites')->firstById($this->site_id);
-		$site->updated = $date;
+		$site->modified = $date;
 		$site->save();
 	}
 
