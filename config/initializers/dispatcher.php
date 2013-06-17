@@ -89,6 +89,15 @@ Router::connect(new Route(array(
 
 Router::connect(new Route(array(
 	'method' => 'GET',
+	'template' => '/api/{:slug}/categories/{:category_id}/items',
+	'params' => array(
+		'action' => 'index',
+		'controller' => 'items'
+	) + $defaults['params']
+)));
+
+Router::connect(new Route(array(
+	'method' => 'GET',
 	'template' => '/api/{:slug}/categories/{:category_id}/promotions',
 	'params' => array(
 		'action' => 'promotions',

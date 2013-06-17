@@ -10,74 +10,58 @@ use Model;
 use Inflector;
 
 class ItemsController extends ApiController {
+	const PAGE_LIMIT = 20;
+
 	public function index()
 	{
-		$conditions = array('site_id' => $this->site()->id);
-		$order = array('order' => 'ASC');
-
-		if (!isset($this->request->query['category'])) {
-			throw new InvalidArgumentException('category id required');
-		}
-
-		$category_id = $this->request->query['category'];
+		$category_id = $this->request->get('params:category_id');
 		$category = Model::load('Categories')->firstById($category_id);
-		$conditions['parent_id'] = $category_id;
-		$type = $conditions['type'] = $category->type;
 
-		$classname = '\app\models\items\\' . Inflector::camelize($type);
-		$items = $classname::find('all', array(
-			'conditions' => $conditions,
-			'limit' => $this->param('limit', 20),
-			'page' => $this->param('page', 1),
-			'order' => $order,
-		));
+		$params = [
+			'order' => ['order' => 'ASC'],
+			'conditions' => [
+				'site_id' => $this->site()->id,
+				'parent_id' => $category->id,
+				'type' => $category->type
+			],
+			'limit' => self::PAGE_LIMIT,
+			'page' => $this->param('page', 1)
+		];
 
-		return $this->toJSON($items);
+		$url = "/api/{$this->site()->domain}/categories/{$category->id}/items";
+		$url_params = ['category' => $category_id];
+
+		return $this->paginate($params, $url, $url_params);
 	}
 
 	public function promotions()
 	{
-		$category_id = $this->request->params['category_id'];
+		$category_id = $this->request->get('params:category_id');
+		$date = $this->request->get('query:time') ?: time();
+
 		$category = Model::load('Categories')->firstByIdAndType($category_id, 'promotions');
 
 		if (!$category) {
 			throw new RecordNotFoundException('category does not have promotions');
 		}
 
-		$date = $this->request->get('query:time') ?: time();
+		$params = [
+			'order' => ['order' => 'ASC'],
+			'conditions' => [
+				'site_id' => $this->site()->id,
+				'parent_id' => $category->id,
+				'type' => $category->type,
+				'start' => ['$lt' => $date],
+				'end' => ['$gt' => $date]
+			],
+			'limit' => self::PAGE_LIMIT,
+			'page' => $this->param('page', 1)
+		];
 
-		$conditions = array(
-			'site_id' => $this->site()->id,
-			'parent_id' => $category_id,
-			'type' => 'promotions',
-			'start' => array('$lt' => $date),
-			'end' => array('$gt' => $date),
-		);
+		$url = "/api/{$this->site()->domain}/categories/{$category->id}/promotions";
+		$url_params = ['time' => $date];
 
-		$items = \app\models\items\Promotions::find('all', array(
-			'conditions' => $conditions,
-			'limit' => $this->param('limit', 20),
-			'page' => $this->param('page', 1),
-			'order' => array('order' => 'ASC'),
-		));
-
-		return $this->toJSON($items);
-	}
-
-	protected function _prepareAdd($data)
-	{
-		$need = array('type','parent_id');
-		$discard = array('created','updated','geo');
-
-		foreach ($discard as $field) {
-			if (array_key_exists($field, $data)) unset($data[$field]);
-		}
-
-		foreach ($need as $field) {
-			if (!array_key_exists($field,$data)) throw new \Exception('need more params: '. $field);
-		}
-
-		return $data;
+		return $this->paginate($params, $url, $url_params);
 	}
 
 	public function add()
@@ -85,9 +69,9 @@ class ItemsController extends ApiController {
 		$this->requireUserAuth();
 
 		try {
-			$data = $this->_prepareAdd($this->request->data);
+			$data = $this->prepareAdd($this->request->data);
 
-			$images = isset($data['images']) ? $data['images']: false;
+			$images = isset($data['images']) ? $data['images'] : false;
 
 			$item = Items::find('first', array('conditions' => array(
 				'_id' => $this->request->params['id'],
@@ -135,50 +119,58 @@ class ItemsController extends ApiController {
 
 	public function related()
 	{
-		$item = Items::find('first', array('conditions' => array(
-			'_id' => $this->request->params['id'],
-			'site_id' => $this->site()->id
-		)));
+		$item = Items::find('first', [
+			'conditions' => [
+				'_id' => $this->request->get('params:id'),
+				'site_id' => $this->site()->id
+			]
+		]);
 
-		if (!$item) throw new \app\models\RecordNotFoundException('item not found');
-
-		if ($item->related) {
-			$classname = '\app\models\items\\' . Inflector::camelize($item->type);
-			$related = $classname::find('all', array(
-				'conditions' => array(
-					'_id' => $item->related->to('array'),
-					'site_id' => $this->site()->id
-				),
-				'limit' => $this->param('limit', 20),
-				'page' => $this->param('page', 1)
-			));
-		} else {
-			$related = array();
+		if (!$item) {
+			throw new \app\models\RecordNotFoundException('item not found');
 		}
 
-		return $this->toJSON($related);
+		if (!$item->related) {
+			return ['items' => array()];
+		}
+
+		$params = [
+			'conditions' => [
+				'_id' => $item->related->to('array'),
+				'site_id' => $this->site()->id
+			],
+			'limit' => self::PAGE_LIMIT,
+			'page' => $this->param('page', 1)
+		];
+
+		$url = "/api/{$this->site()->domain}/items/{$item->id()}/related";
+		$url_params = [];
+
+		return $this->paginate($params, $url, $url_params);
 	}
 
 	public function search()
 	{
-		$params = $this->request->query;
-		$conditions = $this->postConditions($params, array(
+		$conditions = $this->postConditions($this->request->query, [
 			'title' => 'like',
 			'description' => 'like'
-		));
+		]);
 		$conditions['site_id'] = $this->site()->id;
 
-		$items = Items::find('all',array(
+		$params = [
 			'conditions' => $conditions,
-			'limit' => $this->param('limit', 20),
+			'limit' => self::PAGE_LIMIT,
 			'page' => $this->param('page', 1)
-		))->to('array');
+		];
 
-		return array_reduce($items, function($items, $item) {
+		$url = "/api/{$this->site()->domain}/items/search";
+		$url_params = $this->request->query;
+
+		return $this->paginate($params, $url, $url_params, function($items, $item) {
 			$classname = '\app\models\items\\' . Inflector::camelize($item['type']);
 			$items[$item['type']] []= $classname::create($item)->toJSON();
 			return $items;
-		}, array());
+		});
 	}
 
 	public function show()
@@ -193,21 +185,23 @@ class ItemsController extends ApiController {
 
 	public function latest()
 	{
-		$conditions = array('site_id' => $this->site()->id);
+		$parent_id = $this->request->get('params:parent_id');
 
-		if ($this->param('parent_id')) $conditions['parent_id'] = $this->param('parent_id');
+		$params = [
+			'conditions' => ['site_id' => $this->site()->id],
+			'order' => ['created' => 'DESC'],
+			'limit' => self::PAGE_LIMIT,
+			'page' => $this->param('page', 1)
+		];
 
-		$items = Items::find('all', array(
-			'conditions' => $conditions,
-			'order' => array('created' => 'DESC'),
-			'limit' => $this->param('limit', 20),
-			'page' => $this->param('page', 1),
-		))->to('array');
+		if ($parent_id) {
+			$params['conditions']['parent_id'] = $parent_id;
+		}
 
-		return array_map(function($item) {
-			$classname = '\app\models\items\\' . Inflector::camelize($item['type']);
-			return $classname::create($item)->toJSON();
-		}, $items);
+		$url = "/api/{$this->site()->domain}/items/latest";
+		$url_params = ['parent_id' => $parent_id];
+
+		return $this->paginate($params, $url, $url_params);
 	}
 
 	public function by_category()
@@ -274,10 +268,68 @@ class ItemsController extends ApiController {
 		$this->response->status(200);
 	}
 
+	protected function prepareAdd($data)
+	{
+		$need = array('type', 'parent_id');
+		$discard = array('created', 'updated', 'geo');
+
+		foreach ($discard as $field) {
+			if (array_key_exists($field, $data)) unset($data[$field]);
+		}
+
+		foreach ($need as $field) {
+			if (!array_key_exists($field,$data)) {
+				throw new \Exception('need more params: '. $field);
+			}
+		}
+
+		return $data;
+	}
+
 	protected function checkEtag()
 	{
 		if ($this->request->params['action'] != 'promotions') {
 			parent::checkEtag();
 		}
+	}
+
+	protected function paginate($params, $url, $url_params, $reduce = null)
+	{
+		$items = Items::find('all', $params)->to('array');
+		$response = [];
+
+		if ($reduce) {
+			$response['items'] = array_reduce($items, $reduce, array());
+		} else {
+			$response['items'] = array_map(function($item) {
+				$classname = '\app\models\items\\' .
+					Inflector::camelize($item['type']);
+				return $classname::create($item)->toJSON();
+			}, $items);
+		}
+
+		$count = Items::find('count', ['conditions' => $params['conditions']]);
+		$pages = ceil($count / $params['limit']);
+		$meta = [];
+
+		if ($params['page'] > 1) {
+			$meta['previous'] = $this->parseUrl($url, $url_params + [
+				'page' => $params['page'] - 1]);
+		}
+
+		if ($pages > $params['page']) {
+			$meta['next'] = $this->parseUrl($url, $url_params + [
+				'page' => $params['page'] + 1]);
+		}
+
+		if (!empty($meta)) $response['_meta'] = $meta;
+
+		return $response;
+	}
+
+	protected function parseUrl($url, $params)
+	{
+		$query = http_build_query($params);
+		return $url . '?' . $query;
 	}
 }
