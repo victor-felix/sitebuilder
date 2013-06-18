@@ -9,6 +9,7 @@
 <?php echo $this->form->create('/skins/add/' . $theme->id(), array(
 	'id' => 'form-custom-theme',
 	'class' => 'form-edit default-form',
+	'method' => 'file'
 )) ?>
 
 	<?php echo $this->element('skins/form', compact('theme', 'skin', 'site')) ?>

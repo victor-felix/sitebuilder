@@ -5,6 +5,7 @@ namespace meumobi\sitebuilder\entities;
 use lithium\util\Inflector;
 
 use MongoId;
+use FileUpload;
 
 class Skin
 {
@@ -13,6 +14,7 @@ class Skin
 	protected $parentId;
 	protected $mainColor;
 	protected $assets;
+	protected $uploadedAssets;
 	protected $colors;
 
 	public function __construct(array $attrs = [])
@@ -24,7 +26,10 @@ class Skin
 	{
 		foreach ($attrs as $key => $value) {
 			$key = Inflector::camelize($key, false);
-			if (property_exists($this, $key)) {
+			$method = 'set' . Inflector::camelize($key);
+			if (method_exists($this, $method)) {
+				$this->$method($value);
+			} else if (property_exists($this, $key)) {
 				$this->$key = $value;
 			}
 		}
@@ -63,5 +68,33 @@ class Skin
 	public function assets()
 	{
 		return $this->assets;
+	}
+
+	public function uploadedAssets()
+	{
+		return $this->uploadedAssets;
+	}
+
+	public function setAsset($asset, $value)
+	{
+		$this->assets[$asset] = $value;
+	}
+
+	public function setUploadedAssets($file)
+	{
+		$files = array();
+
+		foreach ($file as $key => $assets) {
+			foreach ($assets as $asset => $value) {
+				$files[$asset][$key] = $value;
+			}
+		}
+
+		$this->uploadedAssets = array_filter($files, function($asset) {
+			if ($asset['error']) return false;
+			list($valid, $errors) = FileUpload::validate($asset, null, ['png',
+				'jpeg', 'jpg', 'gif']);
+			return $valid;
+		});
 	}
 }

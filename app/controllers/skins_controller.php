@@ -55,7 +55,7 @@ class SkinsController extends AppController
 		$skin = $this->skinRepo->find($id);
 		$theme = $this->themeRepo->find($skin->themeId());
 		if (!empty($this->data)) {
-			$this->data['main_color'] = substr($this->data['main_color'],1);
+			$this->data['main_color'] = substr($this->data['main_color'], 1);
 			$skin->setAttributes($this->data);
 			$this->skinRepo->update($skin);
 			Session::writeFlash('success', s('Configuration successfully saved'));

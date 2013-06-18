@@ -10,6 +10,7 @@
 <?php echo $this->form->create('/sites/custom_theme', array(
 	'id' => 'form-custom-theme',
 	'class' => 'form-edit default-form',
+	'method' => 'file'
 )) ?>
 
 	<fieldset style="position: relative;">
