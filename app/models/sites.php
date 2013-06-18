@@ -330,6 +330,8 @@ class Sites extends AppModel
 		$data['description'] = nl2br($data['description']);
 		$data['webputty_token'] = $this->css_token;
 		$data['analytics_token'] = $this->google_analytics;
+		$data['android_app_url'] = $this->android_app_url;
+		$data['ios_app_url'] = $this->ios_app_url;
 
 		if ($logo = $this->logo()) {
 			$data['logo'] = $logo->link();
