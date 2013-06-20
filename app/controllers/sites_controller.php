@@ -193,6 +193,11 @@ class SitesController extends AppController
 		$this->general();
 	}
 
+	public function application()
+	{
+		$this->general();
+	}
+
 	public function news()
 	{
 		$site = $this->getCurrentSite();

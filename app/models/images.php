@@ -214,7 +214,8 @@ class Images extends AppModel {
 		} else {
 			if ($self->model == 'SitePhotos'
 				|| $self->model == 'SiteLogos'
-				|| $self->model == 'SiteAppleTouchIcon') {
+				|| $self->model == 'SiteAppleTouchIcon'
+				|| $self->model == 'SiteSplashScreens') {
 				$model = 'Sites';
 			} else {
 				$model = $self->model;
