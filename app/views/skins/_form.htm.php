@@ -15,19 +15,22 @@
 					<div class="content">
 						<p class="title"><?php echo $theme->name() ?></p>
 						<?php if ($custom): ?>
-						<?php echo $this->element('sites/skins_list', array(
-							'skins' => $skins,
-							'currentSkin' => $skin,
-							'customizeLink' => false,
-						)) ?>
+							<?php echo $this->element('sites/skins_list', array(
+								'skins' => $skins,
+								'currentSkin' => $skin,
+								'customizeLink' => false,
+							)) ?>
 						<?php endif ?>
 						<?php foreach ((array) $skin->assets() as $name => $asset): ?>
 							<div class="form-grid-460">
-							<?php echo $this->form->input("uploaded_assets[{$name}]", array(
-								'type' => 'file',
-								'label' => $name,
-								'class' => 'ui-text'
-							)) ?>
+								<?php echo $this->html->image($asset, array(
+									'class' => 'logo'
+								)) ?>
+								<?php echo $this->form->input("uploaded_assets[{$name}]", array(
+									'type' => 'file',
+									'label' => $name,
+									'class' => 'ui-text'
+								)) ?>
 							</div>
 						<?php endforeach ?>
 						<div class="colors-wrap">

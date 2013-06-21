@@ -2,6 +2,7 @@
 
 namespace app\controllers\api;
 
+use meumobi\sitebuilder\presenters\api\SkinPresenter;
 use meumobi\sitebuilder\repositories\SkinsRepository;
 
 class SitesController extends ApiController
@@ -57,11 +58,7 @@ class SitesController extends ApiController
 
 		$skinsRepo = new SkinsRepository();
 		$skin = $skinsRepo->find(array_unset($site, 'skin'));
-		$site['theme'] = array(
-			'theme_id' => $skin->themeId(),
-			'colors' => $skin->colors(),
-			'assets' => $skin->assets(),
-		);
+		$site['theme'] = SkinPresenter::present($skin);
 
 		return compact('site', 'business', 'categories', 'news', 'newsCategory');
 	}
