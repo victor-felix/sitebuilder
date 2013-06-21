@@ -31,10 +31,11 @@
 				<div class="form-grid-460 first">
 					<span class="optional"><?php echo s('Optional') ?></span>
 					<?php echo $this->form->input('splashScreen', array(
-						'label' => s('splash screen for IPhone'),
+						'label' => s('splash screen for Iphone'),
 						'type' => 'file',
 						'class' => 'ui-text large'
 					)) ?>
+					<small><?php echo s('The recommended dimensions for image are %s height and %s width', '640px', '1096px') ?></small>
 				</div>
 			</div>
 		</div>
@@ -67,7 +68,7 @@
 						'type' => 'file',
 						'class' => 'ui-text large'
 					)) ?>
-					<small><?php echo s('The recommended dimensions for image are 114px height and 114px width') ?></small>
+					<small><?php echo s('The recommended dimensions for image are %s height and %s width', '114px', '114px') ?></small>
 				</div>
 			</div>
 		</div>
