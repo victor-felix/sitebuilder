@@ -14,14 +14,10 @@ class ThemesRepository
 	public function all()
 	{
 		return array_map(function($theme) {
-			$theme->defaults['assets'] = array();
+			$theme->defaults['assets'] = $theme-assets;
 			$theme->defaults['colors'] = $theme->colors;
 			$theme->defaults['main_color'] = $theme->main_color;
 			$theme->colors = array_keys((array) $theme->defaults);
-
-			foreach ($theme->assets as $asset) {
-				$theme->defaults['assets'][$asset] = null;
-			}
 
 			return new Theme($theme);
 		}, json_decode(file_get_contents(Config::read('Themes.url'))));
