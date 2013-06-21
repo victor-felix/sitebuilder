@@ -125,8 +125,8 @@ class SkinsRepository
 		$uploader->path = APP_ROOT . $path;
 
 		foreach ($skin->uploadedAssets() as $name => $asset) {
-			$name = $uploader->upload($asset, "{$name}.:extension");
-			$skin->setAsset($name, $path . '/' . $name);
+			$file = $uploader->upload($asset, "{$name}.:extension");
+			$skin->setAsset($name, $path . '/' . $file);
 		}
 
 		$skin->setUploadedAssets(array());
