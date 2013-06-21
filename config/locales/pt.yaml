@@ -351,7 +351,7 @@
 'Share with your friends and customers your mobile website through the links below:': 'Compartilhe com seus clientes e amigos o seu website mobile através dos links abaixo:'
 'icon for IPhone': 'ícone para IPhone'
 'Allow your visitors to quickly retur to your site adding an app-like icon to their mobile phone home screens': 'Permita que seus visitantes retornem rapidamente ao seu site, adicionando um ícone como se fosse um aplicativo. Esse ícone ficará na tela do iphone do seus visitantes.'
-'The recommended dimensions for image are 114px height and 114px width': 'A dimensão da imagem deve ser de 114px de altura e 114px de largura'
+'The recommended dimensions for image are %s height and %s width': 'A dimensão da imagem deve ser de %s de altura e %s de largura'
 'Customize': 'Personalizar'
 'customization': 'Personalização'
 'customize your theme': 'Personalize seu tema'
