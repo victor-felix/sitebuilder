@@ -77,8 +77,8 @@ namespace :deploy do
   end
 
   task :wait do
-    run "flock -x #{shared_path}/tmp/update_feeds.pid -c echo"
-    run "flock -x #{shared_path}/tmp/update_priority_feeds.pid -c echo"
+    run "flock -x #{shared_path}/tmp/update_feeds_low.pid -c echo"
+    run "flock -x #{shared_path}/tmp/update_feeds_high.pid -c echo"
   end
 end
 
