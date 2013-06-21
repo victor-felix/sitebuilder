@@ -43,7 +43,7 @@ class SkinsRepository
 		$result = $this->collection()->insert($data);
 		$skin->setId($data['_id']);
 
-		$this->uploadedAssets($skin);
+		$this->uploadAssets($skin);
 		$this->update($skin);
 
 		return $result;
@@ -128,6 +128,8 @@ class SkinsRepository
 			$name = $uploader->upload($asset, "{$name}.:extension");
 			$skin->setAsset($name, $path . '/' . $name);
 		}
+
+		$skin->setUploadedAssets(array());
 
 		return true;
 	}
