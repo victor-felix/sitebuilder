@@ -12,7 +12,8 @@
 	'method' => 'file'
 )) ?>
 
-	<?php echo $this->element('skins/form', compact('theme', 'skin', 'site')) ?>
+	<?php $custom = false; ?>
+	<?php echo $this->element('skins/form', compact('theme', 'skin', 'site', 'custom')) ?>
 
 	<fieldset class="actions">
 		<?php echo $this->form->submit(s('Save and Continue'), array(

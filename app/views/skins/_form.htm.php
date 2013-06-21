@@ -14,21 +14,44 @@
 					</div>
 					<div class="content">
 						<p class="title"><?php echo $theme->name() ?></p>
+						<?php if ($custom): ?>
+						<?php echo $this->element('sites/skins_list', array(
+							'skins' => $skins,
+							'currentSkin' => $skin,
+							'customizeLink' => false,
+						)) ?>
+						<?php endif ?>
+						<?php foreach ((array) $skin->assets() as $name => $asset): ?>
+							<div class="form-grid-460">
+							<?php echo $this->form->input("uploaded_assets[{$name}]", array(
+								'type' => 'file',
+								'label' => $name,
+								'class' => 'ui-text'
+							)) ?>
+							</div>
+						<?php endforeach ?>
 						<div class="colors-wrap">
-							<ul id="color-picker" class="color-picker">
-								<li>
-									<span><?php echo s('Main Color') ?></span>
-									<span class="color" data-color="main_color" data-value="#<?php echo $skin->mainColor() ?>" style="background-color: #<?php echo $skin->mainColor() ?>"></span>
-								</li>
-								<?php foreach ($skin->colors() as $name => $color): ?>
-									<?php if ($color): ?>
-										<li>
-											<span><?php echo s($name) ?></span>
-											<span class="color" data-color="<?php echo $name ?>" data-value="<?php echo $this->string->pad($color, 7, substr($color, -1)) ?>" style="background-color: <?php echo $color ?>"></span>
-										</li>
-									<?php endif ?>
-								<?php endforeach ?>
-							</ul>
+							<?php if ($custom): ?>
+							<?php foreach ($skins as $themeSkin): ?>
+								<?php
+									if ($themeSkin->id() == $skin->parentId()
+										|| $themeSkin->parentId() && $themeSkin->id() != $skin->id()) {
+										continue;
+									}
+								?>
+								<?php echo $this->element('skins/colors_list', array(
+									'skin' => $themeSkin,
+									'hide' => ($skin->id() != $themeSkin->id()),
+									'custom' => $custom,
+								)) ?>
+							<?php endforeach ?>
+						<?php else: ?>
+							<?php echo $this->element('skins/colors_list', array(
+								'skin' => $skin,
+								'hide' => false,
+								'custom' => $custom,
+							)) ?>
+						<?php endif ?>
 						</div>
 					</div>
 				</li>
@@ -41,7 +64,11 @@
 		'value' => '#' . $skin->mainColor(),
 		'id' => 'main_color'
 	)) ?>
-
+	<?php echo $this->form->input('parent_id', array(
+		'type' => 'hidden',
+		'value' => $custom ? $skin->id() : null,
+		'id' => 'parent_id'
+	)) ?>
 	<?php foreach ($skin->colors() as $name => $color) {
 		if ($color) {
 			echo $this->form->input("colors[{$name}]", array(
@@ -50,12 +77,6 @@
 				'id' => $name
 			));
 		}
-	} ?>
-
-	<?php foreach ($skin->assets() as $name => $asset) {
-		echo $this->form->input("uploaded_assets[{$name}]", array(
-			'type' => 'file',
-		));
 	} ?>
 
 	<?php echo $this->element('sites/theme_preview', array(
