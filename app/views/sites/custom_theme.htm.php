@@ -1,4 +1,7 @@
-<?php $skins = $theme->skins() ?>
+<?php
+	$skins = $theme->skins();
+	$custom = true;
+?>
 <div class="page-heading">
 	<div class="grid-4 first">&nbsp;</div>
 	<div class="grid-8">
@@ -13,75 +16,7 @@
 	'method' => 'file'
 )) ?>
 
-	<fieldset style="position: relative;">
-		<div class="themes">
-			<div class="tip-big">
-				<h2><?php echo s('customize your theme') ?></h2>
-			</div>
-			<div class="customize-theme">
-				<ul class="featured-list">
-					<li class="open">
-						<div class="link">
-							<span class="icon"></span>
-							<h3><?php echo s('appearance') ?></h3>
-							<small><?php echo s('Edit the colors of your mobile site.') ?></small>
-							<span class="arrow open"></span>
-						</div>
-						<div class="content">
-							<p class="title"><?php echo $theme->name() ?></p>
-							<?php echo $this->element('sites/skins_list', array(
-								'skins' => $skins,
-								'currentSkin' => $skin,
-								'customizeLink' => false,
-							)) ?>
-							<div class="colors-wrap">
-								<?php foreach ($skins as $themeSkin): ?>
-								<?php
-									if ($themeSkin->id() == $skin->parentId() 
-										|| $themeSkin->parentId() && $themeSkin->id() != $skin->id()) {
-										continue;
-									}
-								?>
-								<ul id="color-picker-<?php echo $themeSkin->parentId() ? $themeSkin->parentId() : $themeSkin->id() ?>" class="color-picker <?php if ($skin->id() != $themeSkin->id()) echo 'hidden' ?>">
-									<?php $colorCount = 1 ?>
-									<?php foreach($themeSkin->colors() as $name => $color): ?>
-									<?php if ($color): ?>
-										<li>
-											<span><?php echo s('color') . ' #' . $colorCount++ ?></span>
-											<span class="color" data-color="<?php echo $name ?>" data-value="<?php echo $this->string->pad($color, 7, substr($color, -1)) ?>" style="background-color: <?php echo $color ?>"></span>
-										</li>
-									<?php endif ?>
-									<?php endforeach ?>
-								</ul>
-								<?php endforeach ?>
-							</div>
-						</div>
-					</li>
-				</ul>
-			</div>
-		</div>
-		<?php
-		echo $this->form->input('parent_id', array(
-			'type' => 'hidden',
-			'value' => $skin->id(),
-			'id' => 'parent_id'
-		));
-
-		foreach ($skin->colors() as $name => $color) {
-			if ($color) {
-				echo $this->form->input("colors[$name]", array(
-					'type' => 'hidden',
-					'value' => $color,
-					'id' => $name
-				));
-			}
-		}
-		?>
-		<?php echo $this->element('sites/theme_preview', array(
-			'site' => $site,
-			'autoload' => true
-		)) ?>
-	</fieldset>
+	<?php echo $this->element('skins/form', compact('theme', 'skin', 'skins', 'site', 'custom')) ?>
 
 	<fieldset class="actions">
 		<?php echo $this->form->submit(s('Save and Continue'), array(
