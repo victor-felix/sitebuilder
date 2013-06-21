@@ -14,7 +14,7 @@ class ThemesRepository
 	public function all()
 	{
 		return array_map(function($theme) {
-			$theme->defaults['assets'] = $theme-assets;
+			$theme->defaults['assets'] = $theme->assets;
 			$theme->defaults['colors'] = $theme->colors;
 			$theme->defaults['main_color'] = $theme->main_color;
 			$theme->colors = array_keys((array) $theme->defaults);
