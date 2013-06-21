@@ -76,6 +76,9 @@ class SitesController extends AppController
 			if ($parent->parentId()) {
 				$skin = $parent;
 				$skinData = array('colors' => $this->data['colors']);
+				if (isset($this->data['uploaded_assets'])) {
+					$skinData['uploaded_assets'] = $this->data['uploaded_assets'];
+				}
 				$skin->setAttributes($skinData);
 				$skinRepo->update($skin);
 			} else {
@@ -86,6 +89,9 @@ class SitesController extends AppController
 					'colors' => $this->data['colors'],
 					'assets' => $parent->assets(),
 				);
+				if (isset($this->data['uploaded_assets'])) {
+					$skinData['uploaded_assets'] = $this->data['uploaded_assets'];
+				}
 				$skin = new Skin($skinData);
 				$skinRepo->create($skin);
 			}

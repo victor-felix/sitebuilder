@@ -13,9 +13,9 @@ class Skin
 	protected $themeId;
 	protected $parentId;
 	protected $mainColor;
-	protected $assets;
-	protected $uploadedAssets;
-	protected $colors;
+	protected $assets = array();
+	protected $uploadedAssets = array();
+	protected $colors = array();
 
 	public function __construct(array $attrs = [])
 	{

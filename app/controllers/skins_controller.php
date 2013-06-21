@@ -31,7 +31,8 @@ class SkinsController extends AppController
 		$skinData = array(
 			'theme_id' => $theme->id(),
 			'main_color' => $theme->defaults('main_color'),
-			'colors' => $theme->defaults(),
+			'colors' => $theme->defaults('colors'),
+			'assets' => $theme->defaults('assets'),
 		);
 		if (!empty($this->data)) {
 			$this->data['main_color'] = substr($this->data['main_color'],1);

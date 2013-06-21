@@ -27,7 +27,9 @@ class SkinPresenter
 		$decoratedAssets = [];
 
 		foreach ($assets as $key => $value) {
-			$decoratedAssets[$key] = Mapper::url($value, true);
+			if ($value) {
+				$decoratedAssets[$key] = Mapper::url($value, true);
+			}
 		}
 
 		return $decoratedAssets;
