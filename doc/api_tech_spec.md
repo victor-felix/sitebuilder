@@ -1,4 +1,6 @@
-##Making API Calls
+# MeuMobi: API Tech Specs
+
+## Making API Calls
 
 The API uses REST to perform actions on resources. Resources are represented by URL paths. Actions can take parameters that are passed as query strings (?param=value) (no named params anymore since we are moving to REST, and it mandates a single URI for each resource).
 
@@ -6,19 +8,19 @@ The API is located at [http://enterprise.meumobilesite.com](http://enterprise.me
 
 A simple API request would look like this: GET http://enterprise.meumobilesite.com/api/{domain}/categories
 
-##Authentication
+## Authentication
 
 Read calls do not need authentication. You need to authenticate only when you want to add, edit or delete a resource. Authentication can be sending a custom header. The authentication method we chose is a token unique to every user.
 
-###HTTP Header
+### HTTP Header
 
 The header should be called X-Authentication-Token and should contain your user's auth token.
 
-##Cache Management
+## Cache Management
 
 The template engine should cache every request made to the API to lower server usage. This cache can be stored indefinitely or cleared from time to time to save disk space. Every use of the cached data should be validated with the API by using the ETags sent with the response.
 
-###How It Works
+### How It Works
 
 When a URL is retrieved, the API will return the response along with its response headers. One of this headers is the ETag, containing the ETag value of the resource. This value is a checksum of the resource, meaning that if the resource doesn't change the ETag value will remain the same. One example of header would be ETag: "d057d85fc18d4dd0524ab4c6e7844c3bf1a27df1".
 
@@ -26,7 +28,7 @@ Later, when the Template Engine needs to use the same resource again, it should 
 
 If the resource hasn't changed, the API will return an empty response and a "304 Not Modified" HTTP status code. It means that the cached version is still good and shold be used. If the resource is now different, the API will return the full resource in the response and a new ETag value for further caching.
 
-##API Responses
+## API Responses
 
 The API responses will always be in JSON format with "application/json" Content-Type, unless other format is requested through an extension. If the request is successful, it will return the description of the resource as describe in every method. If there are any errors with the request, it will return a JSON with a message explaining the error, like this:
 
@@ -34,16 +36,16 @@ The API responses will always be in JSON format with "application/json" Content-
         "error": "Authorization token not provided"
     }
 
-##Reference
+## Reference
 
-###GET /{domain}/performance
+### GET /{domain}/performance
 
 Combines all the needed requests for a front page.
 
 
     { "business" : { "address" : null,
           "email" : "",
-	      "facebook" : "http://www.facebook.com/username/",
+          "facebook" : "http://www.facebook.com/username/",
 	      "phone" : "",
 	      "timetable" : "",
 	      "twitter" : "",
@@ -98,7 +100,7 @@ Combines all the needed requests for a front page.
 	    }
 	}
     
-###POST /{domain}/mail
+### POST /{domain}/mail
 
 Sends a mail to the site's contact mail.
 
@@ -111,7 +113,7 @@ Parameters:
  
 Authentication Token: X-Authentication-Token: 9456bbf53af6fdf30a5d625ebf155b4018c8b0aephp
 
-###GET /{domain}/categories/{category_id}/items
+### GET /{domain}/categories/{category_id}/items
 
 Gets a list of items.
 
@@ -139,7 +141,7 @@ Example response:
 	   ]
 	}
 
-###GET /{domain}/items/{id} 
+### GET /{domain}/items/{id} 
 
 Gets an item.
 
@@ -159,7 +161,7 @@ Example response:
 	   }
 	}
 
-###GET /{domain}/items/search
+### GET /{domain}/items/search
 
 Returns a list of items as a result of the search, receives as parameter, fields and values used as search filter, on a pattern key/value,  only not accepts the field "site_id", this is configured by api
 
@@ -233,7 +235,7 @@ Example response:
 	    ]
 	}
 
-###POST /{domain}/items
+### POST /{domain}/items
 
 Posts a new item.
 
@@ -247,7 +249,7 @@ Any item-specific param (like description, address, etc., can vary for each item
 - **title**
 - **related**: array of ids of related items. for example, in rest-client, ["4e9cb46e9a645d2277000000", "4e9cb46e9a645d2277000001", "4e9cb46e9a645d2277000002", ...]
  
-###POST /{domain}/items/{id}/add
+### POST /{domain}/items/{id}/add
 
 Create an item as related to an existing.
 
@@ -259,15 +261,15 @@ Any item-specific param (like description, address, etc., can vary for each item
 - **parent_id**
 - **type**
 
-###GET /{domain}/items/{id}/related
+### GET /{domain}/items/{id}/related
 
 Gets the related items for this item.
 
-###GET /{domain}/items/{id}/images
+### GET /{domain}/items/{id}/images
 
 Gets all the images from an item.
 
-###POST /{domain}/items/{id}/images
+### POST /{domain}/items/{id}/images
 
 Adds an image to an item.
 
@@ -278,11 +280,11 @@ Parameters:
 - **title**: title of the image
 - **description**: description of the image
  
-###GET /{domain}/images/{id}
+### GET /{domain}/images/{id}
 
 Shows an image.
 
-###POST /{domain}/images
+### POST /{domain}/images
 
 Adds an image without an item.
 
@@ -292,7 +294,7 @@ Parameters:
 - **title**: title of the image 
 - **description**: description of the image
  
-###PUT /{domain}/images/{id}
+### PUT /{domain}/images/{id}
 
 Edits an image
 
@@ -302,11 +304,11 @@ Parameters:
 - **title**: title of the image 
 - **description**: description of the image
 
-###DELETE /{domain}/images/{id}
+### DELETE /{domain}/images/{id}
 
 Deletes an image 
 
-###PUT /{domain}/items/{id}
+### PUT /{domain}/items/{id}
 
 Edits an item.
 
@@ -342,11 +344,11 @@ Example response:
 	   }
 	}
 
-###DELETE /{domain}/items/{id}
+### DELETE /{domain}/items/{id}
 
 Deletes an item.
 
-###GET /{domain}/items/by_category
+### GET /{domain}/items/by_category
 
 Gets items grouped by their parent categories.
 
@@ -381,7 +383,7 @@ Example response:
 	  "8" : [  ]
 	}
 
-###GET /{domain}/items/latest
+### GET /{domain}/items/latest
 
 Gets the latest added items.
 
@@ -412,7 +414,7 @@ Example response:
 	    ...
 	]
 
-###GET /{domain}/categories/{id}/promotions
+### GET /{domain}/categories/{id}/promotions
 
 Gets valid promotions.
 
@@ -420,7 +422,7 @@ Parameters:
 
 - **time**: override time for the promotion. The default is the current time. Should be passed as UNIX seconds (returned by the time() function in PHP).
  
-###GET /{domain}/categories/{id}/geo/nearest
+### GET /{domain}/categories/{id}/geo/nearest
 
 Gets the items near to a certain location.
 
@@ -428,7 +430,7 @@ Parameters:
 - lat
 - lng
  
-###GET /{domain}/categories/{id}/geo/inside
+### GET /{domain}/categories/{id}/geo/inside
 
 Gets the items inside a certain area.
 
@@ -438,7 +440,7 @@ Parameters:
 - sw_lat
 - sw_lng 
 
-###GET /{domain}/news
+### GET /{domain}/news
 
 Gets a list of non-categorized articles.
 
@@ -468,7 +470,7 @@ Example response:
 	   ]
 	}
 
-###GET /{domain}/categories
+### GET /{domain}/categories
 
 Gets a list of categories.
 
@@ -496,7 +498,7 @@ Example response:
 	    ]
 	}
 
-###GET /{domain}/categories/{id}/search
+### GET /{domain}/categories/{id}/search
 
 Searches a list of items from a certain category.
 
@@ -504,7 +506,7 @@ Params:
 
 - **keyword**: keywords to search in title and description.
  
-###GET /{domain}/categories/{id}/children
+### GET /{domain}/categories/{id}/children
 
 Gets a list of all categories with parent_id = {id}
 
@@ -530,7 +532,7 @@ Example response:
 	   ]
 	}
 
-###POST /{domain}/categories
+### POST /{domain}/categories
 
 Posts a new category.
 
@@ -539,7 +541,7 @@ Parameters:
 - **title**: category title
 - **feed_url**: feed for the category
 
-###GET /{domain}/categories/{id}
+### GET /{domain}/categories/{id}
 
 Gets a category.
 
@@ -557,11 +559,11 @@ Example response:
 	   }
 	}
 
-###DELETE /{domain}/categories/{id}
+### DELETE /{domain}/categories/{id}
 
 Deletes a category
 
-###GET /{domain}
+### GET /{domain}
 
 Example response:
 
@@ -597,7 +599,7 @@ Example response:
 	   }
 	}
 
-###GET /{domain}/extensions
+### GET /{domain}/extensions
 
 Gets extension's list
 
@@ -610,7 +612,7 @@ Gets extension's list
 	...
 	]
 
-###GET /{domain}/extensions/{id}
+### GET /{domain}/extensions/{id}
 
 Gets extension's info
 
@@ -621,24 +623,24 @@ Gets extension's info
 	  "language": "en"
 	}
 
-###POST /{domain}/extensions
+### POST /{domain}/extensions
 
 Creates a new extension
 
 Required fields: extension, category_id, site_id, itemLimit, language
 
-###PUT /{domain}/extensions/{id}
+### PUT /{domain}/extensions/{id}
 
 Updates an extension
 
-##How to test API
+## How to test API
 
-###Suggested Tools
+### Suggested Tools
 
 - add-on for firefox: https://addons.mozilla.org/en-US/firefox/addon/restclient/
 - for a restclient to install from gems: bash$ gem install rest-client
 
-###From restclient gem
+### From restclient gem
 
 Datas and ids are fake. Don't need to use Authentication for non PROD environment
 
