@@ -1,3 +1,6 @@
+require 'rubygems'
+require 'bundler/setup'
+
 require 'redcarpet'
 
 def read_file(file_path)
