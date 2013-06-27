@@ -46,6 +46,10 @@ namespace :deploy do
     run "cd #{release_path} && bundle exec whenever -w"
   end
 
+  task :parse_api_doc do
+    run "ruby #{release_path}/sitebuilder/script/parse_docs.rb #{release_path}/sitebuilder/doc/api_tech_spec.md #{release_path}/segments/meumobi/public/api.html 'MeuMobi: Tech Spec'"
+  end
+
   task :platform_check do
     run "php #{release_path}/sitebuilder/script/check_platform.php"
   end
@@ -91,6 +95,7 @@ before 'deploy:update_code', 'deploy:server:stop'
 after 'deploy:update_code', 'deploy:shared'
 after 'deploy:update_code', 'deploy:symlinks'
 after 'deploy:update_code', 'deploy:cronfile'
+after 'deploy:update_code', 'deploy:parse_api_doc'
 after 'deploy:update_code', 'deploy:db:migrate'
 after 'deploy:update_code', 'deploy:platform_check'
 after 'deploy:update_code', 'deploy:server:start'
