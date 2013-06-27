@@ -6,6 +6,7 @@ set :scm, :git
 set :deploy_via, :remote_cache
 set :git_enable_submodules, true
 
+default_run_options[:pty] = true
 set :use_sudo, true
 
 set :normalize_asset_timestamps, false
