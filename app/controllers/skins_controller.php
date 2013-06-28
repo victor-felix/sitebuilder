@@ -104,8 +104,8 @@ class SkinsController extends AppController
 		if ($skin->parentId()) {
 			$site->skin = $skin->parentId();
 		}
-		if ($this->skinRepo->destroy($skin)) {
-			$site->save();
+		if ($site->save()) {
+			$this->skinRepo->destroy($skin);
 			$message = 'successfully deleted.';
 			if ($this->isXhr()) {
 				$this->respondToJSON(array(
