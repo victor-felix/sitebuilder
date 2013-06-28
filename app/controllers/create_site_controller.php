@@ -55,7 +55,7 @@ class CreateSiteController extends AppController
 		}
 
 		$themesRepo = new ThemesRepository();
-		$themes = $themesRepo->bySegment(MeuMobi::segment());
+		$themes = $themesRepo->bySegment(MeuMobi::segment(), true);
 
 		$this->set(compact('site', 'themes'));
 	}

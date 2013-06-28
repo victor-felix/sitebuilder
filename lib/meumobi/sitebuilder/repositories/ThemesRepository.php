@@ -23,18 +23,23 @@ class ThemesRepository
 		}, json_decode(file_get_contents(Config::read('Themes.url'))));
 	}
 
-	public function bySegment($segment)
+	public function bySegment($segment, $onlyWithSkins = false)
 	{
 		$theme_ids = Segments::current()->themes();
 		$themes = $this->all();
 
-		if (empty($theme_ids)) {
-			return $themes;
-		} else {
-			return array_filter($themes, function($theme) use ($theme_ids) {
+		if (!empty($theme_ids)) {
+			$themes = array_filter($themes, function($theme) use ($theme_ids) {
 				return in_array($theme->id(), $theme_ids);
 			});
 		}
+
+		if ($onlyWithSkins) {
+			return array_filter($themes, function($theme) {
+				return (boolean) $theme->skins();
+			});
+		}
+		return $themes;
 	}
 
 	public function find($id)
