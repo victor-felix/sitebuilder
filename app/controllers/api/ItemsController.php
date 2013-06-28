@@ -60,8 +60,9 @@ class ItemsController extends ApiController {
 
 		$url = "/api/{$this->site()->domain}/categories/{$category->id}/promotions";
 		$url_params = ['time' => $date];
-
-		return $this->paginate($params, $url, $url_params);
+		$items = \app\models\items\Promotions::find('all', $params);
+		//TODO call paginate
+		return ['items' => $items->to('array')];
 	}
 
 	public function add()
