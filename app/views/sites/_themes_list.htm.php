@@ -1,6 +1,15 @@
 <?php
 	$currentTheme = $site->theme ? $site->theme : reset($themes)->id();
-	$currentSkin = $site->skin ? $site->skin() : reset($themes)->skins()[0];
+	if ($site->skin) {
+		$currentSkin = $site->skin();
+	} else {
+		foreach ($themes as $theme) {
+			if (isset($theme->skins()[0])) {
+				$currentSkin = $theme->skins()[0];
+				break;
+			}
+		}
+	}
 ?>
 <div class="themes">
 	<div class="tip-big">
