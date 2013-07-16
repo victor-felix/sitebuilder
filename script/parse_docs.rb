@@ -20,23 +20,10 @@ def parse_doc(markdown_file_path, doc_file_path, doc_title = "MeuMobi")
 
   doc_parser = Redcarpet::Markdown.new(Redcarpet::Render::HTML_TOC)
 
-  template = <<-END
-  <!doctype html>
-  <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>%s</title>
-    <link rel="stylesheet" href="/styles/shared/markdown.css">
-  </head>
-    <body>
-      %s
-      %s
-    </body>
-  </html> 
-  END
+  layout = read_file(File.expand_path("../../doc/layout.html", __FILE__))
 
   markdown_content = read_file(markdown_file_path)
-  doc_content = sprintf(template,
+  doc_content = sprintf(layout,
                         doc_title,
                         doc_parser.render(markdown_content),
                         parser.render(markdown_content))
