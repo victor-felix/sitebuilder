@@ -36,7 +36,7 @@ The API responses will always be in JSON format with "application/json" Content-
         "error": "Authorization token not provided"
     }
 
-## API API Endpoints Reference
+## API Endpoints Reference
 
 ### Site
 
@@ -152,11 +152,11 @@ Parameters:
  
 Authentication Token: X-Authentication-Token: 9456bbf53af6fdf30a5d625ebf155b4018c8b0aephp
 
-### News
+### News Feed
 
 #### GET /{domain}/news/category
 
-Get news category
+Get news feed category
 
 Example response:
 
