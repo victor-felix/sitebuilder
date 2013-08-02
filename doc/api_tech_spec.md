@@ -154,6 +154,29 @@ Authentication Token: X-Authentication-Token: 9456bbf53af6fdf30a5d625ebf155b4018
 
 ### News
 
+#### GET /{domain}/news/category
+
+Get news category
+
+Example response:
+
+	{
+		"id": "962",
+		"site_id": "215",
+		"parent_id": null,
+		"type": "articles",
+		"title": "News",
+		"feed_url": null,
+		"visibility": "-1",
+		"populate": "auto",
+		"icon": null,
+		"order": "1",
+		"created": "2013-03-14 15:02:08",
+		"modified": "2013-06-27 21:19:52",
+		"updated": "2013-06-27 21:19:52",
+		"items_count": 50
+	}
+
 #### GET /{domain}/news
 
 Gets a list of non-categorized articles.
