@@ -36,12 +36,51 @@ The API responses will always be in JSON format with "application/json" Content-
         "error": "Authorization token not provided"
     }
 
-## Reference
+## API API Endpoints Reference
 
-### GET /{domain}/performance
+### Site
+
+#### GET /{domain}
+
+Gets info of the current site.
+
+Example response:
+
+	{
+	   "sites":{
+	      "id":"1",
+	      "category_id":"1",
+	      "segment":"restaurant",
+	      "theme":"boteco",
+	      "skin":"ae3232",
+	      "slug":"juliogreff",
+	      "title":"Julio Greff",
+	      "description":"Julio Greff",
+	      "timetable":"",
+	      "street":"",
+	      "number":"",
+	      "zip":"",
+	      "complement":"",
+	      "zone":"",
+	      "city":"",
+	      "state":"",
+	      "country":"BR",
+	      "email":"",
+	      "phone":"",
+	      "website":"",
+	      "facebook":"",
+	      "twitter":"",
+	      "latitude":null,
+	      "longitude":null,
+	      "created":"2011-01-26 07:34:55",
+	      "modified":"2011-01-26 07:34:55",
+	      "logo":null
+	   }
+	}
+
+#### GET /{domain}/performance
 
 Combines all the needed requests for a front page.
-
 
     { "business" : { "address" : null,
           "email" : "",
@@ -99,8 +138,8 @@ Combines all the needed requests for a front page.
 	      "webputty_token" : null
 	    }
 	}
-    
-### POST /{domain}/mail
+
+#### POST /{domain}/mail
 
 Sends a mail to the site's contact mail.
 
@@ -113,7 +152,128 @@ Parameters:
  
 Authentication Token: X-Authentication-Token: 9456bbf53af6fdf30a5d625ebf155b4018c8b0aephp
 
-### GET /{domain}/categories/{category_id}/items
+### News
+
+#### GET /{domain}/news
+
+Gets a list of non-categorized articles.
+
+Example response:
+
+	{
+	   "articles":[
+	      {
+		 "feed_id":"3",
+		 "guid":"http:\/\/www.rj.gov.br\/web\/guest\/exibeconteudo?articleId=451045",
+		 "link":"http:\/\/www.rj.gov.br\/web\/guest\/exibeconteudo?articleId=451045",
+		 "pubdate":"2011-05-08 18:41:00",
+		 "format":"html",
+		 "title":"Fam\u00edlias comemoram Dia das M\u00e3es em concerto no Theatro Municipal",
+		 "description":"Lorem Ipsum Dolor Sit Amet",
+		 "author":"Renata Oliveira",
+		 "id":"1",
+		 "site_id":"2",
+		 "parent_id":"0",
+		 "type":"articles",
+		 "order":"0",
+		 "created":"2011-05-08 21:33:03",
+		 "modified":"2011-05-08 21:33:03",
+		 "images":[
+		 ]
+	      }
+	   ]
+	}
+
+### Categories
+
+#### GET /{domain}/categories
+
+Gets a list of categories.
+
+Params:
+
+- **visibility**: whether the categories are visible or not. Possible values: 1 (visible categories), 0 (invisible categories), all (all categories). Only visible categories is the default.
+
+Example response:
+
+	{
+	   "categories":[
+	      {
+		 "id":"1",
+		 "parent_id":"0",
+		 "title":"Cardapio",
+		 "order":"0",
+		 "created":"2011-01-26 07:34:55",
+		 "modified":"2011-01-26 07:34:55"
+		 "extensions": {
+		 "extension": "store-locator", 
+		 "itemLimit": 10,
+		 "language": "en"
+	      },
+	      {...}    
+	    ]
+	}
+
+#### POST /{domain}/categories
+
+Posts a new category.
+
+Parameters:
+- **parent_id**: parent category
+- **title**: category title
+- **feed_url**: feed for the category
+
+#### GET /{domain}/categories/{id}
+
+Gets a category.
+
+Example response:
+
+	{
+	   "categories":{
+	      "id":"1",
+	      "site_id":"1",
+	      "parent_id":"0",
+	      "title":"Cardapio",
+	      "order":"0",
+	      "created":"2011-01-26 07:34:55",
+	      "modified":"2011-01-26 07:34:55"
+	   }
+	}
+
+#### DELETE /{domain}/categories/{id}
+
+Deletes a category
+
+#### GET /{domain}/categories/{id}/children
+
+Gets a list of all categories with parent_id = {id}
+
+Parameters:
+
+- **depth**: depth of nested categories to return. If > 0, returns the children of the children, if any. Default is 0.
+
+Example response:
+
+    {
+	   "categories":[
+	      {
+		 "id":"1",
+		 "parent_id":"0",
+		 "title":"Cardapio",
+		 "order":"0",
+		 "created":"2011-01-26 07:34:55",
+		 "modified":"2011-01-26 07:34:55"
+	      },
+	      {
+		  ...
+	      }
+	   ]
+	}
+
+### Items
+
+#### GET /{domain}/categories/{category_id}/items
 
 Gets a list of items.
 
@@ -141,7 +301,7 @@ Example response:
 	   ]
 	}
 
-### GET /{domain}/items/{id} 
+#### GET /{domain}/items/{id} 
 
 Gets an item.
 
@@ -161,7 +321,7 @@ Example response:
 	   }
 	}
 
-### GET /{domain}/items/search
+#### GET /{domain}/items/search
 
 Returns a list of items as a result of the search, receives as parameter, fields and values used as search filter, on a pattern key/value,  only not accepts the field "site_id", this is configured by api
 
@@ -235,7 +395,15 @@ Example response:
 	    ]
 	}
 
-### POST /{domain}/items
+#### GET /{domain}/categories/{id}/search
+
+Searches a list of items from a certain category.
+
+Params:
+
+- **keyword**: keywords to search in title and description.
+
+#### POST /{domain}/items
 
 Posts a new item.
 
@@ -249,7 +417,7 @@ Any item-specific param (like description, address, etc., can vary for each item
 - **title**
 - **related**: array of ids of related items. for example, in rest-client, ["4e9cb46e9a645d2277000000", "4e9cb46e9a645d2277000001", "4e9cb46e9a645d2277000002", ...]
  
-### POST /{domain}/items/{id}/add
+#### POST /{domain}/items/{id}/add
 
 Create an item as related to an existing.
 
@@ -261,15 +429,15 @@ Any item-specific param (like description, address, etc., can vary for each item
 - **parent_id**
 - **type**
 
-### GET /{domain}/items/{id}/related
+#### GET /{domain}/items/{id}/related
 
 Gets the related items for this item.
 
-### GET /{domain}/items/{id}/images
+#### GET /{domain}/items/{id}/images
 
 Gets all the images from an item.
 
-### POST /{domain}/items/{id}/images
+#### POST /{domain}/items/{id}/images
 
 Adds an image to an item.
 
@@ -280,35 +448,7 @@ Parameters:
 - **title**: title of the image
 - **description**: description of the image
  
-### GET /{domain}/images/{id}
-
-Shows an image.
-
-### POST /{domain}/images
-
-Adds an image without an item.
-
-Parameters:
-
-- **visible**: visibility of the image
-- **title**: title of the image 
-- **description**: description of the image
- 
-### PUT /{domain}/images/{id}
-
-Edits an image
-
-Parameters:
-
-- **visible**: visibility of the image
-- **title**: title of the image 
-- **description**: description of the image
-
-### DELETE /{domain}/images/{id}
-
-Deletes an image 
-
-### PUT /{domain}/items/{id}
+#### PUT /{domain}/items/{id}
 
 Edits an item.
 
@@ -344,11 +484,11 @@ Example response:
 	   }
 	}
 
-### DELETE /{domain}/items/{id}
+#### DELETE /{domain}/items/{id}
 
 Deletes an item.
 
-### GET /{domain}/items/by_category
+#### GET /{domain}/items/by_category
 
 Gets items grouped by their parent categories.
 
@@ -383,7 +523,7 @@ Example response:
 	  "8" : [  ]
 	}
 
-### GET /{domain}/items/latest
+#### GET /{domain}/items/latest
 
 Gets the latest added items.
 
@@ -414,7 +554,7 @@ Example response:
 	    ...
 	]
 
-### GET /{domain}/categories/{id}/promotions
+#### GET /{domain}/categories/{id}/promotions
 
 Gets valid promotions.
 
@@ -422,7 +562,7 @@ Parameters:
 
 - **time**: override time for the promotion. The default is the current time. Should be passed as UNIX seconds (returned by the time() function in PHP).
  
-### GET /{domain}/categories/{id}/geo/nearest
+#### GET /{domain}/categories/{id}/geo/nearest
 
 Gets the items near to a certain location.
 
@@ -430,7 +570,7 @@ Parameters:
 - lat
 - lng
  
-### GET /{domain}/categories/{id}/geo/inside
+#### GET /{domain}/categories/{id}/geo/inside
 
 Gets the items inside a certain area.
 
@@ -440,166 +580,9 @@ Parameters:
 - sw_lat
 - sw_lng 
 
-### GET /{domain}/news
+### Extensions
 
-Gets a list of non-categorized articles.
-
-Example response:
-
-    {
-	   "articles":[
-	      {
-		 "feed_id":"3",
-		 "guid":"http:\/\/www.rj.gov.br\/web\/guest\/exibeconteudo?articleId=451045",
-		 "link":"http:\/\/www.rj.gov.br\/web\/guest\/exibeconteudo?articleId=451045",
-		 "pubdate":"2011-05-08 18:41:00",
-		 "format":"html",
-		 "title":"Fam\u00edlias comemoram Dia das M\u00e3es em concerto no Theatro Municipal",
-		 "description":"Lorem Ipsum Dolor Sit Amet",
-		 "author":"Renata Oliveira",
-		 "id":"1",
-		 "site_id":"2",
-		 "parent_id":"0",
-		 "type":"articles",
-		 "order":"0",
-		 "created":"2011-05-08 21:33:03",
-		 "modified":"2011-05-08 21:33:03",
-		 "images":[
-		 ]
-	      }
-	   ]
-	}
-
-### GET /{domain}/categories
-
-Gets a list of categories.
-
-Params:
-
-- **visibility**: whether the categories are visible or not. Possible values: 1 (visible categories), 0 (invisible categories), all (all categories). Only visible categories is the default.
-
-Example response:
-
-    {
-	   "categories":[
-	      {
-		 "id":"1",
-		 "parent_id":"0",
-		 "title":"Cardapio",
-		 "order":"0",
-		 "created":"2011-01-26 07:34:55",
-		 "modified":"2011-01-26 07:34:55"
-		 "extensions": {
-		 "extension": "store-locator", 
-		 "itemLimit": 10,
-		 "language": "en"
-	      },
-	      {...}    
-	    ]
-	}
-
-### GET /{domain}/categories/{id}/search
-
-Searches a list of items from a certain category.
-
-Params:
-
-- **keyword**: keywords to search in title and description.
- 
-### GET /{domain}/categories/{id}/children
-
-Gets a list of all categories with parent_id = {id}
-
-Parameters:
-
-- **depth**: depth of nested categories to return. If > 0, returns the children of the children, if any. Default is 0.
-
-Example response:
-
-    {
-	   "categories":[
-	      {
-		 "id":"1",
-		 "parent_id":"0",
-		 "title":"Cardapio",
-		 "order":"0",
-		 "created":"2011-01-26 07:34:55",
-		 "modified":"2011-01-26 07:34:55"
-	      },
-	      {
-		  ...
-	      }
-	   ]
-	}
-
-### POST /{domain}/categories
-
-Posts a new category.
-
-Parameters:
-- **parent_id**: parent category
-- **title**: category title
-- **feed_url**: feed for the category
-
-### GET /{domain}/categories/{id}
-
-Gets a category.
-
-Example response:
-
-    {
-	   "categories":{
-	      "id":"1",
-	      "site_id":"1",
-	      "parent_id":"0",
-	      "title":"Cardapio",
-	      "order":"0",
-	      "created":"2011-01-26 07:34:55",
-	      "modified":"2011-01-26 07:34:55"
-	   }
-	}
-
-### DELETE /{domain}/categories/{id}
-
-Deletes a category
-
-### GET /{domain}
-
-Example response:
-
-    {
-	   "sites":{
-	      "id":"1",
-	      "category_id":"1",
-	      "segment":"restaurant",
-	      "theme":"boteco",
-	      "skin":"ae3232",
-	      "slug":"juliogreff",
-	      "title":"Julio Greff",
-	      "description":"Julio Greff",
-	      "timetable":"",
-	      "street":"",
-	      "number":"",
-	      "zip":"",
-	      "complement":"",
-	      "zone":"",
-	      "city":"",
-	      "state":"",
-	      "country":"BR",
-	      "email":"",
-	      "phone":"",
-	      "website":"",
-	      "facebook":"",
-	      "twitter":"",
-	      "latitude":null,
-	      "longitude":null,
-	      "created":"2011-01-26 07:34:55",
-	      "modified":"2011-01-26 07:34:55",
-	      "logo":null
-	   }
-	}
-
-### GET /{domain}/extensions
+#### GET /{domain}/extensions
 
 Gets extension's list
 
@@ -612,7 +595,7 @@ Gets extension's list
 	...
 	]
 
-### GET /{domain}/extensions/{id}
+#### GET /{domain}/extensions/{id}
 
 Gets extension's info
 
@@ -623,15 +606,45 @@ Gets extension's info
 	  "language": "en"
 	}
 
-### POST /{domain}/extensions
+#### POST /{domain}/extensions
 
 Creates a new extension
 
 Required fields: extension, category_id, site_id, itemLimit, language
 
-### PUT /{domain}/extensions/{id}
+#### PUT /{domain}/extensions/{id}
 
 Updates an extension
+
+### Images
+
+#### GET /{domain}/images/{id}
+
+Shows an image.
+
+#### POST /{domain}/images
+
+Adds an image without an item.
+
+Parameters:
+
+- **visible**: visibility of the image
+- **title**: title of the image 
+- **description**: description of the image
+ 
+#### PUT /{domain}/images/{id}
+
+Edits an image
+
+Parameters:
+
+- **visible**: visibility of the image
+- **title**: title of the image 
+- **description**: description of the image
+
+#### DELETE /{domain}/images/{id}
+
+Deletes an image
 
 ## How to test API
 
