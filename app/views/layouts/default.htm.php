@@ -101,6 +101,7 @@
 							<ul>
 								<li><?php echo $this->html->link(s('themes'), '/sites/theme') ?></li>
 								<li><?php echo $this->html->link(s('customization'), '/sites/custom_theme/' . $currentSite->skin ) ?></li>
+								<li><?php echo $this->html->link(s('application'), '/sites/application') ?></li>
 							</ul>
 						</li>
 						<li>
@@ -165,7 +166,7 @@
 				</div>
 			</div>
 		</div>
-		<?php echo $this->html->script('shared/jquery', 'shared/jquery.formrestrict', 'shared/jquery.alphanumeric', 'shared/modernizr.custom.placeholder.js', 'shared/colorpicker', 'shared/main', 'shared/markitup', 'shared/async_upload', 'shared/jquery.chosen', 'shared/themes') ?>
+		<?php echo $this->html->script('shared/jquery', 'shared/jquery.formrestrict', 'shared/jquery.alphanumeric', 'shared/modernizr.custom.placeholder', 'shared/colorpicker', 'shared/main', 'shared/markitup', 'shared/async_upload', 'shared/jquery.chosen', 'shared/themes') ?>
 		<?php echo $this->html->scriptsForLayout ?>
 	</body>
 </html>

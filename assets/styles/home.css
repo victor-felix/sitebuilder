@@ -99,6 +99,14 @@ ul.dropdown li ul {
 	min-width: 220px;
 }
 
+.header.no-language .login {
+	margin-top: 38px;
+}
+
+.header.no-language .call {
+	margin-top: 30px;
+}
+
 /* hero */
 
 .hero.outer.wrapp {

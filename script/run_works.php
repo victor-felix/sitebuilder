@@ -1,6 +1,7 @@
 <?php
 
-require dirname(__DIR__) . '/config/bootstrap.php';
+require dirname(__DIR__) . '/config/cli.php';
+
 require 'lib/utils/Worker.php';
 
 array_shift($argv);

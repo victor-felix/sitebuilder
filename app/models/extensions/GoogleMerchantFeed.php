@@ -6,6 +6,10 @@ use app\models\Extensions;
 
 class GoogleMerchantFeed extends Extensions
 {
+	const PRIORITY_HIGH = 2;
+	const PRIORITY_MEDIUM = 1;
+	const PRIORITY_LOW = 0;
+
 	protected $specification = array(
 		'title' => 'Google Merchant Feed',
 		'description' => 'Import content automatically from a Google Merchant product feed',
@@ -50,6 +54,7 @@ class GoogleMerchantFeed extends Extensions
 
 	public static function enable($extension)
 	{
+		$extension->priority = self::PRIORITY_HIGH;
 		$category = self::category($extension);
 		$category->populate = 'auto';
 		$category->save();

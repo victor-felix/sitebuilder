@@ -40,7 +40,7 @@ class FileUpload {
 
     public static function validateType($file, $types) {
         if(!empty($types)) {
-            $ext = Filesystem::extension($file['name']);
+            $ext = strtolower(Filesystem::extension($file['name']));
             return in_array($ext, $types);
         }
         else {
@@ -80,13 +80,8 @@ class FileUpload {
             $name = self::getName($file, $name);
 
             $destination = $path . '/' . $name;
-            if(!Filesystem::exists($destination)) {
-                Filesystem::moveUploadedFile($file['tmp_name'], $destination);
-                return $name;
-            }
-            else {
-                throw new Exception('destination file already exists');
-            }
+            Filesystem::moveUploadedFile($file['tmp_name'], $destination);
+            return $name;
         }
         else {
             throw new Exception('upload folder is not writeable');

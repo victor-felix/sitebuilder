@@ -9,6 +9,11 @@ set_include_path(APP_ROOT . PATH_SEPARATOR .
 
 ini_set('error_log', ERROR_LOG);
 
+require 'vendor/autoload.php';
+
+require_once 'lib/htmlpurifier/HTMLPurifier/Bootstrap.php';
+spl_autoload_register(array('HTMLPurifier_Bootstrap', 'autoload'));
+
 require 'config/bootstrap/lithium.php';
 require 'config/bootstrap/spaghetti.php';
 require 'config/bootstrap/initializers.php';
@@ -19,6 +24,7 @@ require 'config/connections.php';
 require 'app/models/app_model.php';
 require 'app/controllers/app_controller.php';
 require 'app/models/meu_mobi.php';
+
 
 return function($segment) {
 	require 'segments/' . $segment . '/config.php';

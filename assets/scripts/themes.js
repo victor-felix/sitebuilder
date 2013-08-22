@@ -2,7 +2,7 @@ $(function() {
 	var reloadPreview = function(theme, skin) {
 		var frame = $('#theme-frame');
 		var url = frame.data('url') + '?';
-
+		skin = skin ? skin : frame.data('skin');
 		if (skin) {
 			url += "skin=" + skin;
 		}
@@ -142,16 +142,16 @@ $(function() {
 	//autoload theme
 	if ($('#theme-frame').data('autoload')) {
 		var theme = null;
+		var skinElement = null;
 		var skin = null;
 		var theme_picker = $('.theme-picker > ul > li.selected');
 		if (theme_picker.length) {
 			theme = theme_picker.data('theme');
-			skin = theme_picker.children('.skin-picker').find('li.selected').data('skin');
+			skinElement = theme_picker.children('.skin-picker').find('li.selected');
 		} else {
-			var skinElement = $('.customize-theme .skin-picker > li.selected');
-			skin = skinElement.is('.custom') ? skinElement.data('custom') : skinElement.data('skin');
+			skinElement = $('.customize-theme .skin-picker > li.selected');
 		}
-
+		skin = skinElement.is('.custom') ? skinElement.data('custom') : skinElement.data('skin');
 		reloadPreview(theme, skin);
 	}
 
@@ -159,7 +159,7 @@ $(function() {
 	$('.theme-preview').parents('#content').css('overflow', 'visible');
 
 	//remove live preview on theme customization page
-	if ($('.themes div.theme-preview, .dashboard div.theme-preview').length > 0) {
+	if ($('div.theme-preview').not('.live-wrapp .theme-preview').length > 0) {
 		$('div.live-preview').remove();
 	}
 
@@ -178,10 +178,12 @@ $(function() {
 			onChange: function (hsb, hex, rgb, element) {
 				colorElement.css('backgroundColor', '#' + hex);
 				colorElement.data('value', '#' + hex);
+				$('input#' + colorElement.data('color')).val('#' + hex);
 			},
 			onSubmit: function(hsb, hex, rgb, el) {
 				colorElement.css('backgroundColor', '#' + hex);
 				colorElement.data('value', '#' + hex);
+				$('input#' + colorElement.data('color')).val('#' + hex);
 				$(el).ColorPickerHide();
 			}
 		});

@@ -89,6 +89,15 @@ Router::connect(new Route(array(
 
 Router::connect(new Route(array(
 	'method' => 'GET',
+	'template' => '/api/{:slug}/categories/{:category_id}/items',
+	'params' => array(
+		'action' => 'index',
+		'controller' => 'items'
+	) + $defaults['params']
+)));
+
+Router::connect(new Route(array(
+	'method' => 'GET',
 	'template' => '/api/{:slug}/categories/{:category_id}/promotions',
 	'params' => array(
 		'action' => 'promotions',
@@ -134,10 +143,19 @@ Router::connect(new Route(array(
 
 Router::connect(new Route(array(
 	'method' => 'GET',
+	'template' => '/api/{:slug}/news',
+	'params' => array(
+		'action' => 'news',
+		'controller' => 'items'
+	) + $defaults['params']
+)));
+
+Router::connect(new Route(array(
+	'method' => 'GET',
 	'template' => '/api/{:slug}/news/category',
 	'params' => array(
-		'action' => 'category',
-		'controller' => 'news'
+		'action' => 'showNewsCategory',
+		'controller' => 'categories'
 	) + $defaults['params']
 )));
 
@@ -225,7 +243,6 @@ Router::connect(new Route(array(
 Router::resources('categories', $defaults);
 Router::resources('extensions', $defaults);
 Router::resources('items', $defaults);
-Router::resources('news', array('only' => 'index') + $defaults);
 Router::resources('images', $defaults);
 
 Router::connect(new Route(array(

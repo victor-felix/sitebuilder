@@ -185,6 +185,11 @@ class Sites extends AppModel
 		return Model::load('Images')->firstByRecord('SiteAppleTouchIcon', $this->id);
 	}
 
+	public function splashScreen()
+	{
+		return Model::load('Images')->firstByRecord('SiteSplashScreens', $this->id);
+	}
+
 	public function logo()
 	{
 		return Model::load('Images')->firstByRecord('SiteLogos', $this->id);
@@ -330,6 +335,8 @@ class Sites extends AppModel
 		$data['description'] = nl2br($data['description']);
 		$data['webputty_token'] = $this->css_token;
 		$data['analytics_token'] = $this->google_analytics;
+		$data['android_app_url'] = $this->android_app_url;
+		$data['ios_app_url'] = $this->ios_app_url;
 
 		if ($logo = $this->logo()) {
 			$data['logo'] = $logo->link();
@@ -604,23 +611,17 @@ class Sites extends AppModel
 
 	protected function saveLogoAndAppleTouchIcon()
 	{
-		if (isset($this->data['logo']) && !$this->data['logo']['error']) {
-			if ($logo = $this->logo()) {
-				Model::load('Images')->delete($logo->id);
+		$upload = function ($image, $imageModel, $debug = false) {
+			if (isset($this->data[$image]) && !$this->data[$image]['error']) {
+				if ($item = $this->$image()) {
+					Model::load('Images')->delete($item->id);
+				}
+				Model::load('Images')->upload(new $imageModel($this->id), $this->data[$image], array('visible' => 1));
 			}
-
-			Model::load('Images')->upload(new SiteLogos($this->id), $this->data['logo'],
-				array('visible' => 1));
-		}
-
-		if (isset($this->data['appleTouchIcon']) && !$this->data['appleTouchIcon']['error']) {
-			if ($appleTouchIcon = $this->appleTouchIcon()) {
-				Model::load('Images')->delete($appleTouchIcon->id);
-			}
-
-			Model::load('Images')->upload(new SiteAppleTouchIcon($this->id), $this->data['appleTouchIcon'],
-				array('visible' => 1));
-		}
+		};
+		$upload('logo', 'SiteLogos');
+		$upload('appleTouchIcon', 'SiteAppleTouchIcon');
+		$upload('splashScreen', 'SiteSplashScreens', 1);
 	}
 
 	protected function savePhoto()
@@ -641,7 +642,7 @@ class Sites extends AppModel
 	}
 }
 
-class SiteLogos
+class SiteImages
 {
 	public $id;
 
@@ -650,6 +651,14 @@ class SiteLogos
 		$this->id = $id;
 	}
 
+	public function id()
+	{
+		return $this->id;
+	}
+}
+
+class SiteLogos extends SiteImages
+{
 	public function resizes()
 	{
 		$config = Config::read('SiteLogos.resizes');
@@ -664,22 +673,10 @@ class SiteLogos
 	{
 		return 'SiteLogos';
 	}
-
-	public function id()
-	{
-		return $this->id;
-	}
 }
 
-class SiteAppleTouchIcon
+class SiteAppleTouchIcon extends SiteImages
 {
-	public $id;
-
-	public function __construct($id = null)
-	{
-		$this->id = $id;
-	}
-
 	public function resizes()
 	{
 		$config = Config::read('SiteAppleTouchIcon.resizes');
@@ -694,22 +691,23 @@ class SiteAppleTouchIcon
 	{
 		return 'SiteAppleTouchIcon';
 	}
+}
 
-	public function id()
+class SiteSplashScreens extends SiteImages
+{
+	public function resizes()
 	{
-		return $this->id;
+		return array();
+	}
+
+	public function imageModel()
+	{
+		return 'SiteSplashScreens';
 	}
 }
 
-class SitePhotos
+class SitePhotos extends SiteImages
 {
-	public $id;
-
-	public function __construct($id = null)
-	{
-		$this->id = $id;
-	}
-
 	public function resizes()
 	{
 		$config = Config::read('SitePhotos.resizes');
@@ -730,8 +728,4 @@ class SitePhotos
 		return new self($id);
 	}
 
-	public function id()
-	{
-		return $this->id;
-	}
 }

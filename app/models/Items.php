@@ -43,6 +43,8 @@ class Items extends \lithium\data\Model {
 		'title' => array('type' => 'string', 'null' => false)
 	);
 
+	protected $fields = array();
+
 	public function breadcrumbs($entity, $category_id) {
 		return Model::load('Categories')->firstById($category_id)->bredcrumbs();
 	}

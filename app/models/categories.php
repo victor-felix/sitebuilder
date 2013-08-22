@@ -281,7 +281,7 @@ class Categories extends AppModel
 		}
 
 		$site = Model::load('Sites')->firstById($this->site_id);
-		$site->updated = $date;
+		$site->modified = $date;
 		$site->save();
 	}
 
@@ -304,9 +304,8 @@ class Categories extends AppModel
 		return $id;
 	}
 
-	public function removeItems()
+	public function removeItems($id)
 	{
-		$id = $this->id;
 		$items = Items::find('all', array('conditions' => array(
 			'parent_id' => $id
 		)));
@@ -327,11 +326,10 @@ class Categories extends AppModel
 	protected function deleteChildren($id)
 	{
 		$self = $this->firstById($id);
-
 		$categories = $this->allByParentId($id);
 		$this->deleteSet(Model::load('Categories'), $categories);
 
-		$this->removeItems();
+		$this->removeItems($id);
 
 		Extensions::remove(array(
 			'category_id' => $id,
