@@ -50,7 +50,7 @@ class UpdateFeedsService
 				$stats['failed_images'] += $feed_stats['failed_images'];
 				$stats['total_feeds'] += 1;
 			} catch (Exception $e) {
-				$this->logger->error('product update error', [
+				$this->logger->error('rss update error', [
 					'exception' => get_class($e),
 					'message' => $e->getMessage(),
 					'trace' => $e->getTraceAsString()]);
