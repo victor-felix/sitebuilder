@@ -304,8 +304,9 @@ class Categories extends AppModel
 		return $id;
 	}
 
-	public function removeItems($id)
+	public function removeItems($id = null)
 	{
+		$id = $id ? $id : $this->id;
 		$items = Items::find('all', array('conditions' => array(
 			'parent_id' => $id
 		)));
