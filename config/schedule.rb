@@ -1,6 +1,6 @@
 set :output, File.expand_path('log/whenever.log')
 
-every 1.minute do
+every 15.minute do
   command "php #{File.expand_path 'sitebuilder/script/update_feeds.php'} low"
 end
 
