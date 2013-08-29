@@ -125,7 +125,7 @@ class UpdateMerchantProductsService
 
 				$this->logger()->debug('finished feed', ['url' => $feed['_id']]);
 			} catch (Exception $e) {
-				$this->logger->error('product update error', [
+				$this->logger->error('google-merchant-feed update error', [
 					'exception' => get_class($e),
 					'message' => $e->getMessage(),
 					'trace' => $e->getTraceAsString()]);

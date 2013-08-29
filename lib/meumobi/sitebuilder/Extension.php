@@ -11,7 +11,7 @@ class Extension
 	public static function find($id, $scope = null)
 	{
 		// TODO
-		$scope = array('conditions' => array('site_id' => $scope->site));
+		$scope = array('conditions' => array('_id' => $id, 'site_id' => $scope->site));
 		$extension = Extensions::find('first', $scope);
 		return new static($extension->to('array'));
 	}
