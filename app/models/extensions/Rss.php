@@ -7,6 +7,7 @@ require_once 'lib/simplepie/SimplePie.php';
 use lithium\util\Validator;
 use app\models\Extensions;
 use app\models\items\Articles;
+use app\models\RecordNotFoundException;
 use Model;
 use SimplePie;
 use Exception;
@@ -80,7 +81,13 @@ class Rss extends Extensions
 
 	public function updateArticles($entity)
 	{
-		$category = self::category($entity);
+		try {
+			$category = self::category($entity);
+		} catch (RecordNotFoundException $e) {
+			$extensionData = $entity->to('array');
+			Rss::remove(array('_id' => $entity->_id));
+			throw new Exception('Invalid extension removed from database: ' . print_r($extensionData, 1));
+		}
 		$stats = array(
 			'total_articles' => 0,
 			'total_images' => 0,
