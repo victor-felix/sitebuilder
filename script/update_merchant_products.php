@@ -18,7 +18,7 @@ $priorities = ['high' => UpdateMerchantProductsService::PRIORITY_HIGH,
 	'low' => UpdateMerchantProductsService::PRIORITY_LOW];
 $priority = $priorities[$argv[1]];
 
-meumobi_lock("update_merchant_products_{$priority}", function() use ($priority) {
+meumobi_lock("update_merchant_products_{$argv[1]}", function() use ($priority) {
 	$service = new UpdateMerchantProductsService([
 		'priority' => $priority,
 		'logger_path' => 'log/merchant_products.log'
