@@ -117,7 +117,7 @@ class Articles extends \app\models\Items
 	protected static function getPurifier() {
 		$config = HTMLPurifier_Config::createDefault();
 		$config->set('Cache.SerializerPath', Filesystem::path(APP_ROOT . '/tmp/cache/html_purifier'));
-		$config->set('HTML.Allowed', 'b,i,br,p');
+		$config->set('HTML.Allowed', 'b,i,br,p,strong');
 		return new HTMLPurifier($config);
 	}
 
