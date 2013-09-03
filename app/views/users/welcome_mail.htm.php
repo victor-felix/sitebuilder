@@ -1,8 +1,8 @@
 <p>
-	<strong><?= s('Thanks for joining MeuMobi!') ?></strong>
+	<strong><?= s('Thanks for joining %s!', $segment->title) ?></strong>
 	<br />
 	<br />
-	<?= s('With MeuMobi you can:') ?>
+	<?= s('With %s you can:', $segment->title) ?>
 	<br />
 	<br />
 	<?= s('&raquo; Create a mobile site and app for your business.') ?><br />

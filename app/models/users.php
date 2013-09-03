@@ -327,13 +327,13 @@ class Users extends AppModel
 
 	protected function sendWelcomeMail($created)
 	{
-		if (1 || $created) {
+		if ($created) {
 			$segment = MeuMobi::currentSegment();
 			$this->sendMail($segment->email,
 				array($this->email => $this->fullname()),
-				'Welcome to [MeuMobi]',
+				s("Welcome to %s", $segment->title),
 				'users/welcome_mail.htm',
-				array('title' => s('Welcome to [MeuMobi]')));
+				array('title' => s("Welcome to %s", $segment->title), 'segment'=>$segment));
 		}
 	}
 
@@ -342,10 +342,13 @@ class Users extends AppModel
 		if ($created) {
 			$segment = MeuMobi::currentSegment();
 			$this->sendMail($segment->email,
-					array($this->email => $this->fullname()),
-					'[MeuMobi] Account Confirmation',
-					'users/confirm_mail.htm',
-					array('title' => s('[MeuMobi] Account Confirmation')));
+				array($this->email => $this->fullname()),
+				'[MeuMobi] Account Confirmation',
+				'users/confirm_mail.htm',
+				array(
+					'user' => $this,
+					'title' => s('[MeuMobi] Account Confirmation')
+				));
 		}
 	}
 
