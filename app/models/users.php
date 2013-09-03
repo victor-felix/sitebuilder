@@ -16,7 +16,7 @@ class Users extends AppModel
 	protected $getters = array('firstname', 'lastname');
 	protected $beforeSave = array('hashPassword', 'createToken', 'joinName');
 	protected $beforeDelete = array('removeSites');
-	protected $afterSave = array('authenticate', 'sendConfirmationMail');
+	protected $afterSave = array('authenticate', 'sendWelcomeMail');
 	protected $validates = array(
 		'firstname' => array(
 			'rule' => 'notEmpty',
@@ -310,23 +310,42 @@ class Users extends AppModel
 		return $id;
 	}
 
-	protected function sendConfirmationMail($created)
-	{
-		if ($created && !Config::read('Mail.preventSending')) {
+	protected function sendMail($from, $to, $subject, $view, $data) {
+		if (!Config::read('Mail.preventSending')) {
 			$segment = MeuMobi::currentSegment();
-
 			$mailer = new Mailer(array(
-				'from' => $segment->email,
-				'to' => array($this->email => $this->fullname()),
-				'subject' => s('[MeuMobi] Account Confirmation'),
-				'views' => array('text/html' => 'users/confirm_mail.htm'),
+				'from' => $from,
+				'to' => $to,
+				'subject' => s($subject),
+				'views' => array('text/html' => $view),
 				'layout' => 'mail',
-				'data' => array(
-					'user' => $this,
-					'title' => s('[MeuMobi] Account Confirmation')
-				)
+				'data' => $data,
 			));
 			$mailer->send();
+		}
+	}
+
+	protected function sendWelcomeMail($created)
+	{
+		if (1 || $created) {
+			$segment = MeuMobi::currentSegment();
+			$this->sendMail($segment->email,
+				array($this->email => $this->fullname()),
+				'Welcome to [MeuMobi]',
+				'users/welcome_mail.htm',
+				array('title' => s('Welcome to [MeuMobi]')));
+		}
+	}
+
+	protected function sendConfirmationMail($created)
+	{
+		if ($created) {
+			$segment = MeuMobi::currentSegment();
+			$this->sendMail($segment->email,
+					array($this->email => $this->fullname()),
+					'[MeuMobi] Account Confirmation',
+					'users/confirm_mail.htm',
+					array('title' => s('[MeuMobi] Account Confirmation')));
 		}
 	}
 
