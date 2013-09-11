@@ -125,7 +125,8 @@ class Articles extends \app\models\Items
 		$html = $item->get_content();
 		$purifier = static::getPurifier();
 		$html = $purifier->purify($html);
-		$html = mb_convert_encoding($html, 'ISO-8859-1', mb_detect_encoding($html));
+		$html = mb_convert_encoding($html, 'UTF-8', mb_detect_encoding($html));
+		$html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
 
 		if ($strToRemove) {
 			$html = str_replace($strToRemove, '', (string)$html);
