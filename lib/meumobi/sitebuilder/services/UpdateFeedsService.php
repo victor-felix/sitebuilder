@@ -2,6 +2,8 @@
 
 namespace meumobi\sitebuilder\services;
 
+use lithium\data\Connections;
+
 use app\models\extensions\Rss;
 use Exception;
 
@@ -33,16 +35,23 @@ class UpdateFeedsService
 			'start_time' => microtime(true)
 		];
 
-		$extensions = Rss::find('all', [
-			'conditions' => [
-				'extension' => 'rss',
-				'enabled' => 1,
-				'priority' => $this->priorityCriteria()
-			]
-		]);
+		$connection = Connections::get('default')->connection;
 
-		foreach ($extensions as $extension) {
+		$extensionsCursor = $connection->extensions->find([
+			'extension' => 'rss',
+			'enabled' => 1,
+			'priority' => $this->priorityCriteria()
+		]);
+		//set the initial timeout to 30 seconds
+		$extensionsCursor->timeout(30000);
+		foreach ($extensionsCursor as $extensionData) {
+			//wait 3 minutes on each interation
+			$extensionsCursor->timeout(180000);
 			try {
+				$data = $extensionData;
+				$data['_id'] = (string) $data['_id'];
+
+				$extension = Rss::create($data);
 				$feed_stats = $extension->updateArticles();
 				$stats['total_articles'] += $feed_stats['total_articles'];
 				$stats['removed_articles'] += $feed_stats['removed_articles'];
