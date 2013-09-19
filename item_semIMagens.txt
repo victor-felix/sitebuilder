@@ -1,0 +1,5 @@
+Array
+(
+    [articles] => 1
+    [business] => 1
+)

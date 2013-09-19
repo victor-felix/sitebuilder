@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use meumobi\sitebuilder\services\GeocodeItemsService;
+
 require_once 'lib/utils/Works/Geocode.php';
 require_once 'lib/bbcode/Decoda.php';
 
@@ -11,6 +13,7 @@ use Model;
 use GoogleGeocoding;
 use GeocodingException;
 use OverQueryLimitException;
+use meumobi\sitebuilder\services\UpdateFeedsService;
 use Decoda;
 use lithium\util\Collection;
 use utils\Geocode;
@@ -404,16 +407,20 @@ class Items extends \lithium\data\Model {
 				$location = $geocode->results[0]->geometry->location;
 				$item->geo = array((float) $location->lng, (float) $location->lat);
 			} catch (OverQueryLimitException $e) {
-				$job = \app\models\Jobs::create();
-				$data = array(
-					'type' => 'geocode',
-					'params' => array(
-						'item_id' => (string) $item->_id,
-						'type' => $item->type,
-					),
-				);
-				$job->set($data);
-				$job->save();
+				$return = $chain->next($self, $params, $chain);
+				if ($item->id()) {
+					$data = array(
+						'type' => 'geocode',
+						'priority' => GeocodeItemsService::PRIORITY_HIGH,
+						'params' => array(
+							'item_id' => $item->id(),
+							'type' => $item->type,
+						),
+					);
+					$job = \app\models\Jobs::create($data);
+					$job->save();
+				}
+				return $return;
 			} catch (GeocodingException $e) {
 				$item->geo = 0;
 			}
