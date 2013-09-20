@@ -1,12 +1,12 @@
 <?php
 
-require_once 'lib/utils/Works/Import.php';
+use meumobi\sitebuilder\services\ImportCsvService;
+
 require_once 'lib/utils/FileUpload.php';
 require_once 'lib/mailer/Mailer.php';
 
 use app\models\Extensions;
 use app\models\Items;
-use utils\Import;
 
 class Categories extends AppModel
 {
@@ -201,16 +201,19 @@ class Categories extends AppModel
 	{
 		if (isset($this->data['import']) && is_uploaded_file($this->data['import']['tmp_name'])) {
 			$fileSize = $this->data['import']['size'];
-			if ($fileSize && self::MAX_IMPORTFILE_SIZE < ($fileSize / 1024)
-				&& $this->scheduleImport()) {
+			try {
+				if ($fileSize && self::MAX_IMPORTFILE_SIZE < ($fileSize / 1024)
+					&& $this->scheduleImport()) {
 					return $this->save();
+				}
+				$import = new ImportCsvService(['logger_path' => 'log/imports.log']);
+				$import->setMethod($this->data['import_method']);
+				$import->setCategory($this);
+				$import->setFile($this->data['import']['tmp_name']);
+				$import->import();
+			} catch (Exception $e) {
+				Session::writeFlash('error', s('Sorry, can\'t import the category items'));
 			}
-			$import = new Import();
-			$import->notIsJob();
-			$import->setMethod($this->data['import_method']);
-			$import->category($this);
-			$import->file($this->data['import']['tmp_name']);
-			$import->start();
 		}
 	}
 
@@ -219,37 +222,32 @@ class Categories extends AppModel
 		$uploader = new FileUpload();
 		$uploader->path = APP_ROOT . '/uploads/imports';
 
-		try {
-			$importFile = $uploader->upload($this->data['import'], Security::hash(time()) . '_:original_name');
+		$importFile = $uploader->upload($this->data['import'], Security::hash(time()) . '_:original_name');
 
-			$data = array(
-				'type' => 'import',
-				'params' => array(
-					'method' => $this->data['import_method'],
-					'site_id' => $this->data['site_id'],
-					'category_id' => $this->data['id'],
-					'file' => $importFile,
-				)
-			);
+		$data = array(
+			'type' => 'import',
+			'params' => array(
+				'method' => $this->data['import_method'],
+				'site_id' => $this->data['site_id'],
+				'category_id' => $this->data['id'],
+				'file' => "/uploads/imports/$importFile",
+			)
+		);
 
-			$job = \app\models\Jobs::create($data);
-			if ($job->save()) {
-				$this->sendImportMail(array('job' => $job->to('array')));
-				Session::writeFlash('success', s('The import was scheduled successfully'));
-				return true;
-			} else {
-				throw new Exception('Can\'t import file');
-			}
-		} catch (Exception $e) {
-			Session::writeFlash('error', s('Sorry, can\'t import category'.$e->getMessage()));
-			return false;
+		$job = \app\models\Jobs::create($data);
+		if ($job->save()) {
+			$this->sendImportMail(array('job' => $job->to('array')));
+			Session::writeFlash('success', s('The import was scheduled successfully'));
+			return true;
+		} else {
+			throw new Exception();
 		}
 	}
 
 	protected function sendImportMail($params = array())
 	{
 		if (!Config::read('Mail.preventSending')) {
-			$segment = Model::load('Segments')->firstById(MeuMobi::segment());
+			$segment = MeuMobi::currentSegment();
 			$user = Auth::user();
 			$default = array(
 				'user' => $user,
