@@ -34,8 +34,8 @@ class ImportCsvService {
 				$this->setCategory($category);
 				$log['total_items'] = $this->import();
 				$this->logger()->info('csv imported ', $log);
-			} catch (Exception $e) {
-				$this->logger->error('csv import error', [
+			} catch (\Exception $e) {
+				$this->logger()->error('csv import error', [
 					'exception' => get_class($e),
 					'message' => $e->getMessage(),
 					'trace' => $e->getTraceAsString()
@@ -78,7 +78,7 @@ class ImportCsvService {
 			//remove all items creates before import start
 			$classname::remove(
 				array(
-					'parent_id' => $this->category()->id,
+					'parent_id' => $this->getCategory()->id,
 					'created' => array(
 						'$lt' => new \MongoDate($startTime),
 					),
@@ -132,7 +132,7 @@ class ImportCsvService {
 	public function getCategory()
 	{
 		if (!$this->category) {
-			throw new Exception("category not set");
+			throw new \Exception("category not set");
 		}
 		return $this->category;
 	}
