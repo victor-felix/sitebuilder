@@ -85,6 +85,9 @@ namespace :deploy do
     run "flock -x #{shared_path}/tmp/update_feeds_high.pid -c echo"
     run "flock -x #{shared_path}/tmp/update_merchant_products_low.pid -c echo"
     run "flock -x #{shared_path}/tmp/update_merchant_products_high.pid -c echo"
+    run "flock -x #{shared_path}/tmp/import_csv.pid -c echo"
+    run "flock -x #{shared_path}/tmp/geocode_items_high.pid -c echo"
+    run "flock -x #{shared_path}/tmp/geocode_items_low.pid -c echo"
   end
 end
 
