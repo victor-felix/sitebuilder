@@ -9,11 +9,15 @@ every 1.minute do
 end
 
 every 10.minutes do
-  command "php #{File.expand_path 'sitebuilder/script/run_works.php import'}"
+  command "php #{File.expand_path 'sitebuilder/script/import_csv.php'}"
+end
+
+every 30.minutes do
+  command "php #{File.expand_path 'sitebuilder/script/geocode_items.php high'}"
 end
 
 every 1.hour do
-  command "php #{File.expand_path 'sitebuilder/script/run_works.php geocode'}"
+  command "php #{File.expand_path 'sitebuilder/script/geocode_items.php low'}"
 end
 
 every 1.day do

@@ -13,6 +13,10 @@ class ThemesRepository
 {
 	public function all()
 	{
+		$data = json_decode(file_get_contents(Config::read('Themes.url')));
+		if (!is_array($data)) {
+			return array();
+		}
 		return array_map(function($theme) {
 			$theme->defaults['assets'] = isset($theme->assets) ? $theme->assets : array();
 			$theme->defaults['colors'] = isset($theme->colors) ? $theme->colors : array();
@@ -20,7 +24,7 @@ class ThemesRepository
 			$theme->colors = isset($theme->defaults) ? array_keys((array) $theme->defaults) : array();
 
 			return new Theme($theme);
-		}, json_decode(file_get_contents(Config::read('Themes.url'))));
+		}, $data);
 	}
 
 	public function bySegment($segment, $onlyWithSkins = false)
