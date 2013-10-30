@@ -154,7 +154,7 @@ class Articles extends \app\models\Items
 					}
 				}
 				if($node->nodeType == XML_ELEMENT_NODE) {
-					$results .= $doc->saveXML($node) . PHP_EOL;
+					$results .= $doc->saveHTML($node) . PHP_EOL;
 				}
 			}
 		}
