@@ -33,7 +33,8 @@
 				<?php echo $this->form->input('facebook', array(
 					'label' => s('Facebook Page'),
 					'type' => 'text',
-					'class' => 'ui-text large'
+					'class' => 'ui-text large',
+					'value' => $site->facebook ? $site->facebook : 'http://'
 				)) ?>
 				<small><?php echo s('Ex: http://facebook.com/username') ?></small>
 			</div>
@@ -43,7 +44,8 @@
 				<?php echo $this->form->input('twitter', array(
 					'label' => s('Twitter Page'),
 					'type' => 'text',
-					'class' => 'ui-text large'
+					'class' => 'ui-text large',
+					'value' => $site->twitter ? $site->twitter : 'http://'
 				)) ?>
 				<small><?php echo s('Ex: http://twitter.com/username') ?></small>
 			</div>
@@ -53,7 +55,8 @@
 				<?php echo $this->form->input('website', array(
 					'label' => s('URL of your current website'),
 					'type' => 'text',
-					'class' => 'ui-text large'
+					'class' => 'ui-text large',
+					'value' => $site->website ? $site->website : 'http://'
 				)) ?>
 				<small><?php echo s('Ex: http://www.yourwebsite.com') ?></small>
 			</div>
