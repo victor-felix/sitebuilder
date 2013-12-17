@@ -17,7 +17,8 @@ class Sites extends AppModel
 	protected $beforeSave = array(
 		'getLatLng',
 		'saveDomain',
-		'trimFields'
+		'trimFields',
+		'cleanDomainLinks'
 	);
 
 	protected $afterSave = array(
@@ -435,6 +436,19 @@ class Sites extends AppModel
 			}
 		}
 
+		return $data;
+	}
+
+	protected function cleanDomainLinks($data)
+	{
+		$fieldsToClean = array('facebook', 'twitter', 'website',
+			'android_app_url', 'ios_app_url');
+
+		foreach ($fieldsToClean as $field) {
+			if (isset($data[$field]) && $data[$field] == 'http://') {
+				$data[$field] = '';
+			}
+		}
 		return $data;
 	}
 

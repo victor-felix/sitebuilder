@@ -154,7 +154,7 @@ class Articles extends \app\models\Items
 					}
 				}
 				if($node->nodeType == XML_ELEMENT_NODE) {
-					$results .= $doc->saveXML($node) . PHP_EOL;
+					$results .= $doc->saveHTML($node) . PHP_EOL;
 				}
 			}
 		}
@@ -202,9 +202,10 @@ class Articles extends \app\models\Items
 			foreach ($nodes as $img) {
 				$images []= $img->getAttribute('src');
 			}
+			return $images;
 		}
 
-		$nodes = $xpath->query('//img[contains(@class, "wp-image")]');
+		$nodes = $xpath->query('//img[contains(@src, "wp-content/uploads")]');
 		if ($nodes->length) {
 			foreach ($nodes as $img) {
 				$images []= array( 
