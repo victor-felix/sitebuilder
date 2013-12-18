@@ -33,6 +33,7 @@ class SkinsController extends AppController
 			'main_color' => $theme->defaults('main_color'),
 			'colors' => $theme->defaults('colors'),
 			'assets' => $theme->defaults('assets'),
+			'html5' => $theme->defaults('html5'),
 		);
 		if (!empty($this->data)) {
 			$this->data['main_color'] = substr($this->data['main_color'],1);
