@@ -65,7 +65,7 @@
 				</a>
 			</li>
 			<?php endif ?>
-			<li id="add-content" class="open">
+			<li id="add-content" class="open" style="display:none;">
 				<div class="link">
 					<span class="icon"></span>
 					<h3><?php echo s('create new content') ?></h3>
