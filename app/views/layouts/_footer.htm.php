@@ -6,7 +6,7 @@
 			<a href="http://blog.meumobi.com" target="_blank"><?php echo s('Our Blog') ?></a>
 			<p class="copy">
 				<span class="border"></span>
-				<?php echo s('&copy;%s MeuMobi. All rights reserved',date("Y")) ?>
+				<?php //echo s('&copy;%s MeuMobi. All rights reserved',date("Y")) ?>
 			</p>
 		</div>
 		<div class="contact">

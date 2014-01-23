@@ -1,3 +1,4 @@
+<a href="#" id="success-feedback">Category successfully updated.</a>
 <?php $this->pageTitle = s('dashboard') ?>
 
 <div class="page-heading">
