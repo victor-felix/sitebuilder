@@ -2,11 +2,14 @@
 	<div class="container">
 		<div class="links">
 			<a class="logo" href="#"><?php echo s('MeuMobi') ?></a>
-			<a href="http://blog.meumobi.com/about" target="_blank"><?php echo s('About Us') ?></a>
-			<a href="http://blog.meumobi.com" target="_blank"><?php echo s('Our Blog') ?></a>
+      <ul>
+        <li><a href="http://blog.meumobi.com/about" target="_blank"><?php echo s('About Us') ?></a></li>
+        <li><a href="http://blog.meumobi.com" target="_blank"><?php echo s('Our Blog') ?></a></li>
+        <li><a href="/docs/api"><?php echo s('Api Documentation') ?></a></li>
+      </ul>
 			<p class="copy">
 				<span class="border"></span>
-				<?php //echo s('&copy;%s MeuMobi. All rights reserved',date("Y")) ?>
+				<?php echo s('&copy;%s MeuMobi. All rights reserved', @date("Y")) ?>
 			</p>
 		</div>
 		<div class="contact">

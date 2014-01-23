@@ -571,7 +571,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 /**
  *error flash
  */
-#success-feedback, #error-feedback {
+#success-feedback, #error-feedback, .feedback {
 	background: #278740 url(/images/shared/layout/feedback-close.png) 900px 26px no-repeat;
 	color: #FFF;
 	display: block;
@@ -583,7 +583,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	width: 890px;
 }
 
-#success-feedback:hover {
+#success-feedback:hover, .feedback {
 	background-color: #227738;
 }
 
