@@ -1,4 +1,4 @@
-<a href="http://<?php echo e($site->domain) ?>/landing-page" target="_blank" class="feedback">Check your Meumobi's App landing page: http://<?php echo e($site->domain) ?>/landing-page</a>
+<a href="http://<?php echo e($site->domain) ?>/landing-page" target="_blank" class="feedback"><?php echo s("Check your Meumobi's App landing page: %s", 'http://' . $site->domain ) ?>/landing-page</a>
 <?php $this->pageTitle = s('dashboard') ?>
 
 <div class="page-heading">
