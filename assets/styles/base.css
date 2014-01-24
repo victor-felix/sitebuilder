@@ -924,3 +924,10 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	margin-bottom: 12px;
 	margin-left: 1px;
 }
+
+.footer .links > ul {
+  float: right;
+  margin: 0 15px 0 0;
+  list-style: none;
+}
+

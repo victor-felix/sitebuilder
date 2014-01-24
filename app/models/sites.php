@@ -338,6 +338,7 @@ class Sites extends AppModel
 		$data['analytics_token'] = $this->google_analytics;
 		$data['android_app_url'] = $this->android_app_url;
 		$data['ios_app_url'] = $this->ios_app_url;
+		$data['landing_page'] = $this->landing_page;
 
 		if ($logo = $this->logo()) {
 			$data['logo'] = $logo->link();
