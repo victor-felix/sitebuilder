@@ -2,12 +2,12 @@
 	<div class="container">
 		<div class="hero-unit clearfix">
 			<div class="block pull-left">
-				<h1><?php echo s('Create a mobile website for your business.') ?></h1>
-				<h2><?php echo s('Works with all cellphones and smartphones.') ?></h2>
-				<?php echo $this->language->link(s('start your free trial ›'), '/signup/user', array(
+				<h1><?php echo s('Create your site for smartphones and tables. Free!') ?></h1>
+				<h2><?php echo s('Fast, easy and no programming!') ?></h2>
+				<?php echo $this->language->link(s('Create your free version ›'), '/signup/user', array(
 					'class' => 'btn big'
 				)) ?>
-				<p class="trial"><small><strong><?php echo s('NO') ?></strong> <?php echo s('Credit card required.') ?><br> <?php echo s('30-day, fully functional trial.') ?></small></p>
+				
 			</div>
 			<div class="pull-right">
 				<div class="slider ">
@@ -161,45 +161,6 @@
 		</div>
 	</div>
 </div>
-<div class="prices outer wrapp">
-	<div class="container">
-		<p class="main-title"><?php echo s('Our plans and prices.') ?></p>
-		<div class="row">
-			<div class="span6">
-				<p class="price"><span><?php echo s('Basic') ?> </span><?php echo s('US$ <strong>9/mo</strong>') ?></p>
-				<p class="price-label"><?php echo s('create a mobile presence') ?></p>
-				<ul>
-					<li><span class="icon"></span><?php echo s('<strong>Basic information:</strong><br>contacts, address, photos, social links, news via RSS') ?></li>
-					<li><span class="icon"></span><?php echo s('additional content such as <strong>menus, products, services</strong>, etc.') ?></li>
-					<li class="uncheck"><span class="icon"></span><?php echo s('add more location? get a Store Locator') ?> ›</li>
-				</ul>
-			</div>
-			<div class="span6">
-				<p class="price"><span><?php echo s('Locator') ?> </span><?php echo s('US$ <strong>34/mo</strong>') ?></p>
-				<p class="price-label"><?php echo s('for businesses with multiple locations') ?></p>
-				<ul>
-					<li><span class="icon"></span><?php echo s('<strong>Basic information:</strong><br>contacts, address, photos, social links, news via RSS') ?></li>
-					<li><span class="icon"></span><?php echo s('additional content such as <strong>menus, products, services</strong>, etc.') ?></li>
-					<li><span class="icon"></span><?php echo s('create a <strong>store locator</strong>, showing the locations nearest to your customer - <small>up to 25 stores</small>') ?></li>
-				</ul>
-			</div>
-		</div>
-
-		<p class="action">
-			<?php echo $this->language->link(s('start your free trial now!'), '/signup/user', array(
-				'class' => 'btn big'
-			)) ?>
-			<br>
-			<span class="trial">
-				<small>
-				<?php echo s('NO') ?> <strong><?php echo s('credit card required!') ?></strong>
-				<br>
-				<?php echo s('you´ll be able to choose a plan after the trial.') ?>
-				</small>
-			</span>
-		</p>
-	</div>
-</div>
 <div class="quotes outer wrapp">
 	<div class="container">
 		<div class="row">
@@ -263,10 +224,10 @@
 </div>
 <div class="container ">
 	<div class="custom-solution">
-		<p class="main-title"><?php echo s('need custom solutions?') ?></p>
+		<p class="main-title"><?php echo s('want to create an APP for iPhone and Android?') ?></p>
 		<p>
-		<?php echo s('Creating custom layout, open API, white label solution for agencies, mobile site resale for digital partners. Any custom solution!') ?>
-		<strong class="mail">enterprise@meumobi.com</strong>
+		<?php echo s('Submit your website to us and receive your APP for iPhone and Android .. want to know more? Contact us by email: ') ?>
+		<strong class="mail"><?php echo s('contact@meumobi.com') ?></strong>
 		</p>
 	</div>
 </div>

@@ -97,7 +97,8 @@ class SkinsRepository
 			'parent_id' => $object->parentId(),
 			'main_color' => $object->mainColor(),
 			'colors' => $object->colors(),
-			'assets' => $object->assets()
+			'assets' => $object->assets(),
+			'html5' => $object->html5(),
 		];
 	}
 

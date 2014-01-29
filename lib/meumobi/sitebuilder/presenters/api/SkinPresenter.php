@@ -13,7 +13,8 @@ class SkinPresenter
 			'theme_id' => $object->themeId(),
 			'parent_id' => $object->parentId(),
 			'colors' => $object->colors(),
-			'assets' => self::decorateAssets($object->assets())
+			'assets' => self::decorateAssets($object->assets()),
+			'html5' => $object->html5()
 		];
 	}
 

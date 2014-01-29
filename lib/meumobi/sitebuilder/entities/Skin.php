@@ -16,6 +16,7 @@ class Skin
 	protected $assets = array();
 	protected $uploadedAssets = array();
 	protected $colors = array();
+	protected $html5;
 
 	public function __construct(array $attrs = [])
 	{
@@ -68,6 +69,11 @@ class Skin
 	public function assets()
 	{
 		return $this->assets;
+	}
+
+	public function html5()
+	{
+		return $this->html5;
 	}
 
 	public function uploadedAssets()

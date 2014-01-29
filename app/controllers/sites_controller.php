@@ -88,6 +88,7 @@ class SitesController extends AppController
 					'main_color' => $parent->mainColor(),
 					'colors' => $this->data['colors'],
 					'assets' => $parent->assets(),
+					'html5' => $parent->html5(),
 				);
 				if (isset($this->data['uploaded_assets'])) {
 					$skinData['uploaded_assets'] = $this->data['uploaded_assets'];

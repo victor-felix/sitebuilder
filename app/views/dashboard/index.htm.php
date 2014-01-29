@@ -1,3 +1,4 @@
+<a href="http://<?php echo e($site->domain) ?>/landing-page" target="_blank" class="feedback"><?php echo s("Check your Meumobi's App landing page: %s", 'http://' . $site->domain ) ?>/landing-page</a>
 <?php $this->pageTitle = s('dashboard') ?>
 
 <div class="page-heading">
@@ -65,7 +66,7 @@
 				</a>
 			</li>
 			<?php endif ?>
-			<li id="add-content" class="open">
+			<li id="add-content" class="open" style="display:none;">
 				<div class="link">
 					<span class="icon"></span>
 					<h3><?php echo s('create new content') ?></h3>

@@ -521,7 +521,12 @@ div.wrapp.prices {
 }
 
 .footer .links {
-	width: 280px;
+}
+
+.footer .links > ul {
+  float: right;
+  margin: 0 15px 0 0;
+  list-style: none;
 }
 
 .footer .links a {
@@ -542,7 +547,7 @@ div.wrapp.prices {
 	display: block;
 	width: 63px;
 	border-top: 1px solid;
-	margin: 20px 0 15px;
+	margin: 20px 0 25px;
 }
 
 .footer a.logo {
