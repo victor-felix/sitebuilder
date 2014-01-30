@@ -352,6 +352,11 @@ class Sites extends AppModel
 			$data['photos'] []= $photo->toJSON();
 		}
 
+		$data['apple_touch_icon'] = '';
+		if ($appleTouchIcon = $this->appleTouchIcon()) {
+			$data['apple_touch_icon'] = $appleTouchIcon->link();
+		}
+
 		return $data;
 	}
 
