@@ -2,7 +2,7 @@
 	<div class="container">
 		<div class="hero-unit clearfix">
 			<div class="block pull-left">
-				<h1><?php echo s('Create your site for smartphones and tables. Free!') ?></h1>
+				<h1><?php echo s('Create your site for smartphones and tablets. Free!') ?></h1>
 				<h2><?php echo s('Fast, easy and no programming!') ?></h2>
 				<?php echo $this->language->link(s('Create your free version ›'), '/signup/user', array(
 					'class' => 'btn big'
@@ -13,7 +13,7 @@
 				<div class="slider ">
 					<p>
 						<?php echo $this->html->image('/images/home/slides/slide-01.png', array(
-							'alt' => s('best User Experience on all mobile phones and tablets, like iphone and ipad')
+							'alt' => s('best User Experience on all mobile phones and tablets, like iPhone and iPad')
 						)) ?>
 					</p>
 					<p>
@@ -74,7 +74,7 @@
 			<div class="thumbnail">
 				<p class="img">
 					<?php echo $this->html->image('/images/shared/home/en/all+devices.png', array(
-						'alt' => s('the mobile site of your company on all phones and tablets: iphone, android, nokia, samsung, blackberry, lg, motorola, ipad, etc.')
+						'alt' => s('the mobile site of your company on all phones and tablets: iPhone, android, nokia, samsung, blackberry, lg, motorola, iPad, etc.')
 					)) ?>
 				</p>
 				<h3><?php echo s('Publish your site on all mobile devices') ?></h3>

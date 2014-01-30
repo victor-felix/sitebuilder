@@ -15,7 +15,7 @@
 <fieldset>
 	<div class="grid-4 first">
 		<div class="tip">
-			<h2><?php echo s('splash screen for Iphone') ?></h2>
+			<h2><?php echo s('splash screen for iPhone') ?></h2>
 		</div>
 	</div>
 
@@ -31,7 +31,7 @@
 				<div class="form-grid-460 first">
 					<span class="optional"><?php echo s('Optional') ?></span>
 					<?php echo $this->form->input('splashScreen', array(
-						'label' => s('splash screen for Iphone'),
+						'label' => s('splash screen for iPhone'),
 						'type' => 'file',
 						'class' => 'ui-text large'
 					)) ?>
@@ -45,9 +45,9 @@
 <fieldset>
 	<div class="grid-4 first">
 		<div class="tip">
-			<h2><?php echo s('icon for IPhone') ?></h2>
+			<h2><?php echo s('icon for iPhone') ?></h2>
 			<p>
-				<?php echo s('Allow your visitors to quickly retur to your site adding an app-like icon to their mobile phone home screens') ?>
+				<?php echo s('Allow your visitors to quickly return to your site adding an app-like icon to their mobile iPhone home screens') ?>
 			</p>
 		</div>
 	</div>
@@ -64,7 +64,7 @@
 				<div class="form-grid-460 first">
 					<span class="optional"><?php echo s('Optional') ?></span>
 					<?php echo $this->form->input('appleTouchIcon', array(
-						'label' => s('icon for IPhone'),
+						'label' => s('icon for iPhone'),
 						'type' => 'file',
 						'class' => 'ui-text large'
 					)) ?>
