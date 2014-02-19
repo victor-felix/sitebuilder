@@ -25,11 +25,7 @@ class Events extends \app\models\Items {
         ),
         'date' => array(
             'title' => 'Date',
-            'type' => 'string'
-        ),
-        'hour' => array(
-            'title' => 'Hour',
-            'type' => 'string'
+            'type' => 'datetime'
         ),
         'contact' => array(
             'title' => 'Contact',
@@ -48,8 +44,7 @@ class Events extends \app\models\Items {
             'description'  => array('type' => 'string', 'default' => ''),
             'address'  => array('type' => 'string', 'default' => ''),
             'contact'  => array('type' => 'string', 'default' => ''),
-            'date'  => array('type' => 'string', 'default' => ''),
-            'hour'  => array('type' => 'string', 'default' => '')
+            'date'  => array('type' => 'datetime', 'default' => '')
         );
     }
 }
