@@ -4,7 +4,7 @@ Config::write('Segment', array(
   'id' => 'meumobi',
   'title' => 'MeuMobi',
   'root' => 'Index',
-  'items' => array('articles'),
+  'items' => array('articles','events'),
   'extensions' => array('rss','store-locator'),
   'email' => array('no-reply@meumobi.com' => 'MeuMobi'),
   'hideCategories' => false,
