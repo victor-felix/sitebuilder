@@ -243,13 +243,13 @@ class Items extends \lithium\data\Model {
 			function orderItems(parent) {
 				try	{
 					var order = 0;
-			  		db.items.find({parent_id: parent}).forEach( function(item) {
-			                     	item.order = ++order;
-			                     	db.items.save(item);
-			                     });
-			        return order;
-			    } catch(err) {
-				  return 0;
+					db.items.find({parent_id: parseInt(parent)}).forEach( function(item) {
+						item.order = ++order;
+						db.items.save(item);
+					});
+					return order;
+				} catch(err) {
+					return err;
 				}
 			}
 		";
