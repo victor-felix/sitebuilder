@@ -1,6 +1,8 @@
 <?php
 namespace app\models\items;
 
+use app\models\Items;
+
 class ExtendedArticles extends Articles {
 	protected $type = 'ExtendedArticles';
 	
@@ -44,3 +46,19 @@ class ExtendedArticles extends Articles {
 		);
 	}
 }
+
+ExtendedArticles::applyFilter('remove', function($self, $params, $chain) {
+	return Items::updateOrdering($self, $params, $chain);
+});
+
+ExtendedArticles::applyFilter('remove', function($self, $params, $chain) {
+	return Items::removeImages($self, $params, $chain);
+});
+
+ExtendedArticles::applyFilter('save', function($self, $params, $chain) {
+	return Items::addTimestamps($self, $params, $chain);
+});
+
+ExtendedArticles::applyFilter('save', function($self, $params, $chain) {
+	return Items::addOrder($self, $params, $chain);
+});
