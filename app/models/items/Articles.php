@@ -149,7 +149,6 @@ class Articles extends \app\models\Items
 					$content = trim($node->textContent);
 					if($content) {
 						$new_node = $doc->createElement('p', $content);
-						$body->replaceChild($new_node, $node);
 						$node = $new_node;
 					}
 				}
