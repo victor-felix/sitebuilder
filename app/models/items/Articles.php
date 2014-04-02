@@ -78,7 +78,7 @@ class Articles extends \app\models\Items
 			'pubdate' => gmdate('Y-m-d H:i:s', $item->get_date('U')),
 			'author' => $author ? $author->get_name() : '',
 			'format' => 'html',
-			'type' => 'articles'
+			'type' => $feed->type
 		);
 
 		$article = static::create($article);

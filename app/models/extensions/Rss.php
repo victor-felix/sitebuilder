@@ -23,7 +23,7 @@ class Rss extends Extensions
 		'title' => 'News feed - RSS',
 		'description' => 'Import content automatically from a news feed',
 		'type' => 'rss',
-		'allowed-items' => array('articles'),
+		'allowed-items' => array('articles','extended_articles'),
 	);
 
 	protected $fields = array(
@@ -97,14 +97,14 @@ class Rss extends Extensions
 		try {
 			$feed = $entity->getFeed();
 			$items = $feed->get_items();
-
+			$classname = '\app\models\items\\' . \Inflector::camelize($category->type);
 			foreach ($items as $item) {
-				$count = Articles::find('count', array('conditions' => array(
+				$count = $classname::find('count', array('conditions' => array(
 					'parent_id' => $entity->category_id,
 					'guid' => $item->get_id()
 				)));
 				if (!$count) {
-					$article_stats = Articles::addToFeed($category, $item);
+					$article_stats = $classname::addToFeed($category, $item);
 					$stats['total_images'] += $article_stats['total_images'];
 					$stats['failed_images'] += $article_stats['failed_images'];
 					$stats['total_articles'] += 1;
