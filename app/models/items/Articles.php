@@ -48,6 +48,7 @@ class Articles extends \app\models\Items
 			'pubdate' => array('type' => 'date', 'default' => 0),
 			'description' => array('type' => 'string', 'default' => ''),
 			'author' => array('type' => 'string', 'default' => ''),
+			'enclosures' => array('type' => 'array', 'default' => array()),
 		);
 	}
 
@@ -68,6 +69,15 @@ class Articles extends \app\models\Items
 		}
 
 		$author = $item->get_author();
+		$enclosures = [];
+		foreach($item->get_enclosures() as $enclosure) {
+			$enclosures[] = [
+			'url' => $enclosure->get_link(),
+			'type' => $enclosure->get_type(),
+			'length' => $enclosure->get_length(),
+			];
+		}
+
 		$article = array(
 			'site_id' => $feed->site_id,
 			'parent_id' => $feed->id,
@@ -78,7 +88,8 @@ class Articles extends \app\models\Items
 			'pubdate' => gmdate('Y-m-d H:i:s', $item->get_date('U')),
 			'author' => $author ? $author->get_name() : '',
 			'format' => 'html',
-			'type' => $feed->type
+			'type' => 'articles',
+			'enclosures' => $enclosures
 		);
 
 		$article = static::create($article);
