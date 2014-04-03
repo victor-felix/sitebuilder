@@ -48,7 +48,7 @@ class Articles extends \app\models\Items
 			'pubdate' => array('type' => 'date', 'default' => 0),
 			'description' => array('type' => 'string', 'default' => ''),
 			'author' => array('type' => 'string', 'default' => ''),
-			'enclosures' => array('type' => 'array', 'default' => array()),
+			'medias' => array('type' => 'array', 'default' => array()),
 		);
 	}
 
@@ -69,11 +69,12 @@ class Articles extends \app\models\Items
 		}
 
 		$author = $item->get_author();
-		$enclosures = [];
+		$medias = [];
 		foreach($item->get_enclosures() as $enclosure) {
-			$enclosures[] = [
+			$medias[] = [
 			'url' => $enclosure->get_link(),
 			'type' => $enclosure->get_type(),
+			'title' => $enclosure->get_title(),
 			'length' => $enclosure->get_length(),
 			];
 		}
@@ -89,7 +90,7 @@ class Articles extends \app\models\Items
 			'author' => $author ? $author->get_name() : '',
 			'format' => 'html',
 			'type' => 'articles',
-			'enclosures' => $enclosures
+			'medias' => $medias
 		);
 
 		$article = static::create($article);
