@@ -23,10 +23,14 @@ class Events extends \app\models\Items {
             'title' => 'Address',
             'type' => 'string'
         ),
-        'date' => array(
-            'title' => 'Date',
+        'start_date' => array(
+            'title' => 'Start Date',
             'type' => 'datetime'
         ),
+        'end_date' => array(
+            'title' => 'End Date',
+            'type' => 'datetime'
+    		),
         'contact' => array(
             'title' => 'Contact',
             'type' => 'string'
@@ -44,7 +48,8 @@ class Events extends \app\models\Items {
             'description'  => array('type' => 'string', 'default' => ''),
             'address'  => array('type' => 'string', 'default' => ''),
             'contact'  => array('type' => 'string', 'default' => ''),
-            'date'  => array('type' => 'datetime', 'default' => '')
+            'start_date'  => array('type' => 'datetime', 'default' => ''),
+            'end_date'  => array('type' => 'datetime', 'default' => '')
         );
     }
 }

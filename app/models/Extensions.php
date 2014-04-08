@@ -145,6 +145,33 @@ class Extensions extends \lithium\data\Model
 	public static function beforeRemove($extension) {
 
 	}
+
+	public static function switchEnabledStatus($self, $params, $chain)
+	{
+		$extension = $params['entity'];
+		if ($extension->enabled) {
+			static::enable($extension);
+		} else {
+			static::disable($extension);
+		}
+		return $chain->next($self, $params, $chain);
+	}
+
+	public static function enable($extension)
+	{
+		$extension->priority = static ::PRIORITY_HIGH;
+		$category = static::category($extension);
+		$category->populate = 'auto';
+		$category->save();
+	}
+
+	public static function disable($extension)
+	{
+		$category = static::category($extension);
+		$category->removeItems();
+		$category->populate = 'manual';
+		$category->save();
+	}
 }
 
 Extensions::applyFilter('remove', function($self, $params, $chain) {
