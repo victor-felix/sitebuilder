@@ -7,6 +7,12 @@ set :user, 'meumobi'
 # production settings. do not change unless PROD env moves. if you need to
 # deploy to INT or another env, create or modify a task for it.
 
+task :rimobi do
+  set :php_env, 'rimobi'
+	set :deploy_to, '/home/meumobi/PROJECTS/int-meumobilesite.com'
+	role :app, 'rimobi.ipanemax.com'
+end
+
 task :production do
   set :php_env, 'production'
 	set :deploy_to, '/home/meumobi/PROJECTS/meumobi.com'
