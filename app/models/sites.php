@@ -339,6 +339,7 @@ class Sites extends AppModel
 		$data['android_app_url'] = $this->android_app_url;
 		$data['ios_app_url'] = $this->ios_app_url;
 		$data['landing_page'] = $this->landing_page;
+		$data['stock_symbols'] = $this->stock_symbols;
 
 		if ($logo = $this->logo()) {
 			$data['logo'] = $logo->link();

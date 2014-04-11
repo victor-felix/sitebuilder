@@ -76,6 +76,15 @@
 				</div>
 				<small><?php echo s('If you wish to use a custom domain, you can configure one after this wizard.<br /> In the admin panel you will find instructions on haw to proceed') ?></small>
 			</div>
+			<div class="form-grid-460 first">
+				<span class="optional"><?php echo s('Optional') ?></span>
+				<?php echo $this->form->input('stock_symbols', array(
+					'label' => s('Stock Symbols'),
+					'type' => 'text',
+					'class' => 'ui-text large'
+				)) ?>
+				<small><?php echo s('You can use several codes separated by commas') ?></small>
+			</div>
 		</div>
 	</div>
 </fieldset>
