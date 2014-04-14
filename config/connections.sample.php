@@ -3,7 +3,15 @@
 use lithium\data\Connections;
 
 $mysql = array(
-    'production' => array(
+    'rimobi' => array(
+        'driver' => 'MySql',
+        'host' => 'localhost',
+        'user' => 'meumobi',
+        'password' => 'q1T10Cr',
+        'database' => 'rimobi',
+        'prefix' => ''
+			),
+		'production' => array(
         'driver' => 'MySql',
         'host' => 'localhost',
         'user' => 'root',
@@ -22,7 +30,12 @@ $mysql = array(
 );
 
 $mongodb = array(
-    'production' => array(
+    'rimobi' => array(
+        'type' => 'MongoDb',
+        'host' => 'localhost',
+        'database' => 'rimobi'
+			),
+		'production' => array(
         'type' => 'MongoDb',
         'host' => 'localhost',
         'database' => 'meumobi_partners'
