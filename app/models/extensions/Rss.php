@@ -23,7 +23,7 @@ class Rss extends Extensions
 		'title' => 'News feed - RSS',
 		'description' => 'Import content automatically from a news feed',
 		'type' => 'rss',
-		'allowed-items' => array('articles','extended_articles'),
+		'allowed-items' => array('articles'),
 	);
 
 	protected $fields = array(
