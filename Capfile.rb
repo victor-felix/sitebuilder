@@ -1,6 +1,7 @@
 require 'bundler/capistrano'
 
 set :application, 'meumobi'
+default_run_options[:pty] = true
 
 set :scm, :git
 set :deploy_via, :remote_cache
@@ -27,7 +28,7 @@ namespace :deploy do
 
   task :permissions do
     shared_links.map { |d|
-      run "chmod 777 #{shared_path}/#{d}"
+      run "#{sudo} chmod 777 #{shared_path}/#{d}"
     }
   end
 
@@ -58,6 +59,10 @@ namespace :deploy do
     task :migrate do
       run "php #{release_path}/sitebuilder/script/migrate.php"
     end
+	
+		task :create do
+			run "php #{release_path}/sitebuilder/script/create_db.php"
+		end
   end
 
   namespace :cron do
@@ -94,6 +99,7 @@ end
 after 'deploy:setup', 'deploy:shared_setup'
 after 'deploy:setup', 'deploy:environment'
 after 'deploy:setup', 'deploy:permissions'
+after 'deploy:setup', 'deploy:db:create'
 before 'deploy:update_code', 'deploy:cron:stop'
 before 'deploy:update_code', 'deploy:wait'
 before 'deploy:update_code', 'deploy:server:stop'
