@@ -27,7 +27,9 @@ namespace :deploy do
   end
 
   task :permissions do
-    run "#{sudo} chmod -R 777 #{shared_path}/*"
+    shared_links.map { |d|
+      run "#{sudo} chmod -R 777 #{shared_path}/#{d}"
+    }
   end
 
   task :shared do
