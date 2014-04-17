@@ -52,7 +52,7 @@ $mongodb = array (
 				'host' => 'localhost',
 				'database' => 'int_partners' 
 		),
-		'integration' => array (
+		'development' => array (
 				'type' => 'MongoDb',
 				'host' => 'localhost',
 				'database' => 'dev_partners'
