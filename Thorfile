@@ -204,7 +204,7 @@ $button-base-color: %{main_color};
 
       create_file "segments/#{name}/public/styles/_colors.scss", SegmentColorsTemplate % options
 
-      run "php #{self.class.source_root}/sitebuilder/script/create_user.php '#{options[:user_first]}' '#{options[:user_last]}' '#{options[:user_email]}' '#{options[:user_password]}'"
+      run "php #{self.class.source_root}/sitebuilder/script/create_user.php '#{options[:user_first]}' '#{options[:user_last]}' '#{options[:user_email]}' '#{options[:user_password]}' '#{options[:title]}' '#{options[:name]}'"
       run "sass -I #{self.class.source_root}/segments/#{name}/public/styles/ --update #{self.class.source_root}/sitebuilder/assets/styles/segment.scss:#{self.class.source_root}/segments/#{name}/public/styles/segment.css --no-cache"
       say "Your email is: #{options[:user_email]}"
       say "Your password is: #{options[:user_password]}"
