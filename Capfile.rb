@@ -59,10 +59,6 @@ namespace :deploy do
     task :migrate do
       run "php #{release_path}/sitebuilder/script/migrate.php"
     end
-	
-		task :create do
-			run "php #{release_path}/sitebuilder/script/create_db.php"
-		end
   end
 
   namespace :cron do
