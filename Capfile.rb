@@ -95,7 +95,6 @@ end
 after 'deploy:setup', 'deploy:shared_setup'
 after 'deploy:setup', 'deploy:environment'
 after 'deploy:setup', 'deploy:permissions'
-after 'deploy:setup', 'deploy:db:create'
 before 'deploy:update_code', 'deploy:cron:stop'
 before 'deploy:update_code', 'deploy:wait'
 before 'deploy:update_code', 'deploy:server:stop'
