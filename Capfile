@@ -19,6 +19,12 @@ task :production do
 	role :app, 'elefante.ipanemax.com'
 end
 
+task :development do
+  set :php_env, 'development'
+  set :deploy_to, '/home/meumobi/PROJECTS/services.int-meumobi.com'
+  role :app, 'laguna.ipanemax.com'
+end
+
 task :integration do
   set :php_env, 'integration'
   set :deploy_to, '/home/meumobi/PROJECTS/int-meumobi.com'
