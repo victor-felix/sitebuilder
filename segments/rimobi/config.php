@@ -10,4 +10,8 @@ Config::write('Segment', array(
   'hideCategories' => false,
   'enableSignup' => false,
   'primaryColor' => '#000'
+	'fullOptions' => false,
+  'enableMultiUsers' => false,
+  'analytics' => 'UA-22519238-3',
+	'themes' => array('rimobi')
 ));
