@@ -1,0 +1,122 @@
+::selection {
+  background: #2f3e6e;
+  color: white; }
+
+::-moz-selection {
+  background: #2f3e6e;
+  color: white; }
+
+body {
+  background-color: white; }
+
+#header {
+  border-top-color: #2f3e6e; }
+
+#header .contextual-navbar ul li a:hover {
+  background-color: #2f3e6e;
+  border-color: #2f3e6e; }
+
+#header .navigation .user a:hover {
+  background: #2f3e6e; }
+
+#header .head h1,
+#header .head .steps li.current {
+  color: #2f3e6e; }
+
+.businessitems-list li .info a {
+  color: #2f3e6e; }
+
+.form-edit .fieldset-expand {
+  border-bottom: 1px solid #dddddd;
+  color: #2f3e6e; }
+
+.theme-picker ul li.selected a img {
+  border-color: #2f3e6e; }
+
+.skin-picker ul li.selected a {
+  border-color: #2f3e6e; }
+
+#header p.login a {
+  color: #2f3e6e; }
+
+.features li p.title {
+  color: #2f3e6e; }
+
+#login-window p a {
+  color: #2f3e6e; }
+
+#login-window .cancel,
+#login-window .forgot-password {
+  color: #2f3e6e; }
+
+.form-register fieldset h2 {
+  color: #2f3e6e; }
+
+.form-register .fieldset-expand,
+#FormLogin .forgot-password,
+#FormLogin .no-account {
+  color: #2f3e6e; }
+
+.theme-picker ul li.selected a img {
+  border-color: #2f3e6e; }
+
+.skin-picker ul li.selected a {
+  border-color: #2f3e6e; }
+
+.registration-finished h2 a {
+  color: #2f3e6e; }
+
+.registration-finished .next-steps ul li a {
+  color: #2f3e6e; }
+
+.tip-register a {
+  color: #2f3e6e; }
+
+.ui-button,
+#header .contextual-navbar .dropdown li ul a:hover,
+.dropdown li ul a:hover,
+.global-navbar .dropdown:hover > li > p {
+  color: #2f3e6e; }
+
+.ui-button.red {
+  background: #2f3e6e;
+  /* Old browsers */
+  background: -webkit-linear-gradient(top, #3a4c87 0%, #3e5292 50%, #374880 51%, #2f3e6e 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #3a4c87 0%, #3e5292 50%, #374880 51%, #2f3e6e 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #3a4c87 0%, #3e5292 50%, #374880 51%, #2f3e6e 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #3a4c87 0%, #3e5292 50%, #374880 51%, #2f3e6e 100%);
+  /* W3C */
+  border-color: #202a4a; }
+
+.ui-button.red:hover {
+  background: #3a4c87;
+  background: -webkit-linear-gradient(top, #2f3e6e 0%, #374880 50%, #3e5292 51%, #3a4c87 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #2f3e6e 0%, #374880 50%, #3e5292 51%, #3a4c87 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #2f3e6e 0%, #374880 50%, #3e5292 51%, #3a4c87 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #2f3e6e 0%, #374880 50%, #3e5292 51%, #3a4c87 100%);
+  /* W3C */
+  border-color: #2f3e6e; }
+
+.support,
+.global-navbar,
+.categories-list .ui-button-add,
+.picture-upload-container .default .icon_upload {
+  background-color: #2f3e6e; }
+
+div.theme-picker > ul > li.selected {
+  box-shadow: 0 0 0 3px #2f3e6e inset; }
+
+.featured-list li .link .icon
+, .featured-list li:hover .arrow
+, .placeholder-links a img {
+  background-color: #2f3e6e; }
+
+.featured-list li .link h3,
+div.dashboard .domain a {
+  color: #2f3e6e; }
