@@ -4,11 +4,14 @@ Config::write('Segment', array(
   'id' => 'investors',
   'title' => 'MeuMobi Investors',
   'items' => array('articles', 'events'),
-  'extensions' => array('rss'),
+  'extensions' => array('rss', 'event-feed'),
   'root' => 'Index',
   'email' => array('contact@meumobi.com' => 'Investors'),
   'hideCategories' => false,
   'enableSignup' => false,
   'fullOptions' => true,
   'analytics' => '',
+	'enableMultiUsers' => false,
+  'analytics' => 'UA-22519238-3',
+	'themes' => array('rimobi')
 ));
