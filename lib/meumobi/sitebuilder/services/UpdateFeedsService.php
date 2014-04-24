@@ -58,6 +58,10 @@ class UpdateFeedsService
 				$stats['total_images'] += $feed_stats['total_images'];
 				$stats['failed_images'] += $feed_stats['failed_images'];
 				$stats['total_feeds'] += 1;
+				$connection->extensions->update([
+					'extension' => 'rss',
+					'_id' => $extensionData['_id']
+				], ['$unset' => ['priority' => '']]);
 			} catch (Exception $e) {
 				$this->logger->error('rss update error', [
 					'exception' => get_class($e),
