@@ -8,6 +8,7 @@ abstract class Service
 
 	protected $options;
 	protected $logger;
+	protected $logChannel = 'sitebuilder.merchant_products';
 
 	abstract public function call();
 
@@ -30,8 +31,7 @@ abstract class Service
 		}
 
 		$handler = new \Monolog\Handler\RotatingFileHandler($this->loggerPath());
-		$logger = new \Monolog\Logger('sitebuilder.merchant_products',
-				[$handler]);
+		$logger = new \Monolog\Logger($this->logChannel, [$handler]);
 
 		return $this->logger = $logger;
 	}
