@@ -19,10 +19,9 @@
 -- Table structure for table `categories`
 --
 
-DROP TABLE IF EXISTS `categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `categories` (
+CREATE TABLE IF NOT EXISTS `categories` (
   `id` int(12) NOT NULL AUTO_INCREMENT,
   `site_id` int(12) NOT NULL,
   `parent_id` int(12) DEFAULT NULL,
@@ -45,10 +44,9 @@ CREATE TABLE `categories` (
 -- Table structure for table `images`
 --
 
-DROP TABLE IF EXISTS `images`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `images` (
+CREATE TABLE IF NOT EXISTS `images` (
   `id` int(12) NOT NULL AUTO_INCREMENT,
   `model` varchar(255) NOT NULL,
   `foreign_key` varchar(255) DEFAULT NULL,
@@ -72,10 +70,9 @@ CREATE TABLE `images` (
 -- Table structure for table `schema_migrations`
 --
 
-DROP TABLE IF EXISTS `schema_migrations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `schema_migrations` (
+CREATE TABLE IF NOT EXISTS `schema_migrations` (
   `version` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -85,10 +82,9 @@ CREATE TABLE `schema_migrations` (
 -- Table structure for table `sites`
 --
 
-DROP TABLE IF EXISTS `sites`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `sites` (
+CREATE TABLE IF NOT EXISTS `sites` (
   `id` int(12) NOT NULL AUTO_INCREMENT,
   `segment` varchar(64) DEFAULT NULL,
   `theme` varchar(64) DEFAULT NULL,
@@ -121,10 +117,9 @@ CREATE TABLE `sites` (
 -- Table structure for table `sites_domains`
 --
 
-DROP TABLE IF EXISTS `sites_domains`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `sites_domains` (
+CREATE TABLE IF NOT EXISTS `sites_domains` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `site_id` int(12) NOT NULL,
   `domain` varchar(255) NOT NULL,
@@ -138,10 +133,9 @@ CREATE TABLE `sites_domains` (
 -- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `id` int(12) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
@@ -160,10 +154,9 @@ CREATE TABLE `users` (
 -- Table structure for table `users_sites`
 --
 
-DROP TABLE IF EXISTS `users_sites`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `users_sites` (
+CREATE TABLE IF NOT EXISTS `users_sites` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(12) unsigned NOT NULL,
   `site_id` int(12) unsigned NOT NULL,
