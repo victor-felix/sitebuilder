@@ -22,7 +22,7 @@ class SitesController extends ApiController
 		$business['address'] = nl2br($business['address']);
 		$business['timetable'] = nl2br($business['timetable']);
 
-		$categoryKeys = array('id', 'title', 'type');
+		$categoryKeys = array('id', 'title', 'type', 'parent_id');
 		$extensionKeys = array('url', 'language', 'itemLimit', 'extension');
 		$categories = array_map(function($category) use ($categoryKeys, $extensionKeys) {
 			$data = $category->data;
