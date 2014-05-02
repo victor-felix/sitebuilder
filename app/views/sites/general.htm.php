@@ -65,6 +65,20 @@
 </fieldset>
 
 <fieldset>
+	<h2><?php echo s('Language') ?></h2>
+	<div class="field-group">
+		<div class="form-grid-220 first">
+			<?php echo $this->form->input('language', array(
+				'label' => s('Language'),
+				'type' => 'select',
+				'class' => 'ui-select',
+				'options' => ['auto' => 'Auto', 'en' => 'English', 'pt' => 'Português']
+			)) ?>
+		</div>
+	</div>
+</fieldset>
+
+<fieldset>
 	<h2><?php echo s('Android app') ?></h2>
 	<div class="field-group">
 		<div class="form-grid-460 first">

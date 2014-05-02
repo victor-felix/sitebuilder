@@ -340,6 +340,7 @@ class Sites extends AppModel
 		$data['ios_app_url'] = $this->ios_app_url;
 		$data['landing_page'] = $this->landing_page;
 		$data['stock_symbols'] = $this->stock_symbols;
+		$data['language'] = $this->language;
 
 		if ($logo = $this->logo()) {
 			$data['logo'] = $logo->link();
