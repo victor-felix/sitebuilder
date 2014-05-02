@@ -147,7 +147,7 @@
 		<div class="popup-wrapper">
 			<div id="#share-links" class="popup share-links">
 				<div class="header">
-					<h2><?php echo s('share') . ' ' .  MeuMobi::currentSegment()->title ?></h2>
+					<h2><?php echo s('share') . ' ' . $this->string->truncate(e($currentSite->title), 15) ?></h2>
 					<a href="#" class="close"><img src="/images/shared/themes/icon-close.png" alt="close" /></a>
 				</div>
 				<div class="links">
