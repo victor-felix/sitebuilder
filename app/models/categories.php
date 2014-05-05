@@ -29,6 +29,12 @@ class Categories extends AppModel
 				'message' => 'The title of a category could contain 50 chars max.'
 			)
 		),
+		'parent_id' => array(
+			array(
+				'rule' => 'validParent',
+				'message' => 'A valide parent category is required'
+			)
+		)
 	);
 
 	public function __construct($data = array())
@@ -79,7 +85,7 @@ class Categories extends AppModel
 
 	public function parent()
 	{
-		if ($this->parent_id) {
+		if ($this->parent_id && $this->validParent($this->parent_id)) {
 			return $this->firstById($this->parent_id);
 		}
 	}
@@ -335,5 +341,20 @@ class Categories extends AppModel
 		));
 
 		return $id;
+	}
+
+	protected function validParent($value)
+	{
+		if ($value) {
+			return (bool)Model::load('Categories')->count(array(
+			'conditions' => array(
+				'site_id' => $this->site_id,
+				'visibility >' => -1,
+				'id' => $value,
+				),
+			));
+		} else if (is_null($value)) {
+			return true;
+		}
 	}
 }
