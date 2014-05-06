@@ -82,39 +82,23 @@ class SkinsController extends AppController
 		$this->redirect("/skins/edit/{$newSkin->id()}");
 	}
 
-	public function delete($id)
-	{
-		$skin = $this->skinRepo->find($id);
-		if ($this->skinRepo->destroy($skin)) {
-			$message = 'successfully deleted.';
-			if ($this->isXhr()) {
-				$this->respondToJSON(array(
-					'success' => $message,
-				));
-			} else {
-				Session::writeFlash('success', $message);
-				$this->redirect('/');
-			}
-		}
-	}
-
 	public function delete_custom($id)
 	{
 		$site = $this->getCurrentSite();
 		$skin = $this->skinRepo->find($id);
 		if ($skin->parentId()) {
 			$site->skin = $skin->parentId();
-		}
-		if ($site->save()) {
+			if ($site->save()) {
 			$this->skinRepo->destroy($skin);
 			$message = 'successfully deleted.';
-			if ($this->isXhr()) {
-				$this->respondToJSON(array(
-					'success' => $message,
-				));
-			} else {
-				Session::writeFlash('success', $message);
-				$this->redirect('/');
+				if ($this->isXhr()) {
+					$this->respondToJSON(array(
+						'success' => $message,
+					));
+				} else {
+					Session::writeFlash('success', $message);
+					$this->redirect('/');
+				}
 			}
 		}
 	}
