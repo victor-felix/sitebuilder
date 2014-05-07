@@ -10,5 +10,6 @@ Config::write('Segment', array(
   'hideCategories' => false,
   'enableSignup' => false,
   'primaryColor' => '#000',
-  'analytics' => 'UA-22519238-3'
+  'analytics' => 'UA-22519238-3',
+  'enableFieldSet' => array('photos','weblinks','location', 'contact', 'news', 'description', 'timetable', 'stocks'),
 ));
