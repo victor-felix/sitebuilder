@@ -92,7 +92,9 @@
 								<?php if(!MeuMobi::currentSegment()->hideCategories): ?>
 									<li><?php echo $this->html->link(MeuMobi::currentSegment()->root, '/categories') ?></li>
 								<?php endif ?>
+								<?php if(MeuMobi::currentSegment()->isEnabledFieldSet('news')): ?>
 								<li><?php echo $this->html->link(s('News'), '/sites/news') ?></li>
+								<?php endif ?>
 							</ul>
 						</li>
 						<?php if(Users::ROLE_ADMIN == $currentSite->role): ?>

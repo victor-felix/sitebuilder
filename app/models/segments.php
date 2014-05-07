@@ -44,6 +44,15 @@ class Segments
 		}
 	}
 
+	public function isEnabledFieldSet($fieldset)
+	{
+		if (array_key_exists('enableFieldSet', $this->attr)) {
+			return in_array($fieldset, $this->attr['enableFieldSet']);
+		} else {
+			return true;
+		}
+	}
+
 	public function fullOptions()
 	{
 		if (array_key_exists('fullOptions', $this->attr)) {

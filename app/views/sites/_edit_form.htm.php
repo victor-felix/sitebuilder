@@ -40,7 +40,7 @@
 					<small><?php echo s('To improve appearence of logo on your mobi site, we recommend to use an image on GIF or PNG with transparent background. Max size 50kb') ?></small>
 				</div>
 			</div>
-
+			<?php if (MeuMobi::currentSegment()->isEnabledFieldSet('description')): ?>
 			<div class="form-grid-460">
 				<span class="optional">
 					<?php echo s('<span id="businessCounter">500</span> left') ?>
@@ -56,7 +56,7 @@
 					<?php echo s('Give the users a brief description of what your business is, what it does, when it was founded, what your main services or products are, and so on.') ?>
 				</small>
 			</div>
-
+			<?php endif; ?>
 			<div class="form-grid-460 first">
 				<div class="site-mobile-url">
 					<div class="input text">
@@ -76,19 +76,11 @@
 				</div>
 				<small><?php echo s('If you wish to use a custom domain, you can configure one after this wizard.<br /> In the admin panel you will find instructions on haw to proceed') ?></small>
 			</div>
-			<div class="form-grid-460 first">
-				<span class="optional"><?php echo s('Optional') ?></span>
-				<?php echo $this->form->input('stock_symbols', array(
-					'label' => s('Stock Symbols'),
-					'type' => 'text',
-					'class' => 'ui-text large'
-				)) ?>
-				<small><?php echo s('You can use several codes separated by commas') ?></small>
-			</div>
 		</div>
 	</div>
 </fieldset>
 
+<?php if (MeuMobi::currentSegment()->isEnabledFieldSet('location')): ?>
 <fieldset id="business-address">
 	<div class="grid-4 first">
 		<div class="tip">
@@ -119,7 +111,8 @@
 		</div>
 	</div>
 </fieldset>
-
+<?php endif; ?>
+<?php if (MeuMobi::currentSegment()->isEnabledFieldSet('contact')): ?>
 <fieldset id="business-contact">
 	<div class="grid-4 first">
 		<div class="tip">
@@ -156,3 +149,4 @@
 		</div>
 	</div>
 </fieldset>
+<?php endif;?>

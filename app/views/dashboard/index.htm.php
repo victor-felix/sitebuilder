@@ -16,46 +16,15 @@
 			<p id="qr-code"><img src="http://api.qrserver.com/v1/create-qr-code/?size=100x100&data=http://<?php echo e($site->domain) ?>" /></p>
 		</div>
 		<ul class="featured-list">
-			<li id="photos">
-				<a class="link" href="<?php echo Mapper::url('/sites/business_info#business-photos') ?>">
-					<span class="icon"></span>
-					<h3><?php echo s('add photos of your company') ?></h3>
-					<small><?php echo s('let your customers see what your business looks like') ?></small>
-					<span class="arrow"></span>
-				</a>
-			</li>
-			<li id="social">
-				<a class="link" href="<?php echo Mapper::url('/sites/business_info#business-social') ?>">
-					<span class="icon"></span>
-					<h3><?php echo s('your social links') ?></h3>
-					<small><?php echo s('facebook page, twitter, website address') ?></small>
-					<span class="arrow"></span>
-				</a>
-			</li>
-			<li id="address">
-				<a class="link" href="<?php echo Mapper::url('/sites/business_info#business-address') ?>">
-					<span class="icon"></span>
-					<h3><?php echo s('your address') ?></h3>
-					<small><?php echo s('full address adds a map on your mobile site') ?></small>
-					<span class="arrow"></span>
-				</a>
-			</li>
-			<li id="contact">
-				<a class="link" href="<?php echo Mapper::url('/sites/business_info#business-contact') ?>">
-					<span class="icon"></span>
-					<h3><?php echo s('your contacts') ?></h3>
-					<small><?php echo s('phone numbers and email address') ?></small>
-					<span class="arrow"></span>
-				</a>
-			</li>
-			<li id="feed">
-				<a class="link" href="<?php echo Mapper::url('/sites/news') ?>">
-					<span class="icon"></span>
-					<h3><?php echo s('add a news feed') ?></h3>
-					<small><?php echo s('use your website RSS to display news') ?></small>
-					<span class="arrow"></span>
-				</a>
-			</li>
+			<?php $i = 0; $fildsets = MeuMobi::currentSegment()->enableFieldSet ? MeuMobi::currentSegment()->enableFieldSet : array() ?>
+			<?php foreach ($fildsets as $item ): ?>
+			<?php 
+				echo $this->element('dashboard/'.$item);
+				$i++;
+				if($i>4)
+					break;
+			?>
+			<?php endforeach; ?>
 			<?php if ($category): ?>
 			<li id="categories">
 				<a class="link" href="<?php echo Mapper::url('/categories') ?>">

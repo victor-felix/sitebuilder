@@ -1,4 +1,28 @@
-<fieldset>
+<?php if (MeuMobi::currentSegment()->isEnabledFieldSet('stocks')): ?>
+<fieldset id="stocks">
+	<div class="grid-4 first">
+		<div class="tip">
+			<h2><?php echo s('Stocks') ?></h2>
+		</div>
+	</div>
+
+	<div class="grid-8">
+		<div class="field-group">
+			<div class="form-grid-460 first">
+				<span class="optional"><?php echo s('Optional') ?></span>
+				<?php echo $this->form->input('stock_symbols', array(
+					'label' => s('Symbols'),
+					'type' => 'text',
+					'class' => 'ui-text large'
+				)) ?>
+				<small><?php echo s('You can use several codes separated by commas') ?></small>
+			</div>
+		</div>
+	</div>
+</fieldset>
+<?php endif; ?>
+<?php if (MeuMobi::currentSegment()->isEnabledFieldSet('timetable')): ?>
+<fieldset id="timeable">
 	<div class="grid-4 first">
 		<div class="tip">
 			<h2><?php echo s('Open hours') ?></h2>
@@ -18,7 +42,8 @@
 		</div>
 	</div>
 </fieldset>
-
+<?php endif; ?>
+<?php if (MeuMobi::currentSegment()->isEnabledFieldSet('weblinks')): ?>
 <fieldset id="business-social">
 	<div class="grid-4 first">
 		<div class="tip">
@@ -63,7 +88,8 @@
 		</div>
 	</div>
 </fieldset>
-
+<?php endif ?>
+<?php if (MeuMobi::currentSegment()->isEnabledFieldSet('photos')): ?>
 <fieldset id="business-photos">
 	<div class="grid-4 first">
 		<div class="tip">
@@ -116,3 +142,4 @@
 		</div>
 	</div>
 </fieldset>
+<?php endif; ?>
