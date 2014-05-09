@@ -335,7 +335,7 @@ class Sites extends AppModel
 		$data['updated_at'] = $this->modified;
 		$data['description'] = nl2br($data['description']);
 		$data['webputty_token'] = $this->css_token;
-		$data['analytics_token'] = $this->google_analytics;
+		$data['analytics_token'] = strpos($this->google_analytics,',') === false ? $this->google_analytics : explode(",", $this->google_analytics);
 		$data['android_app_url'] = $this->android_app_url;
 		$data['ios_app_url'] = $this->ios_app_url;
 		$data['landing_page'] = $this->landing_page;

@@ -33,10 +33,11 @@
 		<div class="form-grid-460 first">
 			<span class="optional"><?php echo s('Optional') ?></span>
 			<?php echo $this->form->input('google_analytics', array(
-				'label' => s('Account Number'),
+				'label' => s('Use comma to separate resp. website and mobile App tracking IDs'),
 				'type' => 'text',
 				'class' => 'ui-text large'
 			)) ?>
+			<small><?php echo s('example: UA-50482698-1, UA-22519238-6') ?></small>
 		</div>
 	</div>
 </fieldset>
