@@ -11,12 +11,16 @@ class AppController extends Controller
 	protected function beforeFilter()
 	{
 		$this->detectLanguage();
+		$this->headers();
 
 		if ($this->isXhr()) {
 			$this->autoLayout = false;
 		}
 	}
-
+	protected function headers() {
+		header('X-Frame-Options: DENY');
+		header_remove('X-Powered-By');
+	}
 	protected function detectLanguage()
 	{
 		if (Auth::loggedIn()) {
