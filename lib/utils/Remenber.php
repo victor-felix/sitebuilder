@@ -100,7 +100,7 @@ class Remenber extends \lithium\data\Model  {
 	public static function add($user, $id = false){
 		$data = array();
 		$lifetime = time() + Date::$convert['months'] * 3;
-		setcookie(session_name(), session_id(),  $lifetime, '/');
+		setcookie(session_name(), session_id(),  $lifetime, '/', null, null, true);
 		
 		if($id)
 			return self::update(array(
@@ -129,7 +129,7 @@ class Remenber extends \lithium\data\Model  {
 			else
 				return true;
 		}
-		setcookie(session_name(), session_id(),  0, '/');
+		setcookie(session_name(), session_id(),  0, '/', null, null, true);
 		self::remove( array('session_id' => $id ));
 	}
 	
