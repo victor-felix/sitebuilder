@@ -11,7 +11,7 @@ use Config;
 use Model;
 
 class ApiController extends \lithium\action\Controller {
-	protected $beforeFilter = array('log', 'checkSite', 'checkEtag');
+	protected $beforeFilter = array('headers', 'log', 'checkSite', 'checkEtag');
 	protected $site;
 	protected $params;
 
@@ -208,5 +208,10 @@ class ApiController extends \lithium\action\Controller {
 		if (!Model::load('UsersSites')->isUserAuthenticatedOnSite($this->site()->id, $token)) {
 			throw new NotAuthenticatedException('authentication required');
 		}
+	}
+
+	protected function headers()
+	{
+		header_remove('X-Powered-By');
 	}
 }
