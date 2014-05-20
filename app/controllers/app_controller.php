@@ -18,7 +18,6 @@ class AppController extends Controller
 		}
 	}
 	protected function headers() {
-		header('X-Frame-Options: DENY');
 		header_remove('X-Powered-By');
 	}
 	protected function detectLanguage()
