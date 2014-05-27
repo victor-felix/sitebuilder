@@ -16,7 +16,7 @@ class ItemsController extends ApiController {
 	{
 		$category_id = $this->request->get('params:category_id');
 		$category = Model::load('Categories')->firstById($category_id);
-		list($orderField, $orderDirection) = explode(',',$this->param('order', 'order,ASC'));
+		list($orderField, $orderDirection) = explode(',',$this->param('order', 'order,DESC'));
 		$params = [
 			'order' => [$orderField => $orderDirection],
 			'conditions' => [
