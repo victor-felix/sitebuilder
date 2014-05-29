@@ -74,7 +74,8 @@ class Articles extends \app\models\Items
 			$medias[] = [
 			'url' => $enclosure->get_link(),
 			'type' => $enclosure->get_type(),
-			'title' => $enclosure->get_title(),
+			'title' => html_entity_decode($enclosure->get_title(), ENT_QUOTES, 'UTF-8'),
+			//'title' => $enclosure->get_title(),
 			'length' => $enclosure->get_length(),
 			];
 		}
