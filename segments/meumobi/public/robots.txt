@@ -6,4 +6,6 @@ Disallow: /signup
 Disallow: /scripts
 Disallow: /images
 Disallow: /styles
+Disallow: /api
+Disallow: /docs
 Disallow: /uploads
