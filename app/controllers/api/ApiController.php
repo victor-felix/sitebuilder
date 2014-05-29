@@ -11,7 +11,7 @@ use Config;
 use Model;
 
 class ApiController extends \lithium\action\Controller {
-	protected $beforeFilter = array('log', 'checkSite', 'headers', 'checkEtag');
+	protected $beforeFilter = array('log', 'checkSite', 'checkEtag', 'headers');
 	protected $site;
 	protected $params;
 
@@ -212,7 +212,6 @@ class ApiController extends \lithium\action\Controller {
 
 	protected function headers()
 	{
-		header_remove('X-Powered-By');
 		header('Access-Control-Allow-Origin: http://' . $this->request->params['slug']);
 	}
 }
