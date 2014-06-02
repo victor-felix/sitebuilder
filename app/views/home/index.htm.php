@@ -32,7 +32,6 @@
 			</div>
 		</div>
 	</div>
-</div>
 <div class="presentation outer wrapp">
 	<div class="container">
 		<h2 class="title"><?php echo s('Everything you need to create a <br>professional <strong>mobile site</strong>.') ?></h2>
