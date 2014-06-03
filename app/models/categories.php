@@ -6,6 +6,7 @@ require_once 'lib/utils/FileUpload.php';
 require_once 'lib/mailer/Mailer.php';
 
 use app\models\Extensions;
+use app\models\extensions\Rss;
 use app\models\Items;
 
 class Categories extends AppModel
@@ -210,8 +211,8 @@ class Categories extends AppModel
 			try {
 				if ($fileSize && self::MAX_IMPORTFILE_SIZE < ($fileSize / 1024)
 					&& $this->scheduleImport()) {
-					return $this->save();
-				}
+						return $this->save();
+					}
 				$import = new ImportCsvService(['logger_path' => 'log/imports.log']);
 				$import->setMethod($this->data['import_method']);
 				$import->setCategory($this);
@@ -318,6 +319,16 @@ class Categories extends AppModel
 		foreach ($items as $item) {
 			Items::remove(array('_id' => $item->id()));
 		}
+		if ($this->hasFeed()) {
+			Extensions::update(
+				[
+					'priority' => Rss::PRIORITY_HIGH
+				],
+				[
+					'category_id' => $this->id(),
+					'extension' => 'rss',
+				]);
+		}
 	}
 
 	public function enabledExtensions()
@@ -347,10 +358,10 @@ class Categories extends AppModel
 	{
 		if ($value) {
 			return (bool)Model::load('Categories')->count(array(
-			'conditions' => array(
-				'site_id' => $this->site_id,
-				'visibility >' => -1,
-				'id' => $value,
+				'conditions' => array(
+					'site_id' => $this->site_id,
+					'visibility >' => -1,
+					'id' => $value,
 				),
 			));
 		} else if (is_null($value)) {
