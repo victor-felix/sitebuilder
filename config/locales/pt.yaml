@@ -112,7 +112,7 @@
 'Give the users a brief description of what your business is, what it does, when it was founded, what your main services or products are, and so on.': 'Como você descreveria seu negócio? Descreve os objetivos, os principais serviços ou produtos, etc. Uma boa descrição costuma ajudar bastante seus clientes!'
 'Google Analytics': 'Google Analytics'
 'Having a mobile optimized site is critical to <strong>engage consumers across the multiple paths to purchase.</strong>': '88%% dos usuários de smartphones do Brasil <strong>procuram informações locais em seus celulares</strong>.'
-'Hi, <b>%s</b>. <br/><br/>You have requested the reset of your MeuMobi password. In order to do that you should click on link below.': 'Oi, <b>%s>', <br/><br/>Você solicitou a recuperação da sua senha no MeuMobi. Para dar continuidade clique no link abaixo:
+'Hi, <b>%s</b>. <br/><br/>You have requested the reset of your MeuMobi password. In order to do that you should click on link below.': 'Oi, <b>%s<b>, <br/><br/>Você solicitou a recuperação da sua senha no MeuMobi. Para dar continuidade clique no link abaixo:'
 'Hi, <b>%s</b>. <br/><br/>You''ve received this mail to confirm your MeuMobi Sign-up. Please click on link below to confirm your mail adress.': 'Oi, <b>%s</b>, <br/><br/>Você precisa confirmar seu cadastro no MeuMobi. Para dar continuidade clique no link abaixo para confirmar seu e-mail:'
 'If you wish to use a custom domain, you can configure one after this wizard.<br /> In the admin panel you will find instructions on haw to proceed': 'Se você deseja utilizar um domínio customizado, você pode configurar um após o cadastro.<br /> No painel de administração você encontrará instruções de como proceder'
 'Import CSV file': 'Importar um arquivo CSV'
@@ -376,3 +376,4 @@
 'want to create an APP for iPhone and Android?': 'quer criar um aplicativo para iPhone e Android?'
 'Submit your website to us and receive your APP for iPhone and Android .. want to know more? Contact us by email: ': 'Envie o website da sua empresa para nós e receba seu Aplicativo para iPhone e Android..quer saber mais? Entre em contato pelo e-mail abaixo:'
 'Check your Meumobi''s App landing page: %s': 'Divulgue sua pagina de lançamento: %s'
+
