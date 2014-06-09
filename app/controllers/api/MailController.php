@@ -27,7 +27,7 @@ class MailController extends ApiController
 			'layout' => 'mail',
 			'data' => array(
 				'site' => $site,
-				'segment' => MeuMobi::currentSegment(),
+				'segment' => \MeuMobi::currentSegment(),
 				'name' => $this->request->get('data:name'),
 				'mail' => $this->request->get('data:mail'),
 				'phone' => $this->request->get('data:phone'),
