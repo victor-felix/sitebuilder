@@ -5,12 +5,14 @@
         <?php echo $this->html->charset() ?>
         <title><?php echo $title ?></title>
     </head>
-    
+<?php
+	$logoPath = $site()->logo() ? $site()->logo()->link('200x200') : '/images/layout/logo.png';
+?>
     <body bgcolor="#EFEFEF">
         <font face="Arial" color="#555">
         <table border="0" width="640" align="center">
             <tr>
-                <td><br /><br /><?php echo $this->html->imagelink(Mapper::url('/images/layout/logo.png', true), Mapper::url('/', true)) ?><br /><br /></td>
+                <td><br /><br /><?php echo $this->html->imagelink(Mapper::url( $logoPath, true), Mapper::url('/', true)) ?><br /><br /></td>
             </tr>
             <tr>
                 <td bgcolor="#FFFFFF">
