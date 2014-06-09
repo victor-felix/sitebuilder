@@ -11,5 +11,5 @@
 </p>
 
 <p>
-<?= s('Powered by') ?> <b><?= $segment->title ?></b> - <a href="<?= Mapper::url('/', true) ?>" target="_blank"><?= Mapper::url('/', true) ?></a> | <b>Support:</b> <a href="mailto:contact@meumobi.com" target="_blank">contact@meumobi.com</a>
+<?= s('Powered by') ?> <b><?= \MeuMobi::currentSegment()->title ?></b> - <a href="<?= Mapper::url('/', true) ?>" target="_blank"><?= Mapper::url('/', true) ?></a> | <b>Support:</b> <a href="mailto:contact@meumobi.com" target="_blank">contact@meumobi.com</a>
 </p>

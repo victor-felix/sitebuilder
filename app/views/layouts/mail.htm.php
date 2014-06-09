@@ -6,7 +6,7 @@
         <title><?php echo $title ?></title>
     </head>
 <?php
-	$logoPath = $site->logo() ? $site->logo()->link('200x200') : '/images/layout/logo.png';
+	$logoPath = isset($site) && $site->logo() ? $site->logo()->link('200x200') : '/images/layout/logo.png';
 ?>
     <body bgcolor="#EFEFEF">
         <font face="Arial" color="#555">
