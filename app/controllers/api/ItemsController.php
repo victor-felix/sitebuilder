@@ -270,7 +270,8 @@ class ItemsController extends ApiController {
 
 	public function news()
 	{
-		$category = $this->site()->newsCategory();
+		if (!$category = $this->site()->newsCategory())
+			return ['items' => []];
 
 		$params = [
 			'order' => ['pubdate' => 'DESC'],

@@ -23,7 +23,6 @@ class Sites extends AppModel
 
 	protected $afterSave = array(
 		'saveLogoAndAppleTouchIcon',
-		'createNewsCategory',
 		'updateFeed',
 		'saveDomains',
 		'createRelation'
@@ -96,6 +95,7 @@ class Sites extends AppModel
 	public function newsExtension()
 	{
 		$category = $this->newsCategory();
+		if ($category)
 		return \app\models\extensions\Rss::find('first', array(
 			'conditions' => array('category_id' => $category->id)
 		));
@@ -557,10 +557,8 @@ class Sites extends AppModel
 		return $data;
 	}
 
-	protected function createNewsCategory($created)
+	protected function createNewsCategory()
 	{
-		if (!$created) return;
-
 		$category = new Categories(array(
 			'site_id' => $this->id,
 			'parent_id' => null,
@@ -578,13 +576,15 @@ class Sites extends AppModel
 			'enabled' => 0
 		));
 		$extension->save();
+		return $category;
 	}
 
 	protected function updateFeed($created)
 	{
 		if (!isset($this->data['feed_url'])) return;
-
-		$category = $this->newsCategory();
+		if (!$category = $this->newsCategory()) {
+			$category = $this->createNewsCategory();
+		}
 		$category->title = $this->data['feed_title'];
 		$category->save();
 
