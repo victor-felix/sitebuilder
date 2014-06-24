@@ -106,14 +106,19 @@ class SitesController extends AppController
 				$this->redirect('/');
 			}
 		} else {
-			$skin = $skinRepo->find($skinId);
-		}
-
-		$themes = $themesRepo->bySegment(MeuMobi::segment());
-		foreach ($themes as $item) {
-			if ($item->id() == $skin->themeId()) {
-				$theme = $item;
+			try {
+				$skin = $skinRepo->find($skinId);
+			} catch (meumobi\sitebuilder\repositories\RecordNotFoundException $e) {
+				Session::writeFlash('error', s("The skin doesn't exist"));
+				$this->redirect('/');
 			}
+
+		}
+		try {
+			$theme = $themesRepo->find($skin->themeId());
+		} catch (meumobi\sitebuilder\repositories\RecordNotFoundException $e) {
+			Session::writeFlash('error', s("The theme doesn't exist"));
+			$this->redirect('/');
 		}
 		$this->set(compact('site', 'currentSkin', 'skin', 'theme'));
 	}
