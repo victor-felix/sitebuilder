@@ -1,4 +1,5 @@
 <?php
+use app\models\Extensions;
 require dirname(__DIR__) . '/config/cli.php';
 
 class CheckDatabase
@@ -49,17 +50,18 @@ EOD;
 		$re = '/^(https?|feed):\/\/.[a-z0-9-_]+(\.[a-z0-9-]+)+([\/?].+)?$/mi';
 		$invalidUrls = $invalidStatus = array();
 		$extensions = Extensions::find('all', [
-			'conditions' => ['extension' => 'rss'],
-			'fields' => ['url', 'category_id','site_id'],
+			'conditions' => ['extension' => 'rss', 'enabled' => 1],
+			'fields' => ['url', 'category_id', 'site_id', 'enabled'],
 		]);
 
-		foreach ( $extensions as $extension) {
-			if (preg_match($re, $extension->url))
+		foreach ($extensions as $extension) {
+			if (!$extension->url || !preg_match($re, $extension->url)) {
 				$invalidUrls[] = $extension->to('array');
-
+			} else {
 			list($version,$status,$msg) = explode(' ', get_headers($extension->url)[0]);
 			if ($status != 200)
 				$invalidStatus[$status][] = $extension->to('array');
+			}
 		}
 
 		$this->logger()->info('invalid Feeds', ['Feeds with invalid url:' => $invalidUrls]);
