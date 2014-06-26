@@ -58,9 +58,15 @@ EOD;
 			if (!$extension->url || !preg_match($re, $extension->url)) {
 				$invalidUrls[] = $extension->to('array');
 			} else {
-			list($version,$status,$msg) = explode(' ', get_headers($extension->url)[0]);
-			if ($status != 200)
-				$invalidStatus[$status][] = $extension->to('array');
+				$headers = get_headers($extension->url);
+				if ($headers) {
+					list($version,$status,$msg) = explode(' ', $headers[0]);
+					if ($status != 200) {
+						$invalidStatus["status_$status"][] = $extension->to('array');
+					}
+				} else {
+					$invalidUrls['request_error'][] = $extension->to('array');
+				}
 			}
 		}
 
