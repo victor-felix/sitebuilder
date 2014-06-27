@@ -6,33 +6,35 @@ use Mapper;
 
 class SkinPresenter
 {
-	public static function present($object)
-	{
-		return [
-			'id' => $object->id(),
-			'theme_id' => $object->themeId(),
-			'parent_id' => $object->parentId(),
-			'colors' => $object->colors(),
-			'assets' => self::decorateAssets($object->assets()),
-			'html5' => $object->html5()
-		];
-	}
+  public static function present($object)
+  {
+    return [
+      'id' => $object->id(),
+        'theme_id' => $object->themeId(),
+        'parent_id' => $object->parentId(),
+        'colors' => $object->colors(),
+        'assets' => self::decorateAssets($object->assets()),
+        'tokens' => $object->tokens(),
+        'layout_alternatives' => $object->layoutAlternatives(),
+        'html5' => $object->html5()
+      ];
+  }
 
-	public static function presentSet($set)
-	{
-		return array_map(array(__CLASS__, 'present'), $set);
-	}
+  public static function presentSet($set)
+  {
+    return array_map(array(__CLASS__, 'present'), $set);
+  }
 
-	protected static function decorateAssets($assets)
-	{
-		$decoratedAssets = [];
+  protected static function decorateAssets($assets)
+  {
+    $decoratedAssets = [];
 
-		foreach ($assets as $key => $value) {
-			if ($value) {
-				$decoratedAssets[$key] = Mapper::url($value, true);
-			}
-		}
+    foreach ($assets as $key => $value) {
+      if ($value) {
+        $decoratedAssets[$key] = Mapper::url($value, true);
+      }
+    }
 
-		return $decoratedAssets;
-	}
+    return $decoratedAssets;
+  }
 }

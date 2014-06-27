@@ -22,6 +22,8 @@ class ThemesRepository
 			$theme->defaults['colors'] = isset($theme->colors) ? $theme->colors : array();
 			$theme->defaults['main_color'] = isset($theme->main_color) ? $theme->main_color : '#000';
 			$theme->defaults['html5'] = isset($theme->html5) ? $theme->html5 : false;
+			$theme->defaults['tokens'] = isset($theme->tokens) ? $theme->tokens : array();
+			$theme->defaults['layout_alternatives'] = isset($theme->layout_alternatives) ? $theme->layout_alternatives : array();
 			$theme->colors = isset($theme->defaults) ? array_keys((array) $theme->defaults) : array();
 
 			return new Theme($theme);

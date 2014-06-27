@@ -33,6 +33,26 @@
 								)) ?>
 							</div>
 						<?php endforeach ?>
+						<?php foreach ((array) $skin->tokens() as $token => $value): ?>
+							<div class="form-grid-460">
+								<?php echo $this->form->input("tokens[{$token}]", array(
+									'type' => 'text',
+									'label' => $token,
+									'value' => $value,
+									'class' => 'ui-text'
+								)) ?>
+							</div>
+						<?php endforeach ?>
+						<?php foreach ((array) $skin->layoutAlternatives() as $option => $value): ?>
+							<div class="form-grid-460">
+								<?php echo $this->form->input("layout_alternatives[{$option}]", array(
+									'type' => 'text',
+									'label' => $option,
+									'value' => $value,
+									'class' => 'ui-text'
+								)) ?>
+							</div>
+						<?php endforeach ?>
 						<div class="colors-wrap">
 							<?php if ($custom): ?>
 							<?php foreach ($skins as $themeSkin): ?>

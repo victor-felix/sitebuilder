@@ -17,6 +17,8 @@ class Skin
 	protected $uploadedAssets = array();
 	protected $colors = array();
 	protected $html5;
+	protected $tokens = array();
+	protected $layoutAlternatives = array();
 
 	public function __construct(array $attrs = [])
 	{
@@ -84,6 +86,14 @@ class Skin
 	public function setAsset($asset, $value)
 	{
 		$this->assets[$asset] = $value;
+	}
+
+	public function tokens() {
+			return $this->tokens;
+	}
+
+	public function layoutAlternatives() {
+			return $this->layoutAlternatives;
 	}
 
 	public function setUploadedAssets($file)
