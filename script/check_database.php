@@ -18,7 +18,7 @@ class CheckDatabase
 	{
 		$invalidParentQuery = <<<'EOD'
 	SELECT 
-		id, site_id, parent_id, type, title, populate 
+		id, site_id, parent_id, type
 	FROM categories AS ct
 	WHERE parent_id IS NOT NULL 
 	AND NOT EXISTS (
@@ -30,7 +30,7 @@ EOD;
 
 		$invalidSiteQuery = <<<'EOD'
 	SELECT
-		id, site_id, parent_id, type, title, populate
+		id, site_id, parent_id, type
 	FROM categories AS ct
 	WHERE NOT EXISTS (
 	 SELECT id
@@ -40,38 +40,44 @@ EOD;
 EOD;
 
 		$invalidParents = Model::load('Categories')->query($invalidParentQuery);
-		$this->logger()->info('invalid Categories', ['categories with invalid parents:' => $invalidParents]);
+		if ($invalidParents->rowCount())
+			$this->logger()->info('invalid Categories', ['categories with invalid parents:' => $invalidParents]);
 
 		$invalidSites = Model::load('Categories')->query($invalidSiteQuery);
-		$this->logger()->info('invalid Categories', ['categories with invalid sites:' => $invalidSites]);
+		if ($invalidSites->rowCount())
+			$this->logger()->info('invalid Categories', ['categories with invalid sites:' => $invalidSites]);
 	}
 
 	public function invalidFeeds() {
-		$re = '/^(https?|feed):\/\/.[a-z0-9-_]+(\.[a-z0-9-]+)+([\/?].+)?$/mi';
-		$invalidUrls = $invalidStatus = array();
+		$re = '/^(https?|feed):\/\/.[a-z0-9-_]+(\.[a-z0-9-\/]+)+([\/?].+)?$/mi'; //'/^(https?|feed):\/\/.[a-z0-9-_]+(\.[a-z0-9-]+)+([\/?].+)?$/mi';
+		$invalidUrlFormats = $invalidRequest =  $invalidStatus = array();
 		$extensions = Extensions::find('all', [
 			'conditions' => ['extension' => 'rss', 'enabled' => 1],
-			'fields' => ['url', 'category_id', 'site_id', 'enabled'],
+			'fields' => ['url'],
 		]);
 
 		foreach ($extensions as $extension) {
 			if (!$extension->url || !preg_match($re, $extension->url)) {
 				$invalidUrls[] = $extension->to('array');
 			} else {
-				$headers = get_headers($extension->url);
+				$headers = get_headers(str_replace('feed://', 'http://', $extension->url));
 				if ($headers) {
 					list($version,$status,$msg) = explode(' ', $headers[0]);
 					if ($status != 200) {
 						$invalidStatus["status_$status"][] = $extension->to('array');
 					}
 				} else {
-					$invalidUrls['request_error'][] = $extension->to('array');
+					$invalidRequest[] = $extension->to('array');
 				}
 			}
 		}
 
-		$this->logger()->info('invalid Feeds', ['Feeds with invalid url:' => $invalidUrls]);
-		$this->logger()->info('invalid Feeds', ['Feeds with invalid response status(obs. grouped by status):' => $invalidStatus]);
+		if ($invalidUrls)
+			$this->logger()->info('invalid Feeds', ['Feeds with invalid url format:' => $invalidUrls]);
+		if ($invalidRequest)
+			$this->logger()->info('invalid Feeds', ['Feeds with invalid request:' => $invalidRequest]);
+		if ($invalidStatus)
+			$this->logger()->info('invalid Feeds', ['Feeds with invalid response status(obs. grouped by status):' => $invalidStatus]);
 	}
 
 	protected function logger()
