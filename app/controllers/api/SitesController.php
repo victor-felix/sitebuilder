@@ -57,7 +57,8 @@ class SitesController extends ApiController
 		$newsCategory = array('title' => $newsCategory->title);
 
 		$skinsRepo = new SkinsRepository();
-		$skin = $skinsRepo->find(array_unset($site, 'skin'));
+		$skinId = $this->param('skin', array_unset($site, 'skin'));
+		$skin = $skinsRepo->find($skinId);
 		$site['theme'] = SkinPresenter::present($skin);
 
 		return compact('site', 'business', 'categories', 'news', 'newsCategory');
