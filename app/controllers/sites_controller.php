@@ -75,7 +75,7 @@ class SitesController extends AppController
       $parent = $skinRepo->find($this->data['parent_id']);
       if ($parent->parentId()) {
         $skin = $parent;
-        $skinData = array('colors' => $this->data['colors']);
+        $skinData = array_intersect_key($this->data, array_flip(['colors', 'tokens', 'layout_alternatives']));
         if (isset($this->data['uploaded_assets'])) {
           $skinData['uploaded_assets'] = $this->data['uploaded_assets'];
         }
