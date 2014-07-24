@@ -230,6 +230,17 @@ class ItemsController extends ApiController {
 		$item->type = $category->type;
 
 		if ($item->save()) {
+			$images = isset($this->request->data['images']) ? $this->request->data['images'] : false;
+			if ($images) {
+				foreach ($images as $id => $image) {
+					if (!is_numeric($id)) continue;
+					$record = Model::load('Images')->firstById($id);
+					$record->title = $image['title'];
+					$record->foreign_key = $item->id();
+					$record->save();
+				}
+			}
+
 			$this->response->status(201);
 			return $item->toJSON();
 		} else {
