@@ -26,7 +26,7 @@ AddOutputFilterByType DEFLATE application/atom+xml \
   ExpiresActive On
 
   <FilesMatch "\.(?i:jpg|jpeg|png|gif|svg)$">
-    ExpiresDefault A29030400
+    ExpiresDefault "access plus 3 days"
     # 3 days
     # Expires Default A259200
     # Header append Cache-Control "private must-revalidate"
