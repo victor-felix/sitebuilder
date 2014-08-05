@@ -1,6 +1,6 @@
 <?php
 //Handle preflight requests
-if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     header('Access-Control-Allow-Origin: *');
     header('Access-Control-Allow-Methods: POST, GET, PUT, DELETE, OPTIONS');
 		header('Access-Control-Allow-Headers: Origin, X-Requested-With, Accept, X-Authentication-Token, Content-Type');
