@@ -208,16 +208,18 @@ class Articles extends \app\models\Items
 		@$dom->loadHtml('<?xml encoding="UTF-8">' . $item->get_content());
 		$xpath = new \DOMXPath($dom);
 		$images = array();
+		$src = array();
 
 		$nodes = $xpath->query('//a[@rel="lightbox"]');
 		if ($nodes->length) {
 			foreach ($nodes as $img) {
-				$images []= $img->getAttribute('src');
+				$src []= $img->getAttribute('src');
+				$images []= empty($src)?$img->getAttribute('href'):$src;
 			}
 			return $images;
 		}
 
-		$nodes = $xpath->query('//img[contains(@src, "wp-content/uploads")]');
+		$nodes = $xpath->query('//img[contains(@src, "wp-content/uploads")]|//img[contains(@src, "/photos/")] ');
 		if ($nodes->length) {
 			foreach ($nodes as $img) {
 				$images []= array( 
