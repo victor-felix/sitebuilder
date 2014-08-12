@@ -336,8 +336,8 @@ class Sites extends AppModel
 		$data['description'] = nl2br($data['description']);
 		$data['webputty_token'] = $this->css_token;
 		$data['analytics_token'] = $this->google_analytics;
-		$data['android_app_url'] = $this->android_app_url;
-		$data['ios_app_url'] = $this->ios_app_url;
+		$data['android_app_id'] = $this->android_app_id;
+		$data['ios_app_id'] = $this->ios_app_id;
 		$data['landing_page'] = $this->landing_page;
 		$data['stock_symbols'] = $this->stock_symbols;
 		$data['language'] = $this->language;
@@ -458,7 +458,7 @@ class Sites extends AppModel
 	protected function cleanDomainLinks($data)
 	{
 		$fieldsToClean = array('facebook', 'twitter', 'website',
-			'android_app_url', 'ios_app_url');
+			'android_app_id', 'ios_app_id');
 
 		foreach ($fieldsToClean as $field) {
 			if (isset($data[$field]) && $data[$field] == 'http://') {

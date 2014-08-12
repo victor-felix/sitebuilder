@@ -84,7 +84,7 @@
 	<div class="field-group">
 		<div class="form-grid-460 first">
 			<span class="optional"><?php echo s('Optional') ?></span>
-			<?php echo $this->form->input('android_app_url', array(
+			<?php echo $this->form->input('android_app_id', array(
 				'label' => s('App url'),
 				'type' => 'text',
 				'class' => 'ui-text large'
@@ -98,7 +98,7 @@
 	<div class="field-group">
 		<div class="form-grid-460 first">
 			<span class="optional"><?php echo s('Optional') ?></span>
-			<?php echo $this->form->input('ios_app_url', array(
+			<?php echo $this->form->input('ios_app_id', array(
 				'label' => s('App url'),
 				'type' => 'text',
 				'class' => 'ui-text large'
