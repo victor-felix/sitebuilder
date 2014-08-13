@@ -75,6 +75,37 @@
 	</div>
 </fieldset>
 
+<fieldset>
+	<h2><?php echo s('Android app') ?></h2>
+	<div class="field-group">
+		<div class="form-grid-460 first">
+			<span class="optional"><?php echo s('Optional') ?></span>
+			<?php echo $this->form->input('android_app_id', array(
+				'label' => s('App id'),
+				'type' => 'text',
+				'placeholder' => 'com.meumobi.myapp',
+				'class' => 'ui-text large'
+			)) ?>
+		</div>
+	</div>
+</fieldset>
+
+<fieldset>
+	<h2><?php echo s('Ios app') ?></h2>
+	<div class="field-group">
+		<div class="form-grid-460 first">
+			<span class="optional"><?php echo s('Optional') ?></span>
+			<?php echo $this->form->input('ios_app_id', array(
+				'label' => s('App id'),
+				'type' => 'text',
+				'placeholder' => '123456789',
+				'class' => 'ui-text large'
+			)) ?>
+		</div>
+	</div>
+</fieldset>
+
+
 <fieldset class="actions">
     <?php echo $this->form->submit(s('Save'), array('class' => 'ui-button red larger')) ?>
 </fieldset>
