@@ -1,13 +1,18 @@
 <?php
 
-require_once 'lib/bbcode/Decoda.php';
 
 class BbcodeHelper extends Helper
 {
 	public function parse($text)
 	{
-			$parser = new Decoda($text);
-			return $parser->parse(true);
+			$parser = new \Decoda\Decoda($text, [
+				'xhtmlOutput' => true, 
+				'lineBreaks' => true, 
+				'escapeHtml' => false	
+			]);
+			$parser->defaults();
+			//$parser->whitelist('b', 'i', 'color', 'url', 'big', 'small');
+			return $parser->parse();
 	}
 
 	public function strip($text)
