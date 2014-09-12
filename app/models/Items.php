@@ -5,16 +5,15 @@ namespace app\models;
 use meumobi\sitebuilder\services\GeocodeItemsService;
 
 require_once 'lib/utils/Works/Geocode.php';
-require_once 'lib/bbcode/Decoda.php';
 
 use Config;
 use Inflector;
 use Model;
+use \Decoda\Decoda;
 use GoogleGeocoding;
 use GeocodingException;
 use OverQueryLimitException;
 use meumobi\sitebuilder\services\UpdateFeedsService;
-use Decoda;
 use lithium\util\Collection;
 use utils\Geocode;
 
@@ -118,9 +117,14 @@ class Items extends \lithium\data\Model {
 		foreach ($this->fields as $code => $field) {
 			if ($field['type'] == 'richtext'
 				&& !(isset($self['format']) && $self['format'] == 'html')) {
-				$allowedTagsConvertion = array('b', 'i', 'color', 'url', 'big', 'small');
-				$parser = new Decoda($self[$code], $allowedTagsConvertion);
-				$self[$code] = '<p>' . $parser->parse(true) . '</p>';
+				$parser = new Decoda($self[$code], [
+					'xhtmlOutput' => true, 
+					'lineBreaks' => true, 
+					'escapeHtml' => false	
+				]);
+				$parser->defaults();
+				$parser->whitelist('b', 'i', 'color', 'url', 'big', 'small');
+				$self[$code] = '<p>' . $parser->parse() . '</p>';
 			}
 		}
 
