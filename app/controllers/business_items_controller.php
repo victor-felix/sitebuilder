@@ -143,7 +143,7 @@ class BusinessItemsController extends AppController
 		)));
 		$currentOrder = $item->order;
 
-		if (($currentOrder - 1) == $item->moveUp()) {
+		if ($item->moveUp()) {
 			$status = 'success';
 			$message = s('Item successfully moved up');
 		} else {
@@ -170,7 +170,7 @@ class BusinessItemsController extends AppController
 		)));
 		$currentOrder = $item->order;
 
-		if (($currentOrder + 1) == $item->moveDown()) {
+		if ($item->moveDown()) {
 			$status = 'success';
 			$message = s('Item successfully moved down');
 		} else {

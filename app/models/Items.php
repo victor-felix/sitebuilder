@@ -169,7 +169,7 @@ class Items extends \lithium\data\Model {
 
 	public function moveUp($entity, $steps = 1) {
 		$oldOrder = $entity->order;
-		$previus = $this->findByOrder($entity, $oldOrder - $steps);
+		$previus = $this->findByOrder($entity, $oldOrder + $steps);
 
 		if (!$previus) {
 			return false;
@@ -184,7 +184,7 @@ class Items extends \lithium\data\Model {
 
 	public function moveDown($entity, $steps = 1) {
 		$oldOrder = $entity->order;
-		$previus = $this->findByOrder($entity, $oldOrder + $steps);
+		$previus = $this->findByOrder($entity, $oldOrder - $steps);
 
 		if (!$previus) {
 			return false;
