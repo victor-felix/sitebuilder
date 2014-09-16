@@ -6,19 +6,10 @@ use Exception, GeocodingException, app\models\RecordNotFoundException;
 
 require_once 'lib/geocoding/GoogleGeocoding.php';
 
-class GeocodeItemsService
+class GeocodeItemsService extends Service
 {
-	const PRIORITY_LOW = 0;
-	const PRIORITY_HIGH = 1;
-
 	const DELAY_TIME = 250000;
-	protected $options;
-	protected $logger;
-	
-	public function __construct(array $options = [])
-	{
-		$this->options = $options;
-	}
+	const LOG_CHANNEL  = 'sitebuilder.geocode';
 
 	public function call()
 	{
@@ -72,34 +63,5 @@ class GeocodeItemsService
 		$stats['elapsed_time'] = array_unset($stats, 'end_time') -
 		array_unset($stats, 'start_time');
 		$this->logger()->info('finished geocoding items', $stats);
-	}
-
-	protected function logger()
-	{
-		if ($this->logger) return $this->logger;
-	
-		if (isset($this->options['logger'])) {
-			return $this->logger = $this->options['logger'];
-		}
-	
-		$handler = new \Monolog\Handler\RotatingFileHandler($this->loggerPath());
-		$this->logger = new \Monolog\Logger('sitebuilder.geocode', [$handler]);
-	
-		return $this->logger;
-	}
-	
-	protected function loggerPath()
-	{
-		return APP_ROOT . '/' . $this->options['logger_path'];
-	}
-
-	protected function priorityCriteria()
-	{
-		$priorities = [
-			self::PRIORITY_HIGH => ['$gte' => 1],
-			self::PRIORITY_LOW => ['$exists' => false],
-		];
-	
-		return $priorities[$this->options['priority']];
 	}
 }

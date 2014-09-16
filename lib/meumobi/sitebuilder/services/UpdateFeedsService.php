@@ -5,20 +5,10 @@ namespace meumobi\sitebuilder\services;
 use lithium\data\Connections;
 
 use app\models\extensions\Rss;
-use Exception;
 
-class UpdateFeedsService
+class UpdateFeedsService extends Service
 {
-	const PRIORITY_LOW = 0;
-	const PRIORITY_HIGH = 1;
-
-	protected $options;
-	protected $logger;
-
-	public function __construct(array $options = [])
-	{
-		$this->options = $options;
-	}
+	const LOG_CHANNEL  = 'sitebuilder.feeds';
 
 	public function call()
 	{
@@ -75,34 +65,5 @@ class UpdateFeedsService
 			array_unset($stats, 'start_time');
 
 		$this->logger->info('finished updating feeds', $stats);
-	}
-
-	protected function priorityCriteria()
-	{
-		$priorities = [
-			self::PRIORITY_HIGH => ['$gte' => 1],
-			self::PRIORITY_LOW => ['$exists' => false],
-		];
-
-		return $priorities[$this->options['priority']];
-	}
-	
-	protected function logger()
-	{
-		if ($this->logger) return $this->logger;
-
-		if (isset($this->options['logger'])) {
-			return $this->logger = $this->options['logger'];
-		}
-
-		$handler = new \Monolog\Handler\RotatingFileHandler($this->loggerPath());
-		$logger = new \Monolog\Logger('sitebuilder.feeds', [$handler]);
-
-		return $this->logger = $logger;
-	}
-
-	protected function loggerPath()
-	{
-		return APP_ROOT . '/' . $this->options['logger_path'];
 	}
 }

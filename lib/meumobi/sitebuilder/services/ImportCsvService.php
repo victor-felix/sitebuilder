@@ -6,9 +6,8 @@ use app\models\Jobs;
 class ImportCsvService {
 	const INCLUSIVE = 0;
 	const EXCLUSIVE = 1;
-	
-	protected $options;
-	protected $logger;
+	const LOG_CHANNEL = 'sitebuilder.import_csv';
+
 	protected $fields;
 	protected $file;
 	protected $filePath;
@@ -16,11 +15,6 @@ class ImportCsvService {
 	protected $method;
 	protected $category;
 	
-	public function __construct(array $options = [])
-	{
-		$this->options = $options;
-	}
-
 	public function call()
 	{
 		$startTime = microtime(true);
@@ -156,24 +150,5 @@ class ImportCsvService {
 			return $job;
 		}
 		return false;
-	}
-
-	protected function logger()
-	{
-		if ($this->logger) return $this->logger;
-
-		if (isset($this->options['logger'])) {
-			return $this->logger = $this->options['logger'];
-		}
-
-		$handler = new \Monolog\Handler\RotatingFileHandler($this->loggerPath());
-		$this->logger = new \Monolog\Logger('sitebuilder.import_csv', [$handler]);
-
-		return $this->logger;
-	}
-
-	protected function loggerPath()
-	{
-		return APP_ROOT . '/' . $this->options['logger_path'];
 	}
 }

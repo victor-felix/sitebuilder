@@ -1,16 +1,21 @@
 <?php
 namespace meumobi\sitebuilder\services;
+use Exception;
 
 abstract class Service
 {
 	const PRIORITY_LOW = 0;
 	const PRIORITY_HIGH = 1;
+	const LOG_CHANNEL = 'sitebuilder.service';
 
 	protected $options;
 	protected $logger;
-	protected $logChannel = 'sitebuilder.merchant_products';
 
 	abstract public function call();
+
+	public function __construct(array $options = []) {
+		$this->options = $options;
+	}
 
 	protected function priorityCriteria()
 	{
@@ -31,7 +36,7 @@ abstract class Service
 		}
 
 		$handler = new \Monolog\Handler\RotatingFileHandler($this->loggerPath());
-		$logger = new \Monolog\Logger($this->logChannel, [$handler]);
+		$logger = new \Monolog\Logger(static::LOG_CHANNEL, [$handler]);
 
 		return $this->logger = $logger;
 	}

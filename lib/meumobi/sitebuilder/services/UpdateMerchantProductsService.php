@@ -1,26 +1,15 @@
 <?php
-
 namespace meumobi\sitebuilder\services;
 
 use app\models\extensions\GoogleMerchantFeed;
 use app\models\items\MerchantProducts;
 use lithium\data\Connections;
 
-use Exception;
 use Model;
 
-class UpdateMerchantProductsService
+class UpdateMerchantProductsService extends Service
 {
-	const PRIORITY_LOW = 0;
-	const PRIORITY_HIGH = 1;
-
-	protected $options;
-	protected $logger;
-
-	public function __construct(array $options = [])
-	{
-		$this->options = $options;
-	}
+	const LOG_CHANNEL  = 'sitebuilder.merchant_products';
 
 	public function call()
 	{
@@ -138,36 +127,6 @@ class UpdateMerchantProductsService
 			array_unset($stats, 'start_time');
 
 		$this->logger->info('finished updating products', $stats);
-	}
-
-	protected function priorityCriteria()
-	{
-		$priorities = [
-			self::PRIORITY_HIGH => ['$gte' => 1],
-			self::PRIORITY_LOW => ['$exists' => false],
-		];
-
-		return $priorities[$this->options['priority']];
-	}
-	
-	protected function logger()
-	{
-		if ($this->logger) return $this->logger;
-
-		if (isset($this->options['logger'])) {
-			return $this->logger = $this->options['logger'];
-		}
-
-		$handler = new \Monolog\Handler\RotatingFileHandler($this->loggerPath());
-		$logger = new \Monolog\Logger('sitebuilder.merchant_products',
-			[$handler]);
-
-		return $this->logger = $logger;
-	}
-
-	protected function loggerPath()
-	{
-		return APP_ROOT . '/' . $this->options['logger_path'];
 	}
 }
 

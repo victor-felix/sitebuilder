@@ -5,15 +5,11 @@ namespace meumobi\sitebuilder\services;
 use app\models\extensions\EventFeed;
 use app\models\items\Events;
 use lithium\data\Connections;
-use Exception;
 use Model;
 
 class UpdateEventsService extends Service {
-	protected $logChannel = 'sitebuilder.events';
+	const LOG_CHANNEL = 'sitebuilder.events';
 
-	public function __construct(array $options = []) {
-		$this->options = $options;
-	}
 	public function call() {
 		$this->logger()->info('updating events', [
 				'priority' => $this->options['priority']
