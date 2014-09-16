@@ -44,36 +44,6 @@ class Rss extends Extensions
 		);
 	}
 
-	public static function enable($extension)
-	{
-		$extension->priority = self::PRIORITY_HIGH;
-		$category = self::category($extension);
-		$category->populate = 'auto';
-		$category->save();
-	}
-
-	public static function disable($extension)
-	{
-		$category = self::category($extension);
-		$category->removeItems();
-		$category->populate = 'manual';
-		$category->save();
-	}
-
-	public static function switchEnabledStatus($self, $params, $chain)
-	{
-		$extension = $params['entity'];
-		if ($extension->changed('enabled')) {
-			if ($extension->enabled) {
-				self::enable($extension);
-			} else {
-				self::disable($extension);
-			}
-		}
-
-		return $chain->next($self, $params, $chain);
-	}
-
 	public static function beforeRemove($extension)
 	{
 		self::disable($extension);
