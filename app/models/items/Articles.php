@@ -69,17 +69,7 @@ class Articles extends \app\models\Items
 		}
 
 		$author = $item->get_author();
-		$medias = [];
-		foreach($item->get_enclosures() as $enclosure) {
-			$medias[] = [
-			'url' => $enclosure->get_link(),
-			'type' => $enclosure->get_type(),
-			'title' => html_entity_decode($enclosure->get_title(), ENT_QUOTES, 'UTF-8'),
-			//'title' => $enclosure->get_title(),
-			'length' => $enclosure->get_length(),
-			];
-		}
-
+		$medias = static::getArticlesMedias($item);
 		$article = array(
 			'site_id' => $feed->site_id,
 			'parent_id' => $feed->id,
@@ -199,6 +189,34 @@ class Articles extends \app\models\Items
 		}
 
 		return $images;
+	}
+
+	protected static function getArticlesMedias($item) {
+			$medias = [];
+			foreach($item->get_enclosures() as $enclosure) {
+				$medias[] = [
+				'url' => $enclosure->get_link(),
+				'type' => $enclosure->get_type(),
+				'title' => html_entity_decode($enclosure->get_title(), ENT_QUOTES, 'UTF-8'),
+				'length' => $enclosure->get_length(),
+				];
+			}
+			return array_merge($medias, static::getContentVideos($item));
+	}
+
+	protected static function getContentVideos($item) {
+		$videos = [];
+		$re = "/(https?:)?\\/\\/(?:[0-9A-Z-]+\\.)?(?:youtu\\.be\\/|youtube\\.com(?:\\/embed\\/|\\/v\\/|\\/watch\\?v=|\\/ytscreeningroom\\?v=|\\/feeds\\/api\\/videos\\/|\\/user\\S*[^\\w\\-\\s]|\\S*[^\\w\\-\\s]))([\\w\\-]{11})[?=&+%\\w-]*/i";
+		preg_match_all($re, $item->get_content(), $matches);
+		foreach ($matches[0] as $match) {
+				$videos[] = [
+				'url' => $match,
+				'type' => 'text/html',
+				'title' => '',
+				'length' => '',
+				];	
+		}
+		return $videos;	
 	}
 
 	protected static function getContentImages($item) {

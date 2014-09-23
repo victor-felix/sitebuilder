@@ -135,6 +135,9 @@ class Rss extends Extensions
 		$feed = new SimplePie();
 		$feed->enable_cache(false);
 		$feed->set_feed_url($entity->url);
+		$strip_htmltags = $feed->strip_htmltags;
+		array_splice($strip_htmltags, array_search('iframe', $strip_htmltags), 1);
+		$feed->strip_htmltags($strip_htmltags);
 		$feed->init();
 		return $feed;
 	}
