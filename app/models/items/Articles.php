@@ -206,15 +206,19 @@ class Articles extends \app\models\Items
 
 	protected static function getContentVideos($item) {
 		$videos = [];
-		$re = "/(https?:)?\\/\\/(?:[0-9A-Z-]+\\.)?(?:youtu\\.be\\/|youtube\\.com(?:\\/embed\\/|\\/v\\/|\\/watch\\?v=|\\/ytscreeningroom\\?v=|\\/feeds\\/api\\/videos\\/|\\/user\\S*[^\\w\\-\\s]|\\S*[^\\w\\-\\s]))([\\w\\-]{11})[?=&+%\\w-]*/i";
-		preg_match_all($re, $item->get_content(), $matches);
-		foreach ($matches[0] as $match) {
-				$videos[] = [
-				'url' => $match,
-				'type' => 'text/html',
-				'title' => '',
-				'length' => '',
-				];	
+		$dom = new \DOMDocument('1.0', 'UTF-8');
+		@$dom->loadHtml('<?xml encoding="UTF-8">' . $item->get_content());
+		$xpath = new \DOMXPath($dom);
+		$nodes = $xpath->query('//iframe[contains(@src,"youtube") or contains(@src,"dailymotion") or contains(@src,"vimeo")]');
+		if ($nodes->length) {
+			foreach ($nodes as $iframe) {
+					$videos[] = [
+					'url' => $iframe->getAttribute('src'),
+					'type' => 'text/html',
+					'title' => '',
+					'length' => null,
+					];	
+			}
 		}
 		return $videos;	
 	}
