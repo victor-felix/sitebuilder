@@ -209,7 +209,11 @@ class Articles extends \app\models\Items
 		$dom = new \DOMDocument('1.0', 'UTF-8');
 		@$dom->loadHtml('<?xml encoding="UTF-8">' . $item->get_content());
 		$xpath = new \DOMXPath($dom);
-		$nodes = $xpath->query('//iframe[contains(@src,"youtube") or contains(@src,"dailymotion") or contains(@src,"vimeo")]');
+		$nodes = $xpath->query('//iframe[contains(@src,"youtube") 
+			or contains(@src,"dailymotion") 
+			or contains(@src,"canalplus")
+			or contains(@src,"gfycat")
+			or contains(@src,"vimeo")]');
 		if ($nodes->length) {
 			foreach ($nodes as $iframe) {
 					$videos[] = [
