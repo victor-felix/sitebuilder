@@ -194,12 +194,13 @@ class Articles extends \app\models\Items
 	protected static function getArticlesMedias($item) {
 			$medias = [];
 			foreach($item->get_enclosures() as $enclosure) {
-				$medias[] = [
-				'url' => $enclosure->get_link(),
-				'type' => $enclosure->get_type(),
-				'title' => html_entity_decode($enclosure->get_title(), ENT_QUOTES, 'UTF-8'),
-				'length' => $enclosure->get_length(),
-				];
+				if ($enclosure->get_link()) //fix null media bug http://stackoverflow.com/questions/4053664/simplepie-includes-phantom-enclosures-that-dont-exist
+					$medias[] = [
+						'url' => $enclosure->get_link(),
+						'type' => $enclosure->get_type(),
+						'title' => html_entity_decode($enclosure->get_title(), ENT_QUOTES, 'UTF-8'),
+						'length' => $enclosure->get_length(),
+					];
 			}
 			return array_merge($medias, static::getContentVideos($item));
 	}
