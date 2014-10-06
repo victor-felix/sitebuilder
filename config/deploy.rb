@@ -20,13 +20,24 @@ set :repo_url, 'git@git-repos.ipanemax.com:partners.meumobi.git'
 # set :log_level, :debug
 
 # Default value for :pty is false
-# set :pty, true
+#set :pty, true
 
 # Default value for :linked_files is []
 # set :linked_files, %w{config/database.yml}
 
 # Default value for linked_dirs is []
-# set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+set :linked_dirs, %w{uploads log tmp/cache/yaml tmp/cache/html_purifier}
+
+#Sitebuilder services lock files
+set :services_paths, [
+  'tmp/update_feeds_low.pid',
+  'tmp/update_feeds_high.pid', 
+  'tmp/update_merchant_products_low.pid', 
+  'tmp/update_merchant_products_high.pid', 
+  'tmp/import_csv.pid',
+  'tmp/geocode_items_high.pid',
+  'tmp/geocode_items_low.pid'
+  ] 
 
 # Default value for default_env is {}
 # set :default_env, { path: '/opt/ruby/bin:$PATH' }
@@ -40,16 +51,16 @@ set :ssh_options, {
 }
 
 namespace :deploy do
-  before 'deploy:symlink:shared', 'deploy:app:environment'
-  before 'deploy:updated', 'deploy:permissions:chmod'
-  before 'deploy:updated', 'deploy:cron:stop'
-  before 'deploy:updated', 'deploy:services:stop'
-  before 'deploy:updated', 'deploy:server:stop'
-  after 'deploy:updated', 'deploy:services:cron'
-  after 'deploy:updated', 'deploy:app:api_doc'
-  after 'deploy:updated', 'deploy:db:connection'
-  after 'deploy:updated', 'deploy:db:migrate'
-  after 'deploy:updated', 'deploy:platform:check'
-  after 'deploy:updated', 'deploy:server:start'
-  after 'deploy:updated', 'deploy:cron:start'
+  before 'deploy:symlink:shared', 'app:environment'
+  before 'deploy:updated', 'permissions:chmod'
+  before 'deploy:updated', 'service:cron:stop'
+  before 'deploy:updated', 'app:services:stop'
+  before 'deploy:updated', 'service:apache:stop'
+  after 'deploy:updated', 'app:services:cronjobs'
+  after 'deploy:updated', 'app:api_doc'
+  after 'deploy:updated', 'db:settings'
+  after 'deploy:updated', 'db:migrate'
+  after 'deploy:updated', 'app:platform_check'
+  after 'deploy:updated', 'service:apache:start'
+  after 'deploy:updated', 'service:cron:start'
 end
