@@ -2,7 +2,7 @@ namespace :service do
   # Map alias to real command
   service_cmd = { 'apache' => 'apache2', 'mysql' => 'mysqld', 'mongodb' => 'mongodb', 'cron' => 'cron' }
 
-  %w[apache mysql mongodb].each do |service|
+  %w[apache mysql mongodb cron].each do |service|
     namespace service do
       %w[start stop status restart].each do |command|
         desc "#{command} #{service}"

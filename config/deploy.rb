@@ -4,6 +4,9 @@ lock '3.2.1'
 set :application, 'meumobi'
 set :repo_url, 'git@git-repos.ipanemax.com:partners.meumobi.git'
 
+set :scm, :git 
+set :git_strategy, Capistrano::Git::SubmoduleStrategy
+
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
 
@@ -23,10 +26,11 @@ set :repo_url, 'git@git-repos.ipanemax.com:partners.meumobi.git'
 #set :pty, true
 
 # Default value for :linked_files is []
-# set :linked_files, %w{config/database.yml}
+#set :linked_files, %w{config/ENVIRONMENT}
 
 # Default value for linked_dirs is []
 set :linked_dirs, %w{uploads log tmp/cache/yaml tmp/cache/html_purifier}
+set :file_permissions_paths, %w{uploads log tmp tmp/cache/yaml tmp/cache/html_purifier}
 
 #Sitebuilder services lock files
 set :services_paths, [
@@ -52,7 +56,7 @@ set :ssh_options, {
 
 namespace :deploy do
   before 'deploy:symlink:shared', 'app:environment'
-  before 'deploy:updated', 'permissions:chmod'
+  before 'deploy:updated', 'deploy:permissions:chmod'
   before 'deploy:updated', 'service:cron:stop'
   before 'deploy:updated', 'app:services:stop'
   before 'deploy:updated', 'service:apache:stop'

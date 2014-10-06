@@ -2,8 +2,8 @@ namespace :app do
   desc "Set app environment mode on configured on :php_env"
   task :environment do
     on roles(:app) do
-      within shared_path do 
-        execute :echo, "#{fetch(:php_env)} > ENVIRONMENT"
+      within release_path do 
+        execute :echo, "#{fetch(:php_env)} > config/ENVIRONMENT"
       end
     end
   end

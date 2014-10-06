@@ -1,6 +1,8 @@
 source 'http://rubygems.org'
 
 gem 'capistrano', '~> 3.2.1'
+gem 'capistrano-bundler'
+gem 'capistrano-git-submodule-strategy', '~> 0.1.9'
 gem 'thor', '~> 0.14'
 gem 'activesupport', '~> 3.2.6'
 gem 'whenever', '~> 0.7.3', require: false
