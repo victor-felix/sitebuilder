@@ -9,7 +9,7 @@ role :app, %w{arpoador.ipanemax.com}
 #role :db,  %w{deploy@example.com}
 
 #deploy path
-set :deploy_to, '/home/meumobi/PROJECTS/test.int-meumobi.com'
+set :deploy_to, '/home/meumobi/PROJECTS/int-meumobi.com'
 
 set :php_env, 'integration'
 
