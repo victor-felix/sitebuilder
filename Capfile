@@ -1,32 +1,26 @@
-load 'deploy' if respond_to?(:namespace)
-load 'sitebuilder/Capfile'
+# Load DSL and Setup Up Stages
+require 'capistrano/setup'
 
-set :repository, 'git@git-repos.ipanemax.com:partners.meumobi.git'
-set :user, 'meumobi'
+# Includes default deployment tasks
+require 'capistrano/deploy'
 
-# production settings. do not change unless PROD env moves. if you need to
-# deploy to INT or another env, create or modify a task for it.
+# Includes tasks from other gems included in your Gemfile
+#
+# For documentation on these, see for example:
+#
+#   https://github.com/capistrano/rvm
+#   https://github.com/capistrano/rbenv
+#   https://github.com/capistrano/chruby
+#   https://github.com/capistrano/bundler
+#   https://github.com/capistrano/rails
+#
+# require 'capistrano/rvm'
+# require 'capistrano/rbenv'
+# require 'capistrano/chruby'
+require 'capistrano/bundler'
+# require 'capistrano/rails/assets'
+# require 'capistrano/rails/migrations'
+require 'capistrano/git-submodule-strategy'
 
-task :rimobi do
-  set :php_env, 'rimobi'
-	set :deploy_to, '/home/meumobi/PROJECTS/int-meumobilesite.com'
-	role :app, 'rimobi.ipanemax.com'
-end
-
-task :production do
-  set :php_env, 'production'
-	set :deploy_to, '/home/meumobi/PROJECTS/meumobi.com'
-	role :app, 'elefante.ipanemax.com'
-end
-
-task :development do
-  set :php_env, 'development'
-  set :deploy_to, '/home/meumobi/PROJECTS/services.int-meumobi.com'
-  role :app, 'laguna.ipanemax.com'
-end
-
-task :integration do
-  set :php_env, 'integration'
-  set :deploy_to, '/home/meumobi/PROJECTS/int-meumobi.com'
-  role :app, 'laguna.ipanemax.com'
-end
+# Loads custom tasks from `lib/capistrano/tasks' if you have any defined.
+Dir.glob('sitebuilder/lib/capistrano/tasks/*.rake').each { |r| import r }
