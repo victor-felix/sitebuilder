@@ -29,8 +29,8 @@ set :git_strategy, Capistrano::Git::SubmoduleStrategy
 #set :linked_files, %w{config/ENVIRONMENT}
 
 # Default value for linked_dirs is []
-set :linked_dirs, %w{uploads log tmp/cache/yaml tmp/cache/html_purifier}
-set :file_permissions_paths, %w{uploads log tmp tmp/cache/yaml tmp/cache/html_purifier}
+set :linked_dirs, %w{uploads log tmp}
+set :file_permissions_paths, %w{uploads log tmp} #tmp/cache/yaml tmp/cache/html_purifier}
 
 #Sitebuilder services lock files
 set :services_paths, [
