@@ -12,6 +12,6 @@ Config::write('Segment', array(
   'fullOptions' => false,
   'enableMultiUsers' => Config::read('App.environment') != 'production',
   'analytics' => 'UA-22519238-3',
-  'themes' => array('paraty', 'posto9', 'leblon', 'helmut', 'flip', 'rimobi'), //'flip_app', 'rimobi'),
+  'themes' => Config::read('App.environment') == 'production' ? array('paraty', 'posto9', 'leblon', 'helmut', 'flip', 'rimobi') : array('paraty', 'posto9', 'leblon', 'helmut', 'flip', 'rimobi', 'copacabana', 'casaevideo'),
   'enableFieldSet' => array('photos','weblinks','location', 'contact', 'news', 'description', 'timetable'), //, 'stocks'),
 ));
