@@ -12,8 +12,8 @@ class Site
 	public static function findByDomain($domain)
 	{
 		// TODO
-		$domain = Model::load('Sites')->firstByDomain($domain);
-		return new static($domain->data);
+		$site = Model::load('Sites')->firstByDomain($domain);
+		return new static($site->data);
 	}
 
 	public function __construct($attr = array())
