@@ -104,7 +104,8 @@ class Sites extends AppModel
 	public function news()
 	{
 		$category = $this->newsCategory();
-
+		if (!$category)
+			return [];
 		return \app\models\items\Articles::find('all', array(
 			'conditions' => array(
 				'site_id' => $this->id,
@@ -112,7 +113,7 @@ class Sites extends AppModel
 			),
 			'limit' => 10,
 			'order' => array('pubdate' => 'DESC')
-		));
+		))->to('array');
 	}
 
 	public function feed_url()

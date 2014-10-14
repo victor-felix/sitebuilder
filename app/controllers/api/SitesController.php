@@ -51,10 +51,10 @@ class SitesController extends ApiController
 				return $image->toJSONPerformance();
 			}, \Model::load('Images')->allByRecord('Items', $article['_id']));
 			return $json;
-		}, $this->site()->news()->to('array'));
+		}, $this->site()->news());
 
-		$newsCategory = $this->site->newsCategory();
-		$newsCategory = array('title' => $newsCategory->title);
+		if ($newsCategory = $this->site->newsCategory())
+			$newsCategory = array('title' => $newsCategory->title);
 
 		$skinsRepo = new SkinsRepository();
 		$skinId = $this->param('skin', array_unset($site, 'skin'));
