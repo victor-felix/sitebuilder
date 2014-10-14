@@ -129,11 +129,6 @@ class Sites extends AppModel
 		}
 	}
 
-	public function defaultDomain()
-	{
-		return $this->slug . '.' . MeuMobi::domain();
-	}
-
 	public function custom_domain()
 	{
 		try {

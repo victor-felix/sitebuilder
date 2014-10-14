@@ -25,7 +25,7 @@
 			<div class="form-grid-460 first">
 				<p class="label"><?php echo s('This is the address of your mobile site:') ?></p>
 				<p class="meumobi-url">
-					<span>http://<?php echo $site->defaultDomain() ?></span>
+					<span>http://<?php echo $site->domain ?></span>
 				</p>
 				<div id="domains" class="input text domains">
 					<p class="label"><?php echo s('Enter your custom domains') ?>:</p>
@@ -77,7 +77,7 @@
 					<span class="current-custom-domain"><?php echo $custom ? $custom : 'm.yourcompany.com';?></span>
 					<br>
 					<small style="display: inline;"><?php echo s('destination') ?>: </small>
-					<span><?php echo $site->defaultDomain() ?></span>
+					<span><?php echo $site->domain ?></span>
 				</p>
 			</div>
 		</div>
@@ -111,7 +111,7 @@
 									RedirectToMeuMobi("http://%s");
 								</script>';
 					 $script = e($script);
-					 echo sprintf($script, "<b>{$site->defaultDomain()}</b>");
+					 echo sprintf($script, "<b>{$site->domain}</b>");
 				?></p>
 				<br>
 				<br>
