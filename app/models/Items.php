@@ -118,7 +118,7 @@ class Items extends \lithium\data\Model {
 			if ($field['type'] == 'richtext'
 				&& !(isset($self['format']) && $self['format'] == 'html')) {
 				$parser = new Decoda($self[$code], [
-					'xhtmlOutput' => false, 
+					'xhtmlOutput' => true, 
 					'lineBreaks' => true, 
 					'escapeHtml' => false	
 				]);
