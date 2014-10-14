@@ -1,4 +1,3 @@
-<?php $custom = $site->custom_domain() ?>
 <div class="page-heading">
 	<div class="grid-4 first">&nbsp;</div>
 	<div class="grid-8">
@@ -25,12 +24,12 @@
 			<div class="form-grid-460 first">
 				<p class="label"><?php echo s('This is the address of your mobile site:') ?></p>
 				<p class="meumobi-url">
-					<span>http://<?php echo $site->domain ?></span>
+					<span>http://<?php echo $domain ?></span>
 				</p>
 				<div id="domains" class="input text domains">
 					<p class="label"><?php echo s('Enter your custom domains') ?>:</p>
 					<?php
-						foreach ($site->domains() as $id => $domain):
+						foreach ($domains as $id => $domain):
 							if($domain != $site->slug.'.'.MeuMobi::domain()):
 					?>
 					<p class="clear domain">
@@ -55,7 +54,7 @@
 							'type' => 'text',
 							'class' => 'ui-text large'
 						)) ?>
-						<a class="<?php if (!$custom) echo 'hidden' ?>" href="#"><?php echo s('delete domain') ?></a>
+						<a class="<?php if (count($domains) == 1) echo 'hidden' ?>" href="#"><?php echo s('delete domain') ?></a>
 						<small><?php echo s('Ex.: m.yourcompany.com') ?></small>
 					</p>
 					<p class="clear domain hidden">
@@ -74,10 +73,10 @@
 				<p class="label"><?php echo s('Now visit your website hosting provider and create a CNAME record with these values:') ?></p>
 				<p class="custom-domain-setup">
 					<small style="display: inline;"><?php echo s('alias') ?>: </small>
-					<span class="current-custom-domain"><?php echo $custom ? $custom : 'm.yourcompany.com';?></span>
+					<span class="current-custom-domain"><?php echo s('m.yourcompany.com');?></span>
 					<br>
 					<small style="display: inline;"><?php echo s('destination') ?>: </small>
-					<span><?php echo $site->domain ?></span>
+					<span><?php echo $domain ?></span>
 				</p>
 			</div>
 		</div>
@@ -103,7 +102,7 @@
 				<br>
 				<br>
 				<p class="label">
-				<?php echo s('<b>If you have a MeuMobi domain</b>, copy this code:') ?>
+				<?php echo s('Copy this code:') ?>
 				</p>
 				<p class="code"><?php 
 					$script = '<script type="text/javascript" src="http://meumobi.com/static/redirect.js"></script>
@@ -111,24 +110,8 @@
 									RedirectToMeuMobi("http://%s");
 								</script>';
 					 $script = e($script);
-					 echo sprintf($script, "<b>{$site->domain}</b>");
+					 echo sprintf($script, "<b>{$domain}</b>");
 				?></p>
-				<br>
-				<br>
-				<p class="label">
-				<?php echo s('<b>if you created a custom domain</b>, copy this code:') ?>
-				</p>
-				<p class="code"><?php 
-					$script = '<script type="text/javascript" 
-									src="http://meumobi.com/static/redirect.js">
-								</script>
-								<script type="text/javascript">
-									RedirectToMeuMobi("http://%s");
-								</script>';
-					$script = e($script);
-					$str = $custom ? $custom : 'm.yourcompany.com';
-					echo sprintf($script, "<b class='current-custom-domain'>{$str}</b>");
-				?></pre>
 			</div>
 		</div>
 	</div>

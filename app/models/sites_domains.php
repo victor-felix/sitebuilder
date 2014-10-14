@@ -5,12 +5,34 @@ class SitesDomains extends AppModel
 {
 	protected $beforeDelete = array('deleteFromSiteManager');
 
+	protected $afterSave = array(
+		'updateSiteManager'
+	);
+
 	protected $validates = array(
 		'domain' => array(
-			'rule' => array('unique', 'domain'),
+			'rule' => 'uniqueDomain',
 			'message' => 'This domain is not available'
 		),
 	);
+
+	protected function uniqueDomain($value) {
+		$domain = $this->firstByDomain($value);
+
+		//domain is available
+		if (!$domain)
+			return true;
+
+		//the domain exists, but in another site
+		if ($this->site_id != $domain->site_id)
+			return false;
+
+		//the domain exists, is from site, but the site already have the domain
+		if ($this->id && $this->id != $domain->id)
+			return false;
+		
+		return true;
+	}
 
 	public function check($domain, $siteId = null)
 	{
@@ -48,5 +70,14 @@ class SitesDomains extends AppModel
 		$self = $this->firstById($id);
 		SiteManager::delete($self->domain);
 		return $id;
+	}
+
+	protected function updateSiteManager($created) {
+		$instance = MeuMobi::instance();
+		if ($created) {
+			SiteManager::create($this->domain, $instance);
+		} else {
+			SiteManager::update($previous, $domain, $instance);
+		}
 	}
 }

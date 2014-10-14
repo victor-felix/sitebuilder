@@ -204,7 +204,12 @@ class SitesController extends AppController
 
   public function custom_domain()
   {
+		$data = [
+			'domain' => $this->getCurrentSite()->domain(),
+			'domains' => $this->getCurrentSite()->domains()
+		];
     $this->general();
+		$this->set($data);
   }
 
   public function application()

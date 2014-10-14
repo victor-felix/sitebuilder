@@ -11,12 +11,13 @@ class Sites extends AppModel
 	protected $getters = array(
 		'feed_url',
 		'feed_title',
-		'custom_domain'
+		'domain',
+		'domains'
 	);
 
 	protected $beforeSave = array(
 		'getLatLng',
-		'saveDomain',
+		'addSlugDomain',
 		'trimFields',
 		'cleanDomainLinks'
 	);
@@ -129,30 +130,19 @@ class Sites extends AppModel
 		}
 	}
 
-	public function custom_domain()
+	public function domain()
 	{
 		try {
 			$domain = Model::load('SitesDomains')->first(array(
 				'conditions' => array(
 					'site_id' => $this->id,
-					'domain !=' =>  $this->slug . '.' . MeuMobi::domain(),
 				),
+				'order' => '`id` DESC',
 			));
 			return $domain ? $domain->domain : null;
 		} catch (Exception $e) {
 			return null;
 		}
-	}
-
-	public function firstByDomain($domain)
-	{
-		$sql = 'SELECT s.* FROM sites s
-			INNER JOIN sites_domains d ON s.id = d.site_id
-			WHERE d.domain = ?';
-		$query = $this->connection()->query($sql, array($domain));
-		$site = $query->fetch(PDO::FETCH_ASSOC);
-
-		if ($site) return new Sites($site);
 	}
 
 	public function domains()
@@ -164,6 +154,17 @@ class Sites extends AppModel
 			}
 		}
 		return $domains;
+	}
+
+	public function firstByDomain($domain)
+	{
+		$sql = 'SELECT s.* FROM sites s
+			INNER JOIN sites_domains d ON s.id = d.site_id
+			WHERE d.domain = ?';
+		$query = $this->connection()->query($sql, array($domain));
+		$site = $query->fetch(PDO::FETCH_ASSOC);
+
+		if ($site) return new Sites($site);
 	}
 
 	public function photos()
@@ -422,19 +423,6 @@ class Sites extends AppModel
 		return $id;
 	}
 
-	protected function saveDomain($data)
-	{
-		$siteId = isset($data['id']) ? $data['id'] : null;
-		//check if has a default or custom domains
-		if ((isset($data['slug']) && trim($data['slug']))
-			|| isset($data['domains'])) {
-			$defaultDomain = $data['slug'] . '.' . MeuMobi::domain();
-			$data['domains'][] = $defaultDomain;
-		}
-
-		return $data;
-	}
-
 	protected function trimFields($data)
 	{
 		$fieldsToTrim = array('description', 'timetable', 'address', 'email',
@@ -463,72 +451,34 @@ class Sites extends AppModel
 		return $data;
 	}
 
+	protected function addSlugDomain($data)
+	{
+		$new = !isset($data['id']);
+		//add the slug domain if new site
+		if ($new) {
+			$data['domains'][] = $data['slug'] . '.' . MeuMobi::domain();
+		}
+		return $data;
+	}
+
 	protected function saveDomains($created)
 	{
-		$instance = MeuMobi::instance();
-		//handle default error if domains not exists
+		//handle default error if domains not setted
 		try {
 			$domains = $this->domains;
 		} catch (Exception $e) {
 			return $created;
 		}
-
 		foreach ($domains as $id => $domain) {
-			$previous = '';
-
-			//check if is changing the domain value
-			if ($siteDomain = Model::load('SitesDomains')->firstByIdAndSiteId($id, $this->id)) {
-				$previous = $siteDomain->domain;
-			} else {
+			//load domain if alredy exists or create a new one
+			if (!$siteDomain = Model::load('SitesDomains')->firstByIdAndSiteId($id, $this->id)) {
 				$siteDomain = new SitesDomains();
 			}
-
-			//check if domain exist in the site
-			if ($domain && $domainExists = Model::load('SitesDomains')->check($domain)) {
-				if ($domainExists->site_id != $this->id) {
-					Session::writeFlash('error', s('The domain %s is not available', $domain));
-
-					//delete if change the domain to a existent domain
-				} else if ($previous && $siteDomain->id != $domainExists->id) {
-					SiteManager::delete($siteDomain->domain);
-					$siteDomain->delete($siteDomain->id);
-				}
-				continue;
-			}
-
-			//if old domain is empty, removes it
-			if (!$domain) {
-				if ($previous) {
-					SiteManager::delete($siteDomain->domain);
-					$siteDomain->delete($siteDomain->id);
-				}
-				continue;
-			}
-
 			$siteDomain->domain = $domain;
 			$siteDomain->site_id = $this->id;
 			if ($siteDomain->validate()) {
 				$siteDomain->save();
-				if ($previous) {
-					SiteManager::update($previous, $domain, $instance);
-				} else {
-					SiteManager::create($domain, $instance);
-				}
 			}
-		}
-
-		//set site domain field
-		$defaultDomain = $this->data['slug'] . '.' . MeuMobi::domain();
-		$custom = $this->custom_domain();
-		$domain = $custom ? $custom : $defaultDomain;
-
-		//update only if different
-		if (!isset($this->data['domain']) || $this->data['domain'] != $domain) {
-			$this->update(array(
-				'conditions' => array('id' => $this->id)
-			), array(
-				'domain' => $domain,
-			));
 		}
 	}
 
