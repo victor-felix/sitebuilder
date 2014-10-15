@@ -33,7 +33,7 @@ class Categories extends AppModel
 		'parent_id' => array(
 			array(
 				'rule' => 'validParent',
-				'message' => 'A valide parent category is required'
+				'message' => 'A valid parent category is required'
 			)
 		)
 	);
