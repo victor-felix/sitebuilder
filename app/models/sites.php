@@ -478,8 +478,11 @@ class Sites extends AppModel
 			$siteDomain->site_id = $this->id;
 			if ($siteDomain->validate()) {
 				$siteDomain->save();
+			} else {
+				Session::writeFlash('error', s('The domain %s is not available', $domain));
 			}
 		}
+		return $created;
 	}
 
 	protected function getLatLng($data)

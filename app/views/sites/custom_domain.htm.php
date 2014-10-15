@@ -5,7 +5,7 @@
 	</div>
 	<div class="clear"></div>
 </div>
-<?php echo $this->form->create('/sites/custom_domain/' . $site->id, array(
+<?php echo $this->form->create('/sites/custom_domain/', array(
 	'id' => 'form-general-site-info',
 	'class' => 'form-edit default-form',
 	'object' => $site,
@@ -47,6 +47,7 @@
 							endif;
 						endforeach;
 					?>
+					<?php if (count($domains) == 1): ?>
 					<p class="clear domain">
 						<?php echo $this->form->input('domains[]', array(
 							'label' => false,
@@ -54,14 +55,15 @@
 							'type' => 'text',
 							'class' => 'ui-text large'
 						)) ?>
-						<a class="<?php if (count($domains) == 1) echo 'hidden' ?>" href="#"><?php echo s('delete domain') ?></a>
 						<small><?php echo s('Ex.: m.yourcompany.com') ?></small>
 					</p>
+					<?php endif ?>
 					<p class="clear domain hidden">
 						<?php echo $this->form->input('domains[]', array(
 							'label' => false,
 							'div' => false,
 							'type' => 'text',
+							'disabled' => 'disabled',
 							'class' => 'ui-text large'
 						)) ?>
 						<a href="#"><?php echo s('delete domain') ?></a>

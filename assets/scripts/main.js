@@ -587,7 +587,7 @@ $(window).load(function() {
 		$('#domains #add-new').click(function(e) {
 			e.preventDefault();
 			var field = $(this).prev().clone();
-			field.find('input').val('');
+			field.find('input').removeAttr('disabled').val('');
 			field.find('a').click(removeField);
 			field.show().insertBefore(this);
 		});

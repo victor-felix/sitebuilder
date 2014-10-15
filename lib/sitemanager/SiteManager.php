@@ -2,6 +2,11 @@
 
 class SiteManager
 {
+	public static function isAvailable()
+	{
+		return (bool)Config::read('SiteManager.url');
+	}
+
 	public static function create($domain, $instance)
 	{
 		if (Config::read('SiteManager.url')) {
