@@ -74,7 +74,7 @@
 							<div class="right">
 								<p class="site-url dynamic-text" data-max-font-size="36">
 									<span>
-										http://<?php echo e($currentSite->domain) ?>
+										http://<?php echo e($currentSite->domain()) ?>
 									</span>
 								</p>
 								<p class="share-link">
@@ -155,7 +155,7 @@
 				<div class="links">
 					<p><?php echo s('Share with your friends and customers your mobile website through the links below:') ?></p>
 					<!-- AddThis Button BEGIN -->
-					<div class="addthis_toolbox addthis_default_style addthis_32x32_style" addthis:url="http://<?php echo e($currentSite->domain) ?>" addthis:title="<?php echo e($currentSite->title) ?>">
+					<div class="addthis_toolbox addthis_default_style addthis_32x32_style" addthis:url="http://<?php echo e($currentSite->domain()) ?>" addthis:title="<?php echo e($currentSite->title) ?>">
 					<a class="addthis_button_preferred_1"></a>
 					<a class="addthis_button_preferred_2"></a>
 					<a class="addthis_button_preferred_3"></a>

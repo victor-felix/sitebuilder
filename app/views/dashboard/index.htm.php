@@ -1,4 +1,4 @@
-<a id="feedback" href="http://<?php echo e($site->domain) ?>/landing-page" target="_blank" class="feedback"><?php echo s("Check your Meumobi's App landing page: %s", 'http://' . $site->domain ) ?>/landing-page</a>
+<a id="feedback" href="http://<?php echo e($site->domain()) ?>/landing-page" target="_blank" class="feedback"><?php echo s("Check your Meumobi's App landing page: %s", 'http://' . $site->domain() ) ?>/landing-page</a>
 <?php $this->pageTitle = s('dashboard') ?>
 
 <div class="page-heading">
@@ -13,7 +13,7 @@
 		<div class="tip-big">
 			<h2><?php echo s('welcome to your mobile site') ?></h2>
 			<p><?php echo s('keep improving your mobile site') ?></p>
-			<p id="qr-code"><img src="http://api.qrserver.com/v1/create-qr-code/?size=100x100&data=http://<?php echo e($site->domain) ?>" /></p>
+			<p id="qr-code"><img src="http://api.qrserver.com/v1/create-qr-code/?size=100x100&data=http://<?php echo e($site->domain()) ?>" /></p>
 		</div>
 		<ul class="featured-list">
 			<?php $i = 0; $fildsets = MeuMobi::currentSegment()->enableFieldSet ? MeuMobi::currentSegment()->enableFieldSet : array() ?>
@@ -75,8 +75,8 @@
 		</ul>
 		<div class="domain">
 			<p><?php echo s('you can access anytime from your mobile phone') ?></p>
-			<?php echo $this->html->link('http://' . e($site->domain),
-				'http://' . e($site->domain), array('target' => 'blank')) ?>
+			<?php echo $this->html->link('http://' . e($site->domain()),
+				'http://' . e($site->domain()), array('target' => 'blank')) ?>
 		</div>
 	</div>
 	<?php echo $this->element('sites/theme_preview', array(

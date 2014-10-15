@@ -32,7 +32,7 @@ class ExtensionPresenter {
 		$attr = $this->model->attributes();
 		$attr = array_diff_key($attr, array_flip($keys));
 		if ($this->model->extension == 'store-locator') {
-			$attr['url'] = \Mapper::url('/api/' . $site->domain . '/categories/' . $this->model->category_id . '/geo/nearest', true);
+			$attr['url'] = \Mapper::url('/api/' . $site->domain() . '/categories/' . $this->model->category_id . '/geo/nearest', true);
 		}
 		return $attr;
 	}

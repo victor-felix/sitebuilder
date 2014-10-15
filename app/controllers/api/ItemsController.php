@@ -28,7 +28,7 @@ class ItemsController extends ApiController {
 			'page' => $this->param('page', 1)
 		];
 
-		$url = "/api/{$this->site()->domain}/categories/{$category->id}/items";
+		$url = "/api/{$this->site()->domain()}/categories/{$category->id}/items";
 		$url_params = ['category' => $category_id];
 
 		return $this->paginate($params, $url, $url_params);
@@ -58,7 +58,7 @@ class ItemsController extends ApiController {
 			'page' => $this->param('page', 1)
 		];
 
-		$url = "/api/{$this->site()->domain}/categories/{$category->id}/promotions";
+		$url = "/api/{$this->site()->domain()}/categories/{$category->id}/promotions";
 		$url_params = ['time' => $date];
 
 		return $this->paginate($params, $url, $url_params, null, '\app\models\items\Promotions');
@@ -143,7 +143,7 @@ class ItemsController extends ApiController {
 			'page' => $this->param('page', 1)
 		];
 
-		$url = "/api/{$this->site()->domain}/items/{$item->id()}/related";
+		$url = "/api/{$this->site()->domain()}/items/{$item->id()}/related";
 		$url_params = [];
 
 		return $this->paginate($params, $url, $url_params);
@@ -163,7 +163,7 @@ class ItemsController extends ApiController {
 			'page' => $this->param('page', 1)
 		];
 
-		$url = "/api/{$this->site()->domain}/items/search";
+		$url = "/api/{$this->site()->domain()}/items/search";
 		$url_params = $this->request->query;
 
 		return $this->paginate($params, $url, $url_params, function($items, $item) {
@@ -198,7 +198,7 @@ class ItemsController extends ApiController {
 			$params['conditions']['parent_id'] = $parent_id;
 		}
 
-		$url = "/api/{$this->site()->domain}/items/latest";
+		$url = "/api/{$this->site()->domain()}/items/latest";
 		$url_params = ['parent_id' => $parent_id];
 
 		return $this->paginate($params, $url, $url_params);
@@ -294,7 +294,7 @@ class ItemsController extends ApiController {
 			'page' => $this->param('page', 1)
 		];
 
-		$url = "/api/{$this->site()->domain}/news";
+		$url = "/api/{$this->site()->domain()}/news";
 		$url_params = [];
 
 		return $this->paginate($params, $url, $url_params);

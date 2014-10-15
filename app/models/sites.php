@@ -194,7 +194,7 @@ class Sites extends AppModel
 
 	public function link()
 	{
-		return 'http://' . $this->domain;
+		return 'http://' . $this->domain();
 	}
 
 	public function skin()

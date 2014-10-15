@@ -93,7 +93,7 @@
 					'data-target' => 'div.file-import'
 				)) ?>
 				<?php if(!is_null($category->id)): ?>
-					<?php echo $this->html->link(s('Export CSV file'), '/api/' . $site->domain . '/export/' . $category->id, array('class' => 'ui-button')) ?>
+					<?php echo $this->html->link(s('Export CSV file'), '/api/' . $site->domain() . '/export/' . $category->id, array('class' => 'ui-button')) ?>
 				<?php endif ?>
 				<div class="file-import">
 					<?php echo $this->form->input('import', array(
