@@ -30,6 +30,13 @@ class Categories extends AppModel
 				'message' => 'The title of a category could contain 50 chars max.'
 			)
 		),
+		'type' => array(
+			array(
+				'rule' => 'notEmpty',
+				'message' => 'A non empty type is required'
+			),
+		),
+
 		'parent_id' => array(
 			array(
 				'rule' => 'validParent',
