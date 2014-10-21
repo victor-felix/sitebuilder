@@ -343,6 +343,24 @@ class Items extends \lithium\data\Model {
 		return $chain->next($self, $params, $chain);
 	}
 
+	public static function addThumbnail($self, $params, $chain)
+	{
+		$item = $params['entity'];
+		$category = $item->parent();
+		$images = $item->images();
+		if ($images) {
+			$item->thumbnail = \Mapper::url($images[0]->path, true);
+		}	else if ($item->medias) {
+			foreach ($item->medias as $media) {
+				if ($media->type == 'text/html' && $thumbnail = $media->url) {//get video thumb
+					$item->thumbnail = $thumbnail;
+					break;
+				}
+			}	
+		}
+		return $chain->next($self, $params, $chain);
+	}
+
 	public static function getNotGeocoded($self, $collection, $params)
 	{
 		$limit = $params['limit'];
@@ -592,6 +610,10 @@ Items::applyFilter('save', function($self, $params, $chain) {
 
 Items::applyFilter('save', function($self, $params, $chain) {
 	return Items::addOrder($self, $params, $chain);
+});
+
+Items::applyFilter('save', function($self, $params, $chain) {
+	return Items::addThumbnail($self, $params, $chain);
 });
 
 Items::finder('type', function($self, $params, $chain) {

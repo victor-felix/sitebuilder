@@ -48,6 +48,7 @@ class Articles extends \app\models\Items
 			'pubdate' => array('type' => 'date', 'default' => 0),
 			'description' => array('type' => 'string', 'default' => ''),
 			'author' => array('type' => 'string', 'default' => ''),
+			'thumbnail' => array('type' => 'string', 'default' => ''),
 			'medias' => array('type' => 'array', 'default' => array()),
 		);
 	}
@@ -309,6 +310,10 @@ Articles::applyFilter('remove', function($self, $params, $chain) {
 
 Articles::applyFilter('save', function($self, $params, $chain) {
 	return Items::addTimestamps($self, $params, $chain);
+});
+
+Articles::applyFilter('save', function($self, $params, $chain) {
+	return Items::addThumbnail($self, $params, $chain);
 });
 
 Articles::applyFilter('save', function($self, $params, $chain) {
