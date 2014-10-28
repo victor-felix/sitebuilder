@@ -41,5 +41,9 @@ EventFeed::applyFilter('save', function($self, $params, $chain) {
 });
 
 EventFeed::applyFilter('save', function($self, $params, $chain) {
-	return EventFeed::addTimestampsAndType($self, $params, $chain);
+	return EventFeed::addTimestamps($self, $params, $chain);
+});
+
+EventFeed::applyFilter('save', function($self, $params, $chain) {
+	return EventFeed::addType($self, $params, $chain);
 });

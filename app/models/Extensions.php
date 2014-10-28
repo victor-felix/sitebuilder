@@ -1,15 +1,12 @@
 <?php
-
 namespace app\models;
 
 use Model;
 use Inflector;
 
-class Extensions extends \lithium\data\Model
+class Extensions extends Modules
 {
 	protected $specification;
-	protected $fields;
-
 	protected $_meta = array(
 		'name' => null,
 		'title' => null,
@@ -21,21 +18,16 @@ class Extensions extends \lithium\data\Model
 		'locked' => false
 	);
 
-	protected $_schema = array(
-		'_id' => array('type' => 'id'),
-		'extension' => array('type' => 'string', 'null' => false),
-		'site_id' => array('type' => 'integer', 'null' => false),
-		'category_id' => array('type' => 'integer', 'null' => false),
-		'created' => array('type' => 'date', 'default' => 0),
-		'modified' => array('type' => 'date', 'default' => 0),
-		'enabled'=> array('type' => 'integer', 'default' => 0),
-	);
-
-	public function id($entity)
+	public static function __init()
 	{
-		if ($entity->_id) {
-			return $entity->_id->{'$id'};
-		}
+		parent::__init();
+		$self = static::_object();
+		$parent = parent::_object();
+		$self->_schema = $parent->_schema + array(
+			'extension' => array('type' => 'string', 'null' => false),
+			'category_id' => array('type' => 'integer', 'null' => false),
+			'enabled'=> array('type' => 'integer', 'default' => 0),
+		);
 	}
 
 	public function changed($entity, $field) {
@@ -55,18 +47,6 @@ class Extensions extends \lithium\data\Model
 		return !is_null($entity->{$attr});
 	}
 
-	public function fields($entity)
-	{
-		return array_keys($this->fields);
-	}
-
-	public function field($entity, $field)
-	{
-		if(array_key_exists($field, $this->fields)) {
-			return (object) $this->fields[$field];
-		}
-	}
-
 	public function specification($entity, $field)
 	{
 		if(array_key_exists($field, $this->specification)) {
@@ -83,22 +63,10 @@ class Extensions extends \lithium\data\Model
 		return Model::load('Categories')->firstById($extension->category_id);
 	}
 
-	public static function addTimestampsAndType($self, $params, $chain)
+	public static function addType($self, $params, $chain)
 	{
 		$extension = $params['entity'];
-		$date = date('Y-m-d H:i:s');
-		$category = $extension->parent();
-
-		if (!$extension->id()) {
-			$extension->created = $date;
-		}
-
-		$extension->modified = $date;
-		$category->modified = $date;
-		$category->save();
-
 		$extension->extension = $extension->specification('type');
-
 		return $chain->next($self, $params, $chain);
 	}
 
@@ -140,10 +108,6 @@ class Extensions extends \lithium\data\Model
 			}
 		}
 		return $availableExtensions;
-	}
-
-	public static function beforeRemove($extension) {
-
 	}
 
 	public static function switchEnabledStatus($self, $params, $chain)
@@ -188,7 +152,11 @@ Extensions::applyFilter('remove', function($self, $params, $chain) {
 });
 
 Extensions::applyFilter('save', function($self, $params, $chain) {
-	return Extensions::addTimestampsAndType($self, $params, $chain);
+	return Extensions::addTimestamps($self, $params, $chain);
+});
+
+Extensions::applyFilter('save', function($self, $params, $chain) {
+	return Extensions::addType($self, $params, $chain);
 });
 
 Extensions::finder('type', function($self, $params, $chain) {

@@ -37,7 +37,10 @@ class StoreLocator extends Extensions
 		);
 	}
 }
+StoreLocator::applyFilter('save', function($self, $params, $chain) {
+	return StoreLocator::addTimestamps($self, $params, $chain);
+});
 
 StoreLocator::applyFilter('save', function($self, $params, $chain) {
-	return StoreLocator::addTimestampsAndType($self, $params, $chain);
+	return StoreLocator::addType($self, $params, $chain);
 });

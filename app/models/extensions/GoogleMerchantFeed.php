@@ -46,5 +46,9 @@ GoogleMerchantFeed::applyFilter('save', function($self, $params, $chain) {
 });
 
 GoogleMerchantFeed::applyFilter('save', function($self, $params, $chain) {
-	return GoogleMerchantFeed::addTimestampsAndType($self, $params, $chain);
+	return GoogleMerchantFeed::addTimestamps($self, $params, $chain);
+});
+
+GoogleMerchantFeed::applyFilter('save', function($self, $params, $chain) {
+	return GoogleMerchantFeed::addType($self, $params, $chain);
 });

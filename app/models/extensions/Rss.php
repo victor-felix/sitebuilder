@@ -148,5 +148,9 @@ Rss::applyFilter('save', function($self, $params, $chain) {
 });
 
 Rss::applyFilter('save', function($self, $params, $chain) {
-	return Rss::addTimestampsAndType($self, $params, $chain);
+	return Rss::addType($self, $params, $chain);
+});
+
+Rss::applyFilter('save', function($self, $params, $chain) {
+	return Rss::addTimestamps($self, $params, $chain);
 });
