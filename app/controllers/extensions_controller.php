@@ -104,28 +104,4 @@ class ExtensionsController extends AppController {
 
 		$this->set(compact('extension','category'));
 	}
-
-	public function delete($id = null) {
-		$extension = Items::find('type', array('conditions' => array(
-			'_id' => $id
-		)));
-
-		$category_id = $extension->category_id;
-
-		$extension->delete();
-		$message = s('Item successfully deleted.');
-
-		if($this->isXhr()) {
-			$json = array(
-				'success'=>$message,
-				'go_back'=>true,
-				'refresh'=> '/categories/edit/' . $category_id,
-			);
-			$this->respondToJSON($json);
-		}
-		else {
-			Session::writeFlash('success', $message);
-			$this->redirect('/business_items/index/' . $extension->parent_id);
-		}
-	}
 }
