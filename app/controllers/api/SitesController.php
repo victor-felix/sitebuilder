@@ -11,7 +11,7 @@ class SitesController extends ApiController
 	{
 		return $this->toJSON($this->site());
 	}
-
+	//TODO clean this action, use presenters to format json responses
 	public function performance()
 	{
 		$site = $this->site()->toJSONPerformance();
@@ -61,7 +61,11 @@ class SitesController extends ApiController
 		$skin = $skinsRepo->find($skinId);
 		$site['theme'] = SkinPresenter::present($skin);
 
-		return compact('site', 'business', 'categories', 'news', 'newsCategory');
+		$plugins = array_map(function($plugin) {
+			return array_diff_key($plugin, array_flip(['modified', 'created', 'site_id']));//remove unnecessary keys
+		}, $this->site()->plugins()->to('array'));
+
+		return compact('site', 'business', 'categories', 'plugins', 'news', 'newsCategory');
 	}
 
 	public function theme()

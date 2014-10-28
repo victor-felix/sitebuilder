@@ -1,6 +1,7 @@
 <?php
 use meumobi\sitebuilder\entities\Skin;
 use meumobi\sitebuilder\repositories\SkinsRepository;
+use app\models\Plugins;
 
 require_once 'lib/sitemanager/SiteManager.php';
 require_once 'app/models/categories.php';
@@ -76,6 +77,7 @@ class Sites extends AppModel
 	);
 
 	protected $categories;
+	protected $plugins;
 
 	public function __construct($data = array())
 	{
@@ -204,6 +206,15 @@ class Sites extends AppModel
 			$skinRepo = new SkinsRepository();
 			return $skinRepo->find($this->skin);
 		}
+	}
+
+	public function plugins()
+	{
+		if ($this->plugins) return $this->plugins;
+
+		return $this->categories = Plugins::find('all', array('conditions' => array(
+			'site_id' => $this->id,
+		))); 
 	}
 
 	public function categories()
