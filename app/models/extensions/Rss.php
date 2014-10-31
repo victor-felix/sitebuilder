@@ -30,6 +30,10 @@ class Rss extends Extensions
 		'url' => array(
 			'title' => 'Feed URL',
 			'type' => 'string'
+		),
+		'use_html_purifier' => array(
+			'title' => 'Clean html',
+			'type' => 'boolean'
 		)
 	);
 
@@ -41,6 +45,7 @@ class Rss extends Extensions
 
 		$self->_schema = $parent->_schema + array(
 			'url' => array('type' => 'string', 'default' => ''),
+			'use_html_purifier' => array('type' => 'integer', 'default' => 1),
 		);
 	}
 
@@ -74,7 +79,7 @@ class Rss extends Extensions
 					'guid' => $item->get_id()
 				)));
 				if (!$count) {
-					$article_stats = $classname::addToFeed($category, $item);
+					$article_stats = $classname::addToFeed($category, $item, $entity);
 					$stats['total_images'] += $article_stats['total_images'];
 					$stats['failed_images'] += $article_stats['failed_images'];
 					$stats['total_articles'] += 1;
