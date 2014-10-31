@@ -8,7 +8,7 @@ Config::write('Segment', array(
   'root' => 'Index',
   'email' => array('no-reply@meumobi.com' => 'MeuMobi Enterprise'),
   'hideCategories' => false,
-  'enableSignup' => true,
+  'enableSignup' => false,
   'primaryColor' => '#000',
   'analytics' => 'UA-22519238-3',
   'themes' => array('paraty', 'posto9', 'leblon', 'helmut', 'flip', 'rimobi', 'flip_app', 'rimobi'),
