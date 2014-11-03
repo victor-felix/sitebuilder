@@ -13,7 +13,7 @@
 	<div class="clear"></div>
 </div>
 
-<?php echo $this->items->form('/business_items/edit/' . $item->id(), $item, array(
+<?php echo $this->items->form('/business_items/edit/' . $item->_id, $item, array(
 	'class' => 'form-edit default-form',
 	'id' => 'form-edit-businessitem'
 )) ?>
@@ -29,7 +29,7 @@
 		)) ?>
 		<?php echo $this->html->link(
 			$this->html->image('shared/categories/delete.gif') . s('Delete item'),
-			'/business_items/delete/' . $item->id(), array(
+			'/business_items/delete/' . $item->_id, array(
 				'class' => 'ui-button delete has-confirm',
 				'data-confirm' => '#delete-confirm'
 			)
@@ -43,7 +43,7 @@
 		<p>
 			<?php echo s('Really want to delete <strong>%s</strong>?', e($item->title)) ?>
 		</p>
-		<?php echo $this->html->link(s('Yes, delete'), '/business_items/delete/' . $item->id(), array(
+		<?php echo $this->html->link(s('Yes, delete'), '/business_items/delete/' . $item->_id, array(
 			'class' => 'ui-button ajax-request go-back highlight'
 		)) ?>
 		<?php echo $this->html->link(s('No, I don\'t'), '#', array('class' => 'ui-button')) ?>
