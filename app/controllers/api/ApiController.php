@@ -6,17 +6,39 @@ require_once 'app/models/sites.php';
 
 use lithium\util\Inflector;
 use meumobi\sitebuilder\Site;
+use \lithium\storage\Session;
 use DateTime;
 use Config;
 use Model;
 
 class ApiController extends \lithium\action\Controller {
-	protected $beforeFilter = array('log', 'checkSite', 'checkEtag', 'headers');
+	protected $beforeFilter = [
+		'log',
+		'checkSite',
+		'checkEtag',
+		'headers',
+		'requireVisitorAuth',
+		'requireUserAuth' => [
+			'add',
+			'create',
+			'update',
+			'destroy'
+		]
+	];
+
 	protected $site;
 	protected $params;
 
 	public function beforeFilter() {
-		foreach($this->beforeFilter as $filter) {
+		foreach($this->beforeFilter as $k => $filter) {
+			if (is_array($filter)) { //filter per action
+			 if (in_array($this->request->params['action'], filter)) { 
+					$filter = $k;		
+				} else {
+					continue; //skip filter if action not listed
+				}
+			}
+
 			if($this->{$filter}() === false) {
 				return false;
 			}
@@ -162,7 +184,7 @@ class ApiController extends \lithium\action\Controller {
 		}
 	}
 
-	public function render(array $options = array()) {
+	public function render(array $options = []) {
 		$media = $this->_classes['media'];
 		$class = get_class($this);
 		$name = preg_replace('/Controller$/', '', substr($class, strrpos($class, '\\') + 1));
@@ -172,13 +194,13 @@ class ApiController extends \lithium\action\Controller {
 			$this->set($options['data']);
 			unset($options['data']);
 		}
-		$defaults = array(
+		$defaults = [
 			'status' => null,
 			'location' => false,
 			'data' => null,
 			'head' => false,
 			'controller' => Inflector::underscore($name)
-		);
+		];
 		$options += $this->_render + $defaults;
 
 		if ($key && $media::type($key)) {
@@ -196,7 +218,7 @@ class ApiController extends \lithium\action\Controller {
 			return;
 		}
 		$data = $this->_render['data'];
-		$media::render($this->response, $data, $options + array('request' => $this->request));
+		$media::render($this->response, $data, $options + ['request' => $this->request]);
 	}
 
 	protected function requireUserAuth()
@@ -206,7 +228,17 @@ class ApiController extends \lithium\action\Controller {
 		$token = $this->request->env('HTTP_X_AUTHENTICATION_TOKEN');
 
 		if (!Model::load('UsersSites')->isUserAuthenticatedOnSite($this->site()->id, $token)) {
-			throw new NotAuthenticatedException('authentication required');
+			throw new UnAuthorizedException();
+		}
+	}
+
+	protected function requireVisitorAuth()
+	{
+		if (\Config::read('Api.ignoreAuth')) return;
+
+		if ($this->site()->private //only if site is private
+			&& !Session::read(\Auth::SESSION_KEY, ['name' => 'cookie'])) {//TODO use Auth class for this
+			throw new UnAuthorizedException();	
 		}
 	}
 

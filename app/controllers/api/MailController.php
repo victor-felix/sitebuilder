@@ -46,7 +46,7 @@ class MailController extends ApiController
 		$token = $this->request->env('HTTP_X_AUTHENTICATION_TOKEN');
 
 		if ($token != '9456bbf53af6fdf30a5d625ebf155b4018c8b0aephp') {
-			throw new NotAuthenticatedException('authentication required');
+			throw new ForbiddenException();
 		}
 	}
 }
