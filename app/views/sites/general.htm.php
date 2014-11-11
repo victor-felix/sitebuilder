@@ -14,6 +14,20 @@
 )) ?>
 
 <fieldset>
+	<h2><?php echo s('Private site') ?></h2>
+	<div class="field-group">
+		<div class="form-grid-460 first">
+			<span class="optional"><?php echo s('Optional') ?></span>
+			<?php echo $this->form->input('private', array(
+				'label' => s('Private'),
+				'type' => 'checkbox',
+				'class' => ''
+			)) ?>
+		</div>
+	</div>
+</fieldset>
+
+<fieldset>
 	<h2><?php echo s('Online Css Token') ?></h2>
 	<div class="field-group">
 		<div class="form-grid-460 first">
