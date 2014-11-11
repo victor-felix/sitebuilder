@@ -387,6 +387,8 @@ class Sites extends AppModel
 			'timezone' => $this->timezone()
 		));
 
+		unset($data['private']); //remove private attr
+
 		if ($logo = $this->logo()) {
 			$data['logo'] = $logo->link();
 		}
