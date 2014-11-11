@@ -10,12 +10,10 @@ class VisitorsController extends ApiController
 		//Set the stub visitor cookie
 		$visitor = $this->request->data; 
 		Session::write(
-			'Auth.user',
-			serialize($visitor), 
-			['name' => 'cookie']
-		);//TODO use the Auth class if continues to set cookie for validation
+			\Auth::SESSION_KEY,
+			serialize($visitor) 
+		);
 		return;
-
 		//Implemetation when model visitor exists
 		/*$visitor = Visitor::where(email: $request->params->email); //load visitor from database
 		if ($visitor && $visitor->authenticate(password: $request->params->password)) {
