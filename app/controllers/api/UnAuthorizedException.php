@@ -4,6 +4,6 @@ namespace app\controllers\api;
 
 class UnAuthorizedException extends \Exception
 {
-	public $status = 403;
+	public $status = 401;
 	protected $message = 'authentication required';
 }

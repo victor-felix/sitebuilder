@@ -6,7 +6,8 @@ ErrorHandler::apply(array('lithium\action\Dispatcher', 'run'),
 	array('type' => array(
 		'app\models\sites\MissingSiteException',
 		'app\models\RecordNotFoundException',
-		'app\controllers\api\NotAuthenticatedException',
+		'app\controllers\api\UnAuthorizedException',
+		'app\controllers\api\ForbiddenException',
 		'app\controllers\api\InvalidArgumentException',
 	)),
 	function($exception, $params) {
