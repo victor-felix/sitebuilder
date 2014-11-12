@@ -37,8 +37,6 @@ class ExtensionsController extends ApiController
 
 	public function create()
 	{
-		$this->requireUserAuth();
-
 		$extension = $this->site()->buildExtension($this->request->data);
 
 		if ($extension->save()) {
@@ -52,8 +50,6 @@ class ExtensionsController extends ApiController
 
 	public function update()
 	{
-		$this->requireUserAuth();
-
 		$extension = \app\models\Extensions::find('first', array('conditions' => array(
 			'_id' => $this->request->params['id'],
 		)));
@@ -71,8 +67,6 @@ class ExtensionsController extends ApiController
 
 	public function destroy()
 	{
-		$this->requireUserAuth();
-
 		\app\models\Extensions::remove(array(
 			'_id' => $this->request->params['id']
 		));

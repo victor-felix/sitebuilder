@@ -13,8 +13,6 @@ class ImagesController extends ApiController {
 	}
 
 	public function create() {
-		$this->requireUserAuth();
-
 		if(isset($this->request->params['item_id'])) {
 			$item = Items::find('first', array('conditions' => array(
 				'site_id' => $this->site()->id,
@@ -40,7 +38,6 @@ class ImagesController extends ApiController {
 	}
 
 	public function update() {
-		$this->requireUserAuth();
 		$image = Model::load('Images')->firstById($this->request->params['id']);
 		$image->updateAttributes($this->request->data);
 		$image->save();
@@ -55,7 +52,6 @@ class ImagesController extends ApiController {
 	}
 
 	public function destroy() {
-		$this->requireUserAuth();
 		Model::load('Images')->delete($this->param('id'));
 		$this->response->status(200);
 	}

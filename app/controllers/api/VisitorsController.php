@@ -6,6 +6,7 @@ use \lithium\storage\Session;
 
 class VisitorsController extends ApiController
 {
+	protected $skipBeforeFilter = ['requireVisitorAuth'];
 	public function login() {
 		//Set the stub visitor cookie
 		$visitor = $this->request->data; 

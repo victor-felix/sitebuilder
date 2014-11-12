@@ -66,8 +66,6 @@ class ItemsController extends ApiController {
 
 	public function add()
 	{
-		$this->requireUserAuth();
-
 		try {
 			$data = $this->prepareAdd($this->request->data);
 
@@ -219,8 +217,6 @@ class ItemsController extends ApiController {
 
 	public function create()
 	{
-		$this->requireUserAuth();
-
 		$category_id = $this->request->data['parent_id'];
 		$category = Model::load('Categories')->firstById($category_id);
 		$classname = '\app\models\items\\' . Inflector::camelize($category->type);
@@ -250,8 +246,6 @@ class ItemsController extends ApiController {
 
 	public function update()
 	{
-		$this->requireUserAuth();
-
 		$item = Items::find('first', array('conditions' => array(
 			'_id' => $this->request->params['id'],
 			'site_id' => $this->site()->id
@@ -273,8 +267,6 @@ class ItemsController extends ApiController {
 
 	public function destroy()
 	{
-		$this->requireUserAuth();
-
 		Items::remove(array('_id' => $this->request->params['id']));
 		$this->response->status(200);
 	}
