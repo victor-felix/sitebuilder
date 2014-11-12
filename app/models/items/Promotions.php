@@ -25,6 +25,10 @@ class Promotions extends Items
 			'title' => 'Link',
 			'type' => 'string'
 		),
+		'group' => array(
+			'title' => 'Group',
+			'type' => 'string'
+		),
 	);
 
 	public static function __init()

@@ -48,6 +48,10 @@ class Users extends \app\models\Items {
 					'title' => 'pushId',
 					'type' => 'string'
 			),
+			'group' => array(
+				'title' => 'Group',
+				'type' => 'string'
+			),
 	);
 	
 	public static function __init() {

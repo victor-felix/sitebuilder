@@ -27,6 +27,10 @@ class Business extends \app\models\Items {
             'title' => 'Phone',
             'type' => 'string'
         ),
+        'group' => array(
+            'title' => 'Group',
+            'type' => 'string'
+        ),
     );
 
     public static function __init() {

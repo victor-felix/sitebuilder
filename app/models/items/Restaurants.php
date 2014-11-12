@@ -26,7 +26,11 @@ class Restaurants extends \app\models\Items {
         'price' => array(
             'title' => 'Price',
             'type' => 'string'
-        )
+        ),
+        'group' => array(
+            'title' => 'Group',
+            'type' => 'string'
+        ),
     );
 
     public static function __init() {

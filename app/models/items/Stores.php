@@ -39,7 +39,11 @@ class Stores extends \app\models\Items {
         'featured' => array(
             'title' => 'Featured?',
             'type' => 'boolean'
-        )
+        ),
+        'group' => array(
+            'title' => 'Group',
+            'type' => 'string'
+        ),
     );
 
     public static function __init() {

@@ -42,7 +42,8 @@ class Items extends \lithium\data\Model {
 		'created' => array('type' => 'date', 'default' => 0),
 		'modified' => array('type' => 'date', 'default' => 0),
 		'type' => array('type' => 'string', 'null' => false),
-		'title' => array('type' => 'string', 'null' => false)
+		'title' => array('type' => 'string', 'null' => false),
+		'group' => array('type' => 'string')
 	);
 
 	protected $fields = array();
@@ -82,8 +83,12 @@ class Items extends \lithium\data\Model {
 		return $config;
 	}
 
-	public function fields($entity) {
-		return array_keys($this->fields);
+	public function fields($entity, $site = null) {
+		$fields = $this->fields;
+		if($site && !$site->private) {
+			unset($fields['group']);
+		}
+		return array_keys($fields);
 	}
 
 	public function field($entity, $field) {
