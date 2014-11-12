@@ -7,6 +7,8 @@ use meumobi\sitebuilder\repositories\SkinsRepository;
 
 class SitesController extends ApiController
 {
+	protected $skipBeforeFilter = ['requireVisitorAuth'];
+
 	public function show()
 	{
 		return $this->toJSON($this->site());
