@@ -13,6 +13,7 @@ class Visitor
 	protected $siteId;
 	protected $email;
 	protected $hashedPassword;
+	protected $authToken;
 	protected $lastLogin;
 	protected $devices = array();
 	protected $groups = array();
@@ -65,6 +66,11 @@ class Visitor
 	public function hashedPassword()
 	{
 		return $this->hashedPassword;
+	}
+
+	public function authToken()
+	{
+		return $this->authToken ?: Security::hash(time(), 'sha1');
 	}
 
 	public function lastLogin()

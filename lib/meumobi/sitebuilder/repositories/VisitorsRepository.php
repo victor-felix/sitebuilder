@@ -45,6 +45,15 @@ class VisitorsRepository
 		}
 	}
 
+	public function findByAuthToken($authToken)
+	{
+		$result = $this->collection()->findOne(compact('authToken'));
+
+		if ($result) {
+			return $this->hydrate($result);
+		}
+	}
+
 	public function create($visitor)
 	{
 		$data = $this->dehydrate($visitor);
@@ -95,6 +104,7 @@ class VisitorsRepository
 		return [
 			'email' => $object->email(),
 			'hashedPassword' => $object->hashedPassword(),
+			'authToken' => $object->authToken(),
 			'lastLogin' => $object->lastLogin(),
 			'devices' => $object->devices(),
 			'groups' => $object->groups()

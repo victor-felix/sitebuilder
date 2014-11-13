@@ -33,8 +33,8 @@ class ApiController extends \lithium\action\Controller {
 	public function beforeFilter() {
 		foreach($this->beforeFilter as $k => $filter) {
 			if(is_array($filter)) { //filter per action
-			 if (in_array($this->request->params['action'], $filter)) { 
-					$filter = $k;		
+			 if (in_array($this->request->params['action'], $filter)) {
+					$filter = $k;
 				} else {
 					continue; //skip filter if action not listed
 				}
@@ -239,10 +239,10 @@ class ApiController extends \lithium\action\Controller {
 
 	protected function requireVisitorAuth()
 	{
-		//if (\Config::read('Api.ignoreAuth')) return;
-		if ($this->site()->private //only if site is private
-			&& !Session::read(\Auth::SESSION_KEY)) {//TODO use Auth class for this
-			throw new UnAuthorizedException();	
+		$repository = new meumobi\sitebuilder\repositories\VisitorsRepository();
+		$visitor = $repository->findByToken($this->request->env('HTTP_X_VISITOR_TOKEN'));
+		if ($this->site()->private && !$visitor) {
+			throw new UnAuthorizedException();
 		}
 	}
 
