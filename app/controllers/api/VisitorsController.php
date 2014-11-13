@@ -10,8 +10,9 @@ class VisitorsController extends ApiController
 {
 	protected $skipBeforeFilter = ['requireVisitorAuth'];
 	public function login() {
-		$email = $this->request->get('params:email');
-		$password = $this->request->get('params:password');
+		$email = $this->request->get('data:email');
+		$password = $this->request->get('data:password');
+
 		$repository = new VisitorsRepository();
 		$visitor = $repository->findByEmailAndPassword($email, $password);
 
