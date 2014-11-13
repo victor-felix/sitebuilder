@@ -51,7 +51,7 @@ class Visitor
 
 	public function setPassword($password)
 	{
-		if (!empty($password) {
+		if (!empty($password)) {
 			return $this->hashedPassword = Security::hash($password, 'sha1');
 		}
 	}
