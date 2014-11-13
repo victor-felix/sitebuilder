@@ -28,7 +28,11 @@ class Articles extends \app\models\Items
 		'author' => array(
 			'title' => 'Author',
 			'type' => 'string'
-		)
+		),
+		'group' => array(
+			'title' => 'Group',
+			'type' => 'string'
+		),
 	);
 
 	protected static $blacklist = array(

@@ -15,6 +15,10 @@ class Links extends \app\models\Items {
         'link' => array(
             'title' => 'Link',
             'type' => 'string'
+        ),
+        'group' => array(
+            'title' => 'Group',
+            'type' => 'string'
         )
     );
 

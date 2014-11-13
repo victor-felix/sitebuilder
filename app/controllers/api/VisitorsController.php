@@ -8,6 +8,7 @@ use meumobi\sitebuilder\entities\Visitor;
 
 class VisitorsController extends ApiController
 {
+	protected $skipBeforeFilter = ['requireVisitorAuth'];
 	public function login() {
 		$email = $this->request->get('params:email');
 		$password = $this->request->get('params:password');

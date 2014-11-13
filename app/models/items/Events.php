@@ -34,7 +34,11 @@ class Events extends \app\models\Items {
         'contact' => array(
             'title' => 'Contact',
             'type' => 'string'
-        )
+        ),
+        'group' => array(
+            'title' => 'Group',
+            'type' => 'string'
+        ),
     );
 
     public static function __init() {

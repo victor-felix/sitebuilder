@@ -27,6 +27,10 @@ class ExtendedArticles extends Articles {
 					'title' => 'Enclosure',
 					'type' => 'string'
 			),
+      'group' => array(
+          'title' => 'Group',
+          'type' => 'string'
+       ),
 	);
 	
 	public static function __init()
