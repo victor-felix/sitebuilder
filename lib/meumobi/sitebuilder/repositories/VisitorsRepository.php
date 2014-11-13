@@ -37,7 +37,7 @@ class VisitorsRepository
 	{
 		$result = $this->collection()->findOne([
 			'email' => $email,
-			'hashedPassword' => Security::hash($password, 'sha1');
+			'hashedPassword' => Security::hash($password, 'sha1')
 		]);
 
 		if ($result) {
