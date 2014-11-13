@@ -7,7 +7,7 @@ use lithium\util\Inflector;
 use MongoId;
 use Security;
 
-class Skin
+class Visitor
 {
 	protected $id;
 	protected $email;
