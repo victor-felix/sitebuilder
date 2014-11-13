@@ -3,6 +3,7 @@
 namespace meumobi\sitebuilder\entities;
 
 use lithium\util\Inflector;
+use meumobi\sitebuilder\entities\VisitorDevice;
 
 use MongoId;
 use Security;
@@ -15,8 +16,8 @@ class Visitor
 	protected $hashedPassword;
 	protected $authToken;
 	protected $lastLogin;
-	protected $devices = array();
-	protected $groups = array();
+	protected $devices = [];
+	protected $groups = [];
 
 	public function __construct(array $attrs = [])
 	{
@@ -80,11 +81,21 @@ class Visitor
 
 	public function devices()
 	{
-		return $this->devices;
+		return array_unique($this->devices);
+	}
+
+	public function addDevice(VisitorDevice $device)
+	{
+		if (!in_array($device, $this->devices)) $this->devices []= $device;
 	}
 
 	public function groups()
 	{
-		return $this->groups;
+		return array_unique($this->groups);
+	}
+
+	public function addGroup($group)
+	{
+		if (!in_array($group, $this->groups)) $this->groups []= $group;
 	}
 }

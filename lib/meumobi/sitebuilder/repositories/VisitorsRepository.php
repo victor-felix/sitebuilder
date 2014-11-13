@@ -4,6 +4,7 @@ namespace meumobi\sitebuilder\repositories;
 
 use lithium\data\Connections;
 use meumobi\sitebuilder\entities\Visitor;
+use meumobi\sitebuilder\entities\VisitorDevice;
 
 use Connection;
 use FileUpload;
@@ -54,6 +55,13 @@ class VisitorsRepository
 		}
 	}
 
+	public function findAvailableGroupsBySite($site_id)
+	{
+		return $this->collection()->distinct('group', [
+			'site_id' => $site_id
+		]);
+	}
+
 	public function create($visitor)
 	{
 		$data = $this->dehydrate($visitor);
@@ -96,6 +104,12 @@ class VisitorsRepository
 
 	protected function hydrate($data)
 	{
+		$data['devices'] = array_map(function($d) {
+			return new VisitorDevice([
+				'id' => $d['id'],
+				'model' => $d['model'],
+			]);
+		}, $data['devices']);
 		return new visitor($data);
 	}
 
@@ -106,7 +120,9 @@ class VisitorsRepository
 			'hashedPassword' => $object->hashedPassword(),
 			'authToken' => $object->authToken(),
 			'lastLogin' => $object->lastLogin(),
-			'devices' => $object->devices(),
+			'devices' => array_map(function($d) {
+				return ['id' => $d->id(), 'model' => $d->model()];
+			}, $object->devices()),
 			'groups' => $object->groups()
 		];
 	}

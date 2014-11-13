@@ -5,6 +5,7 @@ namespace app\controllers\api;
 use lithium\storage\Session;
 use meumobi\sitebuilder\repositories\VisitorsRepository;
 use meumobi\sitebuilder\entities\Visitor;
+use meumobi\sitebuilder\entities\VisitorDevice;
 
 class VisitorsController extends ApiController
 {
@@ -17,11 +18,15 @@ class VisitorsController extends ApiController
 		$visitor = $repository->findByEmailAndPassword($email, $password);
 
 		if ($visitor) {
-			// $visitor->addDevice($request->params->device_id, $request->params->model);// add device to visitor if needed
-			Session::write(
-				\Auth::SESSION_KEY,
-				serialize($visitor)
-			);
+			$device = $this->request->get('data:device');
+			$device = new VisitorDevice([
+				'id' => $device['id'],
+				'model' => $device['model']
+			]);
+			$visitor->addDevice($request->params->device_id, $request->params->model);
+			$visitor->lastLogin = date('Y-m-d H:i:s');
+			$repository->save($visitor);
+			return [ 'token' => $visitor->token ];
 		} else {
 			throw new UnAuthorizedException('Invalid visitor');
 		}
