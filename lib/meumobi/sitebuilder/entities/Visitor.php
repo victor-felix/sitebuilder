@@ -5,12 +5,13 @@ namespace meumobi\sitebuilder\entities;
 use lithium\util\Inflector;
 
 use MongoId;
+use Security;
 
 class Skin
 {
 	protected $id;
 	protected $email;
-	protected $password;
+	protected $hashedPassword;
 	protected $lastLogin;
 	protected $devices = array();
 	protected $groups = array();
@@ -48,9 +49,16 @@ class Skin
 		return $this->email;
 	}
 
-	public function password()
+	public function setPassword($password)
 	{
-		return $this->password;
+		if (!empty($password) {
+			return $this->hashedPassword = Security::hash($password, 'sha1');
+		}
+	}
+
+	public function hashedPassword()
+	{
+		return $this->hashedPassword;
 	}
 
 	public function lastLogin()

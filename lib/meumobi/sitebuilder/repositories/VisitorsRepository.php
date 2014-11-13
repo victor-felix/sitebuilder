@@ -10,6 +10,7 @@ use FileUpload;
 use Filesystem;
 use MongoClient;
 use MongoId;
+use Security;
 
 class VisitorsRepository
 {
@@ -29,6 +30,18 @@ class VisitorsRepository
 			return $this->hydrate($result);
 		} else {
 			throw new RecordNotFoundException("The visitor '{$id}' was not found");
+		}
+	}
+
+	public function findByEmailAndPassword($email, $password)
+	{
+		$result = $this->collection()->findOne([
+			'email' => $email,
+			'hashedPassword' => Security::hash($password, 'sha1');
+		]);
+
+		if ($result) {
+			return $this->hydrate($result);
 		}
 	}
 
@@ -81,7 +94,7 @@ class VisitorsRepository
 	{
 		return [
 			'email' => $object->email(),
-			'password' => $object->password(),
+			'hashedPassword' => $object->hashedPassword(),
 			'lastLogin' => $object->lastLogin(),
 			'devices' => $object->devices(),
 			'groups' => $object->groups()
