@@ -27,6 +27,7 @@ class ApiController extends \lithium\action\Controller {
 	];
 	protected $skipBeforeFilter = [];
 	protected $site;
+	protected $visitor;
 	protected $params;
 
 	public function beforeFilter() {
@@ -140,6 +141,10 @@ class ApiController extends \lithium\action\Controller {
 		if ($this->site) return $this->site;
 		$domain = $this->request->params['slug'];
 		return $this->site = Model::load('Sites')->firstByDomain($domain);
+	}
+	//TODO move to a helper Class, like Auth::user()
+	protected function visitor() {
+		return unserialize(Session::read(\Auth::SESSION_KEY));
 	}
 
 	protected function log() {
