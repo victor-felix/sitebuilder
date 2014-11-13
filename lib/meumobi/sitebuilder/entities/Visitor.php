@@ -10,6 +10,7 @@ use Security;
 class Visitor
 {
 	protected $id;
+	protected $siteId;
 	protected $email;
 	protected $hashedPassword;
 	protected $lastLogin;
@@ -42,6 +43,11 @@ class Visitor
 	public function setId(MongoId $id)
 	{
 		$this->id = $id;
+	}
+
+	public function siteId()
+	{
+		return $this->siteId;
 	}
 
 	public function email()
