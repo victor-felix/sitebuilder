@@ -78,6 +78,11 @@ class Visitor
 	{
 		return $this->lastLogin;
 	}
+		
+	public function setLastLogin($lastLogin)
+	{
+		$this->lastLogin = $lastLogin;
+	}
 
 	public function devices()
 	{

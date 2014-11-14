@@ -24,7 +24,7 @@ class VisitorsController extends ApiController
 				'model' => $device['model']
 			]);
 			$visitor->addDevice($device);
-			$visitor->lastLogin = date('Y-m-d H:i:s');
+			$visitor->setLastLogin(date('Y-m-d H:i:s'));
 			$repository->save($visitor);
 			return [ 'token' => $visitor->token ];
 		} else {
