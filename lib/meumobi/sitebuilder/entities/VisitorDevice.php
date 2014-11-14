@@ -1,6 +1,6 @@
 <?php
-
 namespace meumobi\sitebuilder\entities;
+use lithium\util\Inflector;
 
 class VisitorDevice
 {
@@ -15,8 +15,8 @@ class VisitorDevice
 	public function setAttributes(array $attrs)
 	{
 		foreach ($attrs as $key => $value) {
-			$key = \Inflector::camelize($key, false);
-			$method = 'set' . \Inflector::camelize($key);
+			$key = Inflector::camelize($key, false);
+			$method = 'set' . Inflector::camelize($key);
 			if (method_exists($this, $method)) {
 				$this->$method($value);
 			} else if (property_exists($this, $key)) {
@@ -33,5 +33,10 @@ class VisitorDevice
 	public function model()
 	{
 		return $this->model;
+	}
+
+  public function __toString()
+	{
+		return $this->id . '' . $this->model;
 	}
 }
