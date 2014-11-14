@@ -132,7 +132,7 @@ class Items extends \lithium\data\Model {
 				$self[$code] = '<p>' . $parser->parse() . '</p>';
 			}
 		}
-
+		unset($self['group']);
 		$self['images'] = array();
 		$images = $this->images($entity);
 		foreach($images as $image) {
