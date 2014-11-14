@@ -5,8 +5,10 @@ namespace app\controllers\api;
 require_once 'app/models/sites.php';
 
 use lithium\util\Inflector;
+use lithium\storage\Session;
 use meumobi\sitebuilder\Site;
-use \lithium\storage\Session;
+use meumobi\sitebuilder\repositories\VisitorsRepository;
+use meumobi\sitebuilder\entities\Visitor;
 use DateTime;
 use Config;
 use Model;
@@ -239,8 +241,8 @@ class ApiController extends \lithium\action\Controller {
 
 	protected function requireVisitorAuth()
 	{
-		$repository = new meumobi\sitebuilder\repositories\VisitorsRepository();
-		$this->visitor = $repository->findByToken($this->request->env('HTTP_X_VISITOR_TOKEN'));
+		$repository = new VisitorsRepository();
+		$this->visitor = $repository->findByAuthToken($this->request->env('HTTP_X_VISITOR_TOKEN'));
 		if ($this->site()->private && !$this->visitor) {
 			throw new UnAuthorizedException();
 		}
@@ -248,6 +250,10 @@ class ApiController extends \lithium\action\Controller {
 
 	protected function headers()
 	{
-		header('Access-Control-Allow-Origin: http://' . $this->request->params['slug']);
+		$origin = '*';
+		if (!\MeuMobi::currentSegment()->enableApiAccessFromAllDomains) {
+			$origin = 'http://' . $this->request->params['slug'];
+		}
+		header("Access-Control-Allow-Origin: $origin");
 	}
 }
