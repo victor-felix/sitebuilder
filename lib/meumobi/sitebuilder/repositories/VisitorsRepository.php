@@ -117,6 +117,7 @@ class VisitorsRepository
 	{
 		return [
 			'email' => $object->email(),
+			'siteId' => $object->siteId(),
 			'hashedPassword' => $object->hashedPassword(),
 			'authToken' => $object->authToken(),
 			'lastLogin' => $object->lastLogin(),
