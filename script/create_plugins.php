@@ -20,8 +20,8 @@ if (!$file) {
 				"alias" : "rglnr_mobile-5"
 			}
 		},
-		...
-	]	
+	...
+	]
 
 EOL;
 	return;

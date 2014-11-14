@@ -19,7 +19,7 @@ if (!$file) {
 			"groups" : ["group1", "group2"],
 			"devices" : []
 		},
-		...
+	...
 	]	
 
 EOL;
