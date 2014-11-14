@@ -15,8 +15,8 @@ class VisitorDevice
 	public function setAttributes(array $attrs)
 	{
 		foreach ($attrs as $key => $value) {
-			$key = Inflector::camelize($key, false);
-			$method = 'set' . Inflector::camelize($key);
+			$key = \Inflector::camelize($key, false);
+			$method = 'set' . \Inflector::camelize($key);
 			if (method_exists($this, $method)) {
 				$this->$method($value);
 			} else if (property_exists($this, $key)) {
