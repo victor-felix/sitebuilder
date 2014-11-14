@@ -144,7 +144,7 @@ class ApiController extends \lithium\action\Controller {
 	}
 	//TODO move to a helper Class, like Auth::user()
 	protected function visitor() {
-		return unserialize(Session::read(\Auth::SESSION_KEY));
+		return $this->visitor;
 	}
 
 	protected function log() {
@@ -240,8 +240,8 @@ class ApiController extends \lithium\action\Controller {
 	protected function requireVisitorAuth()
 	{
 		$repository = new meumobi\sitebuilder\repositories\VisitorsRepository();
-		$visitor = $repository->findByToken($this->request->env('HTTP_X_VISITOR_TOKEN'));
-		if ($this->site()->private && !$visitor) {
+		$this->visitor = $repository->findByToken($this->request->env('HTTP_X_VISITOR_TOKEN'));
+		if ($this->site()->private && !$this->visitor) {
 			throw new UnAuthorizedException();
 		}
 	}
