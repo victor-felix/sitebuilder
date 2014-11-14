@@ -71,7 +71,8 @@ class Visitor
 
 	public function authToken()
 	{
-		return $this->authToken ?: Security::hash(time(), 'sha1');
+		//I(tadeu) updated this to return the persited authToken, but I'm not sure if it is correct, seems confusing to me
+		return $this->authToken ? $this->authToken : Security::hash(time(), 'sha1');
 	}
 
 	public function lastLogin()

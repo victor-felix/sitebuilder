@@ -26,7 +26,7 @@ class VisitorsController extends ApiController
 			$visitor->addDevice($device);
 			$visitor->setLastLogin(date('Y-m-d H:i:s'));
 			$repository->update($visitor);
-			return [ 'token' => $visitor->token ];
+			return [ 'token' => $visitor->authToken() ];
 		} else {
 			throw new UnAuthorizedException('Invalid visitor');
 		}
