@@ -43,6 +43,16 @@ Router::connect(new Route(array(
 
 Router::connect(new Route(array(
 	'method' => 'GET',
+	'template' => '/api/{:slug}/export/visitors',
+	'params' => array(
+		'action' => 'visitors',
+		'controller' => 'export',
+		'type' => 'csv'
+	) + $defaults['params']
+)));
+
+Router::connect(new Route(array(
+	'method' => 'GET',
 	'template' => '/api/{:slug}/export/{:category_id}',
 	'params' => array(
 		'action' => 'export',
