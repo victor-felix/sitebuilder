@@ -31,7 +31,7 @@ class ExportController extends ApiController {
 
 	public function visitors() {
 		$repo = new VisitorsRepository();
-		$visitors = $repo->all();
+		$visitors = $repo->findBySiteId($this->site->id);
 		$presenter = new VisitorsArrayPresenter($visitors);
 		$this->setHeaders('visitors');
 		exit($presenter->toCSV());

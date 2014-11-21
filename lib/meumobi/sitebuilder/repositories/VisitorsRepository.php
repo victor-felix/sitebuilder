@@ -34,6 +34,11 @@ class VisitorsRepository
 		}
 	}
 
+	public function findBySiteId($id)
+	{
+		return $this->hydrateSet($this->collection()->find(['siteId' => $id]));
+	}
+
 	public function findByEmailAndPassword($email, $password)
 	{
 		$result = $this->collection()->findOne([
