@@ -13,7 +13,7 @@ if (!$file) {
 	File format:
 	[
 		{
-			"site_id" : 10, 
+			"siteId" : "10", 
 			"email" : "visitor@mail.com",
 			"password" : "123456",
 			"groups" : ["group1", "group2"],

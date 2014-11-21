@@ -51,6 +51,15 @@ Router::connect(new Route(array(
 )));
 
 Router::connect(new Route(array(
+	'method' => 'POST',
+	'template' => '/api/{:slug}/visitors/devices',
+	'params' => array(
+		'controller' => 'visitors',
+		'action' => 'addDevice',
+	) + $defaults['params']
+)));
+
+Router::connect(new Route(array(
 	'method' => 'GET',
 	'template' => '/api/{:slug}/export/visitors',
 	'params' => array(
