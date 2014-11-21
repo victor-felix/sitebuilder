@@ -8,12 +8,17 @@ class ImportVisitorsCsvService extends ImportCsvService {
 
 	protected $site;
 
+	public function call() {
+		//TODO implement service call
+	}
+
 	public function import()
 	{
 		$startTime = time();
 		$imported = 0;
 		$repo = new VisitorsRepository();
 		while ($data = $this->getNextItem()) {
+			$data['password'] = 'infobox';//TODO auto generate and send the password by email
 			$data['site_id'] = $this->getSite()->id;
 			$data['groups'] = explode(',', $data['groups']);
 			$visitor = new Visitor($data);
