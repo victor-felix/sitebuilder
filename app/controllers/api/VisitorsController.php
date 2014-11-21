@@ -46,4 +46,16 @@ class VisitorsController extends ApiController
 			throw new ForbiddenException('Invalid visitor');
 		}
 	}
+
+	public function addDevice() {
+		$this->requireVisitorAuth();//log in visitor
+		$repository = new VisitorsRepository();
+		$visitor = $this->visitor();
+		$device = new VisitorDevice([
+			'id' => $this->request->get('data:id'),
+			'model' => $this->request->get('data:model')
+		]);
+		$visitor->addDevice($device);
+		$repository->update($visitor);
+	}
 }
