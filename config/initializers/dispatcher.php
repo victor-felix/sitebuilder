@@ -34,6 +34,15 @@ Router::connect(new Route(array(
 
 Router::connect(new Route(array(
 	'method' => 'POST',
+	'template' => '/api/{:slug}/visitors',
+	'params' => array(
+		'controller' => 'visitors',
+		'action' => 'update',
+	) + $defaults['params']
+)));
+
+Router::connect(new Route(array(
+	'method' => 'POST',
 	'template' => '/api/{:slug}/visitors/login',
 	'params' => array(
 		'controller' => 'visitors',

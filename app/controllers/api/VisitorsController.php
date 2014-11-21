@@ -31,4 +31,19 @@ class VisitorsController extends ApiController
 			throw new UnAuthorizedException('Invalid visitor');
 		}
 	}
+
+	public function update() {
+		$this->requireVisitorAuth();//log in visitor
+		$currentPassword = $this->request->get('data:current_password');
+		$newPassword = $this->request->get('data:password');
+		$repository = new VisitorsRepository();
+		$visitor = $repository->findByEmailAndPassword($this->visitor()->email(), $currentPassword);
+
+		if ($visitor) {
+			$visitor->setPassword($newPassword);
+			$repository->update($visitor);
+		} else {
+			throw new ForbiddenException('Invalid visitor');
+		}
+	}
 }
