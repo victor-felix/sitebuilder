@@ -320,7 +320,7 @@ class ItemsController extends ApiController {
 	protected function paginate($params, $url, $url_params, $reduce = null, $itemsClass = '\app\models\Items')
 	{
 		if ($this->site()->private) {
-			$params['conditions']['group'] = array_merge($this->visitor()->groups(), ['']);
+			$params['conditions']['groups'] = array_merge($this->visitor()->groups(), [[]]);//filter by visitor group and ungrouped items
 		}
 		$items = $itemsClass::find('all', $params)->to('array');
 		$response = [];

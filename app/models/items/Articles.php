@@ -29,9 +29,9 @@ class Articles extends \app\models\Items
 			'title' => 'Author',
 			'type' => 'string'
 		),
-		'group' => array(
+		'groups' => array(
 			'title' => 'Group',
-			'type' => 'string'
+			'type' => 'groups'
 		),
 	);
 
