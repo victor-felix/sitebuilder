@@ -62,8 +62,8 @@ class VisitorsRepository
 
 	public function findAvailableGroupsBySite($site_id)
 	{
-		return $this->collection()->distinct('group', [
-			'site_id' => $site_id
+		return $this->collection()->distinct('groups', [
+			'siteId' => $site_id
 		]);
 	}
 
