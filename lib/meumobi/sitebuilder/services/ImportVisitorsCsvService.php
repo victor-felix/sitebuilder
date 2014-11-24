@@ -20,7 +20,7 @@ class ImportVisitorsCsvService extends ImportCsvService {
 		while ($data = $this->getNextItem()) {
 			$data['password'] = 'infobox';//TODO auto generate and send the password by email
 			$data['site_id'] = $this->getSite()->id;
-			$data['groups'] = explode(',', $data['groups']);
+			$data['groups'] = $data['groups'] ? explode(',', $data['groups']) : [];//if groups is set explode, otherwise empty array
 			$visitor = new Visitor($data);
 			$repo->create($visitor);
 			$imported++;
