@@ -4,7 +4,8 @@ use lithium\util\Inflector;
 
 class VisitorDevice
 {
-	protected $id;
+	protected $uiid;
+	protected $pushId;
 	protected $model;
 
 	public function __construct(array $attrs = [])
@@ -25,9 +26,14 @@ class VisitorDevice
 		}
 	}
 
-	public function id()
+	public function uiid()
 	{
-		return $this->id;
+		return $this->uiid;
+	}
+
+	public function pushId()
+	{
+		return $this->pushId;
 	}
 
 	public function model()
@@ -37,6 +43,6 @@ class VisitorDevice
 
   public function __toString()
 	{
-		return $this->id . '' . $this->model;
+		return $this->uiid . '' . $this->model;
 	}
 }
