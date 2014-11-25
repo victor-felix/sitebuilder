@@ -111,7 +111,7 @@ class VisitorsRepository
 	{
 		$data['devices'] = array_map(function($d) {
 			return new VisitorDevice([
-				'uiid' => $d['uiid'],
+				'uuid' => $d['uuid'],
 				'pushId' => $d['pushId'],
 				'model' => $d['model'],
 			]);
@@ -129,7 +129,7 @@ class VisitorsRepository
 			'lastLogin' => $object->lastLogin(),
 			'devices' => array_map(function($d) {
 				return [
-					'uiid' => $d->uiid(),
+					'uuid' => $d->uuid(),
 					'pushId' => $d->pushId(),
 					'model' => $d->model()
 				];
