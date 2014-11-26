@@ -23,6 +23,7 @@ class ImportVisitorsCsvService extends ImportCsvService {
 			$data['groups'] = $data['groups'] ? explode(',', $data['groups']) : [];//if groups is set explode, otherwise empty array
 			$visitor = new Visitor($data);
 			$repo->create($visitor);
+			$this->sendVisitorEmail($data);
 			$imported++;
 		}
 		fclose($this->getFile());
@@ -41,5 +42,21 @@ class ImportVisitorsCsvService extends ImportCsvService {
 			throw new \Exception("site not set");
 		}
 		return $this->site;
+	}
+
+	protected function sendVisitorEmail($data) {
+		//if (\Config::read('Mail.preventSending'))
+			//return;
+		$segment = \MeuMobi::currentSegment();
+		$data['segment'] = $segment;
+		$mailer = new \Mailer(array(
+			'from' => $segment->email,
+			'to' => $data['email'],
+			'subject' => 'Visitor Password',
+			'views' => array('text/html' => 'visitors/password_mail.htm'),
+			'layout' => 'mail',
+			'data' =>  $data,
+		)); 
+		return $mailer->send();
 	}
 }
