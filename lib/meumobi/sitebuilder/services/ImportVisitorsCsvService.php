@@ -45,8 +45,8 @@ class ImportVisitorsCsvService extends ImportCsvService {
 	}
 
 	protected function sendVisitorEmail($data) {
-		//if (\Config::read('Mail.preventSending'))
-			//return;
+		if (\Config::read('Mail.preventSending'))
+			return;
 		$segment = \MeuMobi::currentSegment();
 		$data['title'] = 'Visitor Password';
 		$data['segment'] = $segment;
