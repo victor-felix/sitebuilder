@@ -18,7 +18,7 @@ class ImportVisitorsCsvService extends ImportCsvService {
 		$imported = 0;
 		$repo = new VisitorsRepository();
 		while ($data = $this->getNextItem()) {
-			$data['password'] = 'infobox';//TODO auto generate and send the password by email
+			$data['password'] = \Security::randomPassword();
 			$data['site_id'] = $this->getSite()->id;
 			$data['groups'] = $data['groups'] ? explode(',', $data['groups']) : [];//if groups is set explode, otherwise empty array
 			$visitor = new Visitor($data);
@@ -48,11 +48,12 @@ class ImportVisitorsCsvService extends ImportCsvService {
 		//if (\Config::read('Mail.preventSending'))
 			//return;
 		$segment = \MeuMobi::currentSegment();
+		$data['title'] = 'Visitor Password';
 		$data['segment'] = $segment;
 		$mailer = new \Mailer(array(
 			'from' => $segment->email,
 			'to' => $data['email'],
-			'subject' => 'Visitor Password',
+			'subject' => $data['title'],
 			'views' => array('text/html' => 'visitors/password_mail.htm'),
 			'layout' => 'mail',
 			'data' =>  $data,

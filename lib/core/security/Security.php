@@ -42,4 +42,9 @@ class Security {
     public static function token(){
         return ($_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']) . Session::id();
     }
+    public static function randomPassword($length = 6){
+        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        $password = substr( str_shuffle( $chars ), 0, $length );
+        return $password;
+    }
 }
