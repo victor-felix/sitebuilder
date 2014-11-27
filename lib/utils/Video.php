@@ -14,7 +14,7 @@ class Video {
 			['width' => 1920, 'height' => 1080 , 'url' => 'http://img.youtube.com/vi/%s/maxresdefault.jpg'],
 		];
 
-		preg_match_all($re, $str, $matches);
+		preg_match_all($re, $url, $matches);
 		$videoId = $matches[2][0];//get video id
 
 		return array_map(function($size) use ($videoId) {

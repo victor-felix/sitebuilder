@@ -368,8 +368,8 @@ class Items extends \lithium\data\Model {
 			}, Config::read('BusinessItems.resizes'));
 		}	else if ($item->medias) {//the item don't have images, try media thumbnails
 			foreach ($item->medias as $media) {
-				if ($media->thumbnails) {//tthis media have a thumb
-					$item->thumbnail = $media->thumbnails;
+				if ($media['thumbnails']) {//tthis media have a thumb
+					$item->thumbnails = $media['thumbnails'];
 					break;
 				}
 			}	

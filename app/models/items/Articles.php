@@ -3,6 +3,7 @@
 namespace app\models\items;
 
 require_once 'lib/dom/SimpleHtmlDom.php';
+require_once 'lib/utils/Video.php';//TODO use lazyload
 
 use Model;
 use Mapper;
@@ -11,6 +12,7 @@ use HTMLPurifier;
 use HTMLPurifier_Config;
 use Filesystem;
 use app\models\Items;
+use Video;
 
 class Articles extends \app\models\Items
 {
@@ -212,8 +214,9 @@ class Articles extends \app\models\Items
 			$medias = array_merge($medias, static::getContentVideos($item));
 			//try to generate video thumbs if none is set
 			return array_map(function($media) {
-				if (!$media->thumbnails)
-					$media->thumbnails = Video::getThumbnails($media->url); //return thumbnails if the url is from a video
+				if (!$media['thumbnails'])
+					$media['thumbnails'] = Video::getThumbnails($media['url']); //return thumbnails if the url is from a video
+				return $media;
 			}, $medias);
 	}
 
@@ -233,6 +236,7 @@ class Articles extends \app\models\Items
 					'url' => $iframe->getAttribute('src'),
 					'type' => 'text/html',
 					'title' => '',
+					'thumbnails' => [],
 					'length' => null,
 					];	
 			}
