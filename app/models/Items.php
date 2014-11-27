@@ -349,17 +349,20 @@ class Items extends \lithium\data\Model {
 		return $chain->next($self, $params, $chain);
 	}
 
-	public static function addThumbnail($self, $params, $chain)
+	public static function addThumbnails($self, $params, $chain)
 	{
 		$item = $params['entity'];
-		$category = $item->parent();
 		$images = $item->images();
+		$item->thumbnails = [];//clear previous thumbs
 		if ($images) {
-			$item->thumbnail = \Mapper::url($images[0]->path, true);
-		}	else if ($item->medias) {
+			$item->thumbnails = array_map(function($size) use ($images) {
+				$size['url'] = $images[0]->link("$size[width]x$size[height]");//\Mapper::url($images[0]->path, true);
+				return $size;
+			}, Config::read('ItemThumbnails.sizes'));
+		}	else if ($item->medias) {//the item don't have images, try media thumbnails
 			foreach ($item->medias as $media) {
-				if ($media->type == 'text/html' && $thumbnail = $media->url) {//get video thumb
-					$item->thumbnail = $thumbnail;
+				if ($media->thumbnails) {//tthis media have a thumb
+					$item->thumbnail = $media->thumbnails;
 					break;
 				}
 			}	

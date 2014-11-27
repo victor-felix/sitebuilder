@@ -200,15 +200,21 @@ class Articles extends \app\models\Items
 	protected static function getArticlesMedias($item) {
 			$medias = [];
 			foreach($item->get_enclosures() as $enclosure) {
-				if ($enclosure->get_link()) //fix null media bug http://stackoverflow.com/questions/4053664/simplepie-includes-phantom-enclosures-that-dont-exist
+				if ($enclosure->get_link())//stackoverflow.com/questions/4053664/simplepie-includes-phantom-enclosures-that-dont-exist
 					$medias[] = [
 						'url' => $enclosure->get_link(),
 						'type' => $enclosure->get_type(),
 						'title' => html_entity_decode($enclosure->get_title(), ENT_QUOTES, 'UTF-8'),
 						'length' => $enclosure->get_length(),
+						'thumbnails' => $enclosure->get_thumbnails(),
 					];
 			}
-			return array_merge($medias, static::getContentVideos($item));
+			$medias = array_merge($medias, static::getContentVideos($item));
+			//try to generate video thumbs if none is set
+			return array_map(function($media) {
+				if (!$media->thumbnails)
+					$media->thumbnails = Video::getThumbnails($media->url); //return thumbnails if the url is from a video
+			}, $medias);
 	}
 
 	protected static function getContentVideos($item) {
@@ -318,7 +324,7 @@ Articles::applyFilter('save', function($self, $params, $chain) {
 });
 
 Articles::applyFilter('save', function($self, $params, $chain) {
-	return Items::addThumbnail($self, $params, $chain);
+	return Items::addThumbnails($self, $params, $chain);
 });
 
 Articles::applyFilter('save', function($self, $params, $chain) {
