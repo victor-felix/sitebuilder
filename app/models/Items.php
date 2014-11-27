@@ -43,7 +43,8 @@ class Items extends \lithium\data\Model {
 		'modified' => array('type' => 'date', 'default' => 0),
 		'type' => array('type' => 'string', 'null' => false),
 		'title' => array('type' => 'string', 'null' => false),
-		'group' => array('type' => 'string')
+		'thumbnails' => array('type' => 'array', 'default' => []),
+		'groups' => array('type' => 'array', 'default' = [])
 	);
 
 	protected $fields = array();

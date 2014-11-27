@@ -52,7 +52,6 @@ class Articles extends \app\models\Items
 			'pubdate' => array('type' => 'date', 'default' => 0),
 			'description' => array('type' => 'string', 'default' => ''),
 			'author' => array('type' => 'string', 'default' => ''),
-			'thumbnail' => array('type' => 'string', 'default' => ''),
 			'medias' => array('type' => 'array', 'default' => array()),
 		);
 	}
