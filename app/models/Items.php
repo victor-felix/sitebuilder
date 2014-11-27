@@ -352,13 +352,20 @@ class Items extends \lithium\data\Model {
 	public static function addThumbnails($self, $params, $chain)
 	{
 		$item = $params['entity'];
+		$domain = 'http://'. Model::load('Sites')->firstById($item->site_id)->domain();//get site domain
 		$images = $item->images();
 		$item->thumbnails = [];//clear previous thumbs
 		if ($images) {
-			$item->thumbnails = array_map(function($size) use ($images) {
-				$size['url'] = $images[0]->link("$size[width]x$size[height]");//\Mapper::url($images[0]->path, true);
+			$item->thumbnails = array_map(function($sizeStr) use ($images, $domain) {
+				$sizeStr = str_replace('#','', $sizeStr);//remove # from size
+				$sizeArr = explode('x', $sizeStr);
+
+				$size['width'] = $sizeArr[0];
+				$size['height'] = $sizeArr[1];
+				$size['url'] = $domain . $images[0]->link($sizeStr);
+
 				return $size;
-			}, Config::read('ItemThumbnails.sizes'));
+			}, Config::read('BusinessItems.resizes'));
 		}	else if ($item->medias) {//the item don't have images, try media thumbnails
 			foreach ($item->medias as $media) {
 				if ($media->thumbnails) {//tthis media have a thumb
