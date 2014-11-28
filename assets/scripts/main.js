@@ -592,4 +592,7 @@ $(window).load(function() {
 			field.show().insertBefore(this);
 		});
 		$('#domains .domain a').click(removeField);
+
+    //enable datatable list
+    $('#visitors-list').DataTable();
 });

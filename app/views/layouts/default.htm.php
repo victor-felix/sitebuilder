@@ -8,7 +8,7 @@
 		<link rel="shortcut icon" href="<?php echo Mapper::url('/images/layout/favicon.png') ?>" type="image/png" />
 		<?php echo $this->html->stylesheet('shared/base', 'shared/uikit', 'shared/categories',
 			'shared/edit-forms', 'shared/businessitems', 'shared/dashboard', 'segment', 'shared/markitup.simple',
-			'shared/markitup.xbbcode', 'shared/chosen', 'shared/themes', 'shared/colorpicker') ?>
+			'shared/markitup.xbbcode', 'shared/chosen', 'shared/jquery.dataTables', 'shared/themes', 'shared/colorpicker') ?>
 		<?php echo $this->html->stylesForLayout ?>
 	</head>
 
@@ -168,7 +168,9 @@
 				</div>
 			</div>
 		</div>
-		<?php echo $this->html->script('shared/jquery', 'shared/jquery.formrestrict', 'shared/jquery.alphanumeric', 'shared/modernizr.custom.placeholder', 'shared/colorpicker', 'shared/main', 'shared/markitup', 'shared/async_upload', 'shared/jquery.chosen', 'shared/themes') ?>
+		<?php echo $this->html->script('shared/jquery', 'shared/jquery.formrestrict',
+			'shared/jquery.alphanumeric', 'shared/jquery.dataTables','shared/modernizr.custom.placeholder', 'shared/colorpicker', 
+			'shared/main', 'shared/markitup', 'shared/async_upload', 'shared/jquery.chosen', 'shared/themes') ?>
 		<?php echo $this->html->scriptsForLayout ?>
 	</body>
 </html>
