@@ -352,7 +352,7 @@ class Items extends \lithium\data\Model {
 	public static function addThumbnails($self, $params, $chain)
 	{
 		$item = $params['entity'];
-		$domain = 'http://'. Model::load('Sites')->firstById($item->site_id)->domain();//get site domain
+		$domain = 'http://'. \MeuMobi::domain();
 		$images = $item->images();
 		$item->thumbnails = [];//clear previous thumbs
 		if ($images) {
