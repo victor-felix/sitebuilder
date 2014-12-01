@@ -5,6 +5,10 @@ RewriteRule ^(.*)$ index.php [L]
 
 Header add Vary "X-Visitor-Token"
 
+#CORS headers
+SetEnvIfNoCase request_uri \.(?:jpg|jpeg|gif|png) ALLOW_CORS
+Header always add Access-Control-Allow-Origin "*" env=ALLOW_CORS
+
 # compress all text files
 AddOutputFilterByType DEFLATE application/atom+xml \
                         application/javascript \
