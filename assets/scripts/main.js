@@ -631,29 +631,47 @@ $(window).load(function() {
   });
   $('#domains .domain a').click(removeField);
 
-  //enable datatable list
-  $('#visitors-list').DataTable({
-    initComplete: function() {
-      var api = this.api();
-
-      api.columns().indexes().flatten().each(function(i) {
-        var column = api.column(i);
-        var select = $('<select><option value=""></option></select>')
-          .appendTo($(column.footer()).empty())
-          .on('change', function() {
-            var val = $.fn.dataTable.util.escapeRegex(
-              $(this).val()
-            );
-
-            column
-              .search(val ? '^' + val + '$' : '', true, false)
-              .draw();
-          });
-
-        column.data().unique().sort().each(function(d, j) {
-          select.append('<option value="' + d + '">' + d + '</option>')
-        });
-      });
+  dataTableLang = {
+    "sEmptyTable": "Nenhum registro encontrado",
+    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+    "sInfoPostFix": "",
+    "sInfoThousands": ".",
+    "sLengthMenu": "_MENU_ resultados por página",
+    "sLoadingRecords": "Carregando...",
+    "sProcessing": "Processando...",
+    "sZeroRecords": "Nenhum registro encontrado",
+    "sSearch": "Pesquisar",
+    "oPaginate": {
+      "sNext": "Próximo",
+      "sPrevious": "Anterior",
+      "sFirst": "Primeiro",
+      "sLast": "Último"
+    },
+    "oAria": {
+      "sSortAscending": ": Ordenar colunas de forma ascendente",
+      "sSortDescending": ": Ordenar colunas de forma descendente"
     }
+  };
+  //enable datatable list
+  var visitorTable = $('#visitors-list').DataTable({
+   // bFilter: false
+    sDom: 'ltipr',
+    lengthChange: false,
+    language: dataTableLang
   });
+    
+  yadcf.init(visitorTable, [
+    {
+      column_number: 0,
+      filter_type: "text"
+    },
+    {
+      column_number : 1,
+      column_data_type: "html",
+      html_data_type: "text",
+      filter_default_label: "Select a group"   
+    }
+  ]);
 });

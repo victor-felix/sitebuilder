@@ -21,18 +21,19 @@
 								<th>Last Login</th>
 						</tr>
 				</thead>
-				<tfoot>
-						<tr>
-								<th>Email</th>
-								<th>Groups</th>
-								<th>Last Login</th>
-						</tr>
-				</tfoot>
 				<tbody>
 						<?php foreach($visitors as $visitor): ?>
 						<tr>
 								<td><?= $visitor->email() ?></td>
-								<td><?= implode(', ',$visitor->groups()) ?></td>
+								<td>
+									<?php if ($visitor->groups()): ?>
+										<?php foreach($visitor->groups() as $group): ?>
+											<span class="badge"><?= $group ?></span>
+										<?php endforeach ?>
+									<?php else: ?>
+											<span class="badge">no group</span>
+									<?php endif ?>
+								</td>
 								<td><?= $visitor->lastLogin() ?></td>
 						</tr>
 						<?php endforeach; ?>
