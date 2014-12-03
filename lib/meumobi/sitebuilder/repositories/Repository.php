@@ -4,8 +4,6 @@ namespace meumobi\sitebuilder\repositories;
 
 use lithium\data\Connections;
 
-use Connection;
-
 abstract class Repository
 {
 	protected $connection;

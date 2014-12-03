@@ -3,7 +3,7 @@
 namespace meumobi\sitebuilder\repositories;
 
 use meumobi\sitebuilder\entities\Skin;
-
+use Connection;
 use FileUpload;
 use Filesystem;
 use MongoClient;

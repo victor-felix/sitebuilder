@@ -31,7 +31,7 @@ class Entity
 		return $this->id ? $this->id->{'$id'} : null;
 	}
 
-	public function setId(MongoId $id)
+	public function setId($id)
 	{
 		$this->id = $id;
 	}

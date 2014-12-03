@@ -13,6 +13,16 @@ class Theme extends Entity
 	protected $thumbnails;
 	protected $defaults;
 
+	public function id()
+	{
+		return $this->id;
+	}
+
+	public function setId($id)
+	{
+		$this->id = $id;
+	}
+
 	public function name()
 	{
 		return $this->name;
