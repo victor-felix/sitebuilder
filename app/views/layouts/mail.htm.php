@@ -12,7 +12,7 @@
         <font face="Arial" color="#555">
         <table border="0" width="640" align="center">
             <tr>
-                <td><br /><br /><?php echo $this->html->imagelink(MeuMobi::url($logoPath), 'http://'.$site->domain()) ?><br /><br /></td>
+						<td><br /><br /><img src="<?= MeuMobi::url($logoPath) ?>" alt="<?= $site->title ?>" /><br /><br /></td>
             </tr>
             <tr>
                 <td bgcolor="#FFFFFF">

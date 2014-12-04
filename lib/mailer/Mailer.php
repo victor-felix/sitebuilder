@@ -68,7 +68,6 @@ class Mailer {
         endforeach;
     }
     public function send() {
-				echo $this->message();return 1;
         $mailer = Swift_Mailer::newInstance($this->transport());
         return $mailer->send($this->message());
     }
