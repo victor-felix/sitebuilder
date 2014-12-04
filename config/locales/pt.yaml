@@ -48,6 +48,7 @@
 'Click-to-call': 'Click-to-call'
 'Configuration successfully saved': 'Configurações salvas com sucesso'
 'Confirm password': 'Confirme a senha'
+'Your password is: %s': 'Sua senha é: %s'
 'Congratulations! Your mobile site is ready!': 'Parabéns! Seu site mobile está pronto!'
 'Congratulations, your invitation was confirmed': 'Parabéns, seu convite foi confirmado'
 'Contact Information': 'informações de contatos'
@@ -376,4 +377,4 @@
 'want to create an APP for iPhone and Android?': 'quer criar um aplicativo para iPhone e Android?'
 'Submit your website to us and receive your APP for iPhone and Android .. want to know more? Contact us by email: ': 'Envie o website da sua empresa para nós e receba seu Aplicativo para iPhone e Android..quer saber mais? Entre em contato pelo e-mail abaixo:'
 'Check your Meumobi''s App landing page: %s': 'Divulgue sua pagina de lançamento: %s'
-
+'Your visitor password': 'Sua senha de visitante'
