@@ -1,5 +1,5 @@
 <p>
-	<strong><?= s('Thanks for joining %s!', $segment->title) ?></strong>
+	<strong><?= s('Thanks for joining %s!', $site->title) ?></strong>
 	<br />
 	<br />
 	<?= s('Your password is: %s', $password) ?>

@@ -47,8 +47,11 @@ class ImportVisitorsCsvService extends ImportCsvService {
 	protected function sendVisitorEmail($data) {
 		if (\Config::read('Mail.preventSending'))
 			return;
+
+		\I18n::locale($this->getSite()->language);
+
 		$segment = \MeuMobi::currentSegment();
-		$data['title'] = 'Your visitor password';
+		$data['title'] = s('Your visitor password');
 		$data['segment'] = $segment;
 		$data['site'] = $this->getSite();
 		$mailer = new \Mailer(array(

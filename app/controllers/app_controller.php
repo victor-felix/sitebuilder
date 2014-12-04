@@ -119,7 +119,6 @@ function __($key) {
 
 function s($key) {
 	$arguments = func_get_args();
-	$arguments[0] = YamlDictionary::translate($key);
 	return call_user_func_array('__', $arguments);
 }
 
