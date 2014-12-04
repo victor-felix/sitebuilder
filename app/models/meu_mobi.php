@@ -37,9 +37,13 @@ class MeuMobi
 
 		if (!$domain) {
 			$domain = self::instance();
-			$domain = substr($domain, strpos($domain, '.') + 1);
 		}
 
 		return $domain;
+	}
+
+	public static function url($path)
+	{
+		return 'http://'.self::domain().$path;
 	}
 }

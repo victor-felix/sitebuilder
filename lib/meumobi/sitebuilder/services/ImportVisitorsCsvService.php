@@ -50,6 +50,7 @@ class ImportVisitorsCsvService extends ImportCsvService {
 		$segment = \MeuMobi::currentSegment();
 		$data['title'] = 'Your visitor password';
 		$data['segment'] = $segment;
+		$data['site'] = $this->getSite();
 		$mailer = new \Mailer(array(
 			'from' => $segment->email,
 			'to' => $data['email'],
