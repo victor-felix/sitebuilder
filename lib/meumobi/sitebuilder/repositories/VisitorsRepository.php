@@ -55,10 +55,10 @@ class VisitorsRepository extends Repository
 		}
 	}
 
-	public function findAvailableGroupsBySite($site_id)
+	public function findAvailableGroupsBySite($siteId)
 	{
 		return $this->collection()->distinct('groups', [
-			'siteId' => $site_id
+			'site_id' => (int)$siteId
 		]);
 	}
 
