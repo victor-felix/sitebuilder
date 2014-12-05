@@ -31,7 +31,7 @@
 											<span class="badge"><?= $group ?></span>
 										<?php endforeach ?>
 									<?php else: ?>
-											<span class="badge">no group</span>
+											<span>-</span>
 									<?php endif ?>
 								</td>
 								<td><?= $visitor->lastLogin() ?></td>
