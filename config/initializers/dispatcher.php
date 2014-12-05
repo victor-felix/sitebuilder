@@ -107,6 +107,15 @@ Router::connect(new Route(array(
 
 Router::connect(new Route(array(
 	'method' => 'GET',
+	'template' => '/api/{:slug}/items/latest',
+	'params' => array(
+		'action' => 'latest',
+		'controller' => 'items'
+	) + $defaults['params']
+)));
+
+Router::connect(new Route(array(
+	'method' => 'GET',
 	'template' => '/api/{:slug}/items/search',
 	'params' => array(
 		'controller' => 'items',
@@ -120,6 +129,16 @@ Router::connect(new Route(array(
 	'params' => array(
 		'action' => 'index',
 		'controller' => 'items'
+	) + $defaults['params']
+)));
+
+Router::connect(new Route(array(
+	'method' => 'GET',
+	'template' => '/api/{:slug}/categories/{:category_id}/items.rss',
+	'params' => array(
+		'action' => 'index_rss',
+		'controller' => 'items',
+		'type' => 'rss',
 	) + $defaults['params']
 )));
 
@@ -359,5 +378,12 @@ Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
 			}
 			return join(PHP_EOL, $result);
 		}
+	}
+));
+
+\lithium\net\http\Media::type('rss', 'application/rss+xml', array(
+	'encode' => function($data) {
+		$view = new View();
+		return $view->render('business_items/feed.rss', $data, false);
 	}
 ));

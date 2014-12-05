@@ -6,8 +6,8 @@ use lithium\core\Object;
 
 use app\models\Items;
 use app\models\RecordNotFoundException;
-use Model;
 use Inflector;
+use Model;
 
 class ItemsController extends ApiController {
 	const PAGE_LIMIT = 20;
@@ -32,6 +32,29 @@ class ItemsController extends ApiController {
 		$url_params = ['category' => $category_id];
 
 		return $this->paginate($params, $url, $url_params);
+	}
+
+	public function index_rss()
+	{
+		$category_id = $this->request->get('params:category_id');
+		$category = Model::load('Categories')->firstById($category_id);
+		$params = [
+			'order' => ['created' => 'desc'],
+			'conditions' => [
+				'site_id' => $this->site()->id,
+				'parent_id' => $category->id,
+				'type' => $category->type
+			],
+			'limit' => self::PAGE_LIMIT,
+		];
+
+		$url = "/api/{$this->site()->domain()}/categories/{$category->id}/items";
+		$url_params = ['category' => $category_id];
+
+		return [
+			'items' => $this->getItems($params, $url, $url_params),
+			'site' => $this->site()
+		];
 	}
 
 	public function promotions()
@@ -317,12 +340,16 @@ class ItemsController extends ApiController {
 		}
 	}
 
-	protected function paginate($params, $url, $url_params, $reduce = null, $itemsClass = '\app\models\Items')
-	{
+	protected function getItems($params, $url, $url_params, $reduce = null, $itemsClass = '\app\models\Items') {
 		if ($this->site()->private) {
 			$params['conditions']['groups'] = array_merge($this->visitor()->groups(), [[]]);//filter by visitor group and ungrouped items
 		}
-		$items = $itemsClass::find('all', $params)->to('array');
+		return $itemsClass::find('all', $params)->to('array');
+	}
+
+	protected function paginate($params, $url, $url_params, $reduce = null, $itemsClass = '\app\models\Items')
+	{
+		$items = $this->getItems($params, $url, $url_params, $reduce, $itemsClass);
 		$response = [];
 
 		if ($reduce) {
