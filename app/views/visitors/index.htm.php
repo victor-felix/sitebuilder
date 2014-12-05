@@ -26,13 +26,9 @@
 						<tr>
 								<td><?= $visitor->email() ?></td>
 								<td>
-									<?php if ($visitor->groups()): ?>
-										<?php foreach($visitor->groups() as $group): ?>
-											<span class="badge"><?= $group ?></span>
-										<?php endforeach ?>
-									<?php else: ?>
-											<span>-</span>
-									<?php endif ?>
+									<?php foreach($visitor->groups() as $group): ?>
+										<span class="badge"><?= $group ?></span>
+									<?php endforeach ?>
 								</td>
 								<td><?= $visitor->lastLogin() ?></td>
 						</tr>
