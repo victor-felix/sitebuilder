@@ -12,8 +12,12 @@ use Model;
 class ItemsController extends ApiController {
 	const PAGE_LIMIT = 20;
 
+	protected $skipBeforeFilter = ['requireVisitorAuth'];
+
 	public function index()
 	{
+		$this->requireVisitorAuth();
+
 		$category_id = $this->request->get('params:category_id');
 		$category = Model::load('Categories')->firstById($category_id);
 		list($orderField, $orderDirection) = explode(',',$this->param('order', 'order,DESC'));
@@ -59,6 +63,8 @@ class ItemsController extends ApiController {
 
 	public function promotions()
 	{
+		$this->requireVisitorAuth();
+
 		$category_id = $this->request->get('params:category_id');
 		$date = $this->request->get('query:time') ?: time();
 
@@ -89,6 +95,8 @@ class ItemsController extends ApiController {
 
 	public function add()
 	{
+		$this->requireVisitorAuth();
+
 		try {
 			$data = $this->prepareAdd($this->request->data);
 
@@ -140,6 +148,8 @@ class ItemsController extends ApiController {
 
 	public function related()
 	{
+		$this->requireVisitorAuth();
+
 		$item = Items::find('first', [
 			'conditions' => [
 				'_id' => $this->request->get('params:id'),
@@ -172,6 +182,8 @@ class ItemsController extends ApiController {
 
 	public function search()
 	{
+		$this->requireVisitorAuth();
+
 		$conditions = $this->postConditions($this->request->query, [
 			'title' => 'like',
 			'description' => 'like'
@@ -196,6 +208,8 @@ class ItemsController extends ApiController {
 
 	public function show()
 	{
+		$this->requireVisitorAuth();
+
 		$item = Items::find('type', array('conditions' => array(
 			'_id' => $this->request->params['id'],
 			'site_id' => $this->site()->id
@@ -206,6 +220,8 @@ class ItemsController extends ApiController {
 
 	public function latest()
 	{
+		$this->requireVisitorAuth();
+
 		$parent_id = $this->request->get('params:parent_id');
 
 		$params = [
@@ -227,6 +243,8 @@ class ItemsController extends ApiController {
 
 	public function by_category()
 	{
+		$this->requireVisitorAuth();
+
 		$categories = Model::load('Categories')->allBySiteIdAndVisibility($this->site()->id, 1);
 		$items = array();
 
@@ -240,6 +258,8 @@ class ItemsController extends ApiController {
 
 	public function create()
 	{
+		$this->requireVisitorAuth();
+
 		$category_id = $this->request->data['parent_id'];
 		$category = Model::load('Categories')->firstById($category_id);
 		$classname = '\app\models\items\\' . Inflector::camelize($category->type);
@@ -269,6 +289,8 @@ class ItemsController extends ApiController {
 
 	public function update()
 	{
+		$this->requireVisitorAuth();
+
 		$item = Items::find('first', array('conditions' => array(
 			'_id' => $this->request->params['id'],
 			'site_id' => $this->site()->id
@@ -290,12 +312,16 @@ class ItemsController extends ApiController {
 
 	public function destroy()
 	{
+		$this->requireVisitorAuth();
+
 		Items::remove(array('_id' => $this->request->params['id']));
 		$this->response->status(200);
 	}
 
 	public function news()
 	{
+		$this->requireVisitorAuth();
+
 		if (!$category = $this->site()->newsCategory())
 			return ['items' => []];
 
@@ -342,7 +368,8 @@ class ItemsController extends ApiController {
 
 	protected function getItems($params, $url, $url_params, $reduce = null, $itemsClass = '\app\models\Items') {
 		if ($this->site()->private) {
-			$params['conditions']['groups'] = array_merge($this->visitor()->groups(), [[]]);//filter by visitor group and ungrouped items
+			$groups = $this->visitor() ? $this->visitor()->groups() : [];
+			$params['conditions']['groups'] = array_merge($groups, [[]]);//filter by visitor group and ungrouped items
 		}
 		return $itemsClass::find('all', $params)->to('array');
 	}
