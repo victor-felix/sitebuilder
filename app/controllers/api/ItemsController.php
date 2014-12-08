@@ -375,23 +375,24 @@ class ItemsController extends ApiController {
 			$groups = $this->visitor() ? $this->visitor()->groups() : [];
 			$params['conditions']['groups'] = array_merge($groups, [[]]);//filter by visitor group and ungrouped items
 		}
-		return $itemsClass::find('all', $params)->to('array');
-	}
 
-	protected function paginate($params, $url, $url_params, $reduce = null, $itemsClass = '\app\models\Items')
-	{
-		$items = $this->getItems($params, $url, $url_params, $reduce, $itemsClass);
-		$response = [];
+		$items = $itemsClass::find('all', $params)->to('array');
 
 		if ($reduce) {
-			$response['items'] = array_reduce($items, $reduce, array());
+			return array_reduce($items, $reduce, array());
 		} else {
-			$response['items'] = array_map(function($item) {
+			return array_map(function($item) {
 				$classname = '\app\models\items\\' .
 					Inflector::camelize($item['type']);
 				return $classname::create($item)->toJSON();
 			}, $items);
 		}
+	}
+
+	protected function paginate($params, $url, $url_params, $reduce = null, $itemsClass = '\app\models\Items')
+	{
+		$items = $this->getItems($params, $url, $url_params, $reduce, $itemsClass);
+		$response = ['items' => $items];
 
 		$count = Items::find('count', ['conditions' => $params['conditions']]);
 		$pages = ceil($count / $params['limit']);
