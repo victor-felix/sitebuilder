@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <rss version="2.0">
    <channel>
-      <title><?php echo $site['data']['title'] ?></title>
-      <link>http://<?php echo $site['data']['domain'] ?></link>
+      <title><?php echo Sanitize::html($site->title) ?></title>
+      <link><?php echo $site->link() ?></link>
       <?php foreach($items as $item): ?>
         <item>
             <title><?php echo $item['title'] ?></title>

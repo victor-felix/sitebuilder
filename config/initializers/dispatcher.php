@@ -383,7 +383,6 @@ Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
 
 \lithium\net\http\Media::type('rss', 'application/rss+xml', array(
 	'encode' => function($data) {
-		$view = new View();
-		return $view->render('business_items/feed.rss', $data, false);
+		return $data;
 	}
 ));
