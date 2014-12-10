@@ -47,5 +47,5 @@ AddOutputFilterByType DEFLATE application/atom+xml \
     # Header append Cache-Control "private must-revalidate"
   </FilesMatch>
 
-  ExpiresByType application/json          "access plus 30 minutes"
+  ExpiresByType application/json          "access plus 10 seconds"
 </IfModule>
