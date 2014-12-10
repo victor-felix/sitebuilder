@@ -5,7 +5,7 @@
   Você foi convidado para testar o Aplicativo Infobox de Comunicação Interna da Siemens. Através dele divulgaremos notícias importantes sobre a empresa, de forma fácil, privada e segura.
   <br />
   <br /> 
-  O App Infobox é compatível com smartphones Android e iOS. Acesse o link a seguir do seu celular e comece a testar: https://build.phonegap.com/apps/843971/install
+  O App Infobox é compatível com smartphones Android e iOS. Acesse o link a seguir do seu celular e comece a testar: <a href="https://build.phonegap.com/apps/843971/install">https://build.phonegap.com/apps/843971/install</a>
   <br />
   <br />
   ou usando o QR code seguinte:
