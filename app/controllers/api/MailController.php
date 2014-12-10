@@ -5,9 +5,13 @@ namespace app\controllers\api;
 require_once 'lib/mailer/Mailer.php';
 
 use Mailer;
+use Config;
+use I18n;
 
 class MailController extends ApiController
 {
+	protected $skipBeforeFilter = ['requireVisitorAuth'];
+
 	public function index()
 	{
 		$this->requireUserAuth();
@@ -19,6 +23,9 @@ class MailController extends ApiController
 		}
 
 		$site = $this->site();
+		$response = [];
+		I18n::locale($site->language);
+
 		$mailer = new Mailer(array(
 			'from' => array($this->request->get('data:mail') => $this->request->get('data:name')),
 			'to' => array($site->email => $site->title),
@@ -34,9 +41,16 @@ class MailController extends ApiController
 				'message' => $this->request->get('data:message'),
 			)
 		));
-		$mailer->send();
 
-		return array('success' => true);
+		if (!Config::read('Mail.preventSending')) {
+			$mailer->send();
+		} else {
+			$response['email'] = $mailer->render('text/html');
+		}
+
+		$response['success'] = true;
+
+		return $response;
 	}
 
 	protected function requireUserAuth()

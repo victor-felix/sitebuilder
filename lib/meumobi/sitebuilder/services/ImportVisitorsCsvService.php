@@ -45,8 +45,7 @@ class ImportVisitorsCsvService extends ImportCsvService {
 	}
 
 	protected function sendVisitorEmail($data) {
-		if (\Config::read('Mail.preventSending'))
-			return;
+		if (\Config::read('Mail.preventSending')) return;
 
 		\I18n::locale($this->getSite()->language);
 

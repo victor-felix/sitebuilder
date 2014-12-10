@@ -12,8 +12,9 @@ class I18n extends YamlDictionary
 
 	public static function locale($locale = null)
 	{
-		if (!in_array($locale, self::availableLanguages()))
+		if (!in_array($locale, self::availableLanguages())) {
 			$locale = self::DEFAULT_LANG;
+		}
 		return static::dictionary($locale);
 	}
 
