@@ -16,9 +16,9 @@ class MailController extends ApiController
 	{
 		$this->requireUserAuth();
 
-		if (!isset($this->request->data['name']) &&
-			!isset($this->request->data['mail']) &&
-			!isset($this->request->data['message'])) {
+		if (!$this->request->data['name'] ||
+			!$this->request->data['mail'] ||
+			!$this->request->data['message']) {
 			return array('error' => 'missing parameters');
 		}
 
