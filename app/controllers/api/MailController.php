@@ -23,13 +23,14 @@ class MailController extends ApiController
 		}
 
 		$site = $this->site();
-		$response = [];
 		I18n::locale($site->language);
+		$subject = s('%s Contact Mail', $site->title);
+		$response = [];
 
 		$mailer = new Mailer(array(
 			'from' => array($this->request->get('data:mail') => $this->request->get('data:name')),
 			'to' => array($site->email => $site->title),
-			'subject' => s('%s Contact Mail',$site->title),
+			'subject' => $subject,
 			'views' => array('text/html' => 'sites/contact_mail.htm'),
 			'layout' => 'mail',
 			'data' => array(
@@ -46,6 +47,7 @@ class MailController extends ApiController
 			$mailer->send();
 		} else {
 			$response['email'] = $mailer->render('text/html');
+			$response['subject'] = $subject;
 		}
 
 		$response['success'] = true;
