@@ -41,8 +41,9 @@ class Mailer {
         $message->setFrom($this->from);
         $message->setTo($this->to);
 
+        $view = new View();
         foreach($this->views as $type => $path):
-            $content = $this->render($path, $this->data, $this->layout);
+            $content = $view->render($path, $this->data, $this->layout);
             $message->addPart($content, $type);
         endforeach;
 
