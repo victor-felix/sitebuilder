@@ -3,6 +3,7 @@
 namespace app\models\items;
 
 require_once 'lib/dom/SimpleHtmlDom.php';
+require_once 'lib/utils/Video.php';//TODO use lazyload
 
 use Model;
 use Mapper;
@@ -11,6 +12,7 @@ use HTMLPurifier;
 use HTMLPurifier_Config;
 use Filesystem;
 use app\models\Items;
+use Video;
 
 class Articles extends \app\models\Items
 {
@@ -29,9 +31,9 @@ class Articles extends \app\models\Items
 			'title' => 'Author',
 			'type' => 'string'
 		),
-		'group' => array(
+		'groups' => array(
 			'title' => 'Group',
-			'type' => 'string'
+			'type' => 'groups'
 		),
 	);
 
@@ -52,7 +54,6 @@ class Articles extends \app\models\Items
 			'pubdate' => array('type' => 'date', 'default' => 0),
 			'description' => array('type' => 'string', 'default' => ''),
 			'author' => array('type' => 'string', 'default' => ''),
-			'thumbnail' => array('type' => 'string', 'default' => ''),
 			'medias' => array('type' => 'array', 'default' => array()),
 		);
 	}
@@ -201,15 +202,22 @@ class Articles extends \app\models\Items
 	protected static function getArticlesMedias($item) {
 			$medias = [];
 			foreach($item->get_enclosures() as $enclosure) {
-				if ($enclosure->get_link()) //fix null media bug http://stackoverflow.com/questions/4053664/simplepie-includes-phantom-enclosures-that-dont-exist
+				if ($enclosure->get_link())//stackoverflow.com/questions/4053664/simplepie-includes-phantom-enclosures-that-dont-exist
 					$medias[] = [
 						'url' => $enclosure->get_link(),
 						'type' => $enclosure->get_type(),
 						'title' => html_entity_decode($enclosure->get_title(), ENT_QUOTES, 'UTF-8'),
 						'length' => $enclosure->get_length(),
+						'thumbnails' => $enclosure->get_thumbnails(),
 					];
 			}
-			return array_merge($medias, static::getContentVideos($item));
+			$medias = array_merge($medias, static::getContentVideos($item));
+			//try to generate video thumbs if none is set
+			return array_map(function($media) {
+				if (!$media['thumbnails'])
+					$media['thumbnails'] = Video::getThumbnails($media['url']); //return thumbnails if the url is from a video
+				return $media;
+			}, $medias);
 	}
 
 	protected static function getContentVideos($item) {
@@ -228,6 +236,7 @@ class Articles extends \app\models\Items
 					'url' => $iframe->getAttribute('src'),
 					'type' => 'text/html',
 					'title' => '',
+					'thumbnails' => [],
 					'length' => null,
 					];	
 			}
@@ -319,7 +328,7 @@ Articles::applyFilter('save', function($self, $params, $chain) {
 });
 
 Articles::applyFilter('save', function($self, $params, $chain) {
-	return Items::addThumbnail($self, $params, $chain);
+	return Items::addThumbnails($self, $params, $chain);
 });
 
 Articles::applyFilter('save', function($self, $params, $chain) {

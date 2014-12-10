@@ -6,14 +6,19 @@ use lithium\core\Object;
 
 use app\models\Items;
 use app\models\RecordNotFoundException;
-use Model;
 use Inflector;
+use Model;
+use View;
 
 class ItemsController extends ApiController {
 	const PAGE_LIMIT = 20;
 
+	protected $skipBeforeFilter = ['requireVisitorAuth'];
+
 	public function index()
 	{
+		$this->requireVisitorAuth();
+
 		$category_id = $this->request->get('params:category_id');
 		$category = Model::load('Categories')->firstById($category_id);
 		list($orderField, $orderDirection) = explode(',',$this->param('order', 'order,DESC'));
@@ -34,8 +39,36 @@ class ItemsController extends ApiController {
 		return $this->paginate($params, $url, $url_params);
 	}
 
+	public function index_rss()
+	{
+		$category_id = $this->request->get('params:category_id');
+		$category = Model::load('Categories')->firstById($category_id);
+		$params = [
+			'order' => ['created' => 'desc'],
+			'conditions' => [
+				'site_id' => $this->site()->id,
+				'parent_id' => $category->id,
+				'type' => $category->type
+			],
+			'limit' => self::PAGE_LIMIT,
+		];
+
+		$url = "/api/{$this->site()->domain()}/categories/{$category->id}/items";
+		$url_params = ['category' => $category_id];
+
+		$data = [
+			'items' => $this->getItems($params, $url, $url_params),
+			'site' => $this->site()
+		];
+
+		$view = new View();
+		return $view->render('business_items/feed.rss', $data, false);
+	}
+
 	public function promotions()
 	{
+		$this->requireVisitorAuth();
+
 		$category_id = $this->request->get('params:category_id');
 		$date = $this->request->get('query:time') ?: time();
 
@@ -66,6 +99,8 @@ class ItemsController extends ApiController {
 
 	public function add()
 	{
+		$this->requireVisitorAuth();
+
 		try {
 			$data = $this->prepareAdd($this->request->data);
 
@@ -117,6 +152,8 @@ class ItemsController extends ApiController {
 
 	public function related()
 	{
+		$this->requireVisitorAuth();
+
 		$item = Items::find('first', [
 			'conditions' => [
 				'_id' => $this->request->get('params:id'),
@@ -149,6 +186,8 @@ class ItemsController extends ApiController {
 
 	public function search()
 	{
+		$this->requireVisitorAuth();
+
 		$conditions = $this->postConditions($this->request->query, [
 			'title' => 'like',
 			'description' => 'like'
@@ -173,6 +212,8 @@ class ItemsController extends ApiController {
 
 	public function show()
 	{
+		$this->requireVisitorAuth();
+
 		$item = Items::find('type', array('conditions' => array(
 			'_id' => $this->request->params['id'],
 			'site_id' => $this->site()->id
@@ -183,6 +224,8 @@ class ItemsController extends ApiController {
 
 	public function latest()
 	{
+		$this->requireVisitorAuth();
+
 		$parent_id = $this->request->get('params:parent_id');
 
 		$params = [
@@ -204,6 +247,8 @@ class ItemsController extends ApiController {
 
 	public function by_category()
 	{
+		$this->requireVisitorAuth();
+
 		$categories = Model::load('Categories')->allBySiteIdAndVisibility($this->site()->id, 1);
 		$items = array();
 
@@ -217,6 +262,8 @@ class ItemsController extends ApiController {
 
 	public function create()
 	{
+		$this->requireVisitorAuth();
+
 		$category_id = $this->request->data['parent_id'];
 		$category = Model::load('Categories')->firstById($category_id);
 		$classname = '\app\models\items\\' . Inflector::camelize($category->type);
@@ -246,6 +293,8 @@ class ItemsController extends ApiController {
 
 	public function update()
 	{
+		$this->requireVisitorAuth();
+
 		$item = Items::find('first', array('conditions' => array(
 			'_id' => $this->request->params['id'],
 			'site_id' => $this->site()->id
@@ -267,12 +316,16 @@ class ItemsController extends ApiController {
 
 	public function destroy()
 	{
+		$this->requireVisitorAuth();
+
 		Items::remove(array('_id' => $this->request->params['id']));
 		$this->response->status(200);
 	}
 
 	public function news()
 	{
+		$this->requireVisitorAuth();
+
 		if (!$category = $this->site()->newsCategory())
 			return ['items' => []];
 
@@ -317,23 +370,29 @@ class ItemsController extends ApiController {
 		}
 	}
 
-	protected function paginate($params, $url, $url_params, $reduce = null, $itemsClass = '\app\models\Items')
-	{
+	protected function getItems($params, $url, $url_params, $reduce = null, $itemsClass = '\app\models\Items') {
 		if ($this->site()->private) {
-			$params['conditions']['group'] = array_merge($this->visitor()->groups(), ['']);
+			$groups = $this->visitor() ? $this->visitor()->groups() : [];
+			$params['conditions']['groups'] = array_merge($groups, [[]]);//filter by visitor group and ungrouped items
 		}
+
 		$items = $itemsClass::find('all', $params)->to('array');
-		$response = [];
 
 		if ($reduce) {
-			$response['items'] = array_reduce($items, $reduce, array());
+			return array_reduce($items, $reduce, array());
 		} else {
-			$response['items'] = array_map(function($item) {
+			return array_map(function($item) {
 				$classname = '\app\models\items\\' .
 					Inflector::camelize($item['type']);
 				return $classname::create($item)->toJSON();
 			}, $items);
 		}
+	}
+
+	protected function paginate($params, $url, $url_params, $reduce = null, $itemsClass = '\app\models\Items')
+	{
+		$items = $this->getItems($params, $url, $url_params, $reduce, $itemsClass);
+		$response = ['items' => $items];
 
 		$count = Items::find('count', ['conditions' => $params['conditions']]);
 		$pages = ceil($count / $params['limit']);

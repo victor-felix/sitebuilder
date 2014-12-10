@@ -4,6 +4,7 @@ require_once 'lib/yaml_dictionary/YamlDictionary.php';
 
 class I18n extends YamlDictionary
 {
+	const DEFAULT_LANG = 'en';
 	protected static $path = 'config/locales';
 	protected static $dictionary;
 	protected static $yaml;
@@ -11,6 +12,9 @@ class I18n extends YamlDictionary
 
 	public static function locale($locale = null)
 	{
+		if (!in_array($locale, self::availableLanguages())) {
+			$locale = self::DEFAULT_LANG;
+		}
 		return static::dictionary($locale);
 	}
 

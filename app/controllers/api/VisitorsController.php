@@ -20,7 +20,8 @@ class VisitorsController extends ApiController
 		if ($visitor) {
 			$device = $this->request->get('data:device');
 			$device = new VisitorDevice([
-				'id' => $device['id'],
+				'uuid' => $device['uuid'],
+				'pushId' => $device['pushId'],
 				'model' => $device['model']
 			]);
 			$visitor->addDevice($device);
@@ -52,7 +53,8 @@ class VisitorsController extends ApiController
 		$repository = new VisitorsRepository();
 		$visitor = $this->visitor();
 		$device = new VisitorDevice([
-			'id' => $this->request->get('data:id'),
+			'uuid' => $this->request->get('data:uuid'),
+			'pushId' => $this->request->get('data:pushId'),
 			'model' => $this->request->get('data:model')
 		]);
 		$visitor->addDevice($device);

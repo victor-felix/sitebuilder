@@ -1,4 +1,5 @@
 <?php
+use meumobi\sitebuilder\repositories\VisitorsRepository;
 
 class ItemsHelper extends Helper
 {
@@ -30,14 +31,14 @@ class ItemsHelper extends Helper
 	);
 	protected $item;
 
-	public function __construct($view)
-	{
+	public function __construct($view) {
 		parent::__construct($view);
-		$this->types['related'] = function($type) use ($view) {
+		$siteId = $view->controller->getCurrentSite()->id;
+		$this->types['related'] = function($type) use ($siteId) {
 			$classname = '\app\models\items\\' . $type[1];
 			$conditions = array(
 				'type' => Inflector::underscore($type[1]),
-				'site_id' => $view->controller->getCurrentSite()->id
+				'site_id' => $siteId
 			);
 			$items = $classname::find('all',
 				array(
@@ -56,10 +57,10 @@ class ItemsHelper extends Helper
 				'class' => 'chosen'
 			);
 		};
+		$this->addGroupsField($siteId);
 	}
 
-	public function form($url, $item, $attr)
-	{
+	public function form($url, $item, $attr) {
 		$this->item = $item;
 		$attr += array(
 			'method' => 'file',
@@ -68,13 +69,11 @@ class ItemsHelper extends Helper
 		return $this->form->create($url, $attr);
 	}
 
-	public function endform()
-	{
+	public function endform() {
 		return $this->form->close();
 	}
 
-	public function input($name)
-	{
+	public function input($name) {
 		$field = $this->item->field($name);
 		$defaults = array(
 			'label' => $field->title
@@ -92,5 +91,23 @@ class ItemsHelper extends Helper
 			$params);
 		$attr['class'] .= ' large';
 		return $this->form->input($name, $attr);
+	}
+
+	protected function addGroupsField($siteId) {
+		$this->types['groups'] = function($type) use ($siteId) {
+			$repository = new VisitorsRepository();
+			$groups = $repository->findAvailableGroupsBySite($siteId);
+			$options = array();
+			foreach ($groups as $group) {
+				$options[$group] = $group;//set the group name as value
+			}
+			return array(
+				'name' => 'groups[]',
+				'type' => 'select',
+				'multiple' => true,
+				'options' => $options,
+				'class' => 'chosen'
+			);
+		};
 	}
 }

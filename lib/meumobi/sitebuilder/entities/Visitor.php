@@ -2,15 +2,13 @@
 
 namespace meumobi\sitebuilder\entities;
 
-use lithium\util\Inflector;
 use meumobi\sitebuilder\entities\VisitorDevice;
 
 use MongoId;
 use Security;
 
-class Visitor
+class Visitor extends Entity
 {
-	protected $id;
 	protected $siteId;
 	protected $email;
 	protected $hashedPassword;
@@ -19,37 +17,9 @@ class Visitor
 	protected $devices = [];
 	protected $groups = [];
 
-	public function __construct(array $attrs = [])
-	{
-		$this->setAttributes($attrs);
-	}
-
-	public function setAttributes(array $attrs)
-	{
-		foreach ($attrs as $key => $value) {
-			$key = Inflector::camelize($key, false);
-			$method = 'set' . Inflector::camelize($key);
-			if (method_exists($this, $method)) {
-				$this->$method($value);
-			} else if (property_exists($this, $key)) {
-				$this->$key = $value;
-			}
-		}
-	}
-
-	public function id()
-	{
-		return $this->id ? $this->id->{'$id'} : null;
-	}
-
-	public function setId(MongoId $id)
-	{
-		$this->id = $id;
-	}
-
 	public function siteId()
 	{
-		return $this->siteId;
+		return (int)$this->siteId;
 	}
 
 	public function email()

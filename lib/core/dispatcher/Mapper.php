@@ -62,7 +62,7 @@ class Mapper {
                 $self->domain = 'http' . $s . '://' . $_SERVER['HTTP_HOST'];
             }
             else {
-                $self->domain = 'http://localhost';
+                $self->domain = '';
             }
         }
         

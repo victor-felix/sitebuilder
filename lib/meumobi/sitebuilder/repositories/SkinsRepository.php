@@ -2,19 +2,15 @@
 
 namespace meumobi\sitebuilder\repositories;
 
-use lithium\data\Connections;
 use meumobi\sitebuilder\entities\Skin;
-
 use Connection;
 use FileUpload;
 use Filesystem;
 use MongoClient;
 use MongoId;
 
-class SkinsRepository
+class SkinsRepository extends Repository
 {
-  protected $connection;
-  protected $collection;
 
   public function all()
   {
@@ -71,20 +67,6 @@ class SkinsRepository
     return $this->collection()->remove(['_id' => new MongoId($skin->id())]);
   }
 
-  protected function connection()
-  {
-    if ($this->connection) return $this->connection;
-
-    return $this->connection = Connections::get('default')->connection;
-  }
-
-  protected function collection()
-  {
-    if ($this->collection) return $this->collection;
-
-    return $this->collection = $this->connection()->skins;
-  }
-
   protected function hydrate($data)
   {
     return new Skin($data);
@@ -102,13 +84,6 @@ class SkinsRepository
         'layout_alternatives' => $object->layoutAlternatives(),
         'html5' => $object->html5(),
       ];
-  }
-
-  protected function hydrateSet($set)
-  {
-    return array_map(function($data) {
-      return $this->hydrate($data);
-    }, iterator_to_array($set, false));
   }
 
   protected function updateSiteEtags($skin_id)

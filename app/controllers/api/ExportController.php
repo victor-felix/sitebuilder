@@ -29,14 +29,6 @@ class ExportController extends ApiController {
 		exit;
 	}
 
-	public function visitors() {
-		$repo = new VisitorsRepository();
-		$visitors = $repo->findBySiteId($this->site->id);
-		$presenter = new VisitorsArrayPresenter($visitors);
-		$this->setHeaders('visitors');
-		exit($presenter->toCSV());
-	}
-
 	protected function setHeaders($filename) {
 		header("Content-type: application/csv");
 		header("Content-Disposition: attachment; filename=$filename.csv");

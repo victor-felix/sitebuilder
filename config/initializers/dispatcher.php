@@ -61,16 +61,6 @@ Router::connect(new Route(array(
 
 Router::connect(new Route(array(
 	'method' => 'GET',
-	'template' => '/api/{:slug}/export/visitors',
-	'params' => array(
-		'action' => 'visitors',
-		'controller' => 'export',
-		'type' => 'csv'
-	) + $defaults['params']
-)));
-
-Router::connect(new Route(array(
-	'method' => 'GET',
 	'template' => '/api/{:slug}/export/{:category_id}',
 	'params' => array(
 		'action' => 'export',
@@ -117,6 +107,15 @@ Router::connect(new Route(array(
 
 Router::connect(new Route(array(
 	'method' => 'GET',
+	'template' => '/api/{:slug}/items/latest',
+	'params' => array(
+		'action' => 'latest',
+		'controller' => 'items'
+	) + $defaults['params']
+)));
+
+Router::connect(new Route(array(
+	'method' => 'GET',
 	'template' => '/api/{:slug}/items/search',
 	'params' => array(
 		'controller' => 'items',
@@ -130,6 +129,16 @@ Router::connect(new Route(array(
 	'params' => array(
 		'action' => 'index',
 		'controller' => 'items'
+	) + $defaults['params']
+)));
+
+Router::connect(new Route(array(
+	'method' => 'GET',
+	'template' => '/api/{:slug}/categories/{:category_id}/items.rss',
+	'params' => array(
+		'action' => 'index_rss',
+		'controller' => 'items',
+		'type' => 'rss',
 	) + $defaults['params']
 )));
 
@@ -369,5 +378,11 @@ Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
 			}
 			return join(PHP_EOL, $result);
 		}
+	}
+));
+
+\lithium\net\http\Media::type('rss', 'application/rss+xml', array(
+	'encode' => function($data) {
+		return $data;
 	}
 ));
