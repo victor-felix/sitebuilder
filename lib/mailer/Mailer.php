@@ -41,9 +41,8 @@ class Mailer {
         $message->setFrom($this->from);
         $message->setTo($this->to);
 
-        $view = new View();
         foreach($this->views as $type => $path):
-            $content = $view->render($path, $this->data, $this->layout);
+            $content = $this->render($type, $this->data, $this->layout);
             $message->addPart($content, $type);
         endforeach;
 
@@ -69,7 +68,13 @@ class Mailer {
         return $view->render($this->views[$type], $this->data, $this->layout);
     }
     public function send() {
-        $mailer = Swift_Mailer::newInstance($this->transport());
-        return $mailer->send($this->message());
+        $message = $this->message();
+        if(!Config::read('Mail.preventSending')):
+            $mailer = Swift_Mailer::newInstance($this->transport());
+            return $mailer->send($message);
+        else:
+            $log = KLogger::instance(Filesystem::path(APP_ROOT . '/log'));
+            $log->logInfo($message);
+        endif;
     }
 }

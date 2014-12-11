@@ -42,16 +42,8 @@ class MailController extends ApiController
 				'message' => $this->request->get('data:message'),
 			)
 		));
-
-		if (!Config::read('Mail.preventSending')) {
-			$mailer->send();
-		} else {
-			$response['email'] = $mailer->render('text/html');
-			$response['subject'] = $subject;
-		}
-
+		$mailer->send();
 		$response['success'] = true;
-
 		return $response;
 	}
 
