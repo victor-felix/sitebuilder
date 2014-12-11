@@ -9,6 +9,7 @@
 namespace lithium\data\source;
 
 use Mongo;
+use MongoClient;
 use MongoId;
 use MongoCode;
 use MongoDate;
@@ -247,14 +248,14 @@ class MongoDb extends \lithium\data\Source {
 		$login = $cfg['login'] ? "{$cfg['login']}:{$cfg['password']}@" : '';
 		$connection = "mongodb://{$login}{$host}" . ($login ? "/{$cfg['database']}" : '');
 		$options = array(
-			'connect' => true, 'timeout' => $cfg['timeout'], 'replicaSet' => $cfg['replicaSet']
+			'connect' => true, 'connectTimeoutMS' => $cfg['timeout'], 'replicaSet' => $cfg['replicaSet']
 		);
 
 		try {
 			if ($persist = $cfg['persistent']) {
 				$options['persist'] = $persist === true ? 'default' : $persist;
 			}
-			$this->server = new Mongo($connection, $options);
+			$this->server = new MongoClient($connection, $options);
 
 			if ($this->connection = $this->server->{$cfg['database']}) {
 				$this->_isConnected = true;
@@ -271,7 +272,7 @@ class MongoDb extends \lithium\data\Source {
 	 * @return boolean True on successful disconnect, false otherwise.
 	 */
 	public function disconnect() {
-		if ($this->server && $this->server->connected) {
+		if ($this->server && $this->server->getConnections() != []) {
 			try {
 				$this->_isConnected = !$this->server->close();
 			} catch (Exception $e) {}
