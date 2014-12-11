@@ -629,7 +629,7 @@ Items::applyFilter('save', function($self, $params, $chain) {
 });
 
 Items::applyFilter('save', function($self, $params, $chain) {
-	return Items::addThumbnail($self, $params, $chain);
+	return Items::addThumbnails($self, $params, $chain);
 });
 
 Items::finder('type', function($self, $params, $chain) {
