@@ -50,7 +50,7 @@ class ImportVisitorsCsvService extends ImportCsvService {
 		\I18n::locale($this->getSite()->language);
 
 		$segment = \MeuMobi::currentSegment();
-		$data['title'] = s('Your visitor password');
+		$data['title'] = s('[%s]: Get started', $this->getSite()->title);
 		$data['segment'] = $segment;
 		$data['site'] = $this->getSite();
 		$mailer = new \Mailer(array(
