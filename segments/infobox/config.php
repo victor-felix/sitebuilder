@@ -6,9 +6,10 @@ Config::write('Segment', array(
   'items' => array('articles', 'events'),
   'extensions' => array('rss'),
   'root' => 'Posts',
-  'email' => array('victor@meumobi.com' => 'infobox'),
+  'email' => array('infobox@meumobi.com' => 'Infobox'),
   'hideCategories' => false,
   'enableSignup' => false,
   'fullOptions' => true,
   'analytics' => '',
+  'enableApiAccessFromAllDomains' => true,
 ));
