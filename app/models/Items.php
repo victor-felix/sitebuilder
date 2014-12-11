@@ -124,11 +124,12 @@ class Items extends \lithium\data\Model {
 			if ($field['type'] == 'richtext'
 				&& !(isset($self['format']) && $self['format'] == 'html')) {
 				$parser = new Decoda($self[$code], [
-					'xhtmlOutput' => true, 
-					'lineBreaks' => true, 
-					'escapeHtml' => false	
+					'xhtmlOutput' => true,
+					'lineBreaks' => true,
+					'escapeHtml' => false
 				]);
-				$parser->defaults();
+				$parser->addFilter(new \Decoda\Filter\UrlFilter());
+				$parser->setStrict(false);
 				$parser->whitelist('b', 'i', 'color', 'url', 'big', 'small');
 				$self[$code] = '<p>' . $parser->parse() . '</p>';
 			}
@@ -372,7 +373,7 @@ class Items extends \lithium\data\Model {
 					$item->thumbnails = $media['thumbnails'];
 					break;
 				}
-			}	
+			}
 		}
 		return $chain->next($self, $params, $chain);
 	}
