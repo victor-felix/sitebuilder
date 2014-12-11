@@ -32,12 +32,13 @@ class VisitorsRepository extends Repository
 
 	public function findBySiteId($id)
 	{
-		return $this->hydrateSet($this->collection()->find(['site_id' => (int)$id]));
+		return $this->hydrateSet($this->collection()->find(['site_id' => (int) $id]));
 	}
 
-	public function findByEmailAndPassword($email, $password)
+	public function findForAuthentication($siteId, $email, $password)
 	{
 		$result = $this->collection()->findOne([
+			'site_id' => (int) $siteId,
 			'email' => $email,
 			'hashed_password' => Security::hash($password, 'sha1')
 		]);
@@ -58,7 +59,7 @@ class VisitorsRepository extends Repository
 	public function findAvailableGroupsBySite($siteId)
 	{
 		return $this->collection()->distinct('groups', [
-			'site_id' => (int)$siteId
+			'site_id' => (int) $siteId
 		]);
 	}
 

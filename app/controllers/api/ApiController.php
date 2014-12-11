@@ -144,7 +144,7 @@ class ApiController extends \lithium\action\Controller {
 		$domain = $this->request->params['slug'];
 		return $this->site = Model::load('Sites')->firstByDomain($domain);
 	}
-	//TODO move to a helper Class, like Auth::user()
+
 	protected function visitor() {
 		return $this->visitor;
 	}

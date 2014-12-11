@@ -10,12 +10,14 @@ use meumobi\sitebuilder\entities\VisitorDevice;
 class VisitorsController extends ApiController
 {
 	protected $skipBeforeFilter = ['requireVisitorAuth'];
-	public function login() {
+
+	public function login()
+	{
 		$email = $this->request->get('data:email');
 		$password = $this->request->get('data:password');
 
 		$repository = new VisitorsRepository();
-		$visitor = $repository->findByEmailAndPassword($email, $password);
+		$visitor = $repository->findForAuthentication($this->site()->id, $email, $password);
 
 		if ($visitor) {
 			$device = $this->request->get('data:device');
@@ -33,14 +35,15 @@ class VisitorsController extends ApiController
 		}
 	}
 
-	public function update() {
-		$this->requireVisitorAuth();//log in visitor
+	public function update()
+	{
+		$this->requireVisitorAuth();
 		$currentPassword = $this->request->get('data:current_password');
 		$newPassword = $this->request->get('data:password');
 		$repository = new VisitorsRepository();
-		$visitor = $repository->findByEmailAndPassword($this->visitor()->email(), $currentPassword);
+		$visitor = $this->visitor();
 
-		if ($visitor) {
+		if ($visitor && $visitor->passwordMatch($currentPassword)) {
 			$visitor->setPassword($newPassword);
 			$repository->update($visitor);
 		} else {
@@ -48,8 +51,9 @@ class VisitorsController extends ApiController
 		}
 	}
 
-	public function addDevice() {
-		$this->requireVisitorAuth();//log in visitor
+	public function addDevice()
+	{
+		$this->requireVisitorAuth();
 		$repository = new VisitorsRepository();
 		$visitor = $this->visitor();
 		$device = new VisitorDevice([
