@@ -338,7 +338,7 @@ class Items extends \lithium\data\Model {
 		$date = date('Y-m-d H:i:s');
 		$category = $item->parent();
 
-		if (!$item->id()) {
+		if (!$item->id() && !$item->created) {
 			$item->created = $date;
 		}
 
