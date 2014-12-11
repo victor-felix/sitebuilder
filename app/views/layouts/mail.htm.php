@@ -10,9 +10,9 @@
     <body bgcolor="#EFEFEF">
         <font face="Arial" color="#555">
         <table border="0" width="640" align="center">
-            <tr>
+            <!--tr>
                 <td><br /><br /><img src="<?= MeuMobi::url($logoPath) ?>" alt="<?= $site->title ?>" /><br /><br /></td>
-            </tr>
+            </tr-->
             <tr>
                 <td bgcolor="#FFFFFF">
                     <?php echo $this->contentForLayout ?>
