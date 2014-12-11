@@ -24,7 +24,7 @@ class MailController extends ApiController
 
 		$site = $this->site();
 		I18n::locale($site->language);
-		$subject = s('%s Contact Mail', $site->title);
+		$subject = s('api_mail_contact', $site->title);
 		$response = [];
 		$segment = \MeuMobi::currentSegment();
 		$mailer = new Mailer(array(
