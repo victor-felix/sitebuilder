@@ -11,4 +11,5 @@ Config::write('Segment', array(
   'enableSignup' => false,
   'fullOptions' => true,
   'analytics' => '',
+  'enableApiAccessFromAllDomains' => true,
 ));
