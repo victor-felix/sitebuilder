@@ -1,8 +1,8 @@
 <li id="address">
 	<a class="link" href="<?php echo Mapper::url('/sites/business_info#business-address') ?>">
-		<span class="icon"></span>
+		<i class="icons fa fa-4x fa-map-marker"></i>
 		<h3><?php echo s('your address') ?></h3>
 		<small><?php echo s('full address adds a map on your mobile site') ?></small>
-		<span class="arrow"></span>
+		<i class="arrows fa fa-4x fa-angle-right"></i>
 	</a>
 </li>

@@ -19,7 +19,7 @@
 			<?php $i = 0; $fildsets = MeuMobi::currentSegment()->enableFieldSet ? MeuMobi::currentSegment()->enableFieldSet : array() ?>
 			<?php foreach ($fildsets as $item ): ?>
 			<?php 
-				echo $this->element('dashboard/'.$item);
+				echo $this->element('dashboard/'.$item, compact('site'));
 				$i++;
 				if($i>4)
 					break;
@@ -28,19 +28,19 @@
 			<?php if ($category): ?>
 			<li id="categories">
 				<a class="link" href="<?php echo Mapper::url('/categories') ?>">
-					<span class="icon"></span>
+					<i class="icons fa fa-4x fa-pencil-square-o"></i>
 					<h3><?php echo s('edit content') ?></h3>
 					<small><?php echo s('you can edit your menu, products, stores or news') ?></small>
-					<span class="arrow"></span>
+					<i class="arrows fa fa-4x fa-angle-right"></i>
 				</a>
 			</li>
 			<?php endif ?>
 			<li id="add-content" class="open" style="display:none;">
 				<div class="link">
-					<span class="icon"></span>
+					<span class="icons fa fa-4x fa-file-o"></span>
 					<h3><?php echo s('create new content') ?></h3>
 					<small><?php echo s('you can add a restaurant menu, products, services, etc') ?></small>
-					<span class="arrow open"></span>
+					<i class="arrows fa fa-4x fa-angle-down"></i>
 				</div>
 				<p class="placeholder-links">
 					<a href="<?php echo Mapper::url('/placeholder_creator/menu') ?>">

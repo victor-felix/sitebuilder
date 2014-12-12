@@ -66,6 +66,17 @@
 	text-decoration: none;
 }
 
+.featured-list > li .link .icons {
+	width: 51px;
+	height: 51px;
+	display: block;
+	position: absolute;
+	left: 10px;
+	top: 13px;
+  color: #c02926;
+}
+
+
 .featured-list > li .link .icon {
 	background: url(/images/shared/dashboard/icons.png) no-repeat 0 0 #c02926;
 	width: 51px;
@@ -133,6 +144,20 @@
 	background-position: 0 -119px;
 }
 
+.featured-list > li .arrows {
+	width: 15px;
+	height: 26px;
+	display: block;
+	position: absolute;
+	right: 10px;
+	top: 17px;
+  color: #ddd;
+}
+
+.featured-list > li:hover .arrows {
+  color: #c02926;
+}
+	
 .featured-list > li .arrow {
 	background: url(/images/shared/dashboard/icons.png) no-repeat 0 -74px;
 	width: 15px;
