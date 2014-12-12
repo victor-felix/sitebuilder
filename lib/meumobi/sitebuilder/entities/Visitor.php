@@ -34,6 +34,11 @@ class Visitor extends Entity
 		}
 	}
 
+	public function passwordMatch($password)
+	{
+		return Security::hash($password, 'sha1') == $this->hashedPassword;
+	}
+
 	public function hashedPassword()
 	{
 		return $this->hashedPassword;

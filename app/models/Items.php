@@ -47,7 +47,8 @@ class Items extends \lithium\data\Model {
 		'groups' => array('type' => 'array', 'default' => [])
 	);
 
-	protected $fields = array();
+	protected $privateFields = ['groups'];
+	protected $fields = [];
 
 	public function breadcrumbs($entity, $category_id) {
 		return Model::load('Categories')->firstById($category_id)->bredcrumbs();
@@ -85,11 +86,13 @@ class Items extends \lithium\data\Model {
 	}
 
 	public function fields($entity, $site = null) {
-		$fields = $this->fields;
-		if($site && !$site->private) {
-			unset($fields['group']);
+		$fields = array_keys($this->fields);
+
+		if ($site && !$site->private) {
+			$fields = array_diff($fields, $this->privateFields);
 		}
-		return array_keys($fields);
+
+		return $fields;
 	}
 
 	public function field($entity, $field) {
@@ -124,11 +127,12 @@ class Items extends \lithium\data\Model {
 			if ($field['type'] == 'richtext'
 				&& !(isset($self['format']) && $self['format'] == 'html')) {
 				$parser = new Decoda($self[$code], [
-					'xhtmlOutput' => true, 
-					'lineBreaks' => true, 
-					'escapeHtml' => false	
+					'xhtmlOutput' => true,
+					'lineBreaks' => true,
+					'escapeHtml' => false
 				]);
-				$parser->defaults();
+				$parser->addFilter(new \Decoda\Filter\UrlFilter());
+				$parser->setStrict(false);
 				$parser->whitelist('b', 'i', 'color', 'url', 'big', 'small');
 				$self[$code] = '<p>' . $parser->parse() . '</p>';
 			}
@@ -338,7 +342,7 @@ class Items extends \lithium\data\Model {
 		$date = date('Y-m-d H:i:s');
 		$category = $item->parent();
 
-		if (!$item->id()) {
+		if (!$item->id() && !$item->created) {
 			$item->created = $date;
 		}
 
@@ -372,7 +376,7 @@ class Items extends \lithium\data\Model {
 					$item->thumbnails = $media['thumbnails'];
 					break;
 				}
-			}	
+			}
 		}
 		return $chain->next($self, $params, $chain);
 	}
