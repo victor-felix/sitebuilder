@@ -654,24 +654,27 @@ $(window).load(function() {
       "sSortDescending": ": Ordenar colunas de forma descendente"
     }
   };
-  //enable datatable list
-  var visitorTable = $('#visitors-list').DataTable({
-   // bFilter: false
-    sDom: 'ltipr',
-    lengthChange: false,
-    language: dataTableLang
-  });
-    
-  yadcf.init(visitorTable, [
-    {
-      column_number: 0,
-      filter_type: "text"
-    },
-    {
-      column_number : 1,
-      column_data_type: "html",
-      html_data_type: "text",
-      filter_default_label: "Select a group"   
-    }
-  ]);
+
+  if ($('#visitors-list').length) {
+    //enable datatable list
+    var visitorTable = $('#visitors-list').DataTable({
+     // bFilter: false
+      sDom: 'ltipr',
+      lengthChange: false,
+      language: dataTableLang
+    });
+      
+    yadcf.init(visitorTable, [
+      {
+        column_number: 0,
+        filter_type: "text"
+      },
+      {
+        column_number : 1,
+        column_data_type: "html",
+        html_data_type: "text",
+        filter_default_label: "Select a group"   
+      }
+    ]);
+  }
 });
