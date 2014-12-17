@@ -20,22 +20,23 @@ class ImportVisitorsCsvService extends ImportCsvService {
 		while ($data = $this->getNextItem()) {
 			$data['password'] = \Security::randomPassword();
 			$data['site_id'] = $this->getSite()->id;
-			$data['groups'] = $data['groups'] ? explode(',', $data['groups']) : [];//if groups is set explode, otherwise empty array
+			$data['groups'] = $data['groups']
+				? array_map('trim', explode(',', $data['groups']))
+				: [];
 			$visitor = new Visitor($data);
 			$repo->create($visitor);
 			$this->sendVisitorEmail($data);
 			$imported++;
 		}
 		fclose($this->getFile());
-		//unlink($this->filePath);
 		return $imported;
 	}
-	
+
 	public function setSite(\Sites $site)
 	{
 		$this->site = $site;
 	}
-	
+
 	public function getSite()
 	{
 		if (!$this->site) {
@@ -45,8 +46,6 @@ class ImportVisitorsCsvService extends ImportCsvService {
 	}
 
 	protected function sendVisitorEmail($data) {
-		if (\Config::read('Mail.preventSending')) return;
-
 		\I18n::locale($this->getSite()->language);
 
 		$segment = \MeuMobi::currentSegment();
@@ -60,7 +59,7 @@ class ImportVisitorsCsvService extends ImportCsvService {
 			'views' => array('text/html' => 'visitors/password_mail.htm'),
 			'layout' => 'mail',
 			'data' =>  $data,
-		)); 
+		));
 		return $mailer->send();
 	}
 }
