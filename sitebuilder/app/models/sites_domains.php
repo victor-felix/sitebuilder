@@ -1,20 +1,7 @@
 <?php
-require_once 'lib/sitemanager/SiteManager.php';
 
 class SitesDomains extends AppModel
 {
-	protected $old;
-
-	protected $beforeDelete = array('deleteFromSiteManager');
-
-	protected $beforeSave = array(
-		'getOldDomain'
-	);
-
-	protected $afterSave = array(
-		'updateSiteManager'
-	);
-
 	protected $validates = array(
 		'domain' => array(
 			array(
@@ -42,7 +29,7 @@ class SitesDomains extends AppModel
 		//the domain exists, is from site, but the site already have the domain
 		if (!$this->id || $this->id != $domain->id)
 			return false;
-		
+
 		return true;
 	}
 
@@ -75,35 +62,5 @@ class SitesDomains extends AppModel
 				)
 			);
 		}
-	}
-
-	public function deleteFromSiteManager($id)
-	{
-		$self = $this->firstById($id);
-		SiteManager::delete($self->domain);
-		return $id;
-	}
-
-	/*
-	 *Get previous domain values to allow update siteManager
-	 */
-	protected function getOldDomain($data) {
-		if (SiteManager::isAvailable() && $data['id']) {
-			$self = $this->firstById($data['id']);
-			$this->old = $self->data;
-		}
-		return $data;
-	}
-
-	protected function updateSiteManager($created) {
-		if (!SiteManager::isAvailable()) 
-			return $created;
-		$instance = MeuMobi::instance();
-		if ($created) {
-			SiteManager::create($this->domain, $instance);
-		} else {
-			SiteManager::update($this->old['domain'], $this->domain, $instance);
-		}
-		return $created;
 	}
 }

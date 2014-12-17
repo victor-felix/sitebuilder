@@ -108,7 +108,6 @@ Config::write('Mail.preventSending', true);
 Config::write('Debug.showErrors', true);
 Config::write('Api.ignoreAuth', true);
 Config::write('Themes.ignoreTag', true);
-Config::write('SiteManager.url', 'http://meu-site-manager.meumobilesite.com');
     TEMPLATE
 
     ProdEnvTemplate = <<-TEMPLATE
@@ -119,7 +118,6 @@ ini_set('display_errors', 'Off');
 
 Config::write('Yaml.cache', true);
 
-Config::write('SiteManager.url', 'http://meu-site-manager.int-meumobilesite.com');
     TEMPLATE
 
     desc "init", "initializes a new meumobi instace"

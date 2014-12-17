@@ -3,7 +3,6 @@ use meumobi\sitebuilder\entities\Skin;
 use meumobi\sitebuilder\repositories\SkinsRepository;
 use app\models\Plugins;
 
-require_once 'lib/sitemanager/SiteManager.php';
 require_once 'app/models/categories.php';
 require_once 'lib/geocoding/GoogleGeocoding.php';
 
@@ -35,7 +34,6 @@ class Sites extends AppModel
 		'deleteCategories',
 		'deleteLogo',
 		'removeUsers',
-		'removeFromSiteManager',
 		'deleteCustomSkin'
 	);
 
@@ -426,14 +424,6 @@ class Sites extends AppModel
 	{
 		Model::load('UsersSites')->removeSite($id);
 
-		return $id;
-	}
-
-	protected function removeFromSiteManager($id)
-	{
-		foreach ($this->domains() as $domain) {
-			SiteManager::delete($domain);
-		}
 		return $id;
 	}
 

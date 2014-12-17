@@ -180,12 +180,7 @@ class SitesController extends AppController
       'conditions' => array('site_id' => $sitesIds),
     ));
 
-    $sucess = SiteManager::regenerate($domains, MeuMobi::instance());
-    if ($sucess) {
-      Session::writeFlash('success', s('Domains was successfully regenerated'));
-    } else {
-      Session::writeFlash('error', s('Sorry, can\'t regenerate domains'));
-    }
+    Session::writeFlash('success', s('Domains was successfully regenerated'));
 
     $this->redirect('/');
   }
