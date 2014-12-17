@@ -11,5 +11,6 @@ Config::write('Segment', array(
   'enableSignup' => false,
   'fullOptions' => true,
   'analytics' => '',
+	'enableFieldSet' => array('photos', 'visitors', 'weblinks','location', 'contact', 'news', 'description', 'timetable'),
   'enableApiAccessFromAllDomains' => true,
 ));

@@ -381,5 +381,7 @@
 'Hi! <br /><br />You have received this mail from a contact form on your %s website.': 'Olá! Você recebeu esse email de um formulário de contato no seu site %s.'
 'Your visitor password': 'Sua senha de visitante'
 '[%s]: Get started': '[%s]: Primeiros passos'
-
+'Visitors': 'Visitantes'
+'Manage your visitors': 'Gerênciar seus visitantes'
+'Use panel on right of screen to manage your visitors.': 'Use o painel ao lado para gerenciar seus visitantes.'
 'api_mail_contact': '%s: Email de Contato'
