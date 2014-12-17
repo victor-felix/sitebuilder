@@ -1,0 +1,51 @@
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [L]
+
+Header add Vary "X-Visitor-Token"
+
+#CORS headers
+SetEnvIfNoCase Request_URI \.(?:jpg|jpeg|gif|png) ALLOW_CORS
+SetEnvIf Request_Method "OPTIONS" ALLOW_CORS
+
+#set headers, the "always" is because of redictet
+Header always set Access-Control-Allow-Origin "*" env=ALLOW_CORS
+Header always set Access-Control-Allow-Methods "POST, GET, PUT, DELETE, OPTIONS" env=ALLOW_CORS
+Header always set Access-Control-Allow-Headers "If-None-Match, Origin, X-Requested-With, Accept, X-Authentication-Token, Content-Type, X-Visitor-Token" env=ALLOW_CORS
+
+#return if OPTIONS
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^(.*)$ $1 [R=200,L]
+
+
+# compress all text files
+AddOutputFilterByType DEFLATE application/atom+xml \
+                        application/javascript \
+                        application/json \
+                        application/rss+xml \
+                        application/vnd.ms-fontobject \
+                        application/x-font-ttf \
+                        application/xhtml+xml \
+                        application/xml \
+                        font/opentype \
+                        image/svg+xml \
+                        image/x-icon \
+                        text/css \
+                        text/html \
+                        text/plain \
+                        text/x-component \
+                        text/xml
+<IfModule mod_expires.c>
+  # Turn on Expires
+  ExpiresActive On
+
+  <FilesMatch "\.(?i:jpg|jpeg|png|gif|svg)$">
+    ExpiresDefault "access plus 3 days"
+    # 3 days
+    # Expires Default A259200
+    # Header append Cache-Control "private must-revalidate"
+  </FilesMatch>
+
+  ExpiresByType application/json          "access plus 10 seconds"
+</IfModule>

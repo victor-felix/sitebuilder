@@ -1,0 +1,245 @@
+.ui-button {
+	background: url(/images/shared/layout/ui-button-white.png) center repeat-x;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border: 1px solid #CCC;
+	color: #C02926;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 12px;
+	font-family: "Arial", Helvetica, sans-serif;
+	padding: 5px 10px;
+	outline: none;
+	text-decoration: none;
+	-webkit-box-shadow: 0 1px 0px #E8E8E8;
+	-moz-box-shadow: 0 1px 0px #E8E8E8;
+}
+
+.ui-button:hover {
+	border-color: #AAA;
+}
+
+.ui-button:active {
+	background-image: url(/images/shared/layout/ui-button-white-active.png);
+	border-color: #AAA;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+}
+
+.ui-button.large {
+	font-size: 18px;
+	padding: 7px 14px;
+}
+
+.ui-button.larger {
+	font-size: 24px;
+	padding: 8px 12px;
+	letter-spacing: -1px;
+	text-transform: lowercase;
+}
+
+.ui-button.greater {
+	font-size: 28px;
+	padding: 7px 14px;
+	letter-spacing: -2px;
+	text-transform: lowercase;
+}
+
+.ui-button.small {
+	font-size: 11px;
+	padding: 4px 8px;
+}
+
+.ui-button.smaller {
+	font-size: 10px;
+	padding: 2px 6px;
+}
+
+.ui-button.highlight {
+	font-weight: bold;
+}
+
+.ui-button.delete {
+	border-color: #b22623;
+	color: #B22623;
+}
+
+.ui-button.delete:hover,
+	.ui-button.delete:active {
+	border-color: #871d1b;
+	color: #871d1b;
+}
+
+.ui-button.red {
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	background-color: #b22623;
+	background-image: none;
+	color: #FFF;
+	border-color: #b22623;
+}
+
+.ui-button.red:hover {
+	background-color: #c02926;
+	border-color: #871d1b;
+}
+
+.ui-button.disabled,
+	.ui-button.disabled:hover,
+	.ui-button.disabled:active {
+	border-color: #CCC;
+	background: #EEE;
+	color: #666;
+	cursor: default;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+}
+
+.ui-text,
+.ui-textarea {
+	border: 1px solid #CCC;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	background: #FFF;
+	font: 17px "Arial", "Helvetica", sans-serif;
+	color: #444;
+	cursor: pointer;
+	outline: none;
+	padding: 3px 6px 4px;
+	width: 206px;
+}
+
+.ui-text:hover,
+	.ui-textarea:hover {
+	border-color: #AAA;
+}
+
+.ui-text:focus,
+	.ui-textarea:focus {
+	background: #EFEFEF url(/images/shared/layout/ui-text-bg.png) top repeat-x;
+	border-color: #AAA;
+}
+
+.chosen.large,
+	.ui-text.large,
+	.ui-textarea.large {
+	width: 446px;
+}
+
+.ui-text.greater {
+	padding: 6px;
+	font-size: 21px;
+}
+
+.ui-textarea.greater {
+	font-size: 17px;
+	padding: 10px;
+	width: 436px;
+}
+
+.ui-text.disabled,
+	.ui-text.disabled:hover,
+	.ui-text.disabled:active,
+	.ui-textarea.disabled,
+	.ui-textarea.disabled:hover,
+	.ui-textarea.disabled:active {
+	border-color: #BBB;
+	background: #DDD;
+	cursor: default;
+	color: #555;
+}
+
+.ui-text.error,
+	.ui-textarea.error {
+	border-color: #F00;
+	-webkit-box-shadow: 0 0 4px #F00;
+	-moz-box-shadow: 0 0 4px #F00;
+}
+
+.ui-textarea {
+	font-size: 12px;
+	line-height: 16px;
+	resize: none;
+}
+
+.ui-textarea.large {
+	height: 100px;
+}
+
+.ui-select {
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border: 1px solid #CCC;
+	font: 17px "Arial", "Helvetica", sans-serif;
+	color: #444;
+	cursor: pointer;
+	padding: 3px 4px 4px;
+	width: 220px;
+}
+
+.ui-select.large {
+	width: 460px;
+}
+
+.ui-switch {
+	background: whiteSmoke;
+	border: 1px solid #CCC;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	font-size: 16px;
+	color: #88cc00;
+}
+
+.ui-switch .ui-button {
+	width: 60px;
+	height: 17px;
+	margin: 1px;
+}
+
+.ui-switch span {
+	margin: 6px 10px;
+}
+
+.ui-switch .on {
+	display: none;
+}
+
+.ui-switch.enabled .on {
+	display: block;
+}
+
+.ui-switch.enabled .off {
+	display: none;
+}
+
+.ui-switch .on .ui-button {
+	float: right;
+}
+
+.ui-switch .on span {
+	float: left;
+}
+
+.ui-switch .off .ui-button {
+	float: left;
+}
+
+.ui-switch .off span {
+	float: right;
+	color: #cdcdcd;
+}
+/* as seen on https://github.com/paulirish/html5-boilerplate/wiki/Make-it-better */
+button:focus {
+	outline-width: 0px;
+	outline-style: dotted;
+}
+
+button::-moz-focus-inner {
+	padding: 0;
+	border: 0;
+}

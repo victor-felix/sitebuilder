@@ -1,0 +1,264 @@
+.form-register .tip-big h2 {
+	float: none;
+	width: auto;
+	padding: 0;
+	margin: 0 0 10px;
+}
+
+.form-register .tip-big p {
+	font-size: 20PX;
+	font-weight: lighter;
+	color: #888;
+}
+
+#header {
+	margin: 0 auto;
+	padding: 45px 0 0px;
+	border-top: 10px solid #42537e;
+}
+
+#header .logo {
+	font-size: 28px;
+	text-decoration: none;
+}
+
+#content {
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	box-shadow: 0 0 4px #333;
+	-webkit-box-shadow: 0 0 2px #CCC;
+	-moz-box-shadow: 0 0 2px #CCC;
+}
+
+#header .head {
+	padding: 45px 0;
+	text-transform: lowercase;
+}
+
+#header .head h1 {
+	font: lighter 43px/45px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica,arial,sans-serif;
+	float: left;
+	margin-top: -10px;
+	width: 390px;
+	border: none;
+	color: #42537e;
+}
+
+#header .head .steps {
+	float: right;
+}
+
+#header .head .steps li {
+	color: #BBBBBB;
+	display: inline;
+	float: left;
+	font-size: 15px;
+	line-height: 14px;
+	margin-left: 40px;
+	width: 132px;
+}
+
+#header .head .steps li.current {
+	color: #42537e;
+}
+
+#header .head .steps li h3 {
+	font-weight: lighter;
+	font: lighter 43px/22px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica,arial,sans-serif;
+	margin-bottom: 23px;
+}
+
+#header p.login {
+	color: #999;
+	margin-top: 10px;
+}
+
+#header .login a {
+	text-decoration: none;
+}
+
+#header .login a:hover {
+	text-decoration: underline;
+}
+
+.tip-register {
+	color: #333;
+	background: #ffc;
+	line-height: 1.4em;
+	padding: 10px 15px;
+}
+
+.tip-register a {
+	color: #c02926;
+}
+
+/*
+* register theme
+*/
+.form-register .themes {
+	padding: 40px 0 0 25px;
+}
+
+/*
+* register finished
+*/
+.registration-finished {
+	text-align: center;
+	padding-bottom: 10px;
+}
+.registration-finished img {
+	margin: 50px 0 0 0;
+}
+
+.registration-finished h2 {
+	color: #666;
+	font-size: 22px;
+	text-align: center;
+	font-weight: normal;
+	margin-bottom: 50px;
+}
+
+.registration-finished h2 a {
+	color: #c02926;
+	font: lighter 36px/36px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica,arial,sans-serif;
+	display: block;
+	letter-spacing: -1px;
+	text-transform: lowercase;
+	text-decoration: none;
+}
+
+.registration-finished h2 a:hover {
+	text-decoration: underline;
+}
+
+.registration-finished a {
+	display: block;
+}
+
+.registration-finished .next-steps {
+	border-top: 1px solid #DDD;
+	padding: 20px 25px;
+}
+
+.registration-finished .next-steps h3 {
+	color: #777;
+	font: lighter 20px/24px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica,arial,sans-serif;
+	margin-bottom: 5px;
+	text-transform: lowercase;
+	width: 220px;
+}
+
+.registration-finished .next-steps p {
+	color: #777;
+	width: 220px;
+	font-size: 12px;
+}
+
+.registration-finished .next-steps ul {
+	float: right;
+	margin-top: -48px;
+}
+
+.registration-finished .next-steps ul li {
+	list-style: none;
+	margin-bottom: 5px;
+}
+
+.registration-finished .next-steps ul li a {
+	color: #c02926;
+	font-size: 14px;
+	text-decoration: none;
+}
+
+.registration-finished .next-steps ul li a:hover {
+	text-decoration: underline;
+}
+
+.login #header {
+	width: 340px;
+	background-color: #fff;
+	border-radius: 3px 3px 0 0;
+	-webkit-border-radius: 3px 3px 0 0;
+	-moz-border-radius: 3px 3px 0 0;
+	box-shadow: -1px 1px 1px #CCCCCC, 1px 1px 1px #CCCCCC, 0 1px 1px #CCCCCC;
+	-webkit-box-shadow: -1px 1px 1px #CCCCCC, 1px 1px 1px #CCCCCC, 0 1px 1px #CCCCCC;
+	-moz-box-shadow: -1px 1px 1px #CCCCCC, 1px 1px 1px #CCCCCC, 0 1px 1px #CCCCCC;
+	text-align: center;
+	margin-top: 70px;
+	border-bottom: 1px solid #CCCCCC;
+	padding: 30px 0 20px;
+	border-top-width: 15px;
+}
+
+.login #content {
+	width: 340px;
+	border-radius: 0;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	box-shadow: 0 2px 2px #CCCCCC;
+	-webkit-box-shadow: 0 2px 2px #CCCCCC;
+	-moz-box-shadow: 0 2px 2px #CCCCCC;
+	border-left: 1px solid #CCCCCC;
+	border-right: 1px solid #CCCCCC;
+}
+
+.login #success-feedback, #error-feedback {
+	margin: 0 auto;
+	width: 292px;
+}
+
+.login #header .logo {
+	text-decoration: none;
+	max-width: 235px;
+	font-size: 28px;
+	display: inline-block;
+}
+
+.login #header .logo img {
+	max-width: 100%;
+}
+
+.login .form-register {
+	border: 0;
+}
+
+.login .form-register .field-group {
+	float: none;
+	margin: 0 auto;
+	width: 300px;
+	padding-top: 25px;
+}
+
+.login .form-register .form-grid-220 {
+	margin-bottom: 25px;
+}
+
+.login .form-register fieldset {
+	padding: 0;
+	border: 0;
+}
+
+.login .form-register fieldset.actions {
+	padding: 0 20px 25px;
+}
+
+.login .form-register fieldset.actions button {
+	margin: 0;
+}
+
+.login .form-register .checkbox, .login .form-edit div.input.checkbox input {
+	margin: 0;
+}
+
+.login .ui-text, .login .ui-textarea {
+	width: 285px;
+}
+
+.login #footer {
+	display: none;
+}
+
+.login .wrapper {
+	overflow: hidden;
+}

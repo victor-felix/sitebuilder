@@ -1,0 +1,265 @@
+.default-form {
+	border-top: 1px solid #DDD;
+}
+
+.default-form fieldset {
+	border: 0;
+	border-bottom: 1px solid #DDD;
+	clear: both;
+	padding-bottom: 10px;
+}
+
+.default-form fieldset.actions {
+	border: 0;
+	padding: 25px;
+	padding-left: 35px;
+}
+
+.default-form fieldset.actions button {
+	margin-left: 288px;
+}
+
+.default-form fieldset h2 {
+	color: #333;
+	float: left;
+	font: lighter 24px/22px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica,arial,sans-serif;
+	margin-right: 20px;
+	padding: 40px 0 30px 25px;
+	text-transform: lowercase;
+	width: 275px;
+}
+
+.default-form .tip {
+	border-top: none;
+	padding: 35px 25px 25px 35px;
+}
+
+.default-form .tip h2 {
+	padding: 0 0 10px;
+	float: none;
+}
+
+.default-form .tip h2.greater {
+	font-size: 32px;
+	line-height: 32px;
+}
+
+.default-form .tip p {
+	font-size: 16px;
+	line-height: 18px;
+	padding-right: 35px;
+	color: #999;
+	margin-top: 5px;
+}
+
+.default-form .tip p img.icon {
+	float: left;
+	margin: 0 10px 7px 0;
+}
+
+.default-form .tip p img.icon + span {
+	padding-top: 10px;
+	display: block;
+}
+
+.default-form .tip small {
+	clear: both;
+	font-size: 12px;
+	line-height: 15px;
+}
+
+.default-form .field-group {
+	float: left;
+	padding: 40px 0 0 0;
+	width: 460px;
+}
+
+.default-form .form-grid-220 {
+	position: relative;
+	float: left;
+	margin-left: 20px;
+	margin-bottom: 30px;
+	width: 220px;
+}
+
+.default-form .form-grid-460 {
+	position: relative;
+	clear: both;
+	margin-bottom: 30px;
+	width: 460px;
+}
+
+.default-form .form-grid-570 {
+	float: left;
+	padding: 40px 0 0 0;
+	width: 540px;
+}
+
+.default-form .form-grid-220.first {
+	margin-left: 0;
+	clear: left;
+}
+
+.default-form label, .default-form .label {
+	display: block;
+	font-size: 12px;
+	color: #666;
+	margin-bottom: 2px;
+}
+
+.default-form small {
+	color: #888;
+	display: block;
+	font-size: 11px;
+	line-height: 12px;
+	margin-top: 8px;
+}
+
+.default-form .optional {
+	color: #CCC;
+	position: absolute;
+	right: 0;
+	font-size: 11px;
+	font-style: italic;
+}
+
+.default-form .optional.red {
+	color: red;
+}
+
+.default-form p.error {
+	color: #F00;
+	font-style: italic;
+	margin-top: 4px;
+}
+
+.default-form .fieldset-expand {
+	border-bottom: 1px solid #DDD;
+	color: #c02926;
+	display: block;
+	font: lighter 18px/22px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica,arial,sans-serif;
+	text-decoration: none;
+	outline: none;
+	padding: 30px 25px;
+}
+
+.default-form .fieldset-expand:hover {
+	background: url(/images/shared/layout/ui-button-white.png) center repeat-x;
+	border-bottom-color: #CCC;
+	-moz-box-shadow: 0 1px 0px #EEE;
+	-webkit-box-shadow: 0 1px 0px #EEE;
+}
+
+.default-form .fieldset-expand:active {
+	background: url(/images/shared/layout/ui-button-white-active.png) center repeat-x;
+}
+
+.default-form .fieldset-expand span {
+	background: url(/images/shared/register/arrow-expand-fieldset.png) right no-repeat;
+	float: right;
+	padding-right: 40px;
+	text-indent: -9999px;
+	width: 30px;
+}
+
+.default-form .domains {
+	padding: 25px 0;
+	clear: both;
+}
+
+.default-form .domains p {
+	margin: 10px 0;
+}
+
+.default-form .domains p a{
+	float: right;
+}
+
+.default-form .custom-domain-setup {
+	margin: 5px 0;
+}
+
+.default-form .custom-domain-setup small {
+	font-size: 13px;
+}
+
+.default-form .custom-domain-setup span {
+	color: #999;
+	font-size: 17px;
+}
+
+.default-form .meumobi-url span {
+	color: #999;
+	font-size: 17px;
+	display: inline-block;
+	line-height: 29px;
+	margin-right: 5px;
+	float: left;
+}
+
+.default-form .meumobi-url input {
+	float: left;
+	margin-right: 5px;
+}
+
+.default-form p.code {
+	border: 1px solid #CCC;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	padding: 10px;
+}
+
+.default-form .logo {
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	border: 1px solid #CCC;
+	padding: 5px;
+	margin-bottom: 10px;
+	max-width: 200px;
+	max-height: 200px;
+}
+
+.default-form a.delete-items {
+	margin-right: 10px;
+}
+
+.default-form a.delete {
+	float: right;
+	position: relative;
+	padding-left: 25px;
+	margin-top: 8px;
+}
+
+.default-form a.delete img {
+	position: absolute;
+	top: 5px;
+	left: 7px;
+}
+
+.populate-fields {
+	overflow: hidden;
+}
+
+.populate-fields fieldset {
+	border-bottom: none;
+	margin: 0;
+	padding: 10px 0 0;
+}
+
+.import_method {
+	overflow: hidden;
+}
+
+.import_method fieldset {
+	border-bottom: none;
+}
+
+.default-form div.input.checkbox input {
+	margin-top: 5px;
+}
+
+.default-form label.checkbox {
+	margin: -1.2em 0 0 20px;
+}
