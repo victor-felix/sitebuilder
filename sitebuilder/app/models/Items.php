@@ -131,7 +131,7 @@ class Items extends \lithium\data\Model {
 					'lineBreaks' => true,
 					'escapeHtml' => false
 				]);
-				$parser->addFilter(new \Decoda\Filter\UrlFilter());
+				$parser->defaults();
 				$parser->setStrict(false);
 				$parser->whitelist('b', 'i', 'color', 'url', 'big', 'small');
 				$self[$code] = '<p>' . $parser->parse() . '</p>';
