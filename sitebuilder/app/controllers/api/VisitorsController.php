@@ -46,6 +46,7 @@ class VisitorsController extends ApiController
 		if ($visitor && $visitor->passwordMatch($currentPassword)) {
 			$visitor->setPassword($newPassword);
 			$repository->update($visitor);
+			return [ 'success' => true ];
 		} else {
 			throw new ForbiddenException('Invalid visitor');
 		}
