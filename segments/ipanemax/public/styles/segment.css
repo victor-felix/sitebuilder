@@ -118,5 +118,6 @@ div.theme-picker > ul > li.selected {
   background-color: #74d500; }
 
 .featured-list li .link h3,
+.featured-list > li .link .icons,
 div.dashboard .domain a {
   color: #74d500; }
