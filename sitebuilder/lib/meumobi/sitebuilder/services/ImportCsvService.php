@@ -22,6 +22,7 @@ abstract class ImportCsvService extends Service {
 		if (!$row = fgetcsv($this->getFile(), 3000)) {
 			return false;
 		}
+		$data = null;
 		foreach ($fields as $key => $field) {
 			if (isset($row[$key])) {
 				$data[$field] = $row[$key];
