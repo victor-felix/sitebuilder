@@ -1,20 +1,21 @@
 <?php
 use lithium\data\Connections;
 
-class TrimGroupNamesOnVisitors
+class TrimGroupNames
 {
 	public static function migrate($connection)
 	{
 		$connection = Connections::get('default')->connection;
 
 		$command = '
-			return db.visitors.find({groups:{$exists: true, $not: {$size: 0}}}).forEach(function(item) {
+			return db.%1$s.find({groups:{$exists: true, $not: {$size: 0}}}).forEach(function(item) {
 				for (var k in item.groups) {
 					item.groups[k] = item.groups[k].trim();
 				}
-				db.visitors.save(item);
+				db.%1$s.save(item);
 			});
 		';
-		$connection->execute($command);
+		$connection->execute(sprintf($command, 'visitors'));
+		$connection->execute(sprintf($command, 'items'));
 	}
 }
