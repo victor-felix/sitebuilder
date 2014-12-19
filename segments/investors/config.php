@@ -11,8 +11,8 @@ Config::write('Segment', array(
   'enableSignup' => false,
   'fullOptions' => true,
   'analytics' => '',
-	'enableMultiUsers' => true,
+  'enableMultiUsers' => true,
   'analytics' => 'UA-22519238-3',
 	'themes' => array('rimobi'),
-	'enableFieldSet' => array('photos','weblinks','location', 'contact', 'news', 'description', 'timetable', 'stocks'),
+	'enableFieldSet' => array('stocks', 'photos', 'location', 'contact', 'description'),
 ));
