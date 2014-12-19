@@ -16,8 +16,8 @@
 			<p id="qr-code"><img src="http://api.qrserver.com/v1/create-qr-code/?size=100x100&data=http://<?php echo e($site->domain()) ?>" /></p>
 		</div>
 		<ul class="featured-list">
-			<?php $i = 0; $fildsets = MeuMobi::currentSegment()->enableFieldSet ? MeuMobi::currentSegment()->enableFieldSet : array() ?>
-			<?php foreach ($fildsets as $item ): ?>
+			<?php $i = 0; $fieldsets = MeuMobi::currentSegment()->enableFieldSet ? MeuMobi::currentSegment()->enableFieldSet : array() ?>
+			<?php foreach ($fieldsets as $item ): ?>
 			<?php 
 				echo $this->element('dashboard/'.$item, compact('site'));
 				$i++;
