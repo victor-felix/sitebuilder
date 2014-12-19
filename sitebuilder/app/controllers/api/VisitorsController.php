@@ -52,7 +52,7 @@ class VisitorsController extends ApiController
 		}
 	}
 
-	public function addDevice()
+	public function add_device()
 	{
 		$this->requireVisitorAuth();
 		$repository = new VisitorsRepository();
@@ -63,6 +63,21 @@ class VisitorsController extends ApiController
 			'model' => $this->request->get('data:model')
 		]);
 		$visitor->addDevice($device);
+		$repository->update($visitor);
+
+	}
+	//TODO remove duplicated code
+	public function update_device()
+	{
+		$this->requireVisitorAuth();
+		$repository = new VisitorsRepository();
+		$visitor = $this->visitor();
+		$device = new VisitorDevice([
+			'uuid' => $this->request->get('params:device_id'),
+			'pushId' => $this->request->get('data:pushId'),
+			'model' => $this->request->get('data:model')
+		]);
+		$visitor->updateDevice($device);
 		$repository->update($visitor);
 	}
 }

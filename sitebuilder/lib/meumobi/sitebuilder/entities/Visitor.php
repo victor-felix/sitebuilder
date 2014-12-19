@@ -3,7 +3,7 @@
 namespace meumobi\sitebuilder\entities;
 
 use meumobi\sitebuilder\entities\VisitorDevice;
-
+use meumobi\sitebuilder\repositories\RecordNotFoundException;
 use MongoId;
 use Security;
 
@@ -68,6 +68,18 @@ class Visitor extends Entity
 	public function addDevice(VisitorDevice $device)
 	{
 		if (!in_array($device, $this->devices)) $this->devices []= $device;
+	}
+
+	//It seems incorrect place to put this, It looks more appropriate to use a repository
+	public function updateDevice(VisitorDevice $device)
+	{
+		//This is uggly as hell, but array_search din't worked
+		$key = false;
+		foreach ($this->devices as  $k => $item) {
+			if ($item->uuid() === $device->uuid()) $key = $k;
+		}
+		if ($key === false) throw new RecordNotFoundException("The visitor with uuid '{$device->uuid()}' was not found"); 
+		$this->devices [$key]= $device;
 	}
 
 	public function groups()

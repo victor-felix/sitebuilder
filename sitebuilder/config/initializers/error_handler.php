@@ -9,6 +9,7 @@ ErrorHandler::apply(array('lithium\action\Dispatcher', 'run'),
 		'app\controllers\api\UnAuthorizedException',
 		'app\controllers\api\ForbiddenException',
 		'app\controllers\api\InvalidArgumentException',
+		'meumobi\sitebuilder\repositories\RecordNotFoundException'
 	)),
 	function($exception, $params) {
 		$response = new \lithium\action\Response(array(
