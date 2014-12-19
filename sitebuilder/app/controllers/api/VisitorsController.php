@@ -23,8 +23,7 @@ class VisitorsController extends ApiController
 			$device = $this->request->get('data:device');
 			$device = new VisitorDevice([
 				'uuid' => $device['uuid'],
-				'pushId' => $device['pushId'],
-				'model' => $device['model']
+				'model' => $device['model'],
 			]);
 			$visitor->addDevice($device);
 			$visitor->setLastLogin(date('Y-m-d H:i:s'));
@@ -59,25 +58,22 @@ class VisitorsController extends ApiController
 		$visitor = $this->visitor();
 		$device = new VisitorDevice([
 			'uuid' => $this->request->get('data:uuid'),
-			'pushId' => $this->request->get('data:pushId'),
+			'pushId' => $this->request->get('data:push_id'),
 			'model' => $this->request->get('data:model')
 		]);
 		$visitor->addDevice($device);
 		$repository->update($visitor);
-
+		return [ 'success' => true ];
 	}
-	//TODO remove duplicated code
+
 	public function update_device()
 	{
 		$this->requireVisitorAuth();
 		$repository = new VisitorsRepository();
 		$visitor = $this->visitor();
-		$device = new VisitorDevice([
-			'uuid' => $this->request->get('params:device_id'),
-			'pushId' => $this->request->get('data:pushId'),
-			'model' => $this->request->get('data:model')
-		]);
-		$visitor->updateDevice($device);
+		$device = $visitor->findDevice($this->request->get('params:device_id'));
+		$device->update($this->request->data);
 		$repository->update($visitor);
+		return [ 'success' => true ];
 	}
 }

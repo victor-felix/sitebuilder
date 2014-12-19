@@ -19,7 +19,7 @@ class Visitor extends Entity
 
 	public function siteId()
 	{
-		return (int)$this->siteId;
+		return (int) $this->siteId;
 	}
 
 	public function email()
@@ -70,16 +70,16 @@ class Visitor extends Entity
 		if (!in_array($device, $this->devices)) $this->devices []= $device;
 	}
 
-	//It seems incorrect place to put this, It looks more appropriate to use a repository
-	public function updateDevice(VisitorDevice $device)
-	{
-		//This is uggly as hell, but array_search din't worked
-		$key = false;
-		foreach ($this->devices as  $k => $item) {
-			if ($item->uuid() === $device->uuid()) $key = $k;
+	public function findDevice($uuid) {
+		$device = current(array_filter($this->devices, function($device) use($uuid) {
+			return $device->uuid() == $uuid;
+		}));
+
+		if (!$device) {
+			throw new RecordNotFoundException("The device with uuid '{$uuid}' was not found"); 
 		}
-		if ($key === false) throw new RecordNotFoundException("The visitor with uuid '{$device->uuid()}' was not found"); 
-		$this->devices [$key]= $device;
+
+		return $device;
 	}
 
 	public function groups()

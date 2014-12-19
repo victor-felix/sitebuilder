@@ -1,11 +1,24 @@
 <?php
+
 namespace meumobi\sitebuilder\entities;
+
+use Inflector;
 
 class VisitorDevice extends Entity
 {
 	protected $uuid;
 	protected $pushId;
 	protected $model;
+
+	public function update($updates)
+	{
+		foreach ($updates as $field => $value) {
+			$field = Inflector::camelize($field, true);
+			if (property_exists($this, $field)) {
+				$this->$field = $value;
+			}
+		}
+	}
 
 	public function uuid()
 	{
@@ -22,7 +35,7 @@ class VisitorDevice extends Entity
 		return $this->model;
 	}
 
-  public function __toString()
+	public function __toString()
 	{
 		return $this->uuid;
 	}
