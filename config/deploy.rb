@@ -2,9 +2,9 @@
 lock '3.2.1'
 
 set :application, 'meumobi'
-set :repo_url, 'git@git-repos.ipanemax.com:partners.meumobi.git'
+set :repo_url, 'git@github.com:meumobi/sitebuilder.git'
 
-set :scm, :git 
+set :scm, :git
 set :git_strategy, Capistrano::Git::SubmoduleStrategy
 
 # Default branch is :master
@@ -35,19 +35,19 @@ set :file_permissions_paths, %w{uploads log tmp} #tmp/cache/yaml tmp/cache/html_
 #Sitebuilder services lock files
 set :services_paths, [
   'tmp/update_feeds_low.pid',
-  'tmp/update_feeds_high.pid', 
-  'tmp/update_merchant_products_low.pid', 
-  'tmp/update_merchant_products_high.pid', 
+  'tmp/update_feeds_high.pid',
+  'tmp/update_merchant_products_low.pid',
+  'tmp/update_merchant_products_high.pid',
   'tmp/import_csv.pid',
   'tmp/geocode_items_high.pid',
   'tmp/geocode_items_low.pid'
-  ] 
+  ]
 
 # Default value for default_env is {}
 # set :default_env, { path: '/opt/ruby/bin:$PATH' }
 
 # Default value for keep_releases is 5
-# set :keep_releases, 5
+set :keep_releases, 5
 
 set :ssh_options, {
   user: 'meumobi',
