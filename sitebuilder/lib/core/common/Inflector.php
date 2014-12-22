@@ -2,7 +2,7 @@
 
 class Inflector {
     public static function camelize($value, $lcfirst = false) {
-        $value = preg_replace('/([_-\s]?([a-z0-9]+))/e', 'ucwords("\\2")', $value);
+        $value = preg_replace('/([_-\s]?([a-z0-9]+))/ie', 'ucwords("\\2")', $value);
         return ($lcfirst ? strtolower($value[0]) : strtoupper($value[0]))
             . substr($value, 1);
     }
