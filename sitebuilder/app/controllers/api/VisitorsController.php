@@ -6,6 +6,7 @@ use lithium\storage\Session;
 use meumobi\sitebuilder\repositories\VisitorsRepository;
 use meumobi\sitebuilder\entities\Visitor;
 use meumobi\sitebuilder\entities\VisitorDevice;
+use meumobi\sitebuilder\presenters\api\VisitorPresenter;
 
 class VisitorsController extends ApiController
 {
@@ -28,10 +29,19 @@ class VisitorsController extends ApiController
 			$visitor->addDevice($device);
 			$visitor->setLastLogin(date('Y-m-d H:i:s'));
 			$repository->update($visitor);
-			return [ 'token' => $visitor->authToken() ];
+			return [
+				'token' => $visitor->authToken(),
+				'visitor' => VisitorPresenter::present($visitor)
+			];
 		} else {
 			throw new UnAuthorizedException('Invalid visitor');
 		}
+	}
+
+	public function show()
+	{
+		$this->requireVisitorAuth();
+		return VisitorPresenter::present($this->visitor());
 	}
 
 	public function update()
@@ -45,7 +55,10 @@ class VisitorsController extends ApiController
 		if ($visitor && $visitor->passwordMatch($currentPassword)) {
 			$visitor->setPassword($newPassword);
 			$repository->update($visitor);
-			return [ 'success' => true ];
+			return [
+				'success' => true,
+				'visitor' => VisitorPresenter::present($visitor)
+			];
 		} else {
 			throw new ForbiddenException('Invalid visitor');
 		}

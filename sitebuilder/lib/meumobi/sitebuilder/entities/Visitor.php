@@ -11,6 +11,8 @@ class Visitor extends Entity
 {
 	protected $siteId;
 	protected $email;
+	protected $firstName;
+	protected $lastName;
 	protected $hashedPassword;
 	protected $authToken;
 	protected $lastLogin;
@@ -25,6 +27,21 @@ class Visitor extends Entity
 	public function email()
 	{
 		return $this->email;
+	}
+
+	public function name()
+	{
+		return $this->firstName() . ' ' . $this->lastName;
+	}
+
+	public function firstName()
+	{
+		return $this->firstName;
+	}
+
+	public function lastName()
+	{
+		return $this->lastName;
 	}
 
 	public function setPassword($password)

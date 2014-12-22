@@ -105,6 +105,8 @@ class VisitorsRepository extends Repository
 	{
 		return [
 			'email' => $object->email(),
+			'first_name' => $object->firstName(),
+			'last_name' => $object->lastName(),
 			'site_id' => $object->siteId(),
 			'hashed_password' => $object->hashedPassword(),
 			'auth_token' => $object->authToken(),
