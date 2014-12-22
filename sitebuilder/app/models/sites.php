@@ -344,6 +344,7 @@ class Sites extends AppModel
 		$data['analytics_token'] = $this->google_analytics;
 		$data['android_app_id'] = $this->android_app_id;
 		$data['ios_app_id'] = $this->ios_app_id;
+		$data['latest_app_version'] = $this->latest_app_version;
 		$data['landing_page'] = $this->landing_page;
 		$data['stock_symbols'] = $this->stock_symbols;
 		$data['language'] = $this->language;
