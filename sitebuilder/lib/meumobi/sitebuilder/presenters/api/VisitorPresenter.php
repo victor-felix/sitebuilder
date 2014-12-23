@@ -9,7 +9,8 @@ class VisitorPresenter
   public static function present($object)
   {
     return [
-      'name' => $object->name(),
+			'first_name' => $object->firstName(),
+			'last_name' => $object->lastName(),
       'email' => $object->email(),
     ];
   }

@@ -29,11 +29,6 @@ class Visitor extends Entity
 		return $this->email;
 	}
 
-	public function name()
-	{
-		return $this->firstName() . ' ' . $this->lastName;
-	}
-
 	public function firstName()
 	{
 		return $this->firstName;
