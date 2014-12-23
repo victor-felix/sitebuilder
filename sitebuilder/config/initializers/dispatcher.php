@@ -42,7 +42,7 @@ Router::connect(new Route(array(
 )));
 
 Router::connect(new Route(array(
-	'method' => 'POST',
+	'method' => 'PUT',
 	'template' => '/api/{:slug}/visitors',
 	'params' => array(
 		'controller' => 'visitors',
