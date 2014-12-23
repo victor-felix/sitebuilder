@@ -149,7 +149,7 @@ Parameters:
 * mail
 * phone
 * message
- 
+
 Authentication Token: X-Authentication-Token: 9456bbf53af6fdf30a5d625ebf155b4018c8b0aephp
 
 ### News Feed
@@ -229,11 +229,11 @@ Example response:
 		 "created":"2011-01-26 07:34:55",
 		 "modified":"2011-01-26 07:34:55"
 		 "extensions": {
-		 "extension": "store-locator", 
+		 "extension": "store-locator",
 		 "itemLimit": 10,
 		 "language": "en"
 	      },
-	      {...}    
+	      {...}
 	    ]
 	}
 
@@ -328,7 +328,7 @@ Example response:
 	   ]
 	}
 
-#### GET /{domain}/items/{id} 
+#### GET /{domain}/items/{id}
 
 Gets an item.
 
@@ -356,9 +356,9 @@ Parameters:
 
 - **parent_id**: parent category id
 - **title**: title of the item
-- **description**: description of the item 
+- **description**: description of the item
 - **Any item field..**
- 
+
 Example of request:
 
 http://meumobi.com/api/zbrahostel.int-meumobi.com/items/search?title=item&parent_id=233
@@ -368,55 +368,55 @@ Example response:
     {
 	    "articles": [
 		{
-		    "_id": "515c77363f482e4e98000000", 
-		    "author": "", 
-		    "created": 1365014326, 
-		    "description": "<p></p>", 
-		    "guid": "", 
-		    "images": [], 
-		    "link": "", 
-		    "modified": 1365014326, 
-		    "order": 1, 
-		    "parent_id": 9, 
-		    "pubdate": 1365014326, 
-		    "site_id": 1, 
-		    "title": "My Item", 
+		    "_id": "515c77363f482e4e98000000",
+		    "author": "",
+		    "created": 1365014326,
+		    "description": "<p></p>",
+		    "guid": "",
+		    "images": [],
+		    "link": "",
+		    "modified": 1365014326,
+		    "order": 1,
+		    "parent_id": 9,
+		    "pubdate": 1365014326,
+		    "site_id": 1,
+		    "title": "My Item",
 		    "type": "articles"
-		}, 
+		},
 		{
-		    "_id": "515e036e3f482eae12000000", 
-		    "author": "", 
-		    "created": 1365115758, 
-		    "description": "<p></p>", 
-		    "guid": "", 
-		    "images": [], 
-		    "link": "", 
-		    "modified": 1365115758, 
-		    "order": 1, 
-		    "parent_id": 11, 
-		    "pubdate": 1365115758, 
-		    "site_id": 1, 
-		    "title": "My Item", 
+		    "_id": "515e036e3f482eae12000000",
+		    "author": "",
+		    "created": 1365115758,
+		    "description": "<p></p>",
+		    "guid": "",
+		    "images": [],
+		    "link": "",
+		    "modified": 1365115758,
+		    "order": 1,
+		    "parent_id": 11,
+		    "pubdate": 1365115758,
+		    "site_id": 1,
+		    "title": "My Item",
 		    "type": "articles"
 		}
-	    ], 
+	    ],
 	    "business": [
 		{
-		    "_id": "515c76d43f482e7398000000", 
-		    "address": "Rua Cel. Pena de Moraes, 415 - Farroupilha - RS", 
-		    "created": 1365014227, 
-		    "description": "<p></p>", 
+		    "_id": "515c76d43f482e7398000000",
+		    "address": "Rua Cel. Pena de Moraes, 415 - Farroupilha - RS",
+		    "created": 1365014227,
+		    "description": "<p></p>",
 		    "geo": [
-		        -51.3480038, 
+		        -51.3480038,
 		        -29.2284825
-		    ], 
-		    "images": [], 
-		    "modified": 1365014227, 
-		    "order": 2, 
-		    "parent_id": 8, 
-		    "phone": "", 
-		    "site_id": 1, 
-		    "title": "My Item", 
+		    ],
+		    "images": [],
+		    "modified": 1365014227,
+		    "order": 2,
+		    "parent_id": 8,
+		    "phone": "",
+		    "site_id": 1,
+		    "title": "My Item",
 		    "type": "business"
 		}
 	    ]
@@ -443,7 +443,7 @@ Any item-specific param (like description, address, etc., can vary for each item
 - **type**
 - **title**
 - **related**: array of ids of related items. for example, in rest-client, ["4e9cb46e9a645d2277000000", "4e9cb46e9a645d2277000001", "4e9cb46e9a645d2277000002", ...]
- 
+
 #### POST /{domain}/items/{id}/add
 
 Create an item as related to an existing.
@@ -474,7 +474,7 @@ Parameters:
 - **visible**: visibility of the image (default is 0)
 - **title**: title of the image
 - **description**: description of the image
- 
+
 #### PUT /{domain}/items/{id}
 
 Edits an item.
@@ -488,7 +488,7 @@ Any item-specific param (like description, address, etc., can vary for each item
 - **type**
 - **title**
 - **related**: array of ids of related items. for example, in rest-client, ["4e9cb46e9a645d2277000000", "4e9cb46e9a645d2277000001", "4e9cb46e9a645d2277000002", ...]
- 
+
 **Note**: when sending images to this action you should change PUT for POST, and send a X-HTTP-Method-Override: PUT header instead. This is a known bug and we're working on it.
 
 Example request (in rest-client):
@@ -563,19 +563,19 @@ Example response:
 
     [
 	    {
-		"_id": "511e891a3f482e52ec000013", 
-		"author": "Matt Burns", 
-		"created": 1360955674, 
-		"description": "<p>With just a few quick steps, it?s easy to open the phone app on any locked iPhone running iOS 6.1...</p>", 
-		"format": "html", 
-		"guid": "http://techcrunch.com/?p=758053", 
-		"link": "http://techcrunch.com/2013/02/14/new-ios-6-1-security-grants-limited-access-to-phone-app-photos-email-messages-facetime/", 
-		"modified": 1360955674, 
-		"order": 20, 
-		"parent_id": 2, 
-		"pubdate": 1360855859, 
-		"site_id": 1, 
-		"title": "New iOS 6.1 Security Flaw Grants Limited Access To Phone App, Photos, Email, Messages, FaceTime", 
+		"_id": "511e891a3f482e52ec000013",
+		"author": "Matt Burns",
+		"created": 1360955674,
+		"description": "<p>With just a few quick steps, it?s easy to open the phone app on any locked iPhone running iOS 6.1...</p>",
+		"format": "html",
+		"guid": "http://techcrunch.com/?p=758053",
+		"link": "http://techcrunch.com/2013/02/14/new-ios-6-1-security-grants-limited-access-to-phone-app-photos-email-messages-facetime/",
+		"modified": 1360955674,
+		"order": 20,
+		"parent_id": 2,
+		"pubdate": 1360855859,
+		"site_id": 1,
+		"title": "New iOS 6.1 Security Flaw Grants Limited Access To Phone App, Photos, Email, Messages, FaceTime",
 		"type": "articles"
 	    }
 	    ...
@@ -588,7 +588,7 @@ Gets valid promotions.
 Parameters:
 
 - **time**: override time for the promotion. The default is the current time. Should be passed as UNIX seconds (returned by the time() function in PHP).
- 
+
 #### GET /{domain}/categories/{id}/geo/nearest
 
 Gets the items near to a certain location.
@@ -596,7 +596,7 @@ Gets the items near to a certain location.
 Parameters:
 - lat
 - lng
- 
+
 #### GET /{domain}/categories/{id}/geo/inside
 
 Gets the items inside a certain area.
@@ -605,7 +605,7 @@ Parameters:
 - ne_lat
 - ne_lng
 - sw_lat
-- sw_lng 
+- sw_lng
 
 ### Extensions
 
@@ -656,9 +656,9 @@ Adds an image without an item.
 Parameters:
 
 - **visible**: visibility of the image
-- **title**: title of the image 
+- **title**: title of the image
 - **description**: description of the image
- 
+
 #### PUT /{domain}/images/{id}
 
 Edits an image
@@ -666,7 +666,7 @@ Edits an image
 Parameters:
 
 - **visible**: visibility of the image
-- **title**: title of the image 
+- **title**: title of the image
 - **description**: description of the image
 
 #### DELETE /{domain}/images/{id}
@@ -680,12 +680,12 @@ Logs in a visitor. Parameters:
 - **email**
 - **password**
 - **device[uuid]**
-- **device[pushId]**
+- **device[push_id]**
 - **device[model]**
 
 #### POST /{domain}/visitors
 
-Updates information about the visitor. 
+Updates information about the visitor.
 
 Parameters:
 
@@ -701,12 +701,12 @@ Response status:
 
 #### POST /{domain}/visitors/devices
 
-Add a device to the visitor if not already exists. 
+Add a device to the visitor if not already exists.
 
 Parameters:
 
 - **uuid**: device uuid
-- **pushId**: device push id
+- **push_id**: device push id
 - **model**: device model
 
 Headers:
@@ -714,11 +714,11 @@ Headers:
 
 #### PUT /{domain}/visitors/devices/{uuid}
 
-Update a device of the visitor  
+Update a device of the visitor
 
 Parameters:
 
-- **pushId**: device push id
+- **push_id**: device push id
 - **model**: device model
 
 Headers:
@@ -741,14 +741,14 @@ Datas and ids are fake. Don't need to use Authentication for non PROD environmen
 
     bash# restclient http://enterprise.meumobilesite.com/api
 	irb(main):001:0> get '/hoggetcard.int-meumobi.com/categories', {"X-Authentication-Token" => "c8e75b59161a5922c04ede9a533867e371fa2933"}
-    
+
 	irb(main):001:0> post '/hoggetcard.int-meumobi.com/items', {parent_id: 9, title: 'Test', type: "articles"}, {"X-Authentication-Token" => "c8e75b59161a5922c04ede9a533867e371fa2933"}
-    
+
 	irb(main):003:0> put '/hoggetcard.int-meumobi.com/items/4e921c9096e4d21415000000', {title: 'Another Test'}, {"X-Authentication-Token" => "c8e75b59161a5922c04ede9a533867e371fa2933"}
-    
+
 	irb(main):003:0>  get '/hoggetcard.int-meumobi.com/categories', {"X-Authentication-Token" => "c8e75b59161a5922c04ede9a533867e371fa2933"}
 	irb(main):003:0> delete '/hoggetcard.int-meumobi.com/items/4e921c9096e4d21415000000', {"X-Authentication-Token" => "c8e75b59161a5922c04ede9a533867e371fa2933"}
-    
+
 	irb(main):003:0> get '/hoggetcard.int-meumobi.com/categories/150/geo/nearest?lat=2.3934249&lng=48.8457628', {"X-Authentication-Token" => "c8e75b59161a5922c04ede9a533867e371fa2933"}
-    
-	irb(main):046:0> get '/hoggetcard.int-meumobi.com/items?type=restaurants', {"X-Authentication-Token" => "c8e75b59161a5922c04ede9a533867e371fa2933"} 
+
+	irb(main):046:0> get '/hoggetcard.int-meumobi.com/items?type=restaurants', {"X-Authentication-Token" => "c8e75b59161a5922c04ede9a533867e371fa2933"}
