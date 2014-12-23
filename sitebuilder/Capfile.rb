@@ -48,7 +48,7 @@ namespace :deploy do
   end
 
   task :parse_api_doc do
-    run "ruby #{release_path}/sitebuilder/script/parse_docs.rb #{release_path}/sitebuilder/doc/api_tech_spec.md #{release_path}/segments/meumobi/public/docs/api.html 'MeuMobi: Tech Spec'"
+    run "ruby #{release_path}/sitebuilder/script/parse_docs.rb #{release_path}/doc/api_specs.md #{release_path}/segments/meumobi/public/docs/api.html 'MeuMobi: Tech Spec'"
   end
 
   task :platform_check do
