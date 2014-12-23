@@ -296,6 +296,10 @@ Example response:
 
 ### Items
 
+#### GET /{domain}/categories/{category_id}/items.rss
+
+Gets a list of items in RSS 2.0 format.
+
 #### GET /{domain}/categories/{category_id}/items
 
 Gets a list of items.
@@ -668,6 +672,61 @@ Parameters:
 #### DELETE /{domain}/images/{id}
 
 Deletes an image
+
+#### POST /{domain}/visitors/login
+
+Logs in a visitor. Parameters:
+
+- **email**
+- **password**
+- **device[uuid]**
+- **device[pushId]**
+- **device[model]**
+
+#### POST /{domain}/visitors
+
+Updates information about the visitor. 
+
+Parameters:
+
+- **current_password**
+- **password**
+
+Headers:
+- **X-Visitor-Token**
+
+Response status:
+- **success: 200**
+- **error: 401 (invalid auth token), 403 (invalid current password)**
+
+#### POST /{domain}/visitors/devices
+
+Add a device to the visitor if not already exists. 
+
+Parameters:
+
+- **uuid**: device uuid
+- **pushId**: device push id
+- **model**: device model
+
+Headers:
+- **X-Visitor-Token**
+
+#### PUT /{domain}/visitors/devices/{uuid}
+
+Update a device of the visitor  
+
+Parameters:
+
+- **pushId**: device push id
+- **model**: device model
+
+Headers:
+- **X-Visitor-Token**
+
+Response status:
+- **success: 200**
+- **error: 404 (device not found)**
 
 ## How to test API
 
