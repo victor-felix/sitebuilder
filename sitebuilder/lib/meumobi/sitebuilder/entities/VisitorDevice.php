@@ -43,6 +43,6 @@ class VisitorDevice extends Entity
 
 	public function __toString()
 	{
-		return $this->uuid;
+		return (string)$this->uuid;
 	}
 }

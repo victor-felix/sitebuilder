@@ -92,12 +92,7 @@ class VisitorsRepository extends Repository
 	protected function hydrate($data)
 	{
 		$data['devices'] = array_map(function($d) {
-			return new VisitorDevice([
-				'uuid' => $d['uuid'],
-				'push_id' => $d['push_id'],
-				'model' => $d['model'],
-				'app_version' => $d['app_version']
-			]);
+			return new VisitorDevice($d);
 		}, $data['devices']);
 		return new visitor($data);
 	}
