@@ -21,7 +21,7 @@ namespace :app do
   task :api_doc do
     on roles(:app) do
       within release_path do 
-        execute :ruby, "sitebuilder/script/parse_docs.rb sitebuilder/doc/api_tech_spec.md segments/meumobi/public/docs/api.html 'MeuMobi: Tech Spec'"
+        execute :ruby, "sitebuilder/script/parse_docs.rb doc/api_specs.md segments/meumobi/public/docs/api.html 'MeuMobi: Tech Spec'"
       end
     end
   end
