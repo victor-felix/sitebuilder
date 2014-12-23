@@ -16,6 +16,7 @@ class Entity
 	public function setAttributes(array $attrs)
 	{
 		foreach ($attrs as $key => $value) {
+			if (is_string($value)) $value = trim($value);
 			$key = Inflector::camelize($key, false);
 			$method = 'set' . Inflector::camelize($key);
 			if (method_exists($this, $method)) {
