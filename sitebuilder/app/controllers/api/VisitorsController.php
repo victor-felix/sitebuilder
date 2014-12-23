@@ -21,12 +21,11 @@ class VisitorsController extends ApiController
 		$visitor = $repository->findForAuthentication($this->site()->id, $email, $password);
 
 		if ($visitor) {
-			$device = $this->request->get('data:device');
-			$device = new VisitorDevice([
-				'uuid' => $device['uuid'],
-				'model' => $device['model'],
-			]);
-			$visitor->addDevice($device);
+			$deviceData = $this->request->get('data:device');
+			if ($deviceData) {
+				$device = new VisitorDevice($deviceData);
+				$visitor->addDevice($device);
+			}
 			$visitor->setLastLogin(date('Y-m-d H:i:s'));
 			$repository->update($visitor);
 			return [
@@ -72,7 +71,8 @@ class VisitorsController extends ApiController
 		$device = new VisitorDevice([
 			'uuid' => $this->request->get('data:uuid'),
 			'pushId' => $this->request->get('data:push_id'),
-			'model' => $this->request->get('data:model')
+			'model' => $this->request->get('data:model'),
+			'app_version' => $this->request->get('data:app_version')
 		]);
 		$visitor->addDevice($device);
 		$repository->update($visitor);

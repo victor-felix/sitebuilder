@@ -9,6 +9,7 @@ class VisitorDevice extends Entity
 	protected $uuid;
 	protected $pushId;
 	protected $model;
+	protected $appVersion;
 
 	public function update($updates)
 	{
@@ -28,6 +29,11 @@ class VisitorDevice extends Entity
 	public function pushId()
 	{
 		return $this->pushId;
+	}
+
+	public function appVersion()
+	{
+		return $this->appVersion;
 	}
 
 	public function model()

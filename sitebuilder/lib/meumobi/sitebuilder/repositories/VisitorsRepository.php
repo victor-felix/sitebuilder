@@ -96,6 +96,7 @@ class VisitorsRepository extends Repository
 				'uuid' => $d['uuid'],
 				'push_id' => $d['push_id'],
 				'model' => $d['model'],
+				'app_version' => $d['app_version']
 			]);
 		}, $data['devices']);
 		return new visitor($data);
@@ -115,7 +116,8 @@ class VisitorsRepository extends Repository
 				return [
 					'uuid' => $d->uuid(),
 					'push_id' => $d->pushId(),
-					'model' => $d->model()
+					'model' => $d->model(),
+					'app_version' => $d->appVersion(),
 				];
 			}, $object->devices()),
 			'groups' => $object->groups()
