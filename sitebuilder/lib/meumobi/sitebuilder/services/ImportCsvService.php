@@ -56,7 +56,9 @@ abstract class ImportCsvService extends Service {
 	{
 		if (!$this->fields) {
 			rewind($this->getFile());
-			$this->fields = fgetcsv($this->getFile(), 3000);
+			$this->fields = array_map(function($field) {
+				return trim($field);
+			}, fgetcsv($this->getFile(), 3000));
 		}
 		return $this->fields;
 	}
