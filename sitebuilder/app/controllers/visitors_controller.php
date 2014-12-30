@@ -1,6 +1,7 @@
 <?php
 use meumobi\sitebuilder\repositories\VisitorsRepository;
 use meumobi\sitebuilder\entities\Visitor;
+use meumobi\sitebuilder\presenters\api\AudienceReportPresenter;
 
 class VisitorsController extends AppController
 {
@@ -10,6 +11,7 @@ class VisitorsController extends AppController
 	{
 		$repository = new VisitorsRepository();
 		$visitors = $repository->findBySiteId($this->getCurrentSite()->id);
-		$this->set(compact('visitors'));
+		$report = AudienceReportPresenter::present($visitors);
+		$this->set(compact('visitors', 'report'));
 	}
 }

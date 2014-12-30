@@ -13,6 +13,39 @@
 		</div>
 	</div>
 	<div class="grid-8">
+		<div>
+			<?php print_r($report); ?>
+			<div id="subscribed-graph"></div>
+			<div id="accepted-graph"></div>
+			<div id="versions-graph"></div>
+			<?php
+			$versionsJson = '';
+			foreach ($report['appVersions'] as $version => $total)
+				$versionsJson .= "{value: {$total}, label: '$version'},";
+
+			$this->html->scriptsForLayout .= "
+				<script>
+				Morris.Donut({
+					element: 'subscribed-graph',
+					data: [
+						{value: {$report['subscribed']}, label: 'Subscribed'},
+						{value: {$report['unsubscribed']}, label: 'Unsubscribed'},
+					]
+				});
+				Morris.Donut({
+					element: 'accepted-graph',
+					data: [
+						{value: {$report['accepted']}, label: 'Accepted'},
+						{value: {$report['invited']}, label: 'Invited'},
+					]
+				});
+				Morris.Donut({
+					element: 'versions-graph',
+					data: [$versionsJson]
+				});
+				</script>";
+			?>
+		</div>
 		<table id="visitors-list" class="display" cellspacing="0" width="100%">
 				<thead>
 						<tr>
