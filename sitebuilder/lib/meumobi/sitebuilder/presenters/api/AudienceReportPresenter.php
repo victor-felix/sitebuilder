@@ -28,7 +28,7 @@ class AudienceReportPresenter
 		}, ['subscribed' => 0, 'appVersions' => []]);
 		//count app versions
 		$unsubscribed = $totalVisitors - $subscribedAndVersions['subscribed'];
-		$subscribedPercent = $totalVisitors ? number_format(($subscribedAndVersions['subscribed'] / $totalVisitors), 2) * 100 : 0;
+		$subscribedPercent = $totalVisitors ? number_format(($subscribedAndVersions['subscribed'] / $totalVisitors) * 100, 2) : 0;
 		$unsubscribedPercent = $totalVisitors ? 100 - $subscribedPercent : 0;
 		$subscribedAndVersions['appVersions'] = array_count_values($subscribedAndVersions['appVersions']);
 		return compact('totalVisitors', 'accepted', 'invited', 'unsubscribed', 'subscribedPercent', 'unsubscribedPercent') + $subscribedAndVersions;
