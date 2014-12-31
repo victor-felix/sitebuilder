@@ -14,6 +14,7 @@
 	</div>
 	<div class="grid-8">
 		<div>
+			<?php if($report['totalVisitors']): ?>
 			<div class="graph">
 				<h2>Subscribed vs Unsubscribed Visitors</h2>
 				<div id="subscribed-graph"></div>
@@ -55,6 +56,7 @@
 				</script>";
 			?>
 		</div>
+		<?php endif ?>
 		<table id="visitors-list" class="display" cellspacing="0" width="100%">
 				<thead>
 						<tr>
