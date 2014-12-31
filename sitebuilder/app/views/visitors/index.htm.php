@@ -14,10 +14,18 @@
 	</div>
 	<div class="grid-8">
 		<div>
-			<?php print_r($report); ?>
-			<div id="subscribed-graph"></div>
-			<div id="accepted-graph"></div>
-			<div id="versions-graph"></div>
+			<div class="graph">
+				<h2>Subscribed vs Unsubscribed Visitors</h2>
+				<div id="subscribed-graph"></div>
+			</div>
+			<div class="graph">
+				<h2>Invited vs Accepted Visitors Number</h2>
+				<div id="accepted-graph"></div>
+			</div>
+			<div class="graph">
+				<h2>App Versions</h2>
+				<div id="versions-graph"></div>
+			</div>
 			<?php
 			$versionsJson = '';
 			foreach ($report['appVersions'] as $version => $total)
@@ -28,9 +36,10 @@
 				Morris.Donut({
 					element: 'subscribed-graph',
 					data: [
-						{value: {$report['subscribed']}, label: 'Subscribed'},
-						{value: {$report['unsubscribed']}, label: 'Unsubscribed'},
-					]
+						{value: {$report['subscribedPercent']}, label: 'Subscribed'},
+						{value: {$report['unsubscribedPercent']}, label: 'Unsubscribed'},
+					],
+					formatter: function (x) { return x + '%'}
 				});
 				Morris.Donut({
 					element: 'accepted-graph',

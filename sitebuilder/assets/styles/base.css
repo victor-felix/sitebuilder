@@ -945,3 +945,16 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
   background-color: #777;
   border-radius: 10px;
 }
+
+.graph {
+  display: inline-block;
+}
+
+.graph h2 {
+  text-align: center;
+}
+
+.graph div {
+  width: 250px;
+  height: 250px;
+}
