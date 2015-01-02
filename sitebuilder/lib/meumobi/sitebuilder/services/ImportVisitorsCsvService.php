@@ -20,14 +20,20 @@ class ImportVisitorsCsvService extends ImportCsvService {
 		if (self::EXCLUSIVE == $this->method) $this->clearVisitors();
 		while ($data = $this->getNextItem()) {
 			$visitor = $this->getVisitor($data);
-			if ($visitor->id())
+			if ($visitor->id()) {
+				$this->log("updating visitor with email: {$visitor->email()}");
 				$this->repository()->update($visitor);
-			else
+			} else {
+				$password = \Security::randomPassword();
+				$visitor->setPassword($password);
+				$this->log("creating visitor with email: {$visitor->email()} and password: $password");
 				$this->repository()->create($visitor);
-			$this->sendVisitorEmail($visitor->email());
+				$this->sendVisitorEmail(['email' => $visitor->email(), 'password' => $password]);
+			}
 			$imported++;
 		}
 		fclose($this->getFile());
+		$this->log("total of imported visitors: $imported");
 		return $imported;
 	}
 
@@ -46,6 +52,7 @@ class ImportVisitorsCsvService extends ImportCsvService {
 
 	protected function clearVisitors()
 	{
+		$this->log("removing visitors from site: {$this->getSite()->id}");		
 		array_map(function($visitor) {
 			$this->repository()->destroy($visitor);
 		}, $this->repository()->findBySiteId($this->getSite()->id));
@@ -68,7 +75,6 @@ class ImportVisitorsCsvService extends ImportCsvService {
 	}
 	protected function buildVisitor($data)
 	{
-		$data['password'] = \Security::randomPassword();
 		$data['site_id'] = $this->getSite()->id;
 		$data['groups'] = $data['groups'] ? $data['groups'] : [];
 		return new Visitor($data);
@@ -79,13 +85,11 @@ class ImportVisitorsCsvService extends ImportCsvService {
 		return $this->repository = new VisitorsRepository();
 	}
 
-	protected function sendVisitorEmail($email)
+	protected function sendVisitorEmail($data)
 	{
 		\I18n::locale($this->getSite()->language);
-
 		$segment = \MeuMobi::currentSegment();
 		$data['title'] = s('[%s]: Get started', $this->getSite()->title);
-		$data['email'] = $email;
 		$data['segment'] = $segment;
 		$data['site'] = $this->getSite();
 		$mailer = new \Mailer(array(
@@ -96,6 +100,13 @@ class ImportVisitorsCsvService extends ImportCsvService {
 			'layout' => 'mail',
 			'data' =>  $data,
 		));
+		$this->log("sending email to : {$data['email']}");
 		return $mailer->send();
+	}
+
+	protected function log($message)
+	{
+		//TODO improve this
+		echo "$message\n";
 	}
 }
