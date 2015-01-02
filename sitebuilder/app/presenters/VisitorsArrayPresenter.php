@@ -1,7 +1,7 @@
 <?php
 
 namespace app\presenters;
-
+//TODO move to meumobi\sitebuilder\presenters\
 class VisitorsArrayPresenter {
 	protected $visitors = [];
 
@@ -19,10 +19,10 @@ class VisitorsArrayPresenter {
 		};
 
 		//Add csv field titles
-		$csv .= $addLine(['id','email', 'groups']);
+		$csv .= $addLine(['id','first_name', 'last_name', 'email', 'groups']);
 
 		foreach ($this->visitors as $visitor) {
-			$values = [$visitor->id(), $visitor->email(), implode(',',$visitor->groups())];
+			$values = [$visitor->id(), $visitor->firstName(), $visitor->lastName(),$visitor->email(), implode(',',$visitor->groups())];
 			$csv .= $addLine($values);
 		}
 
