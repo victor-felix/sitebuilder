@@ -99,6 +99,14 @@ class Visitor extends Entity
 		return array_unique($this->groups);
 	}
 
+	public function setGroups($groups)
+	{
+		if (is_string($groups)) {
+			$groups = array_map('trim', explode(',', $groups));
+		}
+		$this->groups = $groups;
+	}
+
 	public function addGroup($group)
 	{
 		if (!in_array($group, $this->groups)) $this->groups []= $group;
