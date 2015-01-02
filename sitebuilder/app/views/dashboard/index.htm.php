@@ -29,7 +29,7 @@
 			<li id="categories">
 				<a class="link" href="<?php echo Mapper::url('/categories') ?>">
 					<i class="icons fa fa-4x fa-pencil-square-o"></i>
-					<h3><?php echo s('edit content') ?></h3>
+					<h3><?php echo s('Edit content') ?></h3>
 					<small><?php echo s('you can edit your menu, products, stores or news') ?></small>
 					<i class="arrows fa fa-4x fa-angle-right"></i>
 				</a>
