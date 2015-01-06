@@ -40,4 +40,20 @@ function sendVisitorEmail($visitor, $password)
 
 $options = getopt('', ['email:']);
 
-if (isset($options['email'])) updateVisitorPassword($options['email']);
+if (isset($options['email'])) {
+	updateVisitorPassword($options['email']);
+} else {
+	echo <<<'EOL'
+	usage: php import_visitors.php OPTIONS
+
+	reset visitor password
+
+	OPTIONS::
+	MANDATORY :
+		--email visitor email
+
+	EXAMPLE:
+	$php sitebuilder/script/reset_visitor_password.php --email example@example.com
+
+EOL;
+}
