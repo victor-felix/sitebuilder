@@ -35,6 +35,17 @@ class VisitorsRepository extends Repository
 		return $this->hydrateSet($this->collection()->find(['site_id' => (int) $id]));
 	}
 
+	public function findByEmail($email)
+	{
+		$result = $this->collection()->findOne(['email' => $email]);
+
+		if ($result) {
+			return $this->hydrate($result);
+		} else {
+			throw new RecordNotFoundException("The visitor with email: '{$email}' was not found");
+		}
+	}
+
 	public function findForAuthentication($siteId, $email, $password)
 	{
 		$result = $this->collection()->findOne([
