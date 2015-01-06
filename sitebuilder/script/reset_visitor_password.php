@@ -18,6 +18,7 @@ function updateVisitorPassword($email)
 function sendVisitorEmail($visitor, $password)
 {
 	$site = Model::load('Sites')->firstById($visitor->siteId());
+	require 'segments/' . $site->segment . '/config.php';//TODO remove this from here
 	\I18n::locale($site->language);
 	$data =	[
 		'title' => s('[%s]: New password', $site->title),
