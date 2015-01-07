@@ -243,7 +243,10 @@ class ApiController extends \lithium\action\Controller {
 	{
 		$repository = new VisitorsRepository();
 		$this->visitor = $repository->findByAuthToken($this->request->env('HTTP_X_VISITOR_TOKEN'));
-		if ($this->site()->private && !$this->visitor) {
+		if ($this->visitor) {
+			$this->visitor->setLastLogin(date('Y-m-d H:i:s'));
+			$repository->update($this->visitor);
+		} else if ($this->site()->private) {
 			throw new UnAuthorizedException();
 		}
 	}
