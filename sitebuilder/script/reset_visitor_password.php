@@ -27,14 +27,14 @@ function sendVisitorEmail($visitor, $password)
 		'visitor' => $visitor,
 		'site' => $site,
 	];
-	$mailer = new \Mailer(array(
+	$mailer = new \Mailer([
 		'from' => $data['segment']->email,
 		'to' => $visitor->email(),
 		'subject' => $data['title'],
-		'views' => array('text/html' => 'visitors/forgot_password_mail.htm'),
+		'views' => ['text/html' => 'visitors/forgot_password_mail.htm'],
 		'layout' => 'mail',
 		'data' =>  $data,
-	));
+	]);
 	echo "sending email to : {$visitor->email()}\n";
 	return $mailer->send();
 }
