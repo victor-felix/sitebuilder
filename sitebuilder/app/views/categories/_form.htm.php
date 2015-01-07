@@ -56,6 +56,27 @@
 <fieldset>
 	<div class="grid-4 first">
 		<div class="tip">
+			<h2><?php echo s('notification') ?></h2>
+		</div>
+	</div>
+
+	<div class="grid-8">
+		<div class="field-group">
+			<div class="form-grid-460 first">
+				<?php echo $this->form->input('notification', array(
+					'type' => 'checkbox',
+					'label' => null,
+					'value' => 1
+				)) ?>
+				<label for="FormVisibility" class="checkbox"><?php echo s('This category sends push notifications for the users') ?></label>
+			</div>
+		</div>
+	</div>
+</fieldset>
+
+<fieldset>
+	<div class="grid-4 first">
+		<div class="tip">
 			<h2><?php echo s('visibility') ?></h2>
 		</div>
 	</div>
@@ -73,6 +94,7 @@
 		</div>
 	</div>
 </fieldset>
+
 
 <?php if(MeuMobi::currentSegment()->fullOptions()): ?>
 <fieldset>
