@@ -17,7 +17,9 @@ class ImportVisitorsCsvService extends ImportCsvService {
 	public function import()
 	{
 		$imported = 0;
-		if (self::EXCLUSIVE == $this->method) $this->clearVisitors();
+		if (self::EXCLUSIVE == $this->method) {
+			$this->clearVisitors();
+		}
 		while ($data = $this->getNextItem()) {
 			$visitor = $this->getVisitor($data);
 			if ($visitor->id()) {
@@ -70,7 +72,9 @@ class ImportVisitorsCsvService extends ImportCsvService {
 			} catch (RecordNotFoundException $e) {
 			}
 		}
-		if (!$visitor) $visitor = $this->buildVisitor($data);
+		if (!$visitor) {
+			$visitor = $this->buildVisitor($data);
+		}
 		return $visitor;
 	}
 	protected function buildVisitor($data)
@@ -81,7 +85,9 @@ class ImportVisitorsCsvService extends ImportCsvService {
 	}
 	protected function repository()
 	{
-		if ($this->repository) return $this->repository;
+		if ($this->repository) {
+			return $this->repository;
+		}
 		return $this->repository = new VisitorsRepository();
 	}
 
