@@ -35,6 +35,14 @@ class VisitorsRepository extends Repository
 		return $this->hydrateSet($this->collection()->find(['site_id' => (int) $id]));
 	}
 
+	public function findBySiteIdAndGroups($id, $groups)
+	{
+		return $this->hydrateSet($this->collection()->find([
+			'site_id' => (int) $id,
+			'groups' => ['$in' => $groups]
+		]));
+	}
+
 	public function findByEmail($email)
 	{
 		$result = $this->collection()->findOne(['email' => $email]);
