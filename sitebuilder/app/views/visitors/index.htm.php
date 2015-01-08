@@ -16,15 +16,15 @@
 		<div>
 			<?php if($report['totalVisitors']): ?>
 			<div class="graph">
-				<h2>Subscribed vs Unsubscribed Visitors</h2>
+				<h2><?php echo s('Push Subscription') ?></h2>
 				<div id="subscribed-graph"></div>
 			</div>
 			<div class="graph">
-				<h2>Invited vs Accepted Visitors Number</h2>
+				<h2><?php echo s('Invitations') ?></h2>
 				<div id="accepted-graph"></div>
 			</div>
 			<div class="graph">
-				<h2>App Versions</h2>
+				<h2><?php echo s('App Versions') ?></h2>
 				<div id="versions-graph"></div>
 			</div>
 			<?php
