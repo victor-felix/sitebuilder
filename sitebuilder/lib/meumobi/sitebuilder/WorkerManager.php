@@ -4,7 +4,7 @@ namespace meumobi\sitebuilder;
 
 use app\models\Jobs;
 
-class WokerManager
+class WorkerManager
 {
 	public static function enqueue($type, $params)
 	{
@@ -25,14 +25,13 @@ class WokerManager
 	{
 		$job = Jobs::first(['order' => 'modified']);
 		if ($job) {
-			$workerClass = 'meumobi\sitebuilder\workers\\' . \Inflector::camelize($job->type);
+			$workerClass = 'meumobi\sitebuilder\workers\\' . \Inflector::camelize($job->type) . 'Worker';
 			return new $workerClass(compact('job'));
 		}
 	}
 
 	public static function destroy($worker)
 	{
-		Jobs::remove(['_id' => $worker->job->_id]);	
+		Jobs::remove(['_id' => $worker->job()->_id]);
 	}
 }
-
