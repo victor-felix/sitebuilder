@@ -14,6 +14,7 @@ use GoogleGeocoding;
 use GeocodingException;
 use OverQueryLimitException;
 use meumobi\sitebuilder\services\UpdateFeedsService;
+use meumobi\sitebuilder\WorkerManager;
 use lithium\util\Collection;
 use utils\Geocode;
 
@@ -49,6 +50,7 @@ class Items extends \lithium\data\Model {
 
 	protected $privateFields = ['groups'];
 	protected $fields = [];
+	protected $parent;
 
 	public function breadcrumbs($entity, $category_id) {
 		return Model::load('Categories')->firstById($category_id)->bredcrumbs();
@@ -73,7 +75,8 @@ class Items extends \lithium\data\Model {
 	}
 
 	public function parent($entity) {
-		return Model::load('Categories')->firstById($entity->parent_id);
+		if ($this->parent) return $this->parent;
+		return $this->parent = Model::load('Categories')->firstById($entity->parent_id);
 	}
 
 	public function resizes() {
@@ -473,6 +476,20 @@ class Items extends \lithium\data\Model {
 		return $chain->next($self, $params, $chain);
 	}
 
+	public static function sendPushNotification($self, $params, $chain)
+	{
+		$item = $params['entity'];
+		//only if new and category send notifications
+		if (!$item->id() && $item->parent()->notification) {
+			$chain = $chain->next($self, $params, $chain);//save the item
+			if ($item->id()) {
+				WorkerManager::enqueue('push_notification',  ['item_id' => $item->id()]);
+			}
+			return $chain;
+		}
+		return $chain->next($self, $params, $chain);
+	}
+
 	public static function typeFinder($self, $params, $chain)
 	{
 		$result = $chain->next($self, $params, $chain)->rewind();
@@ -634,6 +651,10 @@ Items::applyFilter('save', function($self, $params, $chain) {
 
 Items::applyFilter('save', function($self, $params, $chain) {
 	return Items::addThumbnails($self, $params, $chain);
+});
+
+Items::applyFilter('save', function($self, $params, $chain) {
+	return Items::sendPushNotification($self, $params, $chain);
 });
 
 Items::finder('type', function($self, $params, $chain) {

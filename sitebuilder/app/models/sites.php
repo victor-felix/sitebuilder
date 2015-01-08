@@ -210,7 +210,7 @@ class Sites extends AppModel
 	{
 		if ($this->plugins) return $this->plugins;
 
-		return $this->categories = Plugins::find('all', array('conditions' => array(
+		return $this->plugins = Plugins::find('all', array('conditions' => array(
 			'site_id' => $this->id,
 		))); 
 	}

@@ -69,3 +69,7 @@ Restaurants::finder('within', function($self, $params, $chain) {
 Restaurants::applyFilter('save', function($self, $params, $chain) {
 	return Items::addOrder($self, $params, $chain);
 });
+
+Restaurants::applyFilter('save', function($self, $params, $chain) {
+	return Items::sendPushNotification($self, $params, $chain);
+});

@@ -392,3 +392,8 @@
 'define timetable of your business': 'define os horários de funcionamento do seu negócio'
 'location details: street, zip code, etc.': 'detalhes sobre a localização do seu negócio'
 'App Version': 'Versão da app'
+'Hi, <b>%s</b>. <br/><br/>You have requested the reset of your %s password.': 'Olá, <b>%s</b>. Você pediu a redefinição de sua senha do <b>%s</b>'
+'Your new password is: %s': 'Sua nova senha é: %s'
+'[%s]: New password': '[%s]: Nova senha'
+'notification': 'notificação'
+'This category sends push notifications for the users': 'Esta categoria envia notificações push para os usuários'

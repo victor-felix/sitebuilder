@@ -52,5 +52,9 @@ Products::applyFilter('save', function($self, $params, $chain) {
 });
 
 Products::applyFilter('save', function($self, $params, $chain) {
-	return Items::addOrder($self, $params, $chain);
+    return Items::addOrder($self, $params, $chain);
+});
+
+Products::applyFilter('save', function($self, $params, $chain) {
+    return Items::sendPushNotification($self, $params, $chain);
 });
