@@ -27,3 +27,7 @@ end
 every 1.minute do
   command "php #{File.expand_path 'sitebuilder/script/update_events.php'} high"
 end
+
+every 1.minute do
+  command "php #{File.expand_path 'sitebuilder/script/perform_works.php'}"
+end
