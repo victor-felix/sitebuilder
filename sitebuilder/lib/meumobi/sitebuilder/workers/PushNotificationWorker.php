@@ -16,11 +16,10 @@ class PushNotificationWorker extends Worker
 
 	public function perform()
 	{
-		$this->logger()->info('Sending notification for item ' . $this->getItem()->id());
 		$title = $this->getSite()->title;
 		$content = $this->getItem()->title;
 		$devices = $this->getDevicesTokens();
-		Push::notify($title, $content, $devices);
+		$this->logger()->info(Push::notify($title, $content, $devices));
 	}
 
 	protected function getItem()
