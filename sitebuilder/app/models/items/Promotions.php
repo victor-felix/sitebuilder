@@ -58,3 +58,7 @@ Promotions::finder('nearest', function($self, $params, $chain) {
 Promotions::finder('within', function($self, $params, $chain) {
 	return Items::withinFinder($self, $params, $chain);
 });
+
+Promotions::applyFilter('save', function($self, $params, $chain) {
+	return Items::sendPushNotification($self, $params, $chain);
+});

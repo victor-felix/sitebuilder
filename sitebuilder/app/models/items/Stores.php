@@ -84,3 +84,7 @@ Stores::finder('within', function($self, $params, $chain) {
 Stores::applyFilter('save', function($self, $params, $chain) {
 	return Items::addOrder($self, $params, $chain);
 });
+
+Stores::applyFilter('save', function($self, $params, $chain) {
+	return Items::sendPushNotification($self, $params, $chain);
+});

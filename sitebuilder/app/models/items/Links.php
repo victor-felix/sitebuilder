@@ -39,5 +39,9 @@ Links::applyFilter('save', function($self, $params, $chain) {
 });
 
 Links::applyFilter('save', function($self, $params, $chain) {
-	return Items::addOrder($self, $params, $chain);
+    return Items::addOrder($self, $params, $chain);
+});
+
+Links::applyFilter('save', function($self, $params, $chain) {
+    return Items::sendPushNotification($self, $params, $chain);
 });

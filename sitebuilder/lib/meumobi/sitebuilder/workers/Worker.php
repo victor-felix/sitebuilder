@@ -20,8 +20,8 @@ abstract class Worker
 	{
 		foreach ($attrs as $key => $value) {
 			if (is_string($value)) $value = trim($value);
-			$key = Inflector::camelize($key, false);
-			$method = 'set' . Inflector::camelize($key);
+			$key = \Inflector::camelize($key, true);
+			$method = 'set' . \Inflector::camelize($key);
 			if (method_exists($this, $method)) {
 				$this->$method($value);
 			} else if (property_exists($this, $key)) {
@@ -37,12 +37,7 @@ abstract class Worker
 
 	protected function logger()
 	{
-		if ($this->logger) return $this->logger;
-
-		$handler = new \Monolog\Handler\RotatingFileHandler(APP_ROOT . '/log/feeds.log');
-		$logger = new \Monolog\Logger(static::LOG_CHANNEL, [$handler]);
-
-		return $this->logger = $logger;
+		return $this->logger;
 	}
 }
 

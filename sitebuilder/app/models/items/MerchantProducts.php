@@ -72,3 +72,7 @@ MerchantProducts::applyFilter('save', function($self, $params, $chain) {
 MerchantProducts::applyFilter('remove', function($self, $params, $chain) {
 	return Items::removeImages($self, $params, $chain);
 });
+
+MerchantProducts::applyFilter('save', function($self, $params, $chain) {
+	return Items::sendPushNotification($self, $params, $chain);
+});

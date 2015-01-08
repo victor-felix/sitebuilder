@@ -75,5 +75,9 @@ Events::finder('within', function($self, $params, $chain) {
 });
 
 Events::applyFilter('save', function($self, $params, $chain) {
-	return Items::addOrder($self, $params, $chain);
+    return Items::addOrder($self, $params, $chain);
+});
+
+Events::applyFilter('save', function($self, $params, $chain) {
+    return Items::sendPushNotification($self, $params, $chain);
 });
