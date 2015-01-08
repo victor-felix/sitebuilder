@@ -68,7 +68,7 @@
 					'label' => null,
 					'value' => 1
 				)) ?>
-				<label for="FormVisibility" class="checkbox"><?php echo s('This category sends push notifications for the users') ?></label>
+				<label for="FormNotification" class="checkbox"><?php echo s('This category sends push notifications for the users') ?></label>
 			</div>
 		</div>
 	</div>
