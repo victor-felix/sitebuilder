@@ -13,9 +13,15 @@ require_once 'lib/pushwoosh/Push.php';
 class PushNotificationWorker extends Worker
 {
 	protected $item;
+	protected $site;
 
 	public function perform()
 	{
+		$appId = $this->getSite()->pushwoosh_app_id;
+		if (!$appId) {
+			$this->logger()->info("Can`t send push, no push app consigured for site {$this->getSite()->id}");
+			return true; //has no app configured
+		}
 		$content = $this->getItem()->title;
 		$devices = $this->getDevicesTokens();
 		$this->logger()->info('Sending push notification', [
@@ -24,7 +30,7 @@ class PushNotificationWorker extends Worker
 			'content' => $content,
 			'devices' => $devices,
 		]);
-		Push::notify($content, $devices);
+		return Push::notify($appId, $content, $devices);
 	}
 
 	protected function getItem()
@@ -41,7 +47,8 @@ class PushNotificationWorker extends Worker
 
 	protected function getSite()
 	{
-		return \Model::load('Sites')->firstById($this->getItem()->site_id);
+		if ($this->site) return $this->site;
+		return $this->site = \Model::load('Sites')->firstById($this->getItem()->site_id);
 	}
 
 	protected function getDevicesTokens()

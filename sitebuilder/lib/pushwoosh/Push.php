@@ -9,11 +9,11 @@ class Push
 {
 	protected static $client;
 
-	public static function notify($content, $devices)
+	public static function notify($appId, $content, $devices)
 	{
 		$request = CreateMessageRequest::create()
 		->addNotification(static::getNotification($content, $devices));
-		$response = static::getClient('E76A0-70562')->createMessage($request);
+		$response = static::getClient($appId)->createMessage($request);
 		if ($response->isOk()) {
 			return true;
 		} else {
@@ -36,6 +36,6 @@ class Push
 		if (static::$client) return static::$client;
 		return static::$client = Pushwoosh::create()
 		->setApplication($app)
-		->setAuth('z8slYDk24hm2SJDIhzi6SBcdFPjCMU870gEH4wJ9WbzcdJsC6RBVl72r7k12b99yoHxZ39VDoOPYNsoLLtRk');
+		->setAuth(\Config::read('PushWoosh.authToken'));
 	}
 }

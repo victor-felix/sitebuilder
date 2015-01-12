@@ -10,3 +10,5 @@ Config::write('Preview.url', 'http://placeholder.int-meumobilesite.com');
 Config::write('Sites.domain', 'int-meumobilesite.com');
 
 Config::write('Themes.url', 'http://meu-template-engine.int-meumobilesite.com/themes.json');
+
+Config::write('PushWoosh.debug', false);

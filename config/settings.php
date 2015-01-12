@@ -7,6 +7,8 @@ Config::write('Mailer.transport', 'mail');
 
 Config::write('Sites.blacklist', array());
 
+Config::write('PushWoosh.authToken', 'z8slYDk24hm2SJDIhzi6SBcdFPjCMU870gEH4wJ9WbzcdJsC6RBVl72r7k12b99yoHxZ39VDoOPYNsoLLtRk');
+
 Config::write('Geocode.urls', array(
 	'http://maps.googleapis.com',
 	'http://elefante.ipanemax.com',
