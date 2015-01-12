@@ -6,14 +6,8 @@
 	<div class="clear"></div>
 </div>
 <div>
-	<div class="grid-4 first">
-		<div class="tip">
-			<h4><?php echo s('Tip') ?></h4>
-			<p><?php echo s('Use panel on right of screen to manage your visitors.') ?></p>
-		</div>
-	</div>
-	<div class="grid-8">
-		<div>
+	<div class="grid-12">
+		<div class="graph-wrapper">
 			<?php if($report['totalVisitors']): ?>
 			<div class="graph">
 				<h2><?php echo s('Push Subscription') ?></h2>

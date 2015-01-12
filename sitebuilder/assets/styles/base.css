@@ -69,6 +69,11 @@ a img {
 	width: 620px;
 }
 
+.grid-12 {
+  border-top: 1px solid #ddd;
+  padding: 25px 0 75px;
+}
+
 .grid-4.first, .grid-8.first {
 	margin-left: 0;
 }
@@ -946,8 +951,14 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
   border-radius: 10px;
 }
 
+.graph-wrapper {
+  text-align: center;
+  margin: 20px 0 40px;
+}
+
 .graph {
   display: inline-block;
+  margin: 0 20px;
 }
 
 .graph h2 {
