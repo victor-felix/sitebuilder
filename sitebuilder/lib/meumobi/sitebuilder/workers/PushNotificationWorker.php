@@ -19,7 +19,7 @@ class PushNotificationWorker extends Worker
 	{
 		$appId = $this->getSite()->pushwoosh_app_id;
 		if (!$appId) {
-			$this->logger()->info("Can`t send push, no push app consigured for site {$this->getSite()->id}");
+			$this->logger()->info("Can`t send push, no push app configured for site {$this->getSite()->id}");
 			return true; //has no app configured
 		}
 		$content = $this->getItem()->title;
