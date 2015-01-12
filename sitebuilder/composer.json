@@ -10,6 +10,7 @@
         "php": ">=5.4",
         "ext-mongo": ">=1.3.4",
         "monolog/monolog": "1.4.0",
-        "mjohnson/decoda": "6.*"
+        "mjohnson/decoda": "~6.5.2",
+        "gomoob/php-pushwoosh": "~0.1.0"
     }
 }
