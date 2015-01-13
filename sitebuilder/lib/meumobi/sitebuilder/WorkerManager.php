@@ -38,6 +38,7 @@ class WorkerManager
 				'message' => $e->getMessage(),
 				'trace' => $e->getTraceAsString()
 			]);
+			self::destroy($worker);
 		}
 	}
 
