@@ -15,13 +15,21 @@ Dispatcher::config(array(
 	)
 ));
 
-$defaults = array(
-	'scope' => '/api/{:slug}',
-	'params' => array(
+$defaults = [
+	'params' => [
 		'api' => true,
 		'type' => 'json'
-	)
-);
+	]
+];
+
+Router::connect(new Route([
+	'method' => 'OPTIONS',
+	'template' => '/api/ipanemax.ocalhost',
+	'params' => [
+		'action' => 'index',
+		'controller' => 'preflight',
+	] + $defaults['params']
+]));
 
 Router::connect(new Route(array(
 	'method' => 'POST',

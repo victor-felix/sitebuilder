@@ -5,19 +5,8 @@ RewriteRule ^(.*)$ index.php [L]
 
 Header add Vary "X-Visitor-Token"
 
-#CORS headers
 SetEnvIfNoCase Request_URI \.(?:jpg|jpeg|gif|png) ALLOW_CORS
-SetEnvIf Request_Method "OPTIONS" ALLOW_CORS
-
-#set headers, the "always" is because of redictet
 Header always set Access-Control-Allow-Origin "*" env=ALLOW_CORS
-Header always set Access-Control-Allow-Methods "POST, GET, PUT, DELETE, OPTIONS" env=ALLOW_CORS
-Header always set Access-Control-Allow-Headers "If-None-Match, Origin, X-Requested-With, Accept, X-Authentication-Token, Content-Type, X-Visitor-Token" env=ALLOW_CORS
-
-#return if OPTIONS
-RewriteCond %{REQUEST_METHOD} OPTIONS
-RewriteRule ^(.*)$ $1 [R=200,L]
-
 
 # compress all text files
 AddOutputFilterByType DEFLATE application/atom+xml \
