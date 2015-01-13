@@ -1,13 +1,15 @@
 <?php
 
 namespace meumobi\sitebuilder\workers;
-
+use app\models\Items;
 abstract class Worker
 {
 	const LOG_CHANNEL = 'sitebuilder.worker';
 
 	protected $logger;
 	protected $job;
+	protected $item;
+	protected $site;
 
 	abstract public function perform();
 
@@ -38,6 +40,24 @@ abstract class Worker
 	protected function logger()
 	{
 		return $this->logger;
+	}
+	//It may be better use a trait for getItem and getSite methods
+	protected function getItem()
+	{
+		if ($this->item) return $this->item;
+		$this->item = Items::find('type', array('conditions' => array(
+			'_id' => $this->job()->params['item_id']
+		)));
+		if (!$this->item) {
+			throw new RecordNotFoundException("The item '{$id}' was not found");
+		}
+		return $this->item;
+	}
+
+	protected function getSite()
+	{
+		if ($this->site) return $this->site;
+		return $this->site = \Model::load('Sites')->firstById($this->getItem()->site_id);
 	}
 }
 

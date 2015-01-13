@@ -49,11 +49,6 @@ class Rss extends Extensions
 		);
 	}
 
-	public static function beforeRemove($extension)
-	{
-		self::disable($extension);
-	}
-
 	public function updateArticles($entity)
 	{
 		try {

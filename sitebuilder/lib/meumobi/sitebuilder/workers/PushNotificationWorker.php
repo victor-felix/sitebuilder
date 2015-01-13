@@ -12,9 +12,6 @@ require_once 'lib/pushwoosh/Push.php';
 
 class PushNotificationWorker extends Worker
 {
-	protected $item;
-	protected $site;
-
 	public function perform()
 	{
 		$appId = $this->getSite()->pushwoosh_app_id;
@@ -31,24 +28,6 @@ class PushNotificationWorker extends Worker
 			'devices' => $devices,
 		]);
 		return Push::notify($appId, $content, $devices);
-	}
-
-	protected function getItem()
-	{
-		if ($this->item) return $this->item;
-		$this->item = Items::find('type', array('conditions' => array(
-			'_id' => $this->job()->params['item_id']
-		)));
-		if (!$this->item) {
-			throw new RecordNotFoundException("The item '{$id}' was not found"); 
-		}
-		return $this->item;
-	}
-
-	protected function getSite()
-	{
-		if ($this->site) return $this->site;
-		return $this->site = \Model::load('Sites')->firstById($this->getItem()->site_id);
 	}
 
 	protected function getDevicesTokens()

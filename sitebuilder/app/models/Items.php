@@ -4,8 +4,6 @@ namespace app\models;
 
 use meumobi\sitebuilder\services\GeocodeItemsService;
 
-require_once 'lib/utils/Works/Geocode.php';
-
 use Config;
 use Inflector;
 use Model;
@@ -16,7 +14,6 @@ use OverQueryLimitException;
 use meumobi\sitebuilder\services\UpdateFeedsService;
 use meumobi\sitebuilder\WorkerManager;
 use lithium\util\Collection;
-use utils\Geocode;
 
 Collection::formats('lithium\net\http\Media');
 
@@ -140,7 +137,7 @@ class Items extends \lithium\data\Model {
 				$self[$code] = '<p>' . $parser->parse() . '</p>';
 			}
 		}
-		unset($self['group']);
+		unset($self['groups']);
 		$self['images'] = array();
 		$images = $this->images($entity);
 		foreach($images as $image) {
@@ -456,10 +453,8 @@ class Items extends \lithium\data\Model {
 				if ($item->id()) {
 					$data = array(
 						'type' => 'geocode',
-						'priority' => GeocodeItemsService::PRIORITY_HIGH,
 						'params' => array(
 							'item_id' => $item->id(),
-							'type' => $item->type,
 						),
 					);
 					$job = \app\models\Jobs::create($data);

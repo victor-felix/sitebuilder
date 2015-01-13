@@ -58,6 +58,11 @@ class Extensions extends Modules
 		return Model::load('Categories')->firstById($entity->category_id);
 	}
 
+	public static function beforeRemove($extension)
+	{
+		self::disable($extension);
+	}
+
 	public static function category($extension)
 	{
 		return Model::load('Categories')->firstById($extension->category_id);
