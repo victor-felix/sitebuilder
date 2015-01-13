@@ -22,12 +22,16 @@ class PushNotificationWorker extends Worker
 		$content = $this->getItem()->title;
 		$devices = $this->getDevicesTokens();
 		$this->logger()->info('Sending push notification', [
-			'item id' => $this->getItem()->_id,
+			'item id' => (string)$this->getItem()->_id,
 			'site id' => $this->getItem()->site_id,
 			'content' => $content,
 			'devices' => $devices,
 		]);
-		return Push::notify($appId, $content, $devices);
+		$response = Push::notify($appId, $content, $devices);
+		$this->logger()->info('Push notification sent successfully', [
+			'item id' => (string)$this->getItem()->_id,
+			'push response' => $response,
+		]);
 	}
 
 	protected function getDevicesTokens()

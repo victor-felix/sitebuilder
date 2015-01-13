@@ -24,7 +24,7 @@ class WorkerManager
 		try {
 			self::logger()->info('start executing worker', [
 				'worker' => get_class($worker),
-				'job id' => $worker->job()->_id,
+				'job id' => (string)$worker->job()->_id,
 				'job type' => $worker->job()->type,
 			]);
 			$worker->perform();
@@ -32,7 +32,7 @@ class WorkerManager
 		} catch (\Exception $e) {
 			self::logger()->error('error executing worker', [
 				'worker' => get_class($worker),
-				'job_id' => $worker->job()->_id,
+				'job_id' => (string)$worker->job()->_id,
 				'job type' => $worker->job()->type,
 				'exception' => get_class($e),
 				'message' => $e->getMessage(),

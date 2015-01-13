@@ -15,12 +15,15 @@ class Push
 		->addNotification(static::getNotification($content, $devices));
 		$response = static::getClient($appId)->createMessage($request);
 		if ($response->isOk()) {
-			return true;
+			return [
+				'status code' => $response->getStatusCode(),
+				'status message' => $response->getStatusMessage()
+			];
 		} else {
 			//TODO use a specific Exception
 			throw new Exception("Error sending push notification,
-			code : {$response->getStatusCode()},
-			message: {$response->getStatusMessage()}");
+			status code : {$response->getStatusCode()},
+			status message: {$response->getStatusMessage()}");
 		}
 	}
 
