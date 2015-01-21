@@ -16,6 +16,7 @@ Dispatcher::config(array(
 ));
 
 $defaults = [
+	'scope' => '/api/{:slug}',
 	'params' => [
 		'api' => true,
 		'type' => 'json'
