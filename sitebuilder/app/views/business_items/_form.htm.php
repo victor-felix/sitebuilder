@@ -1,7 +1,7 @@
 <fieldset>
 	<h2><?php echo s('common settings') ?></h2>
 	<div class="field-group">
-		
+
 		<?php foreach($item->fields(Auth::user()->site()) as $field)://TODO remove Auth call ?>
 			<div class="form-grid-460 first">
 				<?php echo $this->items->input($field) ?>
@@ -45,7 +45,7 @@
 				'class' => 'ui-text large',
 				'placeholder' => s('edit subtitle'),
 			)) ?>
-		</div> 
+		</div>
 
 		<a href="#" class="duplicate-previous">more</a>
 

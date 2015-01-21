@@ -39,6 +39,7 @@ class Items extends \lithium\data\Model {
 		'order' => array('type' => 'integer', 'default' => 0),
 		'created' => array('type' => 'date', 'default' => 0),
 		'modified' => array('type' => 'date', 'default' => 0),
+		'published' => array('type' => 'date', 'default' => 0),
 		'type' => array('type' => 'string', 'null' => false),
 		'title' => array('type' => 'string', 'null' => false),
 		'thumbnails' => array('type' => 'array', 'default' => []),
@@ -344,6 +345,10 @@ class Items extends \lithium\data\Model {
 
 		if (!$item->id() && !$item->created) {
 			$item->created = $date;
+		}
+
+		if (!$item->published) {
+			$item->published = $date;
 		}
 
 		$item->modified = $date;

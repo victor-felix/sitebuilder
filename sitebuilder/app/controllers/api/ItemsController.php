@@ -13,7 +13,9 @@ use View;
 class ItemsController extends ApiController {
 	const PAGE_LIMIT = 20;
 
-	protected $skipBeforeFilter = ['requireVisitorAuth'];
+	// TODO we should only skip the etags for segments that actually have
+	// items to be published in the future
+	protected $skipBeforeFilter = ['requireVisitorAuth', 'checkEtag'];
 
 	public function index()
 	{
@@ -21,13 +23,15 @@ class ItemsController extends ApiController {
 
 		$category_id = $this->request->get('params:category_id');
 		$category = Model::load('Categories')->firstById($category_id);
-		list($orderField, $orderDirection) = explode(',',$this->param('order', 'order,DESC'));
+		$date = $this->request->get('query:time') ?: time();
+		list($orderField, $orderDirection) = explode(',', $this->param('order', 'order,DESC'));
 		$params = [
 			'order' => [$orderField => $orderDirection],
 			'conditions' => [
 				'site_id' => $this->site()->id,
 				'parent_id' => $category->id,
-				'type' => $category->type
+				'type' => $category->type,
+				'published' => ['$lt' => $date],
 			],
 			'limit' => self::PAGE_LIMIT,
 			'page' => $this->param('page', 1)

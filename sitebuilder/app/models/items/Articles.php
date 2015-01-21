@@ -35,6 +35,10 @@ class Articles extends \app\models\Items
 			'title' => 'Group',
 			'type' => 'groups'
 		),
+		'published' => array(
+			'title' => 'Publish at',
+			'type' => 'datetime'
+		),
 	);
 
 	protected static $blacklist = array(
