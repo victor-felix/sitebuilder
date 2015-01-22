@@ -12,25 +12,45 @@ class AudienceReportPresenter
 				return $total;
 			};
 		};
+		$totalDevices = 0;
+		$subscribed = 0;
+		$unsubscribed = 0;
+		$subscribedPercent = 0;
+		$unsubscribedPercent = 0;
 		$totalVisitors = count($visitors); 
 		$accepted = array_reduce($visitors, $countProperty('lastLogin'));
-		$invited = $totalVisitors - $accepted;
+		$pending = $totalVisitors - $accepted;
 		$subscribedAndVersions = array_reduce($visitors, function($data, $visitor) use ($countProperty) {
-			//total subscribed
+			//total devices
+			$data['totalDevices'] += count($visitor->devices());
+			//total devices subscribed
 			$subscribedDevices = array_reduce($visitor->devices(), $countProperty('pushId'));
-			if ($subscribedDevices) $data['subscribed']++;
+			if ($subscribedDevices) $data['subscribed'] += $subscribedDevices;
 			//app versions list
 			$deviceVersions = array_map(function($device) {
 				return $device->appVersion() | '';//must return string
 			}, $visitor->devices());
 			$data['appVersions'] = array_merge($data['appVersions'], $deviceVersions);
 			return $data;
-		}, ['subscribed' => 0, 'appVersions' => []]);
-		//count app versions
-		$unsubscribed = $totalVisitors - $subscribedAndVersions['subscribed'];
-		$subscribedPercent = $totalVisitors ? number_format(($subscribedAndVersions['subscribed'] / $totalVisitors) * 100, 2) : 0;
-		$unsubscribedPercent = $totalVisitors ? 100 - $subscribedPercent : 0;
-		$subscribedAndVersions['appVersions'] = array_count_values($subscribedAndVersions['appVersions']);
-		return compact('totalVisitors', 'accepted', 'invited', 'unsubscribed', 'subscribedPercent', 'unsubscribedPercent') + $subscribedAndVersions;
+		}, ['totalDevices' => 0, 'subscribed' => 0, 'appVersions' => []]);
+		//assing values from array
+		extract($subscribedAndVersions);
+		if ($totalDevices) {
+			$unsubscribed = $totalDevices - $subscribed;
+			$subscribedPercent = number_format(($subscribed / $totalDevices) * 100, 2);
+			$unsubscribedPercent = number_format(($unsubscribed / $totalDevices) * 100, 2);
+		}
+		$appVersions = array_count_values($appVersions);
+		return compact(
+			'totalVisitors',
+			'accepted',
+			'pending',
+			'totalDevices',
+			'subscribed',
+			'unsubscribed',
+			'subscribedPercent',
+			'unsubscribedPercent',
+			'appVersions'
+		);
 	}
 }

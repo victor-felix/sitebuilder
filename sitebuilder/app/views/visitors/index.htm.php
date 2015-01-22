@@ -40,7 +40,7 @@
 					element: 'accepted-graph',
 					data: [
 						{value: {$report['accepted']}, label: '" . s('Accepted') . "'},
-						{value: {$report['invited']}, label: '" . s('Invited') . "'},
+						{value: {$report['pending']}, label: '" . s('Invited') . "'},
 					]
 				});
 				Morris.Donut({
