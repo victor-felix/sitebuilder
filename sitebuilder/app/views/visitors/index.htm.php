@@ -21,34 +21,6 @@
 				<h2><?= s('App Versions') ?></h2>
 				<div id="versions-graph"></div>
 			</div>
-			<?php
-			$versionsJson = '';
-			foreach ($report['appVersions'] as $version => $total)
-				$versionsJson .= "{value: {$total}, label: '$version'},";
-
-			$this->html->scriptsForLayout .= "
-				<script>
-				Morris.Donut({
-					element: 'subscribed-graph',
-					data: [
-						{value: {$report['subscribedPercent']}, label: '" . s('Subscribed') . "'},
-						{value: {$report['unsubscribedPercent']}, label: '" . s('Unsubscribed') . "'},
-					],
-					formatter: function (x) { return x + '%'}
-				});
-				Morris.Donut({
-					element: 'accepted-graph',
-					data: [
-						{value: {$report['accepted']}, label: '" . s('Accepted') . "'},
-						{value: {$report['pending']}, label: '" . s('Invited') . "'},
-					]
-				});
-				Morris.Donut({
-					element: 'versions-graph',
-					data: [$versionsJson]
-				});
-				</script>";
-			?>
 		</div>
 		<?php endif ?>
 		<table id="visitors-list" class="display" cellspacing="0" width="100%">
@@ -76,3 +48,6 @@
 	</div>
 	<div class="clear"></div>
 </div>
+<script>
+	window.visitorGraphData = <?= $visitorGraphDataJson ?>;
+</script>

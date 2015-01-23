@@ -1,5 +1,5 @@
 <?php
-namespace meumobi\sitebuilder\presenters\api;
+namespace meumobi\sitebuilder\presenters;
 use Mapper;
 
 class AudienceReportPresenter

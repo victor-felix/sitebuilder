@@ -677,4 +677,14 @@ $(window).load(function() {
       }
     ]);
   }
+
+  if (window.visitorGraphData) {
+    Object.keys(window.visitorGraphData).forEach(function(key) {
+      var options = { element: key, data: window.visitorGraphData[key] };
+      //TODO remove this conditional, this isn't the best place to be
+      if (key == 'subscribed-graph')
+        options.formatter = function (x) { return x + '%'};
+      Morris.Donut(options);
+    });
+  }
 });
