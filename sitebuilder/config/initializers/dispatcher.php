@@ -25,7 +25,7 @@ $defaults = [
 
 Router::connect(new Route([
 	'method' => 'OPTIONS',
-	'template' => '/api/ipanemax.ocalhost',
+	'template' => '/api/:slug',
 	'params' => [
 		'action' => 'index',
 		'controller' => 'preflight',
