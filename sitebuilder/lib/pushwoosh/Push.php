@@ -4,6 +4,7 @@ namespace pushwoosh;
 use Gomoob\Pushwoosh\Client\Pushwoosh;
 use Gomoob\Pushwoosh\Model\Notification\Notification;
 use Gomoob\Pushwoosh\Model\Request\CreateMessageRequest;
+use Gomoob\Pushwoosh\Model\Notification\IOS;
 
 class Push
 {
@@ -30,6 +31,8 @@ class Push
 	public static function getNotification($content, $devices)
 	{
 		$notification = Notification::create()->setContent($content);
+		//add badge
+		$notification->setIOS(IOS::create()->setBadges(1));
 		if ($devices) $notification->setDevices($devices);
 		return $notification;
 	}
