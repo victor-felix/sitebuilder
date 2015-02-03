@@ -23,15 +23,6 @@ $defaults = [
 	]
 ];
 
-Router::connect(new Route([
-	'method' => 'OPTIONS',
-	'template' => '/api/:slug',
-	'params' => [
-		'action' => 'index',
-		'controller' => 'preflight',
-	] + $defaults['params']
-]));
-
 Router::connect(new Route(array(
 	'method' => 'POST',
 	'template' => '/api/{:slug}/mail',

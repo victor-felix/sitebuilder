@@ -4,15 +4,14 @@ namespace app\controllers\api;
 
 require_once 'app/models/sites.php';
 
-use Config;
-use DateTime;
-use MeuMobi;
-use Model;
-use lithium\storage\Session;
 use lithium\util\Inflector;
+use lithium\storage\Session;
 use meumobi\sitebuilder\Site;
-use meumobi\sitebuilder\entities\Visitor;
 use meumobi\sitebuilder\repositories\VisitorsRepository;
+use meumobi\sitebuilder\entities\Visitor;
+use DateTime;
+use Config;
+use Model;
 
 class ApiController extends \lithium\action\Controller {
 	protected $beforeFilter = [
@@ -254,12 +253,10 @@ class ApiController extends \lithium\action\Controller {
 
 	protected function headers()
 	{
-		if (MeuMobi::currentSegment()->enableApiAccessFromAllDomains) {
-			$origin = '*';
-		} else {
+		$origin = '*';
+		if (!\MeuMobi::currentSegment()->enableApiAccessFromAllDomains) {
 			$origin = 'http://' . $this->request->params['slug'];
 		}
-
-		$this->response->headers('Access-Control-Allow-Origin', $origin);
+		header("Access-Control-Allow-Origin: $origin");
 	}
 }
