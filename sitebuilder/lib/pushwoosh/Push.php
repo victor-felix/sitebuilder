@@ -32,7 +32,7 @@ class Push
 	{
 		$notification = Notification::create()->setContent($content);
 		//add badge
-		$notification->setIOS(IOS::create()->setBadges(1));
+		$notification->setIOS(IOS::create()->setBadges('+1'));
 		if ($devices) $notification->setDevices($devices);
 		return $notification;
 	}
