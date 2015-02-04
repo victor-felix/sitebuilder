@@ -33,7 +33,7 @@ class ItemsController extends ApiController {
 				'type' => $category->type,
 				'published' => ['$lt' => $date],
 			],
-			'limit' => self::PAGE_LIMIT,
+			'limit' => $this->param('limit', self::PAGE_LIMIT),
 			'page' => $this->param('page', 1)
 		];
 
@@ -54,7 +54,7 @@ class ItemsController extends ApiController {
 				'parent_id' => $category->id,
 				'type' => $category->type
 			],
-			'limit' => self::PAGE_LIMIT,
+			'limit' => $this->param('limit', self::PAGE_LIMIT),
 		];
 
 		$url = "/api/{$this->site()->domain()}/categories/{$category->id}/items";
@@ -91,7 +91,7 @@ class ItemsController extends ApiController {
 				'start' => ['$lt' => $date],
 				'end' => ['$gt' => $date]
 			],
-			'limit' => self::PAGE_LIMIT,
+			'limit' => $this->param('limit', self::PAGE_LIMIT),
 			'page' => $this->param('page', 1)
 		];
 
@@ -178,7 +178,7 @@ class ItemsController extends ApiController {
 				'_id' => $item->related->to('array'),
 				'site_id' => $this->site()->id
 			],
-			'limit' => self::PAGE_LIMIT,
+			'limit' => $this->param('limit', self::PAGE_LIMIT),
 			'page' => $this->param('page', 1)
 		];
 
@@ -200,7 +200,7 @@ class ItemsController extends ApiController {
 
 		$params = [
 			'conditions' => $conditions,
-			'limit' => self::PAGE_LIMIT,
+			'limit' => $this->param('limit', self::PAGE_LIMIT),
 			'page' => $this->param('page', 1)
 		];
 
@@ -235,7 +235,7 @@ class ItemsController extends ApiController {
 		$params = [
 			'conditions' => ['site_id' => $this->site()->id],
 			'order' => ['created' => 'DESC'],
-			'limit' => self::PAGE_LIMIT,
+			'limit' => $this->param('limit', self::PAGE_LIMIT),
 			'page' => $this->param('page', 1)
 		];
 
@@ -339,7 +339,7 @@ class ItemsController extends ApiController {
 				'site_id' => $this->site()->id,
 				'parent_id' => $category->id
 			],
-			'limit' => self::PAGE_LIMIT,
+			'limit' => $this->param('limit', self::PAGE_LIMIT),
 			'page' => $this->param('page', 1)
 		];
 
@@ -401,6 +401,7 @@ class ItemsController extends ApiController {
 		$count = Items::find('count', ['conditions' => $params['conditions']]);
 		$pages = ceil($count / $params['limit']);
 		$meta = [];
+		$url_params['limit'] = $params['limit'];
 
 		if ($params['page'] > 1) {
 			$meta['previous'] = $this->parseUrl($url, $url_params + [
