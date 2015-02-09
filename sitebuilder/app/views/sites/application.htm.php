@@ -128,7 +128,7 @@
 			<?php echo $this->form->input('pushwoosh_app_id', array(
 				'label' => s('PushWoosh App id'),
 				'type' => 'text',
-				'placeholder' => '8111C-A27A8',
+				'placeholder' => '00000-00000',
 				'class' => 'ui-text large'
 			)) ?>
 		</div>
