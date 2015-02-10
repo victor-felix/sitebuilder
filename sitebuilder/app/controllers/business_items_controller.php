@@ -193,13 +193,18 @@ class BusinessItemsController extends AppController
 	// this function should be refactored somewhere else. I could not find a way
 	// to intercept lithium's casting to add timezones to dates
 	protected function prepareDates($data) {
-		if (isset($data['start']) && isset($data['end'])) {
-			$timezone = date_default_timezone_get();
-			date_default_timezone_set($this->getCurrentSite()->timezoneId());
-			$data['start'] = strtotime($data['start']);
-			$data['end'] = strtotime($data['end']);
-			date_default_timezone_set($timezone);
+		$fields = ['start', 'end', 'published'];
+		$timezone = date_default_timezone_get();
+		date_default_timezone_set($this->getCurrentSite()->timezoneId());
+
+		foreach ($fields as $field) {
+			if (isset($data[$field])) {
+				$data[$field] = strtotime($data[$field]);
+			}
 		}
+
+		date_default_timezone_set($timezone);
+
 		return $data;
 	}
 }

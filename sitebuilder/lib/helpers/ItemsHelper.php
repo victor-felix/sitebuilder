@@ -75,9 +75,8 @@ class ItemsHelper extends Helper
 
 	public function input($name) {
 		$field = $this->item->field($name);
-		$defaults = array(
-			'label' => $field->title
-		);
+		$defaults = [ 'label' => $field->title ];
+
 		$type = (array) $field->type;
 		$type = $type[0];
 		if (is_array($this->types[$type])) {
@@ -85,11 +84,14 @@ class ItemsHelper extends Helper
 		} else {
 			$type_attr = $this->types[$type]($field->type);
 		}
+
 		$params = (array) $field;
 		unset($params['type'], $params['title']);
 		$attr = array_merge($defaults, $this->types['default'], $type_attr,
 			$params);
+
 		$attr['class'] .= ' large';
+
 		return $this->form->input($name, $attr);
 	}
 
