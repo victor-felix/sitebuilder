@@ -40,6 +40,7 @@ class Items extends \lithium\data\Model {
 		'created' => array('type' => 'date', 'default' => 0),
 		'modified' => array('type' => 'date', 'default' => 0),
 		'published' => array('type' => 'date', 'default' => 0),
+		'is_published' => array('type' => 'boolean', 'default' => true),
 		'type' => array('type' => 'string', 'null' => false),
 		'title' => array('type' => 'string', 'null' => false),
 		'thumbnails' => array('type' => 'array', 'default' => []),
@@ -340,15 +341,22 @@ class Items extends \lithium\data\Model {
 	public static function addTimestamps($self, $params, $chain)
 	{
 		$item = $params['entity'];
-		$date = date('Y-m-d H:i:s');
+		$time = time();
+		$date = date('Y-m-d H:i:s', $time);
 		$category = $item->parent();
 
-		if (!$item->id() && !$item->created) {
-			$item->created = $date;
-		}
 
-		if (!$item->published) {
-			$item->published = $date;
+		if (!$item->id()) {
+			if (!$item->created) {
+				$item->created = $date;
+			}
+
+			if (!$item->published) {
+				$item->published = $date;
+				$item->is_published = true;
+			}
+
+			$item->is_published = $item->published->sec <= $time;
 		}
 
 		$item->modified = $date;
@@ -479,11 +487,11 @@ class Items extends \lithium\data\Model {
 	public static function sendPushNotification($self, $params, $chain)
 	{
 		$item = $params['entity'];
-		//only if new and category send notifications
-		if (!$item->id() && $item->parent()->notification) {
-			$chain = $chain->next($self, $params, $chain);//save the item
-			if ($item->id()) {
-				WorkerManager::enqueue('push_notification',  ['item_id' => $item->id()]);
+		// only if new and category send notifications
+		if (!$item->id() && $item->is_published && $item->parent()->notification) {
+			$chain = $chain->next($self, $params, $chain); // save the item
+			if ($id = $item->id()) {
+				WorkerManager::enqueue('push_notification',  ['item_id' => $id]);
 			}
 			return $chain;
 		}

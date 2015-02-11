@@ -1,6 +1,6 @@
 <?php
+
 namespace meumobi\sitebuilder\services;
-use Exception;
 
 abstract class Service
 {
@@ -17,6 +17,7 @@ abstract class Service
 		$this->options = $options;
 	}
 
+	// TODO this does not belong on a generic Service class. move it somewhere else
 	protected function priorityCriteria()
 	{
 		$priorities = [
@@ -27,6 +28,9 @@ abstract class Service
 		return $priorities[$this->options['priority']];
 	}
 
+	// TODO we might inject a logger into the services if we want, but otherwise
+	// we should delegate all this responsibility to an external class, possibly
+	// static, so we can call log() easily from anywhere in our code
 	protected function logger()
 	{
 		if ($this->logger) return $this->logger;
@@ -43,6 +47,7 @@ abstract class Service
 
 	protected function loggerPath()
 	{
-		return APP_ROOT . '/' . $this->options['logger_path'];
+		$path = isset($this->options['logger_path']) ? $this->options['logger_path'] : 'log/log';
+		return APP_ROOT . '/' . $path;
 	}
 }
