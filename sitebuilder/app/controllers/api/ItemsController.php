@@ -13,9 +13,7 @@ use View;
 class ItemsController extends ApiController {
 	const PAGE_LIMIT = 20;
 
-	// TODO we should only skip the etags for segments that actually have
-	// items to be published in the future
-	protected $skipBeforeFilter = ['requireVisitorAuth', 'checkEtag'];
+	protected $skipBeforeFilter = ['requireVisitorAuth'];
 
 	public function index()
 	{
@@ -23,7 +21,6 @@ class ItemsController extends ApiController {
 
 		$category_id = $this->request->get('params:category_id');
 		$category = Model::load('Categories')->firstById($category_id);
-		$date = $this->request->get('query:time') ?: time();
 		list($orderField, $orderDirection) = explode(',', $this->param('order', 'order,DESC'));
 		$params = [
 			'order' => [$orderField => $orderDirection],
@@ -31,7 +28,7 @@ class ItemsController extends ApiController {
 				'site_id' => $this->site()->id,
 				'parent_id' => $category->id,
 				'type' => $category->type,
-				'published' => ['$lt' => $date],
+				'is_published' => true,
 			],
 			'limit' => $this->param('limit', self::PAGE_LIMIT),
 			'page' => $this->param('page', 1)
@@ -52,7 +49,8 @@ class ItemsController extends ApiController {
 			'conditions' => [
 				'site_id' => $this->site()->id,
 				'parent_id' => $category->id,
-				'type' => $category->type
+				'type' => $category->type,
+				'is_published' => true,
 			],
 			'limit' => $this->param('limit', self::PAGE_LIMIT),
 		];
@@ -383,7 +381,7 @@ class ItemsController extends ApiController {
 		$items = $itemsClass::find('all', $params)->to('array');
 
 		if ($reduce) {
-			return array_reduce($items, $reduce, array());
+			return array_reduce($items, $reduce, []);
 		} else {
 			return array_map(function($item) {
 				$classname = '\app\models\items\\' .
