@@ -266,7 +266,7 @@ class ItemsController extends ApiController {
 	{
 		$this->requireVisitorAuth();
 
-		$category_id = $this->request->data['parent_id'];
+		$category_id = $this->request->get('data:parent_id');
 		$category = Model::load('Categories')->firstById($category_id);
 		$classname = '\app\models\items\\' . Inflector::camelize($category->type);
 		$item = $classname::create();
@@ -275,7 +275,7 @@ class ItemsController extends ApiController {
 		$item->type = $category->type;
 
 		if ($item->save()) {
-			$images = isset($this->request->data['images']) ? $this->request->data['images'] : false;
+			$images = $this->request->get('data:images');
 			if ($images) {
 				foreach ($images as $id => $image) {
 					if (!is_numeric($id)) continue;
