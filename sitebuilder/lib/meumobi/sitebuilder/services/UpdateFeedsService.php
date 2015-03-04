@@ -50,7 +50,7 @@ class UpdateFeedsService extends Service
 					'_id' => $extensionData['_id']
 				], ['$unset' => ['priority' => '']]);
 			} catch (Exception $e) {
-				$this->logger->error('rss update error', [
+				$this->logger()->error('rss update error', [
 					'exception' => get_class($e),
 					'message' => $e->getMessage(),
 					'trace' => $e->getTraceAsString()]);
@@ -61,6 +61,6 @@ class UpdateFeedsService extends Service
 		$stats['elapsed_time'] = array_unset($stats, 'end_time') -
 			array_unset($stats, 'start_time');
 
-		$this->logger->info('finished updating feeds', $stats);
+		$this->logger()->info('finished updating feeds', $stats);
 	}
 }
