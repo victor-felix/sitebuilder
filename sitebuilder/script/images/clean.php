@@ -10,8 +10,6 @@ require 'config/settings.php';
 require 'config/connections.php';
 require 'app/models/images.php';
 
-//get log instance
-$log = \KLogger::instance(\Filesystem::path('log'));
 $_ = array_shift($argv);
 
 class Cleaner {

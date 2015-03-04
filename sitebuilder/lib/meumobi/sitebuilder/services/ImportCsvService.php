@@ -6,7 +6,6 @@ use app\models\Jobs;
 abstract class ImportCsvService extends Service {
 	const INCLUSIVE = 0;
 	const EXCLUSIVE = 1;
-	const LOG_CHANNEL = 'sitebuilder.import_csv';
 
 	protected $fields;
 	protected $file;

@@ -1,5 +1,7 @@
 <?php
 
+use meumobi\sitebuilder\Logger;
+
 require_once 'lib/swiftmailer/swift_required.php';
 
 class Mailer {
@@ -73,8 +75,7 @@ class Mailer {
             $mailer = Swift_Mailer::newInstance($this->transport());
             return $mailer->send($message);
         else:
-            $log = KLogger::instance(Filesystem::path(APP_ROOT . '/log'));
-            $log->logInfo($message);
+            Logger::error('mailer', $message);
         endif;
     }
 }

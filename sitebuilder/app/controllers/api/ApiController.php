@@ -9,6 +9,7 @@ use lithium\storage\Session;
 use meumobi\sitebuilder\Site;
 use meumobi\sitebuilder\repositories\VisitorsRepository;
 use meumobi\sitebuilder\entities\Visitor;
+use meumobi\sitebuilder\Logger;
 use DateTime;
 use Config;
 use Model;
@@ -150,9 +151,13 @@ class ApiController extends \lithium\action\Controller {
 	}
 
 	protected function log() {
-		$log = \KLogger::instance(\Filesystem::path(APP_ROOT . '/log'));
-		$log->logInfo('%s %s', $this->request->env('REQUEST_METHOD'), $this->request->url);
-		$log->logInfo('Request Data:\n%s', print_r($this->request->data, true));
+		Logger::info('api', 'http request', [
+			'method' => $this->request->env('REQUEST_METHOD'),
+			'url' => $this->request->url,
+			'data' => $this->request->data,
+		]);
+
+		Logger::debug('api', '$_SERVER', $_SERVER);
 	}
 
 	protected function param($param, $default = null) {

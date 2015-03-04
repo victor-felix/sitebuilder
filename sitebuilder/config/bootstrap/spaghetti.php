@@ -9,7 +9,6 @@ require 'lib/core/common/Exceptions.php';
 require 'lib/core/common/String.php';
 require 'lib/core/common/Filesystem.php';
 require 'lib/core/common/Hookable.php';
-require 'lib/log/KLogger.php';
 require 'lib/core/debug/Debug.php';
 require 'lib/core/dispatcher/Mapper.php';
 require 'lib/core/model/Model.php';

@@ -4,10 +4,8 @@ use lithium\data\Connections;
 use app\models\Jobs;
 
 class ImportItemsCsvService extends ImportCsvService {
-	const LOG_CHANNEL = 'sitebuilder.import_items_csv';
-
 	protected $category;
-	
+
 	public function call()
 	{
 		$startTime = microtime(true);
@@ -52,7 +50,7 @@ class ImportItemsCsvService extends ImportCsvService {
 			if (!$record) {
 				$record = $classname::create();
 			}
-		
+
 			$item['parent_id'] = $this->getCategory()->id;
 			$item['site_id'] = $this->getCategory()->site_id;
 			$item['type'] = $this->getCategory()->type;
@@ -76,12 +74,12 @@ class ImportItemsCsvService extends ImportCsvService {
 		unlink($this->filePath);
 		return $imported;
 	}
-	
+
 	public function setCategory(\Categories $category)
 	{
 		$this->category = $category;
 	}
-	
+
 	public function getCategory()
 	{
 		if (!$this->category) {

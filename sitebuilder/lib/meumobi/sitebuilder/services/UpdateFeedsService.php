@@ -3,13 +3,10 @@
 namespace meumobi\sitebuilder\services;
 
 use lithium\data\Connections;
-
 use app\models\extensions\Rss;
 
 class UpdateFeedsService extends Service
 {
-	const LOG_CHANNEL  = 'sitebuilder.feeds';
-
 	public function call()
 	{
 		$this->logger()->info('updating feeds', [

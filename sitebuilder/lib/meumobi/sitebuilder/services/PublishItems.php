@@ -7,8 +7,6 @@ use meumobi\sitebuilder\WorkerManager;
 
 class PublishItems extends Service
 {
-	const LOG_CHANNEL  = 'sitebuilder.publis_items';
-
 	public function call()
 	{
 		$time = time();

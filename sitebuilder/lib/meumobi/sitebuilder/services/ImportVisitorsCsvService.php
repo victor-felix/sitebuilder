@@ -1,12 +1,9 @@
 <?php
-namespace meumobi\sitebuilder\services;
 use meumobi\sitebuilder\entities\Visitor;
 use meumobi\sitebuilder\repositories\VisitorsRepository;
 use meumobi\sitebuilder\repositories\RecordNotFoundException;
 
 class ImportVisitorsCsvService extends ImportCsvService {
-	const LOG_CHANNEL = 'sitebuilder.import_visitors_csv';
-
 	protected $repository;
 	protected $site;
 
@@ -23,19 +20,19 @@ class ImportVisitorsCsvService extends ImportCsvService {
 		while ($data = $this->getNextItem()) {
 			$visitor = $this->getVisitor($data);
 			if ($visitor->id()) {
-				$this->log("updating visitor with email: {$visitor->email()}");
+				$this->logger()->info("updating visitor with email: {$visitor->email()}");
 				$this->repository()->update($visitor);
 			} else {
 				$password = \Security::randomPassword();
 				$visitor->setPassword($password);
-				$this->log("creating visitor with email: {$visitor->email()} and password: $password");
+				$this->logger()->info("creating visitor with email: {$visitor->email()} and password: $password");
 				$this->repository()->create($visitor);
 				$this->sendVisitorEmail(['email' => $visitor->email(), 'password' => $password]);
 			}
 			$imported++;
 		}
 		fclose($this->getFile());
-		$this->log("total of imported visitors: $imported");
+		$this->logger()->info("total of imported visitors: $imported");
 		return $imported;
 	}
 
@@ -54,7 +51,7 @@ class ImportVisitorsCsvService extends ImportCsvService {
 
 	protected function clearVisitors()
 	{
-		$this->log("removing visitors from site: {$this->getSite()->id}");		
+		$this->logger()->info("removing visitors from site: {$this->getSite()->id}");
 		array_map(function($visitor) {
 			$this->repository()->destroy($visitor);
 		}, $this->repository()->findBySiteId($this->getSite()->id));
@@ -106,13 +103,6 @@ class ImportVisitorsCsvService extends ImportCsvService {
 			'layout' => 'mail',
 			'data' =>  $data,
 		));
-		$this->log("sending email to : {$data['email']}");
+		$this->logger()->info("sending email to : {$data['email']}");
 		return $mailer->send();
 	}
-
-	protected function log($message)
-	{
-		//TODO improve this
-		echo "$message\n";
-	}
-}

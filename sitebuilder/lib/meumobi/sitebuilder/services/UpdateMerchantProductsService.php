@@ -1,4 +1,5 @@
 <?php
+
 namespace meumobi\sitebuilder\services;
 
 use app\models\extensions\GoogleMerchantFeed;
@@ -9,8 +10,6 @@ use Model;
 
 class UpdateMerchantProductsService extends Service
 {
-	const LOG_CHANNEL  = 'sitebuilder.merchant_products';
-
 	public function call()
 	{
 		$this->logger()->info('updating merchant products', [
@@ -129,4 +128,3 @@ class UpdateMerchantProductsService extends Service
 		$this->logger->info('finished updating products', $stats);
 	}
 }
-

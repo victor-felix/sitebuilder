@@ -11,12 +11,10 @@ require 'config/settings.php';
 require 'config/connections.php';
 require 'app/models/sites.php';
 
-ini_set('error_reporting', 1);
+ini_set('error_reporting', -1);
 ini_set('display_errors', 'On');
-Config::write('Debug.showErrors', true);
 
 //get log instance
-$log = \KLogger::instance(\Filesystem::path('log'));
 $_ = array_shift($argv);
 $sitesIds = $argv;
 
@@ -24,9 +22,7 @@ $sitesIds = $argv;
  * regenerate images for some object(Sites, Items)
  */
 function regenerate($model, $images) {
-	global $log;
 	if (!$images) {
-		$log->logInfo("has no image");
 		return;
 	}
 
@@ -38,11 +34,9 @@ function regenerate($model, $images) {
 		try {
 			$image->regenerate($model);
 		} catch (Exception $e){
-			$log->logError($e->getMessage());
 		}
 		$count++;
 	}
-	$log->logInfo("total regenerated : $count");
 	return $count;
 }
 
@@ -63,10 +57,8 @@ if (!count($sites)) {
 }
 
 foreach ($sites as $site) {
-	$log->logInfo("regenerating Site Photos to the site: {$site->id}");
 	regenerate(new SitePhotos($site->id), $site->photos());
 
-	$log->logInfo("regenerating Site Logos to the site: {$site->id}");
 	regenerate(new SiteLogos($site->id), $site->logo());
 
 	$itemsIds = Items::find('list', array('conditions' => array(
@@ -75,7 +67,6 @@ foreach ($sites as $site) {
 
 	foreach (array_keys($itemsIds) as $itemId) {
 		$item = Items::create(array('_id' => $itemId));
-		$log->logInfo("regenerating Images to the item: $itemId in the site: {$site->id}");
 		regenerate($item, $item->images());
 	}
 }

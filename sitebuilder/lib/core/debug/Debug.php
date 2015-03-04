@@ -1,5 +1,7 @@
 <?php
 
+use meumobi\sitebuilder\Logger;
+
 class Debug {
     public static function handleErrors($handler = null) {
         if(is_null($handler)) {
@@ -14,8 +16,7 @@ class Debug {
     }
 
     public static function log($message) {
-        $log = KLogger::instance(Filesystem::path(APP_ROOT . '/log'));
-        $log->logError($message);
+        return Logger::debug('general', $message);
     }
 
     public static function pr($data) {

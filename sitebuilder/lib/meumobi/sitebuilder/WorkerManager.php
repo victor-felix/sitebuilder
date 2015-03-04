@@ -2,14 +2,11 @@
 
 namespace meumobi\sitebuilder;
 
+use meumobi\sitebuilder\Logger;
 use app\models\Jobs;
 
 class WorkerManager
 {
-	const LOG_CHANNEL = 'sitebuilder.worker';
-
-	public static $logger;
-
 	public static function enqueue($type, $params)
 	{
 		$job = Jobs::create([
@@ -58,8 +55,6 @@ class WorkerManager
 
 	public static function logger()
 	{
-		if (self::$logger) return self::$logger;
-		$handler = new \Monolog\Handler\RotatingFileHandler(APP_ROOT . '/log/works.log');
-		return self::$logger = new \Monolog\Logger(self::LOG_CHANNEL, [$handler]);
+		return Logger::logger();
 	}
 }

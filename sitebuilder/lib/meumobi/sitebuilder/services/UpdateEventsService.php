@@ -8,8 +8,6 @@ use lithium\data\Connections;
 use Model;
 
 class UpdateEventsService extends Service {
-	const LOG_CHANNEL = 'sitebuilder.events';
-
 	public function call() {
 		$this->logger()->info('updating events', [
 				'priority' => $this->options['priority']
@@ -17,10 +15,10 @@ class UpdateEventsService extends Service {
 		$stats = ['start_time' => microtime(true)];
 
 		$db = Connections::get('default')->connection;
-		$feeds = $db->extensions->find ( [ 
+		$feeds = $db->extensions->find ( [
 				'extension' => 'event-feed',
 				'enabled' => 1,
-				'priority' => $this->priorityCriteria () 
+				'priority' => $this->priorityCriteria ()
 		] );
 		foreach ($feeds as $feed) {
 			try {
@@ -69,4 +67,3 @@ class UpdateEventsService extends Service {
 		}
 	}
 }
-

@@ -1,5 +1,7 @@
 <?php
 
+use meumobi\sitebuilder\Logger;
+
 class GoogleGeocoding
 {
 	const REGION = 'br';
@@ -33,8 +35,7 @@ class GoogleGeocoding
 	protected static function updateGeocodeUrl()
 	{
 		self::$currentUrl = (self::$currentUrl + 1) % count(self::$geocodeUrls);
-		$log = \KLogger::instance(\Filesystem::path(APP_ROOT . '/log'));
-		$log->logInfo('Change geocode url to: %s', self::geocodeUrl());
+		Logger::info('geocode', 'changed geocode service url', ['url' => self::geocodeUrl()]);
 	}
 
 	protected static function geocodeUrl($goNext = null)
@@ -58,18 +59,18 @@ class GoogleGeocoding
 		$data = curl_exec($remote);
 		curl_close($remote);
 
-		$log = \KLogger::instance(\Filesystem::path(APP_ROOT . '/log'));
-		$log->logInfo('Geocode Request: %s', $url);
-		$log->logInfo('Geocode Response: %s', $data);
-
 		$json = json_decode($data);
+
+		Logger::debug('geocode', 'request', ['url' => $url]);
+		Logger::debug('geocode', 'response', ['data' => $json]);
 
 		if ($json->status == 'OK' && !empty($json->results)) {
 			return $json;
 		} elseif ($json->status == 'OVER_QUERY_LIMIT') {
-			$log->logInfo('Geocode: over query limit');
+			Logger::info('geocode', 'over query limit');
 			throw new OverQueryLimitException('query limit exceeded');
 		} else {
+			Logger::info('geocode', 'unknown error', ['status' => $json->status]);
 			throw new GeocodingException('could not find results');
 		}
 	}

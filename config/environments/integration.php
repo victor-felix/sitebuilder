@@ -1,10 +1,11 @@
 <?php
 
+// we should turn error reporting for everything as soon as we have fixed all
+// the mongodb deprecated notices
 ini_set('error_reporting', E_ALL ^ E_DEPRECATED);
 ini_set('display_errors', 'On');
 
 Config::write('Mail.preventSending', true);
-Config::write('Debug.showErrors', true);
 
 Config::write('Api.ignoreAuth', true);
 Config::write('Preview.url', 'http://placeholder.int-meumobi.com');
