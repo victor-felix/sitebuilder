@@ -3,11 +3,13 @@ use meumobi\sitebuilder\entities\Visitor;
 use meumobi\sitebuilder\repositories\VisitorsRepository;
 use meumobi\sitebuilder\repositories\RecordNotFoundException;
 
-class ImportVisitorsCsvService extends ImportCsvService {
+class ImportVisitorsCsvService extends ImportCsvService
+{
 	protected $repository;
 	protected $site;
 
-	public function call() {
+	public function call()
+	{
 		//TODO implement service call
 	}
 
@@ -106,3 +108,4 @@ class ImportVisitorsCsvService extends ImportCsvService {
 		$this->logger()->info("sending email to : {$data['email']}");
 		return $mailer->send();
 	}
+}
