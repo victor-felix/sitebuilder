@@ -16,6 +16,7 @@ class Visitor extends Entity
 	protected $hashedPassword;
 	protected $authToken;
 	protected $lastLogin;
+	protected $shouldRenewPassword = false;
 	protected $devices = [];
 	protected $groups = [];
 
@@ -42,13 +43,26 @@ class Visitor extends Entity
 	public function setPassword($password)
 	{
 		if (!empty($password)) {
-			return $this->hashedPassword = Security::hash($password, 'sha1');
+			$this->shouldRenewPassword = false;
+			return $this->hashedPassword = $this->hashPassword($password);
 		}
+	}
+
+	public function setRandomPassword()
+	{
+		$password = Security::randomPassword();
+		$this->hashedPassword = $this->hashPassword($password);
+		return $password;
 	}
 
 	public function passwordMatch($password)
 	{
-		return Security::hash($password, 'sha1') == $this->hashedPassword;
+		return $this->hashPassword($password) == $this->hashedPassword;
+	}
+
+	protected function hashPassword()
+	{
+		return Security::hash($password, 'sha1');
 	}
 
 	public function hashedPassword()
@@ -58,15 +72,15 @@ class Visitor extends Entity
 
 	public function authToken()
 	{
-		//I(tadeu) updated this to return the persited authToken, but I'm not sure if it is correct, seems confusing to me
-		return $this->authToken ? $this->authToken : Security::hash(time() . $this->email(), 'sha1');
+		return $this->authToken
+			?: Security::hash(time() . $this->email(), 'sha1');
 	}
 
 	public function lastLogin()
 	{
 		return $this->lastLogin;
 	}
-		
+
 	public function setLastLogin($lastLogin)
 	{
 		$this->lastLogin = $lastLogin;

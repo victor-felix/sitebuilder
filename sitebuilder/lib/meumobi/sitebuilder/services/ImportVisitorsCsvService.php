@@ -25,8 +25,7 @@ class ImportVisitorsCsvService extends ImportCsvService
 				$this->logger()->info("updating visitor with email: {$visitor->email()}");
 				$this->repository()->update($visitor);
 			} else {
-				$password = \Security::randomPassword();
-				$visitor->setPassword($password);
+				$password = $visitor->setRandomPassword();
 				$this->logger()->info("creating visitor with email: {$visitor->email()} and password: $password");
 				$this->repository()->create($visitor);
 				$this->sendVisitorEmail(['email' => $visitor->email(), 'password' => $password]);

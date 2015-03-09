@@ -126,6 +126,7 @@ class VisitorsRepository extends Repository
 			'hashed_password' => $object->hashedPassword(),
 			'auth_token' => $object->authToken(),
 			'last_login' => $object->lastLogin(),
+			'should_renew_password' => $object->shouldRenewPassword(),
 			'devices' => array_map(function($d) {
 				return [
 					'uuid' => $d->uuid(),
