@@ -52,7 +52,7 @@ class VisitorsController extends ApiController
 
 	public function update()
 	{
-		$this->requireVisitorAuth();
+		$this->requireVisitorAuth(['allowExpired' => true]);
 		$currentPassword = $this->request->get('data:current_password');
 		$newPassword = $this->request->get('data:password');
 		$repository = new VisitorsRepository();

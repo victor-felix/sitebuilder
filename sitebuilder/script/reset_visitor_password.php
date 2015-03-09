@@ -8,8 +8,7 @@ function updateVisitorPassword($email)
 {
 	$repository = new VisitorsRepository();
 	$visitor = $repository->findByEmail($email);
-	$password = \Security::randomPassword();
-	$visitor->setPassword($password);
+	$password = $visitor->setRandomPassword();
 	$repository->update($visitor);
 	echo "Visitor password updated to: $password\n";
 	sendVisitorEmail($visitor, $password);

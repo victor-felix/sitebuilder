@@ -60,7 +60,7 @@ class Visitor extends Entity
 		return $this->hashPassword($password) == $this->hashedPassword;
 	}
 
-	protected function hashPassword()
+	protected function hashPassword($password)
 	{
 		return Security::hash($password, 'sha1');
 	}
@@ -84,6 +84,16 @@ class Visitor extends Entity
 	public function setLastLogin($lastLogin)
 	{
 		$this->lastLogin = $lastLogin;
+	}
+
+	public function shouldRenewPassword()
+	{
+		return $this->shouldRenewPassword;
+	}
+
+	public function isPasswordValid()
+	{
+		return !$this->shouldRenewPassword;
 	}
 
 	public function devices()
