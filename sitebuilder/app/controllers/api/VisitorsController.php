@@ -28,10 +28,17 @@ class VisitorsController extends ApiController
 			}
 			$visitor->setLastLogin(date('Y-m-d H:i:s'));
 			$repository->update($visitor);
-			return [
+
+			$response = [
 				'token' => $visitor->authToken(),
-				'visitor' => VisitorPresenter::present($visitor)
+				'visitor' => VisitorPresenter::present($visitor),
 			];
+
+			if ($visitor->shouldRenewPassword()) {
+				$response['error'] = 'password expired';
+			}
+
+			return $response;
 		} else {
 			throw new UnAuthorizedException('Invalid visitor');
 		}
