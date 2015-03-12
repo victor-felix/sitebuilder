@@ -11,16 +11,16 @@ class Logger
 	protected static $instance;
 	protected $logger;
 
-	public static function instance()
+	public static function instance($level = null)
 	{
-		if (!self::$instance) self::$instance = new self;
+		if (!self::$instance) self::$instance = new self($level);
 
 		return self::$instance;
 	}
 
-	public static function logger()
+	public static function logger($level = null)
 	{
-		return self::instance()->getLogger();
+		return self::instance($level)->getLogger();
 	}
 
 	// all static calls just redirect to the singleton
@@ -70,15 +70,13 @@ class Logger
 		return self::logger()->log($level, $message, $context);
 	}
 
-	public function __construct(LoggerInterface $logger = null)
+	public function __construct($level = null)
 	{
-		if (!$logger) {
-			$formatter = new \Monolog\Formatter\LineFormatter();
-			$formatter->ignoreEmptyContextAndExtra();
-			$handler = new \Monolog\Handler\StreamHandler(APP_ROOT . '/log/sitebuilder.log');
-			$handler->setFormatter($formatter);
-			$logger = new \Monolog\Logger('sitebuilder', [$handler]);
-		}
+		$formatter = new \Monolog\Formatter\LineFormatter();
+		$formatter->ignoreEmptyContextAndExtra();
+		$handler = new \Monolog\Handler\StreamHandler(APP_ROOT . '/log/sitebuilder.log', $level);
+		$handler->setFormatter($formatter);
+		$logger = new \Monolog\Logger('sitebuilder', [$handler]);
 
 		$this->logger = $logger;
 	}

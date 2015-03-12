@@ -1,6 +1,7 @@
 <?php
 
 use lithium\core\ErrorHandler;
+use meumobi\sitebuilder\Logger;
 
 ErrorHandler::apply(array('lithium\action\Dispatcher', 'run'),
 	array('type' => array(
@@ -19,3 +20,5 @@ ErrorHandler::apply(array('lithium\action\Dispatcher', 'run'),
 		echo $response->render();
 	}
 );
+
+Logger::logger(Config::read('Log.level'));
