@@ -366,7 +366,7 @@ class MongoDb extends \lithium\data\Source {
 	 * @filter
 	 */
 	public function create($query, array $options = array()) {
-		$defaults = array('safe' => false, 'fsync' => false);
+		$defaults = array('fsync' => false);
 		$options += $defaults;
 		$this->_checkConnection();
 
