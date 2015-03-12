@@ -1,4 +1,7 @@
 <?php
+
+namespace meumobi\sitebuilder\services;
+
 use meumobi\sitebuilder\entities\Visitor;
 use meumobi\sitebuilder\repositories\VisitorsRepository;
 use meumobi\sitebuilder\repositories\RecordNotFoundException;
