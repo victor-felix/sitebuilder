@@ -246,7 +246,7 @@ class ApiController extends \lithium\action\Controller {
 
 	protected function requireVisitorAuth(array $params = [])
 	{
-		$allowExpired = $params['allowExpired'] || false;
+		$allowExpired = array_key_exists('allowExpired', $params) ? $params['allowExpired'] : false;
 		$repository = new VisitorsRepository();
 		$token = $this->request->env('HTTP_X_VISITOR_TOKEN');
 		$this->visitor = $repository->findByAuthToken($token);
