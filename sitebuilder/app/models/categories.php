@@ -1,6 +1,7 @@
 <?php
 
 use meumobi\sitebuilder\services\ImportCsvService;
+use meumobi\sitebuilder\services\Service;
 
 require_once 'lib/utils/FileUpload.php';
 require_once 'lib/mailer/Mailer.php';
@@ -326,16 +327,13 @@ class Categories extends AppModel
 		foreach ($items as $item) {
 			Items::remove(array('_id' => $item->id()));
 		}
-		if ($this->hasFeed()) {
-			Extensions::update(
-				[
-					'priority' => Rss::PRIORITY_HIGH
-				],
-				[
-					'category_id' => $this->id(),
-					'extension' => 'rss',
-				]);
-		}
+		Extensions::update(
+			[
+				'priority' => Service::PRIORITY_HIGH
+			],
+			[
+				'category_id' => $this->id(),
+		]);
 	}
 
 	public function enabledExtensions()
