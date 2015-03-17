@@ -4,53 +4,117 @@ use Mapper;
 
 class AudienceReportPresenter
 {
+	protected $visitors;
+	protected $totalVisitors;
+	protected $subscribed;
+	protected $accepted;
+	protected $devices;
+	protected $appVersions;
+
 	public static function present($visitors)
 	{
-		$countProperty = function($property) {
-			return function($total, $item) use ($property) {
-				if ($item->$property()) $total++;
-				return $total;
-			};
-		};
-		$totalDevices = 0;
-		$subscribed = 0;
-		$unsubscribed = 0;
-		$subscribedPercent = 0;
-		$unsubscribedPercent = 0;
-		$totalVisitors = count($visitors); 
-		$accepted = array_reduce($visitors, $countProperty('lastLogin'));
-		$pending = $totalVisitors - $accepted;
-		$subscribedAndVersions = array_reduce($visitors, function($data, $visitor) use ($countProperty) {
-			//total devices
-			$data['totalDevices'] += count($visitor->devices());
-			//total devices subscribed
-			$subscribedDevices = array_reduce($visitor->devices(), $countProperty('pushId'));
-			if ($subscribedDevices) $data['subscribed'] += $subscribedDevices;
-			//app versions list
-			$deviceVersions = array_map(function($device) {
-				return $device->appVersion() | '';//must return string
-			}, $visitor->devices());
-			$data['appVersions'] = array_merge($data['appVersions'], $deviceVersions);
-			return $data;
-		}, ['totalDevices' => 0, 'subscribed' => 0, 'appVersions' => []]);
-		//assing values from array
-		extract($subscribedAndVersions);
-		if ($totalDevices) {
-			$unsubscribed = $totalDevices - $subscribed;
-			$subscribedPercent = number_format(($subscribed / $totalDevices) * 100, 2);
-			$unsubscribedPercent = number_format(($unsubscribed / $totalDevices) * 100, 2);
+		$report = new self($visitors);
+		return [
+			'totalVisitors' => $report->getTotalVisitors(),
+			'accepted' => $report->getAccepted(),
+			'pending' => $report->getPending(),
+			'totalDevices' => $report->getDevices(),
+			'subscribed' => $report->getSubscribed(),
+			'unsubscribed' => $report->getUnsubscribed(),
+			'subscribedPercent' => $report->getPercent($report->getSubscribed(), $report->getDevices()),
+			'unsubscribedPercent' => $report->getPercent($report->getUnsubscribed(), $report->getDevices()),
+			'appVersions' => $report->getAppVersions(),
+		];
+	}
+
+	protected function __construct($visitors)
+	{
+		$this->visitors = $visitors;
+	}
+
+	protected function getVisitors()
+	{
+		return $this->visitors;
+	}
+
+	protected function getTotalVisitors()
+	{
+		if (!$this->totalVisitors) $this->totalVisitors = count($this->getVisitors());
+		return $this->totalVisitors;
+	}
+
+	protected function getAccepted()
+	{
+		if (!$this->accepted) {
+			$this->accepted = array_reduce($this->getVisitors(), $this->countProperty('lastLogin'));
 		}
-		$appVersions = array_count_values($appVersions);
-		return compact(
-			'totalVisitors',
-			'accepted',
-			'pending',
-			'totalDevices',
-			'subscribed',
-			'unsubscribed',
-			'subscribedPercent',
-			'unsubscribedPercent',
-			'appVersions'
-		);
+		return $this->accepted;
+	}
+
+	protected function getPending()
+	{
+		return $this->getTotalVisitors() - $this->getAccepted();
+	}
+
+	protected function getDevices()
+	{
+		if (!$this->devices) {
+			$this->devices = array_reduce($this->getVisitors(), function($devices, $visitor) {
+				$devices += count($visitor->devices());
+				return $devices;
+			}, 0);
+		}
+		return $this->devices;
+	}
+
+	protected function getAppVersions()
+	{
+		if (!$this->appVersions) {
+			//list of all versions installed
+			$allVersions = array_reduce($this->getVisitors(), function($versions, $visitor) {
+				foreach ($visitor->devices() as $device) {
+					if ($device->appVersion()) $versions[] = $device->appVersion();
+				}
+				return $versions;
+			}, []);
+			//merge and count versions
+			$this->appVersions = array_count_values($allVersions);
+		}
+		return $this->appVersions;
+	}
+
+	protected function getSubscribed()
+	{
+		if (!$this->subscribed) {
+			$this->subscribed = array_reduce($this->getVisitors(), function($total, $visitor) {
+				//check if visitor have any device subscribed
+				$subscribedDevices = array_reduce($visitor->devices(), $this->countProperty('pushId'));
+				if ($subscribedDevices) $total += $subscribedDevices;
+				return $total;
+			}, 0);
+		}
+		return $this->subscribed;
+	}
+
+	protected function getUnsubscribed()
+	{
+		return $this->getDevices() - $this->getSubscribed();
+	}
+
+	/**
+	* Helper methods
+	 */
+	private function countProperty($property)
+	{
+		return function($total, $item) use ($property) {
+			if ($item->$property()) $total++;
+			return $total;
+		};
+	}
+
+	private function getPercent($amount, $total)
+	{
+		if (!$total) return 0;
+		return number_format(($amount / $total) * 100, 2);
 	}
 }

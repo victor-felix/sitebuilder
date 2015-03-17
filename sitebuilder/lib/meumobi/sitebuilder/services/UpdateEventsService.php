@@ -63,7 +63,7 @@ class UpdateEventsService extends Service {
 			$stats['end_time'] = microtime(true);
 			$stats['elapsed_time'] = array_unset($stats, 'end_time') -
 			array_unset($stats, 'start_time');
-			$this->logger->info('finished updating events', $stats);
+			$this->logger()->info('finished updating events', $stats);
 		}
 	}
 }
