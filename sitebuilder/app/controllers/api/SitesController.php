@@ -13,6 +13,7 @@ class SitesController extends ApiController
 	{
 		return $this->toJSON($this->site());
 	}
+
 	//TODO clean this action, use presenters to format json responses
 	public function performance()
 	{
@@ -74,12 +75,6 @@ class SitesController extends ApiController
 	{
 		$skinsRepo = new SkinsRepository();
 		$skin = $skinsRepo->find($this->site()->skin);
-		$theme = array(
-			'theme_id' => $skin->themeId(),
-			'colors' => $skin->colors(),
-			'assets' => $skin->assets(),
-		);
-
-		return $theme;
+		return SkinPresenter::present($skin);
 	}
 }
