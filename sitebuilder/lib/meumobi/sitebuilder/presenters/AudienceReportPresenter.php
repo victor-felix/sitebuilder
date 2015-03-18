@@ -73,7 +73,7 @@ class AudienceReportPresenter
 			//list of all versions installed
 			$allVersions = array_reduce($this->getVisitors(), function($versions, $visitor) {
 				foreach ($visitor->devices() as $device) {
-					if ($device->appVersion()) $versions[] = $device->appVersion();
+					$versions[] = $device->appVersion() ? $device->appVersion() : 'undefined';
 				}
 				return $versions;
 			}, []);
