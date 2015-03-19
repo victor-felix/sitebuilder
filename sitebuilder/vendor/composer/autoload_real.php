@@ -23,9 +23,6 @@ class ComposerAutoloaderInit2046bf4b7d93d271d7a6cb957296f665
         self::$loader = $loader = new \Composer\Autoload\ClassLoader();
         spl_autoload_unregister(array('ComposerAutoloaderInit2046bf4b7d93d271d7a6cb957296f665', 'loadClassLoader'));
 
-        $vendorDir = dirname(__DIR__);
-        $baseDir = dirname($vendorDir);
-
         $map = require __DIR__ . '/autoload_namespaces.php';
         foreach ($map as $namespace => $path) {
             $loader->set($namespace, $path);
@@ -45,4 +42,9 @@ class ComposerAutoloaderInit2046bf4b7d93d271d7a6cb957296f665
 
         return $loader;
     }
+}
+
+function composerRequire2046bf4b7d93d271d7a6cb957296f665($file)
+{
+    require $file;
 }
