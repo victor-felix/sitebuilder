@@ -13,5 +13,10 @@
         "mjohnson/decoda": "~6.5.2",
         "gomoob/php-pushwoosh": "~0.1.0",
         "behat/behat": "~3.0.6"
+    },
+    "autoload": {
+        "psr-0": {
+            "": "./lib/"
+        }
     }
 }

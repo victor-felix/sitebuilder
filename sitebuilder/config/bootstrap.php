@@ -9,25 +9,25 @@ set_include_path(APP_ROOT . PATH_SEPARATOR .
 
 ini_set('error_log', ERROR_LOG);
 
-require 'vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 require_once 'lib/htmlpurifier/HTMLPurifier/Bootstrap.php';
 spl_autoload_register(array('HTMLPurifier_Bootstrap', 'autoload'));
 
-require 'config/bootstrap/lithium.php';
-require 'config/bootstrap/spaghetti.php';
-require 'config/bootstrap/initializers.php';
+require_once 'config/bootstrap/lithium.php';
+require_once 'config/bootstrap/spaghetti.php';
+require_once 'config/bootstrap/initializers.php';
 
-require 'config/settings.php';
-require 'config/connections.php';
+require_once 'config/settings.php';
+require_once 'config/connections.php';
 
-require 'app/models/app_model.php';
-require 'app/controllers/app_controller.php';
-require 'app/models/meu_mobi.php';
+require_once 'app/models/app_model.php';
+require_once 'app/controllers/app_controller.php';
+require_once 'app/models/meu_mobi.php';
 
 
 return function($segment) {
-	require 'segments/' . $segment . '/config.php';
+	require_once 'segments/' . $segment . '/config.php';
 
 	YamlDictionary::dictionary('strings');
 	YamlDictionary::path(APP_ROOT . '/segments/' . $segment);
