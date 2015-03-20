@@ -661,16 +661,27 @@ $(window).load(function() {
      // bFilter: false
       sDom: 'ltipr',
       lengthChange: false,
-      language: dataTableLang
+      "order": [],
+      language: dataTableLang,
+      columnDefs: [
+        {
+          "targets"  : 'no-sort',
+          "orderable": false,
+        },
+        {
+          "targets": 0,
+          "width": "10px"
+        }
+      ]
     });
       
     yadcf.init(visitorTable, [
       {
-        column_number: 0,
+        column_number: 1,
         filter_type: "text"
       },
       {
-        column_number : 1,
+        column_number : 2,
         column_data_type: "html",
         html_data_type: "text",
         filter_default_label: "Select a group"   
@@ -687,4 +698,13 @@ $(window).load(function() {
       Morris.Donut(options);
     });
   }
+  var selectRows = $('.bulk-action-list .select-row');
+  var bulkActions = $('.bulk-actions');
+  selectRows.change(function() {
+    if(selectRows.is(":checked")) {
+      bulkActions.show();
+    } else {
+      bulkActions.hide();
+    }
+  });
 });
