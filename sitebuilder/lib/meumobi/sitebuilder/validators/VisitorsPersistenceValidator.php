@@ -19,6 +19,10 @@ class VisitorsPersistenceValidator implements Validator
 		'lastName' => [
 			'notEmpty' => 'required_value_error_message'
 		],
+		'siteId' => [
+			'notEmpty' => 'required_value_error_message'
+		],
+
 	];
 
 

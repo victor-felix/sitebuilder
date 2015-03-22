@@ -3,6 +3,7 @@ use meumobi\sitebuilder\repositories\VisitorsRepository;
 use meumobi\sitebuilder\entities\Visitor;
 use meumobi\sitebuilder\presenters\VisitorGraphPresenter;
 use meumobi\sitebuilder\presenters\AudienceReportPresenter;
+use meumobi\sitebuilder\validators\VisitorsPersistenceValidator;
 
 class VisitorsController extends AppController
 {
@@ -31,15 +32,17 @@ class VisitorsController extends AppController
 			]
 		];
 		$visitorGraphDataJson = VisitorGraphPresenter::present($visitorGraphData);
-		$this->set(compact('visitors', 'report', 'visitorGraphDataJson')); 
+		$this->set(compact('visitors', 'report', 'visitorGraphDataJson'));
 	}
 
 	public function add()
 	{
 		$site = $this->getCurrentSite();
-		$visitor = new Visitor($this->data);
+		$data = $this->data;
+		$data['site_id'] = $site->id();
+		$visitor = new Visitor($data);
 		if (!empty($this->data)) {
-			$validator = new VisitorPersistenceValidator();
+			$validator = new VisitorsPersistenceValidator();
 			if ($validator->validate($visitor)->isValid()) {
 				$this->repository->create($visitor);
 				Session::writeFlash('success', s('Visitor successfully created.'));
@@ -47,7 +50,8 @@ class VisitorsController extends AppController
 			} else {
 				Session::writeFlash('error', s('Sorry, we can\'t save the visitor'));
 			}
-		} 
+		}
+		$this->set(compact('visitor', 'site'));
 	}
 
 	public function reset($id)

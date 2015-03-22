@@ -7,7 +7,7 @@
 	<div class="clear"></div>
 </div>
 
-<?php echo $this->form->create('/skins/add/' . $theme->id(), array(
+<?php echo $this->form->create('/visitors/add/', array(
 	'id' => 'form-custom-theme',
 	'class' => 'form-edit default-form',
 	'method' => 'file'
