@@ -4,12 +4,10 @@ namespace meumobi\sitebuilder\entities;
 
 use meumobi\sitebuilder\entities\VisitorDevice;
 use meumobi\sitebuilder\repositories\RecordNotFoundException;
-use meumobi\sitebuilder\validators\Validatable;
-use meumobi\sitebuilder\validators\Validator;
 use MongoId;
 use Security;
 
-class Visitor extends Entity implements Validatable
+class Visitor extends Entity
 {
 	protected $siteId;
 	protected $email;
@@ -136,11 +134,5 @@ class Visitor extends Entity implements Validatable
 	public function addGroup($group)
 	{
 		if (!in_array($group, $this->groups)) $this->groups []= $group;
-	}
-
-	public function validate(Validator $validator,array &$errors)
-	{
-		$errors = $validator->brokenRules($this);
-		return $validator->isValid($this);
 	}
 }

@@ -3,57 +3,40 @@ namespace meumobi\sitebuilder\validators;
 
 class VisitorsPersistenceValidator implements Validator
 {
+	/*
+	 * List of validation rules and error messages tokens, since the message 
+	 * should be the responsibility of the presentation layer.
+	 * http://jeffreypalermo.com/blog/the-fallacy-of-the-always-valid-entity/
+	 */
 	protected $validations = [
 		'email' => [
-			[
-				'rule' => 'notEmpty',
-				'message' => 'A non empty email is required'
-			],
-			[
-				'rule' => 'email',
-				'message' => 'Please enter a valid email address.'
-			]
+			'notEmpty' => 'required_value_error_message',
+			'email' => 'invalid_email_error_message'
 		],
 		'firstName' => [
-			[
-				'rule' => 'notEmpty',
-				'message' => 'A non empty name is required'
-			],
+			'notEmpty' => 'required_value_error_message'
 		],
 		'lastName' => [
-			[
-				'rule' => 'notEmpty',
-				'message' => 'A non empty name is required'
-			],
+			'notEmpty' => 'required_value_error_message'
 		],
 	];
 
 
-	public function isValid($entity)
+	public function validate($entity)
 	{
-		return count($this->BrokenRules($entity)) > 0;
-	}
-
-	public function brokenRules($entity)
-	{
-		$brokenRules = [];
-		//replicating the spaghett model validation, but I think this can be better
-		foreach ($this->validations as $field => $validations) {
-			foreach ($validations as $validation) {
-				if (!$this->validateRule($validation['rule'], $entity->$field()))
-					$brokenRules[$field] = $validation['message'];
+		$validationResult = new ValidationResult();
+		//replicating the spagheth model validation, but I think this can be better or use a third party lib
+		foreach ($this->validations as $property => $rules) {
+			foreach ($rules as $rule => $message) {
+				if (!$this->validateRule($rule, $entity->$property()))
+					$validationResult->addError($property, $message);
 			}
 		}
-		var_dump($brokenRules);
-		return $brokenRules;
+		return $validationResult;
 	}
 
 	protected function validateRule($rule, $value)
 	{
-		if(method_exists($this, $rule)) {
-			return $this->$rule($value);
-		} else {
-			return \Validation::$rule($value);
-		}
+		return \Validation::$rule($value);
 	}
 }

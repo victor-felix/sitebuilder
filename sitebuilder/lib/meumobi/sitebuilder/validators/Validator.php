@@ -3,6 +3,8 @@ namespace meumobi\sitebuilder\validators;
 
 interface Validator
 {
-	public function isValid($entity);
-	public function brokenRules($entity);
+	/*
+	 * @return @class ValidationResult
+	 */
+	public function validate($entity);
 }

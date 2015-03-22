@@ -44,11 +44,11 @@ class FeatureContext implements Context, SnippetAcceptingContext
 	{
 		$this->repository = new VisitorsRepository();
 		$validator = new VisitorsPersistenceValidator();
-		$errors = [];
-		if ($this->visitor->validate($validator, $errors)) {
+		$result = $validator->validate($this->visitor);
+		if ($result->isValid()) {
 			$this->repository->create($this->visitor);
 		} else {
-			throw new Exception('Invalid visitor, errors: ' . print_r($errors, true));
+			throw new Exception('Invalid visitor, errors: ' . print_r($result->errors(), true));
 		}
 	}
 
