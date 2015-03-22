@@ -8,4 +8,21 @@ Scenario: Add a new Visitor
     |email|first_name|last_name|groups|
     |test@mail.com|first|last|test|
   When I create a Visitor
-  Then a new visitor shold be added
+  Then a new visitor should be added
+
+Scenario: Add an invalid Visitor
+  Given I fill a visitor email, first name, last name and groups with invalid values:
+    |email|first_name|last_name|groups|
+    |nomail.com||||
+  When I create a Visitor
+  Then a new visitor should NOT be added
+
+Scenario: Reset a Visitor password
+    Given that there is a visitor
+    When I reset it's password
+    Then the visitor password should be invalidated
+
+Scenario: Remove a Visitor
+    Given that there is a visitor
+    When I remove this visitor
+    Then the visitor should not exist anymore

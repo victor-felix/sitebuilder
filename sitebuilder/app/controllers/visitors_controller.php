@@ -40,26 +40,47 @@ class VisitorsController extends AppController
 		$visitor = new Visitor($this->data);
 		if (!empty($this->data)) {
 			$validator = new VisitorPersistenceValidator();
-			if ($validator->isValid($visitor)) {
+			if ($validator->validate($visitor)->isValid()) {
 				$this->repository->create($visitor);
-				if ($this->isXhr()) {
-					$this->respondToJSON(array(
-						'go_back' => true,
-						'refresh' => '/visitorss',
-						'success' => s('Visitor successfully created.')
-					));
-				} else {
-					Session::writeFlash('success', s('Visitor successfully created.'));
-					$this->redirect('/visitors');
-				}
+				Session::writeFlash('success', s('Visitor successfully created.'));
+				$this->redirect('/visitors');
 			} else {
-				if ($this->isXhr()) {
-					$this->respondToJSON(array(
-						'refresh' => '/visitors/add/',
-						'error' => s('Sorry, we can\'t save the visitor')
-					));
-				}
+				Session::writeFlash('error', s('Sorry, we can\'t save the visitor'));
 			}
 		} 
+	}
+
+	public function reset($id)
+	{
+		$site = $this->getCurrentSite();
+		$visitor = $this->repository->find($id);
+		$password = $visitor->setRandomPassword();
+		$this->repository->update($visitor);
+		$data = [
+			'title' => s('[%s]: New password', $site->title),
+			'segment' => MeuMobi::currentSegment(),
+			'password' => $password,
+			'visitor' => $visitor,
+			'site' => $site,
+		];
+		$mailer = new Mailer([
+			'from' => $data['segment']->email,
+			'to' => $visitor->email(),
+			'subject' => $data['title'],
+			'views' => ['text/html' => 'visitors/forgot_password_mail.htm'],
+			'layout' => 'mail',
+			'data' =>  $data,
+		]);
+		$mailer->send();
+		Session::writeFlash('success', s('Visitor password successfully reseted.'));
+		$this->redirect('/visitors');
+	}
+
+	public function remove($id)
+	{
+		$visitor = $this->repository->find($id);
+		$this->repository->destroy($visitor);
+		Session::writeFlash('success', s('Visitor successfully removed.'));
+		$this->redirect('/visitors');
 	}
 }

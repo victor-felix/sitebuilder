@@ -5,9 +5,9 @@ class ValidationResult
 {
 	protected $errors;
 
-	public function addError($error)
+	public function addError($property, $error)
 	{
-		$this->erros[] = $error;
+		$this->errors[$property] = $error;
 	}
 
 	public function isValid()

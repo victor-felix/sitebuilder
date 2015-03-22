@@ -28,8 +28,9 @@ class VisitorsPersistenceValidator implements Validator
 		//replicating the spagheth model validation, but I think this can be better or use a third party lib
 		foreach ($this->validations as $property => $rules) {
 			foreach ($rules as $rule => $message) {
-				if (!$this->validateRule($rule, $entity->$property()))
+				if (!$this->validateRule($rule, $entity->$property())) {
 					$validationResult->addError($property, $message);
+				}
 			}
 		}
 		return $validationResult;
