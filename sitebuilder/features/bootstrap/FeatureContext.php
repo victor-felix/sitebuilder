@@ -9,7 +9,7 @@ use Behat\Gherkin\Node\TableNode;
 
 use meumobi\sitebuilder\repositories\VisitorsRepository;
 use meumobi\sitebuilder\entities\Visitor;
-
+use meumobi\sitebuilder\validators\VisitorsPersistenceValidator;
 /**
  * Defines application features from the specific context.
  */
@@ -43,7 +43,13 @@ class FeatureContext implements Context, SnippetAcceptingContext
 	public function iCreateAVisitor()
 	{
 		$this->repository = new VisitorsRepository();
-		$this->repository->create($this->visitor);
+		$validator = new VisitorsPersistenceValidator();
+		$errors = [];
+		if ($this->visitor->validate($validator, $errors)) {
+			$this->repository->create($this->visitor);
+		} else {
+			throw new Exception('Invalid visitor, errors: ' . print_r($errors, true));
+		}
 	}
 
 	/**
