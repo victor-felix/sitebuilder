@@ -52,7 +52,7 @@
 		</table>
 		<div class="fieldset-actions">
 			<div class="grid-4 first">
-				<?php echo $this->html->link(s('Add Visitor'), '/visitors/add', array(
+				<?= $this->html->link(s('Add Visitor'), '/visitors/add', array(
 					'class' => 'ui-button large add push-scene',
 					'style' => 'margin-bottom: 40px'
 				)) ?>
