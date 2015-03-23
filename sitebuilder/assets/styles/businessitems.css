@@ -78,11 +78,6 @@
 	margin-left: 25px;
 }
 
-#form-add-businessitem button, 
-#form-edit-businessitem button {
-	margin-left: 207px;
-}
-
 .pagination-wrapp {
     text-align: center;
     list-style: none;

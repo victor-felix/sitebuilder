@@ -42,6 +42,7 @@ class VisitorsController extends AppController
 		$data['site_id'] = $site->id();
 		$visitor = new Visitor($data);
 		if (!empty($this->data)) {
+			$data['password'] = $visitor->setRandomPassword();
 			$validator = new VisitorsPersistenceValidator();
 			if ($validator->validate($visitor)->isValid()) {
 				$this->repository->create($visitor);

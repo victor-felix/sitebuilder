@@ -969,3 +969,9 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
   width: 250px;
   height: 250px;
 }
+
+.list .edit-link {
+  color: #444;
+  text-decoration: none;
+  display: block;
+}

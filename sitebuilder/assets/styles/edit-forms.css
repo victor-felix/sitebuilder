@@ -264,10 +264,6 @@
 	margin: -1.2em 0 0 20px;
 }
 
-div.yadcf-filter-wrapper {
-  display: block;
-  margin: 0;
-}
-.yadcf-filter-reset-button {
-    padding: 3px;
+.item-form.default-form fieldset.actions button {
+	margin-left: 207px;
 }

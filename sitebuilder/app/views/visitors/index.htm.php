@@ -23,7 +23,7 @@
 			</div>
 		</div>
 		<?php endif ?>
-		<table id="visitors-list" class="display" cellspacing="0" width="100%">
+		<table id="visitors-list" class="display list" cellspacing="0" width="100%">
 				<thead>
 						<tr>
 								<th><?= s('Email') ?></th>
@@ -34,7 +34,7 @@
 				<tbody>
 						<?php foreach($visitors as $visitor): ?>
 						<tr>
-							<td><?= $visitor->email() ?></td>
+							<td><?= $this->html->link($visitor->email(), 'visitors/edit/' . $visitor->id(), ['class' => 'edit-link']) ?></td>
 							<td>
 								<?php foreach($visitor->groups() as $group): ?>
 									<span class="badge"><?= $group ?></span>
@@ -47,10 +47,10 @@
 		</table>
 		<div class="fieldset-actions">
 			<div class="grid-4 first">
-				<?= $this->html->link(s('Add Visitor'), '/visitors/add', array(
+				<?= $this->html->link(s('Add Visitor'), '/visitors/add', [
 					'class' => 'ui-button large add push-scene',
 					'style' => 'margin-bottom: 40px'
-				)) ?>
+				]) ?>
 			</div>
 		</div>
 	</div>

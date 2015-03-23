@@ -9,7 +9,7 @@
 
 <?= $this->form->create('/visitors/add/', [
 	'id' => 'form-custom-theme',
-	'class' => 'form-edit default-form',
+	'class' => 'form-edit default-form item-form',
 	'method' => 'file'
 ]) ?>
 
@@ -20,9 +20,12 @@
 ]) ?>
 
 <fieldset class="actions">
+        <?= $this->html->link(s('‹ back'), '/visitors', array('class' => 'ui-button large back pop-scene')) ?>
+ 
 	<?= $this->form->submit(s('Save'), [
-		'class' => 'ui-button red larger save',
+		'class' => 'ui-button red larger',
 		'name' => 'continue',
 		'value' => 0,
 	]) ?>
 </fieldset>
+<?= $this->form->close() ?>
