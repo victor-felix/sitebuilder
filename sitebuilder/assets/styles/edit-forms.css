@@ -232,6 +232,13 @@
 	margin-top: 8px;
 }
 
+.default-form a.reset {
+	float: right;
+	position: relative;
+	margin-top: 8px;
+  margin-right: 10px;
+}
+
 .default-form a.delete img {
 	position: absolute;
 	top: 5px;

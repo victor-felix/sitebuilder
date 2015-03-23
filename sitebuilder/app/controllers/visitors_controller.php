@@ -92,7 +92,7 @@ class VisitorsController extends AppController
 		$this->redirect('/visitors');
 	}
 
-	public function remove($id)
+	public function delete($id)
 	{
 		$visitor = $this->repository->find($id);
 		$this->repository->destroy($visitor);

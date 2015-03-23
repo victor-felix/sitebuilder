@@ -26,5 +26,24 @@
 		'name' => 'continue',
 		'value' => 0,
 	]) ?>
+	<?= $this->html->link(
+		$this->html->image('shared/categories/delete.gif') . s('Delete visitor'),
+		'/visitors/delete/' . $visitor->id(), [
+			'class' => 'ui-button delete has-confirm',
+			'data-confirm' => '#delete-confirm'
+	]) ?>
+	<?= $this->html->link(s('reset password'), '/visitors/reset/' . $visitor->id(), ['class' => 'ui-button reset']) ?>
 </fieldset>
 <?= $this->form->close() ?>
+
+<div id="delete-confirm" class="confirm">
+	<div class="wrapper">
+		<p>
+			<?= s('Really want to delete <strong>%s</strong>?', e($visitor->email())) ?>
+		</p>
+		<?= $this->html->link(s('Yes, delete'), '/visitors/delete/' . $visitor->id(), [
+			'class' => 'ui-button ajax-request go-back highlight'
+		]) ?>
+		<?= $this->html->link(s('No, I don\'t'), '#', ['class' => 'ui-button']) ?>
+	</div>
+</div>
