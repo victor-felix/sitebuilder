@@ -23,26 +23,29 @@
 			</div>
 		</div>
 		<?php endif ?>
-		<table id="visitors-list" class="display bulk-action-list" cellspacing="0" width="100%">
+		<table id="visitors-list" class="display" cellspacing="0" width="100%">
 				<thead>
 						<tr>
-								<th class="no-sort"></th>
 								<th><?= s('Email') ?></th>
 								<th><?= s('Groups') ?></th>
 								<th><?= s('Last Login') ?></th>
+								<th class="no-sort"></th>
 						</tr>
 				</thead>
 				<tbody>
 						<?php foreach($visitors as $visitor): ?>
 						<tr>
-								<td><input class="select-row" type="checkbox" name="visitors[]" value="<?= $visitor->id() ?>"></td>
-								<td><?= $visitor->email() ?></td>
-								<td>
-									<?php foreach($visitor->groups() as $group): ?>
-										<span class="badge"><?= $group ?></span>
-									<?php endforeach ?>
-								</td>
-								<td><?= $visitor->lastLogin() ?></td>
+							<td><?= $visitor->email() ?></td>
+							<td>
+								<?php foreach($visitor->groups() as $group): ?>
+									<span class="badge"><?= $group ?></span>
+								<?php endforeach ?>
+							</td>
+							<td><?= $visitor->lastLogin() ?></td>
+							<td>
+								<?= $this->html->link(s('remove'), '/visitors/remove/' . $visitor->id(), ['class' => 'ui-button '])?>
+								<?= $this->html->link(s('reset password'), '/visitors/reset/' . $visitor->id(), ['class' => 'ui-button '])?>
+							</td>
 						</tr>
 						<?php endforeach; ?>
 				</tbody>
@@ -53,16 +56,6 @@
 					'class' => 'ui-button large add push-scene',
 					'style' => 'margin-bottom: 40px'
 				)) ?>
-			</div>
-			<div class="grid-8 bulk-actions hidden">
-				<?php echo $this->html->link(s('Reset Password'), '/visitors/remove', array( 'class' => 'ui-button' )) ?>
-				<?php echo $this->html->link(
-					$this->html->image('shared/categories/delete.gif') . s('Delete item'),
-					'/business_items/delete/', array(
-						'class' => 'ui-button has-confirm',
-						'data-confirm' => '#delete-confirm'
-					)
-				) ?>
 			</div>
 		</div>
 	</div>
