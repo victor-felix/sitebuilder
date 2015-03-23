@@ -45,6 +45,8 @@ class VisitorsController extends AppController
 			$validator = new VisitorsPersistenceValidator();
 			if ($validator->validate($visitor)->isValid()) {
 				$this->repository->create($visitor);
+				$data['title'] = s('[%s]: Get started', $site->title);
+				$this->sendVisitorEmail($data);
 				Session::writeFlash('success', s('Visitor successfully created.'));
 				$this->redirect('/visitors');
 			} else {
@@ -56,26 +58,16 @@ class VisitorsController extends AppController
 
 	public function reset($id)
 	{
-		$site = $this->getCurrentSite();
 		$visitor = $this->repository->find($id);
 		$password = $visitor->setRandomPassword();
 		$this->repository->update($visitor);
 		$data = [
 			'title' => s('[%s]: New password', $site->title),
-			'segment' => MeuMobi::currentSegment(),
 			'password' => $password,
+			'email' => $visitor->email(),
 			'visitor' => $visitor,
-			'site' => $site,
 		];
-		$mailer = new Mailer([
-			'from' => $data['segment']->email,
-			'to' => $visitor->email(),
-			'subject' => $data['title'],
-			'views' => ['text/html' => 'visitors/forgot_password_mail.htm'],
-			'layout' => 'mail',
-			'data' =>  $data,
-		]);
-		$mailer->send();
+		$this->sendVisitorEmail($data, 'visitors/forgot_password_mail.htm');
 		Session::writeFlash('success', s('Visitor password successfully reseted.'));
 		$this->redirect('/visitors');
 	}
@@ -86,5 +78,21 @@ class VisitorsController extends AppController
 		$this->repository->destroy($visitor);
 		Session::writeFlash('success', s('Visitor successfully removed.'));
 		$this->redirect('/visitors');
+	}
+
+	protected function sendVisitorEmail($data, $template = 'visitors/password_mail.htm')
+	{
+		$segment = \MeuMobi::currentSegment();
+		$data['segment'] = $segment;
+		$data['site'] = $this->getCurrentSite();
+		$mailer = new \Mailer([
+			'from' => $segment->email,
+			'to' => $data['email'],
+			'subject' => $data['title'],
+			'views' => array('text/html' => $template),
+			'layout' => 'mail',
+			'data' =>  $data,
+		]);
+		return $mailer->send();
 	}
 }

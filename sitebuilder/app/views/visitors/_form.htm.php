@@ -38,6 +38,19 @@
 </fieldset>
 
 <fieldset>
+	<h2><?= s('Password') ?></h2>
+	<div class="field-group">
+		<div class="form-grid-460 first">
+			<?= $this->form->input('password', [
+				'type' => 'password',
+				'label' => s('Password'),
+				'class' => 'ui-text'
+			]) ?>
+		</div>
+	</div>
+</fieldset>
+
+<fieldset>
 	<h2><?= s('Groups') ?></h2>
 	<div class="field-group">
 		<div class="form-grid-460 first">

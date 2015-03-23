@@ -36,9 +36,13 @@ return function($segment) {
 		echo \lithium\action\Dispatcher::run(new \lithium\action\Request(array(
 			'url' => Mapper::here()
 		)));
+	} catch (SpaghettiException $e) {
+		echo $e->toString();
 	} catch (Exception $e) {
 		Debug::log((string) $e);
 
+		if (Config::read('Debug.showErrors')) {
 			echo '<pre>', $e, '</pre>';
+		}
 	}
 };
