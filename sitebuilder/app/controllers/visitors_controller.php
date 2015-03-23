@@ -58,6 +58,7 @@ class VisitorsController extends AppController
 
 	public function reset($id)
 	{
+		$site = $this->getCurrentSite();
 		$visitor = $this->repository->find($id);
 		$password = $visitor->setRandomPassword();
 		$this->repository->update($visitor);
