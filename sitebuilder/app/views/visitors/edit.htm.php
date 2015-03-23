@@ -26,8 +26,7 @@
 		'name' => 'continue',
 		'value' => 0,
 	]) ?>
-	<?= $this->html->link(
-		$this->html->image('shared/categories/delete.gif') . s('Delete visitor'),
+		<?= $this->html->link('<i class="icons fa fa-trash"></i> ' . s('Delete visitor'),
 		'/visitors/delete/' . $visitor->id(), [
 			'class' => 'ui-button delete has-confirm',
 			'data-confirm' => '#delete-confirm'

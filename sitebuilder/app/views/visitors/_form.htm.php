@@ -5,7 +5,7 @@
 			<?= $this->form->input('first_name', [
 				'type' => 'text',
 				'label' => s('First Name'),
-				'class' => 'ui-text',
+				'class' => 'ui-text large',
 				'value' => $visitor->firstName()
 			]) ?>
 		</div>
@@ -14,7 +14,7 @@
 			<?= $this->form->input('last_name', [
 				'type' => 'text',
 				'label' => s('Last Name'),
-				'class' => 'ui-text',
+				'class' => 'ui-text large',
 				'value' => $visitor->lastName()
 			]) ?>
 		</div>
@@ -23,7 +23,7 @@
 			<?= $this->form->input('email', [
 				'type' => 'text',
 				'label' => s('E-mail address'),
-				'class' => 'ui-text',
+				'class' => 'ui-text large',
 				'value' => $visitor->email()
 			]) ?>
 		</div>
@@ -32,7 +32,7 @@
 			<?= $this->form->input('groups', [
 				'type' => 'text',
 				'label' => s('Groups'),
-				'class' => 'ui-text',
+				'class' => 'ui-text large',
 				'value' => implode($visitor->groups(), ', ')
 			]) ?>
 			<small><?= s('comma separated, eg. Visitors, Editors') ?></small>

@@ -232,6 +232,13 @@
 	margin-top: 8px;
 }
 
+.default-form a.delete .icons {
+  font-size: 19px;
+  position: absolute;
+  left: 5px;
+  top: 2px;
+}
+
 .default-form a.reset {
 	float: right;
 	position: relative;
