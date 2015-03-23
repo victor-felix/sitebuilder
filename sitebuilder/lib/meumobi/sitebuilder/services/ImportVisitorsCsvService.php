@@ -81,7 +81,6 @@ class ImportVisitorsCsvService extends ImportCsvService
 	protected function buildVisitor($data)
 	{
 		$data['site_id'] = $this->getSite()->id;
-		$data['groups'] = $data['groups'] ? $data['groups'] : [];
 		return new Visitor($data);
 	}
 	protected function repository()

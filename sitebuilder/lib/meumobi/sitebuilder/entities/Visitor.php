@@ -126,7 +126,7 @@ class Visitor extends Entity
 	public function setGroups($groups)
 	{
 		if (is_string($groups)) {
-			$groups = array_map('trim', explode(',', $groups));
+			$groups = $groups ? array_map('trim', explode(',', $groups)) : [];
 		}
 		$this->groups = $groups;
 	}
