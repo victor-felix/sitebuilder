@@ -659,34 +659,10 @@ $(window).load(function() {
     //enable datatable list
     var visitorTable = $('#visitors-list').DataTable({
      // bFilter: false
-      sDom: 'ltipr',
+      //sDom: 'ltipr',
       lengthChange: false,
-      "order": [],
-      language: dataTableLang,
-      columnDefs: [
-        {
-          "targets"  : 'no-sort',
-          "orderable": false,
-        },
-        {
-          "targets": 0,
-          "width": "10px"
-        }
-      ]
+      language: dataTableLang
     });
-      
-    yadcf.init(visitorTable, [
-      {
-        column_number: 1,
-        filter_type: "text"
-      },
-      {
-        column_number : 2,
-        column_data_type: "html",
-        html_data_type: "text",
-        filter_default_label: "Select a group"   
-      }
-    ]);
   }
 
   if (window.visitorGraphData) {

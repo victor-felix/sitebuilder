@@ -29,7 +29,6 @@
 								<th><?= s('Email') ?></th>
 								<th><?= s('Groups') ?></th>
 								<th><?= s('Last Login') ?></th>
-								<th class="no-sort"></th>
 						</tr>
 				</thead>
 				<tbody>
@@ -42,10 +41,6 @@
 								<?php endforeach ?>
 							</td>
 							<td><?= $visitor->lastLogin() ?></td>
-							<td>
-								<?= $this->html->link(s('remove'), '/visitors/remove/' . $visitor->id(), ['class' => 'ui-button '])?>
-								<?= $this->html->link(s('reset password'), '/visitors/reset/' . $visitor->id(), ['class' => 'ui-button '])?>
-							</td>
 						</tr>
 						<?php endforeach; ?>
 				</tbody>
