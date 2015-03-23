@@ -57,6 +57,24 @@ class VisitorsController extends AppController
 		$this->set(compact('visitor', 'site'));
 	}
 
+	public function edit($id)
+	{
+		$site = $this->getCurrentSite();
+		$visitor = $this->repository->find($id);
+		if (!empty($this->data)) {
+			$visitor->setAttributes($this->data);
+			$validator = new VisitorsPersistenceValidator();
+			if ($validator->validate($visitor)->isValid()) {
+				$this->repository->update($visitor);
+				Session::writeFlash('success', s('Visitor successfully updated.'));
+				$this->redirect('/visitors');
+			} else {
+				Session::writeFlash('error', s('Sorry, we can\'t update the visitor'));
+			}
+		}
+		$this->set(compact('visitor', 'site'));
+	}
+
 	public function reset($id)
 	{
 		$site = $this->getCurrentSite();

@@ -3,15 +3,14 @@
 		<?= $this->html->link(s('‹ back'), '/visitors', [ 'class' => 'ui-button large back pop-scene']) ?>
 	</div>
 	<div class="grid-8">
-		<h1><?= $this->pageTitle = s('Add Visitor') ?></h1>
+		<h1><?= $this->pageTitle = s('Edit Visitor') ?></h1>
 	</div>
 	<div class="clear"></div>
 </div>
 
-<?= $this->form->create('/visitors/add/', [
+<?= $this->form->create('/visitors/edit/' . $visitor->id(), [
 	'id' => 'form-custom-theme',
 	'class' => 'form-edit default-form item-form',
-	'method' => 'file'
 ]) ?>
 
 <?= $this->element('visitors/form', [

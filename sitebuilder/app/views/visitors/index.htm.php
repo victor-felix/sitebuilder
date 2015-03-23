@@ -34,7 +34,7 @@
 				<tbody>
 						<?php foreach($visitors as $visitor): ?>
 						<tr>
-							<td><?= $this->html->link($visitor->email(), 'visitors/edit/' . $visitor->id(), ['class' => 'edit-link']) ?></td>
+							<td><?= $this->html->link($visitor->email(), '/visitors/edit/' . $visitor->id(), ['class' => 'edit-link']) ?></td>
 							<td>
 								<?php foreach($visitor->groups() as $group): ?>
 									<span class="badge"><?= $group ?></span>
