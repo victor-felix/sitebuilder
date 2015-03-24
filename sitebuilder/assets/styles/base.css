@@ -25,6 +25,10 @@ body {
 	clear: both;
 }
 
+.clickable {
+    cursor: pointer;
+}
+
 a img {
 	border: 0;
 }

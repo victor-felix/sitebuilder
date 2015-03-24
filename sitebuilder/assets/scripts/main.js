@@ -658,9 +658,6 @@ $(window).load(function() {
   if ($('#visitors-list').length) {
     //enable datatable list
     var visitorTable = $('#visitors-list').DataTable({
-     // bFilter: false
-      //sDom: 'ltipr',
-      lengthChange: false,
       language: dataTableLang
     });
   }
@@ -674,13 +671,4 @@ $(window).load(function() {
       Morris.Donut(options);
     });
   }
-  var selectRows = $('.bulk-action-list .select-row');
-  var bulkActions = $('.bulk-actions');
-  selectRows.change(function() {
-    if(selectRows.is(":checked")) {
-      bulkActions.show();
-    } else {
-      bulkActions.hide();
-    }
-  });
 });

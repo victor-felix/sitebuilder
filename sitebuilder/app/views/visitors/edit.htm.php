@@ -26,12 +26,12 @@
 		'name' => 'continue',
 		'value' => 0,
 	]) ?>
-		<?= $this->html->link('<i class="icons fa fa-trash"></i> ' . s('Delete visitor'),
+		<?= $this->html->link('<i class="icons fa fa-trash"></i> ' . s('Remove visitor'),
 		'/visitors/delete/' . $visitor->id(), [
 			'class' => 'ui-button delete has-confirm',
 			'data-confirm' => '#delete-confirm'
 	]) ?>
-	<?= $this->html->link(s('reset password'), '/visitors/reset/' . $visitor->id(), ['class' => 'ui-button reset']) ?>
+	<?= $this->html->link(s('Reset password'), '/visitors/reset/' . $visitor->id(), ['class' => 'ui-button reset']) ?>
 </fieldset>
 <?= $this->form->close() ?>
 

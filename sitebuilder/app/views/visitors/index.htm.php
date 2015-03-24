@@ -26,6 +26,8 @@
 		<table id="visitors-list" class="display list" cellspacing="0" width="100%">
 				<thead>
 						<tr>
+								<th><?= s('First Name') ?></th>
+								<th><?= s('Last Name') ?></th>
 								<th><?= s('Email') ?></th>
 								<th><?= s('Groups') ?></th>
 								<th><?= s('Last Login') ?></th>
@@ -33,8 +35,10 @@
 				</thead>
 				<tbody>
 						<?php foreach($visitors as $visitor): ?>
-						<tr>
-							<td><?= $this->html->link($visitor->email(), '/visitors/edit/' . $visitor->id(), ['class' => 'edit-link']) ?></td>
+						<tr onclick="document.location = '/visitors/edit/<?= $visitor->id(); ?>'" class="clickable">
+							<td><?= $visitor->firstName() ?></td>
+							<td><?= $visitor->lastName() ?></td>
+							<td><?= $visitor->email() ?></td>
 							<td>
 								<?php foreach($visitor->groups() as $group): ?>
 									<span class="badge"><?= $group ?></span>
