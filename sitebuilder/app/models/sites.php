@@ -1,6 +1,7 @@
 <?php
 use meumobi\sitebuilder\entities\Skin;
 use meumobi\sitebuilder\repositories\SkinsRepository;
+use meumobi\sitebuilder\repositories\VisitorsRepository;
 use app\models\Plugins;
 
 require_once 'app/models/categories.php';
@@ -181,6 +182,12 @@ class Sites extends AppModel
 	public function appleTouchIcon()
 	{
 		return Model::load('Images')->firstByRecord('SiteAppleTouchIcon', $this->id);
+	}
+
+	public function availableVisitorsGroups()
+	{
+		$repository = new VisitorsRepository();
+		return $repository->findAvailableGroupsBySite($this->id);
 	}
 
 	public function splashScreen()

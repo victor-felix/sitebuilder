@@ -1,5 +1,4 @@
 <?php
-use meumobi\sitebuilder\repositories\VisitorsRepository;
 
 class ItemsHelper extends Helper
 {
@@ -33,7 +32,8 @@ class ItemsHelper extends Helper
 
 	public function __construct($view) {
 		parent::__construct($view);
-		$siteId = $view->controller->getCurrentSite()->id;
+		$site = $view->controller->getCurrentSite();
+		$siteId = $site->id;
 		$this->types['related'] = function($type) use ($siteId) {
 			$classname = '\app\models\items\\' . $type[1];
 			$conditions = array(
@@ -57,7 +57,7 @@ class ItemsHelper extends Helper
 				'class' => 'chosen'
 			);
 		};
-		$this->addGroupsField($siteId);
+		$this->addGroupsField($site);
 	}
 
 	public function form($url, $item, $attr) {
@@ -95,10 +95,9 @@ class ItemsHelper extends Helper
 		return $this->form->input($name, $attr);
 	}
 
-	protected function addGroupsField($siteId) {
-		$this->types['groups'] = function($type) use ($siteId) {
-			$repository = new VisitorsRepository();
-			$groups = $repository->findAvailableGroupsBySite($siteId);
+	protected function addGroupsField($site) {
+		$this->types['groups'] = function($type) use ($site) {
+			$groups = $site->availableVisitorsGroups();
 			$options = array();
 			foreach ($groups as $group) {
 				$options[$group] = $group;//set the group name as value

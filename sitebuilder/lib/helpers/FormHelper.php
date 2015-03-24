@@ -84,6 +84,9 @@ class FormHelper extends Helper {
 										$option['selected'] = true;
 								}
 						}
+						else if(is_array($select_value)) {
+							$option['selected'] = in_array($key, $select_value);
+						}
 						else if($select_value instanceof \lithium\data\entity\Document) {
 						}
 						else {

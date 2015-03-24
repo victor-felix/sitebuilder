@@ -29,12 +29,16 @@
 		</div>
 
 		<div class="form-grid-460 first">
-			<?= $this->form->input('groups', [
-				'type' => 'text',
+		<?php
+			$groups = $site->availableVisitorsGroups();
+			echo $this->form->input('groups[]', [
+				'type' => 'select',
 				'label' => s('Groups'),
-				'class' => 'ui-text large',
-				'value' => implode($visitor->groups(), ', ')
+				'multiple' => true,
+				'class' => 'chosen large',
+				'id' => 'FormGroups',
+				'options' => array_combine($groups, $groups),
+				'value' => $visitor->groups()
 			]) ?>
-			<small><?= s('comma separated, eg. Visitors, Editors') ?></small>
 		</div>
 </fieldset>
