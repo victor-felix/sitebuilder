@@ -88,7 +88,7 @@ class VisitorsController extends AppController
 			'visitor' => $visitor,
 		];
 		$this->sendVisitorEmail($data, 'visitors/forgot_password_mail.htm');
-		Session::writeFlash('success', s('Visitor password successfully reseted.'));
+		Session::writeFlash('success', s('Visitor password successfully renewed.'));
 		$this->redirect('/visitors');
 	}
 
