@@ -144,8 +144,8 @@ $.extend($.easing, {
           if ($('.markitup').length) {
             $('.markitup').markItUp(mySettings);
           }
-          if ($('.chosen').length) {
-            $('.chosen').chosen();
+          if ($('.multiselect').length) {
+            $('.multiselect').select2();
           }
           addSliderItens(urlRequest);
           slider.delegate('.push-scene', 'click', pushScene);
@@ -483,7 +483,6 @@ $.extend($.easing, {
       });
     });
   } catch (e) {}
-
 })(jQuery);
 
 $(function() {
@@ -545,8 +544,8 @@ $(function() {
   if ($('.markitup').length) {
     $('.markitup').markItUp(mySettings);
   }
-  if ($('.chosen').length) {
-    $('.chosen').chosen();
+  if ($('.multiselect').length) {
+    $('.multiselect').select2();
   }
   $('body').click(function(e) {
     $("#navbar .open").removeClass("open");

@@ -281,3 +281,11 @@
 .item-form.default-form fieldset.actions button {
 	margin-left: 207px;
 }
+
+.multiselect.large {
+	width: 460px;
+}
+
+.multiselect .select2-choices {
+  border-radius: 2px;
+}

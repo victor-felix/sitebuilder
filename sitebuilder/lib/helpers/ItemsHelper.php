@@ -54,7 +54,7 @@ class ItemsHelper extends Helper
 				'type' => 'select',
 				'multiple' => true,
 				'options' => $options,
-				'class' => 'chosen'
+				'class' => 'multiselect'
 			);
 		};
 		$this->addGroupsField($site);

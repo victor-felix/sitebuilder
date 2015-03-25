@@ -97,7 +97,15 @@ class FormHelper extends Helper {
             $content .= $this->html->tag('option', $value, $option);
         endforeach;
 
-        return $this->html->tag('select', $content, $options);
+        $select = $this->html->tag('select', $content, $options);
+				if (isset($options['multiple'])) {
+					$select = $this->input(str_replace('[]', '', $name), array(
+							'type' => 'hidden',
+							'value' => '',
+							'id' => false
+					)) . $select;
+				}
+				return $select;
     }
 
     public function radio($name, $options = array()) {

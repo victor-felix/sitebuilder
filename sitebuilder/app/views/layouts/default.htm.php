@@ -9,7 +9,7 @@
 		<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 		<?php echo $this->html->stylesheet('shared/base', 'shared/uikit', 'shared/categories',
 			'shared/edit-forms', 'shared/businessitems', 'shared/dashboard', 'segment', 'shared/markitup.simple',
-			'shared/markitup.xbbcode', 'shared/chosen', 'shared/jquery.dataTables', 
+			'shared/markitup.xbbcode', 'shared/select2.min', 'shared/jquery.dataTables', 
 			'shared/themes', 'shared/colorpicker','shared/morris') ?>
 		<?php echo $this->html->stylesForLayout ?>
 	</head>
@@ -173,7 +173,7 @@
 		<?php echo $this->html->script('shared/jquery', 'shared/jquery.formrestrict',
 			'shared/jquery.alphanumeric', 'shared/jquery.dataTables', 'shared/modernizr.custom.placeholder',
 			'shared/colorpicker', 'shared/raphael-min', 'shared/morris.min',
-			'shared/main', 'shared/markitup', 'shared/async_upload', 'shared/jquery.chosen', 'shared/themes') ?>
+			'shared/main', 'shared/markitup', 'shared/async_upload', 'shared/select2.min', 'shared/themes') ?>
 		<?php echo $this->html->scriptsForLayout ?>
 	</body>
 </html>
