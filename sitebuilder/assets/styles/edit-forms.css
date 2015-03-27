@@ -292,6 +292,6 @@
 
 .select2 input {
   -webkit-appearance: none;
-  border: none;
-  outline: 0px;
+  border: none !important;
+  outline: 0px !important;
 }
