@@ -289,3 +289,9 @@
 .multiselect .select2-choices {
   border-radius: 2px;
 }
+
+.select2 input {
+  -webkit-appearance: none;
+  border: none;
+  outline: 0px;
+}
