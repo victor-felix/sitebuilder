@@ -172,8 +172,8 @@
 		</div>
 		<?php echo $this->html->script('shared/jquery', 'shared/jquery.formrestrict',
 			'shared/jquery.alphanumeric', 'shared/jquery.dataTables', 'shared/modernizr.custom.placeholder',
-			'shared/colorpicker', 'shared/raphael-min', 'shared/morris.min',
-			'shared/main', 'shared/markitup', 'shared/async_upload', 'shared/select2.min', 'shared/themes') ?>
+			'shared/colorpicker', 'shared/raphael-min', 'shared/morris.min', 'shared/select2.min', 
+			'shared/main', 'shared/markitup', 'shared/async_upload', 'shared/themes') ?>
 		<?php echo $this->html->scriptsForLayout ?>
 	</body>
 </html>

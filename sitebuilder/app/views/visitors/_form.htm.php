@@ -35,6 +35,7 @@
 				'type' => 'select',
 				'label' => s('Groups'),
 				'multiple' => true,
+				'data-allow-add' => true,
 				'class' => 'multiselect large',
 				'id' => 'FormGroups',
 				'options' => array_combine($groups, $groups),
