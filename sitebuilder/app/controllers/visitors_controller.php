@@ -40,6 +40,8 @@ class VisitorsController extends AppController
 		$site = $this->getCurrentSite();
 		$data = $this->data;
 		$data['site_id'] = $site->id();
+		//if no group is selected on the multiselect input the property isn't present in the request
+		if (!$this->request->get('data:groups')) $data['groups'] = [];
 		$visitor = new Visitor($data);
 		if (!empty($this->data)) {
 			$data['password'] = $visitor->setRandomPassword();
@@ -62,7 +64,10 @@ class VisitorsController extends AppController
 		$site = $this->getCurrentSite();
 		$visitor = $this->repository->find($id);
 		if (!empty($this->data)) {
-			$visitor->setAttributes($this->data);
+			$data = $this->data;
+			//if no group is selected on the multiselect input the property isn't present in the request
+			if (!$this->request->get('data:groups')) $data['groups'] = [];
+			$visitor->setAttributes($data);
 			$validator = new VisitorsPersistenceValidator();
 			if ($validator->validate($visitor)->isValid()) {
 				$this->repository->update($visitor);

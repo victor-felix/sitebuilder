@@ -32,6 +32,7 @@ class BusinessItemsController extends AppController
 
 		if (!empty($this->data)) {
 			$this->data = $this->prepareDates($this->data);
+			if (!$this->request->get('data:groups')) $this->data['groups'] = [];
 			$images = array_unset($this->data, 'image');
 			$images = $this->request->data['image'];
 			$item->set($this->data);
@@ -83,6 +84,8 @@ class BusinessItemsController extends AppController
 
 		if (!empty($this->data)) {
 			$this->data = $this->prepareDates($this->data);
+			//if no group is selected on the multiselect input the property isn't present in the request
+			if (!$this->request->get('data:groups')) $this->data['groups'] = [];
 			$images = array_unset($this->data, 'image');
 			$item->set($this->data);
 			$item->site_id = $site->id;
