@@ -27,8 +27,8 @@
 	</div>
 	<div class="grid-8">
 		<?= $this->buttons->submit() ?>
-		<?= $this->buttons->delete(s('Delete all items'), '/categories/delete_all_items/' . $category->id, '#delete-items-confirm') ?>
 		<?= $this->buttons->delete(s('Delete category'), '/categories/delete/' . $category->id, '#delete-confirm')  ?>
+		<?= $this->buttons->delete(s('Delete all items'), '/categories/delete_all_items/' . $category->id, '#delete-items-confirm') ?>
 	</div>
 	<div class="clear"></div>
 </div>

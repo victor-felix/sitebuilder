@@ -1,25 +1,30 @@
 <div class="slide-header">
-    <div class="grid-4 first"><?php echo $this->html->link(s('‹ back'), '/categories/index/' . $parent->id, array('class' => 'ui-button large back pop-scene')) ?>
-    </div>
-    <div class="grid-8">
-        <h1><?php echo $this->pageTitle =  s('Add %s', $item->type()) ?></h1>
-        <?php echo $this->element('common/breadcrumbs', array(
-            'category' => $parent
-        )) ?>
-    </div>
-    <div class="clear"></div>
+	<div class="grid-4 first"><?= $this->html->link(s('‹ back'), '/categories/index/' . $parent->id, ['class' => 'ui-button large back pop-scene']) ?>
+	</div>
+	<div class="grid-8">
+		<h1><?= $this->pageTitle =  s('Add %s', $item->type()) ?></h1>
+		<?= $this->element('common/breadcrumbs', [
+			'category' => $parent
+		]) ?>
+	</div>
+	<div class="clear"></div>
 </div>
 
-<?php echo $this->items->form(null, $item, array(
-    'class' => 'form-edit default-form item-form',
-    'id' => 'form-add-businessitem'
-)) ?>
+<?= $this->items->form(null, $item, [
+	'class' => 'form-edit default-form item-form',
+	'id' => 'form-add-businessitem'
+]) ?>
 
-    <?php echo $this->element('business_items/form', compact('item')) ?>
+<?= $this->element('business_items/form', compact('item')) ?>
 
-    <fieldset class="actions">
-        <?php echo $this->html->link(s('‹ back'), '/categories/index/' . $parent->id, array('class' => 'ui-button large back pop-scene')) ?>
-        <?php echo $this->form->submit(s('Save'), array('class' => 'ui-button red larger')) ?>
-    </fieldset>
+<div class="slide-footer">
+	<div class="grid-4 first">
+		<?= $this->buttons->popScene(s('‹ back'), '/categories/index/' . $parent->id) ?>
+	</div>
+	<div class="grid-8">
+		<?= $this->buttons->submit() ?>
+	</div>
+	<div class="clear"></div>
+</div>
 
-<?php echo $this->items->endform() ?> 
+<?= $this->items->endform() ?>
