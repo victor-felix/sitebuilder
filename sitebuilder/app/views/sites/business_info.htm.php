@@ -22,17 +22,15 @@
 		'site' => $site
 	)) ?>
 
-	<fieldset class="actions">
-		<?php echo $this->form->submit(s('Save'), array(
-			'class' => 'ui-button red larger'
-		)) ?>
+<div class="slide-footer">
+	<div class="grid-8 grid-offset-4">
+		<?= $this->buttons->submit() ?>
 		<?php if (Users::ROLE_ADMIN == $site->role && count(Auth::user()->sites()) > 1): ?>
-			<?php echo $this->html->link($this->html->image('shared/categories/delete.gif') . s('Delete site'), '/sites/remove/' . $site->id, array(
-				'class' => 'ui-button delete has-confirm',
-				'data-confirm' => '#delete-confirm'
-			)) ?>
+			<?= $this->buttons->delete(s('Delete site'), '/sites/remove/' . $site->id, '#delete-confirm')  ?>
 		<?php endif ?>
-	</fieldset>
+	</div>
+	<div class="clear"></div>
+</div>
 
 <?php echo $this->form->close() ?>
 
