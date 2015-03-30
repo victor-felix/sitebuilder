@@ -20,21 +20,16 @@
 
 	<?php echo $this->element('business_items/form', compact('item')) ?>
 
-	<fieldset class="actions">
-		<?php echo $this->html->link(s('‹ back'), '/categories/index/' . $parent->id, array(
-			'class' => 'ui-button large back pop-scene
-		')) ?>
-		<?php echo $this->form->submit(s('Save'), array(
-			'class' => 'ui-button red larger'
-		)) ?>
-		<?php echo $this->html->link(
-			$this->html->image('shared/categories/delete.gif') . s('Delete item'),
-			'/business_items/delete/' . $item->_id, array(
-				'class' => 'ui-button delete has-confirm',
-				'data-confirm' => '#delete-confirm'
-			)
-		) ?>
-	</fieldset>
+	<div class="slide-footer">
+			<div class="grid-4 first">
+					<?= $this->buttons->popScene(s('‹ back'), '/categories/index/' . $parent->id) ?>
+			</div>
+			<div class="grid-8">
+					<?= $this->buttons->submit() ?>
+					<?= $this->buttons->delete(s('Delete item'), '/business_items/delete/' . $item->_id, '#delete-confirm')  ?>
+			</div>
+			<div class="clear"></div>
+	</div>
 
 <?php echo $this->items->endform() ?>
 

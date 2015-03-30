@@ -10,8 +10,24 @@
 	<div class="clear"></div>
 </div>
 
+<?= $this->form->create(null, [
+	'class' => 'form-edit skip-slide default-form',
+	'object' => $category,
+	'method' => 'file'
+]) ?>
+
 <?php echo $this->element('categories/form', array(
-	'action' => null,
 	'category' => $category,
 	'site' => $site
 )) ?>
+
+<div class="slide-footer">
+	<div class="grid-4 first">
+		<?= $this->buttons->popScene(s('‹ back'), '/categories') ?>
+	</div>
+	<div class="grid-8">
+		<?= $this->buttons->submit() ?>
+	</div>
+	<div class="clear"></div>
+</div>
+<?= $this->form->close() ?>

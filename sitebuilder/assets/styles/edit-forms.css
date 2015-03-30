@@ -221,22 +221,11 @@
 	max-height: 200px;
 }
 
-.default-form a.delete-items {
-	margin-right: 10px;
-}
-
 .default-form a.delete {
 	float: right;
 	position: relative;
-	padding-left: 25px;
 	margin-top: 8px;
-}
-
-.default-form a.delete .icons {
-  font-size: 19px;
-  position: absolute;
-  left: 5px;
-  top: 2px;
+	margin-left: 10px;
 }
 
 .default-form a.reset {
