@@ -1,16 +1,10 @@
-.page-heading .breadcrumb {
+.slide-header .breadcrumb {
 	color: #999;
 	font-size: 12px;
 	margin-top: -5px;
 }
 
-.page-heading .add-business-item {
-	float: right;
-	margin-top: -41px;
-	margin-right: 25px;
-}
-
-.page-heading .back {
+.slide-header .pop-scene {
 	margin: 38px 0 0 25px;
 }
 
@@ -68,14 +62,6 @@
 
 .businessitems-list li .info a:hover {
 	text-decoration: underline;
-}
-
-.fieldset-actions {
-	padding: 25px 0;
-}
-
-.fieldset-actions .grid-4.first .ui-button {
-	margin-left: 25px;
 }
 
 .pagination-wrapp {

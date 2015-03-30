@@ -82,6 +82,10 @@ a img {
 	margin-left: 0;
 }
 
+.grid-offset-4 {
+  margin-left: 320px;
+}
+
 .title-3 {
 	font-size: 18px;
 	color: #666;
@@ -563,10 +567,6 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	position: relative;
 }
 
-#content .page-heading {
-	height: 120px;
-}
-
 #content h1 {
 	border-top: 11px solid #DBDBDB;
 	color: #B5B5B5;
@@ -575,6 +575,29 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 	overflow: hidden;
 	letter-spacing: -1px;
 	text-transform: lowercase;
+}
+
+.slide-header {
+	height: 120px;
+}
+
+.slide-header .push-scene {
+  float: right;
+  margin-top: -41px;
+  margin-right: 25px;
+}
+
+.slide-footer {
+  padding: 25px 0;
+}
+
+.slide-footer .push-scene {
+  float: right;
+  margin-right: 25px;
+}
+
+.slide-footer .pop-scene {
+	margin-left: 25px;
 }
 
 /**
