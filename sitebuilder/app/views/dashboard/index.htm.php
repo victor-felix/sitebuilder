@@ -1,7 +1,7 @@
 <a id="feedback" href="http://<?php echo e($site->domain()) ?>/landing-page" target="_blank" class="feedback"><?php echo s("Check your Meumobi's App landing page: %s", 'http://' . $site->domain() ) ?>/landing-page</a>
 <?php $this->pageTitle = s('dashboard') ?>
 
-<div class="page-heading">
+<div class="slide-header">
 	<div class="grid-4 first">&nbsp;</div>
 	<div class="grid-8">
 		<h1><?php echo $this->pageTitle ?></h1>

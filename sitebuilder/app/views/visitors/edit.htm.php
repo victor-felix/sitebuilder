@@ -1,4 +1,4 @@
-<div class="page-heading">
+<div class="slide-header">
 	<div class="grid-4 first">
 		<?= $this->html->link(s('‹ back'), '/visitors', [ 'class' => 'ui-button large back pop-scene']) ?>
 	</div>

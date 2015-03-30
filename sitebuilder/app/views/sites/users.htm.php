@@ -3,7 +3,7 @@
     <div class="slide-elem" rel="/categories">
 <?php endif ?>
 <?php $this->pageTitle = s('Users') ?>
-<div class="page-heading">
+<div class="slide-header">
     <div class="grid-4 first">&nbsp;</div>
     <div class="grid-8">
         <h1><?php echo $this->pageTitle ?></h1>

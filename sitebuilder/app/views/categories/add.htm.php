@@ -1,4 +1,4 @@
-<div class="page-heading">
+<div class="slide-header">
 	<div class="grid-4 first"><?php echo $this->html->link(s('‹ back'), '/categories', array( 'class' => 'ui-button large back pop-scene' )) ?>
 	</div>
 	<div class="grid-8">
