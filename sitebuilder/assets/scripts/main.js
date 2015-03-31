@@ -16,25 +16,25 @@ var mySettings = {
   markupSet: [{
     name: 'Bold',
     key: 'B',
+    className: 'bold',
     openWith: '[b]',
     closeWith: '[/b]'
   }, {
     name: 'Italic',
     key: 'I',
+    className: 'italic',
     openWith: '[i]',
     closeWith: '[/i]'
   }, {
     name: 'Link',
     key: 'L',
+    className: 'link',
     openWith: '[url=[![Link:!:http://]!]]',
     closeWith: '[/url]',
     placeHolder: 'Your text to link...'
   }, {
-    name: 'Big',
-    openWith: '[big]',
-    closeWith: '[/big]'
-  }, {
     name: 'Small',
+    className: 'small',
     openWith: '[small]',
     closeWith: '[/small]'
   }]

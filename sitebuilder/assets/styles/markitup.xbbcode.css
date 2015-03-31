@@ -1,15 +1,12 @@
-.markItUp .markItUpButton1 a {
+.markItUp .bold a {
 	background-image:url(/images/shared/markitup/bold.png);
 }
-.markItUp .markItUpButton2 a {
+.markItUp .italic a {
 	background-image:url(/images/shared/markitup/italic.png);
 }
-.markItUp .markItUpButton3 a {
+.markItUp .link a {
 	background-image:url(/images/shared/markitup/link.png);
 }
-.markItUp .markItUpButton4 a {
-	background-image:url(/images/shared/markitup/big.png);
-}
-.markItUp .markItUpButton5 a {
+.markItUp .small a {
 	background-image:url(/images/shared/markitup/small.png);
 }
