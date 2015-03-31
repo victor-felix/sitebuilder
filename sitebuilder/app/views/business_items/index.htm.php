@@ -28,12 +28,12 @@
             <?php endif ?>
             <div class="info">
                 <?= $this->html->link(e($bi->title), '/business_items/edit/' . $bi->id(), array('class' => 'push-scene')) ?>
-                
+
                 <span class="move-controls">
-                	<?= $this->html->link(s('up'), '/business_items/move_up/' . $bi->id(), array('class' => 'move-up')) ?>
-                	<?= $this->html->link(s('down'), '/business_items/move_down/' . $bi->id(), array('class' => 'move-down')) ?>
+                 <?= $this->html->link(s('up'), '/business_items/moveup/' . $bi->id(), array('class' => 'move-up')) ?>
+                 <?= $this->html->link(s('down'), '/business_items/movedown/' . $bi->id(), array('class' => 'move-down')) ?>
                 </span>
-                
+
                 <p><?= $this->bbcode->strip($bi->description) ?></p>
             </div>
         </li>

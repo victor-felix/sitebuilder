@@ -139,7 +139,7 @@ class BusinessItemsController extends AppController
 		}
 	}
 
-	public function move_up($id)
+	public function moveup($id)
 	{
 		$item = Items::find('first', array('conditions' => array(
 			'_id' => $id
@@ -166,7 +166,7 @@ class BusinessItemsController extends AppController
 		}
 	}
 
-	public function move_down($id)
+	public function movedown($id)
 	{
 		$item = Items::find('first', array('conditions' => array(
 			'_id' => $id
