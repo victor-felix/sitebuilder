@@ -17,9 +17,9 @@ use Model;
 class ApiController extends \lithium\action\Controller {
 	protected $beforeFilter = [
 		'log',
+		'headers',
 		'checkSite',
 		'checkEtag',
-		'headers',
 		'requireVisitorAuth',
 		'requireUserAuth' => [
 			'add',
