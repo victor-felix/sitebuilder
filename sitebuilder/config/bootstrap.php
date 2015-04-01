@@ -2,7 +2,7 @@
 
 define('LIB_ROOT', dirname(__DIR__));
 define('APP_ROOT', dirname(LIB_ROOT));
-define('ERROR_LOG', dirname(dirname(__DIR__)) . '/log/php-' . date('Y-m-d') . '.log');
+define('ERROR_LOG', dirname(dirname(__DIR__)) . '/log/php.log');
 
 set_include_path(APP_ROOT . PATH_SEPARATOR .
 	LIB_ROOT . PATH_SEPARATOR . get_include_path());
