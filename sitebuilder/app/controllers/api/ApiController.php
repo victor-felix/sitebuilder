@@ -13,6 +13,7 @@ use meumobi\sitebuilder\Logger;
 use DateTime;
 use Config;
 use Model;
+use MeuMobi;
 
 class ApiController extends \lithium\action\Controller {
 	protected $beforeFilter = [
@@ -261,10 +262,12 @@ class ApiController extends \lithium\action\Controller {
 
 	protected function headers()
 	{
-		$origin = '*';
-		if (!\MeuMobi::currentSegment()->enableApiAccessFromAllDomains) {
+		if (MeuMobi::currentSegment()->enableApiAccessFromAllDomains) {
+			$origin = '*';
+		} else {
 			$origin = 'http://' . $this->request->params['slug'];
 		}
-		header("Access-Control-Allow-Origin: $origin");
+		$this->response->headers('Access-Control-Allow-Origin', $origin);
+		$this->response->headers('Access-Control-Expose-Headers', 'Etag');
 	}
 }
