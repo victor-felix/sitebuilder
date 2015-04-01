@@ -135,7 +135,7 @@ class Items extends \lithium\data\Model {
 				]);
 				$parser->defaults();
 				$parser->setStrict(false);
-				$parser->whitelist('b', 'i', 'color', 'url', 'big', 'small');
+				$parser->whitelist('b', 'i', 'color', 'url');
 				$self[$code] = '<p>' . $parser->parse() . '</p>';
 			}
 		}

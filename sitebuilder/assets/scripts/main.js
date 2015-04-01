@@ -32,11 +32,6 @@ var mySettings = {
     openWith: '[url=[![Link:!:http://]!]]',
     closeWith: '[/url]',
     placeHolder: 'Your text to link...'
-  }, {
-    name: 'Small',
-    className: 'small',
-    openWith: '[small]',
-    closeWith: '[/small]'
   }]
 };
 
