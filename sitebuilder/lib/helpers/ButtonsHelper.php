@@ -32,7 +32,7 @@ class ButtonsHelper extends Helper
 
 	public function delete($label, $url, $confirm)
 	{
-		return $this->html->link('<i class="fa fa-lg fa-trash"></i> ' . $label,	$url, [
+		return $this->html->link('<i class="fa fa-lg fa-trash-o"></i> ' . $label,	$url, [
 			'class' => 'ui-button delete has-confirm',
 			'data-confirm' => $confirm
 		]);
