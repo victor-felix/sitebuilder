@@ -10,6 +10,7 @@ class ImportVisitorsCsvService extends ImportCsvService
 {
 	protected $repository;
 	protected $site;
+	protected $passwordStrategy = VisitorPasswordGenerationService::RANDOM_PASSWORD;
 
 	public function call()
 	{
@@ -19,6 +20,7 @@ class ImportVisitorsCsvService extends ImportCsvService
 	public function import()
 	{
 		$imported = 0;
+		$passwordGenerationService = new VisitorPasswordGenerationService();
 		if (self::EXCLUSIVE == $this->method) {
 			$this->clearVisitors();
 		}
@@ -28,7 +30,7 @@ class ImportVisitorsCsvService extends ImportCsvService
 				$this->logger()->info("updating visitor with email: {$visitor->email()}");
 				$this->repository()->update($visitor);
 			} else {
-				$password = $visitor->setRandomPassword();
+				$password = $passwordGenerationService->generate($visitor, $this->passwordStrategy, $this->getSite());
 				$this->logger()->info("creating visitor with email: {$visitor->email()} and password: $password");
 				$this->repository()->create($visitor);
 				$this->sendVisitorEmail(['email' => $visitor->email(), 'password' => $password]);
@@ -51,6 +53,11 @@ class ImportVisitorsCsvService extends ImportCsvService
 			throw new \Exception("site not set");
 		}
 		return $this->site;
+	}
+
+	public function setPasswordStrategy($strategy)
+	{
+		$this->passwordStrategy = $strategy;
 	}
 
 	protected function clearVisitors()

@@ -40,10 +40,10 @@ class Visitor extends Entity
 		return $this->lastName;
 	}
 
-	public function setPassword($password)
+	public function setPassword($password, $shouldRenewPassword = false)
 	{
 		if (!empty($password)) {
-			$this->shouldRenewPassword = false;
+			$this->shouldRenewPassword = $shouldRenewPassword;
 			return $this->hashedPassword = $this->hashPassword($password);
 		}
 	}
