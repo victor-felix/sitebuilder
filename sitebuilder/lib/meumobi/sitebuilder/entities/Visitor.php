@@ -48,14 +48,6 @@ class Visitor extends Entity
 		}
 	}
 
-	public function setRandomPassword()
-	{
-		$password = Security::randomPassword();
-		$this->shouldRenewPassword = true;
-		$this->hashedPassword = $this->hashPassword($password);
-		return $password;
-	}
-
 	public function passwordMatch($password)
 	{
 		return $this->hashPassword($password) == $this->hashedPassword;
