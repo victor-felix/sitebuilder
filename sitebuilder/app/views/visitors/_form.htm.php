@@ -42,4 +42,14 @@
 				'value' => $visitor->groups()
 			]) ?>
 		</div>
+	<?php if (!$visitor->id()): ?>
+		<div class="form-grid-460 first">
+			<?= $this->form->input('default_password', [
+				'type' => 'checkbox',
+				'label' => s('Use default password'),
+				'value' => 1
+			]) ?>
+		</div>
+	<?php endif ?>
+	</div>
 </fieldset>

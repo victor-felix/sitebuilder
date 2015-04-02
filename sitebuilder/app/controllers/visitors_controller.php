@@ -4,6 +4,7 @@ use meumobi\sitebuilder\entities\Visitor;
 use meumobi\sitebuilder\presenters\VisitorGraphPresenter;
 use meumobi\sitebuilder\presenters\AudienceReportPresenter;
 use meumobi\sitebuilder\validators\VisitorsPersistenceValidator;
+use meumobi\sitebuilder\services\VisitorPasswordGenerationService;
 
 class VisitorsController extends AppController
 {
@@ -44,7 +45,7 @@ class VisitorsController extends AppController
 		if (!$this->request->get('data:groups')) $data['groups'] = [];
 		$visitor = new Visitor($data);
 		if (!empty($this->data)) {
-			$data['password'] = $visitor->setRandomPassword();
+			$data['password'] = $this->setVisitorPassword($visitor, $site);
 			$validator = new VisitorsPersistenceValidator();
 			if ($validator->validate($visitor)->isValid()) {
 				$this->repository->create($visitor);
@@ -84,7 +85,7 @@ class VisitorsController extends AppController
 	{
 		$site = $this->getCurrentSite();
 		$visitor = $this->repository->find($id);
-		$password = $visitor->setRandomPassword();
+		$password = $this->setVisitorPassword($visitor, $site);//TODO allow default password on renew
 		$this->repository->update($visitor);
 		$data = [
 			'title' => s('[%s]: New password', $site->title),
@@ -103,6 +104,17 @@ class VisitorsController extends AppController
 		$this->repository->destroy($visitor);
 		Session::writeFlash('success', s('Visitor successfully removed.'));
 		$this->redirect('/visitors');
+	}
+
+	protected function setVisitorPassword($visitor, $site)
+	{
+		if ($this->request->get('data:default_password')) {
+			$strategy = VisitorPasswordGenerationService::DEFAULT_PASSWORD;
+		} else {
+			$strategy = VisitorPasswordGenerationService::RANDOM_PASSWORD;
+		}
+		$passwordGenerationService = new VisitorPasswordGenerationService();
+		return $passwordGenerationService->generate($visitor, $strategy, $site);
 	}
 
 	protected function sendVisitorEmail($data, $template = 'visitors/password_mail.htm')
