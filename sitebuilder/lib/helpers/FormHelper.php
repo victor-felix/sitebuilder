@@ -77,23 +77,23 @@ class FormHelper extends Helper {
         $content = '';
         foreach($select_options as $key => $value):
             $option = array('value' => $key);
-						if($select_value instanceof \lithium\data\collection\DocumentArray) {
-								if($select_value->first(function($i) use ($key) {
-									return $i == $key;
-								})) {
-										$option['selected'] = true;
-								}
-						}
-						else if(is_array($select_value)) {
-							$option['selected'] = in_array($key, $select_value);
-						}
-						else if($select_value instanceof \lithium\data\entity\Document) {
-						}
-						else {
-								if((string) $key === (string) $select_value):
-										$option['selected'] = true;
-								endif;
-						}
+            if($select_value instanceof \lithium\data\collection\DocumentArray) {
+            if($select_value->first(function($i) use ($key) {
+                  return $i == $key;
+                })) {
+                    $option['selected'] = true;
+                }
+            }
+            else if(is_array($select_value)) {
+              $option['selected'] = in_array($key, $select_value);
+            }
+            else if($select_value instanceof \lithium\data\entity\Document) {
+            }
+            else {
+                if((string) $key === (string) $select_value):
+                    $option['selected'] = true;
+                endif;
+            }
             $content .= $this->html->tag('option', $value, $option);
         endforeach;
 
@@ -200,10 +200,15 @@ class FormHelper extends Helper {
              )) . $input;
          endif;
 
-        if($label):
+        if($label) {
             $for = array('for' => $options['id']);
-            $input = $this->html->tag('label', $label, $for) . $input;
-        endif;
+            //TODO there is a lot of "if" here, this can be refactored
+            if ($type == 'checkbox') {
+              $input .= $this->html->tag('label', $label, $for);
+            } else {
+              $input = $this->html->tag('label', $label, $for) . $input;
+            }
+        }
 
         if($div):
             $input = $this->div($div, $input, $type);
@@ -241,26 +246,26 @@ class FormHelper extends Helper {
         return false;
     }
 
-	protected function value($name)
-	{
-		$value = '';
-		if ($model = $this->model()) {
-			if ($model->hasAttribute($name)) {
-				$value = $model->{$name};
-			} else if ($model->hasGetter($name)) {
-				$value = $model->{$name}();
-			}
+  protected function value($name)
+  {
+    $value = '';
+    if ($model = $this->model()) {
+      if ($model->hasAttribute($name)) {
+        $value = $model->{$name};
+      } else if ($model->hasGetter($name)) {
+        $value = $model->{$name}();
+      }
 
-			if ($value instanceof MongoDate) {
-				$timezone = date_default_timezone_get();
-				date_default_timezone_set($this->view->controller->getCurrentSite()->timezoneId());
-				$value = date('Y-m-d\TH:i', $value->sec);
-				date_default_timezone_set($timezone);
-			}
-		}
+      if ($value instanceof MongoDate) {
+        $timezone = date_default_timezone_get();
+        date_default_timezone_set($this->view->controller->getCurrentSite()->timezoneId());
+        $value = date('Y-m-d\TH:i', $value->sec);
+        date_default_timezone_set($timezone);
+      }
+    }
 
-		return $value;
-	}
+    return $value;
+  }
 
     protected function error($name) {
         if($model = $this->model()):

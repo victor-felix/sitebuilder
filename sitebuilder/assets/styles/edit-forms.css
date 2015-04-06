@@ -263,8 +263,8 @@
 	margin-top: 5px;
 }
 
-.default-form label.checkbox {
-	margin: -1.2em 0 0 20px;
+.default-form input[type='checkbox'] + label {
+	margin: -16px 0 0 20px;
 }
 
 .item-form.default-form fieldset.actions button {

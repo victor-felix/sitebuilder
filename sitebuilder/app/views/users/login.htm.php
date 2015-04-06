@@ -24,10 +24,9 @@
 
 		<div class="form-grid-220 first">
 			<?php echo $this->form->input('remember', array(
-				'label' => false,
+				'label' => s('Remember me'),
 				'type' => 'checkbox'
 			)) ?>
-			<label for="FormRemember" class="checkbox"><?php echo s('Remember me') ?></label>
 		</div>
 		<?php if (MeuMobi::currentSegment()->isSignupEnabled()): ?>
 			<div class="form-grid-220 first">

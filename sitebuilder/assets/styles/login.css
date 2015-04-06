@@ -1,14 +1,3 @@
-#FormLogin div.checkbox {
-	float: left;
-	padding: 0;
-	width: 22px;
-}
-
-#FormLogin label.checkbox {
-	line-height: 25px;
-	float: left;
-}
-
 #FormLogin .forgot-password, #FormLogin .no-account {
 	color: #2F3E6E;
 	float: right;

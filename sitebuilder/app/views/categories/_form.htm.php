@@ -59,10 +59,9 @@
 			<div class="form-grid-460 first">
 				<?= $this->form->input('notification', array(
 					'type' => 'checkbox',
-					'label' => null,
+					'label' => s('This category sends push notifications for the users'),
 					'value' => 1
 				)) ?>
-				<label for="FormNotification" class="checkbox"><?= s('This category sends push notifications for the users') ?></label>
 			</div>
 		</div>
 	</div>
@@ -80,10 +79,9 @@
 			<div class="form-grid-460 first">
 				<?= $this->form->input('visibility', array(
 					'type' => 'checkbox',
-					'label' => null,
+					'label' => s('This category is visible for any user'),
 					'value' => 1
 				)) ?>
-				<label for="FormVisibility" class="checkbox"><?= s('This category is visible for any user') ?></label>
 			</div>
 		</div>
 	</div>
@@ -144,10 +142,9 @@
 			<div class="form-grid-460 first">
 				<?= $this->form->input('icon', array(
 					'type' => 'checkbox',
-					'label' => null,
+					'label' => s('This category has an icon'),
 					'value' => 1
 				)) ?>
-				<label for="FormIcon" class="checkbox"><?= s('This category has an icon') ?></label>
 			</div>
 		</div>
 	</div>
