@@ -85,6 +85,6 @@ class PlaceholderCreatorController extends AppController
 			));
 		}
 
-		$this->redirect('/business_items/index/' . $category->id);
+		$this->redirect('/items/index/' . $category->id);
 	}
 }

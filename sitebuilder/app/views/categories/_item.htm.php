@@ -19,11 +19,11 @@
 		)) ?>
 
 		<?php if(!$category->hasFeed()): ?>
-			<?php echo $this->html->link(s('add item'), '/business_items/add/' . $category->id, array(
+			<?php echo $this->html->link(s('add item'), '/items/add/' . $category->id, array(
 				'class' => 'ui-button highlight push-scene'
 			)) ?>
 
-			<?php echo $this->html->link(s('manage items'), '/business_items/index/' . $category->id, array(
+			<?php echo $this->html->link(s('manage items'), '/items/index/' . $category->id, array(
 				'class' => 'ui-button manage push-scene left-join'
 			)) ?>
 		<?php else: ?>

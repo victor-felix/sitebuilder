@@ -8,7 +8,7 @@
             'category' => $category->parent()
         )) ?>
 
-        <?= $this->buttons->pushScene(s('add item'), '/business_items/add/' . $category->id) ?>
+        <?= $this->buttons->pushScene(s('add item'), '/items/add/' . $category->id) ?>
     </div>
     <div class="clear"></div>
 </div>
@@ -18,20 +18,20 @@
         <?php foreach($items as $bi): ?>
         <li>
             <?php if($image = $bi->image()): ?>
-                <?= $this->html->imagelink($image->link('80x80'), '/business_items/edit/' . $bi->id(), array(), array(
+                <?= $this->html->imagelink($image->link('80x80'), '/items/edit/' . $bi->id(), array(), array(
                     'class' => 'photo push-scene'
                 )) ?>
             <?php else: ?>
-                <?= $this->html->link('', '/business_items/edit/' . $bi->id(), array(
+                <?= $this->html->link('', '/items/edit/' . $bi->id(), array(
                     'class' => 'photo push-scene'
                 )) ?>
             <?php endif ?>
             <div class="info">
-                <?= $this->html->link(e($bi->title), '/business_items/edit/' . $bi->id(), array('class' => 'push-scene')) ?>
+                <?= $this->html->link(e($bi->title), '/items/edit/' . $bi->id(), array('class' => 'push-scene')) ?>
 
                 <span class="move-controls">
-                 <?= $this->html->link(s('up'), '/business_items/moveup/' . $bi->id(), array('class' => 'move-up')) ?>
-                 <?= $this->html->link(s('down'), '/business_items/movedown/' . $bi->id(), array('class' => 'move-down')) ?>
+                 <?= $this->html->link(s('up'), '/items/moveup/' . $bi->id(), array('class' => 'move-up')) ?>
+                 <?= $this->html->link(s('down'), '/items/movedown/' . $bi->id(), array('class' => 'move-down')) ?>
                 </span>
 
                 <p><?= $this->bbcode->strip($bi->description) ?></p>
@@ -60,7 +60,7 @@
         <?= $this->buttons->popScene(s('‹ back'), '/categories') ?>
     </div>
     <div class="grid-8">
-        <?= $this->buttons->pushScene(s('add item'), '/business_items/add/' . $category->id) ?>
+        <?= $this->buttons->pushScene(s('add item'), '/items/add/' . $category->id) ?>
     </div>
     <div class="clear"></div>
 </div>

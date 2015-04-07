@@ -103,9 +103,9 @@ $.extend($.easing, {
 
   // Function to add slide 'listItens' for
   // don't break history slide, so do it when
-  // in slide category go slide business_items/add
+  // in slide category go slide items/add
   var addSliderItens = function(urlRequest) {
-    if (urlRequest.indexOf("/business_items/add/") != -1) {
+    if (urlRequest.indexOf("/items/add/") != -1) {
       if (!($('.slide-elem[rel*="index"]').is("*"))) {
         var urlRequestItens = urlRequest.replace("add", "index");
         $.ajax({

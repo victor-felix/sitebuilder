@@ -64,7 +64,7 @@ class ItemsController extends ApiController {
 		];
 
 		$view = new View();
-		return $view->render('business_items/feed.rss', $data, false);
+		return $view->render('items/feed.rss', $data, false);
 	}
 
 	public function promotions()

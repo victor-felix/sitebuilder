@@ -15,7 +15,7 @@
 	'id' => 'form-add-businessitem'
 ]) ?>
 
-<?= $this->element('business_items/form', compact('item')) ?>
+<?= $this->element('items/form', compact('item')) ?>
 
 <div class="slide-footer">
 	<div class="grid-4 first">

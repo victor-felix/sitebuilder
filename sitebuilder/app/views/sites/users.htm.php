@@ -27,8 +27,8 @@
             <span data-saveurl="/categories/edit/3" class="title"><?php echo $user->fullname() ?></span>
             <div class="controls">
             <!-- 
-                <a href="/business_items/add/3" class="ui-button highlight push-scene">add item</a>
-                <a href="/business_items/index/3" class="ui-button manage push-scene left-join">manage items</a>--> 
+                <a href="/items/add/3" class="ui-button highlight push-scene">add item</a>
+                <a href="/items/index/3" class="ui-button manage push-scene left-join">manage items</a>--> 
                 <?php echo $this->html->link(s('remove'), '/sites/remove_user/' . $user->id, array(
                     'class' => 'ui-button manage'
                 )) ?>

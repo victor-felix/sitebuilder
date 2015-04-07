@@ -60,11 +60,11 @@ class BusinessItemsController extends AppController
 					$this->respondToJSON(array(
 						'success' => $message,
 						'go_back' => true,
-						'refresh' => '/business_items/index/' . $parent_id
+						'refresh' => '/items/index/' . $parent_id
 					));
 				} else {
 					Session::writeFlash('success', $message);
-					$this->redirect('/business_items/index/' . $item->parent_id);
+					$this->redirect('/items/index/' . $item->parent_id);
 				}
 			}
 		}
@@ -103,11 +103,11 @@ class BusinessItemsController extends AppController
 					$this->respondToJSON(array(
 						'success' => $message,
 						'go_back' => true,
-						'refresh' => '/business_items/index/' . $item->parent_id
+						'refresh' => '/items/index/' . $item->parent_id
 					));
 				} else {
 					Session::writeFlash('success', s('Item successfully updated.'));
-					$this->redirect('/business_items/index/' . $item->parent_id);
+					$this->redirect('/items/index/' . $item->parent_id);
 				}
 			}
 		}
@@ -131,11 +131,11 @@ class BusinessItemsController extends AppController
 			$this->respondToJSON(array(
 				'success' => $message,
 				'go_back' => true,
-				'refresh' => '/business_items/index/' . $parent_id
+				'refresh' => '/items/index/' . $parent_id
 			));
 		} else {
 			Session::writeFlash('success', $message);
-			$this->redirect('/business_items/index/' . $item->parent_id);
+			$this->redirect('/items/index/' . $item->parent_id);
 		}
 	}
 
@@ -158,11 +158,11 @@ class BusinessItemsController extends AppController
 			$this->respondToJSON(array(
 				$status => $message,
 				'go_back' => true,
-				'refresh' => '/business_items/index/' . $item->parent_id
+				'refresh' => '/items/index/' . $item->parent_id
 			));
 		} else {
 			Session::writeFlash($status, $message);
-			$this->redirect('/business_items/index/' . $item->parent_id);
+			$this->redirect('/items/index/' . $item->parent_id);
 		}
 	}
 
@@ -185,11 +185,11 @@ class BusinessItemsController extends AppController
 			$this->respondToJSON(array(
 				$status => $message,
 				'go_back' => true,
-				'refresh' => '/business_items/index/' . $item->parent_id
+				'refresh' => '/items/index/' . $item->parent_id
 			));
 		} else {
 			Session::writeFlash($status, $message);
-			$this->redirect('/business_items/index/' . $item->parent_id);
+			$this->redirect('/items/index/' . $item->parent_id);
 		}
 	}
 
