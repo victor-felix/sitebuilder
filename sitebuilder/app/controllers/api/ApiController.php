@@ -267,7 +267,7 @@ class ApiController extends \lithium\action\Controller {
 		} else {
 			$origin = 'http://' . $this->request->params['slug'];
 		}
-		$this->response->headers('Access-Control-Allow-Origin', $origin);
-		$this->response->headers('Access-Control-Expose-Headers', 'Etag');
+		header("Access-Control-Allow-Origin: $origin");
+		header("Access-Control-Expose-Headers: Etag");
 	}
 }

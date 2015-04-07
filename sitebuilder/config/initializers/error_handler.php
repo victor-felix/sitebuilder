@@ -15,7 +15,7 @@ ErrorHandler::apply(array('lithium\action\Dispatcher', 'run'),
 	function($exception, $params) {
 		$response = new \lithium\action\Response(array(
 			'status' => $exception['exception']->status,
-			'body' => json_encode(array('error' => $exception['message']))
+			'body' => json_encode(['error' => $exception['message']])
 		));
 		echo $response->render();
 	}
