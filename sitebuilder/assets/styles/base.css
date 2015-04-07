@@ -1002,3 +1002,7 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
   text-decoration: none;
   display: block;
 }
+
+.item-media .input.text {
+  margin-bottom: 10px;
+}

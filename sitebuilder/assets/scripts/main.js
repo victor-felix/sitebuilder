@@ -470,6 +470,19 @@ $.extend($.easing, {
   content.delegate('.form-edit .domains .ui-text', 'focusin', change_custom_domain);
   content.delegate('.form-edit .domains .ui-text', 'keyup', change_custom_domain);
 
+  content.delegate('a[data-add-new-property]','click', function(e) {
+    e.preventDefault();
+    var key = $(this.getAttribute("data-add-new-property")).length;//get next key
+    var fields = $(this).prev().clone();
+    fields.find('input:not([data-keep-value])').removeAttr('disabled').val('');// clear values
+    fields.find('input').each(function() {
+      var name = this.name.replace(/\[\d+\]/,"["+key+"]");// add key to field name
+      this.name = name;
+    });
+    //fields.find('a[data-remove]').click(removeField);
+    fields.show().insertBefore(this);
+  });
+
   //restrict to alphanumeric
   try {
     $('.domains .ui-text').alphanumeric({

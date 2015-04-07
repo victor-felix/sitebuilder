@@ -2,7 +2,7 @@
 
 use app\models\Items;
 
-class BusinessItemsController extends AppController
+class ItemsController extends AppController
 {
 	protected $uses = array();
 
