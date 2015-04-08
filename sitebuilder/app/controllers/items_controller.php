@@ -1,6 +1,7 @@
 <?php
 
 use app\models\Items;
+use meumobi\sitebuilder\validators\ItemsPersistenceValidator;
 
 class ItemsController extends AppController
 {
@@ -31,16 +32,22 @@ class ItemsController extends AppController
 		$item->type = $parent->type;
 
 		if (!empty($this->data)) {
-			$this->data = $this->prepareDates($this->data);
-			if (!$this->request->get('data:groups')) $this->data['groups'] = [];
-			$images = array_unset($this->data, 'image');
+			$default = [
+				'groups' => [],
+				'medias' => [],
+			];
+			$data = array_merge($default, $this->data);
+			$data = $this->prepareDates($data);
+			$images = array_unset($data, 'image');
 			$images = $this->request->data['image'];
-			$item->set($this->data);
+			$item->set($data);
 			$item->parent_id = $parent->id;
 			$item->site_id = $site->id;
 			$item->type = $parent->type;
+			$validator = new ItemsPersistenceValidator();
+			$validationResult = $validator->validate($item);
 
-			if ($item->save()) {
+			if ($validationResult->isValid() && $item->save()) {
 				foreach ($images as  $id => $image) {
 					if (is_numeric($id)) {
 						$record = Model::load('Images')->firstById($id);
@@ -66,6 +73,15 @@ class ItemsController extends AppController
 					Session::writeFlash('success', $message);
 					$this->redirect('/items/index/' . $item->parent_id);
 				}
+			} else {
+				if ($this->isXhr()) {
+					$this->respondToJSON(array(
+						'refresh' => '/items/add/' . $parent_id,
+						'error' => s('Sorry, we can\'t save the items')
+					));
+				} else {
+					Session::writeFlash('error', s('Sorry, we can\'t save the items'));
+				}
 			}
 		}
 
@@ -83,14 +99,19 @@ class ItemsController extends AppController
 		)));
 
 		if (!empty($this->data)) {
-			$this->data = $this->prepareDates($this->data);
-			//if no group is selected on the multiselect input the property isn't present in the request
-			if (!$this->request->get('data:groups')) $this->data['groups'] = [];
-			$images = array_unset($this->data, 'image');
-			$item->set($this->data);
+			$default = [
+				'groups' => [],
+				'medias' => [],
+			];
+			$data = array_merge($default, $this->data);
+			$data = $this->prepareDates($data);
+			$images = array_unset($data, 'image');
+			$item->set($data);
 			$item->site_id = $site->id;
+			$validator = new ItemsPersistenceValidator();
+			$validationResult = $validator->validate($item);
 
-			if ($item->save()) {
+			if ($validationResult->isValid() && $item->save()) {
 				foreach ($images as $id => $image) {
 					if (is_numeric($id)) {
 						$record = Model::load('Images')->firstById($id);
@@ -109,7 +130,17 @@ class ItemsController extends AppController
 					Session::writeFlash('success', s('Item successfully updated.'));
 					$this->redirect('/items/index/' . $item->parent_id);
 				}
+			} else {
+				if ($this->isXhr()) {
+					$this->respondToJSON(array(
+						'refresh' => '/items/edit/' . $id,
+						'error' => s('Sorry, we can\'t save the item')
+					));
+				} else {
+					Session::writeFlash('error', s('Sorry, we can\'t save the item'));
+				}
 			}
+
 		}
 
 		$this->set(array(

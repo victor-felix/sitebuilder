@@ -472,17 +472,20 @@ $.extend($.easing, {
 
   content.delegate('a[data-add-new-property]','click', function(e) {
     e.preventDefault();
-    var key = $(this.getAttribute("data-add-new-property")).length;//get next key
+    var key = $(this.getAttribute("data-add-new-property") + ':visible').length;//get next key
     var fields = $(this).prev().clone();
-    fields.find('input:not([data-keep-value])').removeAttr('disabled').val('');// clear values
-    fields.find('input').each(function() {
+    fields.find('input:not([data-keep-value])').val('');// clear values
+    fields.find('input').removeAttr('disabled').each(function() {
       var name = this.name.replace(/\[\d+\]/,"["+key+"]");// add key to field name
       this.name = name;
     });
-    //fields.find('a[data-remove]').click(removeField);
     fields.show().insertBefore(this);
   });
 
+  content.delegate('a[data-remove]', 'click', function (e) {
+    e.preventDefault(); 
+    $(this).parent().remove();
+  });
   //restrict to alphanumeric
   try {
     $('.domains .ui-text').alphanumeric({

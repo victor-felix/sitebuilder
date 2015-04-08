@@ -80,32 +80,36 @@
 				'label' => s('Url'),
 				'value' => $media['url'],
 			]) ?>
+			<?= $this->html->link('Remove File', null, ['data-remove' => true, 'class' => 'right']); ?>
 		</div>
 	<?php
 			endif;
 		endforeach;
 	?>
-	<?php if (!isset($key)): ?>
-		<div class="form-grid-460 first item-media">
+		<div class="form-grid-460 first item-media hidden">
 			<?= $this->form->input("medias[0][type]", [
 				'type' => 'hidden',
 				'data-keep-value' => true,
 				'value' => 'application/pdf',
+				'disabled' => true,
 			]) ?>
 			<?= $this->form->input("medias[0][length]", [
 				'type' => 'hidden',
+				'disabled' => true,
 			]) ?>
 			<?= $this->form->input("medias[0][title]", [
 				'class' => 'ui-text large',
 				'label' => s('Title'),
+				'disabled' => true,
 			]) ?>
 			<?= $this->form->input("medias[0][url]", [
 				'label' => false,
 				'class' => 'ui-text large',
 				'label' => s('Url'),
+				'disabled' => true,
 			]) ?>
+			<?= $this->html->link('Remove File', null, ['data-remove' => true, 'class' => 'right']); ?>
 		</div>
-	<?php endif; ?>
 	<?= $this->html->link('Add File', null, ['data-add-new-property' => ".item-media", 'class' => 'ui-button']); ?>
 	</div>
 
