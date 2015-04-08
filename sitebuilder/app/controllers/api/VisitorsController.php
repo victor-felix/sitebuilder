@@ -30,6 +30,7 @@ class VisitorsController extends ApiController
 			$repository->update($visitor);
 
 			$response = [
+				'success' => true,
 				'token' => $visitor->authToken(),
 				'visitor' => VisitorPresenter::present($visitor),
 			];
@@ -63,6 +64,7 @@ class VisitorsController extends ApiController
 			$repository->update($visitor);
 			return [
 				'success' => true,
+				'token' => $visitor->authToken(),
 				'visitor' => VisitorPresenter::present($visitor)
 			];
 		} else {
