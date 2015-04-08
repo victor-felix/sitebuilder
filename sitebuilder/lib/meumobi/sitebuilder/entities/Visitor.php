@@ -44,6 +44,7 @@ class Visitor extends Entity
 	{
 		if (!empty($password)) {
 			$this->shouldRenewPassword = $shouldRenewPassword;
+			$this->generateAuthToken();
 			return $this->hashedPassword = $this->hashPassword($password);
 		}
 	}
@@ -65,8 +66,12 @@ class Visitor extends Entity
 
 	public function authToken()
 	{
-		return $this->authToken
-			?: Security::hash(time() . $this->email(), 'sha1');
+		return $this->authToken ?: $this->generateAuthToken();
+	}
+
+	protected function generateAuthToken()
+	{
+		return $this->authToken = Security::hash(time() . $this->email(), 'sha1');
 	}
 
 	public function lastLogin()
