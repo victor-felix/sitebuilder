@@ -75,7 +75,7 @@ class ItemsHelper extends Helper
 
 	public function input($name) {
 		$field = $this->item->field($name);
-		$defaults = [ 'label' => $field->title ];
+		$defaults = [ 'label' => s($field->title) ];
 
 		$type = (array) $field->type;
 		$type = $type[0];
