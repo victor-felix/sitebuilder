@@ -80,7 +80,7 @@
 				'label' => s('Url'),
 				'value' => $media['url'],
 			]) ?>
-			<?= $this->html->link('Remove File', null, ['data-remove' => true, 'class' => 'right']); ?>
+			<?= $this->html->link(s('Remove file'), null, ['data-remove' => true, 'class' => 'right']); ?>
 		</div>
 	<?php
 			endif;
@@ -108,9 +108,9 @@
 				'label' => s('Url'),
 				'disabled' => true,
 			]) ?>
-			<?= $this->html->link('Remove File', null, ['data-remove' => true, 'class' => 'right']); ?>
+			<?= $this->html->link(s('Remove file'), null, ['data-remove' => true, 'class' => 'right']); ?>
 		</div>
-	<?= $this->html->link('Add File', null, ['data-add-new-property' => ".item-media", 'class' => 'ui-button']); ?>
+	<?= $this->html->link(s('Add file'), null, ['data-add-new-property' => ".item-media", 'class' => 'ui-button']); ?>
 	</div>
 
 </fieldset>
