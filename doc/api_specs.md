@@ -675,7 +675,9 @@ Deletes an image
 
 #### POST /{domain}/visitors/login
 
-Logs in a visitor. Parameters:
+Logs in a visitor.
+
+Parameters:
 
 - **email**
 - **password**
@@ -683,7 +685,13 @@ Logs in a visitor. Parameters:
 - **device[push_id]**
 - **device[model]**
 
-#### POST /{domain}/visitors
+Response:
+- **token**: X-Visitor-Token value
+- **visitor**: the visitor logged in
+- **error**: when the visitor's password is expired, 'password expired'. this
+  means the only access you have is to update your password with PUT /{domain}/visitors
+
+#### PUT /{domain}/visitors
 
 Updates information about the visitor.
 
