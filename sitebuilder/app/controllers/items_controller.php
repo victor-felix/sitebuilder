@@ -77,10 +77,10 @@ class ItemsController extends AppController
 				if ($this->isXhr()) {
 					$this->respondToJSON(array(
 						'refresh' => '/items/add/' . $parent_id,
-						'error' => s('Sorry, we can\'t save the items')
+						'error' => s('Sorry, we can\'t save the item')
 					));
 				} else {
-					Session::writeFlash('error', s('Sorry, we can\'t save the items'));
+					Session::writeFlash('error', s('Sorry, we can\'t save the item'));
 				}
 			}
 		}
