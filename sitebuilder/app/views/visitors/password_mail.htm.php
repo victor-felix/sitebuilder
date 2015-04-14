@@ -16,10 +16,10 @@
 	Se encontrar dificuldades para instalar InfoBox Segue o passo a passo seguinte: 
 	<ul>
 		<li>
-			<?= $this->html->link(Mapper::url('/docs/Como_Instalar_InfoBox-iOS.pdf', true), 'Como instalar InfoBox no iOS') ?>
+			<?= $this->html->link('Como instalar InfoBox no iOS', Mapper::url('/docs/Como_Instalar_InfoBox-iOS.pdf', true)) ?>
 		</li>
 		<li>
-			<?= $this->html->link(Mapper::url('/docs/Como_Instalar_InfoBox-Android.pdf', true), 'Como instalar InfoBox no Android') ?>
+			<?= $this->html->link('Como instalar InfoBox no Android', Mapper::url('/docs/Como_Instalar_InfoBox-Android.pdf', true)) ?>
 		</li>
 	</ul>
 	<br />
