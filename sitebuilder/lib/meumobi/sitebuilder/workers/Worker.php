@@ -2,6 +2,7 @@
 
 namespace meumobi\sitebuilder\workers;
 use app\models\Items;
+use meumobi\sitebuilder\repositories\RecordNotFoundException;//TODO move exceptions for a more generic namespace
 abstract class Worker
 {
 	const LOG_CHANNEL = 'sitebuilder.worker';
