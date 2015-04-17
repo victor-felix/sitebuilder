@@ -4,7 +4,7 @@ require dirname(__DIR__) . '/config/bootstrap.php';
 
 set_time_limit(0);
 
-ini_set('error_reporting', -1);
+ini_set('error_reporting', E_ALL ^ E_DEPRECATED);
 ini_set('display_errors', 'On');
 
 function meumobi_lock($lock, $fn) {

@@ -13,24 +13,25 @@ class MediaFilesizeWorker extends Worker
 			'item id'  => $this->getItem()->_id,
 			]);
 		try {
-			foreach($this->getItem()->medias as $media) {
-				$this->addFileSize($media);
-			}
-			//$this->getItem()->save();
+			//must use array to prevent a lithiun persistence bug
+			$item = $this->getItem()->to('array');
+			array_walk($item['medias'],[$this, 'addFileSize']);
+			$this->getItem()->medias = $item['medias'];
+			$this->getItem()->save();
 			$this->logger()->info('Media file size successfully added', [
 				'item id'  => $this->getItem()->_id,
-				]);
+			]);
 		} catch(\Exception $e) {
 			$this->logger()->info('Can\'t add file size on medias on item', [
 				'item id'  => $this->getItem()->_id,
-				]);
+			]);
 		}
 	}
 
-	protected function addFileSize($media)
+	protected function addFileSize(&$media)
 	{
-		if (!empty($media->length)) return;// go back if media have size
-		$media->length = $this->getRemoteFileSize($media->url);
+		if (!empty($media['length'])) return;// go back if media have size
+		$media['length'] = $this->getRemoteFileSize($media['url']);
 	}
 
 	/**
@@ -46,11 +47,10 @@ class MediaFilesizeWorker extends Worker
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($curl, CURLOPT_TIMEOUT,60);
-
+		curl_exec($curl);
 		$status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-		$size = curl_getinfo($curl, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
+		$size = (int)curl_getinfo($curl, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
 		curl_close($curl);
-
 		return ($status == 200 || ($status > 300 && $status <= 308)) ? $size : 0;
 	}
 }
