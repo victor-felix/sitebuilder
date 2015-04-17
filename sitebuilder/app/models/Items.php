@@ -484,14 +484,11 @@ class Items extends \lithium\data\Model {
 		return $chain->next($self, $params, $chain);
 	}
 
-	public static function addMediaFileSize($self, $params, $chain)
+	public function addMediaFileSize($entity)
 	{
-		$item = $params['entity'];
-		$chain = $chain->next($self, $params, $chain); // save the item
-		if ($item->id() && $item->medias) {
-			WorkerManager::enqueue('media_filesize',  ['item_id' => $item->id()]);
+		if ($entity->id() && $entity->medias) {
+			WorkerManager::enqueue('media_filesize',  ['item_id' => $entity->id()]);
 		}
-		return $chain;
 	}
 
 	public static function sendPushNotification($self, $params, $chain)

@@ -48,6 +48,7 @@ class ItemsController extends AppController
 			$validationResult = $validator->validate($item);
 
 			if ($validationResult->isValid() && $item->save()) {
+				$item->addMediaFileSize();//TODO check if is the best way to do this, at first I tried tu use a before save filter, but din't work
 				foreach ($images as  $id => $image) {
 					if (is_numeric($id)) {
 						$record = Model::load('Images')->firstById($id);
@@ -112,6 +113,7 @@ class ItemsController extends AppController
 			$validationResult = $validator->validate($item);
 
 			if ($validationResult->isValid() && $item->save()) {
+				$item->addMediaFileSize();
 				foreach ($images as $id => $image) {
 					if (is_numeric($id)) {
 						$record = Model::load('Images')->firstById($id);
