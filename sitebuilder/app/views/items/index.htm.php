@@ -30,8 +30,8 @@
                 <?= $this->html->link(e($bi->title), '/items/edit/' . $bi->id(), array('class' => 'push-scene')) ?>
 
                 <span class="move-controls">
-                 <?= $this->html->link(s('up'), '/items/moveup/' . $bi->id(), array('class' => 'move-up')) ?>
-                 <?= $this->html->link(s('down'), '/items/movedown/' . $bi->id(), array('class' => 'move-down')) ?>
+                 <?= $this->buttons->rowMoveDown('/items/movedown/' . $bi->id()) ?>
+                 <?= $this->buttons->rowMoveUp('/items/moveup/' . $bi->id()) ?>
                 </span>
 
                 <p><?= $this->bbcode->strip($bi->description) ?></p>
