@@ -19,14 +19,14 @@ class ButtonsHelper extends Helper
 	public function rowMoveUp($url)
 	{
 		return $this->html->link('<i class="fa fa-lg fa-sort-up"></i>', $url, [
-			'class' => 'move-up ui-button push-scene',
+			'class' => 'move-up ui-button',
 		]);
 	}
 
 	public function rowMoveDown($url)
 	{
 		return $this->html->link('<i class="fa fa-lg fa-sort-down"></i>', $url, [
-			'class' => 'move-down ui-button push-scene',
+			'class' => 'move-down ui-button',
 		]);
 	}
 

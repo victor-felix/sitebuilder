@@ -10,13 +10,6 @@
 	</span>
 
 	<div class="controls">
-		<?= $this->html->link(s('down'), '/categories/movedown/' . $category->id, array(
-			'class' => 'ui-button highlight'
-		)) ?>
-
-		<?= $this->html->link(s('up'), '/categories/moveup/' . $category->id, array(
-			'class' => 'ui-button highlight left-join'
-		)) ?>
 		<?= $this->buttons->rowMoveDown('/categories/movedown/' . $category->id) ?>
 		<?= $this->buttons->rowMoveUp('/categories/moveup/' . $category->id) ?>
 
