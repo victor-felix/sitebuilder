@@ -267,8 +267,12 @@ $.extend($.easing, {
   };
 
   var configureMultiselect = function () {
-    $('select[multiple][data-allow-add]').select2({tags:true});//enable add dinamyc options
-    $('select[multiple]:not([data-allow-add])').select2();
+    if ($('select[multiple][data-allow-add]').length) {
+      $('select[multiple][data-allow-add]').select2({tags:true});//enable add dinamyc options
+    }
+    if ($('select[multiple]:not([data-allow-add])').length) {
+      $('select[multiple]:not([data-allow-add])').select2();
+    }
   };
 
   content.delegate('.edit-in-place input', 'blur', resetEdit);
