@@ -3,6 +3,6 @@
 		<i class="icons fa fa-4x fa-bullhorn"></i>
 		<h3><?php echo s('Description') ?></h3>
 		<small><?php echo s('basic informations about your business') ?></small>
-		<i class="arrows fa fa-4x fa-angle-right"></i>
+		<i class="arrow fa fa-4x fa-angle-right"></i>
 	</a>
 </li>

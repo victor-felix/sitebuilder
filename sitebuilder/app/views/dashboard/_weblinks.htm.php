@@ -3,6 +3,6 @@
 		<i class="icons fa fa-4x fa-facebook-square"></i>
 		<h3><?php echo s('Social network') ?></h3>
 		<small><?php echo s('facebook page, twitter, website address') ?></small>
-		<i class="arrows fa fa-4x fa-angle-right"></i>
+		<i class="arrow fa fa-4x fa-angle-right"></i>
 	</a>
 </li>

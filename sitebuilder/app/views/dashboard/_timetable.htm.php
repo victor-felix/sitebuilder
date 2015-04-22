@@ -3,6 +3,6 @@
 		<i class="icons fa fa-4x fa-calendar"></i>
 		<h3><?php echo s('Open hours') ?></h3>
 		<small><?php echo s('define timetable of your business') ?></small>
-		<i class="arrows fa fa-4x fa-angle-right"></i>
+		<i class="arrow fa fa-4x fa-angle-right"></i>
 	</a>
 </li>

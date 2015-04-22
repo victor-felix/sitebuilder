@@ -3,6 +3,6 @@
 		<i class="icons fa fa-4x fa-line-chart"></i>
 		<h3><?php echo s('Stock symbols') ?></h3>
 		<small><?php echo s('define stock symbols of your company') ?></small>
-		<i class="arrows fa fa-4x fa-angle-right"></i>
+		<i class="arrow fa fa-4x fa-angle-right"></i>
 	</a>
 </li>

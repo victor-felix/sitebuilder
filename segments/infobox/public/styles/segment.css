@@ -128,11 +128,11 @@ div.theme-picker > ul > li.selected {
   box-shadow: 0 0 0 3px #eb780a inset; }
 
 .featured-list li .link .icon
-, .featured-list li:hover .arrow
+
 , .placeholder-links a img {
   background-color: #eb780a; }
 
 .featured-list li .link h3,
-.featured-list > li .link .icons,
+.featured-list > li .link .icons, .featured-list li:hover .arrow,
 div.dashboard .domain a {
   color: #eb780a; }

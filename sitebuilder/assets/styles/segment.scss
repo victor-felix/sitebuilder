@@ -137,13 +137,13 @@ div.theme-picker > ul > li.selected {
 	box-shadow: 0 0 0 3px $main-color inset;
 }
 
-.featured-list li .link .icon
-,.featured-list li:hover .arrow
-,.placeholder-links a img {
+.featured-list li .link .icon,
+.placeholder-links a img {
 	background-color: $main-color;
 }
 
 .featured-list li .link h3,
+.featured-list li:hover .arrow,
 div.dashboard .domain a {
 	color: $main-color;
 }

@@ -3,6 +3,6 @@
 		<i class="icons fa fa-4x fa-map-marker"></i>
 		<h3><?php echo s('Location') ?></h3>
 		<small><?php echo s('location details: street, zip code, etc.') ?></small>
-		<i class="arrows fa fa-4x fa-angle-right"></i>
+		<i class="arrow fa fa-4x fa-angle-right"></i>
 	</a>
 </li>

@@ -31,7 +31,7 @@
 					<i class="icons fa fa-4x fa-pencil-square-o"></i>
 					<h3><?php echo s('Edit content') ?></h3>
 					<small><?php echo s('you can edit your menu, products, stores or news') ?></small>
-					<i class="arrows fa fa-4x fa-angle-right"></i>
+					<i class="arrow fa fa-4x fa-angle-right"></i>
 				</a>
 			</li>
 			<?php endif ?>
@@ -40,7 +40,7 @@
 					<span class="icons fa fa-4x fa-file-o"></span>
 					<h3><?php echo s('create new content') ?></h3>
 					<small><?php echo s('you can add a restaurant menu, products, services, etc') ?></small>
-					<i class="arrows fa fa-4x fa-angle-down"></i>
+					<i class="arrow fa fa-4x fa-angle-down"></i>
 				</div>
 				<p class="placeholder-links">
 					<a href="<?php echo Mapper::url('/placeholder_creator/menu') ?>">

@@ -76,75 +76,12 @@
   color: #c02926;
 }
 
-
-.featured-list > li .link .icon {
-	background: url(/images/shared/dashboard/icons.png) no-repeat 0 0 #c02926;
-	width: 51px;
-	height: 51px;
-	display: block;
-	position: absolute;
-	left: 10px;
-	top: 13px;
-}
-
 .featured-list > li > .content {
 	padding: 0 0 10px 80px;
 	overflow: hidden;
 }
 
-.featured-list li#photos .icon {
-	background-position: 0 -900px;
-}
-
-.featured-list li#social .icon {
-	background-position: 0 -332px;
-}
-
-.featured-list li#address .icon {
-	background-position: 0 -616px;
-}
-
-.featured-list li#contact .icon {
-	background-position: 0 -758px;
-}
-
-.featured-list li#feed .icon {
-	background-position: 0 -1042px;
-}
-
-.featured-list li#categories .icon {
-	background-position: 0 -190px;
-}
-
-.featured-list li#add-content .icon {
-	background-position: 0 -474px;
-}
-
-.featured-list li#photos:hover .icon {
-	background-position: 0 -829px;
-}
-
-.featured-list li#social:hover .icon {
-	background-position: 0 -261px;
-}
-
-.featured-list li#address:hover .icon {
-	background-position: 0 -545px;
-}
-
-.featured-list li#contact:hover .icon {
-	background-position: 0 -687px;
-}
-
-.featured-list li#feed:hover .icon {
-	background-position: 0 -971px;
-}
-
-.featured-list li#categories:hover .icon {
-	background-position: 0 -119px;
-}
-
-.featured-list > li .arrows {
+.featured-list > li .arrow {
 	width: 15px;
 	height: 26px;
 	display: block;
@@ -154,32 +91,10 @@
   color: #ddd;
 }
 
-.featured-list > li:hover .arrows {
+.featured-list > li:hover .arrow {
   color: #c02926;
 }
 	
-.featured-list > li .arrow {
-	background: url(/images/shared/dashboard/icons.png) no-repeat 0 -74px;
-	width: 15px;
-	height: 26px;
-	display: block;
-	position: absolute;
-	right: 10px;
-	top: 26px;
-}
-
-.featured-list > li:hover .arrow {
-	background-position: 0 -45px;
-	background-color: #c02926;
-}
-
-.featured-list > li .arrow.open, .featured-list li:hover .arrow.open {
-	background-position: 0 0;
-	width: 28px;
-	background-color: #fff;
-	right: 6px;
-}
-
 .featured-list > li .link h3 {
 	color: #c02926;
 	font-size: 22px;
