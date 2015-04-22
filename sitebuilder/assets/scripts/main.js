@@ -681,6 +681,7 @@ $(window).load(function() {
 
   if (window.visitorGraphData) {
     Object.keys(window.visitorGraphData).forEach(function(key) {
+      if (!window.visitorGraphData[key].length) return; //has no available data
       var options = { element: key, data: window.visitorGraphData[key] };
       //TODO remove this conditional, this isn't the best place to be
       if (key == 'subscribed-graph')

@@ -8,21 +8,21 @@
 <div>
 	<div class="grid-12">
 		<div class="graph-wrapper">
-			<?php if($report['totalVisitors']): ?>
-			<div class="graph">
-				<h2><?= s('Push Subscription') ?></h2>
-				<div id="subscribed-graph"></div>
-			</div>
-			<div class="graph">
-				<h2><?= s('Invitations') ?></h2>
-				<div id="accepted-graph"></div>
-			</div>
-			<div class="graph">
-				<h2><?= s('App Versions') ?></h2>
-				<div id="versions-graph"></div>
-			</div>
+			<?php
+				$labels = [
+					'subscribed-graph' => 'Push Subscription',
+					'accepted-graph' => 'Invitations',
+					'versions-graph' => 'App Versions'
+				];
+				foreach ($visitorGraphData as $id => $report) {
+					if (!$report) continue;
+			?>
+				<div class="graph">
+					<h2><?= s($labels[$id]) ?></h2>
+					<div id="<?= $id ?>"></div>
+				</div>
+			<?php	} ?>
 		</div>
-		<?php endif ?>
 		<table id="visitors-list" class="display list" cellspacing="0" width="100%">
 				<thead>
 						<tr>

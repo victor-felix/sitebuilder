@@ -46,7 +46,7 @@ class AudienceReportPresenter
 	protected function getAccepted()
 	{
 		if (!$this->accepted) {
-			$this->accepted = array_reduce($this->getVisitors(), $this->countProperty('lastLogin'));
+			$this->accepted = (int)array_reduce($this->getVisitors(), $this->countProperty('lastLogin'));
 		}
 		return $this->accepted;
 	}

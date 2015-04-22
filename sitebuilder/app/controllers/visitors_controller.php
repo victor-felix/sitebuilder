@@ -21,19 +21,26 @@ class VisitorsController extends AppController
 	{
 		$visitors = $this->repository->findBySiteId($this->getCurrentSite()->id);
 		$report = AudienceReportPresenter::present($visitors);
-		$visitorGraphData = [
-			'versions-graph' => $report['appVersions'],
-			'subscribed-graph' => [
+		$visitorGraphData['versions-graph'] = $report['appVersions'];
+		$visitorGraphData['subscribed-graph']= [];
+		$visitorGraphData['accepted-graph'] = [];
+
+		if ($report['subscribedPercent'] || $report['unsubscribedPercent']) {
+			$visitorGraphData['subscribed-graph'] = [
 				'Subscribed' => $report['subscribedPercent'],
 				'Unsubscribed' => $report['unsubscribedPercent'],
-			],
-			'accepted-graph' => [
+			];
+		}
+
+		if ($report['accepted'] || $report['pending']) {
+			$visitorGraphData['accepted-graph'] = [
 				'Accepted' => $report['accepted'],
 				'Pending' => $report['pending']
-			]
-		];
+			];
+		}
+
 		$visitorGraphDataJson = VisitorGraphPresenter::present($visitorGraphData);
-		$this->set(compact('visitors', 'report', 'visitorGraphDataJson'));
+		$this->set(compact('visitors', 'visitorGraphData', 'visitorGraphDataJson'));
 	}
 
 	public function add()
