@@ -63,6 +63,7 @@ namespace :deploy do
   after 'deploy:updated', 'app:services:cronjobs'
   after 'deploy:updated', 'app:api_doc'
   after 'deploy:updated', 'db:settings'
+  after 'deploy:updated', 'db:backup'
   after 'deploy:updated', 'db:migrate'
   after 'deploy:updated', 'app:platform_check'
   after 'deploy:updated', 'service:apache:start'

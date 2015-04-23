@@ -1,5 +1,5 @@
 namespace :db do
-  desc "Create db settings file"
+  desc "Create database settings file"
   task :settings do
     on roles(:app) do
       within release_path do 
@@ -16,4 +16,14 @@ namespace :db do
       end
     end
   end
+
+  desc "Backup database"
+  task :backup do
+    on roles(:app) do
+      within release_path do 
+        execute :php, 'sitebuilder/script/backup_database.php'
+      end
+    end
+  end
+
 end
