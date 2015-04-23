@@ -30,12 +30,12 @@
 .categories-list .ui-button-add {
 	display: none;
 	position: absolute;
-	height: 30px;
+	height: 25px;
 	width: 30px;
-	padding: 0;
+  padding: 5px 0 0;
+  text-align: center;
 	top: 9px;
 	left: 10px;
-	background: url(/images/shared/layout/ui-button-add.png) no-repeat 0 0 #c02926;
 }
 
 .categories-list li:hover .ui-button-add {

@@ -30,6 +30,13 @@ class ButtonsHelper extends Helper
 		]);
 	}
 
+	public function rowAdd($url)
+	{
+		return $this->html->link('<i class="fa fa-2x fa-plus"></i>', $url, array(
+			'class' => 'ui-button ui-button-add highlight push-scene'
+		)); 
+	}
+
 	public function popScene($label, $url)
 	{
 		return $this->html->link($label, $url, [

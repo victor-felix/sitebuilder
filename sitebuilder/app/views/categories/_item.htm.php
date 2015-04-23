@@ -1,8 +1,6 @@
 <li class="level-<?= $level ?>" data-catid="<?= $category->id ?>" data-parentid="<?= $category->parent_id ?>">
 	<?php if($level == 1): ?>
-		<?= $this->html->link('', '/categories/add/' . $category->id, array(
-			'class' => 'ui-button ui-button-add highlight push-scene'
-		)) ?>
+		<?= $this->buttons->rowAdd('/categories/add/' . $category->id) ?>
 	<?php endif ?>
 
 	<span class="title edit-in-place" data-saveurl="/categories/edit/<?= $category->id ?>" title="<?= s('click to edit') ?>">
