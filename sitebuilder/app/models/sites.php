@@ -584,7 +584,7 @@ class Sites extends AppModel
 	protected function deleteCustomSkin($id)
 	{
 		$skin = $this->skin();
-		if ($skin->parentId()) {
+		if ($skin && $skin->parentId()) {
 			$skinRepo = new SkinsRepository();
 			$skinRepo->destroy($skin);
 		}
