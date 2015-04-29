@@ -38,7 +38,11 @@ class UpdateFeedsService extends Service
 				$data = $extensionData;
 				$data['_id'] = (string) $data['_id'];
 
-				$extension = Rss::create($data);
+				$extension = Rss::find('first', array('conditions' => array(
+					'_id' => $data['_id'],
+					'site_id' => $data['site_id'],
+				)));
+
 				$feed_stats = $extension->updateArticles();
 				$stats['total_articles'] += $feed_stats['total_articles'];
 				$stats['removed_articles'] += $feed_stats['removed_articles'];
