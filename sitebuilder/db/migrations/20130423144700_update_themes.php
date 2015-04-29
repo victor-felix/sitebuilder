@@ -8,6 +8,7 @@ class UpdateThemes
 	{
 		switch (Config::read('App.environment')) {
 		case 'development':
+			$url = 'http://meu-cloud-db.int-meumobilesite.com/configs.json';
 		case 'integration':
 			$url = 'http://meu-cloud-db.int-meumobilesite.com/configs.json';
 			break;
