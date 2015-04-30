@@ -16,6 +16,17 @@ class WorkerManager
 		return $job->save();
 	}
 
+	public static function isEnqueued($type, $params)
+	{
+		$conditions = ['type' => $type];
+		foreach ($params as $param => $value) {
+			$conditions["params.$param"] = $value;	
+		}
+		return (bool)Jobs::find('count', [
+			'conditions' => $conditions
+		]);
+	}
+
 	public static function execute($worker)
 	{
 		try {
