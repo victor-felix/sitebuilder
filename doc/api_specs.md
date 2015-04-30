@@ -673,6 +673,25 @@ Parameters:
 
 Deletes an image
 
+#### POST /visitors/login
+
+Logs in a visitor without knowing the site it belongs to beforehand.
+
+Parameters:
+
+- **email**
+- **password**
+- **device[uuid]**
+- **device[push_id]**
+- **device[model]**
+
+Response:
+- **token**: X-Visitor-Token value
+- **visitor**: the visitor logged in. contains a key 'site', which contains the
+  site's slug
+- **error**: when the visitor's password is expired, 'password expired'. this
+  means the only access you have is to update your password with PUT /{domain}/visitors
+
 #### POST /{domain}/visitors/login
 
 Logs in a visitor.

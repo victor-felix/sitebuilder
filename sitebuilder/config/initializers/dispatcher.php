@@ -61,6 +61,15 @@ Router::connect(new Route(array(
 
 Router::connect(new Route(array(
 	'method' => 'POST',
+	'template' => '/api/visitors/login',
+	'params' => array(
+		'controller' => 'visitors',
+		'action' => 'login_without_site',
+	) + $defaults['params']
+)));
+
+Router::connect(new Route(array(
+	'method' => 'POST',
 	'template' => '/api/{:slug}/visitors/devices',
 	'params' => array(
 		'controller' => 'visitors',

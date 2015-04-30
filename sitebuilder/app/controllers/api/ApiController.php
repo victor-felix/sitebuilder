@@ -143,8 +143,10 @@ class ApiController extends \lithium\action\Controller {
 
 	protected function site() {
 		if ($this->site) return $this->site;
-		$domain = $this->request->params['slug'];
-		return $this->site = Model::load('Sites')->firstByDomain($domain);
+
+		if ($domain = $this->request->get('params:slug')) {
+			return $this->site = Model::load('Sites')->firstByDomain($domain);
+		}
 	}
 
 	protected function visitor() {

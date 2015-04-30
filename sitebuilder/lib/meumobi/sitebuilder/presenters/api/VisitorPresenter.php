@@ -10,6 +10,7 @@ class VisitorPresenter
 			'first_name' => $object->firstName(),
 			'last_name' => $object->lastName(),
 			'email' => $object->email(),
+			'site_id' => $object->siteId(),
 		];
 	}
 
