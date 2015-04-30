@@ -30,7 +30,7 @@ class VisitorsController extends ApiController
 		$password = $this->request->get('data:password');
 
 		$repository = new VisitorsRepository();
-		$siteId = $this->site() ? $this->site()->id ? null;
+		$siteId = $this->site() ? $this->site()->id : null;
 		$visitor = $repository->findForAuthentication($siteId, $email, $password);
 
 		if ($visitor) {
@@ -54,7 +54,7 @@ class VisitorsController extends ApiController
 
 			return $response;
 		} else {
-			throw new UnAuthorizedException('Invalid visitor');
+			throw new UnAuthorizedException('invalid visitor');
 		}
 	}
 
