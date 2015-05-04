@@ -10,15 +10,28 @@ use meumobi\sitebuilder\presenters\api\VisitorPresenter;
 
 class VisitorsController extends ApiController
 {
-	protected $skipBeforeFilter = ['requireVisitorAuth'];
+	protected $skipBeforeFilter = ['requireVisitorAuth', 'checkSite'];
+
+	public function login_without_site()
+	{
+		return $this->loginUser();
+	}
 
 	public function login()
+	{
+		$this->checkSite();
+
+		return $this->loginUser();
+	}
+
+	protected function loginUser()
 	{
 		$email = $this->request->get('data:email');
 		$password = $this->request->get('data:password');
 
 		$repository = new VisitorsRepository();
-		$visitor = $repository->findForAuthentication($this->site()->id, $email, $password);
+		$siteId = $this->site() ? $this->site()->id : null;
+		$visitor = $repository->findForAuthentication($siteId, $email, $password);
 
 		if ($visitor) {
 			$deviceData = $this->request->get('data:device');
@@ -41,19 +54,23 @@ class VisitorsController extends ApiController
 
 			return $response;
 		} else {
-			throw new UnAuthorizedException('Invalid visitor');
+			throw new UnAuthorizedException('invalid visitor');
 		}
 	}
 
 	public function show()
 	{
+		$this->checkSite();
 		$this->requireVisitorAuth();
+
 		return VisitorPresenter::present($this->visitor());
 	}
 
 	public function update()
 	{
+		$this->checkSite();
 		$this->requireVisitorAuth(['allowExpired' => true]);
+
 		$currentPassword = $this->request->get('data:current_password');
 		$newPassword = $this->request->get('data:password');
 		$repository = new VisitorsRepository();
@@ -74,7 +91,9 @@ class VisitorsController extends ApiController
 
 	public function add_device()
 	{
+		$this->checkSite();
 		$this->requireVisitorAuth();
+
 		$repository = new VisitorsRepository();
 		$visitor = $this->visitor();
 		$device = new VisitorDevice([
@@ -85,17 +104,21 @@ class VisitorsController extends ApiController
 		]);
 		$visitor->addDevice($device);
 		$repository->update($visitor);
+
 		return [ 'success' => true ];
 	}
 
 	public function update_device()
 	{
+		$this->checkSite();
 		$this->requireVisitorAuth();
+
 		$repository = new VisitorsRepository();
 		$visitor = $this->visitor();
 		$device = $visitor->findDevice($this->request->get('params:device_id'));
 		$device->update($this->request->data);
 		$repository->update($visitor);
+
 		return [ 'success' => true ];
 	}
 }

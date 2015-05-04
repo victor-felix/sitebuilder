@@ -4,6 +4,7 @@ namespace meumobi\sitebuilder\entities;
 
 use meumobi\sitebuilder\entities\VisitorDevice;
 use meumobi\sitebuilder\repositories\RecordNotFoundException;
+use meumobi\sitebuilder\Site;
 use MongoId;
 use Security;
 
@@ -132,5 +133,10 @@ class Visitor extends Entity
 	public function addGroup($group)
 	{
 		if (!in_array($group, $this->groups)) $this->groups []= $group;
+	}
+
+	public function site()
+	{
+		return Site::find($this->siteId);
 	}
 }

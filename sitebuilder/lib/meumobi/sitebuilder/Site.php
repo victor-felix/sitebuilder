@@ -9,6 +9,12 @@ class Site
 {
 	protected $attr;
 
+	public static function find($id)
+	{
+		$site = Model::load('Sites')->firstById($id);
+		return new static($site->data);
+	}
+
 	public static function findByDomain($domain)
 	{
 		// TODO
@@ -24,6 +30,15 @@ class Site
 	public function __get($attr)
 	{
 		return $this->attr[$attr];
+	}
+
+	public function domain()
+	{
+		$domain = Model::load('SitesDomains')->first([
+			'conditions' => [ 'site_id' => $this->id ],
+			'order' => 'id DESC',
+		]);
+		return $domain ? $domain->domain : null;
 	}
 
 	public function categories($scope = null)

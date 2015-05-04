@@ -56,11 +56,14 @@ class VisitorsRepository extends Repository
 
 	public function findForAuthentication($siteId, $email, $password)
 	{
-		$result = $this->collection()->findOne([
-			'site_id' => (int) $siteId,
+		$conditions = [
 			'email' => $email,
 			'hashed_password' => Security::hash($password, 'sha1')
-		]);
+		];
+
+		if ($siteId) $conditions['site_id'] = (int) $siteId;
+
+		$result = $this->collection()->findOne($conditions);
 
 		if ($result) {
 			return $this->hydrate($result);

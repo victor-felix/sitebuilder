@@ -134,7 +134,11 @@ class ApiController extends \lithium\action\Controller {
 
 	protected function checkEtag()
 	{
-		$etag = $this->etag($this->site());
+		$site = $this->site();
+
+		if (!$site) return;
+
+		$etag = $this->etag($site);
 		if ($this->isFresh($etag)) {
 			$this->response->status(304);
 			return false;
@@ -143,8 +147,10 @@ class ApiController extends \lithium\action\Controller {
 
 	protected function site() {
 		if ($this->site) return $this->site;
-		$domain = $this->request->params['slug'];
-		return $this->site = Model::load('Sites')->firstByDomain($domain);
+
+		if ($domain = $this->request->get('params:slug')) {
+			return $this->site = Model::load('Sites')->firstByDomain($domain);
+		}
 	}
 
 	protected function visitor() {
