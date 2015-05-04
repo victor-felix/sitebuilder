@@ -6,6 +6,9 @@ use meumobi\sitebuilder\repositories\RecordNotFoundException;//TODO move excepti
 abstract class Worker
 {
 	const LOG_CHANNEL = 'sitebuilder.worker';
+	const PRIORITY_HIGH = 2;
+	const PRIORITY_MEDIUM = 1;
+	const PRIORITY_LOW = 0;
 
 	protected $logger;
 	protected $job;

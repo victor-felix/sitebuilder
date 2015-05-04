@@ -25,10 +25,9 @@ use Video;
 class UpdateFeedsWorker extends Worker
 {
 	const ARTICLES_TO_KEEP = 50;
-	const PRIORITY_HIGH = 2;
-	const PRIORITY_MEDIUM = 1;
-	const PRIORITY_LOW = 0;
-
+	protected $category;
+	protected $extension;
+	protected $blacklist = ['gravatar.com'];
 	protected $stats = [
 		'total_articles' => 0,
 		'total_images' => 0,
@@ -40,28 +39,30 @@ class UpdateFeedsWorker extends Worker
 		$this->logger()->info('updating feeds', [
 			'priority' => $this->getPriority()
 		]);
+
 		$ids = $this->getExtensionsIds();
 		array_walk($ids, [$this, 'updateFeed']);
 		$this->logger()->info('finished updating feeds', $this->stats);
-		exit();
+
+		exit('oiiiii');
 	}
 
 	protected function updateFeed($extensionId)
 	{
 		try {
-			$extension = $this->getExtension($extensionId);
-			$category = $this->getCategory($extension);
-			$feed = $this->getFeed($extension);
-			$this->updateArticles($category, $feed, $extension);
-			$this->cleanup($extension);
+			$this->extension = $this->getExtension($extensionId);
+			$this->category = $this->getCategory($this->extension);
+			$feed = $this->getFeed();
+			$this->updateArticles($feed);
+			$this->cleanup();
 
-			$category->updated = date('Y-m-d H:i:s');
-			$category->save();
+			$this->category->updated = date('Y-m-d H:i:s');
+			$this->category->save();
 
-			$extension->priority = self::PRIORITY_LOW;
-			$extension->save();
+			$this->extension->priority = self::PRIORITY_LOW;
+			$this->extension->save();
 		} catch (\Exception $e) {
-		
+			echo $e->getTraceAsString();	
 		}
 	}
 
@@ -83,15 +84,13 @@ class UpdateFeedsWorker extends Worker
 		}
 	}
 
-	protected function updateArticles($category, $feed, $extension)
+	protected function updateArticles($feed)
 	{
 		try {
 			$feedItems =  array_reverse($feed->get_items());
 			foreach ($feedItems as $feedItem) {
-				$item = $this->getItem($category, $feedItem);
+				$item = $this->getItem($feedItem);
 				$this->updateItem($item, $feedItem);
-				$this->stats['total_images'] += $article_stats['total_images'];
-				$this->stats['failed_images'] += $article_stats['failed_images'];
 				$this->stats['total_articles'] += 1;
 			}
 		} catch(Exception $e) {
@@ -99,12 +98,12 @@ class UpdateFeedsWorker extends Worker
 		}
 	}
 
-	protected function getItem($category, $feedItem)
+	protected function getItem($feedItem)
 	{
-		$classname = '\app\models\items\\' . \Inflector::camelize($category->type);
+		$classname = '\app\models\items\\' . \Inflector::camelize($this->category->type);
 		$item = $classname::find('first', [
 			'conditions' => [
-				'parent_id' => $category->id,
+				'parent_id' => $this->category->id,
 				'guid' => $feedItem->get_id()
 			]
 		]);
@@ -116,11 +115,7 @@ class UpdateFeedsWorker extends Worker
 
 	protected function updateItem($item, $feedItem)
 	{
-			$images = static::getArticleImages($item);
-		$stats = array(
-			'total_images' => 0,
-			'failed_images' => 0
-		);
+		$images = $this->getArticleImages($feedItem);
 
 		//remove captions from description
 		$remove = array();
@@ -130,24 +125,24 @@ class UpdateFeedsWorker extends Worker
 			}
 		}
 
-		$author = $item->get_author();
-		$medias = static::getArticlesMedias($item);
-		$article = array(
-			'site_id' => $feed->site_id,
-			'parent_id' => $feed->id,
-			'guid' => static::filterGuid($item->get_id()),
-			'link' => $item->get_link(),
-			'title' => strip_tags($item->get_title()),
-			'description' => static::cleanupHtml($item, $remove, $extension->use_html_purifier),
-			'pubdate' => gmdate('Y-m-d H:i:s', $item->get_date('U')),
+		$author = $feedItem->get_author();
+		$medias = $this->getArticlesMedias($feedItem);
+		$data = array(
+			'site_id' => $this->category->site_id,
+			'parent_id' => $this->category->id,
+			'guid' => $this->filterGuid($feedItem->get_id()),
+			'link' => $feedItem->get_link(),
+			'title' => strip_tags($feedItem->get_title()),
+			'description' => $this->cleanupHtml($feedItem, $remove, $this->extension->use_html_purifier),
+			'pubdate' => gmdate('Y-m-d H:i:s', $feedItem->get_date('U')),
 			'author' => $author ? $author->get_name() : '',
 			'format' => 'html',
-			'type' => $feed->type,
+			'type' => $this->category->type,
 			'medias' => $medias
 		);
 
-		$article = static::create($article);
-		$article->save();
+		$item->set($data);
+		$item->save();
 
 		foreach ($images as $image) {
 			$imageAlt = '';
@@ -155,32 +150,32 @@ class UpdateFeedsWorker extends Worker
 				$imageAlt = $image['alt'];
 				$image = $image['src'];
 			}
-			$image = static::getImageUrl($image, $article['guid']);
-			$result = Model::load('Images')->download($article, $image, array(
+			$image = $this->getImageUrl($image, $item['guid']);
+			$result = Model::load('Images')->download($item, $image, array(
 				'url' => $image,
 				'title' => $imageAlt,
 				'visible' => 1
 			));
 
-			if ($result) $stats['total_images'] += 1;
-			else $stats['failed_images'] += 1;
+			if ($result) {
+				$this->stats['total_images'] += 1;
+			} else {
+				$$this->stats['failed_images'] += 1;
+			}
 		}
-
-		return $stats;
-
 	}
 
-	protected static function getPurifier() {
+	protected function getPurifier() {
 		$config = HTMLPurifier_Config::createDefault();
 		$config->set('Cache.SerializerPath', Filesystem::path(APP_ROOT . '/tmp/cache/html_purifier'));
 		$config->set('HTML.Allowed', 'b,i,br,p,strong');
 		return new HTMLPurifier($config);
 	}
 
-	protected static function cleanupHtml($item, $strToRemove = false, $purify = true) {
-		$html = $item->get_content();
+	protected function cleanupHtml($feedItem, $strToRemove = false, $purify = true) {
+		$html = $feedItem->get_content();
 		if ($purify) {
-			$purifier = static::getPurifier();
+			$purifier = $this->getPurifier();
 			$html = $purifier->purify($html);
 		}
 		$html = mb_convert_encoding($html, 'UTF-8', mb_detect_encoding($html));
@@ -216,15 +211,15 @@ class UpdateFeedsWorker extends Worker
 		return $results;
 	}
 
-	protected function getArticleImages($item) {
-		$images = static::getEnclosureImages($item);
+	protected function getArticleImages($feedItem) {
+		$images = $this->getEnclosureImages($feedItem);
 		$imagesAreInvalid = empty($images) || (is_array($images) && count($images) == 1 && !$images[0]);
 
 		if($imagesAreInvalid) {
-			if ($image = $item->get_item_tags(SIMPLEPIE_NAMESPACE_RSS_20, 'image')) {
+			if ($image = $feedItem->get_item_tags(SIMPLEPIE_NAMESPACE_RSS_20, 'image')) {
 				$images = (array)$image[0]['data'];
 			} else {
-				$images = static::getContentImages($item);
+				$images = $this->getContentImages($feedItem);
 			}
 		}
 
@@ -232,7 +227,7 @@ class UpdateFeedsWorker extends Worker
 			if (is_array($image)) {
 				$image = $image['src'];
 			}
-			if(static::isBlackListed($image)) {
+			if($this->isBlackListed($image)) {
 				unset($images[$k]);
 			}
 		}
@@ -240,9 +235,9 @@ class UpdateFeedsWorker extends Worker
 		return $images;
 	}
 
-	protected function getArticlesMedias($item) {
+	protected function getArticlesMedias($feedItem) {
 			$medias = [];
-			foreach($item->get_enclosures() as $enclosure) {
+			foreach($feedItem->get_enclosures() as $enclosure) {
 				if ($enclosure->get_link())//stackoverflow.com/questions/4053664/simplepie-includes-phantom-enclosures-that-dont-exist
 					$medias[] = [
 						'url' => $enclosure->get_link(),
@@ -252,7 +247,7 @@ class UpdateFeedsWorker extends Worker
 						'thumbnails' => $enclosure->get_thumbnails(),
 					];
 			}
-			$medias = array_merge($medias, static::getContentVideos($item));
+			$medias = array_merge($medias, $this->getContentVideos($feedItem));
 			//try to generate video thumbs if none is set
 			return array_map(function($media) {
 				if (!$media['thumbnails'])
@@ -261,10 +256,10 @@ class UpdateFeedsWorker extends Worker
 			}, $medias);
 	}
 
-	protected function getContentVideos($item) {
+	protected function getContentVideos($feedItem) {
 		$videos = [];
 		$dom = new \DOMDocument('1.0', 'UTF-8');
-		@$dom->loadHtml('<?xml encoding="UTF-8">' . $item->get_content());
+		@$dom->loadHtml('<?xml encoding="UTF-8">' . $feedItem->get_content());
 		$xpath = new \DOMXPath($dom);
 		$nodes = $xpath->query('//iframe[contains(@src,"youtube") 
 			or contains(@src,"dailymotion") 
@@ -285,11 +280,11 @@ class UpdateFeedsWorker extends Worker
 		return $videos;	
 	}
 
-	protected function getContentImages($item) {
-		//$content = str_get_html($item->get_content());
+	protected function getContentImages($feedItem) {
+		//$content = str_get_html($feedItem->get_content());
 		//$links = $content->find('a[rel*=lightbox]');
 		$dom = new \DOMDocument('1.0', 'UTF-8');
-		@$dom->loadHtml('<?xml encoding="UTF-8">' . $item->get_content());
+		@$dom->loadHtml('<?xml encoding="UTF-8">' . $feedItem->get_content());
 		$xpath = new \DOMXPath($dom);
 		$images = array();
 		$src = array();
@@ -316,9 +311,9 @@ class UpdateFeedsWorker extends Worker
 		return $images;
 	}
 
-	protected function getEnclosureImages($item) {
+	protected function getEnclosureImages($feedItem) {
 		$images = array();
-		$enclosures = $item->get_enclosures();
+		$enclosures = $feedItem->get_enclosures();
 		if(is_null($enclosures)) return $images;
 
 		foreach($enclosures as $enclosure) {
@@ -340,9 +335,9 @@ class UpdateFeedsWorker extends Worker
 		return $guid;
 	}
 
-	protected function getImageUrl($url, $article) {
+	protected function getImageUrl($url, $articleUrl) {
 		if(Mapper::isRoot($url)) {
-			$domain = parse_url($article, PHP_URL_HOST);
+			$domain = parse_url($articleUrl, PHP_URL_HOST);
 			$url = 'http://' . $domain . $url;
 		}
 		else if(preg_match('%^(http://download.rj.gov.br/imagens/\d+/\d+/\d+.jpg)%', $url, $output)) {
@@ -353,7 +348,7 @@ class UpdateFeedsWorker extends Worker
 	}
 
 	protected function isBlackListed($link) {
-		foreach(static::$blacklist as $i) {
+		foreach($this->blacklist as $i) {
 			$pattern = preg_quote($i);
 			if(preg_match('%' . $pattern . '%', $link)) {
 				return true;
@@ -363,11 +358,11 @@ class UpdateFeedsWorker extends Worker
 		return false;
 	}
 
-	protected function cleanup($extension)
+	protected function cleanup()
 	{
 		$conditions = array(
-			'site_id' => $extension->site_id,
-			'parent_id' => $extension->category_id
+			'site_id' => $this->extension->site_id,
+			'parent_id' => $this->extension->category_id
 		);
 
 		$count = Articles::find('count', array('conditions' => $conditions));
@@ -386,11 +381,11 @@ class UpdateFeedsWorker extends Worker
 		}
 	}
 
-	protected function getFeed($extension)
+	protected function getFeed()
 	{
 		$feed = new SimplePie();
 		$feed->enable_cache(false);
-		$feed->set_feed_url($extension->url);
+		$feed->set_feed_url($this->extension->url);
 		$strip_htmltags = $feed->strip_htmltags;
 		array_splice($strip_htmltags, array_search('iframe', $strip_htmltags), 1);
 		$feed->strip_htmltags($strip_htmltags);

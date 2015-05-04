@@ -1,7 +1,7 @@
 <?php
 
 use meumobi\sitebuilder\services\ImportCsvService;
-use meumobi\sitebuilder\services\Service;
+use meumobi\sitebuilder\workers\Worker;
 
 require_once 'lib/utils/FileUpload.php';
 require_once 'lib/mailer/Mailer.php';
@@ -329,7 +329,7 @@ class Categories extends AppModel
 		}
 		Extensions::update(
 			[
-				'priority' => Service::PRIORITY_HIGH
+				'priority' => Worker::PRIORITY_HIGH
 			],
 			[
 				'category_id' => $this->id(),
