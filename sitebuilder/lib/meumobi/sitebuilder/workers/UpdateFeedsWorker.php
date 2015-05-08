@@ -25,6 +25,7 @@ use Video;
 class UpdateFeedsWorker extends Worker
 {
 	const ARTICLES_TO_KEEP = 50;
+
 	protected $category;
 	protected $extension;
 	protected $blacklist = ['gravatar.com'];
@@ -41,20 +42,20 @@ class UpdateFeedsWorker extends Worker
 		]);
 
 		$ids = $this->getExtensionsIds();
-		array_walk($ids, [$this, 'updateFeed']);
+		array_walk($ids, [$this, 'updateFromFeed']);
 		$this->logger()->info('finished updating feeds', $this->stats);
 
 		exit('oiiiii');
 	}
 
-	protected function updateFeed($extensionId)
+	protected function updateFromFeed($extensionId)
 	{
 		try {
 			$this->extension = $this->getExtension($extensionId);
 			$this->category = $this->getCategory($this->extension);
 			$feed = $this->getFeed();
 			$this->updateArticles($feed);
-			$this->cleanup();
+			$this->removeOldArticles();
 
 			$this->category->updated = date('Y-m-d H:i:s');
 			$this->category->save();
@@ -90,7 +91,7 @@ class UpdateFeedsWorker extends Worker
 			$feedItems =  array_reverse($feed->get_items());
 			foreach ($feedItems as $feedItem) {
 				$item = $this->getItem($feedItem);
-				$this->updateItem($item, $feedItem);
+				$this->updateArticle($item, $feedItem);
 				$this->stats['total_articles'] += 1;
 			}
 		} catch(Exception $e) {
@@ -113,7 +114,7 @@ class UpdateFeedsWorker extends Worker
 		return $item;
 	}
 
-	protected function updateItem($item, $feedItem)
+	protected function updateArticle($item, $feedItem)
 	{
 		$images = $this->getArticleImages($feedItem);
 
@@ -126,7 +127,7 @@ class UpdateFeedsWorker extends Worker
 		}
 
 		$author = $feedItem->get_author();
-		$medias = $this->getArticlesMedias($feedItem);
+		$medias = $this->getArticleMedias($feedItem);
 		$data = array(
 			'site_id' => $this->category->site_id,
 			'parent_id' => $this->category->id,
@@ -165,14 +166,16 @@ class UpdateFeedsWorker extends Worker
 		}
 	}
 
-	protected function getPurifier() {
+	protected function getPurifier()
+	{
 		$config = HTMLPurifier_Config::createDefault();
 		$config->set('Cache.SerializerPath', Filesystem::path(APP_ROOT . '/tmp/cache/html_purifier'));
 		$config->set('HTML.Allowed', 'b,i,br,p,strong');
 		return new HTMLPurifier($config);
 	}
 
-	protected function cleanupHtml($feedItem, $strToRemove = false, $purify = true) {
+	protected function cleanupHtml($feedItem, $strToRemove = false, $purify = true)
+	{
 		$html = $feedItem->get_content();
 		if ($purify) {
 			$purifier = $this->getPurifier();
@@ -211,7 +214,8 @@ class UpdateFeedsWorker extends Worker
 		return $results;
 	}
 
-	protected function getArticleImages($feedItem) {
+	protected function getArticleImages($feedItem)
+	{
 		$images = $this->getEnclosureImages($feedItem);
 		$imagesAreInvalid = empty($images) || (is_array($images) && count($images) == 1 && !$images[0]);
 
@@ -235,7 +239,8 @@ class UpdateFeedsWorker extends Worker
 		return $images;
 	}
 
-	protected function getArticlesMedias($feedItem) {
+	protected function getArticleMedias($feedItem)
+	{
 			$medias = [];
 			foreach($feedItem->get_enclosures() as $enclosure) {
 				if ($enclosure->get_link())//stackoverflow.com/questions/4053664/simplepie-includes-phantom-enclosures-that-dont-exist
@@ -256,7 +261,8 @@ class UpdateFeedsWorker extends Worker
 			}, $medias);
 	}
 
-	protected function getContentVideos($feedItem) {
+	protected function getContentVideos($feedItem)
+	{
 		$videos = [];
 		$dom = new \DOMDocument('1.0', 'UTF-8');
 		@$dom->loadHtml('<?xml encoding="UTF-8">' . $feedItem->get_content());
@@ -280,9 +286,8 @@ class UpdateFeedsWorker extends Worker
 		return $videos;	
 	}
 
-	protected function getContentImages($feedItem) {
-		//$content = str_get_html($feedItem->get_content());
-		//$links = $content->find('a[rel*=lightbox]');
+	protected function getContentImages($feedItem)
+	{
 		$dom = new \DOMDocument('1.0', 'UTF-8');
 		@$dom->loadHtml('<?xml encoding="UTF-8">' . $feedItem->get_content());
 		$xpath = new \DOMXPath($dom);
@@ -311,7 +316,8 @@ class UpdateFeedsWorker extends Worker
 		return $images;
 	}
 
-	protected function getEnclosureImages($feedItem) {
+	protected function getEnclosureImages($feedItem)
+	{
 		$images = array();
 		$enclosures = $feedItem->get_enclosures();
 		if(is_null($enclosures)) return $images;
@@ -325,7 +331,8 @@ class UpdateFeedsWorker extends Worker
 		return $images;
 	}
 
-	protected function filterGuid($guid) {
+	protected function filterGuid($guid)
+	{
 		$guid = preg_replace('%;jsessionid=[\w\d]+%', '', $guid);
 
 		if(preg_match('%rj\.gov\.br%', $guid)) {
@@ -335,7 +342,8 @@ class UpdateFeedsWorker extends Worker
 		return $guid;
 	}
 
-	protected function getImageUrl($url, $articleUrl) {
+	protected function getImageUrl($url, $articleUrl)
+	{
 		if(Mapper::isRoot($url)) {
 			$domain = parse_url($articleUrl, PHP_URL_HOST);
 			$url = 'http://' . $domain . $url;
@@ -347,7 +355,8 @@ class UpdateFeedsWorker extends Worker
 		return $url;
 	}
 
-	protected function isBlackListed($link) {
+	protected function isBlackListed($link)
+	{
 		foreach($this->blacklist as $i) {
 			$pattern = preg_quote($i);
 			if(preg_match('%' . $pattern . '%', $link)) {
@@ -358,7 +367,7 @@ class UpdateFeedsWorker extends Worker
 		return false;
 	}
 
-	protected function cleanup()
+	protected function removeOldArticles()
 	{
 		$conditions = array(
 			'site_id' => $this->extension->site_id,
