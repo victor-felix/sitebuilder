@@ -30,7 +30,9 @@ class UpdateFeedsWorker extends Worker
 	protected $extension;
 	protected $blacklist = ['gravatar.com'];
 	protected $stats = [
-	
+		'total_feeds' => 0,
+		'failed_feeds'=> [],	
+		'extensions' => []
 	]; 
 
 	public function perform()
@@ -38,26 +40,28 @@ class UpdateFeedsWorker extends Worker
 		$this->logger()->info('updating feeds', [
 			'priority' => $this->getPriority()
 		]);
-
 		$ids = $this->getExtensionsIds();
 		array_walk($ids, [$this, 'updateFromFeed']);
+		$this->stats['priority'] = $this->getPriority();
+		$this->logger()->debug('updated feeds extensions', $this->stats['extensions']);
+		unset($this->stats['extensions']);
 		$this->logger()->info('finished updating feeds', $this->stats);
-
-		exit('oiiiii');
 	}
 
 	protected function updateFromFeed($extensionId)
 	{
-		$this->stats[$extensionId] = [
+		$this->stats['extensions'][$extensionId] = [
+			'extension_id' => $extensionId,
 			'total_articles' => 0,
 			'total_removed_articles' => 0,
 			'total_images' => 0,
-			'failed_images' => 0,
+			'total_failed_images' => 0,
 		];
 
 		try {
 			$this->extension = $this->getExtension($extensionId);
 			$this->category = $this->getCategory($this->extension);
+			$this->stats['extensions'][$extensionId]['category_id'] = $this->category->id();
 			$feed = $this->getFeed();
 			$this->updateArticles($feed);
 			$this->removeOldArticles();
@@ -67,8 +71,9 @@ class UpdateFeedsWorker extends Worker
 
 			$this->extension->priority = self::PRIORITY_LOW;
 			$this->extension->save();
+			$this->stats['total_feeds'] += 1;
 		} catch (\Exception $e) {
-			$this->stats['failed_extensions'][] = [$extensionId => $e->getMessage()];
+			$this->stats['failed_feeds'][] = [$extensionId => $e->getMessage()];
 			echo $e->getTraceAsString();	
 		}
 	}
@@ -118,7 +123,7 @@ class UpdateFeedsWorker extends Worker
 	protected function updateArticle($item, $feedItem)
 	{
 		$images = $this->getArticleImages($feedItem);
-
+		$extensionId = (string) $this->extension->_id;
 		//remove captions from description
 		$remove = array();
 		foreach ($images as $img) {
@@ -145,7 +150,7 @@ class UpdateFeedsWorker extends Worker
 
 		$item->set($data);
 		$item->save();
-		$this->stats['extensions'][$this->extension->_id]['total_articles'] += 1;
+		$this->stats['extensions'][$extensionId]['total_articles'] += 1;
 		
 		foreach ($images as $image) {
 			$imageAlt = '';
@@ -161,9 +166,9 @@ class UpdateFeedsWorker extends Worker
 			));
 
 			if ($result) {
-				$this->stats['extensions'][$this->extension->_id]['total_images'] += 1;
+				$this->stats['extensions'][$extensionId]['total_images'] += 1;
 			} else {
-				$$this->stats['extensions'][$this->extension->_id]['failed_images'] += 1;
+				$$this->stats['extensions'][$extensionId]['failed_images'] += 1;
 			}
 		}
 	}
@@ -186,7 +191,7 @@ class UpdateFeedsWorker extends Worker
 
 			if ($ids) {
 				Articles::remove(array('_id' => $ids));
-				$this->stats['extensions'][$this->extension->_id]['removed_articles'] = count($ids);
+				$this->stats['extensions'][(string)$this->extension->_id]['removed_articles'] = count($ids);
 			}
 		}
 	}
@@ -404,6 +409,9 @@ class UpdateFeedsWorker extends Worker
 		array_splice($strip_htmltags, array_search('iframe', $strip_htmltags), 1);
 		$feed->strip_htmltags($strip_htmltags);
 		$feed->init();
+		if ($feed->error()) {
+			throw new \Exception($feed->error());
+		}
 		return $feed;
 	}
 
