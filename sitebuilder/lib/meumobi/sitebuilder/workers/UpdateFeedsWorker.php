@@ -30,10 +30,8 @@ class UpdateFeedsWorker extends Worker
 	protected $extension;
 	protected $blacklist = ['gravatar.com'];
 	protected $stats = [
-		'total_articles' => 0,
-		'total_images' => 0,
-		'failed_images' => 0,
-	];
+	
+	]; 
 
 	public function perform()
 	{
@@ -50,6 +48,13 @@ class UpdateFeedsWorker extends Worker
 
 	protected function updateFromFeed($extensionId)
 	{
+		$this->stats[$extensionId] = [
+			'total_articles' => 0,
+			'total_removed_articles' => 0,
+			'total_images' => 0,
+			'failed_images' => 0,
+		];
+
 		try {
 			$this->extension = $this->getExtension($extensionId);
 			$this->category = $this->getCategory($this->extension);
@@ -63,6 +68,7 @@ class UpdateFeedsWorker extends Worker
 			$this->extension->priority = self::PRIORITY_LOW;
 			$this->extension->save();
 		} catch (\Exception $e) {
+			$this->stats['failed_extensions'][] = [$extensionId => $e->getMessage()];
 			echo $e->getTraceAsString();	
 		}
 	}
@@ -87,15 +93,10 @@ class UpdateFeedsWorker extends Worker
 
 	protected function updateArticles($feed)
 	{
-		try {
-			$feedItems =  array_reverse($feed->get_items());
-			foreach ($feedItems as $feedItem) {
-				$item = $this->getItem($feedItem);
-				$this->updateArticle($item, $feedItem);
-				$this->stats['total_articles'] += 1;
-			}
-		} catch(Exception $e) {
-			// do nothing if the feed fails for any reason
+		$feedItems =  array_reverse($feed->get_items());
+		foreach ($feedItems as $feedItem) {
+			$item = $this->getItem($feedItem);
+			$this->updateArticle($item, $feedItem);
 		}
 	}
 
@@ -144,7 +145,8 @@ class UpdateFeedsWorker extends Worker
 
 		$item->set($data);
 		$item->save();
-
+		$this->stats['extensions'][$this->extension->_id]['total_articles'] += 1;
+		
 		foreach ($images as $image) {
 			$imageAlt = '';
 			if (is_array($image)) {
@@ -159,19 +161,34 @@ class UpdateFeedsWorker extends Worker
 			));
 
 			if ($result) {
-				$this->stats['total_images'] += 1;
+				$this->stats['extensions'][$this->extension->_id]['total_images'] += 1;
 			} else {
-				$$this->stats['failed_images'] += 1;
+				$$this->stats['extensions'][$this->extension->_id]['failed_images'] += 1;
 			}
 		}
 	}
 
-	protected function getPurifier()
+	protected function removeOldArticles()
 	{
-		$config = HTMLPurifier_Config::createDefault();
-		$config->set('Cache.SerializerPath', Filesystem::path(APP_ROOT . '/tmp/cache/html_purifier'));
-		$config->set('HTML.Allowed', 'b,i,br,p,strong');
-		return new HTMLPurifier($config);
+		$conditions = array(
+			'site_id' => $this->extension->site_id,
+			'parent_id' => $this->extension->category_id
+		);
+
+		$count = Articles::find('count', array('conditions' => $conditions));
+
+		if ($count > self::ARTICLES_TO_KEEP) {
+			$ids = array_keys(Articles::find('list', array(
+				'conditions' => $conditions,
+				'limit' => $count - self::ARTICLES_TO_KEEP,
+				'order' => array('pubdate' => 'ASC')
+			)));
+
+			if ($ids) {
+				Articles::remove(array('_id' => $ids));
+				$this->stats['extensions'][$this->extension->_id]['removed_articles'] = count($ids);
+			}
+		}
 	}
 
 	protected function cleanupHtml($feedItem, $strToRemove = false, $purify = true)
@@ -355,6 +372,17 @@ class UpdateFeedsWorker extends Worker
 		return $url;
 	}
 
+	protected function getPurifier()
+	{
+		$config = HTMLPurifier_Config::createDefault();
+		$path = Filesystem::path(APP_ROOT . '/tmp/cache/html_purifier');
+		if (!file_exists($path))
+			mkdir($path, 0777, true);
+		$config->set('Cache.SerializerPath', $path);
+		$config->set('HTML.Allowed', 'b,i,br,p,strong');
+		return new HTMLPurifier($config);
+	}
+
 	protected function isBlackListed($link)
 	{
 		foreach($this->blacklist as $i) {
@@ -365,29 +393,6 @@ class UpdateFeedsWorker extends Worker
 		}
 
 		return false;
-	}
-
-	protected function removeOldArticles()
-	{
-		$conditions = array(
-			'site_id' => $this->extension->site_id,
-			'parent_id' => $this->extension->category_id
-		);
-
-		$count = Articles::find('count', array('conditions' => $conditions));
-
-		if ($count > self::ARTICLES_TO_KEEP) {
-			$ids = array_keys(Articles::find('list', array(
-				'conditions' => $conditions,
-				'limit' => $count - self::ARTICLES_TO_KEEP,
-				'order' => array('pubdate' => 'ASC')
-			)));
-
-			if ($ids) {
-				Articles::remove(array('_id' => $ids));
-				$this->stats['removed_articles'] = count($ids);
-			}
-		}
 	}
 
 	protected function getFeed()
