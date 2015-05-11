@@ -2,10 +2,10 @@
 	Olá,
 	<br />
 	<br />
-	Você foi convidado para testar o Aplicativo Infobox de Comunicação Interna da Siemens. Por meio dele, divulgaremos notícias importantes sobre a empresa, de forma fácil, privada e segura.
+Gostaríamos de convidá-lo para efetuar o download em seu celular do aplicativo InfoBox, a nova ferramenta de Comunicação Interna da Siemens no Brasil. Por meio dele, divulgaremos notícias e comunicados importantes sobre a empresa, de forma fácil, privada e segura. 	
 	<br />
 	<br /> 
-	O App Infobox é compatível com smartphones Android e iOS. Através do celular, abra este email e click no link a seguir para iniciar a instalação: <a href="https://build.phonegap.com/apps/843971/install">https://build.phonegap.com/apps/843971/install</a>
+	O App InfoBox é compatível com smartphones Android e iOS. Pelo seu celular corporativo, abra este email e clique no link a seguir para iniciar a instalação: <a href="http://bit.ly/1H3la5k">http://bit.ly/1H3la5k</a>
 	<br />
 	<br />
 	Se preferir, faça o download usando o QR code seguinte:
@@ -13,7 +13,10 @@
 	<img class="qr-code" src="https://chart.googleapis.com/chart?chs=116x116&amp;cht=qr&amp;chl=https://build.phonegap.com/apps/843971/install/z7yxG25z65W7pzxAve5E&amp;chld=L|1&amp;choe=UTF-8">
 	<br />
 	<br />
-	Se encontrar dificuldades para instalar InfoBox Segue o passo a passo seguinte: 
+Mas atenção: o InfoBox é um aplicativo de uso restrito aos celulares corporativos da Siemens no Brasil, não sendo permitida sua instalação em dispositivos particulares.
+<br/>
+<br/>	
+Caso encontre dificuldades em instalar o InfoBox, você poderá acompanhar o tutorial com o  passo a passo. Clique aqui e acesse. 
 	<ul>
 		<li>
 			<?= $this->html->link('Como instalar InfoBox no iOS', Mapper::url('/docs/Como_Instalar_InfoBox-iOS.pdf', true)) ?>

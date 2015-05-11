@@ -1,10 +1,9 @@
 <br />
 <br />
-Qualquer dúvida, entre em contato com a equipe de comunicação interna: onlinecommunications.br@siemens.com
+Para mais informações, entre em contato conosco: onlinecommunications.br@siemens.com
 <br />
 <br />
-Att,
+Atenciosamente,
 <br />
 <br />
-Siemens Ltda.<br />
-Communications and Government Affairs
+Equipe de Comunicação da Siemens
