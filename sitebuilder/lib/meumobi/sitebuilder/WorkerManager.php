@@ -3,22 +3,27 @@
 namespace meumobi\sitebuilder;
 
 use meumobi\sitebuilder\Logger;
+use meumobi\sitebuilder\workers\Worker;
 use app\models\Jobs;
 
 class WorkerManager
 {
-	public static function enqueue($type, $params)
+	public static function enqueue($type, $params, $priority = Worker::PRIORITY_LOW)
 	{
 		$job = Jobs::create([
 			'type' => $type,
+			'priority' => $priority,
 			'params' => $params
 		]);
 		return $job->save();
 	}
 
-	public static function isEnqueued($type, $params)
+	public static function isEnqueued($type, $params, $priority = Worker::PRIORITY_LOW)
 	{
-		$conditions = ['type' => $type];
+		$conditions = [
+			'type' => $type,
+			'priority' => $priority
+		];
 		foreach ($params as $param => $value) {
 			$conditions["params.$param"] = $value;	
 		}
@@ -50,9 +55,11 @@ class WorkerManager
 		}
 	}
 
-	public static function getNextJobWorker()
+	public static function getNextJobWorker($priority = Worker::PRIORITY_LOW)
 	{
-		$job = Jobs::first(['order' => 'modified']);
+		$job = Jobs::first([
+			'order' => 'modified'
+		]);
 		if ($job) {
 			$workerClass = 'meumobi\sitebuilder\workers\\' . \Inflector::camelize($job->type) . 'Worker';
 			return new $workerClass(['job' => $job, 'logger' => self::logger()]);

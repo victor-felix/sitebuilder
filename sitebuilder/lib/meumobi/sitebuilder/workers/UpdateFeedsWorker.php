@@ -28,6 +28,7 @@ class UpdateFeedsWorker extends Worker
 
 	protected $category;
 	protected $extension;
+	protected $priority = Worker::PRIORITY_LOW;
 	protected $blacklist = ['gravatar.com'];
 	protected $stats = [
 		'total_feeds' => 0,
@@ -43,9 +44,14 @@ class UpdateFeedsWorker extends Worker
 		$ids = $this->getExtensionsIds();
 		array_walk($ids, [$this, 'updateFromFeed']);
 		$this->stats['priority'] = $this->getPriority();
-		$this->logger()->debug('updated feeds extensions', $this->stats['extensions']);
+		$this->logger()->debug('updated feeds', $this->stats['extensions']);
 		unset($this->stats['extensions']);
 		$this->logger()->info('finished updating feeds', $this->stats);
+	}
+
+	protected function getPriority()
+	{
+		return $this->priority;
 	}
 
 	protected function updateFromFeed($extensionId)
@@ -53,7 +59,9 @@ class UpdateFeedsWorker extends Worker
 		$this->stats['extensions'][$extensionId] = [
 			'extension_id' => $extensionId,
 			'total_articles' => 0,
-			'total_removed_articles' => 0,
+			'updated_articles' => 0,
+			'created_articles' => 0,
+			'removed_articles' => 0,
 			'total_images' => 0,
 			'total_failed_images' => 0,
 		];
@@ -70,7 +78,7 @@ class UpdateFeedsWorker extends Worker
 			$this->category->save();
 
 			$this->extension->priority = self::PRIORITY_LOW;
-			$this->extension->save();
+			$this->extension->save(null, ['callbacks' => false]);
 			$this->stats['total_feeds'] += 1;
 		} catch (\Exception $e) {
 			$this->stats['failed_feeds'][] = [$extensionId => $e->getMessage()];
@@ -83,6 +91,24 @@ class UpdateFeedsWorker extends Worker
 		return $extension = Rss::find('first', array('conditions' => array(
 			'_id' => $id,
 		)));
+	}
+
+	protected function getExtensionsIds()
+	{
+		$extensions = Rss::find('all', [
+			'conditions' => [
+				'extension' => 'rss',
+				'enabled' => 1,
+				'priority' => $this->getPriority()
+			],
+			'fields' => [
+				'_id',
+			]
+		])->to('array');
+
+		return array_map(function($row) {
+			return $row['_id'];
+		}, $extensions); 	
 	}
 
 	protected function getCategory($extension)
@@ -116,6 +142,9 @@ class UpdateFeedsWorker extends Worker
 		]);
 		if (!$item)	{
 			$item = $classname::create();
+			$this->stats['extensions'][(string)$this->extension->_id]['created_articles'] += 1;
+		} else {
+			$this->stats['extensions'][(string)$this->extension->_id]['updated_articles'] += 1;
 		}
 		return $item;
 	}
@@ -413,29 +442,6 @@ class UpdateFeedsWorker extends Worker
 			throw new \Exception($feed->error());
 		}
 		return $feed;
-	}
-
-	protected function getExtensionsIds()
-	{
-		$extensions = Rss::find('all', [
-			'conditions' => [
-				'extension' => 'rss',
-				'enabled' => 1,
-				'priority' => $this->getPriority()
-			],
-			'fields' => [
-				'_id',
-			]
-		])->to('array');
-
-		return array_map(function($row) {
-			return $row['_id'];
-		}, $extensions); 	
-	}
-
-	protected function getPriority()
-	{
-		return $this->job()->params['priority'];
 	}
 }
 
