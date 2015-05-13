@@ -11,6 +11,7 @@ class PublishAllItems
 		$command = '
 			return db.items.find().forEach(function(item) {
 				item.published = item.created;
+				item.is_published = true;
 				db.items.save(item);
 			});
 		';
