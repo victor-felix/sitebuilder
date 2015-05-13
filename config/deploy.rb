@@ -32,6 +32,9 @@ set :git_strategy, Capistrano::Git::SubmoduleStrategy
 set :linked_dirs, %w{uploads log tmp}
 set :file_permissions_paths, %w{uploads log tmp} #tmp/cache/yaml tmp/cache/html_purifier}
 
+# Allows deploy to a specific branch
+set :branch, ENV['branch'] || 'master'
+
 #Sitebuilder services lock files
 set :services_paths, [
   'tmp/update_feeds_low.pid',
