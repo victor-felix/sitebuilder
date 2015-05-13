@@ -33,12 +33,13 @@ class UpdateFeedsWorker extends Worker
 	protected $stats = [
 		'total_updated_feeds' => 0,
 		'total_failed_feeds' => 0,
-		'failed_feeds'=> [],	
+		'failed_feeds'=> [],
 		'extensions' => []
 	]; 
 
 	public function perform()
 	{
+		$start = microtime(true);
 		$this->logger()->info('updating feeds', [
 			'priority' => $this->getPriority()
 		]);
@@ -48,6 +49,7 @@ class UpdateFeedsWorker extends Worker
 		if($this->stats['extensions'])
 			$this->logger()->debug('updated feeds', $this->stats['extensions']);
 		unset($this->stats['extensions']);
+		$this->stats['elapsed_time'] = microtime(true) - $start;
 		$this->logger()->info('finished updating feeds', $this->stats);
 	}
 
