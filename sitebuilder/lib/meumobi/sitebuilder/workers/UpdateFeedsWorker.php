@@ -31,7 +31,8 @@ class UpdateFeedsWorker extends Worker
 	protected $priority = Worker::PRIORITY_LOW;
 	protected $blacklist = ['gravatar.com'];
 	protected $stats = [
-		'total_feeds' => 0,
+		'total_updated_feeds' => 0,
+		'total_failed_feeds' => 0,
 		'failed_feeds'=> [],	
 		'extensions' => []
 	]; 
@@ -63,7 +64,7 @@ class UpdateFeedsWorker extends Worker
 			'created_articles' => 0,
 			'removed_articles' => 0,
 			'total_images' => 0,
-			'total_failed_images' => 0,
+			'failed_images' => 0,
 		];
 
 		try {
@@ -79,10 +80,14 @@ class UpdateFeedsWorker extends Worker
 
 			$this->extension->priority = self::PRIORITY_LOW;
 			$this->extension->save(null, ['callbacks' => false]);
-			$this->stats['total_feeds'] += 1;
+			$this->stats['total_updated_feeds'] += 1;
 		} catch (\Exception $e) {
-			$this->stats['failed_feeds'][] = [$extensionId => $e->getMessage()];
-			echo $e->getTraceAsString();	
+			unset($this->stats['extensions'][$extensionId]);
+			$this->stats['total_failed_feeds'] += 1;
+			$this->stats['failed_feeds'][] = [
+				'extension_id' => $extensionId,
+				'error' => $e->getMessage(),
+			];
 		}
 	}
 
@@ -188,7 +193,7 @@ class UpdateFeedsWorker extends Worker
 				$image = $image['src'];
 			}
 			$image = $this->getImageUrl($image, $item['guid']);
-			$result = Model::load('Images')->download($item, $image, array(
+			$result = \Model::load('Images')->download($item, $image, array(
 				'url' => $image,
 				'title' => $imageAlt,
 				'visible' => 1
@@ -197,7 +202,7 @@ class UpdateFeedsWorker extends Worker
 			if ($result) {
 				$this->stats['extensions'][$extensionId]['total_images'] += 1;
 			} else {
-				$$this->stats['extensions'][$extensionId]['failed_images'] += 1;
+				$this->stats['extensions'][$extensionId]['failed_images'] += 1;
 			}
 		}
 	}

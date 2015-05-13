@@ -6,9 +6,6 @@ use app\models\Extensions;
 
 class Rss extends Extensions
 {
-	const PRIORITY_HIGH = 2;
-	const PRIORITY_LOW = 0;
-
 	protected $specification = array(
 		'title' => 'News feed - RSS',
 		'description' => 'Import content automatically from a news feed',

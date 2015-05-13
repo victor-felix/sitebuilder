@@ -3,6 +3,7 @@ namespace app\models;
 
 use Model;
 use Inflector;
+use meumobi\sitebuilder\workers\Worker;
 
 class Extensions extends Modules
 {
@@ -128,7 +129,7 @@ class Extensions extends Modules
 
 	public static function enable($extension)
 	{
-		$extension->priority = static ::PRIORITY_HIGH;
+		$extension->priority = Worker::PRIORITY_HIGH;
 		$category = static::category($extension);
 		$category->populate = 'auto';
 		$category->save();
