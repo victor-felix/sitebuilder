@@ -45,7 +45,8 @@ class UpdateFeedsWorker extends Worker
 		$ids = $this->getExtensionsIds();
 		array_walk($ids, [$this, 'updateFromFeed']);
 		$this->stats['priority'] = $this->getPriority();
-		$this->logger()->debug('updated feeds', $this->stats['extensions']);
+		if($this->stats['extensions'])
+			$this->logger()->debug('updated feeds', $this->stats['extensions']);
 		unset($this->stats['extensions']);
 		$this->logger()->info('finished updating feeds', $this->stats);
 	}
