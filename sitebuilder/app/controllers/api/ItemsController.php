@@ -207,7 +207,7 @@ class ItemsController extends ApiController {
 
 		return $this->paginate($params, $url, $url_params, function($items, $item) {
 			$classname = '\app\models\items\\' . Inflector::camelize($item['type']);
-			$items[$item['type']] []= $classname::create($item)->toJSON();
+			$items[$item['type']] []= $classname::create($item)->toJSON($this->visitor());
 			return $items;
 		});
 	}
@@ -221,7 +221,7 @@ class ItemsController extends ApiController {
 			'site_id' => $this->site()->id
 		)));
 
-		return $item->toJSON();
+		return $item->toJSON($this->visitor());
 	}
 
 	public function latest()
@@ -294,7 +294,7 @@ class ItemsController extends ApiController {
 			}
 
 			$this->response->status(201);
-			return $item->toJSON();
+			return $item->toJSON($this->visitor());
 		} else {
 			$this->response->status(422);
 		}
@@ -317,7 +317,7 @@ class ItemsController extends ApiController {
 
 		if ($item->save()) {
 			$this->response->status(200);
-			return $item->toJSON();
+			return $item->toJSON($this->visitor());
 		} else {
 			$this->response->status(422);
 		}
@@ -393,7 +393,7 @@ class ItemsController extends ApiController {
 			return array_map(function($item) {
 				$classname = '\app\models\items\\' .
 					Inflector::camelize($item['type']);
-				return $classname::create($item)->toJSON();
+				return $classname::create($item)->toJSON($this->visitor());
 			}, $items);
 		}
 	}

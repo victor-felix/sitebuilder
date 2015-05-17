@@ -122,7 +122,7 @@ class Items extends \lithium\data\Model {
 		return in_array($attr, $this->setters);
 	}
 
-	public function toJSON($entity) {
+	public function toJSON($entity, $visitor) {
 		$self = $entity->to('array');
 
 		foreach ($this->fields as $code => $field) {
@@ -139,8 +139,14 @@ class Items extends \lithium\data\Model {
 				$self[$code] = '<p>' . $parser->parse() . '</p>';
 			}
 		}
-		unset($self['groups']);
-		$self['images'] = array();
+
+		if ($visitor) {
+			$self['groups'] = array_intersect($self['groups'], $visitor->groups());
+		} else {
+			unset($self['groups']);
+		}
+
+		$self['images'] = [];
 		$images = $this->images($entity);
 		foreach($images as $image) {
 			$self['images'] []= $image->toJSON();
