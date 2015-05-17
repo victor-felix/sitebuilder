@@ -35,20 +35,21 @@ class UpdateFeedsWorker extends Worker
 		'total_failed_feeds' => 0,
 		'failed_feeds'=> [],
 		'extensions' => []
-	]; 
+	];
 
 	public function perform()
 	{
 		$start = microtime(true);
-		$this->logger()->info('updating feeds', [
-			'priority' => $this->getPriority()
-		]);
-		$ids = $this->getExtensionsIds();
-		array_walk($ids, [$this, 'updateFromFeed']);
-		$this->stats['priority'] = $this->getPriority();
-		if($this->stats['extensions'])
+		$this->logger()->info('updating feeds', [ 'priority' => $this->priority ]);
+
+		array_walk($this->getExtensionsIds(), [$this, 'updateFromFeed']);
+
+		if($this->stats['extensions']) {
 			$this->logger()->debug('updated feeds', $this->stats['extensions']);
+		}
+
 		unset($this->stats['extensions']);
+		$this->stats['priority'] = $this->getPriority();
 		$this->stats['elapsed_time'] = microtime(true) - $start;
 		$this->logger()->info('finished updating feeds', $this->stats);
 	}
@@ -74,6 +75,7 @@ class UpdateFeedsWorker extends Worker
 			$this->extension = $this->getExtension($extensionId);
 			$this->category = $this->getCategory($this->extension);
 			$this->stats['extensions'][$extensionId]['category_id'] = $this->category->id();
+
 			$feed = $this->getFeed();
 			$this->updateArticles($feed);
 			$this->removeOldArticles();
@@ -116,7 +118,7 @@ class UpdateFeedsWorker extends Worker
 
 		return array_map(function($row) {
 			return $row['_id'];
-		}, $extensions); 	
+		}, $extensions);
 	}
 
 	protected function getCategory($extension)
@@ -132,7 +134,15 @@ class UpdateFeedsWorker extends Worker
 
 	protected function updateArticles($feed)
 	{
-		$feedItems =  array_reverse($feed->get_items());
+		$feedItems = $feed->get_items();
+
+		# sorts the items with most recent first
+		usort($feedItems, function($a, $b) {
+			return $a->get_date('U') < $b->get_date('U') ? 1 : -1;
+		});
+
+		$feedItems = array_slice($feedItems, 0, self::ARTICLES_TO_KEEP);
+
 		foreach ($feedItems as $feedItem) {
 			$item = $this->getItem($feedItem);
 			$this->updateArticle($item, $feedItem);
@@ -148,12 +158,14 @@ class UpdateFeedsWorker extends Worker
 				'guid' => $feedItem->get_id()
 			]
 		]);
-		if (!$item)	{
+
+		if (!$item) {
 			$item = $classname::create();
-			$this->stats['extensions'][(string)$this->extension->_id]['created_articles'] += 1;
+			$this->stats['extensions'][(string) $this->extension->_id]['created_articles'] += 1;
 		} else {
-			$this->stats['extensions'][(string)$this->extension->_id]['updated_articles'] += 1;
+			$this->stats['extensions'][(string) $this->extension->_id]['updated_articles'] += 1;
 		}
+
 		return $item;
 	}
 
@@ -188,7 +200,7 @@ class UpdateFeedsWorker extends Worker
 		$item->set($data);
 		$item->save();
 		$this->stats['extensions'][$extensionId]['total_articles'] += 1;
-		
+
 		foreach ($images as $image) {
 			$imageAlt = '';
 			if (is_array($image)) {
@@ -326,8 +338,8 @@ class UpdateFeedsWorker extends Worker
 		$dom = new \DOMDocument('1.0', 'UTF-8');
 		@$dom->loadHtml('<?xml encoding="UTF-8">' . $feedItem->get_content());
 		$xpath = new \DOMXPath($dom);
-		$nodes = $xpath->query('//iframe[contains(@src,"youtube") 
-			or contains(@src,"dailymotion") 
+		$nodes = $xpath->query('//iframe[contains(@src,"youtube")
+			or contains(@src,"dailymotion")
 			or contains(@src,"canalplus")
 			or contains(@src,"gfycat")
 			or contains(@src,"vimeo")]');
@@ -339,10 +351,10 @@ class UpdateFeedsWorker extends Worker
 					'title' => '',
 					'thumbnails' => [],
 					'length' => null,
-					];	
+					];
 			}
 		}
-		return $videos;	
+		return $videos;
 	}
 
 	protected function getContentImages($feedItem)
@@ -365,8 +377,8 @@ class UpdateFeedsWorker extends Worker
 		$nodes = $xpath->query('//img[contains(@src, "wp-content/uploads")]|//img[contains(@src, "/photos/")] ');
 		if ($nodes->length) {
 			foreach ($nodes as $img) {
-				$images []= array( 
-					'src' => $img->getAttribute('src'),  
+				$images []= array(
+					'src' => $img->getAttribute('src'),
 					'alt' => $img->getAttribute('alt')
 				);
 			}
