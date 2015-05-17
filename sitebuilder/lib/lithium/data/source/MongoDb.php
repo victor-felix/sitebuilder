@@ -499,7 +499,7 @@ class MongoDb extends \lithium\data\Source {
 	 * @filter
 	 */
 	public function update($query, array $options = array()) {
-		$defaults = array('upsert' => false, 'multiple' => true, 'safe' => false, 'fsync' => false);
+		$defaults = array('upsert' => false, 'multiple' => true, '2' => 1, 'fsync' => false);
 		$options += $defaults;
 		$this->_checkConnection();
 
@@ -544,7 +544,7 @@ class MongoDb extends \lithium\data\Source {
 	 */
 	public function delete($query, array $options = array()) {
 		$this->_checkConnection();
-		$defaults = array('justOne' => false, 'safe' => false, 'fsync' => false);
+		$defaults = array('justOne' => false, 'w' => 1, 'fsync' => false);
 		$options = array_intersect_key($options + $defaults, $defaults);
 
 		return $this->_filter(__METHOD__, compact('query', 'options'), function($self, $params) {
