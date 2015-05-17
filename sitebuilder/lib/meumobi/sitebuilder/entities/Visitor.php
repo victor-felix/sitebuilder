@@ -41,6 +41,11 @@ class Visitor extends Entity
 		return $this->lastName;
 	}
 
+	public function fullName()
+	{
+		return join(' ', [ $this->firstName, $this->lastName ]);
+	}
+
 	public function setPassword($password, $shouldRenewPassword = false)
 	{
 		if (!empty($password)) {

@@ -673,6 +673,18 @@ Parameters:
 
 Deletes an image
 
+#### POST /visitors/forgot_password
+
+Sends a "forgot password" message.
+
+Parameters:
+
+- **email**
+
+Response status:
+- **success: 200**
+- **error: 404 (visitor not found)**
+
 #### POST /visitors/login
 
 Logs in a visitor without knowing the site it belongs to beforehand.

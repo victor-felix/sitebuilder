@@ -78,6 +78,15 @@ Router::connect(new Route(array(
 )));
 
 Router::connect(new Route(array(
+	'method' => 'POST',
+	'template' => '/api/visitors/forgot_password',
+	'params' => array(
+		'controller' => 'visitors',
+		'action' => 'forgot_password',
+	) + $defaults['params']
+)));
+
+Router::connect(new Route(array(
 	'method' => 'GET',
 	'template' => '/api/{:slug}/export/{:category_id}',
 	'params' => array(
