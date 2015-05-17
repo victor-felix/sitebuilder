@@ -239,6 +239,13 @@ class ItemsController extends ApiController {
 
 		if ($parent_id) {
 			$params['conditions']['parent_id'] = $parent_id;
+		} else {
+			$categories = Model::load('Categories')->allBySiteIdAndVisibility($this->site()->id, 1);
+			$category_ids = array_map(function($category) {
+				return $category->id;
+			}, $categories);
+
+			$params['conditions']['parent_id'] = [ '$in' => $category_ids ];
 		}
 
 		$url = "/api/{$this->site()->domain()}/items/latest";
