@@ -115,8 +115,21 @@ class VisitorsController extends ApiController
 
 		$repository = new VisitorsRepository();
 		$visitor = $this->visitor();
-		$device = $visitor->findDevice($this->request->get('params:device_id'));
-		$device->update($this->request->data);
+		$device_id = $this->request->get('params:device_id');
+		$device = $visitor->findDevice($device_id);
+
+		if ($device) {
+			$device->update($this->request->data);
+		} else {
+			$device = new VisitorDevice([
+				'uuid' => $device_id,
+				'pushId' => $this->request->get('data:push_id'),
+				'model' => $this->request->get('data:model'),
+				'app_version' => $this->request->get('data:app_version')
+			]);
+			$visitor->addDevice($device);
+		}
+
 		$repository->update($visitor);
 
 		return [ 'success' => true ];

@@ -726,22 +726,9 @@ Response status:
 - **success: 200**
 - **error: 401 (invalid auth token), 403 (invalid current password)**
 
-#### POST /{domain}/visitors/devices
-
-Add a device to the visitor if not already exists.
-
-Parameters:
-
-- **uuid**: device uuid
-- **push_id**: device push id
-- **model**: device model
-
-Headers:
-- **X-Visitor-Token**
-
 #### PUT /{domain}/visitors/devices/{uuid}
 
-Update a device of the visitor
+Update or creates a device for the visitor
 
 Parameters:
 

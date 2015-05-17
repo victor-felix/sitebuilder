@@ -69,15 +69,6 @@ Router::connect(new Route(array(
 )));
 
 Router::connect(new Route(array(
-	'method' => 'POST',
-	'template' => '/api/{:slug}/visitors/devices',
-	'params' => array(
-		'controller' => 'visitors',
-		'action' => 'add_device',
-	) + $defaults['params']
-)));
-
-Router::connect(new Route(array(
 	'method' => 'PUT',
 	'template' => '/api/{:slug}/visitors/devices/{:device_id}',
 	'params' => array(

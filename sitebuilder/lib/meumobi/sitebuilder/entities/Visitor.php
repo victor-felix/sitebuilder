@@ -106,15 +106,9 @@ class Visitor extends Entity
 	}
 
 	public function findDevice($uuid) {
-		$device = current(array_filter($this->devices, function($device) use($uuid) {
+		return current(array_filter($this->devices, function($device) use($uuid) {
 			return $device->uuid() == $uuid;
 		}));
-
-		if (!$device) {
-			throw new RecordNotFoundException("The device with uuid '{$uuid}' was not found"); 
-		}
-
-		return $device;
 	}
 
 	public function groups()
