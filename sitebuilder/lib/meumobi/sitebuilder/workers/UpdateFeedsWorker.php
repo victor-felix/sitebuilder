@@ -141,7 +141,7 @@ class UpdateFeedsWorker extends Worker
 			return $a->get_date('U') < $b->get_date('U') ? 1 : -1;
 		});
 
-		$feedItems = array_slice($feedItems, 0, self::ARTICLES_TO_KEEP);
+		$feedItems = array_reverse(array_slice($feedItems, 0, self::ARTICLES_TO_KEEP));
 
 		foreach ($feedItems as $feedItem) {
 			$item = $this->getItem($feedItem);
