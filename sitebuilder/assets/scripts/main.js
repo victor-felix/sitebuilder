@@ -483,7 +483,7 @@ $.extend($.easing, {
       var name = this.name.replace(/\[\d+\]/,"["+key+"]");// add key to field name
       this.name = name;
     });
-    fields.show().insertBefore(this);
+    fields.removeClass('hidden').insertBefore(this);
   });
 
   content.delegate('a[data-remove]', 'click', function (e) {
