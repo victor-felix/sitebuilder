@@ -232,9 +232,10 @@ class ItemsController extends ApiController {
 
 		$params = [
 			'conditions' => ['site_id' => $this->site()->id],
-			'order' => ['created' => 'DESC'],
+			'order' => ['published' => 'DESC'],
 			'limit' => $this->param('limit', self::PAGE_LIMIT),
-			'page' => $this->param('page', 1)
+			'page' => $this->param('page', 1),
+			'is_published' => true,
 		];
 
 		if ($parent_id) {
