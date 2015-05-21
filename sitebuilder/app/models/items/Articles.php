@@ -59,14 +59,6 @@ Articles::applyFilter('remove', function($self, $params, $chain) {
 });
 
 Articles::applyFilter('save', function($self, $params, $chain) {
-	$item = $params['entity'];
-	if ($item->pubdate) {
-		$item->created = $item->pubdate;
-	}
-	return $chain->next($self, $params, $chain);
-});
-
-Articles::applyFilter('save', function($self, $params, $chain) {
 	return Items::addTimestamps($self, $params, $chain);
 });
 

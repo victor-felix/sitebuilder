@@ -17,7 +17,6 @@ class SitesController extends ApiController
 	//TODO clean this action, use presenters to format json responses
 	public function performance()
 	{
-		sleep(5);
 		$site = $this->site()->toJSONPerformance();
 
 		$businessKeys = array('email', 'facebook', 'twitter', 'phone',
