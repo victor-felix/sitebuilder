@@ -114,7 +114,7 @@ class Sites extends AppModel
 				'parent_id' => $category->id
 			),
 			'limit' => 10,
-			'order' => array('pubdate' => 'DESC')
+			'order' => array('published' => 'DESC')
 		))->to('array');
 	}
 

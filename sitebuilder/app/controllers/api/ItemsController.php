@@ -340,7 +340,7 @@ class ItemsController extends ApiController {
 			return ['items' => []];
 
 		$params = [
-			'order' => ['pubdate' => 'DESC'],
+			'order' => ['published' => 'DESC'],
 			'conditions' => [
 				'site_id' => $this->site()->id,
 				'parent_id' => $category->id

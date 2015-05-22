@@ -9,7 +9,7 @@
             <title><?php echo Sanitize::html($item['title']) ?></title>
             <link><?php echo $item['link'] ?: 'http://meumobi.com' ?></link>
             <description><![CDATA[<?php echo $item['description'] ?>]]></description>
-            <pubDate><?php echo date(DATE_RSS, $item['pubdate']) ?></pubDate>
+            <pubDate><?php echo date(DATE_RSS, $item['published']) ?></pubDate>
             <guid><?php echo $item['guid'] ?: 'http://meumobi.com/' ?></guid>
         </item>
       <?php endforeach ?>

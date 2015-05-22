@@ -183,6 +183,7 @@ class UpdateFeedsWorker extends Worker
 
 		$author = $feedItem->get_author();
 		$medias = $this->getArticleMedias($feedItem);
+
 		$data = array(
 			'site_id' => $this->category->site_id,
 			'parent_id' => $this->category->id,
@@ -190,7 +191,7 @@ class UpdateFeedsWorker extends Worker
 			'link' => $feedItem->get_link(),
 			'title' => strip_tags($feedItem->get_title()),
 			'description' => $this->cleanupHtml($feedItem, $remove, $this->extension->use_html_purifier),
-			'pubdate' => gmdate('Y-m-d H:i:s', $feedItem->get_date('U')),
+			'published' => $feedItem->get_date('U') ? gmdate('Y-m-d H:i:s', $feedItem->get_date('U')) : null,
 			'author' => $author ? $author->get_name() : '',
 			'format' => 'html',
 			'type' => $this->category->type,

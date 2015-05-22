@@ -42,7 +42,6 @@ class Articles extends \app\models\Items
 		$self->_schema = $parent->_schema + array(
 			'guid' => array('type' => 'string', 'default' => ''),
 			'link' => array('type' => 'string', 'default' => ''),
-			'pubdate' => array('type' => 'date', 'default' => 0),
 			'description' => array('type' => 'string', 'default' => ''),
 			'author' => array('type' => 'string', 'default' => ''),
 			'medias' => array('type' => 'array', 'default' => array()),

@@ -49,7 +49,7 @@ class SitesController extends ApiController
 			$json['id'] = $article['_id'];
 			$json['created_at'] = date('Y-m-d H:i:s', $article['created']);
 			$json['updated_at'] = date('Y-m-d H:i:s', $article['modified']);
-			$json['published_at'] = date('Y-m-d H:i:s', $article['pubdate']);
+			$json['published_at'] = date('Y-m-d H:i:s', $article['published']);
 			$json['images'] = array_map(function($image) use ($imageKeys) {
 				return $image->toJSONPerformance();
 			}, \Model::load('Images')->allByRecord('Items', $article['_id']));
