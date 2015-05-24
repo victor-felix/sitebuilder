@@ -4,15 +4,16 @@ namespace app\controllers\api;
 
 require_once 'lib/mailer/Mailer.php';
 
+use I18n;
+use Mailer;
+use MeuMobi;
 use lithium\storage\Session;
 use meumobi\sitebuilder\entities\Visitor;
 use meumobi\sitebuilder\entities\VisitorDevice;
 use meumobi\sitebuilder\presenters\api\VisitorPresenter;
 use meumobi\sitebuilder\repositories\RecordNotFoundException;
 use meumobi\sitebuilder\repositories\VisitorsRepository;
-use MeuMobi;
-use Mailer;
-use I18n;
+use meumobi\sitebuilder\services\ResetVisitorPassword;
 
 class VisitorsController extends ApiController
 {
@@ -146,29 +147,11 @@ class VisitorsController extends ApiController
 		$email = $this->request->get('data:email');
 
 		$repository = new VisitorsRepository();
+		$service = new ResetVisitorPassword();
+
 		$visitor = $repository->findByEmail($email);
-		$site = \Model::load('Sites')->firstById($visitor->siteId());
 
-		$segment = MeuMobi::currentSegment();
-		I18n::locale($site->language);
-		$subject = s('api_mail_contact', $site->title);
-
-		$mailer = new Mailer(array(
-			'from' => $segment->email,
-			'to' => [$site->email => $site->title],
-			'subject' => 'Forgot Password',
-			'views' => ['text/html' => 'sites/contact_mail.htm'],
-			'layout' => 'mail',
-			'data' => [
-				'site' => $site,
-				'segment' => $segment,
-				'name' => $visitor->fullName(),
-				'mail' => $visitor->email(),
-				'phone' => '',
-				 'message' => 'I forgot my password!',
-			]
-		));
-		$mailer->send();
+		$service->resetPassword($visitor);
 
 		return [ 'success' => true ];
 	}

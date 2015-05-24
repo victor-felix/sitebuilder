@@ -1,10 +1,12 @@
 <?php
-use meumobi\sitebuilder\repositories\VisitorsRepository;
+
 use meumobi\sitebuilder\entities\Visitor;
-use meumobi\sitebuilder\presenters\VisitorGraphPresenter;
 use meumobi\sitebuilder\presenters\AudienceReportPresenter;
-use meumobi\sitebuilder\validators\VisitorsPersistenceValidator;
+use meumobi\sitebuilder\presenters\VisitorGraphPresenter;
+use meumobi\sitebuilder\repositories\VisitorsRepository;
+use meumobi\sitebuilder\services\ResetVisitorPassword;
 use meumobi\sitebuilder\services\VisitorPasswordGenerationService;
+use meumobi\sitebuilder\validators\VisitorsPersistenceValidator;
 
 class VisitorsController extends AppController
 {
@@ -92,15 +94,10 @@ class VisitorsController extends AppController
 	{
 		$site = $this->getCurrentSite();
 		$visitor = $this->repository->find($id);
-		$password = $this->setVisitorPassword($visitor, $site);//TODO allow default password on renew
-		$this->repository->update($visitor);
-		$data = [
-			'title' => s('[%s]: New password', $site->title),
-			'password' => $password,
-			'email' => $visitor->email(),
-			'visitor' => $visitor,
-		];
-		$this->sendVisitorEmail($data, 'visitors/forgot_password_mail.htm');
+
+		$service = new ResetVisitorPassword();
+		$service->resetPassword($visitor);
+
 		Session::writeFlash('success', s('Visitor password successfully renewed.'));
 		$this->redirect('/visitors');
 	}

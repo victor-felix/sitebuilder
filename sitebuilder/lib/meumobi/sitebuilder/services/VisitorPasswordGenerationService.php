@@ -1,5 +1,9 @@
 <?php
+
 namespace meumobi\sitebuilder\services;
+
+use Exception;
+use Security;
 
 class VisitorPasswordGenerationService
 {
@@ -8,25 +12,23 @@ class VisitorPasswordGenerationService
 
 	public function generate($visitor, $strategy, $site)
 	{
-		$password = null;
 		switch ($strategy) {
 			case self::RANDOM_PASSWORD:
-				$password = $this->randonPassword();
+				$password = $this->randomPassword();
 				$visitor->setPassword($password, true);
-				break;
+				return $password;
 			case self::DEFAULT_PASSWORD:
 				$password = $this->defaultPassword($site);
 				$visitor->setPassword($password, true);
-				break;
+				return $password;
 			default:
-				throw new \Exception('Invalid password strategy');
+				throw new Exception('invalid password strategy');
 		}
-		return $password;
 	}
 
-	protected function randonPassword()
+	protected function randomPassword()
 	{
-		return \Security::randomPassword();
+		return Security::randomPassword();
 	}
 
 	protected function defaultPassword($site)
