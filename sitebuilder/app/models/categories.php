@@ -2,7 +2,7 @@
 
 use meumobi\sitebuilder\services\ImportCsvService;
 use meumobi\sitebuilder\workers\Worker;
-
+use meumobi\sitebuilder\LOgger; 
 require_once 'lib/utils/FileUpload.php';
 require_once 'lib/mailer/Mailer.php';
 
@@ -286,6 +286,7 @@ class Categories extends AppModel
 	protected function updateParentTimestamps($created)
 	{
 		$date = date('Y-m-d H:i:s');
+		try {
 		$parent = $this->parent();
 
 		if ($parent) {
@@ -296,24 +297,30 @@ class Categories extends AppModel
 		$site = Model::load('Sites')->firstById($this->site_id);
 		$site->modified = $date;
 		$site->save();
+		} catch (Exception $e) {
+			Logger::logger()->error('Category update timestamp error: ' . $e->getMessage());
+		}
 	}
-
+	//TODO merge timestamp observers
 	protected function updateParentTimestampsWhenDeleted($id)
 	{
 		$self = $this->firstById($id);
 
 		$date = date('Y-m-d H:i:s');
-		$parent = $self->parent();
+		try {
+			$parent = $self->parent();
 
-		if ($parent) {
-			$parent->modified = $date;
-			$parent->save();
+			if ($parent) {
+				$parent->modified = $date;
+				$parent->save();
+			}
+
+			$site = Model::load('Sites')->firstById($self->site_id);
+			$site->updated = $date;
+			$site->save();
+		} catch (Exception $e) {
+			Logger::logger()->error('Category update timestamp error: ' . $e->getMessage());
 		}
-
-		$site = Model::load('Sites')->firstById($self->site_id);
-		$site->updated = $date;
-		$site->save();
-
 		return $id;
 	}
 
