@@ -8,7 +8,7 @@ $Sites = Model::load('Sites');
 
 foreach ($argv as $site_id) {
 	try {
-		$Sites->delete($site_id);
+		$Sites->firstById($site_id)->delete($site_id);
 	} catch (Exception $e) {
 		echo $e;
 	}
