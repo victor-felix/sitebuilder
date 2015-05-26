@@ -500,11 +500,12 @@ class Items extends \lithium\data\Model {
 	public static function sendPushNotification($self, $params, $chain)
 	{
 		$item = $params['entity'];
+		$category = $item->parent();
 		// only if new and category send notifications
-		if (!$item->id() && $item->is_published && $item->parent()->notification) {
+		if (!$item->id() && $item->is_published && $category->notification) {
 			$chain = $chain->next($self, $params, $chain); // save the item
 			if ($id = $item->id()) {
-				WorkerManager::enqueue('push_notification',  ['item_id' => $id]);
+				WorkerManager::enqueue('push_notification',  ['item_id' => $id, 'category_id' => $category->id]);
 			}
 			return $chain;
 		}
