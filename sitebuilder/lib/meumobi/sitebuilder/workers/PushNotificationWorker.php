@@ -16,29 +16,28 @@ class PushNotificationWorker extends Worker
 	{
 		$appId = $this->getSite()->pushwoosh_app_id;
 		$category = $this->getItem()->parent();
+		$logData = [
+			'item id' => (string)$this->getItem()->_id,
+			'category id' => $category->id,
+			'site id' => $this->getItem()->site_id,
+		];
 
 		if (!$appId) {
-			$this->logger()->error("Push notification error: no push app configured for site {$this->getSite()->id}");
+			$this->logger()->error("Push notification error: no push app configured for site", $logData);
 			return true; //has no app configured
 		}
 		if (!$category->notification) {
-			$this->logger()->error("Push notification error: push disabled on category: $category->id");
+			$this->logger()->error("Push notification error: push disabled on category", $logData);
 			return true;
 		}
 		$content = $this->getItem()->title;
 		$devices = $this->getDevicesTokens();
-		$this->logger()->info('Sending push notification', [
-			'item id' => (string)$this->getItem()->_id,
-			'category id' => $this->job()->params['category_id'],
-			'site id' => $this->getItem()->site_id,
+		$this->logger()->info('Sending push notification', $logData + [
 			'content' => $content,
 			'devices' => $devices,
 		]);
 		$response = Push::notify($appId, $content, $devices);
-		$this->logger()->info('Push notification sent successfully', [
-			'item id' => (string)$this->getItem()->_id,
-			'category id' => $this->job()->params['category_id'],
-			'site id' => $this->getItem()->site_id,
+		$this->logger()->info('Push notification sent successfully', $logData + [
 			'push response' => $response,
 		]);
 	}

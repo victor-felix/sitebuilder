@@ -22,7 +22,7 @@ class Push
 			];
 		} else {
 			//TODO use a specific Exception
-			throw new Exception("Error sending push notification,
+			throw new \Exception("Error sending push notification,
 			status code : {$response->getStatusCode()},
 			status message: {$response->getStatusMessage()}");
 		}
