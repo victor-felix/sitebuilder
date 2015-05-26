@@ -492,7 +492,8 @@ class Items extends \lithium\data\Model {
 
 	public function addMediaFileSize($entity)
 	{
-		if ($entity->id() && $entity->medias) {
+		$hasMedias = count($entity->medias->to('array'));
+		if ($entity->id() && $hasMedias) {
 			WorkerManager::enqueue('media_filesize',  ['item_id' => $entity->id()]);
 		}
 	}
