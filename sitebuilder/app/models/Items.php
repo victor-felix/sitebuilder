@@ -74,7 +74,6 @@ class Items extends \lithium\data\Model {
 	}
 
 	public function parent($entity) {
-		if ($this->parent) return $this->parent;
 		return $this->parent = Model::load('Categories')->firstById($entity->parent_id);
 	}
 
