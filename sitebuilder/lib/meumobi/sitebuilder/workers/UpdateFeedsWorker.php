@@ -145,7 +145,7 @@ class UpdateFeedsWorker extends Worker
 
 		foreach ($feedItems as $feedItem) {
 			$item = $this->getItem($feedItem);
-			$this->updateArticle($item, $feedItem);
+			if ($item) $this->updateArticle($item, $feedItem);
 		}
 	}
 
@@ -163,6 +163,9 @@ class UpdateFeedsWorker extends Worker
 			$item = $classname::create();
 			$this->stats['extensions'][(string) $this->extension->_id]['created_articles'] += 1;
 		} else {
+			// we are reverting #68 for the moment, so we don't need to update
+			// articles anymore. this will be reverted again soon.
+			return;
 			$this->stats['extensions'][(string) $this->extension->_id]['updated_articles'] += 1;
 		}
 
