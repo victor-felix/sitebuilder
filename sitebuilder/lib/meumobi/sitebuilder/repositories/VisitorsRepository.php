@@ -135,7 +135,10 @@ class VisitorsRepository extends Repository
 					'uuid' => $d->uuid(),
 					'push_id' => $d->pushId(),
 					'model' => $d->model(),
+					'platform' => $d->platform(),
+					'version' => $d->version(),
 					'app_version' => $d->appVersion(),
+					'app_build' => $d->appBuild(),
 				];
 			}, $object->devices()),
 			'groups' => $object->groups()

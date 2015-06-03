@@ -696,6 +696,10 @@ Parameters:
 - **device[uuid]**
 - **device[push_id]**
 - **device[model]**
+- **device[platform]**
+- **device[version]**
+- **device[app_version]**
+- **device[app_build]**
 
 Response:
 - **token**: X-Visitor-Token value
@@ -715,6 +719,10 @@ Parameters:
 - **device[uuid]**
 - **device[push_id]**
 - **device[model]**
+- **device[platform]**
+- **device[version]**
+- **device[app_version]**
+- **device[app_build]**
 
 Response:
 - **token**: X-Visitor-Token value
@@ -746,6 +754,10 @@ Parameters:
 
 - **push_id**: device push id
 - **model**: device model
+- **platform**: device platform
+- **version**: device platform version
+- **app_version**: app version
+- **app_build**: app build number
 
 Headers:
 - **X-Visitor-Token**
