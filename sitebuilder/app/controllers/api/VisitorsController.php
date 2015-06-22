@@ -14,6 +14,7 @@ use meumobi\sitebuilder\presenters\api\VisitorPresenter;
 use meumobi\sitebuilder\repositories\RecordNotFoundException;
 use meumobi\sitebuilder\repositories\VisitorsRepository;
 use meumobi\sitebuilder\services\ResetVisitorPassword;
+use meumobi\sitebuilder\services\CreateOrUpdateDevice;
 
 class VisitorsController extends ApiController
 {
@@ -35,28 +36,37 @@ class VisitorsController extends ApiController
 	{
 		$email = $this->request->get('data:email');
 		$password = $this->request->get('data:password');
+		$deviceData = $this->request->get('data:device');
 
 		$repository = new VisitorsRepository();
 		$siteId = $this->site() ? $this->site()->id : null;
 		$visitor = $repository->findForAuthentication($siteId, $email, $password);
 
 		if ($visitor) {
-			$deviceData = $this->request->get('data:device');
+			$response = [
+				'success' => true,
+				'errors' => []
+			];
+
 			if ($deviceData) {
-				$device = new VisitorDevice($deviceData);
-				$visitor->addDevice($device);
+				$service = new CreateOrUpdateDevice();
+				list($created, $errors) = $service->perform([
+					'data' => $deviceData,
+					'visitor' => $visitor
+				]);
+				$response['errors'] += $errors;
 			}
+
 			$visitor->setLastLogin(date('Y-m-d H:i:s'));
 			$repository->update($visitor);
 
-			$response = [
-				'success' => true,
+			$response += [
 				'token' => $visitor->authToken(),
 				'visitor' => VisitorPresenter::present($visitor),
 			];
 
 			if ($visitor->shouldRenewPassword()) {
-				$response['error'] = 'password expired';
+				$response['errors'][] = 'password expired';
 			}
 
 			return $response;
@@ -96,25 +106,6 @@ class VisitorsController extends ApiController
 		}
 	}
 
-	public function add_device()
-	{
-		$this->checkSite();
-		$this->requireVisitorAuth();
-
-		$repository = new VisitorsRepository();
-		$visitor = $this->visitor();
-		$device = new VisitorDevice([
-			'uuid' => $this->request->get('data:uuid'),
-			'pushId' => $this->request->get('data:push_id'),
-			'model' => $this->request->get('data:model'),
-			'app_version' => $this->request->get('data:app_version')
-		]);
-		$visitor->addDevice($device);
-		$repository->update($visitor);
-
-		return [ 'success' => true ];
-	}
-
 	public function update_device()
 	{
 		$this->checkSite();
@@ -122,20 +113,15 @@ class VisitorsController extends ApiController
 
 		$repository = new VisitorsRepository();
 		$visitor = $this->visitor();
-		$device_id = $this->request->get('params:device_id');
-		$device = $visitor->findDevice($device_id);
 
-		if ($device) {
-			$device->update($this->request->data);
-		} else {
-			$device = new VisitorDevice([
-				'uuid' => $device_id,
-				'pushId' => $this->request->get('data:push_id'),
-				'model' => $this->request->get('data:model'),
-				'app_version' => $this->request->get('data:app_version')
-			]);
-			$visitor->addDevice($device);
-		}
+		$deviceData = $this->request->data;
+		$deviceData['uuid'] = $this->request->get('params:uuid');
+
+		$service = new CreateOrUpdateDevice();
+		$service->perform([
+			'data' => $deviceData,
+			'visitor' => $visitor
+		]);
 
 		$repository->update($visitor);
 

@@ -70,7 +70,7 @@ Router::connect(new Route(array(
 
 Router::connect(new Route(array(
 	'method' => 'PUT',
-	'template' => '/api/{:slug}/visitors/devices/{:device_id}',
+	'template' => '/api/{:slug}/visitors/devices/{:uuid}',
 	'params' => array(
 		'controller' => 'visitors',
 		'action' => 'update_device',
