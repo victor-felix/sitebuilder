@@ -7,6 +7,9 @@ use meumobi\sitebuilder\workers\Worker;
 
 class Extensions extends Modules
 {
+	const PRIORITY_HIGH = 2;
+	const PRIORITY_LOW = 0;
+
 	protected $specification;
 	protected $_meta = array(
 		'name' => null,

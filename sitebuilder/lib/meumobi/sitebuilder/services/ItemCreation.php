@@ -7,6 +7,7 @@ use Model;
 use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\WorkerManager;
 use meumobi\sitebuilder\validators\ItemsPersistenceValidator;
+use meumobi\sitebuilder\validators\ParamsValidator;
 
 class ItemCreation
 {
@@ -24,17 +25,24 @@ class ItemCreation
 	{
 		$validator = new ItemsPersistenceValidator();
 		$validationResult = $validator->validate($item);
-		list($addMediaFileSize, $sendPush) = $this->validateOptions($options, ['addMediaFileSize', 'sendPush']);
+		list($addMediaFileSize, $sendPush) = ParamsValidator::validate($options, ['addMediaFileSize', 'sendPush']);
 
 		if ($validationResult->isValid()) {
+			$downloadImages = $item->download_images ? $item->download_images->to('array') : [];
+			unset($item->download_images);
+
 			$this->addOrder($item);
 			$item->save();
 
 			Logger::info('items', 'item created', [
-				'item id' => $item->id(),
-				'site id' => $item->site_id,
-				'category id' => $item->parent_id,
+				'item_id' => $item->id(),
+				'site_id' => $item->site_id,
+				'category_id' => $item->parent_id,
+				'downloaded_images' => $downloadStats['downloaded_images'],
+				'failed_images' => $downloadStats['failed_images']
 			]);
+
+			$downloadStats = $this->downloadImages($item, $downloadImages);
 
 			if ($addMediaFileSize) {
 				$this->addMediaFileSize($item);
@@ -43,31 +51,17 @@ class ItemCreation
 			if ($sendPush) {
 				$this->sendPushNotification($item);
 			}
-
 			$created = true;
 		} else {
 			Logger::info('items', 'item can`t be created', [
-				'site id' => $item->site_id,
-				'category id' => $item->parent_id,
+				'site_id' => $item->site_id,
+				'category_id' => $item->parent_id,
 				'errors' => $validationResult->errors(),
 			]);
 			$created = false;
 		}
 
 		return [$created, $validationResult->errors()];
-	}
-
-	protected function validateOptions($options, $validOptions)
-	{
-		$invalidOptions = array_diff(array_keys($options), $validOptions);
-
-		if ($invalidOptions) {
-			throw new Exception('invalid options: ' . implode(', ', $invalidOptions));
-		}
-
-		return array_map(function($option) use ($options) {
-			return isset($options[$option]) ? $options[$option] : null;
-		}, $validOptions);
 	}
 
 	protected function addMediaFileSize($item)
@@ -83,6 +77,25 @@ class ItemCreation
 		}
 	}
 
+	protected function downloadImages($item, $downloadImages)
+	{
+		return array_reduce($downloadImages, function($stats, $downloadImage) use ($item) {
+			$image = Model::load('Images')->download($item,
+				$downloadImage['url'], $downloadImage);
+
+			if ($image) {
+				$stats['downloaded_images'] += 1;
+			} else {
+				$stats['failed_images'] += 1;
+			}
+
+			return $stats;
+		}, [
+			'downloaded_images' => 0,
+			'failed_images' => 0
+		]);
+	}
+
 	protected function sendPushNotification($item)
 	{
 		$category = $item->parent();
@@ -96,7 +109,7 @@ class ItemCreation
 			Logger::debug('items', 'not creating push_notification job', [
 				'reason' => [
 					'published' => $item->is_published,
-					'push enabled in category' => $category->notification
+					'push_enabled_in_category' => $category->notification
 				]
 			]);
 		}
