@@ -43,9 +43,9 @@ class VisitorsController extends ApiController
 		$visitor = $repository->findForAuthentication($siteId, $email, $password);
 
 		if ($visitor) {
+			$errors = [];
 			$response = [
 				'success' => true,
-				'errors' => []
 			];
 
 			if ($deviceData) {
@@ -54,7 +54,6 @@ class VisitorsController extends ApiController
 					'data' => $deviceData,
 					'visitor' => $visitor
 				]);
-				$response['errors'] += $errors;
 			}
 
 			$visitor->setLastLogin(date('Y-m-d H:i:s'));
@@ -66,7 +65,11 @@ class VisitorsController extends ApiController
 			];
 
 			if ($visitor->shouldRenewPassword()) {
-				$response['errors'][] = 'password expired';
+				$errors[] = 'password expired';
+			}
+
+			if ($errors) {
+				$response['errors'] = $errors;
 			}
 
 			return $response;
