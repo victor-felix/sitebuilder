@@ -300,7 +300,15 @@ class ItemsController extends ApiController {
 			$this->response->status(201);
 			return $item->toJSON($this->visitor());
 		} else {
+			$errors = array_map(function($error) {
+				return I18n::translate($error);
+			}, array_values($errors));
+
 			$this->response->status(422);
+			return [
+				'error' => 'could not save item',
+				'errors' => $errors
+			];
 		}
 	}
 

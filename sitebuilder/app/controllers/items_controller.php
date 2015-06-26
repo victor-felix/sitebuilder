@@ -77,17 +77,17 @@ class ItemsController extends AppController
 				if ($this->isXhr()) {
 					$this->respondToJSON(array(
 						'refresh' => '/items/add/' . $parent_id,
-						'error' => s('Sorry, we can\'t save the item')
+						'error' => s("Sorry, we can't save the item. %s", s(array_values($errors)[0])),
 					));
 				} else {
-					Session::writeFlash('error', s('Sorry, we can\'t save the item'));
+					Session::writeFlash('error', s("Sorry, we can't save the item. %s", s(array_values($errors)[0])));
 				}
 			}
 		}
 
 		$this->set(array(
 			'item' => $item,
-			'parent' => $parent
+			'parent' => $item->parent()
 		));
 	}
 
@@ -110,6 +110,7 @@ class ItemsController extends AppController
 			$item->site_id = $site->id;
 			$validator = new ItemsPersistenceValidator();
 			$validationResult = $validator->validate($item);
+			$errors = $validationResult->errors();
 
 			if ($validationResult->isValid() && $item->save()) {
 				$item->addMediaFileSize();
@@ -135,10 +136,10 @@ class ItemsController extends AppController
 				if ($this->isXhr()) {
 					$this->respondToJSON(array(
 						'refresh' => '/items/edit/' . $id,
-						'error' => s('Sorry, we can\'t save the item')
+						'error' => s("Sorry, we can't save the item. %s", s(array_values($errors)[0]))
 					));
 				} else {
-					Session::writeFlash('error', s('Sorry, we can\'t save the item'));
+					Session::writeFlash('error', s("Sorry, we can't save the item. %s", s(array_values($errors)[0])));
 				}
 			}
 
