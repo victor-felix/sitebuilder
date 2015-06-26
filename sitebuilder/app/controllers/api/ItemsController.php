@@ -112,7 +112,7 @@ class ItemsController extends ApiController {
 		]);
 
 		if (!$item) {
-			throw new \app\models\RecordNotFoundException('item not found');
+			throw new RecordNotFoundException('item not found');
 		}
 
 		if (!$item->related) {
@@ -268,7 +268,7 @@ class ItemsController extends ApiController {
 			'site_id' => $this->site()->id
 		)));
 
-		if (!$item) throw new \app\models\RecordNotFoundException('item not found');
+		if (!$item) throw new RecordNotFoundException('item not found');
 
 		$item->set(array(
 			'site_id' => $this->site()->id
