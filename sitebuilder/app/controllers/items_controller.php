@@ -1,6 +1,7 @@
 <?php
 
 use app\models\Items;
+use meumobi\sitebuilder\services\ItemCreation;
 use meumobi\sitebuilder\validators\ItemsPersistenceValidator;
 
 class ItemsController extends AppController
@@ -26,10 +27,11 @@ class ItemsController extends AppController
 	public function add($parent_id = null)
 	{
 		$site = $this->getCurrentSite();
-		$parent = Model::load('Categories')->firstById($parent_id);
-		$classname = '\app\models\items\\' . Inflector::camelize($parent->type);
-		$item = $classname::create();
-		$item->type = $parent->type;
+		$itemCreationService = new ItemCreation();
+		$item = $itemCreationService->build([
+			'site_id' => $site->id,
+			'parent_id' => $parent_id
+		]);
 
 		if (!empty($this->data)) {
 			$default = [
@@ -41,14 +43,11 @@ class ItemsController extends AppController
 			$images = array_unset($data, 'image');
 			$images = $this->request->data['image'];
 			$item->set($data);
-			$item->parent_id = $parent->id;
-			$item->site_id = $site->id;
-			$item->type = $parent->type;
-			$validator = new ItemsPersistenceValidator();
-			$validationResult = $validator->validate($item);
-
-			if ($validationResult->isValid() && $item->save()) {
-				$item->addMediaFileSize();//TODO check if is the best way to do this, at first I tried tu use a before save filter, but din't work
+			list ($created, $errors) = $itemCreationService->create($item, [
+				'sendPush' => true,
+				'addMediaFileSize' => true
+			]);
+			if ($created) {
 				foreach ($images as  $id => $image) {
 					if (is_numeric($id)) {
 						$record = Model::load('Images')->firstById($id);

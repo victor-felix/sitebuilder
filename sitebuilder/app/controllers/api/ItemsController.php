@@ -2,11 +2,12 @@
 
 namespace app\controllers\api;
 
-use lithium\core\Object;
-
 use app\models\Items;
 use app\models\RecordNotFoundException;
+use I18n;
 use Inflector;
+use lithium\core\Object;
+use meumobi\sitebuilder\services\ItemCreation;
 use Model;
 use View;
 
@@ -274,15 +275,17 @@ class ItemsController extends ApiController {
 	{
 		$this->requireVisitorAuth();
 
-		$category_id = $this->request->get('data:parent_id');
-		$category = Model::load('Categories')->firstById($category_id);
-		$classname = '\app\models\items\\' . Inflector::camelize($category->type);
-		$item = $classname::create();
-		$item->set($this->request->data);
-		$item->site_id = $this->site()->id;
-		$item->type = $category->type;
+		$data = $this->request->data;
+		$data['site_id'] = $this->site()->id;
 
-		if ($item->save()) {
+		$itemCreationService = new ItemCreation();
+		$item = $itemCreationService->build($data);
+
+		list($created, $errors) = $itemCreationService->create($item, [
+			'sendPush' => true
+		]);
+
+		if ($created) {
 			$images = $this->request->get('data:images');
 			if ($images) {
 				foreach ($images as $id => $image) {
