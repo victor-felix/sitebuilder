@@ -100,59 +100,6 @@ class ItemsController extends ApiController {
 		return $this->paginate($params, $url, $url_params, null, '\app\models\items\Promotions');
 	}
 
-	public function add()
-	{
-		$this->requireVisitorAuth();
-
-		try {
-			$data = $this->prepareAdd($this->request->data);
-
-			$images = isset($data['images']) ? $data['images'] : false;
-
-			$item = Items::find('first', array('conditions' => array(
-				'_id' => $this->request->params['id'],
-				'site_id' => $this->site()->id
-			)));
-
-			if (!$item) throw new \Exception('invalid item');
-
-			$classname = '\app\models\items\\' . Inflector::camelize($data['type']);
-			$newItem = $classname::create();
-			$newItem->set($data);
-			$newItem->site_id = $this->site()->id;
-
-			if (!$newItem->save()) {
-				$this->response->status(422);
-				return;
-			}
-
-			if ($item->related instanceof \lithium\core\Object) {
-				$related = $item->related->to('array');
-				$related []= $newItem->id();
-			} else {
-				$related []= $newItem->id();
-			}
-
-			$item->related = $related;
-			$item->save();
-
-			if ($images) {
-				foreach ($images as $id => $image) {
-					if (!is_numeric($id)) continue;
-					$record = Model::load('Images')->firstById($id);
-					$record->title = $image['title'];
-					$record->foreign_key = $newItem->id();
-					$record->save();
-				}
-			}
-
-			$this->response->status(201);
-			return $this->toJSON($newItem);
-		} catch (\Exception $e) {
-			$this->response->status(422);
-		}
-	}
-
 	public function related()
 	{
 		$this->requireVisitorAuth();

@@ -441,20 +441,8 @@ Any item-specific param (like description, address, etc., can vary for each item
 - **title**
 - **parent_id**
 - **type**
-- **title**
+- **description**
 - **related**: array of ids of related items. for example, in rest-client, ["4e9cb46e9a645d2277000000", "4e9cb46e9a645d2277000001", "4e9cb46e9a645d2277000002", ...]
-
-#### POST /{domain}/items/{id}/add
-
-Create an item as related to an existing.
-
-Parameters:
-
-Any item-specific param (like description, address, etc., can vary for each item), plus:
-
-- **title**
-- **parent_id**
-- **type**
 
 #### GET /{domain}/items/{id}/related
 
