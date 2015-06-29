@@ -15,7 +15,14 @@ class WorkerManager
 			'priority' => $priority,
 			'params' => $params
 		]);
-		return $job->save();
+		$job->save();
+		Logger::info('workers', 'job created', [
+			'job id' => (string) $job->_id,
+			'type' => $type,
+			'priority' => $priority,
+			'params' => $params,
+		]);
+		return $job;
 	}
 
 	public static function isEnqueued($type, $params, $priority = Worker::PRIORITY_LOW)
@@ -35,7 +42,7 @@ class WorkerManager
 	public static function execute($worker)
 	{
 		try {
-			self::logger()->info('start executing worker', [
+			Logger::info('workers', 'start executing worker', [
 				'worker' => get_class($worker),
 				'job id' => (string)$worker->job()->_id,
 				'job type' => $worker->job()->type,
@@ -43,7 +50,7 @@ class WorkerManager
 			$worker->perform();
 			self::destroy($worker);
 		} catch (\Exception $e) {
-			self::logger()->error('error executing worker', [
+			Logger::error('workers', 'error executing worker', [
 				'job_id' => (string)$worker->job()->_id,
 				'job type' => $worker->job()->type,
 				'job params' => $worker->job()->params,
@@ -61,17 +68,12 @@ class WorkerManager
 		]);
 		if ($job) {
 			$workerClass = 'meumobi\sitebuilder\workers\\' . \Inflector::camelize($job->type) . 'Worker';
-			return new $workerClass(['job' => $job, 'logger' => self::logger()]);
+			return new $workerClass(['job' => $job, 'logger' => Logger::logger()]);
 		}
 	}
 
 	public static function destroy($worker)
 	{
 		Jobs::remove(['_id' => $worker->job()->_id]);
-	}
-
-	public static function logger()
-	{
-		return Logger::logger();
 	}
 }

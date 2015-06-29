@@ -134,15 +134,6 @@ Router::connect(new Route(array(
 
 Router::connect(new Route(array(
 	'method' => 'GET',
-	'template' => '/api/{:slug}/items/latest',
-	'params' => array(
-		'action' => 'latest',
-		'controller' => 'items'
-	) + $defaults['params']
-)));
-
-Router::connect(new Route(array(
-	'method' => 'GET',
 	'template' => '/api/{:slug}/items/search',
 	'params' => array(
 		'controller' => 'items',

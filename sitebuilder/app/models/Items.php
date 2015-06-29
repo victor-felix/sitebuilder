@@ -240,24 +240,6 @@ class Items extends \lithium\data\Model {
 		return $item;
 	}
 
-	/**
-	 * set the order value with the last order plus 1
-	 */
-	public static function addOrder($self, $params, $chain) {
-		$item = $params['entity'];
-
-		if(!$item->id()) {
-			$last = $item->getLast();
-			if ($last) {
-				$item->order = $last->order + 1;
-			} else {
-				$item->order = 1;
-			}
-		}
-
-		return $chain->next($self, $params, $chain);
-	}
-
 	public static function resetItemsOrdering($parentId)
 	{
 		$orderMethod = "
@@ -497,21 +479,6 @@ class Items extends \lithium\data\Model {
 		}
 	}
 
-	public static function sendPushNotification($self, $params, $chain)
-	{
-		$item = $params['entity'];
-		$category = $item->parent();
-		// only if new and category send notifications
-		if (!$item->id() && $item->is_published && $category->notification) {
-			$chain = $chain->next($self, $params, $chain); // save the item
-			if ($id = $item->id()) {
-				WorkerManager::enqueue('push_notification',  ['item_id' => $id, 'category_id' => $category->id]);
-			}
-			return $chain;
-		}
-		return $chain->next($self, $params, $chain);
-	}
-
 	public static function typeFinder($self, $params, $chain)
 	{
 		$result = $chain->next($self, $params, $chain)->rewind();
@@ -668,15 +635,7 @@ Items::applyFilter('save', function($self, $params, $chain) {
 });
 
 Items::applyFilter('save', function($self, $params, $chain) {
-	return Items::addOrder($self, $params, $chain);
-});
-
-Items::applyFilter('save', function($self, $params, $chain) {
 	return Items::addThumbnails($self, $params, $chain);
-});
-
-Items::applyFilter('save', function($self, $params, $chain) {
-	return Items::sendPushNotification($self, $params, $chain);
 });
 
 Items::finder('type', function($self, $params, $chain) {

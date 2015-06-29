@@ -2,11 +2,12 @@
 
 namespace app\controllers\api;
 
-use lithium\core\Object;
-
 use app\models\Items;
 use app\models\RecordNotFoundException;
+use I18n;
 use Inflector;
+use lithium\core\Object;
+use meumobi\sitebuilder\services\ItemCreation;
 use Model;
 use View;
 
@@ -99,59 +100,6 @@ class ItemsController extends ApiController {
 		return $this->paginate($params, $url, $url_params, null, '\app\models\items\Promotions');
 	}
 
-	public function add()
-	{
-		$this->requireVisitorAuth();
-
-		try {
-			$data = $this->prepareAdd($this->request->data);
-
-			$images = isset($data['images']) ? $data['images'] : false;
-
-			$item = Items::find('first', array('conditions' => array(
-				'_id' => $this->request->params['id'],
-				'site_id' => $this->site()->id
-			)));
-
-			if (!$item) throw new \Exception('invalid item');
-
-			$classname = '\app\models\items\\' . Inflector::camelize($data['type']);
-			$newItem = $classname::create();
-			$newItem->set($data);
-			$newItem->site_id = $this->site()->id;
-
-			if (!$newItem->save()) {
-				$this->response->status(422);
-				return;
-			}
-
-			if ($item->related instanceof \lithium\core\Object) {
-				$related = $item->related->to('array');
-				$related []= $newItem->id();
-			} else {
-				$related []= $newItem->id();
-			}
-
-			$item->related = $related;
-			$item->save();
-
-			if ($images) {
-				foreach ($images as $id => $image) {
-					if (!is_numeric($id)) continue;
-					$record = Model::load('Images')->firstById($id);
-					$record->title = $image['title'];
-					$record->foreign_key = $newItem->id();
-					$record->save();
-				}
-			}
-
-			$this->response->status(201);
-			return $this->toJSON($newItem);
-		} catch (\Exception $e) {
-			$this->response->status(422);
-		}
-	}
-
 	public function related()
 	{
 		$this->requireVisitorAuth();
@@ -164,7 +112,7 @@ class ItemsController extends ApiController {
 		]);
 
 		if (!$item) {
-			throw new \app\models\RecordNotFoundException('item not found');
+			throw new RecordNotFoundException('item not found');
 		}
 
 		if (!$item->related) {
@@ -274,15 +222,17 @@ class ItemsController extends ApiController {
 	{
 		$this->requireVisitorAuth();
 
-		$category_id = $this->request->get('data:parent_id');
-		$category = Model::load('Categories')->firstById($category_id);
-		$classname = '\app\models\items\\' . Inflector::camelize($category->type);
-		$item = $classname::create();
-		$item->set($this->request->data);
-		$item->site_id = $this->site()->id;
-		$item->type = $category->type;
+		$data = $this->request->data;
+		$data['site_id'] = $this->site()->id;
 
-		if ($item->save()) {
+		$itemCreationService = new ItemCreation();
+		$item = $itemCreationService->build($data);
+
+		list($created, $errors) = $itemCreationService->create($item, [
+			'sendPush' => true
+		]);
+
+		if ($created) {
 			$images = $this->request->get('data:images');
 			if ($images) {
 				foreach ($images as $id => $image) {
@@ -297,7 +247,15 @@ class ItemsController extends ApiController {
 			$this->response->status(201);
 			return $item->toJSON($this->visitor());
 		} else {
+			$errors = array_map(function($error) {
+				return I18n::translate($error);
+			}, array_values($errors));
+
 			$this->response->status(422);
+			return [
+				'error' => 'could not save item',
+				'errors' => $errors
+			];
 		}
 	}
 
@@ -310,7 +268,7 @@ class ItemsController extends ApiController {
 			'site_id' => $this->site()->id
 		)));
 
-		if (!$item) throw new \app\models\RecordNotFoundException('item not found');
+		if (!$item) throw new RecordNotFoundException('item not found');
 
 		$item->set(array(
 			'site_id' => $this->site()->id

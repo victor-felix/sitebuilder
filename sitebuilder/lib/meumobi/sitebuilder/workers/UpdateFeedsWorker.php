@@ -5,22 +5,24 @@
 
 namespace meumobi\sitebuilder\workers;
 
-require_once 'lib/simplepie/SimplePie.php';
 require_once 'lib/dom/SimpleHtmlDom.php';
+require_once 'lib/simplepie/SimplePie.php';
 require_once 'lib/utils/Video.php';
 
-use SimplePie;
-use Mapper;
 use DOMDocument;
+use Filesystem;
 use HTMLPurifier;
 use HTMLPurifier_Config;
-use Filesystem;
-use lithium\data\Connections;
+use Mapper;
+use SimplePie;
+use Video;
 use app\models\Items;
-use meumobi\sitebuilder\repositories\RecordNotFoundException;//TODO move exceptions for a more generic namespace
 use app\models\extensions\Rss;
 use app\models\items\Articles;
-use Video;
+use lithium\data\Connections;
+use meumobi\sitebuilder\Logger;
+use meumobi\sitebuilder\repositories\RecordNotFoundException;//TODO move exceptions for a more generic namespace
+use meumobi\sitebuilder\services\ItemCreation;
 
 class UpdateFeedsWorker extends Worker
 {
@@ -40,18 +42,18 @@ class UpdateFeedsWorker extends Worker
 	public function perform()
 	{
 		$start = microtime(true);
-		$this->logger()->info('updating feeds', [ 'priority' => $this->priority ]);
-
-		array_walk($this->getExtensionsIds(), [$this, 'updateFromFeed']);
+		Logger::info('workers', 'updating feeds', [ 'priority' => $this->priority ]);
+		$itemCreationService = new ItemCreation();
+		array_walk($this->getExtensionsIds(), [$this, 'updateFromFeed'], $itemCreationService);
 
 		if($this->stats['extensions']) {
-			$this->logger()->debug('updated feeds', $this->stats['extensions']);
+			Logger::info('workers', 'updated feeds', $this->stats['extensions']);
 		}
 
 		unset($this->stats['extensions']);
 		$this->stats['priority'] = $this->getPriority();
 		$this->stats['elapsed_time'] = microtime(true) - $start;
-		$this->logger()->info('finished updating feeds', $this->stats);
+		Logger::info('workers', 'finished updating feeds', $this->stats);
 	}
 
 	protected function getPriority()
@@ -59,7 +61,7 @@ class UpdateFeedsWorker extends Worker
 		return $this->priority;
 	}
 
-	protected function updateFromFeed($extensionId)
+	protected function updateFromFeed($extensionId, $key, $itemCreationService)
 	{
 		$this->stats['extensions'][$extensionId] = [
 			'extension_id' => $extensionId,
@@ -77,7 +79,7 @@ class UpdateFeedsWorker extends Worker
 			$this->stats['extensions'][$extensionId]['category_id'] = $this->category->id();
 
 			$feed = $this->getFeed();
-			$this->updateArticles($feed);
+			$this->updateArticles($feed, $itemCreationService);
 			$this->removeOldArticles();
 
 			$this->category->updated = date('Y-m-d H:i:s');
@@ -132,7 +134,7 @@ class UpdateFeedsWorker extends Worker
 		}
 	}
 
-	protected function updateArticles($feed)
+	protected function updateArticles($feed, $itemCreationService)
 	{
 		$feedItems = $feed->get_items();
 
@@ -145,7 +147,7 @@ class UpdateFeedsWorker extends Worker
 
 		foreach ($feedItems as $feedItem) {
 			$item = $this->getItem($feedItem);
-			if ($item) $this->updateArticle($item, $feedItem);
+			if ($item) $this->updateArticle($item, $feedItem, $itemCreationService);
 		}
 	}
 
@@ -172,7 +174,7 @@ class UpdateFeedsWorker extends Worker
 		return $item;
 	}
 
-	protected function updateArticle($item, $feedItem)
+	protected function updateArticle($item, $feedItem, $itemCreationService)
 	{
 		$images = $this->getArticleImages($feedItem);
 		$extensionId = (string) $this->extension->_id;
@@ -202,7 +204,11 @@ class UpdateFeedsWorker extends Worker
 		);
 
 		$item->set($data);
-		$item->save();
+
+		list($created, $errors) = $itemCreationService->create($item, [
+			'sendPush' => $this->getPriority() != Worker::PRIORITY_HIGH
+		]);
+
 		$this->stats['extensions'][$extensionId]['total_articles'] += 1;
 
 		foreach ($images as $image) {

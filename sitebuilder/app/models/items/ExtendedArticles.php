@@ -62,7 +62,3 @@ ExtendedArticles::applyFilter('remove', function($self, $params, $chain) {
 ExtendedArticles::applyFilter('save', function($self, $params, $chain) {
 	return Items::addTimestamps($self, $params, $chain);
 });
-
-ExtendedArticles::applyFilter('save', function($self, $params, $chain) {
-	return Items::addOrder($self, $params, $chain);
-});

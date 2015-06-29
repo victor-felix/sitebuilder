@@ -6,7 +6,7 @@ class I18n extends YamlDictionary
 {
 	const DEFAULT_LANG = 'en';
 	protected static $path = 'config/locales';
-	protected static $dictionary;
+	protected static $dictionary = 'en';
 	protected static $yaml;
 	protected static $availableLanguages;
 

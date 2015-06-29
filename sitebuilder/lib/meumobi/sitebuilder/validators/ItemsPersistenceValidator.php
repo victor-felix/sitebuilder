@@ -10,27 +10,31 @@ class ItemsPersistenceValidator implements Validator
 	 */
 	protected $validations = [
 		'parent_id' => [
-			'notEmpty' => 'required_value_error_message',
+			'notEmpty' => 'required_category_error',
 		],
 		'site_id' => [
-			'notEmpty' => 'required_value_error_message'
+			'notEmpty' => 'required_site_error',
+			'validSite' => 'invalid_site_error'
+		],
+		'type' => [
+			'validType' => 'invalid_type_error'
 		],
 		'title' => [
-			'notEmpty' => 'required_value_error_message'
+			'notEmpty' => 'required_title_error'
 		],
 		'medias' => [
-			'notEmptyMedias' => 'required_media_error_message'
+			'notInvalidMedias' => 'invalid_medias_error'
 		],
 	];
 
 
-	public function validate($entity)
+	public function validate($item)
 	{
 		$validationResult = new ValidationResult();
 		//replicating the spagheth model validation, but I think this can be better or use a third party lib
 		foreach ($this->validations as $property => $rules) {
 			foreach ($rules as $rule => $message) {
-				if (!$this->validateRule($rule, $entity->$property)) {
+				if (!$this->validateRule($rule, $item->$property, $item)) {
 					$validationResult->addError($property, $message);
 				}
 			}
@@ -38,17 +42,29 @@ class ItemsPersistenceValidator implements Validator
 		return $validationResult;
 	}
 
-	protected function validateRule($rule, $value)
+	protected function validateRule($rule, $value, $item)
 	{
 		if (method_exists($this, $rule)) {
-			return $this->$rule($value);	
+			return $this->$rule($value, $item);
 		}
 		return \Validation::$rule($value);
 	}
 
-	protected function notEmptyMedias($medias)
+	protected function validSite($siteId, $item)
 	{
-		$check = ['title', 'url', 'type'];
+		$category = $item->parent();
+		return $category->site_id == $siteId;
+	}
+
+	protected function validType($type, $item)
+	{
+		$category = $item->parent();
+		return $category->type == $type;
+	}
+
+	protected function notInvalidMedias($medias, $item)
+	{
+		$check = ['url', 'type'];
 		foreach ($medias as $media) {
 			foreach ($check as $field) {
 				if (empty($media[$field]))
