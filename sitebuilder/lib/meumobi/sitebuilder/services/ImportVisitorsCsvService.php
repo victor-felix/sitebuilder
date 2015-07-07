@@ -38,8 +38,10 @@ class ImportVisitorsCsvService extends ImportCsvService
 				$this->repository()->create($visitor);
 				$this->sendVisitorEmail(['email' => $visitor->email(), 'password' => $password]);
 			}
+
 			$imported++;
 		}
+
 		fclose($this->getFile());
 		$this->logger()->info("total of imported visitors: $imported");
 		return $imported;
