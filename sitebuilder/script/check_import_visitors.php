@@ -39,7 +39,7 @@ function check($importPath, $logPath, $reportPath)
 
 function findLogByEmail($email, $path)
 {
-	exec("grep -E 'sm-mta.*$email' $path | tail -1", $result);
+	exec("grep -E 'sm-mta.*to=<$email>' $path | tail -1", $result);
 	return $result ? $result[0] : null;
 }
 
