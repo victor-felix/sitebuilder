@@ -142,6 +142,24 @@ class Extensions extends Modules
 		$category->populate = 'manual';
 		$category->save();
 	}
+
+	public static function removeItems($self, $params, $chain)
+	{
+		if (isset($params['conditions']['_id'])) {
+			$extension = static::find('first', [
+				'conditions' => [
+					'_id' => $params['conditions']['_id']
+				]
+			]);
+
+			$category = static::category($extension);
+			$category->removeItems();
+			$category->populate = 'manual';
+			$category->save();
+		}
+
+		return $chain->next($self, $params, $chain);
+	}
 }
 
 Extensions::applyFilter('remove', function($self, $params, $chain) {
@@ -155,6 +173,10 @@ Extensions::applyFilter('remove', function($self, $params, $chain) {
 	}
 
 	return $chain->next($self, $params, $chain);
+});
+
+Extensions::applyFilter('remove', function($self, $params, $chain) {
+	return Extensions::removeItems($self, $params, $chain);
 });
 
 Extensions::applyFilter('save', function($self, $params, $chain) {
