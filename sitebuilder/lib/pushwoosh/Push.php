@@ -1,6 +1,7 @@
 <?php
 namespace pushwoosh;
 
+Use Config;
 Use Exception;
 use Gomoob\Pushwoosh\Client\Pushwoosh;
 use Gomoob\Pushwoosh\Model\Notification\IOS;
@@ -40,6 +41,6 @@ class Push
 		if (static::$client) return static::$client;
 		return static::$client = Pushwoosh::create()
 		->setApplication($app)
-		->setAuth(\Config::read('PushWoosh.authToken'));
+		->setAuth(Config::read('PushWoosh.authToken'));
 	}
 }

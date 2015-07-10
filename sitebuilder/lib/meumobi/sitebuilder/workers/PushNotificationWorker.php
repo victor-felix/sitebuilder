@@ -16,47 +16,57 @@ class PushNotificationWorker extends Worker
 	public function perform()
 	{
 		$appId = $this->getSite()->pushwoosh_app_id;
-		$category = $this->getItem()->parent();
+		$item = $this->getItem();
+		$category = $item->parent();
+		$content = $item->title;
+		$devices = $this->getDevicesTokens($item);
+
 		$logData = [
-			'item_id' => (string)$this->getItem()->_id,
+			'item_id' => (string) $item->_id,
 			'category_id' => $category->id,
-			'site_id' => $this->getItem()->site_id,
+			'site_id' => $item->site_id,
 		];
 
 		if (!$appId) {
 			Logger::info('push_notification', 'no push app configured for site', $logData);
-			return true; //has no app configured
+			return;
 		}
+
 		if (!$category->notification) {
 			Logger::info('push_notification', 'push disabled on category', $logData);
-			return true;
+			return;
 		}
-		$content = $this->getItem()->title;
-		$devices = $this->getDevicesTokens();
+
 		Logger::info('push_notification', 'sending push notification', $logData + [
 			'content' => $content,
 			'number_of_devices' => count($devices),
 		]);
+
 		$response = Push::notify($appId, $content, $devices);
+
 		Logger::info('push_notification', 'push notification sent successfully', $logData + [
 			'push_response' => $response,
 		]);
 	}
 
-	protected function getDevicesTokens()
+	protected function getDevicesTokens($item)
 	{
 		$repository = new VisitorsRepository();
-		$groups = $this->getItem()->to('array')['groups'];//return Document object on direct access
+		$groups = $item->to('array')['groups'];
+
 		if ($groups) {
 			$visitors = $repository->findBySiteIdAndGroups($this->getSite()->id, $groups);
 		} else {
 			$visitors = $repository->findBySiteId($this->getSite()->id);
 		}
+
 		return array_reduce($visitors, function($tokens, $visitor) {
 			$visitorTokens = [];
+
 			foreach ($visitor->devices() as $device) {
 				if ($device->pushId()) $visitorTokens[] = $device->pushId();
 			}
+
 			return array_merge($tokens, $visitorTokens);
 		},[]);
 	}
