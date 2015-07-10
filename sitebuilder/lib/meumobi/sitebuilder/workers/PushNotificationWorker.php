@@ -2,13 +2,14 @@
 
 namespace meumobi\sitebuilder\workers;
 
-use app\models\Items;
-use meumobi\sitebuilder\repositories\RecordNotFoundException;//TODO move exceptions for a more generic namespace
-use pushwoosh\Push;
-use meumobi\sitebuilder\repositories\VisitorsRepository;
-use meumobi\sitebuilder\entities\Visitor;
-
 require_once 'lib/pushwoosh/Push.php';
+
+use app\models\Items;
+use meumobi\sitebuilder\Logger;
+use meumobi\sitebuilder\entities\Visitor;
+use meumobi\sitebuilder\repositories\RecordNotFoundException;//TODO move exceptions for a more generic namespace
+use meumobi\sitebuilder\repositories\VisitorsRepository;
+use pushwoosh\Push;
 
 class PushNotificationWorker extends Worker
 {
@@ -17,28 +18,28 @@ class PushNotificationWorker extends Worker
 		$appId = $this->getSite()->pushwoosh_app_id;
 		$category = $this->getItem()->parent();
 		$logData = [
-			'item id' => (string)$this->getItem()->_id,
-			'category id' => $category->id,
-			'site id' => $this->getItem()->site_id,
+			'item_id' => (string)$this->getItem()->_id,
+			'category_id' => $category->id,
+			'site_id' => $this->getItem()->site_id,
 		];
 
 		if (!$appId) {
-			$this->logger()->error("Push notification error: no push app configured for site", $logData);
+			Logger::info('push_notification', 'no push app configured for site', $logData);
 			return true; //has no app configured
 		}
 		if (!$category->notification) {
-			$this->logger()->error("Push notification error: push disabled on category", $logData);
+			Logger::info('push_notification', 'push disabled on category', $logData);
 			return true;
 		}
 		$content = $this->getItem()->title;
 		$devices = $this->getDevicesTokens();
-		$this->logger()->info('Sending push notification', $logData + [
+		Logger::info('push_notification', 'sending push notification', $logData + [
 			'content' => $content,
-			'devices' => $devices,
+			'number_of_devices' => count($devices),
 		]);
 		$response = Push::notify($appId, $content, $devices);
-		$this->logger()->info('Push notification sent successfully', $logData + [
-			'push response' => $response,
+		Logger::info('push_notification', 'push notification sent successfully', $logData + [
+			'push_response' => $response,
 		]);
 	}
 
