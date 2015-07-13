@@ -179,11 +179,13 @@ class ItemsController extends ApiController {
 		$parent_id = $this->request->get('params:parent_id');
 
 		$params = [
-			'conditions' => ['site_id' => $this->site()->id],
+			'conditions' => [
+				'site_id' => $this->site()->id,
+				'is_published' => true,
+			],
 			'order' => ['published' => 'DESC'],
 			'limit' => $this->param('limit', self::PAGE_LIMIT),
 			'page' => $this->param('page', 1),
-			'is_published' => true,
 		];
 
 		if ($parent_id) {
