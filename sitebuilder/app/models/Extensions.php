@@ -138,7 +138,6 @@ class Extensions extends Modules
 	public static function disable($extension)
 	{
 		$category = static::category($extension);
-		$category->removeItems();
 		$category->populate = 'manual';
 		$category->save();
 	}
