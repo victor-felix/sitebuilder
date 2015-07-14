@@ -57,8 +57,8 @@ class VisitorsRepository extends Repository
 	public function findByEmailAndSite($email, $siteId)
 	{
 		$result = $this->collection()->findOne([
-			'email' => $email,
-			'site_id' => (int) $siteId
+			'email' => trim($email),
+			'site_id' => (int) $siteId,
 		]);
 
 		if ($result) {
