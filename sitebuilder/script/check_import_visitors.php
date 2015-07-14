@@ -1,85 +1,94 @@
 <?php
 
-use meumobi\sitebuilder\Logger;
-
-require dirname(__DIR__) . '/config/cli.php';
-
-function check($importPath, $logPath, $reportPath)
+class CheckImportVisitors
 {
-	$importFile = fopen($importPath, 'r');
-	$reportFile = fopen($reportPath, 'w');
-
-	$fields = array_map(function($field) {
-		return trim($field);
-	}, fgetcsv($importFile, 1000));
-
-	$emailKey = array_search('email', $fields);
-
-	fputcsv($reportFile, array_merge($fields, ['date', 'status']));
-
-	while (($line = fgetcsv($importFile, 1000)) !== false) {
-		$email = trim($line[$emailKey]);
-		$logLine = findLogByEmail($email, $logPath);
-
-		if ($logLine) {
-			list($date, $status) = extractDataFromLog($logLine);
-			$line[] = $date;
-			$line[] = $status;
-			Logger::info('visitors', 'visitor invite email status', compact('email', 'status', 'date'));
-		} else {
-			Logger::info('visitors', 'visitor invite email not found in log', compact('email'));
+	public function check($importPath, $logPath, $reportPath, $verbose)
+	{
+		if (!$this->checkFilesAreReadable([$importPath, $logPath])) {
+			return;
 		}
 
-		fputcsv($reportFile, $line);
+		$importFile = fopen($importPath, 'r');
+		$reportFile = fopen($reportPath, 'w');
+
+		$fields = array_map(function($field) {
+			return trim($field);
+		}, fgetcsv($importFile, 1000));
+
+		$emailKey = array_search('email', $fields);
+
+		fputcsv($reportFile, array_merge($fields, ['date', 'status']));
+
+		while (($line = fgetcsv($importFile, 1000)) !== false) {
+			$email = trim($line[$emailKey]);
+			$logLine = $this->findLogByEmail($email, $logPath);
+
+			if ($logLine) {
+				list($date, $status) = $this->extractDataFromLog($logLine);
+				$line[] = $date;
+				$line[] = $status;
+				$this->log("visitor invite email: $email, status: $status, date: $date", $verbose);
+			} else {
+				$line[] = 'visitor invite email not found in log';
+				$this->log("visitor invite email: $email not found in log", $verbose);
+			}
+
+			fputcsv($reportFile, $line);
+		}
+
+		fclose($importFile);
+		fclose($reportFile);
 	}
 
-	fclose($importFile);
-	fclose($reportFile);
-}
+	protected function findLogByEmail($email, $path)
+	{
+		exec("grep -E 'sm-mta.*to=<$email>' $path | tail -1", $result);
+		return $result ? $result[0] : null;
+	}
 
-function findLogByEmail($email, $path)
-{
-	exec("grep -E 'sm-mta.*to=<$email>' $path | tail -1", $result);
-	return $result ? $result[0] : null;
-}
+	protected function extractDataFromLog($logLine)
+	{
+		// Matches date / status
+		$re = '/^(\w{3}  \d \d{2}:\d{2}:\d{2}).*stat=(\w+( \w+)?)/mi';
+		preg_match_all($re, $logLine, $matches);
+		// Removes first/last unecessary match
+		array_shift($matches);
+		array_pop($matches);
 
-function extractDataFromLog($logLine)
-{
-	// Matches date / status
-	$re = '/^(\w{3}  \d \d{2}:\d{2}:\d{2}).*stat=(\w+( \w+)?)/mi';
-	preg_match_all($re, $logLine, $matches);
-	// Removes first/last unecessary match
-	array_shift($matches);
-	array_pop($matches);
+		return array_map(function($row) {
+			return $row[0];
+		}, $matches);
+	}
 
-	return array_map(function($row) {
-		return $row[0];
-	}, $matches);
-}
+	protected function checkFilesAreReadable($files)
+	{
+		return array_reduce($files, function($result, $path) {
+			$readable = is_readable($path);
+			if (!$readable) {
+				$this->log("File $path can`t be read");
+			}
+			return $result && $readable;
+		}, true);
+	}
 
-function checkFilesAreReadable($files)
-{
-	return array_reduce($files, function($result, $path) {
-		$readable = is_readable($path);
-		if (!$readable) {
-			echo "File $path can`t be read\n";
+	protected function log($message, $verbose = true)
+	{
+		if ($verbose) {
+			echo "$message\n";
 		}
-		return $result && $readable;
-	}, true);
+	}
 }
 
-$options = getopt('', ['import-file:', 'log-file:', 'report-file:']);
+$options = getopt('', ['import-file:', 'log-file:', 'report-file:', 'verbose']);
 
 if (isset($options['import-file'])) {
 	$importPath = $options['import-file'];
 	$logPath = isset($options['log-file']) ? $options['log-file'] : '/var/log/mail.log';
-	$reportPath = isset($options['report-file']) ? $options['report-file'] : APP_ROOT . '/log/import_visitors_report.csv';
+	$reportPath = isset($options['report-file']) ? $options['report-file'] : dirname(dirname(__DIR__)) . '/log/import_visitors_report.csv';
+	$verbose = isset($options['verbose']);
+	$checkImportVisitors = new CheckImportVisitors();
 
-	if (!checkFilesAreReadable([$importPath, $logPath])) {
-		return;
-	}
-
-	check($importPath, $logPath, $reportPath);
+	$checkImportVisitors->check($importPath, $logPath, $reportPath, $verbose);
 } else {
 	echo <<<'EOL'
 	usage: php check_import_visitors.php OPTIONS
@@ -93,9 +102,10 @@ if (isset($options['import-file'])) {
 		OPTIONAL:
 			--log-file file path, default: /var/log/mail.log
 			--report-file file path, default: log/import_visitors_report.csv
+			--verbose print log messages
 
 	EXAMPLE:
-	$php sitebuilder/script/check_import_visitors.php --import-file tmp/visitors.csv
+	$php sitebuilder/script/check_import_visitors.php --verbose --import-file tmp/visitors.csv
 
 EOL;
 }
