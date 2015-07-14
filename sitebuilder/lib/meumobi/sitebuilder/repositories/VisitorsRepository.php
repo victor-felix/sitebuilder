@@ -63,8 +63,6 @@ class VisitorsRepository extends Repository
 
 		if ($result) {
 			return $this->hydrate($result);
-		} else {
-			throw new RecordNotFoundException("The visitor with email: '$email' and siteId: '$siteId' was not found");
 		}
 	}
 

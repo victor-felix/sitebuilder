@@ -78,14 +78,12 @@ class ImportVisitorsCsvService extends ImportCsvService
 		$visitor = null;
 
 		if (self::EXCLUSIVE != $this->method) {
-			try {
-				$visitor = $this->repository()->findByEmailAndSite($data['email'], $this->getSite()->id);
-				$visitor->setAttributes($data);
-			} catch (RecordNotFoundException $e) {
-			}
+			$visitor = $this->repository()->findByEmailAndSite($data['email'], $this->getSite()->id);
 		}
 
-		if (!$visitor) {
+		if ($visitor) {
+			$visitor->setAttributes($data);
+		} else {
 			$visitor = $this->buildVisitor($data);
 		}
 
