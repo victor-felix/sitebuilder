@@ -49,7 +49,7 @@ class CheckImportVisitors
 	protected function extractDataFromLog($logLine)
 	{
 		// Matches date / status
-		$re = '/^(\w{3}  \d \d{2}:\d{2}:\d{2}).*stat=(\w+( \w+)?)/mi';
+		$re = '/^([A-Za-z]+ +\d{1,2} +\d{2}:\d{2}:\d{2}).*stat=(\w+( \w+)?)/mi';
 		preg_match_all($re, $logLine, $matches);
 		// Removes first/last unecessary match
 		array_shift($matches);
