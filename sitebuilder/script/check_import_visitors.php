@@ -27,10 +27,11 @@ class CheckImportVisitors
 				list($date, $status) = $this->extractDataFromLog($logLine);
 				$line[] = $date;
 				$line[] = $status;
-				$this->log("visitor invite email: $email, status: $status, date: $date", $verbose);
+				$this->log("Found in log email: $email, status: $status, date: $date", $verbose);
 			} else {
-				$line[] = 'visitor invite email not found in log';
-				$this->log("visitor invite email: $email not found in log", $verbose);
+				$line[] = '';
+				$line[] = '';
+				$this->log("Missing in log email: $email", $verbose);
 			}
 
 			fputcsv($reportFile, $line);
