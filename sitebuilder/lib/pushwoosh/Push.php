@@ -1,10 +1,12 @@
 <?php
 namespace pushwoosh;
 
+Use Config;
+Use Exception;
 use Gomoob\Pushwoosh\Client\Pushwoosh;
+use Gomoob\Pushwoosh\Model\Notification\IOS;
 use Gomoob\Pushwoosh\Model\Notification\Notification;
 use Gomoob\Pushwoosh\Model\Request\CreateMessageRequest;
-use Gomoob\Pushwoosh\Model\Notification\IOS;
 
 class Push
 {
@@ -17,14 +19,11 @@ class Push
 		$response = static::getClient($appId)->createMessage($request);
 		if ($response->isOk()) {
 			return [
-				'status code' => $response->getStatusCode(),
-				'status message' => $response->getStatusMessage()
+				'status_code' => $response->getStatusCode(),
+				'status_message' => $response->getStatusMessage()
 			];
 		} else {
-			//TODO use a specific Exception
-			throw new \Exception("Error sending push notification,
-			status code : {$response->getStatusCode()},
-			status message: {$response->getStatusMessage()}");
+			throw new Exception("Error sending push notification, status_code: {$response->getStatusCode()}, status_message: {$response->getStatusMessage()}");
 		}
 	}
 
@@ -42,6 +41,6 @@ class Push
 		if (static::$client) return static::$client;
 		return static::$client = Pushwoosh::create()
 		->setApplication($app)
-		->setAuth(\Config::read('PushWoosh.authToken'));
+		->setAuth(Config::read('PushWoosh.authToken'));
 	}
 }
