@@ -10,5 +10,8 @@ Config::write('Segment', array(
   'hideCategories' => false,
   'enableSignup' => false,
   'fullOptions' => true,
-  'analytics' => 'UA-22519238-15',
+	'analytics' => 'UA-22519238-15',
+  'enableFieldSet' => array('visitors', 'weblinks', 'news', 'description', 'contact'),
+  'enableApiAccessFromAllDomains' => true,
+
 ));
