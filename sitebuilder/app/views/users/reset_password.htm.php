@@ -2,13 +2,12 @@
 <?php $this->pageTitle = s('Reset password') ?>
 
 <?php echo $this->form->create('', array(
-    'class' => 'form-register',
-    'id' => 'FormLogin',
+    'class' => 'form-register default-form',
+    'id' => 'FormReset',
     'object' => $user
 )) ?>
 
 <fieldset>
-    <h2><?php echo s('Reset password') ?></h2>
     <div class="field-group">
         <div class="form-grid-220 first">
             <?php echo $this->form->input('password', array(
@@ -30,8 +29,8 @@
 
 <fieldset class="actions">
     <?php echo $this->form->submit(s('Reset password'), array(
-        'class' => 'ui-button red large',
-        'style' => 'margin-right: 415px'
+        'class' => 'ui-button large',
+        'style' => 'float: left'
     )) ?>
 </fieldset>
 

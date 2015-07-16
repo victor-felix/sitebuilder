@@ -2,8 +2,8 @@
 <?php $this->pageTitle = s('Retrieve your Password') ?>
 
 <?php echo $this->form->create('/users/forgot_password', array(
-    'class' => 'form-register',
-    'id' => 'FormLogin',
+    'class' => 'form-register default-form',
+    'id' => 'FormPassword',
     'object' => $user
 )) ?>
 
