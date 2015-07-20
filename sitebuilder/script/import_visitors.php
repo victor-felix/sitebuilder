@@ -1,9 +1,11 @@
 <?php
+
 use meumobi\sitebuilder\services\ImportVisitorsCsvService;
+use meumobi\sitebuilder\services\VisitorPasswordGenerationService;
 
 require dirname(__DIR__) . '/config/cli.php';
 
-$options = getopt(null, ['site:', 'import-file:', 'password-strategy:', 'exclusive', 'resend']);
+$options = getopt(null, ['site:', 'import-file:', 'auto-password', 'exclusive', 'resend-invite']);
 
 //TODO use ParamsValidator after it be available on master
 if (isset($options['import-file']) && isset($options['site'])) {
@@ -11,10 +13,10 @@ if (isset($options['import-file']) && isset($options['site'])) {
 
 	require 'segments/' . $site->segment . '/config.php';
 
-	$options['resend'] = isset($options['resend']);
+	$options['resend'] = isset($options['resend-invite']);
 	$import = new ImportVisitorsCsvService();
 	if (isset($options['exclusive'])) $import->setMethod(ImportVisitorsCsvService::EXCLUSIVE);
-	if (isset($options['password-strategy'])) $import->setPasswordStrategy($options['password-strategy']);
+	if (isset($options['auto-password'])) $import->setPasswordStrategy(VisitorPasswordGenerationService::RANDOM_PASSWORD);
 	$import->setSite($site);
 	$import->setFile($options['import-file']);
 	echo $import->import($options);

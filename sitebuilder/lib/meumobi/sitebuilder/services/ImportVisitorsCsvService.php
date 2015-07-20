@@ -12,7 +12,7 @@ class ImportVisitorsCsvService extends ImportCsvService
 {
 	protected $repository;
 	protected $site;
-	protected $passwordStrategy = VisitorPasswordGenerationService::RANDOM_PASSWORD;
+	protected $passwordStrategy = VisitorPasswordGenerationService::DEFAULT_PASSWORD;
 
 	public function import($options)
 	{
@@ -143,7 +143,12 @@ class ImportVisitorsCsvService extends ImportCsvService
 			'layout' => 'mail',
 			'data' =>  $data,
 		));
-		$this->logger()->info("sending email to : {$data['email']}");
+
+		$this->logger()->info("sending visitor invite email", [
+			'email' => $data['email'],
+			'password' => $data['password'],
+		]);
+
 		return $mailer->send();
 	}
 }
