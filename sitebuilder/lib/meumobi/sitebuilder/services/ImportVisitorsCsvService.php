@@ -5,6 +5,8 @@ namespace meumobi\sitebuilder\services;
 use meumobi\sitebuilder\entities\Visitor;
 use meumobi\sitebuilder\repositories\VisitorsRepository;
 use meumobi\sitebuilder\repositories\RecordNotFoundException;
+use meumobi\sitebuilder\validators\VisitorsPersistenceValidator;
+use meumobi\sitebuilder\Logger;
 
 class ImportVisitorsCsvService extends ImportCsvService
 {
@@ -17,6 +19,7 @@ class ImportVisitorsCsvService extends ImportCsvService
 		$imported = 0;
 		$resend = $options['resend'];
 		$passwordGenerationService = new VisitorPasswordGenerationService();
+		$validator = new VisitorsPersistenceValidator();
 
 		if (self::EXCLUSIVE == $this->method) {
 			$this->clearVisitors();
@@ -24,19 +27,20 @@ class ImportVisitorsCsvService extends ImportCsvService
 
 		while ($data = $this->getNextItem()) {
 			$visitor = $this->getVisitor($data);
+			$validationResult = $validator->validate($visitor);
+
+			if (!$validationResult->isValid()) {
+				Logger::error('visitor', 'visitor can`t be imported', [
+					'errors' => $validationResult->errors(),
+					'visitor' => $data,
+				]);
+				continue;
+			}
 
 			if ($visitor->id()) {
-				$this->logger()->info("updating visitor with email: {$visitor->email()}");
-				if ($resend) {
-					$password = $passwordGenerationService->generate($visitor, $this->passwordStrategy, $this->getSite());
-					$this->sendVisitorEmail(['email' => $visitor->email(), 'password' => $password]);
-				}
-				$this->repository()->update($visitor);
+				$this->updateVisitor($visitor, $passwordGenerationService, $resend);
 			} else {
-				$password = $passwordGenerationService->generate($visitor, $this->passwordStrategy, $this->getSite());
-				$this->logger()->info("creating visitor with email: {$visitor->email()} and password: $password");
-				$this->repository()->create($visitor);
-				$this->sendVisitorEmail(['email' => $visitor->email(), 'password' => $password]);
+				$this->createVisitor($visitor, $passwordGenerationService);
 			}
 
 			$imported++;
@@ -89,11 +93,33 @@ class ImportVisitorsCsvService extends ImportCsvService
 
 		return $visitor;
 	}
+
+	function updateVisitor($visitor, $passwordGenerationService, $resend)
+	{
+		$this->logger()->info("updating visitor with email: {$visitor->email()}");
+
+		if ($resend) {
+			$password = $passwordGenerationService->generate($visitor, $this->passwordStrategy, $this->getSite());
+			$this->sendVisitorEmail(['email' => $visitor->email(), 'password' => $password]);
+		}
+
+		$this->repository()->update($visitor);
+	}
+
+	function createVisitor($visitor, $passwordGenerationService)
+	{
+		$password = $passwordGenerationService->generate($visitor, $this->passwordStrategy, $this->getSite());
+		$this->logger()->info("creating visitor with email: {$visitor->email()} and password: $password");
+		$this->repository()->create($visitor);
+		$this->sendVisitorEmail(['email' => $visitor->email(), 'password' => $password]);
+	}
+
 	protected function buildVisitor($data)
 	{
 		$data['site_id'] = $this->getSite()->id;
 		return new Visitor($data);
 	}
+
 	protected function repository()
 	{
 		if ($this->repository) {
