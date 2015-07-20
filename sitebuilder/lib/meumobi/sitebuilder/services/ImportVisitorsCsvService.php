@@ -98,9 +98,11 @@ class ImportVisitorsCsvService extends ImportCsvService
 	{
 		$this->logger()->info("updating visitor with email: {$visitor->email()}");
 
-		if ($resend) {
+		if ($resend && !$visitor->lastLogin()) {
 			$password = $passwordGenerationService->generate($visitor, $this->passwordStrategy, $this->getSite());
 			$this->sendVisitorEmail(['email' => $visitor->email(), 'password' => $password]);
+		} else if ($visitor->lastLogin()) {
+			$this->logger()->info('invite not sent because visitor already logged in', ['email' => $visitor->email()]);
 		}
 
 		$this->repository()->update($visitor);
