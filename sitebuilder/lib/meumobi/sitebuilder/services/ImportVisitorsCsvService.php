@@ -2,11 +2,16 @@
 
 namespace meumobi\sitebuilder\services;
 
-use meumobi\sitebuilder\entities\Visitor;
-use meumobi\sitebuilder\repositories\VisitorsRepository;
-use meumobi\sitebuilder\repositories\RecordNotFoundException;
-use meumobi\sitebuilder\validators\VisitorsPersistenceValidator;
+use Exception;
+use I18n;
+use Mailer;
+use MeuMobi;
+use Sites;
 use meumobi\sitebuilder\Logger;
+use meumobi\sitebuilder\entities\Visitor;
+use meumobi\sitebuilder\repositories\RecordNotFoundException;
+use meumobi\sitebuilder\repositories\VisitorsRepository;
+use meumobi\sitebuilder\validators\VisitorsPersistenceValidator;
 
 class ImportVisitorsCsvService extends ImportCsvService
 {
@@ -50,10 +55,11 @@ class ImportVisitorsCsvService extends ImportCsvService
 
 		fclose($this->getFile());
 		Logger::info('visitors', 'imported visitors', ['total' => $imported]);
+
 		return $imported;
 	}
 
-	public function setSite(\Sites $site)
+	public function setSite(Sites $site)
 	{
 		$this->site = $site;
 	}
@@ -61,8 +67,9 @@ class ImportVisitorsCsvService extends ImportCsvService
 	public function getSite()
 	{
 		if (!$this->site) {
-			throw new \Exception('site not set');
+			throw new Exception('site not set');
 		}
+
 		return $this->site;
 	}
 
@@ -134,6 +141,7 @@ class ImportVisitorsCsvService extends ImportCsvService
 	protected function buildVisitor($data)
 	{
 		$data['site_id'] = $this->getSite()->id;
+
 		return new Visitor($data);
 	}
 
@@ -142,24 +150,25 @@ class ImportVisitorsCsvService extends ImportCsvService
 		if ($this->repository) {
 			return $this->repository;
 		}
+
 		return $this->repository = new VisitorsRepository();
 	}
 
 	protected function sendVisitorEmail($data)
 	{
-		\I18n::locale($this->getSite()->language);
-		$segment = \MeuMobi::currentSegment();
+		I18n::locale($this->getSite()->language);
+		$segment = MeuMobi::currentSegment();
 		$data['title'] = s('[%s]: Get started', $this->getSite()->title);
 		$data['segment'] = $segment;
 		$data['site'] = $this->getSite();
-		$mailer = new \Mailer(array(
+		$mailer = new Mailer([
 			'from' => $segment->email,
 			'to' => $data['email'],
 			'subject' => $data['title'],
-			'views' => array('text/html' => 'visitors/password_mail.htm'),
+			'views' => ['text/html' => 'visitors/password_mail.htm'],
 			'layout' => 'mail',
 			'data' =>  $data,
-		));
+		]);
 
 		Logger::info('visitors', 'sending visitor invite email', [
 			'email' => $data['email'],
