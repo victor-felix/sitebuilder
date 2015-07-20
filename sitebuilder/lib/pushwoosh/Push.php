@@ -7,6 +7,7 @@ use Gomoob\Pushwoosh\Client\Pushwoosh;
 use Gomoob\Pushwoosh\Model\Notification\IOS;
 use Gomoob\Pushwoosh\Model\Notification\Notification;
 use Gomoob\Pushwoosh\Model\Request\CreateMessageRequest;
+use meumobi\sitebuilder\Logger;
 
 class Push
 {
@@ -16,7 +17,11 @@ class Push
 	{
 		$request = CreateMessageRequest::create()
 		->addNotification(static::getNotification($content, $devices));
+
 		$response = static::getClient($appId)->createMessage($request);
+
+		Logger::debug('push_notification', 'payload request', $request->toJSON());
+
 		if ($response->isOk()) {
 			return [
 				'status_code' => $response->getStatusCode(),
