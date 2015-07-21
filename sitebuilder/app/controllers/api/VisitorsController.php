@@ -14,8 +14,8 @@ use meumobi\sitebuilder\entities\VisitorDevice;
 use meumobi\sitebuilder\presenters\api\VisitorPresenter;
 use meumobi\sitebuilder\repositories\RecordNotFoundException;
 use meumobi\sitebuilder\repositories\VisitorsRepository;
-use meumobi\sitebuilder\services\ResetVisitorPassword;
 use meumobi\sitebuilder\services\CreateOrUpdateDevice;
+use meumobi\sitebuilder\services\ResetVisitorPassword;
 
 class VisitorsController extends ApiController
 {

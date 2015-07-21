@@ -2,12 +2,12 @@
 
 namespace meumobi\sitebuilder\entities;
 
-use meumobi\sitebuilder\entities\VisitorDevice;
-use meumobi\sitebuilder\repositories\RecordNotFoundException;
-use meumobi\sitebuilder\Site;
+use DateTimeZone;
 use MongoId;
 use Security;
-use DateTimeZone;
+use meumobi\sitebuilder\Site;
+use meumobi\sitebuilder\entities\VisitorDevice;
+use meumobi\sitebuilder\repositories\RecordNotFoundException;
 
 class Visitor extends Entity
 {

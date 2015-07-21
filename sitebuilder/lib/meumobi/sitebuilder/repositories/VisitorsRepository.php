@@ -2,19 +2,17 @@
 
 namespace meumobi\sitebuilder\repositories;
 
-use meumobi\sitebuilder\entities\Visitor;
-use meumobi\sitebuilder\entities\VisitorDevice;
-
 use FileUpload;
 use Filesystem;
 use MongoClient;
-use MongoId;
 use MongoDate;
+use MongoId;
 use Security;
+use meumobi\sitebuilder\entities\Visitor;
+use meumobi\sitebuilder\entities\VisitorDevice;
 
 class VisitorsRepository extends Repository
 {
-
 	public function all()
 	{
 		return $this->hydrateSet($this->collection()->find());
