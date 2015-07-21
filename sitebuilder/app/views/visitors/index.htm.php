@@ -44,7 +44,7 @@
 									<span class="badge"><?= $group ?></span>
 								<?php endforeach ?>
 							</td>
-							<td><?= $visitor->lastLogin() ?></td>
+							<td><?= $visitor->lastLogin() ? $visitor->lastLogin()->format('Y-m-d H:i:s') : null ?></td>
 						</tr>
 						<?php endforeach; ?>
 				</tbody>

@@ -7,6 +7,7 @@ use meumobi\sitebuilder\repositories\RecordNotFoundException;
 use meumobi\sitebuilder\Site;
 use MongoId;
 use Security;
+use DateTimeZone;
 
 class Visitor extends Entity
 {
@@ -87,6 +88,9 @@ class Visitor extends Entity
 
 	public function setLastLogin($lastLogin)
 	{
+		if ($lastLogin) {
+			$lastLogin->setTimezone(new DateTimeZone($this->site()->timezone));
+		}
 		$this->lastLogin = $lastLogin;
 	}
 

@@ -4,6 +4,7 @@ namespace app\controllers\api;
 
 require_once 'lib/mailer/Mailer.php';
 
+use DateTime;
 use I18n;
 use Mailer;
 use MeuMobi;
@@ -56,7 +57,7 @@ class VisitorsController extends ApiController
 				]);
 			}
 
-			$visitor->setLastLogin(date('Y-m-d H:i:s'));
+			$visitor->setLastLogin(new DateTime('NOW'));
 			$repository->update($visitor);
 
 			$response += [

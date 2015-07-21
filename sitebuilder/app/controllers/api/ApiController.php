@@ -262,7 +262,7 @@ class ApiController extends \lithium\action\Controller {
 
 		if ($this->visitor) {
 			if ($this->visitor->isPasswordValid() || $allowExpired) {
-				$this->visitor->setLastLogin(date('Y-m-d H:i:s'));
+				$this->visitor->setLastLogin(new DateTime('NOW'));
 				$repository->update($this->visitor);
 			} else {
 				throw new ForbiddenException();
