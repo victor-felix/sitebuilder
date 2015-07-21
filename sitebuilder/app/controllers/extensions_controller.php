@@ -4,7 +4,7 @@ use app\models\Extensions;
 use meumobi\sitebuilder\Site;
 
 class ExtensionsController extends AppController {
-	protected $uses = array('Categories');
+	protected $uses = ['Categories'];
 
 	public function add($extension, $category_id = null) {
 		$site = $this->getCurrentSite();
@@ -29,11 +29,11 @@ class ExtensionsController extends AppController {
 			if($extension->validates() && $extension->save()) {
 				$message = s('Extension successfully added. Your items are being processed and will be available shortly.');
 				if($this->isXhr()) {
-					$json = array(
+					$json = [
 						'success'=>$message,
 						'go_back'=>true,
 						'refresh'=>'/categories/edit/' . $category->id
-					);
+					];
 					$this->respondToJSON($json);
 				}
 				else {
@@ -47,10 +47,12 @@ class ExtensionsController extends AppController {
 
 	public function edit($id = null) {
 		$site = $this->getCurrentSite();
-		$extension = Extensions::find('type', array('conditions' => array(
-			'_id' => $id,
-			'site_id' => $site->id(),
-		)));
+		$extension = Extensions::find('type', [
+			'conditions' => [
+				'_id' => $id,
+				'site_id' => $site->id(),
+			]
+		]);
 
 		$category = Model::load('Categories')->firstById($extension->category_id);
 
@@ -59,11 +61,11 @@ class ExtensionsController extends AppController {
 			if($extension->validates() && $extension->save()) {
 				$message = s('Extension successfully edited');
 				if($this->isXhr()) {
-					$json = array(
+					$json = [
 						'success'=>$message,
 						'go_back'=>true,
 						'refresh'=>'/categories/edit/' . $category->id
-					);
+					];
 					$this->respondToJSON($json);
 				}
 				else {
@@ -77,10 +79,12 @@ class ExtensionsController extends AppController {
 
 	public function enable($id = null) {
 		$site = $this->getCurrentSite();
-		$extension = Extensions::find('type', array('conditions' => array(
-			'_id' => $id,
-			'site_id' => $site->id(),
-		)));
+		$extension = Extensions::find('type', [
+			'conditions' => [
+				'_id' => $id,
+				'site_id' => $site->id(),
+			]
+		]);
 
 		$extension->enabled = $extension->enabled ? 0 : 1;
 		if($extension->save()) {
@@ -89,11 +93,11 @@ class ExtensionsController extends AppController {
 				: s('Extension successfully disabled');
 
 			if($this->isXhr()) {
-				$json = array(
+				$json = [
 					'success'=>$message,
 					'go_back'=>true,
 					'refresh'=>'/categories/edit/' . $extension->category_id
-				);
+				];
 				$this->respondToJSON($json);
 			}
 			else {
@@ -103,5 +107,26 @@ class ExtensionsController extends AppController {
 		}
 
 		$this->set(compact('extension','category'));
+	}
+
+	public function delete($id = null)
+	{
+		$extension = Extensions::find('first', ['conditions' => [
+			'_id' => $id
+		]]);
+		$categoryId = $extension->category_id;
+		Extensions::remove(['_id' => $id]);
+		$message = s('Extension successfully deleted.');
+
+		if ($this->isXhr()) {
+			$this->respondToJSON([
+				'success' => $message,
+				'go_back' => true,
+				'refresh' => '/categories/edit/' . $categoryId
+			]);
+		} else {
+			Session::writeFlash('success', $message);
+			$this->redirect('/categories/edit/' . $categoryId);
+		}
 	}
 }
