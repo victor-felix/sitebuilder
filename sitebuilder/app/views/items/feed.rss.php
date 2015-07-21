@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <rss version="2.0">
    <channel>
-      <title><?php echo Sanitize::html($site->title) ?></title>
-      <link><?php echo $site->link() ?></link>
-      <description><?php echo Sanitize::html($site->title) ?></description>
+      <title><?= e($site->title) ?></title>
+      <link><?= $site->link() ?></link>
+      <description><?= e($site->title) ?></description>
       <?php foreach($items as $item): ?>
         <item>
-            <title><?php echo Sanitize::html($item['title']) ?></title>
-            <link><?php echo $item['link'] ?: 'http://meumobi.com' ?></link>
-            <description><![CDATA[<?php echo $item['description'] ?>]]></description>
-            <pubDate><?php echo date(DATE_RSS, $item['published']) ?></pubDate>
-            <guid><?php echo $item['guid'] ?: 'http://meumobi.com/' ?></guid>
+            <title><?= e($item['title']) ?></title>
+            <link><?= $item['link'] ?></link>
+            <description><![CDATA[<?= $item['description'] ?>]]></description>
+            <pubDate><?= $item['published'] ?></pubDate>
+            <guid><?= $item['guid'] ?></guid>
         </item>
       <?php endforeach ?>
    </channel>

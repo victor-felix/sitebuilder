@@ -2,14 +2,16 @@
 
 namespace app\controllers\api;
 
-use app\models\Items;
-use app\models\RecordNotFoundException;
+use Exception;
 use I18n;
 use Inflector;
-use lithium\core\Object;
-use meumobi\sitebuilder\services\ItemCreation;
 use Model;
 use View;
+use app\models\Items;
+use app\models\RecordNotFoundException;
+use lithium\core\Object;
+use meumobi\sitebuilder\presenters\api\RssItemPresenter;
+use meumobi\sitebuilder\services\ItemCreation;
 
 class ItemsController extends ApiController {
 	const PAGE_LIMIT = 20;
@@ -59,8 +61,10 @@ class ItemsController extends ApiController {
 		$url = "/api/{$this->site()->domain()}/categories/{$category->id}/items";
 		$url_params = ['category' => $category_id];
 
+		$items = $this->getItems($params, $url, $url_params);
+
 		$data = [
-			'items' => $this->getItems($params, $url, $url_params),
+			'items' => RssItemPresenter::presentSet($items),
 			'site' => $this->site()
 		];
 
@@ -325,8 +329,8 @@ class ItemsController extends ApiController {
 		}
 
 		foreach ($need as $field) {
-			if (!array_key_exists($field,$data)) {
-				throw new \Exception('need more params: '. $field);
+			if (!array_key_exists($field, $data)) {
+				throw new Exception('need more params: '. $field);
 			}
 		}
 
