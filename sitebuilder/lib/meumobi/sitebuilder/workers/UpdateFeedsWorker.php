@@ -1,126 +1,66 @@
 <?php
-//TODO order and rename methods
-//TODO clean code, arrays, indentation etc.
-//TODO refactor old imported Articles methods
 
 namespace meumobi\sitebuilder\workers;
 
-require_once 'lib/dom/SimpleHtmlDom.php';
-require_once 'lib/simplepie/SimplePie.php';
-require_once 'lib/utils/Video.php';
-
-use DOMDocument;
-use Filesystem;
-use HTMLPurifier;
-use HTMLPurifier_Config;
-use Mapper;
-use SimplePie;
-use Video;
-use app\models\Items;
+use Exception;
 use app\models\extensions\Rss;
-use app\models\items\Articles;
-use lithium\data\Connections;
 use meumobi\sitebuilder\Logger;
-use meumobi\sitebuilder\repositories\RecordNotFoundException;//TODO move exceptions for a more generic namespace
-use meumobi\sitebuilder\services\ItemCreation;
+use meumobi\sitebuilder\repositories\RecordNotFoundException;
+use meumobi\sitebuilder\services\UpdateNewsFeed;
+use meumobi\sitebuilder\validators\ParamsValidator;
 
-class UpdateFeedsWorker extends Worker
+class UpdateFeedsWorker
 {
-	const ARTICLES_TO_KEEP = 50;
-
-	protected $category;
-	protected $extension;
-	protected $priority = Worker::PRIORITY_LOW;
-	protected $blacklist = ['gravatar.com'];
-	protected $stats = [
-		'total_updated_feeds' => 0,
-		'total_failed_feeds' => 0,
-		'failed_feeds'=> [],
-		'extensions' => []
-	];
-
-	public function perform()
+	public function perform($params)
 	{
+		list($priority) = ParamsValidator::validate($params, ['priority']);
+
+		Logger::info('workers', 'updating feeds', [
+			'priority' => $priority
+		]);
+
 		$start = microtime(true);
-		Logger::info('workers', 'updating feeds', [ 'priority' => $this->priority ]);
-		$itemCreationService = new ItemCreation();
-		array_walk($this->getExtensionsIds(), [$this, 'updateFromFeed'], $itemCreationService);
-
-		if($this->stats['extensions']) {
-			Logger::info('workers', 'updated feeds', $this->stats['extensions']);
-		}
-
-		unset($this->stats['extensions']);
-		$this->stats['priority'] = $this->getPriority();
-		$this->stats['elapsed_time'] = microtime(true) - $start;
-		Logger::info('workers', 'finished updating feeds', $this->stats);
-	}
-
-	protected function getPriority()
-	{
-		return $this->priority;
-	}
-
-	protected function updateFromFeed($extensionId, $key, $itemCreationService)
-	{
-		$this->stats['extensions'][$extensionId] = [
-			'extension_id' => $extensionId,
-			'total_articles' => 0,
-			'updated_articles' => 0,
-			'created_articles' => 0,
-			'removed_articles' => 0,
-			'total_images' => 0,
-			'failed_images' => 0,
+		$stats = [
+			'total_updated_feeds' => 0,
+			'total_failed_feeds' => 0,
+			'failed_feeds'=> [],
+			'categories' => [],
+			'priority' => $priority
 		];
 
-		try {
-			$this->extension = $this->getExtension($extensionId);
-			$this->category = $this->getCategory($this->extension);
-			$this->stats['extensions'][$extensionId]['category_id'] = $this->category->id();
+		$extensions = $this->getExtensionsByPriority($priority);
 
-			$feed = $this->getFeed();
-			$this->updateArticles($feed, $itemCreationService);
-			$this->removeOldArticles();
-
-			$this->category->updated = date('Y-m-d H:i:s');
-			$this->category->save();
-
-			$this->extension->priority = self::PRIORITY_LOW;
-			$this->extension->save(null, ['callbacks' => false]);
-			$this->stats['total_updated_feeds'] += 1;
-		} catch (\Exception $e) {
-			unset($this->stats['extensions'][$extensionId]);
-			$this->stats['total_failed_feeds'] += 1;
-			$this->stats['failed_feeds'][] = [
-				'extension_id' => $extensionId,
-				'error' => $e->getMessage(),
-			];
+		foreach($extensions as $extension) {
+			try {
+				$category = $this->getCategory($extension);
+				$updateNewsFeed = new UpdateNewsFeed();
+				$stats['categories'][$category->id] =
+					$updateNewsFeed->perform(compact('category', 'extension'));
+				$stats['total_updated_feeds'] += 1;
+			} catch (Exception $e) {
+				$stats['total_failed_feeds'] += 1;
+				$stats['failed_feeds'][] = [
+					'extension_id' => (string) $extension->id,
+					'category_id' => $extension->category_id,
+					'site_id' => $extension->site_id,
+					'error' => $e->getMessage(),
+				];
+			}
 		}
+
+		$stats['elapsed_time'] = microtime(true) - $start;
+		Logger::info('workers', 'finished updating feeds', $stats);
 	}
 
-	protected function getExtension($id)
+	protected function getExtensionsByPriority($priority)
 	{
-		return $extension = Rss::find('first', array('conditions' => array(
-			'_id' => $id,
-		)));
-	}
-
-	protected function getExtensionsIds()
-	{
-		$extensions = Rss::find('all', [
+		return Rss::find('all', [
 			'conditions' => [
 				'extension' => 'rss',
 				'enabled' => 1,
-				'priority' => $this->getPriority()
+				'priority' => $priority,
 			],
-			'fields' => [
-				'_id',
-			]
-		])->to('array');
-
-		return array_map(function($row) {
-			return $row['_id'];
-		}, $extensions);
+		]);
 	}
 
 	protected function getCategory($extension)
@@ -128,350 +68,10 @@ class UpdateFeedsWorker extends Worker
 		try {
 			return Rss::category($extension);
 		} catch (RecordNotFoundException $e) {
-			$extensionData = $extension->to('array');
-			Rss::remove(array('_id' => $extension->_id));
-			throw new Exception('Invalid extension removed from database: ' . print_r($extensionData, 1));
+			$extension->enabled = 0;
+			$extension->save();
+			throw new Exception('Invalid extension category');
 		}
-	}
-
-	protected function updateArticles($feed, $itemCreationService)
-	{
-		$feedItems = $feed->get_items();
-
-		# sorts the items with most recent first
-		usort($feedItems, function($a, $b) {
-			return $a->get_date('U') < $b->get_date('U') ? 1 : -1;
-		});
-
-		$feedItems = array_reverse(array_slice($feedItems, 0, self::ARTICLES_TO_KEEP));
-
-		foreach ($feedItems as $feedItem) {
-			$item = $this->getItem($feedItem);
-			if ($item) $this->updateArticle($item, $feedItem, $itemCreationService);
-		}
-	}
-
-	protected function getItem($feedItem)
-	{
-		$classname = '\app\models\items\\' . \Inflector::camelize($this->category->type);
-		$item = $classname::find('first', [
-			'conditions' => [
-				'parent_id' => $this->category->id,
-				'guid' => $feedItem->get_id()
-			]
-		]);
-
-		if (!$item) {
-			$item = $classname::create();
-			$this->stats['extensions'][(string) $this->extension->_id]['created_articles'] += 1;
-		} else {
-			// we are reverting #68 for the moment, so we don't need to update
-			// articles anymore. this will be reverted again soon.
-			return;
-			$this->stats['extensions'][(string) $this->extension->_id]['updated_articles'] += 1;
-		}
-
-		return $item;
-	}
-
-	protected function updateArticle($item, $feedItem, $itemCreationService)
-	{
-		$images = $this->getArticleImages($feedItem);
-		$extensionId = (string) $this->extension->_id;
-		//remove captions from description
-		$remove = array();
-		foreach ($images as $img) {
-			if (is_array($img) && $img['alt']) {
-				$remove[] = "<p>{$img['alt']}</p>";
-			}
-		}
-
-		$author = $feedItem->get_author();
-		$medias = $this->getArticleMedias($feedItem);
-
-		$data = array(
-			'site_id' => $this->category->site_id,
-			'parent_id' => $this->category->id,
-			'guid' => $this->filterGuid($feedItem->get_id()),
-			'link' => $feedItem->get_link(),
-			'title' => strip_tags($feedItem->get_title()),
-			'description' => $this->cleanupHtml($feedItem, $remove, $this->extension->use_html_purifier),
-			'published' => $feedItem->get_date('U') ? gmdate('Y-m-d H:i:s', $feedItem->get_date('U')) : null,
-			'author' => $author ? $author->get_name() : '',
-			'format' => 'html',
-			'type' => $this->category->type,
-			'medias' => $medias
-		);
-
-		$item->set($data);
-
-		list($created, $errors) = $itemCreationService->create($item, [
-			'sendPush' => $this->getPriority() != Worker::PRIORITY_HIGH
-		]);
-
-		$this->stats['extensions'][$extensionId]['total_articles'] += 1;
-
-		foreach ($images as $image) {
-			$imageAlt = '';
-			if (is_array($image)) {
-				$imageAlt = $image['alt'];
-				$image = $image['src'];
-			}
-			$image = $this->getImageUrl($image, $item['guid']);
-			$result = \Model::load('Images')->download($item, $image, array(
-				'url' => $image,
-				'title' => $imageAlt,
-				'visible' => 1
-			));
-
-			if ($result) {
-				$this->stats['extensions'][$extensionId]['total_images'] += 1;
-			} else {
-				$this->stats['extensions'][$extensionId]['failed_images'] += 1;
-			}
-		}
-	}
-
-	protected function removeOldArticles()
-	{
-		$conditions = array(
-			'site_id' => $this->extension->site_id,
-			'parent_id' => $this->extension->category_id
-		);
-
-		$count = Articles::find('count', array('conditions' => $conditions));
-
-		if ($count > self::ARTICLES_TO_KEEP) {
-			$ids = array_keys(Articles::find('list', array(
-				'conditions' => $conditions,
-				'limit' => $count - self::ARTICLES_TO_KEEP,
-				'order' => array('pubdate' => 'ASC')
-			)));
-
-			if ($ids) {
-				Articles::remove(array('_id' => $ids));
-				$this->stats['extensions'][(string)$this->extension->_id]['removed_articles'] = count($ids);
-			}
-		}
-	}
-
-	protected function cleanupHtml($feedItem, $strToRemove = false, $purify = true)
-	{
-		$html = $feedItem->get_content();
-		if ($purify) {
-			$purifier = $this->getPurifier();
-			$html = $purifier->purify($html);
-		}
-		$html = mb_convert_encoding($html, 'UTF-8', mb_detect_encoding($html));
-		$html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
-
-		if ($strToRemove) {
-			$html = str_replace($strToRemove, '', (string)$html);
-		}
-
-		if(!empty($html)) {
-			$doc = new DOMDocument();
-			$doc->loadHTML($html);
-			$body = $doc->getElementsByTagName('body')->item(0);
-			$results = '';
-
-			foreach($body->childNodes as $node) {
-				if($node->nodeType == XML_TEXT_NODE) {
-					$content = trim($node->textContent);
-					if($content) {
-						$new_node = $doc->createElement('p', $content);
-						$node = $new_node;
-					}
-				}
-				if($node->nodeType == XML_ELEMENT_NODE) {
-					$results .= $doc->saveHTML($node) . PHP_EOL;
-				}
-			}
-		}
-		else {
-			$results = '';
-		}
-
-		return $results;
-	}
-
-	protected function getArticleImages($feedItem)
-	{
-		$images = $this->getEnclosureImages($feedItem);
-		$imagesAreInvalid = empty($images) || (is_array($images) && count($images) == 1 && !$images[0]);
-
-		if($imagesAreInvalid) {
-			if ($image = $feedItem->get_item_tags(SIMPLEPIE_NAMESPACE_RSS_20, 'image')) {
-				$images = (array)$image[0]['data'];
-			} else {
-				$images = $this->getContentImages($feedItem);
-			}
-		}
-
-		foreach($images as $k => $image) {
-			if (is_array($image)) {
-				$image = $image['src'];
-			}
-			if($this->isBlackListed($image)) {
-				unset($images[$k]);
-			}
-		}
-
-		return $images;
-	}
-
-	protected function getArticleMedias($feedItem)
-	{
-			$medias = [];
-			foreach($feedItem->get_enclosures() as $enclosure) {
-				if ($enclosure->get_link())//stackoverflow.com/questions/4053664/simplepie-includes-phantom-enclosures-that-dont-exist
-					$medias[] = [
-						'url' => $enclosure->get_link(),
-						'type' => $enclosure->get_type(),
-						'title' => html_entity_decode($enclosure->get_title(), ENT_QUOTES, 'UTF-8'),
-						'length' => $enclosure->get_length(),
-						'thumbnails' => $enclosure->get_thumbnails(),
-					];
-			}
-			$medias = array_merge($medias, $this->getContentVideos($feedItem));
-			//try to generate video thumbs if none is set
-			return array_map(function($media) {
-				if (!$media['thumbnails'])
-					$media['thumbnails'] = Video::getThumbnails($media['url']); //return thumbnails if the url is from a video
-				return $media;
-			}, $medias);
-	}
-
-	protected function getContentVideos($feedItem)
-	{
-		$videos = [];
-		$dom = new \DOMDocument('1.0', 'UTF-8');
-		@$dom->loadHtml('<?xml encoding="UTF-8">' . $feedItem->get_content());
-		$xpath = new \DOMXPath($dom);
-		$nodes = $xpath->query('//iframe[contains(@src,"youtube")
-			or contains(@src,"dailymotion")
-			or contains(@src,"canalplus")
-			or contains(@src,"gfycat")
-			or contains(@src,"vimeo")]');
-		if ($nodes->length) {
-			foreach ($nodes as $iframe) {
-					$videos[] = [
-					'url' => $iframe->getAttribute('src'),
-					'type' => 'text/html',
-					'title' => '',
-					'thumbnails' => [],
-					'length' => null,
-					];
-			}
-		}
-		return $videos;
-	}
-
-	protected function getContentImages($feedItem)
-	{
-		$dom = new \DOMDocument('1.0', 'UTF-8');
-		@$dom->loadHtml('<?xml encoding="UTF-8">' . $feedItem->get_content());
-		$xpath = new \DOMXPath($dom);
-		$images = array();
-		$src = array();
-
-		$nodes = $xpath->query('//a[@rel="lightbox"]');
-		if ($nodes->length) {
-			foreach ($nodes as $img) {
-				$src []= $img->getAttribute('src');
-				$images []= empty($src)?$img->getAttribute('href'):$src;
-			}
-			return $images;
-		}
-
-		$nodes = $xpath->query('//img[contains(@src, "wp-content/uploads")]|//img[contains(@src, "/photos/")] ');
-		if ($nodes->length) {
-			foreach ($nodes as $img) {
-				$images []= array(
-					'src' => $img->getAttribute('src'),
-					'alt' => $img->getAttribute('alt')
-				);
-			}
-		}
-
-		return $images;
-	}
-
-	protected function getEnclosureImages($feedItem)
-	{
-		$images = array();
-		$enclosures = $feedItem->get_enclosures();
-		if(is_null($enclosures)) return $images;
-
-		foreach($enclosures as $enclosure) {
-			$medium = $enclosure->get_medium();
-			if(!$medium || $medium == 'image') {
-				$images []= $enclosure->get_link();
-			}
-		}
-		return $images;
-	}
-
-	protected function filterGuid($guid)
-	{
-		$guid = preg_replace('%;jsessionid=[\w\d]+%', '', $guid);
-
-		if(preg_match('%rj\.gov\.br%', $guid)) {
-			$guid = preg_replace('%\.lportal.*articleId=%', '?articleId=', $guid);
-		}
-
-		return $guid;
-	}
-
-	protected function getImageUrl($url, $articleUrl)
-	{
-		if(Mapper::isRoot($url)) {
-			$domain = parse_url($articleUrl, PHP_URL_HOST);
-			$url = 'http://' . $domain . $url;
-		}
-		else if(preg_match('%^(http://download.rj.gov.br/imagens/\d+/\d+/\d+.jpg)%', $url, $output)) {
-			return $output[0];
-		}
-
-		return $url;
-	}
-
-	protected function getPurifier()
-	{
-		$config = HTMLPurifier_Config::createDefault();
-		$path = Filesystem::path(APP_ROOT . '/tmp/cache/html_purifier');
-		if (!file_exists($path))
-			mkdir($path, 0777, true);
-		$config->set('Cache.SerializerPath', $path);
-		$config->set('HTML.Allowed', 'b,i,br,p,strong');
-		return new HTMLPurifier($config);
-	}
-
-	protected function isBlackListed($link)
-	{
-		foreach($this->blacklist as $i) {
-			$pattern = preg_quote($i);
-			if(preg_match('%' . $pattern . '%', $link)) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	protected function getFeed()
-	{
-		$feed = new SimplePie();
-		$feed->enable_cache(false);
-		$feed->set_feed_url($this->extension->url);
-		$strip_htmltags = $feed->strip_htmltags;
-		array_splice($strip_htmltags, array_search('iframe', $strip_htmltags), 1);
-		$feed->strip_htmltags($strip_htmltags);
-		$feed->init();
-		if ($feed->error()) {
-			throw new \Exception($feed->error());
-		}
-		return $feed;
 	}
 }
 
