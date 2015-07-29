@@ -37,6 +37,11 @@ class PushNotificationWorker extends Worker
 			return;
 		}
 
+		if (!$devices) {
+			Logger::info('push_notification', 'no devices available', $logData);
+			return;
+		}
+
 		Logger::info('push_notification', 'sending push notification', $logData + [
 			'content' => $content,
 			'number_of_devices' => count($devices),
