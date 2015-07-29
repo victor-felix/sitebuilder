@@ -29,8 +29,8 @@ $mysql = array (
 		'development' => array (
 				'driver' => 'MySql',
 				'host' => 'localhost',
-				'user' => 'meumobi',
-				'password' => 'q1T10Cr',
+				'user' => 'root',
+				'password' => 'root',
 				'database' => 'dev_partners',
 				'prefix' => ''
 		),
@@ -59,7 +59,7 @@ $mongodb = array (
 		)
 );
 
-$env = Config::read ( 'App.environment' );
-Connection::add ( $mysql );
-Connection::add ( 'default', $mysql [$env] );
-Connections::add ( 'default', $mongodb [$env] );
+$env = Config::read('App.environment');
+Connection::add($mysql);
+Connection::add('default', $mysql [$env]);
+Connections::add('default', $mongodb [$env]);
