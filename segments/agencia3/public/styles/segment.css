@@ -112,11 +112,14 @@ body {
 div.theme-picker > ul > li.selected {
   box-shadow: 0 0 0 3px #c2cb1e inset; }
 
-div.dashboard .list li .link .icon
-, div.dashboard .list li:hover .arrow
-, .placeholder-links a img {
-  background-color: #c2cb1e; }
+.featured-list li .link .icon,
+.placeholder-links a img {
+  background-color: #c2cb1e;
+}
 
-div.dashboard .list li .link h3,
+.featured-list li .link h3,
+.featured-list > li .link .icons,
+.featured-list li:hover .arrow,
 div.dashboard .domain a {
-  color: #c2cb1e; }
+  color: #c2cb1e;;
+}

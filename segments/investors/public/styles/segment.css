@@ -113,11 +113,13 @@ div.theme-picker > ul > li.selected {
   box-shadow: 0 0 0 3px #2f3e6e inset; }
 
 .featured-list li .link .icon
-
 , .placeholder-links a img {
-  background-color: #2f3e6e; }
+  background-color: #2f3e6e;
+}
 
 .featured-list li .link h3,
-.featured-list > li .link .icons, .featured-list li:hover .arrow,
+.featured-list > li .link .icons,
+.featured-list li:hover .arrow,
 div.dashboard .domain a {
-  color: #2f3e6e; }
+  color: #2f3e6e;
+}
