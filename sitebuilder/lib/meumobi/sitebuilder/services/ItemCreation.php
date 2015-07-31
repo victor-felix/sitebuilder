@@ -34,6 +34,8 @@ class ItemCreation
 			$this->addOrder($item);
 			$item->save();
 
+			$downloadStats = $this->downloadImages($item, $downloadImages);
+
 			Logger::info('items', 'item created', [
 				'item_id' => $item->id(),
 				'site_id' => $item->site_id,
@@ -42,8 +44,6 @@ class ItemCreation
 				'failed_images' => $downloadStats['failed_images']
 			]);
 
-			$downloadStats = $this->downloadImages($item, $downloadImages);
-
 			if ($addMediaFileSize) {
 				$this->addMediaFileSize($item);
 			}
@@ -51,6 +51,7 @@ class ItemCreation
 			if ($sendPush) {
 				$this->sendPushNotification($item);
 			}
+
 			$created = true;
 		} else {
 			Logger::info('items', 'item can`t be created', [
