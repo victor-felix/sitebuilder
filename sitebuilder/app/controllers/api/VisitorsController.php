@@ -69,6 +69,7 @@ class VisitorsController extends ApiController
 			}
 
 			if ($errors) {
+				$response['error'] = $errors[0];
 				$response['errors'] = $errors;
 			}
 
