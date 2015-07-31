@@ -1,0 +1,8 @@
+'visitors/mail/add':
+  subject: '%s: O novo aplicativo de Comunicação Interna da tibox' 
+  body: 'Olá,<br/><br/>Gostaríamos de convidá-lo para efetuar o download em seu celular do aplicativo infomobi, a nova ferramenta de Comunicação Interna da tibox. Por meio dele, divulgaremos notícias e comunicados importantes sobre a empresa, de forma fácil, privada e segura. <br/><br/> O App infomobi é compatível com smartphones Android e iOS. Pelo seu celular, abra este email e clique no link a seguir para iniciar a instalação: <a href="https://build.phonegap.com/apps/1523703/install">http://bit.ly/1fJf2qb</a><br/><br/>Se preferir, faça o download usando o QR code seguinte:<br/><img class="qr-code" src="https://chart.googleapis.com/chart?chs=116x116&amp;cht=qr&amp;chl=https://build.phonegap.com/apps/1523703/install&amp;chld=L|1&amp;choe=UTF-8"><br/><br/>'
+
+'visitors/mail':
+  footer: '<br /><br /> Para mais informações, entre em contato conosco: contact@tibox.com.br<br /><br />Atenciosamente, <br /> <br />Equipe tibox'
+'Como instalar infoMobi no iOS': 'Como instalar infomobi no iOS'
+'Como instalar infoMobi no Android': 'Como instalar infomobi no Android'
