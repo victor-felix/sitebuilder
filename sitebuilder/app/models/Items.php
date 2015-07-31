@@ -145,6 +145,8 @@ class Items extends \lithium\data\Model {
 			unset($self['groups']);
 		}
 
+		$self['pubdate'] = $self['published'];
+
 		$self['images'] = [];
 		$images = $this->images($entity);
 		foreach($images as $image) {
