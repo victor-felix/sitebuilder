@@ -304,7 +304,10 @@ class UpdateNewsFeed
 	protected function extractImages($article, $xpath)
 	{
 		$filter = function($enclosure) {
-			return $enclosure->get_link() && $enclosure->get_medium() == 'image';
+			return $enclosure->get_link() && (
+				!$enclosure->get_medium() ||
+				$enclosure->get_medium() == 'image'
+			);
 		};
 
 		$map = function($enclosure) {
