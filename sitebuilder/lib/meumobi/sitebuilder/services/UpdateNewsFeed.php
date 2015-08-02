@@ -200,6 +200,7 @@ class UpdateNewsFeed
 
 	protected function buildDOMDoc($html)
 	{
+		$html = $html ?: '<html></html>';
 		$doc = new DOMDocument('1.0', 'UTF-8');
 		$doc->loadHtml(mb_convert_encoding($html, 'HTML-ENTITIES',
 			mb_detect_encoding($html)));
