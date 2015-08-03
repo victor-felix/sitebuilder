@@ -58,7 +58,7 @@ class VisitorsController extends AppController
 			$validator = new VisitorsPersistenceValidator();
 			if ($validator->validate($visitor)->isValid()) {
 				$this->repository->create($visitor);
-				$data['title'] = s('[%s]: Get started', $site->title);
+				$data['title'] = s('visitors/mail/add.subject', $site->title);
 				$this->sendVisitorEmail($data);
 				Session::writeFlash('success', s('Visitor successfully created.'));
 				$this->redirect('/visitors');
