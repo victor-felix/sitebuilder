@@ -6,10 +6,6 @@ use app\models\Extensions;
 
 class EventFeed extends Extensions
 {
-	const PRIORITY_HIGH = 2;
-	const PRIORITY_MEDIUM = 1;
-	const PRIORITY_LOW = 0;
-
 	protected $specification = array(
 		'title' => 'Event Feed',
 		'description' => 'Import content automatically from a events feed',
@@ -21,7 +17,13 @@ class EventFeed extends Extensions
 		'url' => array(
 			'title' => 'Feed URL',
 			'type' => 'string'
-		)
+		),
+		'import_mode' => array(
+			'title' => 'Method of import',
+			'type' => 'radio',
+			'options' => array('Inclusive', 'Exclusive'),
+			'value' => 0,
+		),
 	);
 
 	public static function __init()
@@ -32,6 +34,7 @@ class EventFeed extends Extensions
 
 		$self->_schema = $parent->_schema + array(
 			'url' => array('type' => 'string', 'default' => ''),
+			'import_mode' => array('type' => 'integer', 'default' => 0),
 		);
 	}
 }
