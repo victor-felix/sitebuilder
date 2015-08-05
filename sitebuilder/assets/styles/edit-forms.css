@@ -255,9 +255,6 @@
 	overflow: hidden;
 }
 
-.import_method fieldset {
-	border-bottom: none;
-}
 
 .default-form div.input.checkbox input {
 	margin-top: 5px;
@@ -283,4 +280,19 @@
   -webkit-appearance: none;
   border: none !important;
   outline: 0px !important;
+}
+
+.default-form .radio fieldset {
+	border-bottom: none;
+}
+
+.default-form .radio fieldset label {
+    float: left;
+    font-size: 15px;
+    width: 150px;
+}
+
+.default-form .radio input {
+  float: left;
+  margin: 3px 0px 0 5px;
 }

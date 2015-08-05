@@ -170,7 +170,6 @@ class FormHelper extends Helper {
                 break;
             case 'radio':
                 $options['legend'] = $label;
-                $label = false;
                 $input = $this->radio($name, $options);
                 break;
             case 'date':
