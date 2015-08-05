@@ -18,6 +18,12 @@ class Rss extends Extensions
 			'title' => 'Feed URL',
 			'type' => 'string'
 		),
+		'import_mode' => array(
+			'title' => 'Method of import',
+			'type' => 'radio',
+			'options' => array('Inclusive', 'Exclusive'),
+			'value' => 0,
+		),
 		'use_html_purifier' => array(
 			'title' => 'Clean html',
 			'type' => 'boolean'
@@ -33,6 +39,7 @@ class Rss extends Extensions
 		$self->_schema = $parent->_schema + array(
 			'url' => array('type' => 'string', 'default' => ''),
 			'use_html_purifier' => array('type' => 'integer', 'default' => 1),
+			'import_mode' => array('type' => 'integer', 'default' => 0),
 		);
 	}
 }
