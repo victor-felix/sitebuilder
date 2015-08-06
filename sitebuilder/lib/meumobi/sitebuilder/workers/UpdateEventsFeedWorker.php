@@ -16,7 +16,7 @@ class UpdateEventsFeedWorker
 		list($priority) = ParamsValidator::validate($params, ['priority']);
 
 		Logger::info('workers', 'updating events feeds', [
-			'priority' => $priority
+			'priority' => $priority,
 		]);
 
 		$start = microtime(true);
@@ -25,7 +25,7 @@ class UpdateEventsFeedWorker
 			'total_failed_feeds' => 0,
 			'failed_feeds'=> [],
 			'categories' => [],
-			'priority' => $priority
+			'priority' => $priority,
 		];
 
 		$extensions = $this->getExtensionsByPriority($priority);

@@ -2,11 +2,11 @@
 
 namespace meumobi\sitebuilder\services;
 
-use app\models\items\Events;
+use SimpleXMLElement;
 use app\models\Extensions;
+use app\models\items\Events;
 use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\validators\ParamsValidator;
-use SimpleXMLElement;
 
 class UpdateEventsFeed
 {
@@ -43,7 +43,7 @@ class UpdateEventsFeed
 
 		Logger::info('extensions', 'extension priority lowered', [
 			'extension_id' => (string) $extension->_id,
-			'category_id' => $extension->category_id
+			'category_id' => $extension->category_id,
 		]);
 
 		return $stats;

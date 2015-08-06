@@ -6,25 +6,25 @@ use app\models\Extensions;
 
 class EventFeed extends Extensions
 {
-	protected $specification = array(
+	protected $specification = [
 		'title' => 'Event Feed',
 		'description' => 'Import content automatically from a events feed',
 		'type' => 'event-feed',
-		'allowed-items' => array('events'),
-	);
+		'allowed-items' => ['events'],
+	];
 
-	protected $fields = array(
-		'url' => array(
+	protected $fields = [
+		'url' => [
 			'title' => 'Feed URL',
 			'type' => 'string'
-		),
-		'import_mode' => array(
+		],
+		'import_mode' => [
 			'title' => 'Method of import',
 			'type' => 'radio',
-			'options' => array('Inclusive', 'Exclusive'),
+			'options' => ['Inclusive', 'Exclusive'],
 			'value' => 0,
-		),
-	);
+		],
+	];
 
 	public static function __init()
 	{
@@ -32,10 +32,10 @@ class EventFeed extends Extensions
 		$self = static::_object();
 		$parent = parent::_object();
 
-		$self->_schema = $parent->_schema + array(
-			'url' => array('type' => 'string', 'default' => ''),
-			'import_mode' => array('type' => 'integer', 'default' => 0),
-		);
+		$self->_schema = $parent->_schema + [
+			'url' => ['type' => 'string', 'default' => ''],
+			'import_mode' => ['type' => 'integer', 'default' => 0],
+		];
 	}
 }
 
