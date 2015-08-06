@@ -57,7 +57,9 @@ class UpdateEventsFeed
 
 	protected function extractEvents($feed, $category)
 	{
-		return array_map(function($item) use ($category) {
+		$events = [];
+		//tried with array_map, but din't worked because on the SimpleXmlElement
+		foreach ($feed as $item) {
 			$event = Events::create();
 			$event->set([
 				'site_id' => $category->site_id,
@@ -70,7 +72,9 @@ class UpdateEventsFeed
 				'end_date' => (string)$item->end_date,
 				'type' => 'events',
 			]);
-			return $event;
-		}, iterator_to_array($feed));
+			$events[] = $event;
+		}
+
+		return $events;
 	}
 }

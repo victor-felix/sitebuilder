@@ -21,31 +21,32 @@ class BulkImportItems
 		]);
 
 		$stats = [
-			'existing' => 0,
-			'created' => 0,
+			'existing_items' => 0,
+			'created_items' => 0,
 		];
 
-
+		$importedItemsIds = [];
 		$shouldCreate = $shouldCreate ?: function($new) { return true; };
 		$shouldUpdate = $shouldUpdate ?: function($new) {
 			return $new->id();
 		};
 
-		$importedItemsIds = array_reduce($items, function($ids, $item)
-			use ($shouldCreate, $shouldUpdate, $stats) {
+
+		foreach ($items as $item) {
 			if ($shouldUpdate($item) && $this->updateItem($item)) {
-				$ids[] = $item->id();
-				$stats['existing'] += 1;
+				$importedItemsIds[] = $item->id();
+				$stats['existing_items'] += 1;
 			} else if ($shouldCreate($item) && $this->createItem($item)) {
-				$ids[] = $item->id();
-				$stats['created'] += 1;
+				$importedItemsIds[] = $item->id();
+				$stats['created_items'] += 1;
 			}
-		}, []);
+		}
 
 
 		if ($mode == static::EXCLUSIVE) {
 			Items::remove(['_id' => ['$nin' => $importedItemsIds]]);
 		}
+
 		return $stats;
 	}
 
