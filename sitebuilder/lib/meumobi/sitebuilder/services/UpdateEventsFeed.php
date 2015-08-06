@@ -17,22 +17,11 @@ class UpdateEventsFeed
 
 		$feed = $this->fetchFeed($extension->url);
 		$events = $this->extractevents($feed, $category);
-
-		$shouldCreate = function($event) {
-			return !Events::find('count', [
-				'conditions' => [
-					'parent_id' => $event->parent_id,
-					'guid' => $event->guid,
-				],
-			]);
-		};
-
 		$bulkImport = new BulkImportItems();
 		$stats = $bulkImport->perform([
 			'category' => $category,
 			'items' => $events,
 			'mode' => $extension->import_mode,
-			'shouldCreate' =>	$shouldCreate,
 		]);
 
 		$category->updated = date('Y-m-d H:i:s');
@@ -60,7 +49,15 @@ class UpdateEventsFeed
 		$events = [];
 		//tried with array_map, but din't worked because on the SimpleXmlElement
 		foreach ($feed as $item) {
-			$event = Events::create();
+			$event = Events::find('first', [
+				'conditions' => [
+					'parent_id' => $category->id,
+					'guid' => (string)$item['id'],
+				],
+			]);
+
+			$event = $event ?: Events::create();
+
 			$event->set([
 				'site_id' => $category->site_id,
 				'parent_id' => $category->id,

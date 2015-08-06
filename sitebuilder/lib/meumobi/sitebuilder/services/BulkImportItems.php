@@ -3,6 +3,7 @@ namespace meumobi\sitebuilder\services;
 
 use app\models\Items;
 use meumobi\sitebuilder\Logger;
+use meumobi\sitebuilder\validators\ItemsPersistenceValidator;
 use meumobi\sitebuilder\validators\ParamsValidator;
 
 class BulkImportItems
@@ -59,6 +60,9 @@ class BulkImportItems
 
 	protected function updateItem($item)
 	{
-		//TODO
+		//TODO use ItemUpdate service when it becomes available
+		$validator = new ItemsPersistenceValidator();
+		$validationResult = $validator->validate($item);
+		return $validationResult->isValid() && $item->save();
 	}
 }
