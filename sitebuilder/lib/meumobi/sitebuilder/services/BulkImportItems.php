@@ -43,9 +43,15 @@ class BulkImportItems
 			}
 		}
 
-
 		if ($mode == static::EXCLUSIVE) {
-			Items::remove(['_id' => ['$nin' => $importedItemsIds]]);
+			//NOTE this is the slower way, but is how the Categories::removeItems do, since a bulk remove throws fatal error
+			$items = Items::find('all', array('conditions' => array(
+				'_id' => ['$nin' => $importedItemsIds]
+			)));
+
+			foreach ($items as $item) {
+				Items::remove(array('_id' => $item->id()));
+			}
 		}
 
 		return $stats;
