@@ -22,7 +22,6 @@ class EventFeed extends Extensions
 			'title' => 'Method of import',
 			'type' => 'radio',
 			'options' => ['Inclusive', 'Exclusive'],
-			'value' => 0,
 		],
 	];
 

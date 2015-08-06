@@ -22,7 +22,6 @@ class Rss extends Extensions
 			'title' => 'Method of import',
 			'type' => 'radio',
 			'options' => array('Inclusive', 'Exclusive'),
-			'value' => 0,
 		),
 		'use_html_purifier' => array(
 			'title' => 'Clean html',
