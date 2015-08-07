@@ -8,8 +8,8 @@ use meumobi\sitebuilder\validators\ParamsValidator;
 
 class BulkImportItems
 {
-	const INCLUSIVE = 0;
-	const EXCLUSIVE = 1;
+	const INCLUSIVE_IMPORT = 'imclusive';
+	const EXCLUSIVE_IMPORT = 'exclusive';
 
 	public function perform($params)
 	{
@@ -43,14 +43,16 @@ class BulkImportItems
 			}
 		}
 
-		if ($mode == static::EXCLUSIVE) {
+		if ($mode == self::EXCLUSIVE_IMPORT) {
 			//NOTE this is the slower way, but is how the Categories::removeItems do, since a bulk remove throws fatal error
-			$items = Items::find('all', array('conditions' => array(
-				'_id' => ['$nin' => $importedItemsIds]
-			)));
+			$items = Items::find('all', [
+				'conditions' => [
+					'_id' => ['$nin' => $importedItemsIds]
+				]
+			]);
 
 			foreach ($items as $item) {
-				Items::remove(array('_id' => $item->id()));
+				Items::remove(['_id' => $item->id()]);
 			}
 		}
 
