@@ -7,7 +7,7 @@ use app\models\Items;
 use meumobi\sitebuilder\services\PdfThumbnailer;
 
 
-class PdfThumbnailerWorker extends Worker
+class MediaThumbnailerWorker extends Worker
 {
 	public function perform()
 	{
@@ -24,7 +24,7 @@ class PdfThumbnailerWorker extends Worker
 				'item id'  => $this->getItem()->_id,
 			]);
 		} catch(\Exception $e) {
-			$this->logger()->info('Can\'t create pdf thumbnails on item', [
+			$this->logger()->info('Can\'t create thumbnails on item', [
 				'item id'  => $e,
 			]);
 		}
@@ -32,13 +32,25 @@ class PdfThumbnailerWorker extends Worker
 
 	protected function createThumbnail(&$media)
 	{
-		if (empty($media['url'])) return;
-
+		if ($this->getFileType($media['url']) != 'pdf') return;
 		$path = PdfThumbnailer::perform([
 			'path' => $media['url'],
 			'extension' => 'png'
 		]);
-		// must save on database
 		$media['thumbnails'][] = $path;
+	}
+
+	protected function getFileType($file)
+	{
+		if (!filter_var($file, FILTER_VALIDATE_URL)) return false;
+		$headers = get_headers($file, 1);
+
+		if ($headers['Content-Type'] == 'application/pdf'
+			|| ($headers['Content-Type'] == 'application/octet-stream'
+					&& strpos($headers['Content-Disposition'], '.pdf'))) {
+			return 'pdf';
+		}
+
+		return false;
 	}
 }

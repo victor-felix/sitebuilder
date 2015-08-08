@@ -48,6 +48,8 @@ class ItemCreation
 				$this->addMediaFileSize($item);
 			}
 
+			$this->createMediaThumbnails($item);
+
 			if ($sendPush) {
 				$this->sendPushNotification($item);
 			}
@@ -73,6 +75,19 @@ class ItemCreation
 			WorkerManager::enqueue('media_filesize', ['item_id' => $item->id()]);
 		} else {
 			Logger::debug('items', 'not creating media_filesize job', [
+				'reason' => 'item has no media',
+			]);
+		}
+	}
+
+	protected function createMediaThumbnails($item)
+	{
+		$hasMedias = count($item->medias->to('array'));
+
+		if ($hasMedias) {
+			$job = WorkerManager::enqueue('media_thumbnailer', ['item_id' => $item->id()]);
+		} else {
+			Logger::debug('items', 'not creating media_thumbnailer job', [
 				'reason' => 'item has no media',
 			]);
 		}
