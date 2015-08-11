@@ -25,7 +25,7 @@ class ItemCreation
 	{
 		$validator = new ItemsPersistenceValidator();
 		$validationResult = $validator->validate($item);
-		list($addMediaFileSize, $sendPush) = ParamsValidator::validate($options, ['addMediaFileSize', 'sendPush']);
+		list($sendPush) = ParamsValidator::validate($options, ['sendPush']);
 
 		if ($validationResult->isValid()) {
 			$downloadImages = $item->download_images ? $item->download_images->to('array') : [];
@@ -44,9 +44,7 @@ class ItemCreation
 				'failed_images' => $downloadStats['failed_images']
 			]);
 
-			if ($addMediaFileSize) {
-				$this->addMediaFileSize($item);
-			}
+			$this->addMediaFileSize($item);
 
 			if ($sendPush) {
 				$this->sendPushNotification($item);
