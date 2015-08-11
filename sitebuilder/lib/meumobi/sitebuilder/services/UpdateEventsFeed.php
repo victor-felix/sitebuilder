@@ -12,11 +12,14 @@ class UpdateEventsFeed
 {
 	public function perform($params)
 	{
-		list($category, $extension) = ParamsValidator::validate($params,
-			['category', 'extension']);
+		list($category, $extension) = ParamsValidator::validate($params,[
+			'category',
+			'extension'
+		]);
 
 		$feed = $this->fetchFeed($extension->url);
 		$events = $this->extractevents($feed, $category);
+
 		$bulkImport = new BulkImportItems();
 		$stats = $bulkImport->perform([
 			'category' => $category,

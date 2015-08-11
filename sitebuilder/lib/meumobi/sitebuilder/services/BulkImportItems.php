@@ -13,12 +13,13 @@ class BulkImportItems
 
 	public function perform($params)
 	{
-		list($category, $items, $mode, $shouldCreate, $shouldUpdate) =  ParamsValidator::validate($params, [
+		list($category, $items, $mode, $shouldCreate, $shouldUpdate, $sendPush) = ParamsValidator::validate($params, [
 			'category',
 			'items',
 			'mode',
 			'shouldCreate',
 			'shouldUpdate',
+			'sendPush',
 		]);
 
 		$stats = [
@@ -32,12 +33,11 @@ class BulkImportItems
 			return $new->id();
 		};
 
-
 		foreach ($items as $item) {
 			if ($shouldUpdate($item) && $this->updateItem($item)) {
 				$importedItemsIds[] = $item->id();
 				$stats['existing_items'] += 1;
-			} else if ($shouldCreate($item) && $this->createItem($item)) {
+			} else if ($shouldCreate($item) && $this->createItem($item, $sendPush)) {
 				$importedItemsIds[] = $item->id();
 				$stats['created_items'] += 1;
 			}
@@ -59,18 +59,16 @@ class BulkImportItems
 		return $stats;
 	}
 
-	protected function createItem($item)
+	protected function createItem($item, $sendPush)
 	{
 		$service = new ItemCreation();
 
-		return $service->create($item);
+		return $service->create($item, ['sendPush' => $sendPush]);
 	}
 
 	protected function updateItem($item)
 	{
 		//TODO use ItemUpdate service when it becomes available
-		$validator = new ItemsPersistenceValidator();
-		$validationResult = $validator->validate($item);
-		return $validationResult->isValid() && $item->save();
+		return true;
 	}
 }
