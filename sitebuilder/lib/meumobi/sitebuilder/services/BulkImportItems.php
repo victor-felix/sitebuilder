@@ -44,16 +44,7 @@ class BulkImportItems
 		}
 
 		if ($mode == self::EXCLUSIVE_IMPORT) {
-			//NOTE this is the slower way, but is how the Categories::removeItems do, since a bulk remove throws fatal error
-			$items = Items::find('all', [
-				'conditions' => [
-					'_id' => ['$nin' => $importedItemsIds]
-				]
-			]);
-
-			foreach ($items as $item) {
-				Items::remove(['_id' => $item->id()]);
-			}
+			$stats['excluded_items'] = $this->excludeItems($importedItemsIds, $category);
 		}
 
 		return $stats;
@@ -70,5 +61,22 @@ class BulkImportItems
 	{
 		//TODO use ItemUpdate service when it becomes available
 		return true;
+	}
+
+	protected function excludeItems($exceptIds, $category)
+	{
+		//NOTE this is the slower way, but is how the Categories::removeItems do, since a bulk remove throws fatal error
+		$items = Items::find('all', [
+			'conditions' => [
+				'_id' => ['$nin' => $exceptIds],
+				'parent_id' => $category->id,
+			]
+		]);
+
+		foreach ($items as $item) {
+			Items::remove(['_id' => $item->id()]);
+		}
+
+		return count($items);
 	}
 }
