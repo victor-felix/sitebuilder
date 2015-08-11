@@ -8,7 +8,7 @@ use meumobi\sitebuilder\validators\ParamsValidator;
 
 class BulkImportItems
 {
-	const INCLUSIVE_IMPORT = 'imclusive';
+	const INCLUSIVE_IMPORT = 'inclusive';
 	const EXCLUSIVE_IMPORT = 'exclusive';
 
 	public function perform($params)

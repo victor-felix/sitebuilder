@@ -12,9 +12,9 @@ class UpdateEventsFeed
 {
 	public function perform($params)
 	{
-		list($category, $extension) = ParamsValidator::validate($params,[
+		list($category, $extension) = ParamsValidator::validate($params, [
 			'category',
-			'extension'
+			'extension',
 		]);
 
 		$feed = $this->fetchFeed($extension->url);
@@ -50,12 +50,12 @@ class UpdateEventsFeed
 	protected function extractEvents($feed, $category)
 	{
 		$events = [];
-		//tried with array_map, but din't worked because on the SimpleXmlElement
+		//tried with array_map/reduce, but din't worked with the SimpleXmlElement converted to array
 		foreach ($feed as $item) {
 			$event = Events::find('first', [
 				'conditions' => [
 					'parent_id' => $category->id,
-					'guid' => (string)$item['id'],
+					'guid' => (string) $item['id'],
 				],
 			]);
 
@@ -64,12 +64,12 @@ class UpdateEventsFeed
 			$event->set([
 				'site_id' => $category->site_id,
 				'parent_id' => $category->id,
-				'guid' => (string)$item['id'],
+				'guid' => (string) $item['id'],
 				'title' => strip_tags($item->title),
-				'description' => (string)$item->description,
-				'address' => (string)$item->where,
-				'start_date' => (string)$item->start_date,
-				'end_date' => (string)$item->end_date,
+				'description' => (string) $item->description,
+				'address' => (string) $item->where,
+				'start_date' => (string) $item->start_date,
+				'end_date' => (string) $item->end_date,
 				'type' => 'events',
 			]);
 			$events[] = $event;

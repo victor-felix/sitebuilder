@@ -16,19 +16,19 @@ class Rss extends Extensions
 	protected $fields = [
 		'url' => [
 			'title' => 'Feed URL',
-			'type' => 'string'
+			'type' => 'string',
 		],
 		'import_mode' => [
 			'title' => 'Method of import',
 			'type' => 'radio',
 			'options' => [
 				BulkImportItems::INCLUSIVE_IMPORT => 'Inclusive',
-				BulkImportItems::EXCLUSIVE_IMPORT => 'Exclusive'
+				BulkImportItems::EXCLUSIVE_IMPORT => 'Exclusive',
 			],
 		],
 		'use_html_purifier' => [
 			'title' => 'Clean html',
-			'type' => 'boolean'
+			'type' => 'boolean',
 		]
 	];
 

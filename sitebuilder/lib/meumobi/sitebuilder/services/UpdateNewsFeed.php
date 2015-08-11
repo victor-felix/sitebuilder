@@ -110,7 +110,7 @@ class UpdateNewsFeed
 
 			list($images, $media) = $this->extractMedia($item, $domDoc);
 
-			$article->set( [
+			$article->set([
 				'type' => 'articles',
 				'site_id' => $category->site_id,
 				'parent_id' => $category->id,
