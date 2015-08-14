@@ -4,16 +4,16 @@ namespace app\controllers\api;
 
 require_once 'app/models/sites.php';
 
-use lithium\util\Inflector;
-use lithium\storage\Session;
-use meumobi\sitebuilder\Site;
-use meumobi\sitebuilder\repositories\VisitorsRepository;
-use meumobi\sitebuilder\entities\Visitor;
-use meumobi\sitebuilder\Logger;
-use DateTime;
 use Config;
-use Model;
+use DateTime;
 use MeuMobi;
+use Model;
+use lithium\storage\Session;
+use lithium\util\Inflector;
+use meumobi\sitebuilder\Logger;
+use meumobi\sitebuilder\Site;
+use meumobi\sitebuilder\entities\Visitor;
+use meumobi\sitebuilder\repositories\VisitorsRepository;
 
 class ApiController extends \lithium\action\Controller {
 	protected $beforeFilter = [
@@ -262,7 +262,7 @@ class ApiController extends \lithium\action\Controller {
 
 		if ($this->visitor) {
 			if ($this->visitor->isPasswordValid() || $allowExpired) {
-				$this->visitor->setLastLogin(date('Y-m-d H:i:s'));
+				$this->visitor->setLastLogin(new DateTime('NOW'));
 				$repository->update($this->visitor);
 			} else {
 				throw new ForbiddenException();

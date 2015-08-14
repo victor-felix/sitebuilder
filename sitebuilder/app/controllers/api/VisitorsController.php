@@ -4,6 +4,7 @@ namespace app\controllers\api;
 
 require_once 'lib/mailer/Mailer.php';
 
+use DateTime;
 use I18n;
 use Mailer;
 use MeuMobi;
@@ -13,8 +14,8 @@ use meumobi\sitebuilder\entities\VisitorDevice;
 use meumobi\sitebuilder\presenters\api\VisitorPresenter;
 use meumobi\sitebuilder\repositories\RecordNotFoundException;
 use meumobi\sitebuilder\repositories\VisitorsRepository;
-use meumobi\sitebuilder\services\ResetVisitorPassword;
 use meumobi\sitebuilder\services\CreateOrUpdateDevice;
+use meumobi\sitebuilder\services\ResetVisitorPassword;
 
 class VisitorsController extends ApiController
 {
@@ -56,7 +57,7 @@ class VisitorsController extends ApiController
 				]);
 			}
 
-			$visitor->setLastLogin(date('Y-m-d H:i:s'));
+			$visitor->setLastLogin(new DateTime('NOW'));
 			$repository->update($visitor);
 
 			$response += [

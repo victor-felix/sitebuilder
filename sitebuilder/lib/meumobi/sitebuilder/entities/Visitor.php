@@ -2,11 +2,12 @@
 
 namespace meumobi\sitebuilder\entities;
 
-use meumobi\sitebuilder\entities\VisitorDevice;
-use meumobi\sitebuilder\repositories\RecordNotFoundException;
-use meumobi\sitebuilder\Site;
+use DateTimeZone;
 use MongoId;
 use Security;
+use meumobi\sitebuilder\Site;
+use meumobi\sitebuilder\entities\VisitorDevice;
+use meumobi\sitebuilder\repositories\RecordNotFoundException;
 
 class Visitor extends Entity
 {
@@ -87,6 +88,9 @@ class Visitor extends Entity
 
 	public function setLastLogin($lastLogin)
 	{
+		if ($lastLogin) {
+			$lastLogin->setTimezone(new DateTimeZone($this->site()->timezone));
+		}
 		$this->lastLogin = $lastLogin;
 	}
 

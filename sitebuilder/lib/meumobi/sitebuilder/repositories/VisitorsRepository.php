@@ -2,18 +2,17 @@
 
 namespace meumobi\sitebuilder\repositories;
 
-use meumobi\sitebuilder\entities\Visitor;
-use meumobi\sitebuilder\entities\VisitorDevice;
-
 use FileUpload;
 use Filesystem;
 use MongoClient;
+use MongoDate;
 use MongoId;
 use Security;
+use meumobi\sitebuilder\entities\Visitor;
+use meumobi\sitebuilder\entities\VisitorDevice;
 
 class VisitorsRepository extends Repository
 {
-
 	public function all()
 	{
 		return $this->hydrateSet($this->collection()->find());
@@ -116,6 +115,8 @@ class VisitorsRepository extends Repository
 		$data['devices'] = array_map(function($d) {
 			return new VisitorDevice($d);
 		}, $data['devices']);
+		$data['last_login'] = $data['last_login'] ? $data['last_login']->toDateTime() : null;
+
 		return new visitor($data);
 	}
 
@@ -128,7 +129,7 @@ class VisitorsRepository extends Repository
 			'site_id' => $object->siteId(),
 			'hashed_password' => $object->hashedPassword(),
 			'auth_token' => $object->authToken(),
-			'last_login' => $object->lastLogin(),
+			'last_login' => $object->lastLogin() ? new MongoDate($object->lastLogin()->getTimestamp()) : null,
 			'should_renew_password' => $object->shouldRenewPassword(),
 			'devices' => array_map(function($d) {
 				return [
