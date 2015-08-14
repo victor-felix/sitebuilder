@@ -53,6 +53,19 @@ class VisitorsRepository extends Repository
 		}
 	}
 
+	public function findByEmailAndSite($email, $siteId)
+	{
+		$result = $this->collection()->findOne([
+			'email' => trim($email),
+			'site_id' => (int) $siteId,
+		]);
+
+		if ($result) {
+			return $this->hydrate($result);
+		}
+	}
+
+
 	public function findForAuthentication($siteId, $email, $password)
 	{
 		$conditions = [

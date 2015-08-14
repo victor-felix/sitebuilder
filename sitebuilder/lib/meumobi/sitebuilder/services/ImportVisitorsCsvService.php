@@ -12,22 +12,25 @@ class ImportVisitorsCsvService extends ImportCsvService
 	protected $site;
 	protected $passwordStrategy = VisitorPasswordGenerationService::RANDOM_PASSWORD;
 
-	public function call()
-	{
-		//TODO implement service call
-	}
-
-	public function import()
+	public function import($options)
 	{
 		$imported = 0;
+		$resend = $options['resend'];
 		$passwordGenerationService = new VisitorPasswordGenerationService();
+
 		if (self::EXCLUSIVE == $this->method) {
 			$this->clearVisitors();
 		}
+
 		while ($data = $this->getNextItem()) {
 			$visitor = $this->getVisitor($data);
+
 			if ($visitor->id()) {
 				$this->logger()->info("updating visitor with email: {$visitor->email()}");
+				if ($resend) {
+					$password = $passwordGenerationService->generate($visitor, $this->passwordStrategy, $this->getSite());
+					$this->sendVisitorEmail(['email' => $visitor->email(), 'password' => $password]);
+				}
 				$this->repository()->update($visitor);
 			} else {
 				$password = $passwordGenerationService->generate($visitor, $this->passwordStrategy, $this->getSite());
@@ -35,8 +38,10 @@ class ImportVisitorsCsvService extends ImportCsvService
 				$this->repository()->create($visitor);
 				$this->sendVisitorEmail(['email' => $visitor->email(), 'password' => $password]);
 			}
+
 			$imported++;
 		}
+
 		fclose($this->getFile());
 		$this->logger()->info("total of imported visitors: $imported");
 		return $imported;
@@ -71,18 +76,17 @@ class ImportVisitorsCsvService extends ImportCsvService
 	protected function getVisitor($data)
 	{
 		$visitor = null;
-		$id = @$data['id'];
-		unset($data['id']);
-		if (self::EXCLUSIVE != $this->method && $id) {
-			try {
-				$visitor = $this->repository()->find($id);
-				$visitor->setAttributes($data);
-			} catch (RecordNotFoundException $e) {
-			}
+
+		if (self::EXCLUSIVE != $this->method) {
+			$visitor = $this->repository()->findByEmailAndSite($data['email'], $this->getSite()->id);
 		}
-		if (!$visitor) {
+
+		if ($visitor) {
+			$visitor->setAttributes($data);
+		} else {
 			$visitor = $this->buildVisitor($data);
 		}
+
 		return $visitor;
 	}
 	protected function buildVisitor($data)
