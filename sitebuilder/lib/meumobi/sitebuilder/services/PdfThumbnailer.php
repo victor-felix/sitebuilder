@@ -3,7 +3,6 @@
 namespace meumobi\sitebuilder\services;
 
 use Model;
-use app\models\Items;
 use meumobi\sitebuilder\validators\ParamsValidator;
 
 class PdfThumbnailer
@@ -16,11 +15,13 @@ class PdfThumbnailer
 		$fileName = md5(uniqid($path, true)) . '.' . $extension;
 		$dir = Model::load('Images')->getPath('pdfThumbnail') . '/';
 		$to =  $dir . $fileName;
+
 		$imagick = new \Imagick;
 		$imagick->readImage($path);
 		$imagick->setIteratorIndex(0);
 		$imagick->setImageFormat($extension);
 		$imagick->writeImages($to, false);
+		
 		return $to;
 	}
 }
