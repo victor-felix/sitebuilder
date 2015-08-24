@@ -64,6 +64,7 @@ class ItemsPersistenceValidator implements Validator
 
 	protected function notInvalidMedias($medias, $item)
 	{
+		if (!is_array($medias)) return true;
 		$check = ['url', 'type'];
 		foreach ($medias as $media) {
 			foreach ($check as $field) {

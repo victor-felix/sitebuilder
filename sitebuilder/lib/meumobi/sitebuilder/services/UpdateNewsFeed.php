@@ -16,7 +16,6 @@ use Mapper;
 use SimplePie;
 use Video;
 use app\models\Extensions;
-use app\models\Items;
 use app\models\items\Articles;
 use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\validators\ParamsValidator;
@@ -32,26 +31,19 @@ class UpdateNewsFeed
 		list($category, $extension) = ParamsValidator::validate($params,
 			['category', 'extension']);
 
-		$stats = [
-			'existing_articles' => 0,
-			'created_articles' => 0,
-			'removed_articles' => 0,
-		];
-
 		$sendPush = $extension->priority == Extensions::PRIORITY_LOW;
 		$purifyHtml = $extension->use_html_purifier;
 
 		$feed = $this->fetchFeed($extension->url);
-		$articles = $this->extractArticles($feed, $purifyHtml);
+		$articles = $this->extractArticles($feed, $category, $purifyHtml);
 
-		foreach ($articles as $article) {
-			if ($this->isNewContent($category, $article)) {
-				$this->createItem($category, $article, $sendPush);
-				$stats['created_articles'] += 1;
-			} else {
-				$stats['existing_articles'] += 1;
-			}
-		}
+		$bulkImport = new BulkImportItems();
+		$stats = $bulkImport->perform([
+			'category' => $category,
+			'items' => $articles,
+			'mode' => $extension->import_mode,
+			'sendPush' => $sendPush,
+		]);
 
 		$stats['removed_articles'] = $this->removeOldArticles($category);
 
@@ -67,32 +59,6 @@ class UpdateNewsFeed
 		]);
 
 		return $stats;
-	}
-
-	protected function createItem($category, $article, $sendPush)
-	{
-		$service = new ItemCreation();
-
-		$article['site_id'] = $category->site_id;
-		$article['parent_id'] = $category->id;
-
-		$item = $service->build($article);
-		$service->create($item, [
-			'sendPush' => $sendPush,
-			'addMediaFileSize' => true
-		]);
-
-		return $item;
-	}
-
-	protected function isNewContent($category, $article)
-	{
-		return !Items::find('count', [
-			'conditions' => [
-				'parent_id' => $category->id,
-				'guid' => $article['guid'],
-			],
-		]);
 	}
 
 	protected function removeOldArticles($category)
@@ -118,37 +84,51 @@ class UpdateNewsFeed
 		return $removed;
 	}
 
-	protected function extractArticles($feed, $purify)
+	protected function extractArticles($feed, $category, $purify)
 	{
-		$articles = $feed->get_items();
+		$items = $feed->get_items();
 
 		// sorts the items with most recent last
-		usort($articles, function($a, $b) {
+		usort($items, function($a, $b) {
 			return $a->get_date('U') > $b->get_date('U') ? 1 : -1;
 		});
 
-		$articles = array_slice($articles, -self::ARTICLES_TO_KEEP);
+		$items = array_slice($items, -self::ARTICLES_TO_KEEP);
 
-		return array_map(function($article) use ($purify) {
-			$content = $article->get_content();
+		return array_map(function($item) use ($purify, $category) {
+			$article = Articles::find('first', [
+				'conditions' => [
+					'parent_id' => $category->id,
+					'guid' => $item->get_id(),
+				],
+			]);
+
+			$article = $article ?: Articles::create();
+
+			$content = $item->get_content();
 			$domDoc = $this->buildDOMDoc($content);
 
-			list($images, $media) = $this->extractMedia($article, $domDoc);
+			list($images, $media) = $this->extractMedia($item, $domDoc);
 
-			return [
-				'guid' => $article->get_id(),
-				'link' => $article->get_link(),
-				'title' => strip_tags($article->get_title()),
-				'published' => gmdate('Y-m-d H:i:s', $article->get_date('U')),
-				'author' => ($author = $article->get_author())
+			$article->set([
+				'type' => 'articles',
+				'site_id' => $category->site_id,
+				'parent_id' => $category->id,
+				'guid' => $item->get_id(),
+				'link' => $item->get_link(),
+				'title' => strip_tags($item->get_title()),
+				'published' => gmdate('Y-m-d H:i:s', $item->get_date('U')),
+				'author' => ($author = $item->get_author())
 					? $author->get_name()
 					: '',
 				'description' => $this->extractDescription($content, $purify),
 				'medias' => $media,
 				'download_images' => $images,
 				'format' => 'html',
-			];
-		}, $articles);
+			]);
+
+			return $article;
+		}, $items);
 	}
 
 	/* fetching */

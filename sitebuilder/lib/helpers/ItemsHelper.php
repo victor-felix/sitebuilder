@@ -23,6 +23,9 @@ class ItemsHelper extends Helper
 			'type' => 'select',
 			'class' => 'ui-select large'
 		),
+		'radio' => array(
+			'type' => 'radio',
+		),
 		'datetime' => array(
 			'type' => 'datetime-local',
 			'class' => 'ui-text'

@@ -45,7 +45,6 @@ class ItemsController extends AppController
 			$item->set($data);
 			list ($created, $errors) = $itemCreationService->create($item, [
 				'sendPush' => true,
-				'addMediaFileSize' => true
 			]);
 			if ($created) {
 				foreach ($images as  $id => $image) {

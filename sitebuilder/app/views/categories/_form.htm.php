@@ -117,8 +117,8 @@
 					)) ?>
 					<br>
 
-					<label><?= s('Method of import') ?></label>
 					<?= $this->form->input('import_method', array(
+						'label' => s('Method of import'),
 						'type' => 'radio',
 						'value' => 0,
 						'options' => array(s('Inclusive'), s('Exclusive'))

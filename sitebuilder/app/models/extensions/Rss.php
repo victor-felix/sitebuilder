@@ -2,27 +2,35 @@
 namespace app\models\extensions;
 
 use app\models\Extensions;
-
+use meumobi\sitebuilder\services\BulkImportItems;
 
 class Rss extends Extensions
 {
-	protected $specification = array(
+	protected $specification = [
 		'title' => 'News feed - RSS',
 		'description' => 'Import content automatically from a news feed',
 		'type' => 'rss',
-		'allowed-items' => array('articles'),
-	);
+		'allowed-items' => ['articles'],
+	];
 
-	protected $fields = array(
-		'url' => array(
+	protected $fields = [
+		'url' => [
 			'title' => 'Feed URL',
-			'type' => 'string'
-		),
-		'use_html_purifier' => array(
+			'type' => 'string',
+		],
+		'import_mode' => [
+			'title' => 'Method of import',
+			'type' => 'radio',
+			'options' => [
+				BulkImportItems::INCLUSIVE_IMPORT => 'Inclusive',
+				BulkImportItems::EXCLUSIVE_IMPORT => 'Exclusive',
+			],
+		],
+		'use_html_purifier' => [
 			'title' => 'Clean html',
-			'type' => 'boolean'
-		)
-	);
+			'type' => 'boolean',
+		]
+	];
 
 	public static function __init()
 	{
@@ -30,10 +38,11 @@ class Rss extends Extensions
 		$self = static::_object();
 		$parent = parent::_object();
 
-		$self->_schema = $parent->_schema + array(
-			'url' => array('type' => 'string', 'default' => ''),
-			'use_html_purifier' => array('type' => 'integer', 'default' => 1),
-		);
+		$self->_schema = $parent->_schema + [
+			'url' => ['type' => 'string', 'default' => ''],
+			'use_html_purifier' => ['type' => 'integer', 'default' => 1],
+			'import_mode' => ['type' => 'string', 'default' => BulkImportItems::INCLUSIVE_IMPORT],
+		];
 	}
 }
 

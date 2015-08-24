@@ -3,26 +3,31 @@
 namespace app\models\extensions;
 
 use app\models\Extensions;
+use meumobi\sitebuilder\services\BulkImportItems;
 
 class EventFeed extends Extensions
 {
-	const PRIORITY_HIGH = 2;
-	const PRIORITY_MEDIUM = 1;
-	const PRIORITY_LOW = 0;
-
-	protected $specification = array(
+	protected $specification = [
 		'title' => 'Event Feed',
 		'description' => 'Import content automatically from a events feed',
 		'type' => 'event-feed',
-		'allowed-items' => array('events'),
-	);
+		'allowed-items' => ['events'],
+	];
 
-	protected $fields = array(
-		'url' => array(
+	protected $fields = [
+		'url' => [
 			'title' => 'Feed URL',
-			'type' => 'string'
-		)
-	);
+			'type' => 'string',
+		],
+		'import_mode' => [
+			'title' => 'Method of import',
+			'type' => 'radio',
+			'options' => [
+				BulkImportItems::INCLUSIVE_IMPORT => 'Inclusive',
+				BulkImportItems::EXCLUSIVE_IMPORT => 'Exclusive',
+			],
+		],
+	];
 
 	public static function __init()
 	{
@@ -30,9 +35,10 @@ class EventFeed extends Extensions
 		$self = static::_object();
 		$parent = parent::_object();
 
-		$self->_schema = $parent->_schema + array(
-			'url' => array('type' => 'string', 'default' => ''),
-		);
+		$self->_schema = $parent->_schema + [
+			'url' => ['type' => 'string', 'default' => ''],
+			'import_mode' => ['type' => 'string', 'default' => BulkImportItems::INCLUSIVE_IMPORT],
+		];
 	}
 }
 
