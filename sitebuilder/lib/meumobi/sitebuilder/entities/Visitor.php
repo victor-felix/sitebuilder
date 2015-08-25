@@ -17,10 +17,12 @@ class Visitor extends Entity
 	protected $lastName;
 	protected $hashedPassword;
 	protected $authToken;
-	protected $lastLogin;
 	protected $shouldRenewPassword = false;
 	protected $devices = [];
 	protected $groups = [];
+	protected $lastLogin;
+	protected $created;
+	protected $modified;
 
 	public function siteId()
 	{
@@ -92,6 +94,26 @@ class Visitor extends Entity
 			$lastLogin->setTimezone(new DateTimeZone($this->site()->timezone));
 		}
 		$this->lastLogin = $lastLogin;
+	}
+
+	public function created()
+	{
+		return $this->created;
+	}
+
+	public function setCreated($created)
+	{
+		$this->created = $created;
+	}
+
+	public function modified()
+	{
+		return $this->modified;
+	}
+
+	public function setModified($modified)
+	{
+		$this->modified = $modified;
 	}
 
 	public function shouldRenewPassword()

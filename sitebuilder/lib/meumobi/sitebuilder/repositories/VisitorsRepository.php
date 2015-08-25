@@ -2,6 +2,7 @@
 
 namespace meumobi\sitebuilder\repositories;
 
+use DateTime;
 use FileUpload;
 use Filesystem;
 use MongoClient;
@@ -99,6 +100,8 @@ class VisitorsRepository extends Repository
 
 	public function create($visitor)
 	{
+		$visitor->setCreated(new DateTime('NOW'));
+		$visitor->setModified(new DateTime('NOW'));
 		$data = $this->dehydrate($visitor);
 		$result = $this->collection()->insert($data);
 		$visitor->setId($data['_id']);
@@ -109,6 +112,7 @@ class VisitorsRepository extends Repository
 	public function update($visitor)
 	{
 		$criteria = ['_id' => new MongoId($visitor->id())];
+		$visitor->setModified(new DateTime('NOW'));
 		$data = $this->dehydrate($visitor);
 
 		if ($this->collection()->update($criteria, $data)) {
@@ -129,6 +133,8 @@ class VisitorsRepository extends Repository
 			return new VisitorDevice($d);
 		}, $data['devices']);
 		$data['last_login'] = $data['last_login'] ? $data['last_login']->toDateTime() : null;
+		$data['created'] = $data['created'] ? $data['created']->toDateTime() : null;
+		$data['modified'] = $data['modified'] ? $data['modified']->toDateTime() : null;
 
 		return new visitor($data);
 	}
@@ -143,6 +149,8 @@ class VisitorsRepository extends Repository
 			'hashed_password' => $object->hashedPassword(),
 			'auth_token' => $object->authToken(),
 			'last_login' => $object->lastLogin() ? new MongoDate($object->lastLogin()->getTimestamp()) : null,
+			'created' => $object->created() ? new MongoDate($object->created()->getTimestamp()) : null,
+			'modified' => $object->modified() ? new MongoDate($object->modified()->getTimestamp()) : null,
 			'should_renew_password' => $object->shouldRenewPassword(),
 			'devices' => array_map(function($d) {
 				return [
