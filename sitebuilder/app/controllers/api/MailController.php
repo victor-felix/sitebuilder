@@ -19,7 +19,7 @@ class MailController extends ApiController
 		if (!$this->request->get('data:name') ||
 			!$this->request->get('data:mail') ||
 			!$this->request->get('data:message')) {
-			return array('error' => 'missing parameters');
+			throw new InvalidArgumentException('missing parameters');
 		}
 
 		$site = $this->site();
