@@ -1,9 +1,10 @@
 <?php
 
+require_once 'lib/mailer/Mailer.php';
+
 use lithium\storage\Session;
 use lithium\util\Validator;
-
-require_once 'lib/mailer/Mailer.php';
+use meumobi\sitebuilder\services\SendForgottenUserPasswordMail;
 
 class Users extends AppModel
 {
@@ -161,11 +162,14 @@ class Users extends AppModel
 	{
 		if (!empty($email)) {
 			$user = $this->firstByEmail($email);
+
 			if ($user) {
-				$user->sendForgottenPasswordMail();
+				$service = new SendForgottenUserPasswordMail();
+				$service->send($user);
 			} else {
 				$this->errors['email'] = 'The e-mail is not registered in MeuMobi';
 			}
+
 		} else {
 			$this->errors['email'] = 'You need to provide your e-mail';
 		}
@@ -349,26 +353,6 @@ class Users extends AppModel
 					'user' => $this,
 					'title' => s('[MeuMobi] Account Confirmation')
 				));
-		}
-	}
-
-	protected function sendForgottenPasswordMail()
-	{
-		if (!Config::read('Mail.preventSending')) {
-			$segment = MeuMobi::currentSegment();
-
-			$mailer = new Mailer(array(
-				'from' => $segment->email,
-				'to' => array($this->email => $this->fullname()),
-				'subject' => s('[MeuMobi] Reset Password Request'),
-				'views' => array('text/html' => 'users/forgot_password_mail.htm'),
-				'layout' => 'mail',
-				'data' => array(
-					'user' => $this,
-					'title' => s('[MeuMobi] Reset Password Request')
-				)
-			));
-			$mailer->send ();
 		}
 	}
 

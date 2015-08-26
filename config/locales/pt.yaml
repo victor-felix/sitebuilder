@@ -268,7 +268,7 @@
 'Your password needs to be at least 6 characters long.': 'Sua senha precisa ter ao menos 6 caracteres'
 '[MeuMobi] Account Confirmation': '[MeuMobi] Confirmação de Conta'
 '[MeuMobi] Category import scheduled': '[MeuMobi] Importação da categoria agendada'
-'[MeuMobi] Reset Password Request': '[MeuMobi] Recadastramento de Senha'
+'[%s] Reset Password Request': '[%s] Recadastramento de Senha'
 'add item': 'adicionar item'
 'add more location? get a Store Locator': 'seu negócio possui multiplas localidades?'
 'add one more domain': 'adicionar outro domínio'
