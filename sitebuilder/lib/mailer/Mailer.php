@@ -75,7 +75,7 @@ class Mailer {
             $mailer = Swift_Mailer::newInstance($this->transport());
             return $mailer->send($message);
         else:
-            Logger::error('mailer', $message);
+            Logger::debug('mailer', $message);
         endif;
     }
 }
