@@ -3,5 +3,8 @@
 	<br />
 	<br />
 	<?= s('Your new password is: %s', $password) ?>
-	<?= $this->element('visitors/footer') ?>
+	<?= $this->element('visitors/footer', array(
+		'email' => $site->email,
+		'title' => $site->title
+	)) ?>
 </p>

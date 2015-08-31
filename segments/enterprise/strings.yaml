@@ -2,3 +2,10 @@
     pagetitle: 'Create a mobile website easily'
     title: 'The easiest way to create and deploy your company’s mobile website'
     subtitle: 'News and corporate website and enterprise intranets.'
+
+'visitors/mail/add':
+  subject: 'infomobi: O novo aplicativo de Comunicação Interna da %s'
+  body: '<p>Olá,<br/><br/>Gostaríamos de convidá-lo para efetuar o download em seu celular do aplicativo infomobi, a nova ferramenta de Comunicação Interna da %s. Por meio dele, divulgaremos notícias e comunicados importantes sobre a empresa, de forma fácil, privada e segura. <br/><br/> infomobi é compatível com smartphones Android e iOS. <br/>Pelo seu celular baixa o aplicativo infomobi através da loja <a href="https://play.google.com/store/apps/details?id=com.meumobi.infomobi">Google Play</a>'
+
+'visitors/mail':
+  footer: '<br /><br /> Para mais informações, entre em contato conosco: %s<br /><br />Atenciosamente, <br /> <br />Equipe de Comunicação da %s'

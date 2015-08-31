@@ -58,7 +58,7 @@ class VisitorsController extends AppController
 			$validator = new VisitorsPersistenceValidator();
 			if ($validator->validate($visitor)->isValid()) {
 				$this->repository->create($visitor);
-				$data['title'] = s('visitors/mail/add.subject', $site->title);
+				$data['mail_subject'] = s('visitors/mail/add.subject', $site->title);
 				$this->sendVisitorEmail($data);
 				Session::writeFlash('success', s('Visitor successfully created.'));
 				$this->redirect('/visitors');
@@ -129,7 +129,7 @@ class VisitorsController extends AppController
 		$mailer = new \Mailer([
 			'from' => $segment->email,
 			'to' => $data['email'],
-			'subject' => $data['title'],
+			'subject' => $data['mail_subject'],
 			'views' => array('text/html' => $template),
 			'layout' => 'mail',
 			'data' =>  $data,
