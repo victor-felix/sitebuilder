@@ -34,6 +34,11 @@ class Visitor extends Entity
 		return $this->email;
 	}
 
+	public function setEmail($email)
+	{
+		$this->email = strtolower(trim($email));
+	}
+
 	public function firstName()
 	{
 		return $this->firstName;

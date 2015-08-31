@@ -45,7 +45,9 @@ class VisitorsRepository extends Repository
 
 	public function findByEmail($email)
 	{
-		$result = $this->collection()->findOne(['email' => $email]);
+		$result = $this->collection()->findOne([
+			'email' => strtolower(trim($email))
+		]);
 
 		if ($result) {
 			return $this->hydrate($result);
@@ -57,7 +59,7 @@ class VisitorsRepository extends Repository
 	public function findByEmailAndSite($email, $siteId)
 	{
 		$result = $this->collection()->findOne([
-			'email' => trim($email),
+			'email' => strtolower(trim($email)),
 			'site_id' => (int) $siteId,
 		]);
 
@@ -70,7 +72,7 @@ class VisitorsRepository extends Repository
 	public function findForAuthentication($siteId, $email, $password)
 	{
 		$conditions = [
-			'email' => $email,
+			'email' => strtolower(trim($email)),
 			'hashed_password' => Security::hash($password, 'sha1')
 		];
 
