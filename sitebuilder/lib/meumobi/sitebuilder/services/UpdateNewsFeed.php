@@ -86,14 +86,8 @@ class UpdateNewsFeed
 
 	protected function extractArticles($feed, $category, $purify)
 	{
-		$items = $feed->get_items();
-
-		// sorts the items with most recent last
-		usort($items, function($a, $b) {
-			return $a->get_date('U') > $b->get_date('U') ? 1 : -1;
-		});
-
-		$items = array_slice($items, -self::ARTICLES_TO_KEEP);
+		// gets last n items, most recent last
+		$items = array_slice(array_reverse($feed->get_items()), -self::ARTICLES_TO_KEEP);
 
 		return array_map(function($item) use ($purify, $category) {
 			$article = Articles::find('first', [
@@ -117,7 +111,8 @@ class UpdateNewsFeed
 				'guid' => $item->get_id(),
 				'link' => $item->get_link(),
 				'title' => strip_tags($item->get_title()),
-				'published' => gmdate('Y-m-d H:i:s', $item->get_date('U')),
+				'published' => gmdate('Y-m-d H:i:s',
+					$item->get_date('U') ?: date('U')),
 				'author' => ($author = $item->get_author())
 					? $author->get_name()
 					: '',
