@@ -10,7 +10,7 @@ class SetImportModeOnExtensions
 	{
 		$events = Extensions::update([
 			'import_mode' => BulkImportItems::INCLUSIVE_IMPORT], [
-			'extension' => ['rss', 'event_feed'],
+			'extension' => ['rss', 'event-feed'],
 		]);
 	}
 }
