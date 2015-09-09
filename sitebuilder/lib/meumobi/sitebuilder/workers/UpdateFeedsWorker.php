@@ -40,7 +40,7 @@ class UpdateFeedsWorker
 			} catch (Exception $e) {
 				$stats['total_failed_feeds'] += 1;
 				$stats['failed_feeds'][] = [
-					'extension_id' => (string) $extension->id,
+					'extension_id' => (string) $extension->_id,
 					'category_id' => $extension->category_id,
 					'site_id' => $extension->site_id,
 					'error' => $e->getMessage(),
