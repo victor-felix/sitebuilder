@@ -65,7 +65,7 @@ class CreateItem
 
 	protected function addMediaFileSize($item)
 	{
-		$hasMedias = count($item->medias->to('array'));
+		$hasMedias = $item->medias && count($item->medias->to('array'));
 
 		if ($hasMedias) {
 			WorkerManager::enqueue('media_filesize', ['item_id' => $item->id()]);
