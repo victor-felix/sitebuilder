@@ -32,6 +32,7 @@ class Sites extends AppModel
 
 	protected $beforeDelete = array(
 		'deleteImages',
+		'deleteVisitors',
 		'deleteCategories',
 		'deleteLogo',
 		'removeUsers',
@@ -219,7 +220,7 @@ class Sites extends AppModel
 
 		return $this->plugins = Plugins::find('all', array('conditions' => array(
 			'site_id' => $this->id,
-		))); 
+		)));
 	}
 
 	public function categories()
@@ -577,6 +578,18 @@ class Sites extends AppModel
 		$this->deleteSet($model, $model->all(array(
 			'conditions' => array('site_id' => $this->id, 'parent_id' => null)
 		)));
+
+		return $id;
+	}
+
+	protected function deleteVisitors($id)
+	{
+		$repository = new VisitorsRepository();
+		$visitors = $repository->findBySiteId($id);
+
+		foreach ($visitors as $visitor) {
+			$repository->destroy($visitor);
+		}
 
 		return $id;
 	}
