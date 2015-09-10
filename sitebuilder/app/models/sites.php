@@ -31,12 +31,14 @@ class Sites extends AppModel
 	);
 
 	protected $beforeDelete = array(
-		'deleteImages',
 		'deleteVisitors',
 		'deleteCategories',
-		'deleteLogo',
 		'removeUsers',
-		'deleteCustomSkin'
+		'deleteCustomSkin',
+		'deleteLogo',
+		'deletePhotos',
+		'deleteSplashScreens',
+		'deleteAppleTouchIcon',
 	);
 
 	protected $validates = array(
@@ -565,8 +567,28 @@ class Sites extends AppModel
 
 	protected function deleteLogo($id)
 	{
+		return $this->deleteImages('SiteLogos', $id);
+	}
+
+	protected function deletePhotos($id)
+	{
+		return $this->deleteImages('SitePhotos', $id);
+	}
+
+	protected function deleteSplashScreens($id)
+	{
+		return $this->deleteImages('SiteSplashScreens', $id);
+	}
+
+	protected function deleteAppleTouchIcon($id)
+	{
+		return $this->deleteImages('SiteAppleTouchIcon', $id);
+	}
+
+	protected function deleteImages($type, $id)
+	{
 		$model = Model::load('Images');
-		$images = $model->allByRecord('SiteLogos', $id);
+		$images = $model->allByRecord($type, $id);
 		$this->deleteSet($model, $images);
 
 		return $id;
