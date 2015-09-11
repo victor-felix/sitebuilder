@@ -147,6 +147,17 @@ class Users extends AppModel
 		));
 	}
 
+	public function role($site)
+	{
+	  $userSite = Model::load('UsersSites')->first([
+			'user_id' => $this->id,
+			'site_id' => $site->id,
+		]);
+
+		return $userSite ? $userSite->role : null;
+	}
+
+
 	public function confirm($token)
 	{
 		if ($token == $this->token) {

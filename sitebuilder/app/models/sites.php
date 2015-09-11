@@ -33,17 +33,6 @@ class Sites extends AppModel
 		'createRelation',
 	];
 
-	protected $beforeDelete = [
-		'deleteVisitors',
-		'deleteCategories',
-		'removeUsers',
-		'deleteCustomSkin',
-		'deleteLogo',
-		'deletePhotos',
-		'deleteSplashScreens',
-		'deleteAppleTouchIcon',
-	];
-
 	protected $validates = [
 		'slug' => [
 			[
@@ -551,72 +540,6 @@ class Sites extends AppModel
 		$extension->url = $this->data['feed_url'];
 		$extension->enabled = (int) !empty($this->data['feed_url']);
 		$extension->save();
-	}
-
-	protected function deleteLogo($id)
-	{
-		return $this->deleteImages('SiteLogos', $id);
-	}
-
-	protected function deletePhotos($id)
-	{
-		return $this->deleteImages('SitePhotos', $id);
-	}
-
-	protected function deleteSplashScreens($id)
-	{
-		return $this->deleteImages('SiteSplashScreens', $id);
-	}
-
-	protected function deleteAppleTouchIcon($id)
-	{
-		return $this->deleteImages('SiteAppleTouchIcon', $id);
-	}
-
-	protected function deleteImages($type, $id)
-	{
-		$model = Model::load('Images');
-		$images = $model->allByRecord($type, $id);
-		$this->deleteSet($model, $images);
-
-		return $id;
-	}
-
-	protected function deleteCategories($id)
-	{
-		$model = Model::load('Categories');
-		$this->deleteSet($model, $model->all([
-			'conditions' => [
-				'site_id' => $this->id,
-				'parent_id' => null
-			]
-		]));
-
-		return $id;
-	}
-
-	protected function deleteVisitors($id)
-	{
-		$repository = new VisitorsRepository();
-		$visitors = $repository->findBySiteId($id);
-
-		foreach ($visitors as $visitor) {
-			$repository->destroy($visitor);
-		}
-
-		return $id;
-	}
-
-	protected function deleteCustomSkin($id)
-	{
-		$skin = $this->skin();
-
-		if ($skin && $skin->parentId()) {
-			$skinRepo = new SkinsRepository();
-			$skinRepo->destroy($skin);
-		}
-
-		return $id;
 	}
 
 	protected function createRelation($created)
