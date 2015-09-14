@@ -11,7 +11,7 @@ use app\models\Items;
 use app\models\RecordNotFoundException;
 use lithium\core\Object;
 use meumobi\sitebuilder\presenters\api\RssItemPresenter;
-use meumobi\sitebuilder\services\ItemCreation;
+use meumobi\sitebuilder\services\CreateItem;
 
 class ItemsController extends ApiController {
 	const PAGE_LIMIT = 20;
@@ -231,7 +231,7 @@ class ItemsController extends ApiController {
 		$data = $this->request->data;
 		$data['site_id'] = $this->site()->id;
 
-		$itemCreationService = new ItemCreation();
+		$itemCreationService = new CreateItem();
 		$item = $itemCreationService->build($data);
 
 		list($created, $errors) = $itemCreationService->create($item, [

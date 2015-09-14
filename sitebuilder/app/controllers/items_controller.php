@@ -1,7 +1,7 @@
 <?php
 
 use app\models\Items;
-use meumobi\sitebuilder\services\ItemCreation;
+use meumobi\sitebuilder\services\CreateItem;
 use meumobi\sitebuilder\validators\ItemsPersistenceValidator;
 
 class ItemsController extends AppController
@@ -27,7 +27,7 @@ class ItemsController extends AppController
 	public function add($parent_id = null)
 	{
 		$site = $this->getCurrentSite();
-		$itemCreationService = new ItemCreation();
+		$itemCreationService = new CreateItem();
 		$item = $itemCreationService->build([
 			'site_id' => $site->id,
 			'parent_id' => $parent_id

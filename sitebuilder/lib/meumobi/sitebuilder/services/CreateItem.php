@@ -9,7 +9,7 @@ use meumobi\sitebuilder\WorkerManager;
 use meumobi\sitebuilder\validators\ItemsPersistenceValidator;
 use meumobi\sitebuilder\validators\ParamsValidator;
 
-class ItemCreation
+class CreateItem
 {
 	public function build($data)
 	{

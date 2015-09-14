@@ -52,7 +52,7 @@ class BulkImportItems
 
 	protected function createItem($item, $sendPush)
 	{
-		$service = new ItemCreation();
+		$service = new CreateItem();
 
 		return $service->create($item, ['sendPush' => $sendPush]);
 	}
