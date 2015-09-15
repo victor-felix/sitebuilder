@@ -12,6 +12,7 @@ use app\models\RecordNotFoundException;
 use lithium\core\Object;
 use meumobi\sitebuilder\presenters\api\RssItemPresenter;
 use meumobi\sitebuilder\services\CreateItem;
+use meumobi\sitebuilder\services\UpdateItem;
 
 class ItemsController extends ApiController {
 	const PAGE_LIMIT = 20;

@@ -52,7 +52,7 @@ class CreateItem
 
 			$created = true;
 		} else {
-			Logger::info('items', 'item can`t be created', [
+			Logger::info('items', 'item cannot be created', [
 				'site_id' => $item->site_id,
 				'category_id' => $item->parent_id,
 				'errors' => $validationResult->errors(),

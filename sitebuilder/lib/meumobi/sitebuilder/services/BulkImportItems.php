@@ -3,6 +3,8 @@ namespace meumobi\sitebuilder\services;
 
 use app\models\Items;
 use meumobi\sitebuilder\Logger;
+use meumobi\sitebuilder\services\CreateItem;
+use meumobi\sitebuilder\services\UpdateItem;
 use meumobi\sitebuilder\validators\ItemsPersistenceValidator;
 use meumobi\sitebuilder\validators\ParamsValidator;
 
@@ -44,7 +46,7 @@ class BulkImportItems
 		}
 
 		if ($mode == self::EXCLUSIVE_IMPORT) {
-			$stats['excluded_items'] = $this->excludeItems($importedItemsIds, $category);
+			$stats['removed_items'] = $this->removeItems($importedItemsIds, $category);
 		}
 
 		return $stats;
@@ -59,13 +61,15 @@ class BulkImportItems
 
 	protected function updateItem($item)
 	{
-		//TODO use ItemUpdate service when it becomes available
-		return true;
+		$service = new UpdateItem();
+
+		return $service->update($item);
 	}
 
-	protected function excludeItems($exceptIds, $category)
+	protected function removeItems($exceptIds, $category)
 	{
-		//NOTE this is the slower way, but is how the Categories::removeItems do, since a bulk remove throws fatal error
+		// NOTE: this is the slower way, but is how the Categories::removeItems
+		// do, since a bulk remove throws fatal error
 		$items = Items::find('all', [
 			'conditions' => [
 				'_id' => ['$nin' => $exceptIds],
