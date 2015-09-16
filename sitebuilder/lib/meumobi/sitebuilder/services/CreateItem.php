@@ -72,6 +72,7 @@ class CreateItem
 		} else {
 			Logger::debug('items', 'not creating media_filesize job', [
 				'item_id' => $item->id(),
+				'site_id' => $item->site_id,
 				'reason' => 'item has no media',
 			]);
 		}
@@ -108,6 +109,7 @@ class CreateItem
 		} else {
 			Logger::debug('items', 'not creating push_notification job', [
 				'item_id' => $item->id(),
+				'site_id' => $item->site_id,
 				'reason' => [
 					'published' => $item->is_published,
 					'push_enabled_in_category' => $category->notification
