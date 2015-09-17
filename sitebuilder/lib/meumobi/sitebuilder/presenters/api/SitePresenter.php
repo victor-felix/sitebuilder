@@ -44,6 +44,7 @@ class SitePresenter
 
 		return $data;
 	}
+
 	protected static function extractTheme($site, $skin)
 	{
 		$skinId = $skin ? $skin : $site->skin;
@@ -52,6 +53,7 @@ class SitePresenter
 
 		return ['theme' => SkinPresenter::present($skin)];
 	}
+
 	protected static function extractImages($site)
 	{
 		$types = ['logo', 'apple_touch_icon', 'splash_screen'];
@@ -66,7 +68,7 @@ class SitePresenter
 
 		$photos = $site->photos() ?: [];
 
-		$images['photos'] = array_reduce($photos, function($photo, $images) {
+		$images['photos'] = array_reduce($photos, function($images, $photo) {
 			$images[] = $photo->toJSON();
 
 			return $images;
