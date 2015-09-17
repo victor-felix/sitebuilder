@@ -44,7 +44,6 @@ class UpdateNewsFeed
 			'mode' => $extension->import_mode,
 			'sendPush' => $sendPush,
 			'shouldUpdate' => function($item) {
-				pr($item);
 				return $item->changed('title') || $item->changed('description');
 			},
 			'shouldCreate' => function($item) {
