@@ -19,7 +19,7 @@ class UpdateItem
 		if ($validationResult->isValid()) {
 			$item->save();
 
-			Logger::info('items', 'item created', [
+			Logger::info('items', 'item updated', [
 				'item_id' => $item->id(),
 				'site_id' => $item->site_id,
 				'category_id' => $item->parent_id,

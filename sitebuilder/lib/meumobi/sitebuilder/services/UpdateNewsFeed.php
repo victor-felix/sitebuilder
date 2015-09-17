@@ -37,7 +37,11 @@ class UpdateNewsFeed
 		$feed = $this->fetchFeed($extension->url);
 		$articles = $this->extractArticles($feed, $category, $purifyHtml);
 
-		$bulkImport = new BulkImportItems();
+		$bulkImport = new BulkImportItems([
+			'shouldUpdate' => function($item) {
+				return $item->changed('title') || $item->changed('description');
+			}
+		]);
 		$stats = $bulkImport->perform([
 			'category' => $category,
 			'items' => $articles,
