@@ -37,16 +37,19 @@ class UpdateNewsFeed
 		$feed = $this->fetchFeed($extension->url);
 		$articles = $this->extractArticles($feed, $category, $purifyHtml);
 
-		$bulkImport = new BulkImportItems([
-			'shouldUpdate' => function($item) {
-				return $item->changed('title') || $item->changed('description');
-			}
-		]);
+		$bulkImport = new BulkImportItems();
 		$stats = $bulkImport->perform([
 			'category' => $category,
 			'items' => $articles,
 			'mode' => $extension->import_mode,
 			'sendPush' => $sendPush,
+			'shouldUpdate' => function($item) {
+				pr($item);
+				return $item->changed('title') || $item->changed('description');
+			},
+			'shouldCreate' => function($item) {
+				return !$item->id();
+			},
 		]);
 
 		$stats['removed_articles'] = $this->removeOldArticles($category);
