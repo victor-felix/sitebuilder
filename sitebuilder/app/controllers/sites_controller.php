@@ -1,7 +1,9 @@
 <?php
+
 use meumobi\sitebuilder\entities\Skin;
 use meumobi\sitebuilder\repositories\ThemesRepository;
 use meumobi\sitebuilder\repositories\SkinsRepository;
+use meumobi\sitebuilder\services\RemoveSite;
 
 class SitesController extends AppController
 {
@@ -133,17 +135,13 @@ class SitesController extends AppController
       $site = $this->getCurrentSite();
     }
 
-    $sucess = false;
-
-    //remove site only if has more than one
-    if (count(Auth::User()->sites()) > 1) {
-      $sucess = $site->delete($site->id);
-    }
+    $service = new RemoveSite();
+    $sucess = $service->remove($site, Auth::user());
 
     if ($sucess) {
       Session::writeFlash('success', s('Site was successfully removed'));
     } else {
-      Session::writeFlash('error', s('Sorry, can\'t remove site'));
+      Session::writeFlash('error', s("Sorry, can't remove site"));
     }
 
     $this->redirect('/');

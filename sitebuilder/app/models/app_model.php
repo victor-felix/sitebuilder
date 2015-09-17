@@ -80,14 +80,6 @@ class AppModel extends Model {
         return true;
     }
 
-    protected function deleteImages($id) {
-        $model = Model::load('Images');
-        $images = $model->allByRecord($this->imageModel(), $id);
-        $this->deleteSet($model, $images);
-
-        return $id;
-    }
-
     protected function deleteSet($model, $set) {
         foreach($set as $item) {
             $model->delete($item->id);

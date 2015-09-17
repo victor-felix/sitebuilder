@@ -2,13 +2,18 @@
 
 require dirname(__DIR__) . '/config/cli.php';
 
+use meumobi\sitebuilder\services\RemoveSite;
+
 $_ = array_shift($argv);
 
-$Sites = Model::load('Sites');
+$model = Model::load('Sites');
+
+$service = new RemoveSite();
 
 foreach ($argv as $site_id) {
 	try {
-		$Sites->firstById($site_id)->delete($site_id);
+		$site = $model->firstById($site_id);
+		$service->remove($site);
 	} catch (Exception $e) {
 		echo $e;
 	}
