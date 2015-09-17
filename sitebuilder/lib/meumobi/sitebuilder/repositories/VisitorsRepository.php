@@ -9,11 +9,18 @@ use MongoClient;
 use MongoDate;
 use MongoId;
 use Security;
+use lithium\util\Inflector;
 use meumobi\sitebuilder\entities\Visitor;
 use meumobi\sitebuilder\entities\VisitorDevice;
 
 class VisitorsRepository extends Repository
 {
+	protected $dateFields = [
+		'last_login',
+		'created',
+		'modified'
+	];
+
 	public function all()
 	{
 		return $this->hydrateSet($this->collection()->find());
@@ -134,25 +141,21 @@ class VisitorsRepository extends Repository
 		$data['devices'] = array_map(function($d) {
 			return new VisitorDevice($d);
 		}, $data['devices']);
-		$data['last_login'] = $data['last_login'] ? $data['last_login']->toDateTime() : null;
-		$data['created'] = $data['created'] ? $data['created']->toDateTime() : null;
-		$data['modified'] = $data['modified'] ? $data['modified']->toDateTime() : null;
+
+		$data = array_merge($data, $this->hydrateDates($data));
 
 		return new visitor($data);
 	}
 
 	protected function dehydrate($object)
 	{
-		return [
+		$data = [
 			'email' => $object->email(),
 			'first_name' => $object->firstName(),
 			'last_name' => $object->lastName(),
 			'site_id' => $object->siteId(),
 			'hashed_password' => $object->hashedPassword(),
 			'auth_token' => $object->authToken(),
-			'last_login' => $object->lastLogin() ? new MongoDate($object->lastLogin()->getTimestamp()) : null,
-			'created' => $object->created() ? new MongoDate($object->created()->getTimestamp()) : null,
-			'modified' => $object->modified() ? new MongoDate($object->modified()->getTimestamp()) : null,
 			'should_renew_password' => $object->shouldRenewPassword(),
 			'devices' => array_map(function($d) {
 				return [
@@ -167,5 +170,36 @@ class VisitorsRepository extends Repository
 			}, $object->devices()),
 			'groups' => $object->groups()
 		];
+
+		return array_merge($data, $this->dehydrateDates($object));
+	}
+
+	protected function hydrateDates($data)
+	{
+		return array_reduce($this->dateFields, function($dates, $field) use ($data) {
+			if (isset($data[$field]) && $data[$field] instanceof MongoDate) {
+				$dates[$field] = $data[$field]->toDateTime();
+			} else {
+				$dates[$field] = null;
+			}
+
+			return $dates;
+		}, []);
+	}
+
+	protected function dehydrateDates($object)
+	{
+		return array_reduce($this->dateFields, function($dates, $field) use ($object) {
+			$getter = Inflector::camelize($field);
+			$value = $object->$getter();
+
+			if ($value) {
+				$dates[$field] =  new MongoDate($value->getTimestamp());
+			} else {
+				$dates[$field] = null;
+			}
+
+			return $dates;
+		}, []);
 	}
 }

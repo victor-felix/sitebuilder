@@ -30,9 +30,13 @@ class BulkImportItems
 		];
 
 		$importedItemsIds = [];
-		$shouldCreate = $shouldCreate ?: function($new) { return true; };
-		$shouldUpdate = $shouldUpdate ?: function($new) {
-			return $new->id();
+
+		$shouldCreate = $shouldCreate ?: function($item) {
+			return true;
+		};
+
+		$shouldUpdate = $shouldUpdate ?: function($item) {
+			return $item->id();
 		};
 
 		foreach ($items as $item) {

@@ -43,6 +43,13 @@ class UpdateNewsFeed
 			'items' => $articles,
 			'mode' => $extension->import_mode,
 			'sendPush' => $sendPush,
+			'shouldUpdate' => function($item) {
+				pr($item);
+				return $item->changed('title') || $item->changed('description');
+			},
+			'shouldCreate' => function($item) {
+				return !$item->id();
+			},
 		]);
 
 		$stats['removed_articles'] = $this->removeOldArticles($category);
