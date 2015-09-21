@@ -2,9 +2,28 @@
 
 Update these notes using: git log --pretty=format:'* %s' --no-merges rel-2.6.3..HEAD
  
-### rel-2.6.4 (201509XX) ###
+### rel-2.6.4 (20150921) ###
+* Don't delete untouched items when bulk importing. Closes #228
+* Try to update item only if it has an id
+* Fix invalid site photos on performance response
+* Change extension import mode imput type to select
+* Remove log statement
+* add mail tokens on enterprise segments, Close #210
+* Extract the delete observers to the RemoveSite service
+* Fix missing site in CreateItem service logs, closes #203
+* Update addMediaFileSize conditional that checks if an item has any media
+* Fix missing extension id in the Update Feeds and Events log, closes #200
+* Fixes feed update. Option was not getting passed
+* Updates feed items. Closes #68.
+* add RELEASNOTES
+* Allow make deploy by tags, closes #221
 * Adds the UpdateItem service
 * Renames ItemCreation to CreateItem
+* Extract toJSONPresenter from Sites model to SitePresenter
+* Code cleaning of Sites model
+* Remove related photos, slash and icon when site is removed, closes #219
+* Remove related visitors when site is removed, closes #191
+* Refactor VisitorsRepository hydrate and dehydrate methods, closes #211
 * Fix typo in the import_mode migration, closes #214
 * Don't sort feed items by date. Closes #179.
 * Add migration to set import mode of events feeds, closes #205
@@ -42,9 +61,6 @@ Update these notes using: git log --pretty=format:'* %s' --no-merges rel-2.6.3..
 * udpate layouts to use tokens of segments #131
 * Uses dummy HTML for feed import when we have nothing. Closes #177
 * Saves enclosures as images again. Closes #180
-* Adds "pubdate" to JSON responses
-* Adds the singular "error" to the visitor login response
-* Fixes 'Undefined variable: downloadStats'. Closes #176
 * Code cleaning
 * Set the correct timezone for visitor last login date, closes #147
 * Clean ImportVisitorsCsvService
