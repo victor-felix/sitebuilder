@@ -32,7 +32,7 @@ class BulkImportItems
 		$importedItemsIds = [];
 
 		$shouldCreate = $shouldCreate ?: function($item) {
-			return true;
+			return !$item->id();
 		};
 
 		$shouldUpdate = $shouldUpdate ?: function($item) {
@@ -41,12 +41,12 @@ class BulkImportItems
 
 		foreach ($items as $item) {
 			if ($shouldUpdate($item) && $this->updateItem($item)) {
-				$importedItemsIds[] = $item->id();
 				$stats['existing_items'] += 1;
 			} else if ($shouldCreate($item) && $this->createItem($item, $sendPush)) {
-				$importedItemsIds[] = $item->id();
 				$stats['created_items'] += 1;
 			}
+
+			$importedItemsIds[] = $item->id();
 		}
 
 		if ($mode == self::EXCLUSIVE_IMPORT) {
