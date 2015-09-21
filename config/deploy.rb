@@ -33,7 +33,7 @@ set :linked_dirs, %w{uploads log tmp}
 set :file_permissions_paths, %w{uploads log tmp} #tmp/cache/yaml tmp/cache/html_purifier}
 
 # Allows deploy to a specific branch
-set :branch, ENV['branch'] || 'master'
+ask :branch, proc { `git tag`.split("\n").last }
 
 #Sitebuilder services lock files
 set :services_paths, [
