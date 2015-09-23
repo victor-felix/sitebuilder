@@ -4,8 +4,8 @@ namespace meumobi\sitebuilder\workers;
 
 use Exception;
 use app\models\extensions\EventFeed;
-use app\models\RecordNotFoundException;
 use meumobi\sitebuilder\Logger;
+use meumobi\sitebuilder\repositories\RecordNotFoundException;
 use meumobi\sitebuilder\services\UpdateEventsFeed;
 use meumobi\sitebuilder\validators\ParamsValidator;
 

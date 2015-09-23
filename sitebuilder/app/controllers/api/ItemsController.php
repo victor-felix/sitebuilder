@@ -8,9 +8,9 @@ use Inflector;
 use Model;
 use View;
 use app\models\Items;
-use app\models\RecordNotFoundException;
 use lithium\core\Object;
 use meumobi\sitebuilder\presenters\api\RssItemPresenter;
+use meumobi\sitebuilder\repositories\RecordNotFoundException;
 use meumobi\sitebuilder\services\CreateItem;
 use meumobi\sitebuilder\services\UpdateItem;
 

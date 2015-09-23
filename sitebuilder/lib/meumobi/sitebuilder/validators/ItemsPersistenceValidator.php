@@ -3,7 +3,7 @@ namespace meumobi\sitebuilder\validators;
 
 use Model;
 use Validation;
-use app\models\RecordNotFoundException;
+use meumobi\sitebuilder\repositories\RecordNotFoundException;
 
 class ItemsPersistenceValidator implements Validator
 {
