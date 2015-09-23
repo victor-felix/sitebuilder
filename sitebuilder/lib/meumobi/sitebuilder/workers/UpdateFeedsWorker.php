@@ -4,8 +4,8 @@ namespace meumobi\sitebuilder\workers;
 
 use Exception;
 use app\models\extensions\Rss;
-use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\repositories\RecordNotFoundException;
+use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\services\UpdateNewsFeed;
 use meumobi\sitebuilder\validators\ParamsValidator;
 
@@ -66,11 +66,15 @@ class UpdateFeedsWorker
 	protected function getCategory($extension)
 	{
 		try {
-			return Rss::category($extension);
+			$category = Rss::category($extension);
+			$category->site();
+
+			return $category;
 		} catch (RecordNotFoundException $e) {
 			$extension->enabled = 0;
 			$extension->save();
-			throw new Exception('Invalid extension category');
+
+			throw new Exception($e->getMessage());
 		}
 	}
 }
