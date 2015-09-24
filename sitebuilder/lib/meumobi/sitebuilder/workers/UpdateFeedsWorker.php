@@ -3,14 +3,15 @@
 namespace meumobi\sitebuilder\workers;
 
 use Exception;
-use app\models\extensions\Rss;
-use meumobi\sitebuilder\repositories\RecordNotFoundException;
 use meumobi\sitebuilder\Logger;
+use meumobi\sitebuilder\roles\Updatable;
 use meumobi\sitebuilder\services\UpdateNewsFeed;
 use meumobi\sitebuilder\validators\ParamsValidator;
 
 class UpdateFeedsWorker
 {
+	use Updatable;
+
 	public function perform($params)
 	{
 		list($priority) = ParamsValidator::validate($params, ['priority']);
@@ -28,7 +29,7 @@ class UpdateFeedsWorker
 			'priority' => $priority
 		];
 
-		$extensions = $this->getExtensionsByPriority($priority);
+		$extensions = $this->getExtensionsByPriorityAndType($priority, 'rss');
 
 		foreach($extensions as $extension) {
 			try {
@@ -51,31 +52,4 @@ class UpdateFeedsWorker
 		$stats['elapsed_time'] = microtime(true) - $start;
 		Logger::info('workers', 'finished updating feeds', $stats);
 	}
-
-	protected function getExtensionsByPriority($priority)
-	{
-		return Rss::find('all', [
-			'conditions' => [
-				'extension' => 'rss',
-				'enabled' => 1,
-				'priority' => $priority,
-			],
-		]);
-	}
-
-	protected function getCategory($extension)
-	{
-		try {
-			$category = Rss::category($extension);
-			$category->site();
-
-			return $category;
-		} catch (RecordNotFoundException $e) {
-			$extension->enabled = 0;
-			$extension->save();
-
-			throw new Exception($e->getMessage());
-		}
-	}
 }
-

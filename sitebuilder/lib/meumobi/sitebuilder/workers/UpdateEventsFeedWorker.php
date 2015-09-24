@@ -3,14 +3,15 @@
 namespace meumobi\sitebuilder\workers;
 
 use Exception;
-use app\models\extensions\EventFeed;
 use meumobi\sitebuilder\Logger;
-use meumobi\sitebuilder\repositories\RecordNotFoundException;
+use meumobi\sitebuilder\roles\Updatable;
 use meumobi\sitebuilder\services\UpdateEventsFeed;
 use meumobi\sitebuilder\validators\ParamsValidator;
 
 class UpdateEventsFeedWorker
 {
+	use Updatable;
+
 	public function perform($params)
 	{
 		list($priority) = ParamsValidator::validate($params, ['priority']);
@@ -28,7 +29,7 @@ class UpdateEventsFeedWorker
 			'priority' => $priority,
 		];
 
-		$extensions = $this->getExtensionsByPriority($priority);
+		$extensions = $this->getExtensionsByPriorityAndType($priority, 'event-feed');
 
 		foreach($extensions as $extension) {
 			try {
@@ -51,31 +52,4 @@ class UpdateEventsFeedWorker
 		$stats['elapsed_time'] = microtime(true) - $start;
 		Logger::info('workers', 'finished updating events feeds', $stats);
 	}
-
-	protected function getExtensionsByPriority($priority)
-	{
-		return EventFeed::find('all', [
-			'conditions' => [
-				'extension' => 'event-feed',
-				'enabled' => 1,
-				'priority' => $priority,
-			],
-		]);
-	}
-
-	protected function getCategory($extension)
-	{
-		try {
-			$category = EventFeed::category($extension);
-			$category->site();
-
-			return $category;
-		} catch (RecordNotFoundException $e) {
-			$extension->enabled = 0;
-			$extension->save();
-
-			throw new Exception($e->getMessage());
-		}
-	}
 }
-
