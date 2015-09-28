@@ -12,6 +12,7 @@ if (isset($options['import-file']) && isset($options['site'])) {
 	$site = Model::load('Sites')->firstById($options['site']);
 
 	loadSegment($site->segment);
+	I18n::locale($site->language);
 
 	$options['resend'] = isset($options['resend-invite']);
 	$import = new ImportVisitorsCsvService();
@@ -19,6 +20,7 @@ if (isset($options['import-file']) && isset($options['site'])) {
 	if (isset($options['auto-password'])) $import->setPasswordStrategy(VisitorPasswordGenerationService::RANDOM_PASSWORD);
 	$import->setSite($site);
 	$import->setFile($options['import-file']);
+
 	echo $import->import($options);
 } else {
 	echo <<<'EOL'

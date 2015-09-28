@@ -7,9 +7,12 @@ use meumobi\sitebuilder\services\ResetVisitorPassword;
 
 function updateVisitorPassword($email)
 {
-	$repository = new VisitorsRepository();
-	$visitor = $repository->findByEmail($email);
+	$visitor = getVisitor($email);
 	$service = new ResetVisitorPassword();
+
+	$site = Model::load('Sites')->firstById($visitor->siteId());
+	loadSegment($site->segment);
+	I18n::locale($site->language);
 
 	if ($service->resetPassword($visitor)) {
 		echo "Visitor password successfully updated.\n";
@@ -25,6 +28,8 @@ function getVisitor($email)
 	if (!$visitor) {
 		exit("invalid visitor.\n");
 	}
+
+	return $visitor;
 }
 
 $options = getopt('', ['email:']);
