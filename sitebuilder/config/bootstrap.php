@@ -25,24 +25,29 @@ require_once 'app/models/app_model.php';
 require_once 'app/controllers/app_controller.php';
 require_once 'app/models/meu_mobi.php';
 
+use \lithium\action\Dispatcher;
 
-return function($segment) {
-	require_once 'segments/' . $segment . '/config.php';
-
-	YamlDictionary::dictionary('strings');
-	YamlDictionary::path(APP_ROOT . '/segments/' . $segment);
+return function($segment)
+{
+	loadSegment($segment);
 
 	try {
-		echo \lithium\action\Dispatcher::run(new \lithium\action\Request(array(
+		echo Dispatcher::run(new \lithium\action\Request([
 			'url' => Mapper::here()
-		)));
-//	} catch (SpaghettiException $e) {
-//		echo $e->toString();
+		]));
 	} catch (Exception $e) {
 		Debug::log((string) $e);
 
-//		if (Config::read('Debug.showErrors')) {
+		if (Config::read('Debug.showErrors')) {
 			echo '<pre>', $e, '</pre>';
-	//	}
+		}
 	}
 };
+
+function loadSegment($segment)
+{
+	require_once "segments/$segment/config.php";
+
+	YamlDictionary::dictionary('strings');
+	YamlDictionary::path(APP_ROOT . '/segments/' . $segment);
+}

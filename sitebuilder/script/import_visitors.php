@@ -11,7 +11,7 @@ $options = getopt(null, ['site:', 'import-file:', 'auto-password', 'exclusive', 
 if (isset($options['import-file']) && isset($options['site'])) {
 	$site = Model::load('Sites')->firstById($options['site']);
 
-	require 'segments/' . $site->segment . '/config.php';
+	loadSegment($site->segment);
 
 	$options['resend'] = isset($options['resend-invite']);
 	$import = new ImportVisitorsCsvService();
