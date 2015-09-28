@@ -1,41 +1,30 @@
 <?php
+require dirname(__DIR__) . '/config/cli.php';
+
 use meumobi\sitebuilder\repositories\VisitorsRepository;
 use meumobi\sitebuilder\entities\Visitor;
-
-require dirname(__DIR__) . '/config/cli.php';
+use meumobi\sitebuilder\services\ResetVisitorPassword;
 
 function updateVisitorPassword($email)
 {
 	$repository = new VisitorsRepository();
 	$visitor = $repository->findByEmail($email);
-	$password = $visitor->setRandomPassword();
-	$repository->update($visitor);
-	echo "Visitor password updated to: $password\n";
-	sendVisitorEmail($visitor, $password);
+	$service = new ResetVisitorPassword();
+
+	if ($service->resetPassword($visitor)) {
+		echo "Visitor password successfully updated.\n";
+	}
+
 }
 
-function sendVisitorEmail($visitor, $password)
+function getVisitor($email)
 {
-	$site = Model::load('Sites')->firstById($visitor->siteId());
-	require 'segments/' . $site->segment . '/config.php';//TODO remove this from here
-	\I18n::locale($site->language);
-	$data =	[
-		'title' => s('[%s]: New password', $site->title),
-		'segment' => \MeuMobi::currentSegment(),
-		'password' => $password,
-		'visitor' => $visitor,
-		'site' => $site,
-	];
-	$mailer = new \Mailer([
-		'from' => $data['segment']->email,
-		'to' => $visitor->email(),
-		'subject' => $data['title'],
-		'views' => ['text/html' => 'visitors/forgot_password_mail.htm'],
-		'layout' => 'mail',
-		'data' =>  $data,
-	]);
-	echo "sending email to : {$visitor->email()}\n";
-	return $mailer->send();
+	$repository = new VisitorsRepository();
+	$visitor = $repository->findByEmail($email);
+
+	if (!$visitor) {
+		exit("invalid visitor.\n");
+	}
 }
 
 $options = getopt('', ['email:']);
