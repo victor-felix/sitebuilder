@@ -26,26 +26,55 @@ trait Updatable
 	{
 		try {
 			$category = Extensions::category($extension);
-			$category->site();
+
+			$this->assertValidSite($category, $extension);
 
 			return $category;
 		} catch (RecordNotFoundException $e) {
-			$this->disableExtension($extension, $e->getMessage());
+			$message = 'category of extension not found';
+			Logger::info('extensions', $message, [
+				'extension_id' => (string) $extension->_id,
+				'category_id' => $extension->category_id,
+				'site_id' => $extension->site_id,
+			]);
 
-			throw new Exception($e->getMessage());
+			$this->disableExtension($extension, $message);
+
+			throw new Exception($message);
+		}
+	}
+
+
+	public function assertValidSite($category, $extension)
+	{
+		try {
+			$category->site();
+		} catch (RecordNotFoundException $e) {
+			$message = 'site of extension not found';
+
+			Logger::info('extensions', $message, [
+				'extension_id' => (string) $extension->_id,
+				'category_id' => $extension->category_id,
+				'site_id' => $extension->site_id,
+			]);
+
+			$this->disableExtension($extension, $message);
+
+			throw new Exception($message);
 		}
 	}
 
 	public function disableExtension($extension, $reason)
 	{
 		$extension->enabled = 0;
-		$extension->save();
+		$extension->save(null, ['callbacks' => false]);
 
-		Logger::info('extensions', 'category extension disabled', [
+		Logger::info('extensions', 'extension disabled', [
 			'extension_id' => (string) $extension->_id,
 			'category_id' => $extension->category_id,
 			'site_id' => $extension->site_id,
 			'reason' => $reason,
 		]);
 	}
+
 }

@@ -35,6 +35,7 @@ class UpdateEventsFeedWorker
 			try {
 				$category = $this->getCategory($extension);
 				$updateEventsFeed = new UpdateEventsFeed();
+
 				$stats['categories'][$category->id] =
 					$updateEventsFeed->perform(compact('category', 'extension'));
 				$stats['total_updated_feeds'] += 1;
