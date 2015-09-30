@@ -62,4 +62,5 @@
 </div>
 <script>
 	window.visitorGraphData = <?= $visitorGraphDataJson ?>;
+	window.datatableLocaleUrl = '<?= Mapper::url("/scripts/shared/datatable.$language.json") ?>'
 </script>
