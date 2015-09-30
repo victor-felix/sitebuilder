@@ -50,12 +50,14 @@ class HtmlHelper extends Helper
 		return join(' ', $attributes);
 	}
 
-	public function link ($text, $url = null, $attr = array(), $full = false)
+	public function link($text, $url = null, $attr = [], $full = false, $mapper = 'Mapper')
 	{
-		if (is_null($url)) :
+		if (is_null($url)) {
 			$url = $text;
-		endif;
-		$attr['href'] = Mapper::url($url, $full);
+		}
+
+		$attr['href'] = $mapper::url($url, $full);
+
 		return $this->tag('a', $text, $attr);
 	}
 
@@ -149,7 +151,7 @@ class HtmlHelper extends Helper
 			if (is_null($bool)) {
 				$bool = true;
 			}
-		} else 
+		} else
 			if (is_bool(end($args))) {
 				$bool = array_pop($args);
 			}
