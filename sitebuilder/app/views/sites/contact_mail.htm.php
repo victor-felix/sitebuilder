@@ -1,17 +1,19 @@
-<p style="padding: 0 20px;">
-	<?php echo s('Hi! <br /><br />You have received this mail from a contact form on your %s website.', $site->title) ?>
+<p>
+	<?= s('Hi! <br /><br />You have received this mail from a contact form on your %s website.', $site->title) ?>
 </p>
-<p style="padding: 0 20px">
-	<?php echo s('Name') ?>: <?php echo $name ?>
-	<br /><?php echo s('Email') ?>: <?php echo $mail ?>
+<br /><br />
+<p>
+	<?= s('Name') ?>: <?= $name ?>
+	<br /><?= s('Email') ?>: <?= $mail ?>
 	<?php if($phone): ?>
-		<br /><?php echo s('Phone') ?>: <?php echo $phone ?>
+		<br /><?= s('Phone') ?>: <?= $phone ?>
 	<?php endif ?>
 </p>
-<p style="padding: 0 20px">
-	<?php echo $message ?>
-</p>
-
+<br /><br />
 <p>
-	<?= s('Powered by') ?> <b><?= MeuMobi::currentSegment()->title ?></b> - <a href="<?= Mapper::url('/', true) ?>" target="_blank"><?= Mapper::url('/', true) ?></a> | <b>Support:</b> <a href="mailto:contact@meumobi.com" target="_blank">contact@meumobi.com</a>
+	<?= $message ?>
+</p>
+<br /><br />
+<p>
+	<?= s('Powered by') ?> <b><?= MeuMobi::currentSegment()->title ?></b> - <?= $this->html->link('/', null, [], true) ?> | <b>Support:</b> <a href="mailto:contact@meumobi.com" target="_blank">contact@meumobi.com</a>
 </p>

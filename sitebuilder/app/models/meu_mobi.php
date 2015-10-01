@@ -42,8 +42,8 @@ class MeuMobi
 		return $domain;
 	}
 
-	public static function url($path)
+	public static function url($path, $full)
 	{
-		return 'http://'.self::domain().$path;
+		return $full ? 'http://'.self::domain().$path : $path;
 	}
 }

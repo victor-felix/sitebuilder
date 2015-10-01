@@ -206,7 +206,6 @@ class Users extends AppModel
 		$site = $this->site();
 		foreach ($emails as $email) {
 			if ($data = $this->inviteToSite($email, $site)) {
-				$data['link'] = Mapper::url("/accept_invite/login/{$data['token']}", true);
 				$this->sendInviteEmail($email, s('Invited by %s', $this->fullname()), $data);
 			}
 		}
