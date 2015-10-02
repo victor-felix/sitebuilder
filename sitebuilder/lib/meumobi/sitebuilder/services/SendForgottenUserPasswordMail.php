@@ -21,6 +21,7 @@ class SendForgottenUserPasswordMail
 			'data' => [
 				'user' => $user,
 				'site' => $user->site(),
+				'segment' => $segment,
 				'title' => s('[%s] Reset Password Request', $segment->title)
 			]
 		]);

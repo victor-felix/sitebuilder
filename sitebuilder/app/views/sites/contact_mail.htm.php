@@ -15,5 +15,5 @@
 </p>
 <br /><br />
 <p>
-	<?= s('Powered by') ?> <b><?= MeuMobi::currentSegment()->title ?></b> - <?= $this->html->link('/', null, [], true) ?> | <b>Support:</b> <a href="mailto:contact@meumobi.com" target="_blank">contact@meumobi.com</a>
+	<?= s('Powered by') ?> <b><?= $segment->title ?></b> - <?= $this->html->link('/', null, [], true, 'MeuMobi') ?> | <b>Support:</b> <?= $this->html->link(s('contact@meumobi.com'), 'mailto:' . s('contact@meumobi.com'), ['target' => '_blank'], true) ?>
 </p>

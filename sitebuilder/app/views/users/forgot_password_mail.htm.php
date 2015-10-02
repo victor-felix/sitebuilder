@@ -1,5 +1,5 @@
 <p>
-	<?= s('Hi, <b>%s</b>. <br/><br/>You have requested the reset of your MeuMobi password. In order to do that you should click on link below.', $user->firstname()) ?>
+	<?= s('Hi, <b>%s</b>. <br/><br/>You have requested the reset of your %s password. In order to do that you should click on link below.', $user->firstname(), $segment->title) ?>
 </p>
 <br /><br />
 <p>

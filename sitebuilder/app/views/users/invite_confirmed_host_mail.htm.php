@@ -1,3 +1,3 @@
 <p>
-User confirmed the invitation
+	<?= s('The user has confirmed the invitation.') ?>
 </p>
