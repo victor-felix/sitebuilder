@@ -4,12 +4,12 @@
 # is considered to be the first unless any hosts have the primary
 # property set.  Don't declare `role :all`, it's a meta role.
 
-role :app, %w{rimobi.ipanemax.com}
+role :app, %w{comunique-se.ipanemax.com}
 #role :web, %w{deploy@example.com}
 #role :db,  %w{deploy@example.com}
 
 #deploy path
-set :deploy_to, '/home/meumobi/PROJECTS/int-meumobilesite.com'
+set :deploy_to, '/home/meumobi/PROJECTS/mobi.comunique-se.com.br'
 
 set :php_env, 'rimobi'
 
