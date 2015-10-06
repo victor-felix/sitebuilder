@@ -50,7 +50,7 @@ class HtmlHelper extends Helper
 		return join(' ', $attributes);
 	}
 
-	public function link($text, $url = null, $attr = [], $full = false, $mapper = 'Mapper')
+	public function link($text, $url = null, $attr = [], $full = false, $mapper = 'MeuMobi')
 	{
 		if (is_null($url)) {
 			$url = $text;
