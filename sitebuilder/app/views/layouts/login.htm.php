@@ -4,7 +4,7 @@
 		<?php echo $this->html->charset() ?>
 		<title><?php echo $this->pageTitle . ' | ' . $this->controller->getSegment()->title ?></title>
 		<meta name="robots" content="noindex, nofollow">
-		<link rel="shortcut icon" href="<?php echo Mapper::url('/images/layout/favicon.png') ?>" type="image/png" />
+		<link rel="shortcut icon" href="<?php echo MeuMobi::url('/images/layout/favicon.png') ?>" type="image/png" />
 		<?php echo $this->html->stylesheet('shared/base', 'shared/edit-forms', 'shared/register', 'shared/uikit', 'shared/login', 'segment') ?>
 	</head>
 	<body class="login">

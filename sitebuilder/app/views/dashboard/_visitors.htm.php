@@ -1,6 +1,6 @@
 <?php if ($site->private): ?>
 <li id="visitors">
-	<a class="link" href="<?php echo Mapper::url('/visitors') ?>">
+	<a class="link" href="<?php echo MeuMobi::url('/visitors') ?>">
 		<i class="icons fa fa-4x fa-users"></i>
 		<h3><?php echo s('Visitors') ?></h3>
 		<small><?php echo s('manage your visitors') ?></small>
