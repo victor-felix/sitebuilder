@@ -15,7 +15,7 @@ class SendForgottenUserPasswordMail
 		$mailer = new Mailer([
 			'from' => $segment->email,
 			'to' => [$user->email => $user->fullname()],
-			'subject' => s('[%s] Reset Password Request', $segment->title),
+			'subject' => s('users/mail/reset_password:subject', $segment->title),
 			'views' => ['text/html' => 'users/forgot_password_mail.htm'],
 			'layout' => 'mail',
 			'data' => [
