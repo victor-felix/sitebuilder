@@ -21,7 +21,7 @@ class EventFeed extends Extensions
 		],
 		'import_mode' => [
 			'title' => 'Method of import',
-			'type' => 'radio',
+			'type' => 'select',
 			'options' => [
 				BulkImportItems::INCLUSIVE_IMPORT => 'Inclusive',
 				BulkImportItems::EXCLUSIVE_IMPORT => 'Exclusive',
