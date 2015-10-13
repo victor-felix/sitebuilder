@@ -14,8 +14,7 @@ $password = array_shift($argv);
 $siteTitle = array_shift($argv);
 $segment = array_shift($argv);
 
-require 'segments/' . $segment . '/config.php';
-
+loadSegment($segment);
 
 $user = new Users();
 $user->cantCreateSite = true;
