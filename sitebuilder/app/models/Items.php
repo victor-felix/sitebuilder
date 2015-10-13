@@ -12,6 +12,7 @@ use GoogleGeocoding;
 use GeocodingException;
 use OverQueryLimitException;
 use meumobi\sitebuilder\services\UpdateFeedsService;
+use meumobi\sitebuilder\repositories\RecordNotFoundException;
 use meumobi\sitebuilder\WorkerManager;
 use lithium\util\Collection;
 
@@ -489,7 +490,7 @@ class Items extends \lithium\data\Model {
 			$classname = '\app\models\items\\' . Inflector::camelize($result->type);
 			return $classname::find('first', $params['options']);
 		} else {
-			throw new \app\models\RecordNotFoundException('item not found');
+			throw new RecordNotFoundException('item not found');
 		}
 	}
 

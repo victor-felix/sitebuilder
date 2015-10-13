@@ -1,10 +1,14 @@
 <?php
 namespace meumobi\sitebuilder\validators;
 
+use Model;
+use Validation;
+use meumobi\sitebuilder\repositories\RecordNotFoundException;
+
 class ItemsPersistenceValidator implements Validator
 {
 	/*
-	 * List of validation rules and error messages tokens, since the message 
+	 * List of validation rules and error messages tokens, since the message
 	 * should be the responsibility of the presentation layer.
 	 * http://jeffreypalermo.com/blog/the-fallacy-of-the-always-valid-entity/
 	 */
@@ -52,8 +56,13 @@ class ItemsPersistenceValidator implements Validator
 
 	protected function validSite($siteId, $item)
 	{
-		$category = $item->parent();
-		return $category->site_id == $siteId;
+		try {
+			$site = $item->parent()->site();
+
+			return $site->id == $siteId;
+		} catch (RecordNotFoundException $e) {
+			return false;
+		}
 	}
 
 	protected function validType($type, $item)

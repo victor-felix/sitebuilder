@@ -3,14 +3,15 @@
 namespace meumobi\sitebuilder\workers;
 
 use Exception;
-use app\models\extensions\Rss;
 use meumobi\sitebuilder\Logger;
-use meumobi\sitebuilder\repositories\RecordNotFoundException;
+use meumobi\sitebuilder\roles\Updatable;
 use meumobi\sitebuilder\services\UpdateNewsFeed;
 use meumobi\sitebuilder\validators\ParamsValidator;
 
 class UpdateFeedsWorker
 {
+	use Updatable;
+
 	public function perform($params)
 	{
 		list($priority) = ParamsValidator::validate($params, ['priority']);
@@ -28,12 +29,13 @@ class UpdateFeedsWorker
 			'priority' => $priority
 		];
 
-		$extensions = $this->getExtensionsByPriority($priority);
+		$extensions = $this->getExtensionsByPriorityAndType($priority, 'rss');
 
 		foreach($extensions as $extension) {
 			try {
 				$category = $this->getCategory($extension);
 				$updateNewsFeed = new UpdateNewsFeed();
+
 				$stats['categories'][$category->id] =
 					$updateNewsFeed->perform(compact('category', 'extension'));
 				$stats['total_updated_feeds'] += 1;
@@ -51,27 +53,4 @@ class UpdateFeedsWorker
 		$stats['elapsed_time'] = microtime(true) - $start;
 		Logger::info('workers', 'finished updating feeds', $stats);
 	}
-
-	protected function getExtensionsByPriority($priority)
-	{
-		return Rss::find('all', [
-			'conditions' => [
-				'extension' => 'rss',
-				'enabled' => 1,
-				'priority' => $priority,
-			],
-		]);
-	}
-
-	protected function getCategory($extension)
-	{
-		try {
-			return Rss::category($extension);
-		} catch (RecordNotFoundException $e) {
-			$extension->enabled = 0;
-			$extension->save();
-			throw new Exception('Invalid extension category');
-		}
-	}
 }
-

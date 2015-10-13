@@ -92,6 +92,11 @@ class Categories extends AppModel
 		return array_reverse($breadcrumbs);
 	}
 
+	public function site()
+	{
+		return Model::load('Sites')->firstById($this->site_id);
+	}
+
 	public function parent()
 	{
 		if ($this->parent_id && $this->validParent($this->parent_id)) {
@@ -201,7 +206,7 @@ class Categories extends AppModel
 	protected function getItemType($data)
 	{
 		if (is_null($this->id)) {
-			$site = Model::load('Sites')->firstById($this->site_id);
+			$site = $this->site();
 			$items = (array) $site->itemTypes();
 
 			if (!array_key_exists('type', $data) || !in_array($data['type'], $items)) {
@@ -294,7 +299,7 @@ class Categories extends AppModel
 			$parent->save();
 		}
 
-		$site = Model::load('Sites')->firstById($this->site_id);
+		$site = $this->site();
 		$site->modified = $date;
 		$site->save();
 		} catch (Exception $e) {
@@ -315,7 +320,7 @@ class Categories extends AppModel
 				$parent->save();
 			}
 
-			$site = Model::load('Sites')->firstById($self->site_id);
+			$site = $self->site();
 			$site->updated = $date;
 			$site->save();
 		} catch (Exception $e) {

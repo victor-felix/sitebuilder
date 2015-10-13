@@ -1,5 +1,7 @@
 <?php
 
+use meumobi\sitebuilder\repositories\RecordNotFoundException;
+
 class AppModel extends Model {
     protected $displayField = 'title';
 
@@ -25,7 +27,7 @@ class AppModel extends Model {
 
         if(is_null($first)) {
             $class = get_class($this);
-            throw new \app\models\RecordNotFoundException("{$class} with id={$id} not found");
+            throw new RecordNotFoundException("{$class} with id={$id} not found");
         }
         else {
             return $first;
