@@ -205,9 +205,15 @@ class Users extends AppModel
 		$emails = $this->prepareEmails($emails);
 		$site = $this->site();
 		foreach ($emails as $email) {
-			if ($data = $this->inviteToSite($email, $site)) {
-				$data['link'] = Mapper::url("/accept_invite/login/{$data['token']}", true);
-				$this->sendInviteEmail($email, s('Invited by %s', $this->fullname()), $data);
+			$data = $this->inviteToSite($email, $site);
+
+			if ($data) {
+				$segment = MeuMobi::currentSegment();
+
+				$subject = s('users/mail/invite_request:subject', $segment->title, $this->fullname(), $site->title);
+				$data['link'] = MeuMobi::url("/accept_invite/login/{$data['token']}", true);
+
+				$this->sendEmail($email, $subject, $data);
 			}
 		}
 	}
@@ -230,10 +236,15 @@ class Users extends AppModel
 				'invited_user' => $this,
 				'host_user' => $hostUser,
 			);
-			$this->sendInviteEmail($this->email, "Invite confirmed", $data, 'users/invite_confirmed_mail.htm');
+
+			$subject = s('users/mail/invite_confirm:subject', $segment->title, $this->fullname(), $site->title);
+			$this->sendEmail($this->email, $subject, $data, 'users/invite_confirmed_mail.htm');
+
 			if ($hostUser) {
-				$this->sendInviteEmail($hostUser->email, s('%s confirmed the invitation', $this->fullname()), $data, 'users/invite_confirmed_host_mail.htm');
+				$subject = s('users/mail/admin_invite_confirm:subject', $segment->title, $this->fullname(), $site->title);
+				$this->sendEmail($hostUser->email, $subject, $data, 'users/invite_confirmed_host_mail.htm');
 			}
+
 			$this->site($site->id);
 			$invite->delete();
 			return true;
@@ -325,63 +336,44 @@ class Users extends AppModel
 		return $id;
 	}
 
-	protected function sendMail($from, $to, $subject, $view, $data) {
-		if (!Config::read('Mail.preventSending')) {
-			$segment = MeuMobi::currentSegment();
-			$mailer = new Mailer(array(
-				'from' => $from,
-				'to' => $to,
-				'subject' => s($subject),
-				'views' => array('text/html' => $view),
-				'layout' => 'mail',
-				'data' => $data,
-			));
-			$mailer->send();
-		}
-	}
 
 	protected function sendWelcomeMail($created)
 	{
 		if ($created) {
 			$segment = MeuMobi::currentSegment();
+			$site = $this->site();
+
+			$subject = s('users/mail/add:subject', $segment->title, $site->title);
+
 			$this->sendMail($segment->email,
 				array($this->email => $this->fullname()),
-				s("Welcome to %s", $segment->title),
-				'users/welcome_mail.htm',
-				array('title' => s("Welcome to %s", $segment->title), 'segment'=>$segment));
+				$subject,
+				[],
+				'users/welcome_mail.htm'
+			);
 		}
 	}
 
-	protected function sendConfirmationMail($created)
+	protected function sendEmail($to, $subject, $data = [], $template = 'users/invite_mail.htm')
 	{
-		if ($created) {
-			$segment = MeuMobi::currentSegment();
-			$this->sendMail($segment->email,
-				array($this->email => $this->fullname()),
-				'[MeuMobi] Account Confirmation',
-				'users/confirm_mail.htm',
-				array(
-					'user' => $this,
-					'title' => s('[MeuMobi] Account Confirmation')
-				));
-		}
-	}
+		$segment = MeuMobi::currentSegment();
 
-	protected function sendInviteEmail($to, $title, $data = array(), $template = 'users/invite_mail.htm')
-	{
-		if (!Config::read('Mail.preventSending')) {
-			$segment = MeuMobi::currentSegment();
-			$mailer = new Mailer(array(
-				'from' => $segment->email,
-				'to' => $to,
-				'subject' => $title,
-				'views' => array('text/html' => $template),
-				'layout' => 'mail',
-				'data' =>  $data,
-			));
+		$default = [
+			'title' => $subject,
+			'segment' => $segment,
+			'site' => $this->site(),
+		];
 
-			return $mailer->send();
-		}
+		$mailer = new Mailer(array(
+			'from' => $segment->email,
+			'to' => $to,
+			'subject' => $subject,
+			'views' => ['text/html' => $template],
+			'layout' => 'mail',
+			'data' => array_merge($default, $data),
+		));
+
+		return $mailer->send();
 	}
 
 	protected function authenticate($created)

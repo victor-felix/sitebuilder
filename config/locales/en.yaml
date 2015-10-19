@@ -7,10 +7,24 @@
 'Integration with Twitter, Facebook and Google Maps;': 'Choose between great mobile themes designed to take business information in the best way for your customers.'
 'en': 'English'
 'pt': 'Português'
-'api_mail_contact': '%s Contact Mail'
 'required_title_error': 'Title is empty'
 'required_category_error': 'Category is empty'
 'required_site_error': 'Site is empty'
 'invalid_site_error': 'Site is invalid'
 'invalid_type_error': 'Type is invalid'
 'invalid_medias_error': 'Files are invalid'
+'api_mail_contact': '%s Contact Mail'
+'users/mail/reset_password':
+  subject: '[%s] Reset your Password'
+'users/mail/add':
+  subject: '[%s] Welcome to %s Content Managers!'
+'users/mail/invite_request':
+  subject: '[%s] %s Invited you to Join %s Content Managers'
+'users/mail/invite_confirm':
+  subject: '[%s] %s has joined %s Content Managers'
+'users/mail/admin_invite_confirm':
+  subject: '[%s] %s has joined %s Content Managers'
+'visitors/mail/reset_password':
+  subject: '[%s] Reset your %s Password'
+'visitors/mail/add':
+  subject: '[%s] Welcome to %s App!'
