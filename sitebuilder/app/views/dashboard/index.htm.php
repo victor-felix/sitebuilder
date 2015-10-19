@@ -27,7 +27,7 @@
 			<?php endforeach; ?>
 			<?php if ($category): ?>
 			<li id="categories">
-				<a class="link" href="<?php echo Mapper::url('/categories') ?>">
+				<a class="link" href="<?php echo MeuMobi::url('/categories') ?>">
 					<i class="icons fa fa-4x fa-pencil-square-o"></i>
 					<h3><?php echo s('Edit content') ?></h3>
 					<small><?php echo s('you can edit your menu, products, stores or news') ?></small>
@@ -43,28 +43,28 @@
 					<i class="arrow fa fa-4x fa-angle-down"></i>
 				</div>
 				<p class="placeholder-links">
-					<a href="<?php echo Mapper::url('/placeholder_creator/menu') ?>">
+					<a href="<?php echo MeuMobi::url('/placeholder_creator/menu') ?>">
 						<?php echo $this->html->image('/images/shared/dashboard/icon-menu.png', array(
 							'alt' => s('menu')
 						)) ?>
 						<?php echo s('menu') ?>
 					</a>
 
-					<a href="<?php echo Mapper::url('/placeholder_creator/stores') ?>">
+					<a href="<?php echo MeuMobi::url('/placeholder_creator/stores') ?>">
 						<?php echo $this->html->image('/images/shared/dashboard/icon-stores.png', array(
 							'alt' => s('stores')
 						)) ?>
 						<?php echo s('stores') ?>
 					</a>
 
-					<a id="products" href="<?php echo Mapper::url('/placeholder_creator/products') ?>">
+					<a id="products" href="<?php echo MeuMobi::url('/placeholder_creator/products') ?>">
 						<?php echo $this->html->image('/images/shared/dashboard/icon-products.png', array(
 							'alt' => s('products')
 						)) ?>
 						<?php echo s('products') ?>
 					</a>
 
-					<a href="<?php echo Mapper::url('/placeholder_creator/news') ?>">
+					<a href="<?php echo MeuMobi::url('/placeholder_creator/news') ?>">
 						<?php echo $this->html->image('/images/shared/dashboard/icon-news.png', array(
 							'alt' => s('news')
 						)) ?>

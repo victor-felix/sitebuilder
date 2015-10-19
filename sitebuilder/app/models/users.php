@@ -206,7 +206,6 @@ class Users extends AppModel
 		$site = $this->site();
 		foreach ($emails as $email) {
 			if ($data = $this->inviteToSite($email, $site)) {
-				$data['link'] = Mapper::url("/accept_invite/login/{$data['token']}", true);
 				$this->sendInviteEmail($email, s('Invited by %s', $this->fullname()), $data);
 			}
 		}
@@ -326,18 +325,19 @@ class Users extends AppModel
 	}
 
 	protected function sendMail($from, $to, $subject, $view, $data) {
-		if (!Config::read('Mail.preventSending')) {
-			$segment = MeuMobi::currentSegment();
-			$mailer = new Mailer(array(
-				'from' => $from,
-				'to' => $to,
-				'subject' => s($subject),
-				'views' => array('text/html' => $view),
-				'layout' => 'mail',
-				'data' => $data,
-			));
-			$mailer->send();
-		}
+		$segment = MeuMobi::currentSegment();
+		$data['segment'] = $segment;
+
+		$mailer = new Mailer(array(
+			'from' => $from,
+			'to' => $to,
+			'subject' => s($subject),
+			'views' => array('text/html' => $view),
+			'layout' => 'mail',
+			'data' => $data,
+		));
+
+		$mailer->send();
 	}
 
 	protected function sendWelcomeMail($created)
@@ -358,30 +358,28 @@ class Users extends AppModel
 			$segment = MeuMobi::currentSegment();
 			$this->sendMail($segment->email,
 				array($this->email => $this->fullname()),
-				'[MeuMobi] Account Confirmation',
+				"[{$segment->title}] Account Confirmation",
 				'users/confirm_mail.htm',
 				array(
 					'user' => $this,
-					'title' => s('[MeuMobi] Account Confirmation')
+					'title' => s('[{$segment->title}] Account Confirmation')
 				));
 		}
 	}
 
 	protected function sendInviteEmail($to, $title, $data = array(), $template = 'users/invite_mail.htm')
 	{
-		if (!Config::read('Mail.preventSending')) {
-			$segment = MeuMobi::currentSegment();
-			$mailer = new Mailer(array(
-				'from' => $segment->email,
-				'to' => $to,
-				'subject' => $title,
-				'views' => array('text/html' => $template),
-				'layout' => 'mail',
-				'data' =>  $data,
-			));
+		$segment = MeuMobi::currentSegment();
+		$mailer = new Mailer(array(
+			'from' => $segment->email,
+			'to' => $to,
+			'subject' => $title,
+			'views' => array('text/html' => $template),
+			'layout' => 'mail',
+			'data' =>  $data,
+		));
 
-			return $mailer->send();
-		}
+		return $mailer->send();
 	}
 
 	protected function authenticate($created)

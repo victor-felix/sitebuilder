@@ -390,7 +390,7 @@ class Sites extends AppModel
 		$imagesDir = APP_ROOT . '/sitebuilder/assets/images/site_placeholders/';
 		$images = glob($imagesDir . '{*.jpg,*.gif,*.png}', GLOB_BRACE);
 		foreach ($images as $img) {
-			$img = Mapper::url('/images/shared/site_placeholders/' . basename($img), true);
+			$img = MeuMobi::url('/images/shared/site_placeholders/' . basename($img), true);
 			$image = Model::load('Images')->download(new SitePhotos($this->id), $img, [
 				'visible' => 1,
 				'description' => 'edit legend',

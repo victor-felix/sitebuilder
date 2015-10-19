@@ -79,7 +79,7 @@ class PlaceholderCreatorController extends AppController
 		$item->save();
 
 		foreach ($images as $image) {
-			$image = Mapper::url('/images/shared/item_placeholders/' . $image, true);
+			$image = MeuMobi::url('/images/shared/item_placeholders/' . $image, true);
 			$image = Model::load('Images')->download($item, $image, array(
 				'visible' => 1
 			));
