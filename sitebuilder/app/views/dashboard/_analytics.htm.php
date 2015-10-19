@@ -8,7 +8,7 @@ $this->html->scriptsForLayout .= '<script type="text/javascript" src="https://ww
 <?php else: ?>
     <?php if ($analytics->isAuthenticated()): ?>
         <?php  if ($analytics->profile_id): ?>
-            <div id="analytics_report" data-url="<?php echo Mapper::url('/dashboard/analytics_report') ?>">
+            <div id="analytics_report" data-url="<?php echo MeuMobi::url('/dashboard/analytics_report') ?>">
                 <?php //echo $this->element('dashboard/analytics_report', compact('analytics')) ?> 
             </div>
         <?php else: ?>

@@ -2,6 +2,7 @@
 
 Config::write('Segment', array(
   'id' => 'meumobi',
+  'domain' => 'meumobi.com',
   'title' => 'MeuMobi',
   'root' => 'Index',
   'items' =>  Config::read('App.environment') == 'production' ? ['articles'] : ['articles', 'events', 'merchant_products', 'promotions', 'products', 'stores'],

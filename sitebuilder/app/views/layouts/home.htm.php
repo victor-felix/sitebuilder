@@ -6,7 +6,7 @@
 		<meta name="description" content="<?php echo s('Create professional websites for all mobile devices easily. Advanced features such as store locator for your chain stores.') ?>" />
 		<meta name="keywords" content="<?php echo s('mobile website, mobilize website, design mobile website, create mobile website, build mobile website, business, menu, restaurant') ?>" />
 		<title><?php echo s('Create a mobile website easily') . ' | ' . $this->controller->getSegment()->title ?></title>
-		<link rel="shortcut icon" href="<?php echo Mapper::url("/images/layout/favicon.png") ?>" type="image/png" />
+		<link rel="shortcut icon" href="<?php echo MeuMobi::url("/images/layout/favicon.png") ?>" type="image/png" />
 		<?php echo $this->html->stylesheet('shared/bootstrap.min', 'shared/home', 'shared/dropdown') ?>
 	</head>
 

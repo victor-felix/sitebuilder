@@ -336,6 +336,21 @@ class Users extends AppModel
 		return $id;
 	}
 
+	protected function sendMail($from, $to, $subject, $view, $data) {
+		$segment = MeuMobi::currentSegment();
+		$data['segment'] = $segment;
+
+		$mailer = new Mailer(array(
+			'from' => $from,
+			'to' => $to,
+			'subject' => s($subject),
+			'views' => array('text/html' => $view),
+			'layout' => 'mail',
+			'data' => $data,
+		));
+
+		$mailer->send();
+	}
 
 	protected function sendWelcomeMail($created)
 	{
@@ -347,30 +362,25 @@ class Users extends AppModel
 
 			$this->sendMail($segment->email,
 				array($this->email => $this->fullname()),
-				$subject,
-				[],
-				'users/welcome_mail.htm'
-			);
+				"[{$segment->title}] Account Confirmation",
+				'users/confirm_mail.htm',
+				array(
+					'user' => $this,
+					'title' => s('[{$segment->title}] Account Confirmation')
+				));
 		}
 	}
 
 	protected function sendEmail($to, $subject, $data = [], $template = 'users/invite_mail.htm')
 	{
 		$segment = MeuMobi::currentSegment();
-
-		$default = [
-			'title' => $subject,
-			'segment' => $segment,
-			'site' => $this->site(),
-		];
-
 		$mailer = new Mailer(array(
 			'from' => $segment->email,
 			'to' => $to,
-			'subject' => $subject,
-			'views' => ['text/html' => $template],
+			'subject' => $title,
+			'views' => array('text/html' => $template),
 			'layout' => 'mail',
-			'data' => array_merge($default, $data),
+			'data' =>  $data,
 		));
 
 		return $mailer->send();

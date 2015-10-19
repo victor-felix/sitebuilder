@@ -1,6 +1,7 @@
-<p style="padding: 0 20px; font-size: small">
-    <?php echo s('Hi, <b>%s</b>. <br/><br/>You\'ve received this mail to confirm your MeuMobi Sign-up. Please click on link below to confirm your mail adress.', $user->firstname()) ?>
+<p>
+    <?= s('Hi, <b>%s</b>. <br/><br/>You\'ve received this email to confirm your %s Sign-up. Please click on link below to confirm your email adress.', $user->firstname(), $segment->title) ?>
 </p>
-<p style="padding: 0 20px">
-    <?php echo $this->html->link($url = Mapper::url('/users/confirm/' . $user->id . '/' . $user->token, true), $url, array('style' => 'color: #FF0000')) ?>
+<br /><br />
+<p>
+    <?= $this->html->link(s('Click here to confirm your email address') ,"/users/confirm/{$user->id}/{$user->token}", [], true) ?>
 </p>
