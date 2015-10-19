@@ -74,6 +74,17 @@ class Images extends AppModel {
 		return $data;
 	}
 
+	public function getPath($model)
+	{
+		if (!is_string($model)) {
+			$model = $model->imageModel();
+		}
+
+		return String::insert('uploads/:model', array(
+			'model' => Inflector::underscore($model)
+		));
+	}
+
 	protected function saveImage($method, $model, $image, $attr)
 	{
 		if (!$this->transactionStarted()) {
@@ -268,17 +279,6 @@ class Images extends AppModel {
 			'filesize' => $size,
 			'filesize_octal' => decoct($size)
 		);
-	}
-
-	protected function getPath($model)
-	{
-		if (!is_string($model)) {
-			$model = $model->imageModel();
-		}
-
-		return String::insert('uploads/:model', array(
-			'model' => Inflector::underscore($model)
-		));
 	}
 
 	protected function fillFields()
