@@ -1,8 +1,9 @@
 <?php
 
 use meumobi\sitebuilder\entities\Skin;
-use meumobi\sitebuilder\repositories\ThemesRepository;
+use meumobi\sitebuilder\repositories\RecordNotFoundException;
 use meumobi\sitebuilder\repositories\SkinsRepository;
+use meumobi\sitebuilder\repositories\ThemesRepository;
 use meumobi\sitebuilder\services\RemoveSite;
 
 class SitesController extends AppController
@@ -130,13 +131,21 @@ class SitesController extends AppController
 	public function remove($id = null)
 	{
 		if ($id) {
-			$site = Model::load('Sites')->firstById($id);
+			try {
+				$site = Model::load('Sites')->firstById($id);
+			} catch (RecordNotFoundException $e) {
+				// idempotent operation. do nothing.
+			}
 		} else {
 			$site = $this->getCurrentSite();
 		}
 
-		$service = new RemoveSite();
-		$sucess = $service->remove($site, Auth::user());
+		if ($site) {
+			$service = new RemoveSite();
+			$sucess = $service->remove($site, Auth::user());
+		} else {
+			$success = true;
+		}
 
 		if ($sucess) {
 			Session::writeFlash('success', s('Site was successfully removed'));
