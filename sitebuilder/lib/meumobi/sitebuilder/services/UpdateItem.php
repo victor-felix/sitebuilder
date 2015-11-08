@@ -25,6 +25,9 @@ class UpdateItem
 				'category_id' => $item->parent_id,
 			]);
 
+			$this->addMediaFileSize($item);
+			$this->createMediaThumbnails($item);
+
 			$updated = true;
 		} else {
 			Logger::info('items', 'item cannot be updated', [
@@ -39,4 +42,33 @@ class UpdateItem
 
 		return [$updated, $validationResult->errors()];
 	}
+
+	protected function addMediaFileSize($item)
+	{
+		$hasMedias = $item->medias && count($item->medias->to('array'));
+
+		if ($hasMedias) {
+			WorkerManager::enqueue('media_filesize', ['item_id' => $item->id()]);
+		} else {
+			Logger::debug('items', 'not creating media_filesize job', [
+				'item_id' => $item->id(),
+				'site_id' => $item->site_id,
+				'reason' => 'item has no media',
+			]);
+		}
+	}
+
+	protected function createMediaThumbnails($item)
+	{
+		$hasMedias = count($item->medias->to('array'));
+
+		if ($hasMedias) {
+			$job = WorkerManager::enqueue('media_thumbnailer', ['item_id' => $item->id()]);
+		} else {
+			Logger::debug('items', 'not creating media_thumbnailer job', [
+				'reason' => 'item has no media',
+			]);
+		}
+	}
+
 }

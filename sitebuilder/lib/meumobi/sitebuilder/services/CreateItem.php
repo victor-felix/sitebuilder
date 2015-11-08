@@ -45,7 +45,6 @@ class CreateItem
 			]);
 
 			$this->addMediaFileSize($item);
-
 			$this->createMediaThumbnails($item);
 
 			if ($sendPush) {

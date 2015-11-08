@@ -2,6 +2,7 @@
 
 use app\models\Items;
 use meumobi\sitebuilder\services\CreateItem;
+use meumobi\sitebuilder\services\UpdateItem;
 use meumobi\sitebuilder\validators\ItemsPersistenceValidator;
 
 class ItemsController extends AppController
@@ -93,6 +94,7 @@ class ItemsController extends AppController
 	public function edit($id = null)
 	{
 		$site = $this->getCurrentSite();
+		$updateItem = new UpdateItem();
 		$item = Items::find('type', array('conditions' => array(
 			'_id' => $id
 		)));
@@ -102,17 +104,16 @@ class ItemsController extends AppController
 				'groups' => [],
 				'medias' => [],
 			];
+
 			$data = array_merge($default, $this->data);
 			$data = $this->prepareDates($data);
 			$images = array_unset($data, 'image');
 			$item->set($data);
 			$item->site_id = $site->id;
-			$validator = new ItemsPersistenceValidator();
-			$validationResult = $validator->validate($item);
-			$errors = $validationResult->errors();
 
-			if ($validationResult->isValid() && $item->save()) {
-				$item->addMediaFileSize();
+			list ($updated, $errors) = $updateItem->update($item);
+
+			if ($updated) {
 				foreach ($images as $id => $image) {
 					if (is_numeric($id)) {
 						$record = Model::load('Images')->firstById($id);
@@ -120,7 +121,9 @@ class ItemsController extends AppController
 						$record->save();
 					}
 				}
+
 				$message = s('Item successfully updated.');
+
 				if ($this->isXhr()) {
 					$this->respondToJSON(array(
 						'success' => $message,
@@ -141,7 +144,6 @@ class ItemsController extends AppController
 					Session::writeFlash('error', s("Sorry, we can't save the item. %s", s(array_values($errors)[0])));
 				}
 			}
-
 		}
 
 		$this->set(array(
