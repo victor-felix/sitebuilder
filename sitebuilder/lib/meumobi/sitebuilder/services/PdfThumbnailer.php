@@ -13,15 +13,15 @@ class PdfThumbnailer
 			['path', 'extension']);
 
 		$fileName = md5(uniqid($path, true)) . '.' . $extension;
-		$dir = Model::load('Images')->getPath('pdfThumbnail') . '/';
-		$to =  $dir . $fileName;
+		$dir = Model::load('Images')->getPath('pdfThumbnail');
+		$to =  $dir . '/' . $fileName;
 
 		$imagick = new \Imagick;
 		$imagick->readImage($path);
 		$imagick->setIteratorIndex(0);
 		$imagick->setImageFormat($extension);
-		$imagick->writeImages($to, false);
-		
+		$imagick->writeImages(APP_ROOT . '/' . $to, false);
+
 		return $to;
 	}
 }
