@@ -17,7 +17,7 @@ class WorkerManager
 		]);
 		$job->save();
 		Logger::info('workers', 'job created', [
-			'job id' => (string) $job->_id,
+			'job id' => $job->id(),
 			'type' => $type,
 			'priority' => $priority,
 			'params' => $params,
@@ -32,7 +32,7 @@ class WorkerManager
 			'priority' => $priority
 		];
 		foreach ($params as $param => $value) {
-			$conditions["params.$param"] = $value;	
+			$conditions["params.$param"] = $value;
 		}
 		return (bool)Jobs::find('count', [
 			'conditions' => $conditions
@@ -44,14 +44,14 @@ class WorkerManager
 		try {
 			Logger::info('workers', 'start executing worker', [
 				'worker' => get_class($worker),
-				'job id' => (string)$worker->job()->_id,
+				'job id' => $worker->job()->id(),
 				'job type' => $worker->job()->type,
 			]);
 			$worker->perform();
 			self::destroy($worker);
 		} catch (\Exception $e) {
 			Logger::error('workers', 'error executing worker', [
-				'job_id' => (string)$worker->job()->_id,
+				'job_id' => $worker->job()->id(),
 				'job type' => $worker->job()->type,
 				'job params' => $worker->job()->params,
 				'exception' => get_class($e),
@@ -74,6 +74,6 @@ class WorkerManager
 
 	public static function destroy($worker)
 	{
-		Jobs::remove(['_id' => $worker->job()->_id]);
+		Jobs::remove(['_id' => $worker->job()->id()]);
 	}
 }
