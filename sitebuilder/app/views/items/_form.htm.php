@@ -51,7 +51,6 @@
 
 	</div>
 </fieldset>
-<?php if ($item->type == 'articles'): ?>
 <fieldset>
 	<h2><?= s('PDF Files') ?></h2>
 	<div class="field-group">
@@ -112,6 +111,4 @@
 		</div>
 	<?= $this->html->link(s('Add file'), null, ['data-add-new-property' => ".item-media", 'class' => 'ui-button']); ?>
 	</div>
-
 </fieldset>
-<?php endif ?>
