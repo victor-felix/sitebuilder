@@ -21,7 +21,7 @@ function RedirectToMeuMobi(mobileUrl, homePath, excludePath) {
     var isMobile = Redirect.isMobile();
     var isHome = Redirect.isHome(homePath);
     var isExcluded = Redirect.isExcluded(excludePath);
-    var serviceUrl = 'http://services.int-meumobi.com/redirect/?domain='+mobileUrl+'&url=' + location.href;
+    var serviceUrl = 'http://services.int.meumobi.com/redirect/?domain='+mobileUrl+'&url=' + location.href;
     var noRedirectStr = 'no_redirect=true';
     var utmSourceStr = 'utm_source=casaevideo';
     var noRedirect = location.search.indexOf(utmSourceStr) >= 0 || location.search.indexOf(noRedirectStr) >= 0	         || document.cookie.indexOf(noRedirectStr) >= 0;
