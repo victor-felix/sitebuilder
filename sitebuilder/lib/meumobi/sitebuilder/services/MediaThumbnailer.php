@@ -2,6 +2,7 @@
 
 namespace meumobi\sitebuilder\services;
 
+use Exception;
 use meumobi\sitebuilder\services\PdfThumbnailer;
 
 class MediaThumbnailer
@@ -9,7 +10,7 @@ class MediaThumbnailer
 	public static function perform($filePath)
 	{
 		if (self::getFileType($filePath) != 'pdf') {
-			throw new \Exception('Invalid file type');
+			throw new Exception('Invalid file type');
 		}
 
 		return PdfThumbnailer::perform([
@@ -24,7 +25,6 @@ class MediaThumbnailer
 
 		$headers = get_headers($file, 1);
 
-		// is pdf?
 		if ($headers['Content-Type'] == 'application/pdf'
 			|| ($headers['Content-Type'] == 'application/octet-stream'
 					&& strpos($headers['Content-Disposition'], '.pdf'))) {
