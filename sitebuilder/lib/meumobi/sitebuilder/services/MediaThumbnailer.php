@@ -3,6 +3,7 @@
 namespace meumobi\sitebuilder\services;
 
 use Exception;
+use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\services\PdfThumbnailer;
 
 class MediaThumbnailer
@@ -17,6 +18,10 @@ class MediaThumbnailer
 			'path' => $filePath,
 			'extension' => 'png'
 		]);
+	}
+
+	public static function supportedTypes() {
+		return ['application/pdf'];
 	}
 
 	protected static function getFileType($file)

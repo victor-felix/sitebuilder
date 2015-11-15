@@ -15,8 +15,13 @@ class MediaThumbnailerWorker extends Worker
 		]);
 
 		$item = $this->getItem();
+		$media = $item['medias']->to('array');
 
-		foreach ($item['medias'] as $medium) {
+		foreach ($media as $medium) {
+			if (!$this->supportsType($medium)) {
+				continue;
+			}
+
 			if ($thumbnail = $this->createThumbnail($medium)) {
 				$medium['thumbnails'] []= $thumbnail;
 
@@ -27,8 +32,13 @@ class MediaThumbnailerWorker extends Worker
 			}
 		}
 
-		$item->medias = $item['medias'];
+		unset($item['medias']);
+		$item['medias'] = $media;
 		$item->save();
+
+		$this->logger()->info('finish create pdf thumbnails', [
+			'item_id'  => $this->getItem()->_id,
+		]);
 	}
 
 	protected function createThumbnail($media)
@@ -43,6 +53,15 @@ class MediaThumbnailerWorker extends Worker
 			]);
 
 			return false;
+		}
+	}
+
+	protected function supportsType($medium) {
+		if (isset($medium['type'])) {
+			return array_search($medium['type'], MediaThumbnailer::supportedTypes()) >= 0;
+		} else {
+			// we don't know type yet, might as well try
+			return true;
 		}
 	}
 }
