@@ -15,11 +15,9 @@ class MediaThumbnailerWorker extends Worker
 		]);
 
 		$item = $this->getItem();
-		$media = $item['medias']->to('array');
-
-		foreach ($media as $medium) {
+		$media = array_map(function ($medium) {
 			if (!$this->supportsType($medium)) {
-				continue;
+				return $medium;
 			}
 
 			if ($thumbnail = $this->createThumbnail($medium)) {
@@ -30,7 +28,11 @@ class MediaThumbnailerWorker extends Worker
 					'url' => $medium['url'],
 				]);
 			}
-		}
+
+			return $medium;
+		}, $item['medias']->to('array'));
+
+		pr($media);
 
 		unset($item['medias']);
 		$item['medias'] = $media;

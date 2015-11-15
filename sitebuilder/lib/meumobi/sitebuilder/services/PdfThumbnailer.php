@@ -23,11 +23,14 @@ class PdfThumbnailer
 
 		$imagick = new Imagick;
 		$imagick->readImage($path);
+
+		Logger::debug('media_thumbnailer', 'file downloaded', [ 'url' => $path ]);
+
 		$imagick->setIteratorIndex(0);
 		$imagick->setImageFormat($extension);
 		$imagick->writeImages(APP_ROOT . $to, false);
 
-		Logger::debug('media_thumbnailer', 'file downloaded', [ 'url' => $path ]);
+		Logger::debug('media_thumbnailer', 'thumbnail generated', [ 'path' => $to ]);
 
 		return MeuMobi::url($to, true);
 	}
