@@ -11,8 +11,34 @@ use meumobi\sitebuilder\validators\ParamsValidator;
 
 class UpdateItem
 {
-	public function update($item, $options = [])
+	public function update($item, $data = null, $options = [])
 	{
+		if ($data) {
+			$blacklist = ['medias'];
+			$keys = array_keys($data);
+			$allowedKeys = array_diff($keys, $blacklist);
+
+			foreach ($allowedKeys as $k) {
+				$item->set([ $k => $data[$k] ]);
+			}
+
+			$media = [];
+
+			if (isset($data['medias'])) {
+				foreach ($data['medias'] as $medium) {
+					$finder = function ($i) use ($medium) { return $i->url == $medium['url']; };
+					if ($m = $item->medias->find($finder)->first()) {
+						$media []= $m->to('array') + $medium;
+					} else {
+						$media []= $medium;
+					}
+				}
+
+				unset($item['medias']);
+				$item->set([ 'medias' => $media ]);
+			}
+		}
+
 		$validator = new ItemsPersistenceValidator();
 		$validationResult = $validator->validate($item);
 

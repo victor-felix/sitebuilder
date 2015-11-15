@@ -94,10 +94,6 @@
 				'value' => 'application/pdf',
 				'disabled' => true,
 			]) ?>
-			<?= $this->form->input("medias[0][length]", [
-				'type' => 'hidden',
-				'disabled' => true,
-			]) ?>
 			<?= $this->form->input("medias[0][title]", [
 				'class' => 'ui-text large',
 				'label' => s('Title'),

@@ -108,10 +108,8 @@ class ItemsController extends AppController
 			$data = array_merge($default, $this->data);
 			$data = $this->prepareDates($data);
 			$images = array_unset($data, 'image');
-			$item->set($data);
-			$item->site_id = $site->id;
 
-			list ($updated, $errors) = $updateItem->update($item);
+			list ($updated, $errors) = $updateItem->update($item, $data);
 
 			if ($updated) {
 				foreach ($images as $id => $image) {
