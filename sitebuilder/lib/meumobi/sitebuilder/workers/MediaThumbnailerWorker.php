@@ -23,7 +23,7 @@ class MediaThumbnailerWorker extends Worker
 			}
 
 			if ($thumbnail = $this->createThumbnail($medium)) {
-				$medium['thumbnails'] []= $thumbnail;
+				$medium['thumbnails'] []= [ 'url' => $thumbnail ];
 
 				$this->logger()->info('media thumbnail created', [
 					'item_id'  => $this->getItem()->_id,
