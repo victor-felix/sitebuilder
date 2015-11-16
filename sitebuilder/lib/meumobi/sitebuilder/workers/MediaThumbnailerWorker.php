@@ -10,7 +10,7 @@ class MediaThumbnailerWorker extends Worker
 {
 	public function perform()
 	{
-		$this->logger()->info('start create pdf thumbnails', [
+		$this->logger()->info('start create media thumbnails', [
 			'item_id'  => $this->getItem()->_id,
 		]);
 
@@ -32,13 +32,11 @@ class MediaThumbnailerWorker extends Worker
 			return $medium;
 		}, $item['medias']->to('array'));
 
-		pr($media);
-
 		unset($item['medias']);
 		$item['medias'] = $media;
 		$item->save();
 
-		$this->logger()->info('finish create pdf thumbnails', [
+		$this->logger()->info('finish create media thumbnails', [
 			'item_id'  => $this->getItem()->_id,
 		]);
 	}
