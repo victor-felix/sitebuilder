@@ -27,7 +27,6 @@ class UpdateItem
 			if (isset($data['medias'])) {
 				foreach ($data['medias'] as $medium) {
 					$finder = function ($i) use ($medium) { return $i->url == $medium['url']; };
-					pr($item->to('array'));
 					if ($m = $item->medias->find($finder)->first()) {
 						$media []= $m->to('array') + $medium;
 					} else {

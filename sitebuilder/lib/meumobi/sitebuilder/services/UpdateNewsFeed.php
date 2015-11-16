@@ -272,7 +272,7 @@ class UpdateNewsFeed
 
 		$map = function($enclosure) {
 			return [
-				'url' => $enclosure->get_link(),
+				'url' => $enclosure->link,
 				'type' => $enclosure->get_type(),
 				'title' => $enclosure->get_title(),
 				'length' => $enclosure->get_length(),
