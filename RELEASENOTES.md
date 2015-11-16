@@ -1,6 +1,52 @@
 ## Release Notes for meumobi ##
 
-Update these notes using: git log --pretty=format:'* %s' --no-merges rel-2.6.3..HEAD
+Update these notes using: git log --pretty=format:'* %s' --no-merges rel-2.6.5..HEAD
+
+### rel-2.6.5 (20151116) ###
+* Fixes logs for MediaThumbnailerWorker
+* Don't urldecode() links to enclosures. Closes #263
+* Actually save the media thumbnail
+* Use thumbnail object instead of bare URL string. Closes #262
+* Don't try to create thumbnails when media type is known to be unsupported. Closes #260
+* Don't show successful log for failed thumbnail creation. Closes #256
+* Don't overwrite medias for items. Closes #253 and #254
+* Configure integration to use int.meumobi.com
+* Saves full absolute path for pdf previews. Closes #255
+* New item type: 'Contacts'. Closes #246
+* New item type: 'Files'. Closes #247
+* Don't raise an exception when deleting already removed site. Fixes #251
+* Formatting changes
+* Uses full path for destination images in the PdfThumbnailer
+* Update media also on item updates. Closes #250
+* Shows actual id instead of "[object] ..." on worker logs
+* Downgrade Capistrano. New version requires Ruby 2.0+
+* enable API access from all domains on enterprise segment
+* Drops capistrano-git-submodule. Fixes #221
+* Update subject of the user emails
+* Replace Mapper with MeuMobi to generate urls
+* Make the MeuMobi mapper default on Html.link helper
+* rename rimobi env to 'comunique-se'
+* Add dynamic segments to mail templates
+* Update mails templates to use the html link helper
+* Translate datatable based on user settings, closes #223
+* Allow set the url Mapper of html link helper, closes #141
+* fixup! Disable the extension is site not exists, closes #227
+* Load locale based on site settings on command line scripts
+* Use the ResetVisitorPassword service in the reset_visitor_password script
+* Extract segment loading from the bootstrap dispatcher
+* Add Updatable role to extract common behaviors from workers
+* Allow API Access from all domains for investors segment
+* Remove duplicated RecordNotFoundException
+* Disable the extension is site not exists, closes #227
+* Check if site exists before persist an item
+* Add site getter in category model to remove code duplication
+* Change extension import mode input type on Events Feed
+* Allows to deploy a specific tag
+* Refac media/pdf thumbnailers Now MediaThumbnailerWorker delegates all the work to MediaThumbnailer service
+* Create media thumbnails it works only for pdf files
+* Make Images->getPath() public
+* Add pdf worker to extract media thumbs
+* Add PdfThumbnailer simple service with a method that gets a remote pdf, extract its thumbnail and returns the local file path
  
 ### rel-2.6.4 (20150921) ###
 * Don't delete untouched items when bulk importing. Closes #228
