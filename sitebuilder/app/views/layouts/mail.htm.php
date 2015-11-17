@@ -11,7 +11,7 @@
             <tr>
                 <td><br /><br />
                     <?php if($logo): ?>
-                        <img src="<?= MeuMobi::url($logo) ?>" alt="<?= $site->title ?>" />
+                        <img src="<?= MeuMobi::url($logo, true) ?>" alt="<?= $site->title ?>" />
                     <?php else: ?>
                         <h1><?= $site->title ?></h1>
                     <?php endif ?>
