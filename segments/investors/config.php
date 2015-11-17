@@ -14,6 +14,6 @@ Config::write('Segment', array(
   'enableMultiUsers' => true,
   'analytics' => 'UA-22519238-3',
 'themes' => array('rimobi'),
-'enableFieldSet' => array('stocks', 'photos', 'location', 'contact', 'description'),
+'enableFieldSet' => array('stocks', 'photos', 'location', 'contact', 'weblinks', 'description'),
 'enableApiAccessFromAllDomains' => true
 ));
