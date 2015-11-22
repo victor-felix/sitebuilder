@@ -59,13 +59,15 @@ class UpdateNewsFeed
 		$category->updated = date('Y-m-d H:i:s');
 		$category->save();
 
-		$extension->priority = Extensions::PRIORITY_LOW;
-		$extension->save(null, ['callbacks' => false]);
+		if ($extension->priority != Extensions::PRIORITY_LOW) {
+			$extension->priority = Extensions::PRIORITY_LOW;
+			$extension->save(null, ['callbacks' => false]);
 
-		Logger::info('extensions', 'extension priority lowered', [
-			'extension_id' => (string) $extension->_id,
-			'category_id' => $extension->category_id
-		]);
+			Logger::info('extensions', 'extension priority lowered', [
+				'extension_id' => (string) $extension->_id,
+				'category_id' => $extension->category_id
+			]);
+		}
 
 		return $stats;
 	}
