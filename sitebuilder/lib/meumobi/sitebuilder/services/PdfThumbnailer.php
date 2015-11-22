@@ -10,28 +10,43 @@ use meumobi\sitebuilder\validators\ParamsValidator;
 
 class PdfThumbnailer
 {
+	const COMPONENT = 'media_thumbnailer';
+
 	public static function perform($params)
 	{
-		list($path, $extension) = ParamsValidator::validate($params,
-			['path', 'extension']);
+		list($url, $extension) = ParamsValidator::validate($params,
+			['url', 'extension']);
 
-		$fileName = md5(uniqid($path, true)) . '.' . $extension;
+		$fileName = md5(uniqid($url, true)) . '.' . $extension;
 		$dir = Model::load('Images')->getPath('pdfThumbnail');
 		$to =  '/' . $dir . '/' . $fileName;
 
-		Logger::debug('media_thumbnailer', 'downloading file', [ 'url' => $path ]);
+		Logger::debug(self::COMPONENT, 'reading file', [
+			'medium_url' => $url,
+		]);
 
-		$imagick = new Imagick;
-		$imagick->readImage($path);
+		$image = new Imagick($url);
 
-		Logger::debug('media_thumbnailer', 'file downloaded', [ 'url' => $path ]);
+		Logger::debug(self::COMPONENT, 'file read', [
+			'medium_url' => $url,
+		]);
 
-		$imagick->setIteratorIndex(0);
-		$imagick->setImageFormat($extension);
-		$imagick->writeImages(APP_ROOT . $to, false);
+		$image->setIteratorIndex(0);
+		$image->setImageFormat($extension);
+		$image->writeImages(APP_ROOT . $to, false);
 
-		Logger::debug('media_thumbnailer', 'thumbnail generated', [ 'path' => $to ]);
+		$geometry = $image->getImageGeometry();
 
-		return MeuMobi::url($to, true);
+		Logger::debug(self::COMPONENT, 'thumbnail generated', [
+			'medium_url' => $url,
+			'thumbnail_url' => MeuMobi::url($to, true),
+		]);
+
+		return [
+			'url' => MeuMobi::url($to, true),
+			'type' => 'image/png',
+			'width' => $geometry['width'],
+			'height' => $geometry['height'],
+		];
 	}
 }
