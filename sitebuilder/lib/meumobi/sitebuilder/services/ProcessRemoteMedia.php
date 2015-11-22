@@ -23,7 +23,7 @@ class ProcessRemoteMedia
 	{
 		$media = $item->to('array')['medias'];
 		$valid = array_filter($media, function ($medium) {
-			return !isset($medium['type'])
+			return (!isset($medium['type']) && $medium['type'])
 				|| array_search($medium['type'], self::$typeBlacklist) === false;
 		});
 
@@ -62,9 +62,7 @@ class ProcessRemoteMedia
 				$medium['type'] = $info['type'];
 				$medium['length'] = $info['length'];
 
-				$medium = $this->createThumbnail($item, $medium);
-
-				$successes++;
+				$successes += 1;
 
 				Logger::debug(self::COMPONENT, 'remote media info downloaded', [
 					'item_id' => $item->id(),
@@ -72,8 +70,10 @@ class ProcessRemoteMedia
 					'type' => $info['type'],
 					'length' => $info['length'],
 				]);
+
+				$medium = $this->createThumbnail($item, $medium);
 			} else {
-				$failures++;
+				$failures += 1;
 
 				Logger::debug(self::COMPONENT, 'remote media info download failed', [
 					'item_id' => $item->id(),

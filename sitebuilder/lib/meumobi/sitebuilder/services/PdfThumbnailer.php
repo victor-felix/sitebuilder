@@ -25,15 +25,21 @@ class PdfThumbnailer
 			'medium_url' => $url,
 		]);
 
-		$image = new Imagick($url);
+		$image = new Imagick();
+		$image->readImage($url);
 
 		Logger::debug(self::COMPONENT, 'file read', [
 			'medium_url' => $url,
 		]);
 
 		$image->setIteratorIndex(0);
+
+		$image->setImageAlphaChannel(11); // Imagick::ALPHACHANNEL_REMOVE
+		$image->setImageBackgroundColor('white');
+		$image->mergeImageLayers(Imagick::LAYERMETHOD_FLATTEN);
+
 		$image->setImageFormat($extension);
-		$image->writeImages(APP_ROOT . $to, false);
+		$image->writeImage(APP_ROOT . $to);
 
 		$geometry = $image->getImageGeometry();
 
