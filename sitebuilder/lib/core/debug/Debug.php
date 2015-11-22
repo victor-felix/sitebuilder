@@ -20,7 +20,7 @@ class Debug {
     }
 
     public static function pr($data) {
-        echo '<pre>' . print_r($data, true) . '</pre>';
+        echo '<pre>' . print_r($data, true) . '</pre>' . PHP_EOL;
     }
 
     public static function dump($data) {
