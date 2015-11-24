@@ -44,7 +44,7 @@ class ProcessRemoteMedia
 		$failures = 0;
 		$skipped = 0;
 
-		$media = array_map(function($medium) use ($item, $successes, $failures, $skipped) {
+		$media = array_map(function($medium) use ($item, &$successes, &$failures, &$skipped) {
 			if (!isset($medium['url'])) {
 				$skipped += 1;
 				return $medium;
