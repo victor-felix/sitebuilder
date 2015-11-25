@@ -62,11 +62,11 @@ class UpdateItem
 
 			foreach ($data['medias'] as $medium) {
 				$finder = function ($i) use ($medium) {
-					return $i->url == $medium['url'];
+					return $i['url'] == $medium['url'];
 				};
 
-				if ($m = $item->medias->find($finder)->first()) {
-					$media []= array_merge($m->to('array'), $medium);
+				if ($m = find($item->medias->to('array'), $finder)) {
+					$media []= array_merge($m, $medium);
 				} else {
 					$media []= $medium;
 				}
@@ -83,4 +83,11 @@ class UpdateItem
 		$service->schedule($item);
 	}
 
+}
+
+function find($collection, $fn)
+{
+	foreach ($collection as $item) {
+		if ($fn($item)) return $item;
+	}
 }

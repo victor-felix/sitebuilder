@@ -23,7 +23,7 @@ class ProcessRemoteMedia
 	{
 		$media = $item->to('array')['medias'];
 		$valid = array_filter($media, function ($medium) {
-			return (!isset($medium['type']) && $medium['type'])
+			return (!isset($medium['type']) || !$medium['type'])
 				|| array_search($medium['type'], self::$typeBlacklist) === false;
 		});
 
@@ -53,7 +53,7 @@ class ProcessRemoteMedia
 			Logger::debug(self::COMPONENT, 'requesting info for remote media', [
 				'item_id' => $item->id(),
 				'url' => $medium['url'],
-				'type' => $medium['type'],
+				'type' => isset($medium['type']) ? $medium['type'] : null,
 			]);
 
 			list($info, $status) = $this->getRemoteInfo($medium['url']);
