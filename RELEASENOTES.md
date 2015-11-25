@@ -1,6 +1,18 @@
 ## Release Notes for meumobi ##
 
-Update these notes using: git log --pretty=format:'* %s' --no-merges rel-2.6.5..HEAD
+Update these notes using: git log --pretty=format:'* %s' --no-merges rel-2.6.6..HEAD
+
+### rel-2.6.6 (20151125) ###
+
+* Use references when passing counters to a closure
+* Only lower extension priority when it's HIGH. Closes #220
+* Remove alpha channel from PDF->PNG preview. Closes #258
+* Major refactoring of the media infrastructure
+* General code cleaning
+* Remove media thumbnail properties from UI form. Closes #248
+* FIX, use fullpath on site logo of visitor/mail invite
+* Add weblinks as business settings on segment investor
+* Finishes php script successfully
 
 ### rel-2.6.5 (20151116) ###
 * Fixes logs for MediaThumbnailerWorker
