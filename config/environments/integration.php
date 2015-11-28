@@ -1,10 +1,5 @@
 <?php
 
-// we should turn error reporting for everything as soon as we have fixed all
-// the mongodb deprecated notices
-ini_set('error_reporting', E_ALL ^ E_DEPRECATED);
-ini_set('display_errors', 'On');
-
 Config::write('Log.level', Psr\Log\LogLevel::NOTICE);
 
 Config::write('Mail.preventSending', false);

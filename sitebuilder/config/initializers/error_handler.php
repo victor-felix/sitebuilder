@@ -21,4 +21,5 @@ ErrorHandler::apply(array('lithium\action\Dispatcher', 'run'),
 	}
 );
 
-Logger::logger(Config::read('Log.level'));
+$logger = Logger::logger(Config::read('Log.level'));
+Monolog\ErrorHandler::register($logger);
