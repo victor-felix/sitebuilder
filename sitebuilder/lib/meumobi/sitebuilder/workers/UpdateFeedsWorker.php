@@ -12,22 +12,11 @@ class UpdateFeedsWorker
 {
 	use Updatable;
 
+	const COMPONENT = 'update_news_feed';
+
 	public function perform($params)
 	{
 		list($priority) = ParamsValidator::validate($params, ['priority']);
-
-		Logger::info('workers', 'updating feeds', [
-			'priority' => $priority
-		]);
-
-		$start = microtime(true);
-		$stats = [
-			'total_updated_feeds' => 0,
-			'total_failed_feeds' => 0,
-			'failed_feeds'=> [],
-			'categories' => [],
-			'priority' => $priority
-		];
 
 		$extensions = $this->getExtensionsByPriorityAndType($priority, 'rss');
 
@@ -36,21 +25,16 @@ class UpdateFeedsWorker
 				$category = $this->getCategory($extension);
 				$updateNewsFeed = new UpdateNewsFeed();
 
-				$stats['categories'][$category->id] =
-					$updateNewsFeed->perform(compact('category', 'extension'));
-				$stats['total_updated_feeds'] += 1;
+				$updateNewsFeed->perform(compact('category', 'extension'));
 			} catch (Exception $e) {
-				$stats['total_failed_feeds'] += 1;
-				$stats['failed_feeds'][] = [
-					'extension_id' => (string) $extension->_id,
+				Logger::error(self::COMPONENT, 'caught exception', [
+					'extension_id' => $extension->id(),
 					'category_id' => $extension->category_id,
 					'site_id' => $extension->site_id,
-					'error' => $e->getMessage(),
-				];
+					'message' => $e->getMessage(),
+					'exception'  => $e,
+				]);
 			}
 		}
-
-		$stats['elapsed_time'] = microtime(true) - $start;
-		Logger::info('workers', 'finished updating feeds', $stats);
 	}
 }

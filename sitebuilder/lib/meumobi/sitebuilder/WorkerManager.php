@@ -3,6 +3,7 @@
 namespace meumobi\sitebuilder;
 
 use Exception;
+use Inflector;
 use app\models\Jobs;
 use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\workers\Worker;
@@ -18,28 +19,16 @@ class WorkerManager
 			'priority' => $priority,
 			'params' => $params
 		]);
+
 		$job->save();
+
 		Logger::info(self::COMPONENT, 'job created', [
-			'job id' => $job->id(),
+			'job_id' => $job->id(),
 			'type' => $type,
-			'priority' => $priority,
 			'params' => $params,
 		]);
-		return $job;
-	}
 
-	public static function isEnqueued($type, $params, $priority = Worker::PRIORITY_LOW)
-	{
-		$conditions = [
-			'type' => $type,
-			'priority' => $priority
-		];
-		foreach ($params as $param => $value) {
-			$conditions["params.$param"] = $value;
-		}
-		return (bool)Jobs::find('count', [
-			'conditions' => $conditions
-		]);
+		return $job;
 	}
 
 	public static function execute($worker)
@@ -48,6 +37,7 @@ class WorkerManager
 			Logger::info(self::COMPONENT, 'start executing worker', [
 				'job_id' => $worker->job()->id(),
 				'job_type' => $worker->job()->type,
+				'job_params' => $worker->job()->params,
 			]);
 
 			$worker->perform();
@@ -57,6 +47,7 @@ class WorkerManager
 			Logger::info(self::COMPONENT, 'worker finished', [
 				'job_id' => $worker->job()->id(),
 				'job_type' => $worker->job()->type,
+				'job_params' => $worker->job()->params,
 			]);
 		} catch (Exception $e) {
 			Logger::error(self::COMPONENT, 'error executing worker', [
@@ -66,16 +57,19 @@ class WorkerManager
 				'exception' => $e,
 				'message' => $e->getMessage(),
 			]);
+
 			self::destroy($worker);
 		}
 	}
 
-	public static function getNextJobWorker($priority = Worker::PRIORITY_LOW)
+	public static function getNextJobWorker()
 	{
 		$job = Jobs::first([ 'order' => 'modified' ]);
 
 		if ($job) {
-			$workerClass = 'meumobi\sitebuilder\workers\\' . \Inflector::camelize($job->type) . 'Worker';
+			$workerClass = 'meumobi\sitebuilder\workers\\' .
+				Inflector::camelize($job->type) . 'Worker';
+
 			return new $workerClass(['job' => $job, 'logger' => Logger::logger()]);
 		}
 	}

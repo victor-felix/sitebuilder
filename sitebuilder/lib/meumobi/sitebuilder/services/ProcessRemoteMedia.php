@@ -50,7 +50,7 @@ class ProcessRemoteMedia
 				return $medium;
 			}
 
-			Logger::debug(self::COMPONENT, 'requesting info for remote media', [
+			Logger::info(self::COMPONENT, 'requesting info for remote media', [
 				'item_id' => $item->id(),
 				'url' => $medium['url'],
 				'type' => isset($medium['type']) ? $medium['type'] : null,
@@ -64,7 +64,7 @@ class ProcessRemoteMedia
 
 				$successes += 1;
 
-				Logger::debug(self::COMPONENT, 'remote media info downloaded', [
+				Logger::info(self::COMPONENT, 'remote media info downloaded', [
 					'item_id' => $item->id(),
 					'url' => $medium['url'],
 					'type' => $info['type'],
@@ -75,7 +75,7 @@ class ProcessRemoteMedia
 			} else {
 				$failures += 1;
 
-				Logger::debug(self::COMPONENT, 'remote media info download failed', [
+				Logger::notice(self::COMPONENT, 'remote media info download failed', [
 					'item_id' => $item->id(),
 					'url' => $medium['url'],
 					'status' => $status,
@@ -105,7 +105,7 @@ class ProcessRemoteMedia
 			$thumbnailer = new MediaThumbnailer;
 			$medium = $thumbnailer->perform($item, $medium);
 		} catch (Exception $e) {
-			Logger::info(self::COMPONENT, 'caught exception', [
+			Logger::error(self::COMPONENT, 'caught exception', [
 				'message' => $e->getMessage(),
 				'exception'  => $e,
 			]);

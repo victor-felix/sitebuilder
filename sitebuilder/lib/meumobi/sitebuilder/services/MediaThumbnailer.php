@@ -22,13 +22,13 @@ class MediaThumbnailer
 		if ($thumbnail) {
 			$medium['thumbnails'] = [ $thumbnail ];
 
-			Logger::debug(self::COMPONENT, 'thumbnail created', [
+			Logger::info(self::COMPONENT, 'thumbnail created', [
 				'item_id' => $item->id(),
 				'medium_url' => $medium['url'],
 				'thumbnail_url' => $thumbnail['url'],
 			]);
 		} else {
-			Logger::debug(self::COMPONENT, 'thumbnail generation failed', [
+			Logger::notice(self::COMPONENT, 'thumbnail generation failed', [
 				'item_id'  => $item->id(),
 				'medium_url' => $medium['url'],
 				'type' => $medium['type'],

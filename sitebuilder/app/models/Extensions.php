@@ -162,6 +162,13 @@ class Extensions extends Modules
 
 		return $chain->next($self, $params, $chain);
 	}
+
+	public function id($entity) {
+		if($entity->_id) {
+			return $entity->_id->{'$id'};
+		}
+	}
+
 }
 
 Extensions::applyFilter('remove', function($self, $params, $chain) {
