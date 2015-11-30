@@ -3,54 +3,50 @@
 namespace meumobi\sitebuilder\workers;
 
 use Exception;
+use app\models\Extensions;
 use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\roles\Updatable;
 use meumobi\sitebuilder\services\UpdateEventsFeed;
 use meumobi\sitebuilder\validators\ParamsValidator;
 
-class UpdateEventsFeedWorker
+class UpdateEventsFeedWorker extends Worker
 {
 	use Updatable;
 
-	public function perform($params)
+	const COMPONENT = 'update_events_feed';
+
+	public function perform()
 	{
-		list($priority) = ParamsValidator::validate($params, ['priority']);
+		list($priority, $extensionId) = ParamsValidator::validate($this->params,
+			['priority', 'extension_id'], false);
 
-		Logger::info('workers', 'updating events feeds', [
-			'priority' => $priority,
-		]);
-
-		$start = microtime(true);
-		$stats = [
-			'total_updated_feeds' => 0,
-			'total_failed_feeds' => 0,
-			'failed_feeds'=> [],
-			'categories' => [],
-			'priority' => $priority,
+		$priorities = [
+			'high' => Extensions::PRIORITY_HIGH,
+			'low' => Extensions::PRIORITY_LOW
 		];
+		$priority = $priorities[$priority ?: 'low'];
 
-		$extensions = $this->getExtensionsByPriorityAndType($priority, 'event-feed');
+		$extensions = $extensionId
+			? Extensions::find('all', [
+					'conditions' => ['_id' => $extensionId]
+				])
+			: $this->getExtensionsByPriorityAndType($priority, 'event-feed');
 
 		foreach($extensions as $extension) {
 			try {
 				$category = $this->getCategory($extension);
 				$updateEventsFeed = new UpdateEventsFeed();
 
-				$stats['categories'][$category->id] =
-					$updateEventsFeed->perform(compact('category', 'extension'));
-				$stats['total_updated_feeds'] += 1;
+				$updateEventsFeed->perform(compact('category', 'extension'));
 			} catch (Exception $e) {
-				$stats['total_failed_feeds'] += 1;
-				$stats['failed_feeds'][] = [
-					'extension_id' => (string) $extension->_id,
+				Logger::error(self::COMPONENT, 'caught exception', [
+					'extension_id' => $extension->id(),
 					'category_id' => $extension->category_id,
 					'site_id' => $extension->site_id,
-					'error' => $e->getMessage(),
-				];
+					'message' => $e->getMessage(),
+					'exception'  => $e,
+				]);
 			}
 		}
-
-		$stats['elapsed_time'] = microtime(true) - $start;
-		Logger::info('workers', 'finished updating events feeds', $stats);
 	}
 }

@@ -20,6 +20,12 @@ class UpdateFeedsWorker extends Worker
 		list($priority, $extensionId) = ParamsValidator::validate($this->params,
 			['priority', 'extension_id'], false);
 
+		$priorities = [
+			'high' => Extensions::PRIORITY_HIGH,
+			'low' => Extensions::PRIORITY_LOW
+		];
+		$priority = $priorities[$priority ?: 'low'];
+
 		$extensions = $extensionId
 			? Extensions::find('all', [
 					'conditions' => ['_id' => $extensionId]

@@ -21,7 +21,8 @@ class ProcessRemoteMedia
 
 	public function schedule($item)
 	{
-		$media = $item->to('array')['medias'];
+		$item = $item->to('array');
+		$media = isset($item['medias']) ? $item['medias'] : [];
 		$valid = array_filter($media, function ($medium) {
 			return (!isset($medium['type']) || !$medium['type'])
 				|| array_search($medium['type'], self::$typeBlacklist) === false;
