@@ -12,11 +12,10 @@ class WorkerManager
 {
 	const COMPONENT = 'worker_manager';
 
-	public static function enqueue($type, $params, $priority = Worker::PRIORITY_LOW)
+	public static function enqueue($type, $params)
 	{
 		$job = Jobs::create([
 			'type' => $type,
-			'priority' => $priority,
 			'params' => $params
 		]);
 
@@ -70,7 +69,11 @@ class WorkerManager
 			$workerClass = 'meumobi\sitebuilder\workers\\' .
 				Inflector::camelize($job->type) . 'Worker';
 
-			return new $workerClass(['job' => $job, 'logger' => Logger::logger()]);
+			return new $workerClass([
+				'params' => $job->params,
+				'job' => $job,
+				'logger' => Logger::logger(),
+			]);
 		}
 	}
 

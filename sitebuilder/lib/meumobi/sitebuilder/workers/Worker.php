@@ -9,9 +9,10 @@ use meumobi\sitebuilder\repositories\RecordNotFoundException;
 
 abstract class Worker
 {
-	protected $logger;
-	protected $job;
 	protected $item;
+	protected $job;
+	protected $logger;
+	protected $params;
 	protected $site;
 
 	abstract public function perform();
@@ -48,9 +49,9 @@ abstract class Worker
 	{
 		if ($this->item) return $this->item;
 
-		$this->item = Items::find('type', array('conditions' => array(
-			'_id' => $this->job()->params['item_id']
-		)));
+		$this->item = Items::find('type', ['conditions' => [
+			'_id' => $this->params['item_id'],
+		]]);
 
 		if (!$this->item) {
 			throw new RecordNotFoundException("The item '{$id}' was not found");
@@ -67,4 +68,3 @@ abstract class Worker
 			->firstById($this->getItem()->site_id);
 	}
 }
-

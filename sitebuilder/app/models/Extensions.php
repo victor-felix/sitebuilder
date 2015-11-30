@@ -132,7 +132,7 @@ class Extensions extends Modules
 
 	public static function enable($extension)
 	{
-		$extension->priority = Worker::PRIORITY_HIGH;
+		$extension->priority = PRIORITY_HIGH;
 		$category = static::category($extension);
 		$category->populate = 'auto';
 		$category->save();

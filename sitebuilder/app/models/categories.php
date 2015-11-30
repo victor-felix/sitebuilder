@@ -339,13 +339,6 @@ class Categories extends AppModel
 		foreach ($items as $item) {
 			Items::remove(array('_id' => $item->id()));
 		}
-		Extensions::update(
-			[
-				'priority' => Worker::PRIORITY_HIGH
-			],
-			[
-				'category_id' => $this->id(),
-		]);
 	}
 
 	public function enabledExtensions()

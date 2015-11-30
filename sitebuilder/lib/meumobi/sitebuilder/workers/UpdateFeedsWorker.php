@@ -3,24 +3,30 @@
 namespace meumobi\sitebuilder\workers;
 
 use Exception;
+use app\models\Extensions;
 use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\roles\Updatable;
 use meumobi\sitebuilder\services\UpdateNewsFeed;
 use meumobi\sitebuilder\validators\ParamsValidator;
 
-class UpdateFeedsWorker
+class UpdateFeedsWorker extends Worker
 {
 	use Updatable;
 
 	const COMPONENT = 'update_news_feed';
 
-	public function perform($params)
+	public function perform()
 	{
-		list($priority) = ParamsValidator::validate($params, ['priority']);
+		list($priority, $extensionId) = ParamsValidator::validate($this->params,
+			['priority', 'extension_id'], false);
 
-		$extensions = $this->getExtensionsByPriorityAndType($priority, 'rss');
+		$extensions = $extensionId
+			? Extensions::find('all', [
+					'conditions' => ['_id' => $extensionId]
+				])
+			: $this->getExtensionsByPriorityAndType($priority, 'rss');
 
-		foreach($extensions as $extension) {
+		foreach ($extensions as $extension) {
 			try {
 				$category = $this->getCategory($extension);
 				$updateNewsFeed = new UpdateNewsFeed();
