@@ -19,7 +19,17 @@ class UpdateEventsFeed
 			'extension',
 		]);
 
-		$feed = $this->fetchFeed($extension->url, $extension);
+		try {
+			$feed = $this->fetchFeed($extension->url, $extension);
+		} catch (Exception $e) {
+			$this->lowerPriority($extension);
+
+			Logger::error(self::COMPONENT, 'caught exception', [
+				'message' => $e->getMessage(),
+				'exception'  => $e,
+			]);
+		}
+
 		$events = $this->extractevents($feed, $category);
 
 		$bulkImport = new BulkImportItems();
@@ -32,6 +42,13 @@ class UpdateEventsFeed
 		$category->updated = date('Y-m-d H:i:s');
 		$category->save();
 
+		$this->lowerPriority($extension);
+
+		return $stats;
+	}
+
+	protected function lowerPriority($extension)
+	{
 		if ($extension->priority != Extensions::PRIORITY_LOW) {
 			$extension->priority = Extensions::PRIORITY_LOW;
 			$extension->save(null, ['callbacks' => false]);
@@ -41,8 +58,6 @@ class UpdateEventsFeed
 				'category_id' => $extension->category_id,
 			]);
 		}
-
-		return $stats;
 	}
 
 	protected function fetchFeed($url, $extension)
