@@ -16,6 +16,7 @@ use Mapper;
 use SimplePie;
 use Video;
 use app\models\Extensions;
+use app\models\Items;
 use app\models\items\Articles;
 use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\validators\ParamsValidator;
