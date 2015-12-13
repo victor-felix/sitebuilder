@@ -1,8 +1,8 @@
 ## Release Notes for meumobi ##
 
-Update these notes using: git log --pretty=format:'* %s' --no-merges rel-2.6.7..HEAD
+Update these notes using: git log --pretty=format:'* %s' --no-merges rel-2.6.7.2..HEAD
 
-### rel-2.6.7 (20150101) ###
+### rel-2.6.7 (20151201) ###
 
 * Lower extension priority if events feed failed to download. Closes #267
 * Migrates UpdateFeedsWorker to use script/run_worker.php
