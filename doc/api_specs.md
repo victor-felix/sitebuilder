@@ -2,35 +2,61 @@
 
 ## Making API Calls
 
-The API uses REST to perform actions on resources. Resources are represented by URL paths. Actions can take parameters that are passed as query strings (?param=value) (no named params anymore since we are moving to REST, and it mandates a single URI for each resource).
+The API uses REST to perform actions on resources. Resources are represented by
+URL paths. Actions can take parameters that are passed as query strings
+(?param=value) (no named params anymore since we are moving to REST, and it
+mandates a single URI for each resource).
 
-The API is located at [http://enterprise.meumobilesite.com](http://enterprise.meumobilesite.com).
+The API is located at
+[http://enterprise.meumobilesite.com](http://enterprise.meumobilesite.com).
 
-A simple API request would look like this: GET http://enterprise.meumobilesite.com/api/{domain}/categories
+A simple API request would look like this: GET
+http://enterprise.meumobilesite.com/api/{domain}/categories
 
 ## Authentication
 
-Read calls do not need authentication. You need to authenticate only when you want to add, edit or delete a resource. Authentication can be sending a custom header. The authentication method we chose is a token unique to every user.
+Read calls do not need authentication. You need to authenticate only when you
+want to add, edit or delete a resource. Authentication can be sending a custom
+header. The authentication method we chose is a token unique to every user.
 
 ### HTTP Header
 
-The header should be called X-Authentication-Token and should contain your user's auth token.
+The header should be called X-Authentication-Token and should contain your
+user's auth token.
 
 ## Cache Management
 
-The template engine should cache every request made to the API to lower server usage. This cache can be stored indefinitely or cleared from time to time to save disk space. Every use of the cached data should be validated with the API by using the ETags sent with the response.
+The template engine should cache every request made to the API to lower server
+usage. This cache can be stored indefinitely or cleared from time to time to
+save disk space. Every use of the cached data should be validated with the API
+by using the ETags sent with the response.
 
 ### How It Works
 
-When a URL is retrieved, the API will return the response along with its response headers. One of this headers is the ETag, containing the ETag value of the resource. This value is a checksum of the resource, meaning that if the resource doesn't change the ETag value will remain the same. One example of header would be ETag: "d057d85fc18d4dd0524ab4c6e7844c3bf1a27df1".
+When a URL is retrieved, the API will return the response along with its
+response headers. One of this headers is the ETag, containing the ETag value of
+the resource. This value is a checksum of the resource, meaning that if the
+resource doesn't change the ETag value will remain the same. One example of
+header would be ETag: "d057d85fc18d4dd0524ab4c6e7844c3bf1a27df1".
 
-Later, when the Template Engine needs to use the same resource again, it should validate the resource to ensure it wasn't changed. This validation is made by requesting the same resource again, and sending a "If-None-Match" header, along with the known ETag value of the resource. For example, If-None-Match: "d057d85fc18d4dd0524ab4c6e7844c3bf1a27df1".
+Later, when the Template Engine needs to use the same resource again, it should
+validate the resource to ensure it wasn't changed. This validation is made by
+requesting the same resource again, and sending a "If-None-Match" header, along
+with the known ETag value of the resource. For example, If-None-Match:
+"d057d85fc18d4dd0524ab4c6e7844c3bf1a27df1".
 
-If the resource hasn't changed, the API will return an empty response and a "304 Not Modified" HTTP status code. It means that the cached version is still good and shold be used. If the resource is now different, the API will return the full resource in the response and a new ETag value for further caching.
+If the resource hasn't changed, the API will return an empty response and a
+"304 Not Modified" HTTP status code. It means that the cached version is still
+good and shold be used. If the resource is now different, the API will return
+the full resource in the response and a new ETag value for further caching.
 
 ## API Responses
 
-The API responses will always be in JSON format with "application/json" Content-Type, unless other format is requested through an extension. If the request is successful, it will return the description of the resource as describe in every method. If there are any errors with the request, it will return a JSON with a message explaining the error, like this:
+The API responses will always be in JSON format with "application/json"
+Content-Type, unless other format is requested through an extension. If the
+request is successful, it will return the description of the resource as
+describe in every method. If there are any errors with the request, it will
+return a JSON with a message explaining the error, like this:
 
     {
         "error": "Authorization token not provided"
@@ -46,37 +72,37 @@ Gets info of the current site.
 
 Example response:
 
-	{
-	   "sites":{
-	      "id":"1",
-	      "category_id":"1",
-	      "segment":"restaurant",
-	      "theme":"boteco",
-	      "skin":"ae3232",
-	      "slug":"juliogreff",
-	      "title":"Julio Greff",
-	      "description":"Julio Greff",
-	      "timetable":"",
-	      "street":"",
-	      "number":"",
-	      "zip":"",
-	      "complement":"",
-	      "zone":"",
-	      "city":"",
-	      "state":"",
-	      "country":"BR",
-	      "email":"",
-	      "phone":"",
-	      "website":"",
-	      "facebook":"",
-	      "twitter":"",
-	      "latitude":null,
-	      "longitude":null,
-	      "created":"2011-01-26 07:34:55",
-	      "modified":"2011-01-26 07:34:55",
-	      "logo":null
-	   }
-	}
+    {
+       "sites":{
+          "id":"1",
+          "category_id":"1",
+          "segment":"restaurant",
+          "theme":"boteco",
+          "skin":"ae3232",
+          "slug":"juliogreff",
+          "title":"Julio Greff",
+          "description":"Julio Greff",
+          "timetable":"",
+          "street":"",
+          "number":"",
+          "zip":"",
+          "complement":"",
+          "zone":"",
+          "city":"",
+          "state":"",
+          "country":"BR",
+          "email":"",
+          "phone":"",
+          "website":"",
+          "facebook":"",
+          "twitter":"",
+          "latitude":null,
+          "longitude":null,
+          "created":"2011-01-26 07:34:55",
+          "modified":"2011-01-26 07:34:55",
+          "logo":null
+       }
+    }
 
 #### GET /{domain}/performance
 
@@ -85,59 +111,59 @@ Combines all the needed requests for a front page.
     { "business" : { "address" : null,
           "email" : "",
           "facebook" : "http://www.facebook.com/username/",
-	      "phone" : "",
-	      "timetable" : "",
-	      "twitter" : "",
-	      "website" : ""
-	    },
-	  "categories" : [ { "created_at" : "2013-02-27 18:13:53",
-		"extensions" : [  ],
-		"id" : "2",
-		"title" : "Main",
-		"type" : "articles",
-		"updated_at" : "2013-02-27 18:13:53"
-	      },
-	      { "created_at" : "2013-03-05 10:47:15",
-		"extensions" : [ { "created_at" : "2013-03-06 17:35:49",
-		      "extension" : "rss",
-		      "id" : "5137a8a53f482ec7ba000000",
-		      "updated_at" : "2013-03-06 17:35:54",
-		      "url" : "http://feeds.feedburner.com/Mobilecrunch"
-		    } ],
-		"id" : "4",
-		"title" : "My Category",
-		"type" : "articles",
-		"updated_at" : "2013-03-06 17:35:54"
-	      }
-	    ],
-	  "news" : [ { "author" : "Natasha Lomas",
-		"created_at" : "2013-02-28 20:52:09",
-		"description" : "<p>Japanese electronics ...</p>",
-		"id" : "512feda93f482e14e1000000",
-		"images" : [ { "description" : null,
-		      "id" : "890",
-		      "path" : "uploads/items/890.jpg",
-		      "title" : ""
-		    } ],
-		"published_at" : "2013-02-28 22:07:00",
-		"title" : "Fujitsu’s Senior-Focused Smartphone Is A Thoughtful Use Of Android That Tucks Away Complexity",
-		"updated_at" : "2013-02-28 20:52:11"
-	      } ],
-	  "site" : { "created_at" : "2013-02-27 18:13:04",
-	      "date_format" : null,
-	      "description" : "",
-	      "id" : "1",
-	      "logo" : null,
-	      "photos" : [  ],
-	      "segment" : "meumobi",
-	      "skin" : "ae3232",
-	      "theme" : "4e52d2738062333444000002",
-	      "timezone" : "America/Sao_Paulo",
-	      "title" : "Ipanemax",
-	      "updated_at" : "2013-03-06 17:35:54",
-	      "webputty_token" : null
-	    }
-	}
+          "phone" : "",
+          "timetable" : "",
+          "twitter" : "",
+          "website" : ""
+        },
+      "categories" : [ { "created_at" : "2013-02-27 18:13:53",
+        "extensions" : [  ],
+        "id" : "2",
+        "title" : "Main",
+        "type" : "articles",
+        "updated_at" : "2013-02-27 18:13:53"
+          },
+          { "created_at" : "2013-03-05 10:47:15",
+        "extensions" : [ { "created_at" : "2013-03-06 17:35:49",
+              "extension" : "rss",
+              "id" : "5137a8a53f482ec7ba000000",
+              "updated_at" : "2013-03-06 17:35:54",
+              "url" : "http://feeds.feedburner.com/Mobilecrunch"
+            } ],
+        "id" : "4",
+        "title" : "My Category",
+        "type" : "articles",
+        "updated_at" : "2013-03-06 17:35:54"
+          }
+        ],
+      "news" : [ { "author" : "Natasha Lomas",
+        "created_at" : "2013-02-28 20:52:09",
+        "description" : "<p>Japanese electronics ...</p>",
+        "id" : "512feda93f482e14e1000000",
+        "images" : [ { "description" : null,
+              "id" : "890",
+              "path" : "uploads/items/890.jpg",
+              "title" : ""
+            } ],
+        "published_at" : "2013-02-28 22:07:00",
+        "title" : "Fujitsu’s Senior-Focused Smartphone Is A Thoughtful Use Of Android That Tucks Away Complexity",
+        "updated_at" : "2013-02-28 20:52:11"
+          } ],
+      "site" : { "created_at" : "2013-02-27 18:13:04",
+          "date_format" : null,
+          "description" : "",
+          "id" : "1",
+          "logo" : null,
+          "photos" : [  ],
+          "segment" : "meumobi",
+          "skin" : "ae3232",
+          "theme" : "4e52d2738062333444000002",
+          "timezone" : "America/Sao_Paulo",
+          "title" : "Ipanemax",
+          "updated_at" : "2013-03-06 17:35:54",
+          "webputty_token" : null
+        }
+    }
 
 #### POST /{domain}/mail
 
@@ -160,22 +186,22 @@ Get news feed category
 
 Example response:
 
-	{
-		"id": "962",
-		"site_id": "215",
-		"parent_id": null,
-		"type": "articles",
-		"title": "News",
-		"feed_url": null,
-		"visibility": "-1",
-		"populate": "auto",
-		"icon": null,
-		"order": "1",
-		"created": "2013-03-14 15:02:08",
-		"modified": "2013-06-27 21:19:52",
-		"updated": "2013-06-27 21:19:52",
-		"items_count": 50
-	}
+    {
+        "id": "962",
+        "site_id": "215",
+        "parent_id": null,
+        "type": "articles",
+        "title": "News",
+        "feed_url": null,
+        "visibility": "-1",
+        "populate": "auto",
+        "icon": null,
+        "order": "1",
+        "created": "2013-03-14 15:02:08",
+        "modified": "2013-06-27 21:19:52",
+        "updated": "2013-06-27 21:19:52",
+        "items_count": 50
+    }
 
 #### GET /{domain}/news
 
@@ -183,29 +209,29 @@ Gets a list of non-categorized articles.
 
 Example response:
 
-	{
-	   "articles":[
-	      {
-		 "feed_id":"3",
-		 "guid":"http:\/\/www.rj.gov.br\/web\/guest\/exibeconteudo?articleId=451045",
-		 "link":"http:\/\/www.rj.gov.br\/web\/guest\/exibeconteudo?articleId=451045",
-		 "pubdate":"2011-05-08 18:41:00",
-		 "format":"html",
-		 "title":"Fam\u00edlias comemoram Dia das M\u00e3es em concerto no Theatro Municipal",
-		 "description":"Lorem Ipsum Dolor Sit Amet",
-		 "author":"Renata Oliveira",
-		 "id":"1",
-		 "site_id":"2",
-		 "parent_id":"0",
-		 "type":"articles",
-		 "order":"0",
-		 "created":"2011-05-08 21:33:03",
-		 "modified":"2011-05-08 21:33:03",
-		 "images":[
-		 ]
-	      }
-	   ]
-	}
+    {
+       "articles":[
+          {
+         "feed_id":"3",
+         "guid":"http:\/\/www.rj.gov.br\/web\/guest\/exibeconteudo?articleId=451045",
+         "link":"http:\/\/www.rj.gov.br\/web\/guest\/exibeconteudo?articleId=451045",
+         "pubdate":"2011-05-08 18:41:00",
+         "format":"html",
+         "title":"Fam\u00edlias comemoram Dia das M\u00e3es em concerto no Theatro Municipal",
+         "description":"Lorem Ipsum Dolor Sit Amet",
+         "author":"Renata Oliveira",
+         "id":"1",
+         "site_id":"2",
+         "parent_id":"0",
+         "type":"articles",
+         "order":"0",
+         "created":"2011-05-08 21:33:03",
+         "modified":"2011-05-08 21:33:03",
+         "images":[
+         ]
+          }
+       ]
+    }
 
 ### Categories
 
@@ -219,23 +245,23 @@ Params:
 
 Example response:
 
-	{
-	   "categories":[
-	      {
-		 "id":"1",
-		 "parent_id":"0",
-		 "title":"Cardapio",
-		 "order":"0",
-		 "created":"2011-01-26 07:34:55",
-		 "modified":"2011-01-26 07:34:55"
-		 "extensions": {
-		 "extension": "store-locator",
-		 "itemLimit": 10,
-		 "language": "en"
-	      },
-	      {...}
-	    ]
-	}
+    {
+       "categories":[
+          {
+         "id":"1",
+         "parent_id":"0",
+         "title":"Cardapio",
+         "order":"0",
+         "created":"2011-01-26 07:34:55",
+         "modified":"2011-01-26 07:34:55"
+         "extensions": {
+         "extension": "store-locator",
+         "itemLimit": 10,
+         "language": "en"
+          },
+          {...}
+        ]
+    }
 
 #### POST /{domain}/categories
 
@@ -252,17 +278,17 @@ Gets a category.
 
 Example response:
 
-	{
-	   "categories":{
-	      "id":"1",
-	      "site_id":"1",
-	      "parent_id":"0",
-	      "title":"Cardapio",
-	      "order":"0",
-	      "created":"2011-01-26 07:34:55",
-	      "modified":"2011-01-26 07:34:55"
-	   }
-	}
+    {
+       "categories":{
+          "id":"1",
+          "site_id":"1",
+          "parent_id":"0",
+          "title":"Cardapio",
+          "order":"0",
+          "created":"2011-01-26 07:34:55",
+          "modified":"2011-01-26 07:34:55"
+       }
+    }
 
 #### DELETE /{domain}/categories/{id}
 
@@ -279,20 +305,20 @@ Parameters:
 Example response:
 
     {
-	   "categories":[
-	      {
-		 "id":"1",
-		 "parent_id":"0",
-		 "title":"Cardapio",
-		 "order":"0",
-		 "created":"2011-01-26 07:34:55",
-		 "modified":"2011-01-26 07:34:55"
-	      },
-	      {
-		  ...
-	      }
-	   ]
-	}
+       "categories":[
+          {
+         "id":"1",
+         "parent_id":"0",
+         "title":"Cardapio",
+         "order":"0",
+         "created":"2011-01-26 07:34:55",
+         "modified":"2011-01-26 07:34:55"
+          },
+          {
+          ...
+          }
+       ]
+    }
 
 ### Items
 
@@ -307,26 +333,26 @@ Gets a list of items.
 Example response:
 
     {
-	   "items":[
-	      {
-		 "title":"Teste",
-		 "price":"5,00",
-		 "description":"500",
-		 "featured":"",
-		 "id":"6",
-		 "site_id":"1",
-		 "category_id":"0",
-		 "feed_id" :,"";
-		  "type":"product",
-		 "order":"0",
-		 "created":"2011-01-26 23:23:22",
-		 "modified":"2011-01-26 23:23:22"
-	      },
-	      {
-		 ...
-	      }
-	   ]
-	}
+       "items":[
+          {
+         "title":"Teste",
+         "price":"5,00",
+         "description":"500",
+         "featured":"",
+         "id":"6",
+         "site_id":"1",
+         "category_id":"0",
+         "feed_id" :,"";
+          "type":"product",
+         "order":"0",
+         "created":"2011-01-26 23:23:22",
+         "modified":"2011-01-26 23:23:22"
+          },
+          {
+         ...
+          }
+       ]
+    }
 
 #### GET /{domain}/items/{id}
 
@@ -335,18 +361,18 @@ Gets an item.
 Example response:
 
     {
-	   "articles":{
-	      "id":"1",
-	      "feed_id":"1",
-	      "guid":"http:\/\/lifetasteslikefood.wordpress.com\/?p=525",
-	      "link":"http:\/\/lifetasteslikefood.wordpress.com\/2011\/01\/23\/my-soul-mate-food\/",
-	      "title":"My Soul Mate, Food.",
-	      "description":"Intimacy and close relationships are essential in our [...]",
-	      "author":"lifetasteslikefood",
-	      "pubdate":"2011-01-24 05:57:37",
-	      "created":"2011-01-26 12:41:42"
-	   }
-	}
+       "articles":{
+          "id":"1",
+          "feed_id":"1",
+          "guid":"http:\/\/lifetasteslikefood.wordpress.com\/?p=525",
+          "link":"http:\/\/lifetasteslikefood.wordpress.com\/2011\/01\/23\/my-soul-mate-food\/",
+          "title":"My Soul Mate, Food.",
+          "description":"Intimacy and close relationships are essential in our [...]",
+          "author":"lifetasteslikefood",
+          "pubdate":"2011-01-24 05:57:37",
+          "created":"2011-01-26 12:41:42"
+       }
+    }
 
 #### GET /{domain}/items/search
 
@@ -366,61 +392,61 @@ http://meumobi.com/api/zbrahostel.int-meumobi.com/items/search?title=item&parent
 Example response:
 
     {
-	    "articles": [
-		{
-		    "_id": "515c77363f482e4e98000000",
-		    "author": "",
-		    "created": 1365014326,
-		    "description": "<p></p>",
-		    "guid": "",
-		    "images": [],
-		    "link": "",
-		    "modified": 1365014326,
-		    "order": 1,
-		    "parent_id": 9,
-		    "pubdate": 1365014326,
-		    "site_id": 1,
-		    "title": "My Item",
-		    "type": "articles"
-		},
-		{
-		    "_id": "515e036e3f482eae12000000",
-		    "author": "",
-		    "created": 1365115758,
-		    "description": "<p></p>",
-		    "guid": "",
-		    "images": [],
-		    "link": "",
-		    "modified": 1365115758,
-		    "order": 1,
-		    "parent_id": 11,
-		    "pubdate": 1365115758,
-		    "site_id": 1,
-		    "title": "My Item",
-		    "type": "articles"
-		}
-	    ],
-	    "business": [
-		{
-		    "_id": "515c76d43f482e7398000000",
-		    "address": "Rua Cel. Pena de Moraes, 415 - Farroupilha - RS",
-		    "created": 1365014227,
-		    "description": "<p></p>",
-		    "geo": [
-		        -51.3480038,
-		        -29.2284825
-		    ],
-		    "images": [],
-		    "modified": 1365014227,
-		    "order": 2,
-		    "parent_id": 8,
-		    "phone": "",
-		    "site_id": 1,
-		    "title": "My Item",
-		    "type": "business"
-		}
-	    ]
-	}
+        "articles": [
+        {
+            "_id": "515c77363f482e4e98000000",
+            "author": "",
+            "created": 1365014326,
+            "description": "<p></p>",
+            "guid": "",
+            "images": [],
+            "link": "",
+            "modified": 1365014326,
+            "order": 1,
+            "parent_id": 9,
+            "pubdate": 1365014326,
+            "site_id": 1,
+            "title": "My Item",
+            "type": "articles"
+        },
+        {
+            "_id": "515e036e3f482eae12000000",
+            "author": "",
+            "created": 1365115758,
+            "description": "<p></p>",
+            "guid": "",
+            "images": [],
+            "link": "",
+            "modified": 1365115758,
+            "order": 1,
+            "parent_id": 11,
+            "pubdate": 1365115758,
+            "site_id": 1,
+            "title": "My Item",
+            "type": "articles"
+        }
+        ],
+        "business": [
+        {
+            "_id": "515c76d43f482e7398000000",
+            "address": "Rua Cel. Pena de Moraes, 415 - Farroupilha - RS",
+            "created": 1365014227,
+            "description": "<p></p>",
+            "geo": [
+                -51.3480038,
+                -29.2284825
+            ],
+            "images": [],
+            "modified": 1365014227,
+            "order": 2,
+            "parent_id": 8,
+            "phone": "",
+            "site_id": 1,
+            "title": "My Item",
+            "type": "business"
+        }
+        ]
+    }
 
 #### GET /{domain}/categories/{id}/search
 
@@ -486,18 +512,18 @@ put "/ipanemax.com/items/21", {title: "New Title", description: "This is a new d
 Example response:
 
     {
-	   "articles":{
-	      "id":"1",
-	      "feed_id":"1",
-	      "guid":"http:\/\/lifetasteslikefood.wordpress.com\/?p=525",
-	      "link":"http:\/\/lifetasteslikefood.wordpress.com\/2011\/01\/23\/my-soul-mate-food\/",
-	      "title":"My Soul Mate, Food.",
-	      "description":"Intimacy and close relationships are essential in our [...]",
-	      "author":"lifetasteslikefood",
-	      "pubdate":"2011-01-24 05:57:37",
-	      "created":"2011-01-26 12:41:42"
-	   }
-	}
+       "articles":{
+          "id":"1",
+          "feed_id":"1",
+          "guid":"http:\/\/lifetasteslikefood.wordpress.com\/?p=525",
+          "link":"http:\/\/lifetasteslikefood.wordpress.com\/2011\/01\/23\/my-soul-mate-food\/",
+          "title":"My Soul Mate, Food.",
+          "description":"Intimacy and close relationships are essential in our [...]",
+          "author":"lifetasteslikefood",
+          "pubdate":"2011-01-24 05:57:37",
+          "created":"2011-01-26 12:41:42"
+       }
+    }
 
 #### DELETE /{domain}/items/{id}
 
@@ -514,29 +540,29 @@ Parameters:
 Example response:
 
     { "2" : [  ],
-	  "3" : [  ],
-	  "5" : [  ],
-	  "6" : [  ],
-	  "7" : [ { "author" : "moi",
-		"created" : "2011-05-09 04:37:38",
-		"description" : "<p>teste</p>",
-		"feed_id" : "",
-		"format" : "bbcode",
-		"guid" : "",
-		"id" : "29",
-		"images" : [],
-		"link" : "",
-		"modified" : "2011-05-09 04:37:38",
-		"order" : "0",
-		"parent_id" : "7",
-		"pubdate" : "",
-		"site_id" : "2",
-		"title" : "un super article",
-		"type" : "articles"
-	      }
-	    ],
-	  "8" : [  ]
-	}
+      "3" : [  ],
+      "5" : [  ],
+      "6" : [  ],
+      "7" : [ { "author" : "moi",
+        "created" : "2011-05-09 04:37:38",
+        "description" : "<p>teste</p>",
+        "feed_id" : "",
+        "format" : "bbcode",
+        "guid" : "",
+        "id" : "29",
+        "images" : [],
+        "link" : "",
+        "modified" : "2011-05-09 04:37:38",
+        "order" : "0",
+        "parent_id" : "7",
+        "pubdate" : "",
+        "site_id" : "2",
+        "title" : "un super article",
+        "type" : "articles"
+          }
+        ],
+      "8" : [  ]
+    }
 
 #### GET /{domain}/items/latest
 
@@ -550,24 +576,24 @@ Parameters:
 Example response:
 
     [
-	    {
-		"_id": "511e891a3f482e52ec000013",
-		"author": "Matt Burns",
-		"created": 1360955674,
-		"description": "<p>With just a few quick steps, it?s easy to open the phone app on any locked iPhone running iOS 6.1...</p>",
-		"format": "html",
-		"guid": "http://techcrunch.com/?p=758053",
-		"link": "http://techcrunch.com/2013/02/14/new-ios-6-1-security-grants-limited-access-to-phone-app-photos-email-messages-facetime/",
-		"modified": 1360955674,
-		"order": 20,
-		"parent_id": 2,
-		"pubdate": 1360855859,
-		"site_id": 1,
-		"title": "New iOS 6.1 Security Flaw Grants Limited Access To Phone App, Photos, Email, Messages, FaceTime",
-		"type": "articles"
-	    }
-	    ...
-	]
+        {
+        "_id": "511e891a3f482e52ec000013",
+        "author": "Matt Burns",
+        "created": 1360955674,
+        "description": "<p>With just a few quick steps, it?s easy to open the phone app on any locked iPhone running iOS 6.1...</p>",
+        "format": "html",
+        "guid": "http://techcrunch.com/?p=758053",
+        "link": "http://techcrunch.com/2013/02/14/new-ios-6-1-security-grants-limited-access-to-phone-app-photos-email-messages-facetime/",
+        "modified": 1360955674,
+        "order": 20,
+        "parent_id": 2,
+        "pubdate": 1360855859,
+        "site_id": 1,
+        "title": "New iOS 6.1 Security Flaw Grants Limited Access To Phone App, Photos, Email, Messages, FaceTime",
+        "type": "articles"
+        }
+        ...
+    ]
 
 #### GET /{domain}/categories/{id}/promotions
 
@@ -602,24 +628,24 @@ Parameters:
 Gets extension's list
 
     [{ "_id": "4fd689f08ead0ea288000000",
-	  "extension": "store-locator",
-	  "category_id": 613,
-	  "itemLimit": 10,
-	  "language": "en"
-	},
-	...
-	]
+      "extension": "store-locator",
+      "category_id": 613,
+      "itemLimit": 10,
+      "language": "en"
+    },
+    ...
+    ]
 
 #### GET /{domain}/extensions/{id}
 
 Gets extension's info
 
     { "_id": "4fd689f08ead0ea288000000",
-	  "extension": "store-locator",
-	  "category_id": 613,
-	  "itemLimit": 10,
-	  "language": "en"
-	}
+      "extension": "store-locator",
+      "category_id": 613,
+      "itemLimit": 10,
+      "language": "en"
+    }
 
 #### POST /{domain}/extensions
 
@@ -685,7 +711,7 @@ Parameters:
 - **device[push_id]**
 - **device[model]**
 - **device[platform]**
-- **device[version]**
+- **device[platform_version]**
 - **device[app_version]**
 - **device[app_build]**
 
@@ -708,7 +734,7 @@ Parameters:
 - **device[push_id]**
 - **device[model]**
 - **device[platform]**
-- **device[version]**
+- **device[platform_version]**
 - **device[app_version]**
 - **device[app_build]**
 
@@ -734,25 +760,24 @@ Response status:
 - **success: 200**
 - **error: 401 (invalid auth token), 403 (invalid current password)**
 
-#### PUT /{domain}/visitors/devices/{uuid}
+#### PUT /{domain}/devices/{uuid}
 
-Update or creates a device for the visitor
+Update or creates a device
 
 Parameters:
 
 - **push_id**: device push id
 - **model**: device model
 - **platform**: device platform
-- **version**: device platform version
+- **platform_version**: device platform version
 - **app_version**: app version
 - **app_build**: app build number
-
-Headers:
-- **X-Visitor-Token**
+- **user_id**: id of the user (aka visitor) that this device belongs to. if
+  present, **X-Visitor-Token** is required
 
 Response status:
 - **success: 200**
-- **error: 404 (device not found)**
+- **error: 401 (invalid auth token)**
 
 ## How to test API
 
@@ -766,15 +791,15 @@ Response status:
 Datas and ids are fake. Don't need to use Authentication for non PROD environment
 
     bash# restclient http://enterprise.meumobilesite.com/api
-	irb(main):001:0> get '/hoggetcard.int-meumobi.com/categories', {"X-Authentication-Token" => "c8e75b59161a5922c04ede9a533867e371fa2933"}
+    irb(main):001:0> get '/hoggetcard.int-meumobi.com/categories', {"X-Authentication-Token" => "c8e75b59161a5922c04ede9a533867e371fa2933"}
 
-	irb(main):001:0> post '/hoggetcard.int-meumobi.com/items', {parent_id: 9, title: 'Test', type: "articles"}, {"X-Authentication-Token" => "c8e75b59161a5922c04ede9a533867e371fa2933"}
+    irb(main):001:0> post '/hoggetcard.int-meumobi.com/items', {parent_id: 9, title: 'Test', type: "articles"}, {"X-Authentication-Token" => "c8e75b59161a5922c04ede9a533867e371fa2933"}
 
-	irb(main):003:0> put '/hoggetcard.int-meumobi.com/items/4e921c9096e4d21415000000', {title: 'Another Test'}, {"X-Authentication-Token" => "c8e75b59161a5922c04ede9a533867e371fa2933"}
+    irb(main):003:0> put '/hoggetcard.int-meumobi.com/items/4e921c9096e4d21415000000', {title: 'Another Test'}, {"X-Authentication-Token" => "c8e75b59161a5922c04ede9a533867e371fa2933"}
 
-	irb(main):003:0>  get '/hoggetcard.int-meumobi.com/categories', {"X-Authentication-Token" => "c8e75b59161a5922c04ede9a533867e371fa2933"}
-	irb(main):003:0> delete '/hoggetcard.int-meumobi.com/items/4e921c9096e4d21415000000', {"X-Authentication-Token" => "c8e75b59161a5922c04ede9a533867e371fa2933"}
+    irb(main):003:0>  get '/hoggetcard.int-meumobi.com/categories', {"X-Authentication-Token" => "c8e75b59161a5922c04ede9a533867e371fa2933"}
+    irb(main):003:0> delete '/hoggetcard.int-meumobi.com/items/4e921c9096e4d21415000000', {"X-Authentication-Token" => "c8e75b59161a5922c04ede9a533867e371fa2933"}
 
-	irb(main):003:0> get '/hoggetcard.int-meumobi.com/categories/150/geo/nearest?lat=2.3934249&lng=48.8457628', {"X-Authentication-Token" => "c8e75b59161a5922c04ede9a533867e371fa2933"}
+    irb(main):003:0> get '/hoggetcard.int-meumobi.com/categories/150/geo/nearest?lat=2.3934249&lng=48.8457628', {"X-Authentication-Token" => "c8e75b59161a5922c04ede9a533867e371fa2933"}
 
-	irb(main):046:0> get '/hoggetcard.int-meumobi.com/items?type=restaurants', {"X-Authentication-Token" => "c8e75b59161a5922c04ede9a533867e371fa2933"}
+    irb(main):046:0> get '/hoggetcard.int-meumobi.com/items?type=restaurants', {"X-Authentication-Token" => "c8e75b59161a5922c04ede9a533867e371fa2933"}
