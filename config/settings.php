@@ -23,7 +23,11 @@ Config::write('SiteAppleTouchIcon.resizes', array('57x57', '72x72'));
 Config::write('SitePhotos.resizes', array('139x139#', '314x220'));
 Config::write('BusinessItems.resizes', array('80x60#', '80x80#', '139x139#', '314x220'));
 
-Config::write('Log.level', Psr\Log\LogLevel::WARNING);
+// use LOGLEVEL env var or default
+$log_level = getenv('LOGLEVEL');
+Config::write('Log.level', $log_level ?: Psr\Log\LogLevel::INFO);
+
+// error reporting should *always* be the maximum
 ini_set('error_reporting', -1);
 ini_set('display_errors', 'Off');
 

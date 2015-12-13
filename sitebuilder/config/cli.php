@@ -7,8 +7,9 @@ use Monolog\Handler\StreamHandler;
 use Bramus\Monolog\Formatter\ColoredLineFormatter;
 
 set_time_limit(0);
-
 ini_set('display_errors', 'Off');
+
+define('COMPONENT', 'cli');
 
 // logs to stdout for cli scripts
 $formatter = new ColoredLineFormatter();
@@ -16,18 +17,18 @@ $handler = new StreamHandler('php://stdout', Config::read('Log.level'));
 $handler->setFormatter($formatter);
 Logger::logger()->pushHandler($handler);
 
-function meumobi_lock($lock, $fn) {
-	$pidpath = APP_ROOT . "/tmp/{$lock}.pid";
+function meumobi_lock($script_id, $fn) {
+	$pidpath = APP_ROOT . "/tmp/{$script_id}.pid";
 	$pidfile = fopen($pidpath, 'w+');
-	$log = ['lock' => $lock];
+	$log = ['script_id' => $script_id];
 
 	if (!flock($pidfile, LOCK_EX | LOCK_NB)) {
-		Logger::notice('cli', 'cannot start cronjob. lock already acquired', $log);
+		Logger::notice(COMPONENT, 'cannot start script. lock already acquired', $log);
 
 		exit();
 	}
 
-	Logger::info('cli', 'starting cronjob', $log);
+	Logger::info(COMPONENT, 'starting script', $log);
 
 	fwrite($pidfile, getmypid());
 	fflush($pidfile);
@@ -37,5 +38,5 @@ function meumobi_lock($lock, $fn) {
 	fclose($pidfile);
 	unlink($pidpath);
 
-	Logger::info('cli', 'cronjob finished', $log);
+	Logger::info(COMPONENT, 'script finished', $log);
 }
