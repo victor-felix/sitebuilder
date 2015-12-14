@@ -77,6 +77,17 @@ Router::connect(new Route(array(
 	) + $defaults['params']
 )));
 
+// TODO: this route is only to make devices backwards compatible with when they
+// were only available from visitors
+Router::connect(new Route(array(
+	'method' => 'PUT',
+	'template' => '/api/{:slug}/visitors/devices/{:uuid}',
+	'params' => array(
+		'controller' => 'devices',
+		'action' => 'update',
+	) + $defaults['params']
+)));
+
 Router::connect(new Route(array(
 	'method' => 'POST',
 	'template' => '/api/visitors/forgot_password',
