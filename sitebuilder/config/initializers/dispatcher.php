@@ -19,7 +19,7 @@ $defaults = [
 	'scope' => '/api/{:slug}',
 	'params' => [
 		'api' => true,
-		'type' => 'json'
+		'type' => 'json',
 	]
 ];
 
@@ -70,10 +70,10 @@ Router::connect(new Route(array(
 
 Router::connect(new Route(array(
 	'method' => 'PUT',
-	'template' => '/api/{:slug}/visitors/devices/{:uuid}',
+	'template' => '/api/{:slug}/devices/{:uuid}',
 	'params' => array(
-		'controller' => 'visitors',
-		'action' => 'update_device',
+		'controller' => 'devices',
+		'action' => 'update',
 	) + $defaults['params']
 )));
 

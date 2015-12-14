@@ -75,7 +75,6 @@ class VisitorsRepository extends Repository
 		}
 	}
 
-
 	public function findForAuthentication($siteId, $email, $password)
 	{
 		$conditions = [

@@ -2,36 +2,40 @@
 namespace meumobi\sitebuilder\services;
 
 use meumobi\sitebuilder\Logger;
-use meumobi\sitebuilder\entities\Visitor;
 use meumobi\sitebuilder\entities\VisitorDevice;
-use app\controllers\api\InvalidArgumentException;
+use meumobi\sitebuilder\repositories\VisitorsRepository;
+use meumobi\sitebuilder\validators\ParamsValidator;
 
 class CreateOrUpdateDevice
 {
-	public function perform($params)
-	{
-		$created = true;
-		$errors = [];
-		$data = $params['data'];
-		$visitor = $params['visitor'];
+	const COMPONENT = 'devices';
 
-		if (!isset($data['uuid']) || !$data['uuid']) {
-			Logger::info('visitors', 'invalid device uuid', [
-				'visitor' => $visitor->id(),
-				'site' => $visitor->siteId(),
-				'device data' => $data
-			]);
-			$created = false;
-			$errors[] = 'invalid device uuid';
+	public function perform(array $params)
+	{
+		list($uuid, $data, $user) = ParamsValidator::validate($params, ['uuid',
+			'data', 'user']);
+
+		$device = $user->findDevice($uuid);
+
+		$log = [
+			'uuid' => $uuid,
+			'user_id' => $user->id(),
+		];
+
+		Logger::info(self::COMPONENT, 'creating or updating device', $log);
+
+		if ($device) {
+			Logger::debug(self::COMPONENT, 'device found. updating', $log);
+			$device->update($data);
 		} else {
-			$device = $visitor->findDevice($data['uuid']);
-			if ($device) {
-				$device->update($data);
-			} else {
-				$device = new VisitorDevice($data);
-				$visitor->addDevice($device);
-			}
+			Logger::debug(self::COMPONENT, 'device not found. creating new one', $log);
+			$device = new VisitorDevice($data);
+			$visitor->addDevice($device);
 		}
-		return [$created, $errors];
+
+		Logger::debug(self::COMPONENT, 'updating visitor with device information', $log);
+
+		$repository = new VisitorsRepository();
+		return $repository->update($user);
 	}
 }

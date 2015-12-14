@@ -256,9 +256,8 @@ class ApiController extends \lithium\action\Controller {
 		$allowExpired = array_key_exists('allowExpired', $params)
 			? $params['allowExpired']
 			: false;
-		$repository = new VisitorsRepository();
-		$token = $this->request->env('HTTP_X_VISITOR_TOKEN');
-		$this->visitor = $repository->findByAuthToken($token);
+
+		$this->visitor = $this->checkVisitor();
 
 		if ($this->visitor) {
 			if ($this->visitor->isPasswordValid() || $allowExpired) {
@@ -270,6 +269,14 @@ class ApiController extends \lithium\action\Controller {
 		} else if ($this->site()->private) {
 			throw new UnAuthorizedException();
 		}
+	}
+
+	protected function checkVisitor()
+	{
+		$repository = new VisitorsRepository();
+		$token = $this->request->env('HTTP_X_VISITOR_TOKEN');
+
+		return $repository->findByAuthToken($token);
 	}
 
 	protected function headers()
