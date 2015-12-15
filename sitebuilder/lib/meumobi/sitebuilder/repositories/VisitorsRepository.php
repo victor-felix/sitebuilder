@@ -10,8 +10,8 @@ use MongoDate;
 use MongoId;
 use Security;
 use lithium\util\Inflector;
+use meumobi\sitebuilder\entities\Device;
 use meumobi\sitebuilder\entities\Visitor;
-use meumobi\sitebuilder\entities\VisitorDevice;
 
 class VisitorsRepository extends Repository
 {
@@ -138,7 +138,7 @@ class VisitorsRepository extends Repository
 	protected function hydrate($data)
 	{
 		$data['devices'] = array_map(function($d) {
-			return new VisitorDevice($d);
+			return new Device($d);
 		}, $data['devices']);
 
 		$data = array_merge($data, $this->hydrateDates($data));

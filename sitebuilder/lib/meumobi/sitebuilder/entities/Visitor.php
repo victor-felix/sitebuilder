@@ -6,7 +6,7 @@ use DateTimeZone;
 use MongoId;
 use Security;
 use meumobi\sitebuilder\Site;
-use meumobi\sitebuilder\entities\VisitorDevice;
+use meumobi\sitebuilder\entities\Device;
 use meumobi\sitebuilder\repositories\RecordNotFoundException;
 
 class Visitor extends Entity
@@ -136,7 +136,7 @@ class Visitor extends Entity
 		return array_unique($this->devices);
 	}
 
-	public function addDevice(VisitorDevice $device)
+	public function addDevice(Device $device)
 	{
 		if (!in_array($device, $this->devices)) $this->devices []= $device;
 	}

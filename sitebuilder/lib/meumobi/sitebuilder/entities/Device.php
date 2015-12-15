@@ -4,13 +4,14 @@ namespace meumobi\sitebuilder\entities;
 
 use Inflector;
 
-class VisitorDevice extends Entity
+class Device extends Entity
 {
 	protected $uuid;
+	protected $userId;
 	protected $pushId;
 	protected $model;
 	protected $platform;
-	protected $version;
+	protected $platformVersion;
 	protected $appVersion;
 	protected $appBuild;
 
@@ -61,6 +62,6 @@ class VisitorDevice extends Entity
 
 	public function __toString()
 	{
-		return (string)$this->uuid;
+		return (string) $this->uuid;
 	}
 }

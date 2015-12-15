@@ -2,7 +2,7 @@
 namespace meumobi\sitebuilder\services;
 
 use meumobi\sitebuilder\Logger;
-use meumobi\sitebuilder\entities\VisitorDevice;
+use meumobi\sitebuilder\entities\Device;
 use meumobi\sitebuilder\repositories\VisitorsRepository;
 use meumobi\sitebuilder\validators\ParamsValidator;
 
@@ -29,7 +29,11 @@ class CreateOrUpdateDevice
 			$device->update($data);
 		} else {
 			Logger::debug(self::COMPONENT, 'device not found. creating new one', $log);
-			$device = new VisitorDevice($data);
+
+			$data['uuid'] = $uuid;
+			$data['user_id'] = $user->id();
+
+			$device = new Device($data);
 			$visitor->addDevice($device);
 		}
 
