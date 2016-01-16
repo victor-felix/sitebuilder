@@ -43,6 +43,10 @@ class PdfThumbnailer
 
 		$geometry = $image->getImageGeometry();
 
+		// tells imagemagick we're done with this, in order to avoid tmp files
+		// laying around and filling up our disk.
+		$image->clear();
+
 		Logger::debug(self::COMPONENT, 'thumbnail generated', [
 			'medium_url' => $url,
 			'thumbnail_url' => MeuMobi::url($to, true),
