@@ -772,10 +772,9 @@ Parameters:
 - **platform_version**: device platform version
 - **app_version**: app version
 - **app_build**: app build number
-- **user_id**: id of the user (aka visitor) that this device belongs to. if
-  present, **X-Visitor-Token** is required. **Not implemented yet.
-  X-Visitor-Token is currently always required, and user_id is optional and not
-  used**
+
+Headers:
+- **X-Visitor-Token**
 
 Response status:
 - **success: 200**
