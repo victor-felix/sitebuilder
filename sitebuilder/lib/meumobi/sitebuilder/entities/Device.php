@@ -8,12 +8,15 @@ class Device extends Entity
 {
 	protected $uuid;
 	protected $userId;
+	protected $siteId;
 	protected $pushId;
 	protected $model;
 	protected $platform;
 	protected $platformVersion;
 	protected $appVersion;
 	protected $appBuild;
+	protected $created;
+	protected $modified;
 
 	public function update($updates)
 	{
@@ -28,6 +31,16 @@ class Device extends Entity
 	public function uuid()
 	{
 		return $this->uuid;
+	}
+
+	public function userId()
+	{
+		return $this->userId;
+	}
+
+	public function siteId()
+	{
+		return $this->siteId;
 	}
 
 	public function pushId()
@@ -55,9 +68,29 @@ class Device extends Entity
 		return $this->platform;
 	}
 
-	public function version()
+	public function platformVersion()
 	{
-		return $this->version;
+		return $this->platformVersion;
+	}
+
+	public function created()
+	{
+		return $this->created;
+	}
+
+	public function setCreated($created)
+	{
+		$this->created = $created;
+	}
+
+	public function modified()
+	{
+		return $this->modified;
+	}
+
+	public function setModified($modified)
+	{
+		$this->modified = $modified;
 	}
 
 	public function __toString()

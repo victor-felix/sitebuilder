@@ -136,17 +136,6 @@ class Visitor extends Entity
 		return array_unique($this->devices);
 	}
 
-	public function addDevice(Device $device)
-	{
-		if (!in_array($device, $this->devices)) $this->devices []= $device;
-	}
-
-	public function findDevice($uuid) {
-		return current(array_filter($this->devices, function($device) use($uuid) {
-			return $device->uuid() == $uuid;
-		}));
-	}
-
 	public function groups()
 	{
 		return array_unique($this->groups);

@@ -42,6 +42,9 @@ class VisitorsController extends ApiController
 			];
 
 			if ($deviceData) {
+				// backwards compatibility
+				$deviceData['platform_version'] = $deviceData['version'];
+
 				$service = new CreateOrUpdateDevice();
 				$service->perform([
 					'uuid' => $deviceData['uuid'],

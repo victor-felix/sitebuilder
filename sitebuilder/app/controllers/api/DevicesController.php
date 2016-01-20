@@ -13,17 +13,15 @@ class DevicesController extends ApiController
 	{
 		$data = $this->request->data;
 		$uuid = $this->request->get('params:uuid');
+		$site = $this->site();
 		$visitor = $this->checkVisitor();
-
-		if (!$visitor) {
-			throw new InvalidArgumentException('X-Visitor-Token is required!');
-		}
 
 		$service = new CreateOrUpdateDevice();
 		$service->perform([
 			'uuid' => $uuid,
 			'data' => $data,
 			'user' => $visitor,
+			'site' => $site,
 		]);
 
 		return [ 'success' => true ];

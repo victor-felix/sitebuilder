@@ -10,10 +10,7 @@ use meumobi\sitebuilder\entities\Device;
 
 class DevicesRepository extends Repository
 {
-	protected $dateFields = [
-		'created',
-		'modified'
-	];
+	protected $dateFields = ['created', 'modified'];
 
 	public function all()
 	{
@@ -28,6 +25,18 @@ class DevicesRepository extends Repository
 			return $this->hydrate($result);
 		} else {
 			throw new RecordNotFoundException("The device '{$id}' was not found");
+		}
+	}
+
+	public function findBySiteAndUuid($site_id, $uuid)
+	{
+		$result = $this->collection()->findOne([
+			'site_id' => $site_id,
+			'uuid' => $uuid,
+		]);
+
+		if ($result) {
+			return $this->hydrate($result);
 		}
 	}
 
@@ -70,14 +79,15 @@ class DevicesRepository extends Repository
 	protected function dehydrate($object)
 	{
 		$data = [
-			'email' => $object->email(),
-			'first_name' => $object->firstName(),
-			'last_name' => $object->lastName(),
+			'uuid' => $object->uuid(),
+			'user_id' => $object->userId(),
 			'site_id' => $object->siteId(),
-			'hashed_password' => $object->hashedPassword(),
-			'auth_token' => $object->authToken(),
-			'should_renew_password' => $object->shouldRenewPassword(),
-			'groups' => $object->groups()
+			'push_id' => $object->pushId(),
+			'model' => $object->model(),
+			'platform' => $object->platform(),
+			'platform_version' => $object->platformVersion(),
+			'app_version' => $object->appVersion(),
+			'app_build' => $object->appBuild(),
 		];
 
 		return array_merge($data, $this->dehydrateDates($object));
