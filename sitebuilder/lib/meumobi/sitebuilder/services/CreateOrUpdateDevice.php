@@ -1,7 +1,7 @@
 <?php
 namespace meumobi\sitebuilder\services;
 
-use InvalidArgumentException;
+use app\controllers\api\InvalidArgumentException;
 use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\entities\Device;
 use meumobi\sitebuilder\repositories\DevicesRepository;
@@ -17,19 +17,22 @@ class CreateOrUpdateDevice
 		list($uuid, $data, $user, $site) = ParamsValidator::validate(
 			$params, ['uuid', 'data', 'user', 'site']);
 
-		$repository = new DevicesRepository();
-		$device = $repository->findBySiteAndUuid($site->id(), $uuid);
+		$site_id = $site->id();
+		$user_id = $user ? $user->id() : null;
 
-		$log = [ 'uuid' => $uuid, 'site_id' => $site->id() ];
+		$repository = new DevicesRepository();
+		$device = $repository->findBySiteAndUuid($site_id, $uuid);
+
+		$log = [ 'uuid' => $uuid, 'site_id' => $site_id ];
 
 		if ($user) {
-			$log['user_id'] = $user->id();
+			$log['user_id'] = $user_id;
 		}
 
 		Logger::info(self::COMPONENT, 'creating or updating device', $log);
 
 		if ($device) {
-			if ($user && $user->id() != $device->userId()) {
+			if ($user_id != $device->userId()) {
 				throw new InvalidArgumentException('device does not belong to user');
 			}
 
@@ -41,10 +44,10 @@ class CreateOrUpdateDevice
 			Logger::debug(self::COMPONENT, 'device not found. creating new one', $log);
 
 			$data['uuid'] = $uuid;
-			$data['site_id'] = $site->id();
+			$data['site_id'] = $site_id;
 
 			if ($user) {
-				$data['user_id'] = $user->id();
+				$data['user_id'] = $user_id;
 			}
 
 			$device = new Device($data);
