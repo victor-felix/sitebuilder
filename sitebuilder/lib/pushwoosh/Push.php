@@ -14,6 +14,7 @@ use meumobi\sitebuilder\validators\ParamsValidator;
 
 class Push
 {
+	const COMPONENT = 'pushnotif';
 	protected static $client;
 
 	public static function notify(array $options)
@@ -29,7 +30,7 @@ class Push
 		$response = static::getClient($site->pushwoosh_app_id)
 			->createMessage($request);
 
-		Logger::debug('push_notification', 'payload request', $request->toJSON());
+		Logger::debug(self::COMPONENT, 'payload request', $request->toJSON());
 
 		if ($response->isOk()) {
 			return [
@@ -53,15 +54,15 @@ class Push
 			$android->setIcon(MeuMobi::url($icon->link('72x72'), true));
 		}
 
-		if ($thumbnails = $item->thumbnails->to('array')) {
-			$android->setBanner($thumbnails[0]['url']);
+		if ($thumbnail = $item->getThumbnail(314, 220)) {
+			$android->setBanner($thumbnail['url']);
 		}
 
 		$notification = Notification::create()
 			->setContent($item->title)
 			->setData([
 				'item_id' => $item->id(),
-				'category_id' => $item->category_id,
+				'category_id' => $item->parent_id,
 			])
 			->setIOS(IOS::create()->setBadges('+1'))
 			->setAndroid($android);

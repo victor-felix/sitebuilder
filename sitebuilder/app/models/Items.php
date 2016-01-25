@@ -121,6 +121,16 @@ class Items extends \lithium\data\Model {
 		return in_array($attr, $this->setters);
 	}
 
+	public function getThumbnail($entity, $width, $height)
+	{
+		$thumbnails = $entity->thumbnails->to('array');
+
+		return current(array_filter($thumbnails, function($thumbnail) use($width, $height) {
+			return $thumbnail['width'] == $width
+				&& $thumbnail['height'] == $height;
+		}));
+	}
+
 	public function toJSON($entity, $visitor) {
 		$self = $entity->to('array');
 
