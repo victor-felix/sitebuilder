@@ -1,8 +1,9 @@
 <?php
 namespace pushwoosh;
 
-Use Config;
-Use Exception;
+use Config;
+use Exception;
+use MeuMobi;
 use Gomoob\Pushwoosh\Client\Pushwoosh;
 use Gomoob\Pushwoosh\Model\Notification\Android;
 use Gomoob\Pushwoosh\Model\Notification\IOS;
@@ -45,19 +46,25 @@ class Push
 
 	public static function getNotification($site, $item, $devices)
 	{
+		$android = Android::create()
+			->setHeader($site->title);
+
+		if ($icon = $site->appleTouchIcon()) {
+			$android->setIcon(MeuMobi::url($icon->link('72x72'), true));
+		}
+
+		if ($thumbnails = $item->thumbnails->to('array')) {
+			$android->setBanner($thumbnails[0]['url']);
+		}
+
 		$notification = Notification::create()
 			->setContent($item->title)
 			->setData([
 				'item_id' => $item->id(),
 				'category_id' => $item->category_id,
 			])
-			->setIOS(IOS::create()
-				->setBadges('+1')
-			)
-			->setAndroid(Android::create()
-				->setIcon($site->appleTouchIcon()->link('72x72'))
-				->setHeader($site->title)
-			);
+			->setIOS(IOS::create()->setBadges('+1'))
+			->setAndroid($android);
 
 		if ($devices) $notification->setDevices($devices);
 
