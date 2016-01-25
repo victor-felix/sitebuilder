@@ -17,15 +17,16 @@ class Push
 
 	public static function notify(array $options)
 	{
-		list($icon, $header, $content, $appId, $devices) = ParamsValidator::validate(
-			$options, ['icon', 'header', 'content', 'appId', 'devices']);
+		list($site, $item, $devices) = ParamsValidator::validate($options, [
+			'site', 'item', 'devices']);
 
 		// CreateMessageRequest:
 		// http://gomoob.github.io/php-pushwoosh/create-message.html
 		$request = CreateMessageRequest::create()
-			->addNotification(static::getNotification($content, $icon, $header, $devices));
+			->addNotification(static::getNotification($site, $item, $devices));
 
-		$response = static::getClient($appId)->createMessage($request);
+		$response = static::getClient($site->pushwoosh_app_id)
+			->createMessage($request);
 
 		Logger::debug('push_notification', 'payload request', $request->toJSON());
 
@@ -42,16 +43,20 @@ class Push
 		}
 	}
 
-	public static function getNotification($content, $icon, $header, $devices)
+	public static function getNotification($site, $item, $devices)
 	{
 		$notification = Notification::create()
-			->setContent($content)
+			->setContent($item->title)
+			->setData([
+				'item_id' => $item->id(),
+				'category_id' => $item->category_id,
+			])
 			->setIOS(IOS::create()
 				->setBadges('+1')
 			)
 			->setAndroid(Android::create()
-				->setIcon($icon)
-				->setHeader($header)
+				->setIcon($site->appleTouchIcon()->link('72x72'))
+				->setHeader($site->title)
 			);
 
 		if ($devices) $notification->setDevices($devices);

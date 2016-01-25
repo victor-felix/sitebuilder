@@ -18,10 +18,8 @@ class PushNotificationWorker extends Worker
 	public function perform()
 	{
 		$site = $this->getSite();
-		$appId = $site->pushwoosh_app_id;
 		$item = $this->getItem();
 		$category = $item->parent();
-		$content = $item->title;
 		$devices = $this->getDevicesTokens($item);
 
 		$log = [
@@ -30,20 +28,18 @@ class PushNotificationWorker extends Worker
 			'site_id' => $site->id,
 		];
 
-		if (!$appId || !$category->notification || !$devices) {
+		if (!$site->pushwoosh_app_id || !$category->notification || !$devices) {
 			return;
 		}
 
 		Logger::info(self::COMPONENT, 'sending push notification', $log + [
-			'content' => $content,
+			'content' => $item->title,
 			'number_of_devices' => count($devices),
 		]);
 
 		$response = Push::notify([
-			'icon' => $site->appleTouchIcon()->link('72x72'),
-			'header' => $site->title,
-			'content' => $content,
-			'appId' => $appId,
+			'site' => $site,
+			'item' => $item,
 			'devices' => $devices,
 		]);
 
