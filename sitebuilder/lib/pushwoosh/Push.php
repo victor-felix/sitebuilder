@@ -48,7 +48,8 @@ class Push
 	public static function getNotification($site, $item, $devices)
 	{
 		$android = Android::create()
-			->setHeader($site->title);
+			->setHeader($site->title)
+			->setBadges('+1');
 
 		if ($icon = $site->appleTouchIcon()) {
 			$android->setIcon(MeuMobi::url($icon->link('72x72'), true));

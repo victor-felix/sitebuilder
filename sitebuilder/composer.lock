@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "453d7592d6940a9d8e8029226da6c88f",
-    "content-hash": "342716d35fb4096b055c322c60af966a",
+    "hash": "86e2aae99d42933bd4827fcee17b5ad0",
+    "content-hash": "2ee5946824b228797952a8af89ad39f2",
     "packages": [
         {
             "name": "bramus/ansi-php",
@@ -91,29 +91,32 @@
         },
         {
             "name": "gomoob/php-pushwoosh",
-            "version": "0.1.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gomoob/php-pushwoosh.git",
-                "reference": "b73e758f983b31cf04bc6d579eed221aa0d7a1db"
+                "reference": "d85eedec0e7aeb3809372a226bd1178d9ae1c3d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gomoob/php-pushwoosh/zipball/b73e758f983b31cf04bc6d579eed221aa0d7a1db",
-                "reference": "b73e758f983b31cf04bc6d579eed221aa0d7a1db",
+                "url": "https://api.github.com/repos/gomoob/php-pushwoosh/zipball/d85eedec0e7aeb3809372a226bd1178d9ae1c3d9",
+                "reference": "d85eedec0e7aeb3809372a226bd1178d9ae1c3d9",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": ">=5.4"
             },
             "require-dev": {
-                "fabpot/php-cs-fixer": "~0.5",
-                "pdepend/pdepend": ">=1.1.1",
-                "phploc/phploc": "~2.0",
-                "phpmd/phpmd": "~1.5",
+                "codeclimate/php-test-reporter": "~0.2",
+                "pdepend/pdepend": "~2.2",
+                "phploc/phploc": "~2.1",
+                "phpmd/phpmd": "~2.3",
+                "phpunit/phpunit": "~4.8",
                 "satooshi/php-coveralls": "~0.6",
                 "sebastian/phpcpd": "~2.0",
-                "squizlabs/php_codesniffer": "~1.5"
+                "squizlabs/php_codesniffer": "~2.3",
+                "symfony/stopwatch": "2.8.0",
+                "symfony/yaml": "2.8.0"
             },
             "type": "library",
             "autoload": {
@@ -143,10 +146,11 @@
             "description": "A PHP Library to easily work with the Pushwoosh REST Web Services.",
             "keywords": [
                 "gomoob",
+                "notification",
                 "push",
                 "pushwoosh"
             ],
-            "time": "2014-09-19 09:21:29"
+            "time": "2015-12-25 00:40:55"
         },
         {
             "name": "mjohnson/decoda",

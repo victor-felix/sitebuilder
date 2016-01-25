@@ -22,15 +22,15 @@ class PushNotificationWorker extends Worker
 		$category = $item->parent();
 		$devices = $this->getDevicesTokens($item);
 
+		if (!$site->pushwoosh_app_id || !$category->notification || !$devices) {
+			return;
+		}
+
 		$log = [
 			'item_id' => $item->id(),
 			'category_id' => $category->id,
 			'site_id' => $site->id,
 		];
-
-		if (!$site->pushwoosh_app_id || !$category->notification || !$devices) {
-			return;
-		}
 
 		Logger::info(self::COMPONENT, 'sending push notification', $log + [
 			'content' => $item->title,
