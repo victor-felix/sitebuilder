@@ -6,7 +6,7 @@ use DateTimeZone;
 use MongoId;
 use Security;
 use meumobi\sitebuilder\Site;
-use meumobi\sitebuilder\entities\Device;
+use meumobi\sitebuilder\repositories\DevicesRepository;
 use meumobi\sitebuilder\repositories\RecordNotFoundException;
 
 class Visitor extends Entity
@@ -18,7 +18,6 @@ class Visitor extends Entity
 	protected $hashedPassword;
 	protected $authToken;
 	protected $shouldRenewPassword = false;
-	protected $devices = [];
 	protected $groups = [];
 	protected $lastLogin;
 	protected $created;
@@ -133,7 +132,8 @@ class Visitor extends Entity
 
 	public function devices()
 	{
-		return array_unique($this->devices);
+		$repo = new DevicesRepository();
+		return $repo->findByUserId($this->id());
 	}
 
 	public function groups()

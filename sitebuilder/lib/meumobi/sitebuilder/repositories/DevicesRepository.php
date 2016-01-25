@@ -28,6 +28,13 @@ class DevicesRepository extends Repository
 		}
 	}
 
+	public function findByUserId($user_id)
+	{
+		return $this->hydrateSet($this->collection()->find([
+			'user_id' => $user_id,
+		]));
+	}
+
 	public function findBySiteAndUuid($site_id, $uuid)
 	{
 		$result = $this->collection()->findOne([
