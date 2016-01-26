@@ -3,8 +3,16 @@
 		<div class="links">
 			<a class="logo" href="#"><?php echo s('MeuMobi') ?></a>
       <ul>
-        <li><a href="http://blog.meumobi.com/?page_id=5" target="_blank"><?php echo s('About Us') ?></a></li>
-        <li><a href="http://blog.meumobi.com" target="_blank"><?php echo s('Our Blog') ?></a></li>
+				<?php if(MeuMobi::currentSegment()->aboutUsUrl): ?> 
+				<li>
+					<a href="<?php echo MeuMobi::currentSegment()->aboutUsUrl ?>" target="_blank"><?php echo s('About Us') ?></a>
+				</li>
+				<?php endif ?>
+				<?php if(MeuMobi::currentSegment()->blogUrl): ?> 
+				<li>
+					<a href="<?php echo MeuMobi::currentSegment()->blogUrl ?>" target="_blank"><?php echo s('Our Blog') ?></a>
+				</li>
+				<?php endif ?>
         <li><a href="/docs/api"><?php echo s('Api Documentation') ?></a></li>
       </ul>
 			<p class="copy">
@@ -14,19 +22,27 @@
 		</div>
 		<div class="contact">
 			<div>
-			<p class="upper"><?php echo s('Contact Us') ?></p>
-			<p>
-				<span><?php echo s('contact@meumobi.com') ?></span>
-			</p>
-			<p>
-				<span><?php echo s('+55 21 2499.3744') ?></span>
-			</p>
+				<p class="upper"><?php echo s('Contact Us') ?></p>
+				<?php if(MeuMobi::currentSegment()->contactMail): ?>
+					<p>
+						<span><?php echo MeuMobi::currentSegment()->contactMail ?></span>
+					</p>
+				<?php endif ?>
+				<?php if(MeuMobi::currentSegment()->contactPhone): ?>
+					<p>
+						<span><?php echo MeuMobi::currentSegment()->contactPhone ?></span>
+					</p>
+				<?php endif ?>
 			</div>
 		</div>
 		<div class="social">
 			<span class="upper"><?php echo s('Find us on') ?></span>
-			<a class="face" href="http://www.facebook.com/meumobi"><?php echo s('facebook') ?></a>
-			<a class="twitter" href="http://twitter.com/MeuMobi"><?php echo s('twitter') ?></a>
+			<?php if(MeuMobi::currentSegment()->contactFacebook): ?>
+			<a class="face" href="<?php echo MeuMobi::currentSegment()->contactFacebook ?>"><?php echo s('facebook') ?></a>
+			<?php endif ?>
+			<?php if(MeuMobi::currentSegment()->contactTwitter): ?>
+			<a class="twitter" href="<?php echo MeuMobi::currentSegment()->contactTwitter ?>"><?php echo s('twitter') ?></a>
+			<?php endif ?>
 		</div>
 	</div>
 </div>

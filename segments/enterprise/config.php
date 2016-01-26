@@ -1,6 +1,12 @@
 <?php
 
 Config::write('Segment', array(
+	//'aboutUsUrl' => '',
+	// 'blogUrl' => '',
+	'contactMail' => 'contact@meumobi.com',
+	// 'contactPhone' => '',
+	'contactFacebook' => 'http://facebook.com/meumobi',
+	'contactTwitter' => 'http://twitter.com/meumobi',
   'id' => 'enterprise',
   'title' => 'MeuMobi Enterprise',
   'items' => array('articles', 'events'),
