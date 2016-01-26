@@ -3,39 +3,54 @@
 namespace meumobi\sitebuilder\services;
 
 use Exception;
+use Filesystem;
 use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\services\PdfThumbnailer;
 
 class MediaThumbnailer
 {
-	public static function perform($filePath)
-	{
-		if (self::getFileType($filePath) != 'pdf') {
-			throw new Exception('Invalid file type');
-		}
+	const COMPONENT = 'media_thumbnailer';
 
-		return PdfThumbnailer::perform([
-			'path' => $filePath,
-			'extension' => 'png'
+	public function perform($item, $medium)
+	{
+		Logger::info(self::COMPONENT, 'creating medium thumbnail', [
+			'item_id' => $item->id(),
 		]);
-	}
 
-	public static function supportedTypes() {
-		return ['application/pdf'];
-	}
+		list($thumbnail, $error) = $this->createThumbnail($medium);
 
-	protected static function getFileType($file)
-	{
-		if (!filter_var($file, FILTER_VALIDATE_URL)) return false;
+		if ($thumbnail) {
+			$medium['thumbnails'] = [ $thumbnail ];
 
-		$headers = get_headers($file, 1);
-
-		if ($headers['Content-Type'] == 'application/pdf'
-			|| ($headers['Content-Type'] == 'application/octet-stream'
-					&& strpos($headers['Content-Disposition'], '.pdf'))) {
-			return 'pdf';
+			Logger::info(self::COMPONENT, 'thumbnail created', [
+				'item_id' => $item->id(),
+				'medium_url' => $medium['url'],
+				'thumbnail_url' => $thumbnail['url'],
+			]);
+		} else {
+			Logger::notice(self::COMPONENT, 'thumbnail generation failed', [
+				'item_id'  => $item->id(),
+				'medium_url' => $medium['url'],
+				'type' => $medium['type'],
+				'error' => $error,
+			]);
 		}
 
-		return false;
+		return $medium;
+	}
+
+	public function createThumbnail($medium)
+	{
+		if ($medium['type'] == 'application/pdf') {
+			$thumbnail = PdfThumbnailer::perform([
+				'url' => $medium['url'],
+				'extension' => 'png'
+			]);
+
+			return [$thumbnail, null];
+		} else {
+			$error = sprintf('file type "%s" not supported', $medium['type']);
+			return [null, $error];
+		}
 	}
 }

@@ -2,9 +2,10 @@
 
 namespace meumobi\sitebuilder;
 
+use Bramus\Monolog\Formatter\ColoredLineFormatter;
+use Monolog\Handler\StreamHandler;
 use Psr\Log\LogLevel;
 use Psr\Log\LoggerInterface;
-use meumobi\sitebuilder\logger\LineFormatter;
 
 class Logger
 {
@@ -72,9 +73,9 @@ class Logger
 
 	public function __construct($level = null)
 	{
-		$formatter = new \Monolog\Formatter\LineFormatter();
+		$formatter = new ColoredLineFormatter();
 		$formatter->ignoreEmptyContextAndExtra();
-		$handler = new \Monolog\Handler\StreamHandler(APP_ROOT . '/log/sitebuilder.log', $level);
+		$handler = new StreamHandler(APP_ROOT . '/log/sitebuilder.log', $level);
 		$handler->setFormatter($formatter);
 		$logger = new \Monolog\Logger('sitebuilder', [$handler]);
 

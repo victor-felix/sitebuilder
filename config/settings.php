@@ -1,4 +1,5 @@
 <?php
+
 Config::write('App.encoding', 'utf-8');
 Config::write('App.support', 'szNHAQVZXjPDDc8HYQjKMX2q6VjnMxSA');
 Config::write('App.environment', trim(Filesystem::read(__DIR__ . '/ENVIRONMENT')));
@@ -22,13 +23,19 @@ Config::write('SiteAppleTouchIcon.resizes', array('57x57', '72x72'));
 Config::write('SitePhotos.resizes', array('139x139#', '314x220'));
 Config::write('BusinessItems.resizes', array('80x60#', '80x80#', '139x139#', '314x220'));
 
-Config::write('Log.level', Psr\Log\LogLevel::WARNING);
+// use LOGLEVEL env var or default
+$log_level = getenv('LOGLEVEL');
+Config::write('Log.level', $log_level ?: Psr\Log\LogLevel::INFO);
+
+// error reporting should *always* be the maximum
+ini_set('error_reporting', -1);
+ini_set('display_errors', 'Off');
 
 $dir = new GlobIterator(__DIR__ . '/segments/*.php');
-foreach($dir as $file) {
-    if($file->isFile()) {
-        require $file->getPathname();
-    }
+foreach ($dir as $file) {
+	if ($file->isFile()) {
+		require $file->getPathname();
+	}
 }
 
 require 'config/environments/' . Config::read('App.environment') . '.php';

@@ -2,12 +2,9 @@
 
 define('LIB_ROOT', dirname(__DIR__));
 define('APP_ROOT', dirname(LIB_ROOT));
-define('ERROR_LOG', dirname(dirname(__DIR__)) . '/log/php.log');
 
 set_include_path(APP_ROOT . PATH_SEPARATOR .
 	LIB_ROOT . PATH_SEPARATOR . get_include_path());
-
-ini_set('error_log', ERROR_LOG);
 
 require_once 'vendor/autoload.php';
 

@@ -10,28 +10,53 @@ use meumobi\sitebuilder\validators\ParamsValidator;
 
 class PdfThumbnailer
 {
+	const COMPONENT = 'media_thumbnailer';
+
 	public static function perform($params)
 	{
-		list($path, $extension) = ParamsValidator::validate($params,
-			['path', 'extension']);
+		list($url, $extension) = ParamsValidator::validate($params,
+			['url', 'extension']);
 
-		$fileName = md5(uniqid($path, true)) . '.' . $extension;
+		$fileName = md5(uniqid($url, true)) . '.' . $extension;
 		$dir = Model::load('Images')->getPath('pdfThumbnail');
 		$to =  '/' . $dir . '/' . $fileName;
 
-		Logger::debug('media_thumbnailer', 'downloading file', [ 'url' => $path ]);
+		Logger::debug(self::COMPONENT, 'reading file', [
+			'medium_url' => $url,
+		]);
 
-		$imagick = new Imagick;
-		$imagick->readImage($path);
+		$image = new Imagick();
+		$image->readImage($url);
 
-		Logger::debug('media_thumbnailer', 'file downloaded', [ 'url' => $path ]);
+		Logger::debug(self::COMPONENT, 'file read', [
+			'medium_url' => $url,
+		]);
 
-		$imagick->setIteratorIndex(0);
-		$imagick->setImageFormat($extension);
-		$imagick->writeImages(APP_ROOT . $to, false);
+		$image->setIteratorIndex(0);
 
-		Logger::debug('media_thumbnailer', 'thumbnail generated', [ 'path' => $to ]);
+		$image->setImageAlphaChannel(11); // Imagick::ALPHACHANNEL_REMOVE
+		$image->setImageBackgroundColor('white');
+		$image->mergeImageLayers(Imagick::LAYERMETHOD_FLATTEN);
 
-		return MeuMobi::url($to, true);
+		$image->setImageFormat($extension);
+		$image->writeImage(APP_ROOT . $to);
+
+		$geometry = $image->getImageGeometry();
+
+		// tells imagemagick we're done with this, in order to avoid tmp files
+		// laying around and filling up our disk.
+		$image->clear();
+
+		Logger::debug(self::COMPONENT, 'thumbnail generated', [
+			'medium_url' => $url,
+			'thumbnail_url' => MeuMobi::url($to, true),
+		]);
+
+		return [
+			'url' => MeuMobi::url($to, true),
+			'type' => 'image/png',
+			'width' => $geometry['width'],
+			'height' => $geometry['height'],
+		];
 	}
 }

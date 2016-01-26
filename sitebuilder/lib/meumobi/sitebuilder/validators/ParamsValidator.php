@@ -6,11 +6,11 @@ use Exception;
 
 class ParamsValidator
 {
-	public static function validate($options, $validOptions)
+	public static function validate($options, $validOptions, $strict = true)
 	{
 		$invalidOptions = array_diff(array_keys($options), $validOptions);
 
-		if ($invalidOptions) {
+		if ($strict && $invalidOptions) {
 			throw new Exception('invalid options: ' . implode(', ', $invalidOptions));
 		}
 

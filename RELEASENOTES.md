@@ -1,6 +1,30 @@
 ## Release Notes for meumobi ##
 
-Update these notes using: git log --pretty=format:'* %s' --no-merges rel-2.6.5..HEAD
+Update these notes using: git log --pretty=format:'* %s' --no-merges rel-2.6.7.2..HEAD
+
+### rel-2.6.7 (20151201) ###
+
+* Lower extension priority if events feed failed to download. Closes #267
+* Migrates UpdateFeedsWorker to use script/run_worker.php
+* Creates script/run_worker.php for running workers manually
+* Removes MediaThumbnailerWorker. Superseded by ProcessRemoteMediaWorker.
+* Improves logging in general for workers, UpdateNewsFeed and ProcessRemoteMedia
+* Logs all PHP errors to log/sitebuilder.log. Closes #272
+* Updates composer.json dependencies
+* Log events for command line scripts. Closes #273
+* Updates environment for comunique-se's DB connections
+
+### rel-2.6.6 (20151125) ###
+
+* Use references when passing counters to a closure
+* Only lower extension priority when it's HIGH. Closes #220
+* Remove alpha channel from PDF->PNG preview. Closes #258
+* Major refactoring of the media infrastructure
+* General code cleaning
+* Remove media thumbnail properties from UI form. Closes #248
+* FIX, use fullpath on site logo of visitor/mail invite
+* Add weblinks as business settings on segment investor
+* Finishes php script successfully
 
 ### rel-2.6.5 (20151116) ###
 * Fixes logs for MediaThumbnailerWorker

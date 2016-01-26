@@ -3,15 +3,11 @@
 namespace meumobi\sitebuilder\repositories;
 
 use DateTime;
-use FileUpload;
-use Filesystem;
-use MongoClient;
 use MongoDate;
 use MongoId;
 use Security;
 use lithium\util\Inflector;
 use meumobi\sitebuilder\entities\Visitor;
-use meumobi\sitebuilder\entities\VisitorDevice;
 
 class VisitorsRepository extends Repository
 {
@@ -75,7 +71,6 @@ class VisitorsRepository extends Repository
 		}
 	}
 
-
 	public function findForAuthentication($siteId, $email, $password)
 	{
 		$conditions = [
@@ -138,10 +133,6 @@ class VisitorsRepository extends Repository
 
 	protected function hydrate($data)
 	{
-		$data['devices'] = array_map(function($d) {
-			return new VisitorDevice($d);
-		}, $data['devices']);
-
 		$data = array_merge($data, $this->hydrateDates($data));
 
 		return new visitor($data);
@@ -157,17 +148,6 @@ class VisitorsRepository extends Repository
 			'hashed_password' => $object->hashedPassword(),
 			'auth_token' => $object->authToken(),
 			'should_renew_password' => $object->shouldRenewPassword(),
-			'devices' => array_map(function($d) {
-				return [
-					'uuid' => $d->uuid(),
-					'push_id' => $d->pushId(),
-					'model' => $d->model(),
-					'platform' => $d->platform(),
-					'version' => $d->version(),
-					'app_version' => $d->appVersion(),
-					'app_build' => $d->appBuild(),
-				];
-			}, $object->devices()),
 			'groups' => $object->groups()
 		];
 

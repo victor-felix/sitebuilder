@@ -5,23 +5,23 @@ every 30.minute do
 end
 
 every 15.minute do
-  command "php #{File.expand_path 'sitebuilder/script/update_feeds.php'} low"
+  command "php #{File.expand_path 'sitebuilder/script/run_worker.php'} --worker=UpdateFeeds --priority=low --lock=updatefeeds-low"
 end
 
 every 1.minute do
-  command "php #{File.expand_path 'sitebuilder/script/update_feeds.php'} high"
+  command "php #{File.expand_path 'sitebuilder/script/run_worker.php'} --worker=UpdateFeeds --priority=high --lock=updatefeeds-high"
 end
 
 every 10.minutes do
   command "php #{File.expand_path 'sitebuilder/script/import_csv.php'}"
 end
 
-every 1.day do
-  command "php #{File.expand_path 'sitebuilder/script/update_events.php'} low"
+every 60.minutes do
+  command "php #{File.expand_path 'sitebuilder/script/run_worker.php'} --worker=UpdateEventsFeed --priority=low --lock=updateevents-low"
 end
 
 every 1.minute do
-  command "php #{File.expand_path 'sitebuilder/script/update_events.php'} high"
+  command "php #{File.expand_path 'sitebuilder/script/run_worker.php'} --worker=UpdateEventsFeed --priority=high --lock=updateevents-high"
 end
 
 every 1.minute do

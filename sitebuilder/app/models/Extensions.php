@@ -132,7 +132,7 @@ class Extensions extends Modules
 
 	public static function enable($extension)
 	{
-		$extension->priority = Worker::PRIORITY_HIGH;
+		$extension->priority = self::PRIORITY_HIGH;
 		$category = static::category($extension);
 		$category->populate = 'auto';
 		$category->save();
@@ -162,6 +162,13 @@ class Extensions extends Modules
 
 		return $chain->next($self, $params, $chain);
 	}
+
+	public function id($entity) {
+		if($entity->_id) {
+			return $entity->_id->{'$id'};
+		}
+	}
+
 }
 
 Extensions::applyFilter('remove', function($self, $params, $chain) {

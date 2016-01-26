@@ -16,6 +16,7 @@ use Mapper;
 use SimplePie;
 use Video;
 use app\models\Extensions;
+use app\models\Items;
 use app\models\items\Articles;
 use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\validators\ParamsValidator;
@@ -23,6 +24,7 @@ use meumobi\sitebuilder\validators\ParamsValidator;
 class UpdateNewsFeed
 {
 	const ARTICLES_TO_KEEP = 50;
+	const COMPONENT = 'update_news_feed';
 
 	protected $blacklist = ['gravatar.com'];
 
@@ -34,7 +36,7 @@ class UpdateNewsFeed
 		$sendPush = $extension->priority == Extensions::PRIORITY_LOW;
 		$purifyHtml = $extension->use_html_purifier;
 
-		$feed = $this->fetchFeed($extension->url);
+		$feed = $this->fetchFeed($extension->url, $extension);
 		$articles = $this->extractArticles($feed, $category, $purifyHtml);
 
 		$bulkImport = new BulkImportItems();
@@ -43,29 +45,54 @@ class UpdateNewsFeed
 			'items' => $articles,
 			'mode' => $extension->import_mode,
 			'sendPush' => $sendPush,
-			'shouldUpdate' => function($item) {
-				return $item->id() && (
+			'shouldUpdate' => function($item) use ($extension) {
+				$shouldUpdate = $item->id() && (
 					$item->changed('title') ||
 					$item->changed('description')
 				);
+
+				if ($shouldUpdate) {
+					Logger::debug(self::COMPONENT, 'item will be updated', [
+						'item_id' => $item->id(),
+						'guid' => $item->guid,
+						'category_id' => $extension->category_id,
+						'extension_id' => $extension->id(),
+					]);
+				}
+
+				return $shouldUpdate;
 			},
-			'shouldCreate' => function($item) {
-				return !$item->id();
+			'shouldCreate' => function($item) use ($extension) {
+				$shouldCreate = !$item->id();
+
+				if ($shouldCreate) {
+					Logger::debug(self::COMPONENT, 'item will be created', [
+						'guid' => $item->guid,
+						'category_id' => $extension->category_id,
+						'extension_id' => $extension->id(),
+					]);
+				}
+
+				return $shouldCreate;
 			},
 		]);
 
-		$stats['removed_articles'] = $this->removeOldArticles($category);
+		if ($extension->import_mode == BulkImportItems::INCLUSIVE_IMPORT) {
+			$stats['removed_articles'] = $this->removeOldArticles($category);
+		}
 
 		$category->updated = date('Y-m-d H:i:s');
 		$category->save();
 
-		$extension->priority = Extensions::PRIORITY_LOW;
-		$extension->save(null, ['callbacks' => false]);
+		if ($extension->priority != Extensions::PRIORITY_LOW) {
+			$extension->priority = Extensions::PRIORITY_LOW;
+			$extension->save(null, ['callbacks' => false]);
 
-		Logger::info('extensions', 'extension priority lowered', [
-			'extension_id' => (string) $extension->_id,
-			'category_id' => $extension->category_id
-		]);
+			Logger::info(self::COMPONENT, 'extension priority lowered', [
+				'extension_id' => $extension->id(),
+				'category_id' => $extension->category_id
+			]);
+		}
 
 		return $stats;
 	}
@@ -78,16 +105,24 @@ class UpdateNewsFeed
 		$removed = 0;
 
 		if ($count > self::ARTICLES_TO_KEEP) {
-			$ids = array_keys(Articles::find('list', [
+			$items = Articles::find('all', [
 				'conditions' => $conditions,
 				'limit' => $count - self::ARTICLES_TO_KEEP,
 				'order' => ['published' => 'ASC']
-			]));
+			]);
 
-			if ($ids) {
-				Articles::remove(['_id' => $ids]);
-				$removed = count($ids);
+			foreach ($items as $item) {
+				Items::remove(['_id' => $item->id()]);
+
+				Logger::info(self::COMPONENT, 'item deleted', [
+					'item_id' => $item->id(),
+					'guid' => $item->guid,
+					'site_id' => $item->site_id,
+					'category_id' => $item->parent_id,
+				]);
 			}
+
+			$removed = count($items);
 		}
 
 		return $removed;
@@ -137,7 +172,7 @@ class UpdateNewsFeed
 
 	/* fetching */
 
-	protected function fetchFeed($url)
+	protected function fetchFeed($url, $extension)
 	{
 		$feed = new SimplePie();
 		$feed->enable_cache(false);
@@ -149,7 +184,19 @@ class UpdateNewsFeed
 		array_splice($strip_htmltags, array_search('iframe', $strip_htmltags), 1);
 		$feed->strip_htmltags($strip_htmltags);
 
+		Logger::info(self::COMPONENT, 'fetching feed', [
+			'url' => $url,
+			'extension_id' => $extension->id(),
+			'category_id' => $extension->category_id,
+		]);
+
 		$feed->init();
+
+		Logger::info(self::COMPONENT, 'feed fetched', [
+			'url' => $url,
+			'extension_id' => $extension->id(),
+			'category_id' => $extension->category_id,
+		]);
 
 		if ($error = $feed->error()) {
 			throw new Exception($error);

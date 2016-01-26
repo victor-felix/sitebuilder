@@ -10,19 +10,17 @@ use meumobi\sitebuilder\validators\ParamsValidator;
 
 class BulkImportItems
 {
+	const COMPONENT = 'items';
 	const INCLUSIVE_IMPORT = 'inclusive';
 	const EXCLUSIVE_IMPORT = 'exclusive';
 
 	public function perform($params)
 	{
-		list($category, $items, $mode, $shouldCreate, $shouldUpdate, $sendPush) = ParamsValidator::validate($params, [
-			'category',
-			'items',
-			'mode',
-			'shouldCreate',
-			'shouldUpdate',
-			'sendPush',
-		]);
+		list($category, $items, $mode, $shouldCreate, $shouldUpdate, $sendPush) =
+			ParamsValidator::validate($params, [
+				'category', 'items', 'mode', 'shouldCreate', 'shouldUpdate',
+				'sendPush',
+			]);
 
 		$stats = [
 			'existing_items' => 0,
@@ -72,8 +70,6 @@ class BulkImportItems
 
 	protected function removeItems($exceptIds, $category)
 	{
-		// NOTE: this is the slower way, but is how the Categories::removeItems
-		// do, since a bulk remove throws fatal error
 		$items = Items::find('all', [
 			'conditions' => [
 				'_id' => ['$nin' => $exceptIds],
@@ -83,6 +79,12 @@ class BulkImportItems
 
 		foreach ($items as $item) {
 			Items::remove(['_id' => $item->id()]);
+
+			Logger::info(self::COMPONENT, 'item deleted', [
+				'item_id' => $item->id(),
+				'site_id' => $item->site_id,
+				'category_id' => $item->parent_id,
+			]);
 		}
 
 		return count($items);

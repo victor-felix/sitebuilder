@@ -11,7 +11,7 @@ role :app, %w{comunique-se.ipanemax.com}
 #deploy path
 set :deploy_to, '/home/meumobi/PROJECTS/mobi.comunique-se.com.br'
 
-set :php_env, 'rimobi'
+set :php_env, 'comunique-se'
 
 # Extended Server Syntax
 # ======================

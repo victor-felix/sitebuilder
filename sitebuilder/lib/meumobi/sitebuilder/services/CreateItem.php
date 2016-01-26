@@ -6,6 +6,7 @@ use Inflector;
 use Model;
 use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\WorkerManager;
+use meumobi\sitebuilder\services\ProcessRemoteMedia;
 use meumobi\sitebuilder\validators\ItemsPersistenceValidator;
 use meumobi\sitebuilder\validators\ParamsValidator;
 
@@ -44,8 +45,7 @@ class CreateItem
 				'failed_images' => $downloadStats['failed_images']
 			]);
 
-			$this->addMediaFileSize($item);
-			$this->createMediaThumbnails($item);
+			$this->processRemoteMedia($item);
 
 			if ($sendPush) {
 				$this->sendPushNotification($item);
@@ -64,32 +64,10 @@ class CreateItem
 		return [$created, $validationResult->errors()];
 	}
 
-	protected function addMediaFileSize($item)
+	protected function processRemoteMedia($item)
 	{
-		$hasMedias = $item->medias && count($item->medias->to('array'));
-
-		if ($hasMedias) {
-			WorkerManager::enqueue('media_filesize', ['item_id' => $item->id()]);
-		} else {
-			Logger::debug('items', 'not creating media_filesize job', [
-				'item_id' => $item->id(),
-				'site_id' => $item->site_id,
-				'reason' => 'item has no media',
-			]);
-		}
-	}
-
-	protected function createMediaThumbnails($item)
-	{
-		$hasMedias = count($item->medias->to('array'));
-
-		if ($hasMedias) {
-			$job = WorkerManager::enqueue('media_thumbnailer', ['item_id' => $item->id()]);
-		} else {
-			Logger::debug('items', 'not creating media_thumbnailer job', [
-				'reason' => 'item has no media',
-			]);
-		}
+		$service = new ProcessRemoteMedia;
+		$service->schedule($item);
 	}
 
 	protected function downloadImages($item, $downloadImages)
@@ -119,15 +97,6 @@ class CreateItem
 			$job = WorkerManager::enqueue('push_notification', [
 				'item_id' => $item->id(),
 				'category_id' => $item->parent_id
-			]);
-		} else {
-			Logger::debug('items', 'not creating push_notification job', [
-				'item_id' => $item->id(),
-				'site_id' => $item->site_id,
-				'reason' => [
-					'published' => $item->is_published,
-					'push_enabled_in_category' => $category->notification
-				]
 			]);
 		}
 	}

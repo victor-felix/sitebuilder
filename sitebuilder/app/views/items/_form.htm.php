@@ -55,20 +55,8 @@
 	<h2><?= s('PDF Files') ?></h2>
 	<div class="field-group">
 		<?php if($item->medias): ?>
-			<?php 
-				foreach($item->medias as $key => $media ):
-					if ($media['type'] == 'application/pdf'):
-			?>
+			<?php foreach($item->medias as $key => $media ): ?>
 				<div class="form-grid-460 first item-media">
-					<?= $this->form->input("medias[$key][type]", [
-						'type' => 'hidden',
-						'data-keep-value' => true,
-						'value' => $media['type'],
-					]) ?>
-					<?= $this->form->input("medias[$key][length]", [
-						'type' => 'hidden',
-						'value' => $media['length'],
-					]) ?>
 					<?= $this->form->input("medias[$key][title]", [
 						'class' => 'ui-text large',
 						'label' => s('Title'),
@@ -82,18 +70,9 @@
 					]) ?>
 					<?= $this->html->link(s('Remove file'), null, ['data-remove' => true, 'class' => 'right']); ?>
 				</div>
-			<?php
-					endif;
-				endforeach;
-			?>
+			<?php endforeach ?>
 		<?php endif ?>
 		<div class="form-grid-460 first item-media hidden">
-			<?= $this->form->input("medias[0][type]", [
-				'type' => 'hidden',
-				'data-keep-value' => true,
-				'value' => 'application/pdf',
-				'disabled' => true,
-			]) ?>
 			<?= $this->form->input("medias[0][title]", [
 				'class' => 'ui-text large',
 				'label' => s('Title'),

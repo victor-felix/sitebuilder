@@ -12,7 +12,7 @@ abstract class Repository
 	abstract public function all();
 
 	abstract public function find($id);
-	
+
 	abstract public function create($visitor);
 
 	abstract public function update($visitor);
@@ -35,15 +35,16 @@ abstract class Repository
 		if ($this->collection) return $this->collection;
 
 		$class = (new \ReflectionClass($this))->getShortName();
-		$collectionName = strtolower(preg_split("/(?!(^|[a-z]|$))/", $class)[0]);//get the collection name from class name
+		// get the collection name from class name
+		$collectionName = strtolower(preg_split('/(?!(^|[a-z]|$))/', $class)[0]);
 
 		return $this->collection = $this->connection()->$collectionName;
 	}
 
-  protected function hydrateSet($set)
-  {
-    return array_map(function($data) {
-      return $this->hydrate($data);
-    }, iterator_to_array($set, false));
-  }
+	protected function hydrateSet($set)
+	{
+		return array_map(function($data) {
+			return $this->hydrate($data);
+		}, iterator_to_array($set, false));
+	}
 }

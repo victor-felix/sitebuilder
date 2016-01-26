@@ -6,6 +6,7 @@ use Inflector;
 use Model;
 use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\WorkerManager;
+use meumobi\sitebuilder\services\ProcessRemoteMedia;
 use meumobi\sitebuilder\validators\ItemsPersistenceValidator;
 use meumobi\sitebuilder\validators\ParamsValidator;
 
@@ -22,21 +23,7 @@ class UpdateItem
 				$item->set([ $k => $data[$k] ]);
 			}
 
-			$media = [];
-
-			if (isset($data['medias'])) {
-				foreach ($data['medias'] as $medium) {
-					$finder = function ($i) use ($medium) { return $i->url == $medium['url']; };
-					if ($m = $item->medias->find($finder)->first()) {
-						$media []= $m->to('array') + $medium;
-					} else {
-						$media []= $medium;
-					}
-				}
-
-				unset($item['medias']);
-				$item->set([ 'medias' => $media ]);
-			}
+			$this->updateMedia($item, $data);
 		}
 
 		$validator = new ItemsPersistenceValidator();
@@ -51,13 +38,12 @@ class UpdateItem
 				'category_id' => $item->parent_id,
 			]);
 
-			$this->addMediaFileSize($item);
-			$this->createMediaThumbnails($item);
+			$this->processRemoteMedia($item);
 
 			$updated = true;
 		} else {
 			Logger::info('items', 'item cannot be updated', [
-				'id' => $item->id(),
+				'item_id' => $item->id(),
 				'site_id' => $item->site_id,
 				'category_id' => $item->parent_id,
 				'errors' => $validationResult->errors(),
@@ -69,32 +55,39 @@ class UpdateItem
 		return [$updated, $validationResult->errors()];
 	}
 
-	protected function addMediaFileSize($item)
+	protected function updateMedia($item, $data)
 	{
-		$hasMedias = $item->medias && count($item->medias->to('array'));
+		if (isset($data['medias'])) {
+			$media = [];
 
-		if ($hasMedias) {
-			WorkerManager::enqueue('media_filesize', ['item_id' => $item->id()]);
-		} else {
-			Logger::debug('items', 'not creating media_filesize job', [
-				'item_id' => $item->id(),
-				'site_id' => $item->site_id,
-				'reason' => 'item has no media',
-			]);
+			foreach ($data['medias'] as $medium) {
+				$finder = function ($i) use ($medium) {
+					return $i['url'] == $medium['url'];
+				};
+
+				if ($m = find($item->medias->to('array'), $finder)) {
+					$media []= array_merge($m, $medium);
+				} else {
+					$media []= $medium;
+				}
+			}
 		}
+
+		unset($item['medias']);
+		$item->set([ 'medias' => $media ]);
 	}
 
-	protected function createMediaThumbnails($item)
+	protected function processRemoteMedia($item)
 	{
-		$hasMedias = count($item->medias->to('array'));
-
-		if ($hasMedias) {
-			$job = WorkerManager::enqueue('media_thumbnailer', ['item_id' => $item->id()]);
-		} else {
-			Logger::debug('items', 'not creating media_thumbnailer job', [
-				'reason' => 'item has no media',
-			]);
-		}
+		$service = new ProcessRemoteMedia;
+		$service->schedule($item);
 	}
 
+}
+
+function find($collection, $fn)
+{
+	foreach ($collection as $item) {
+		if ($fn($item)) return $item;
+	}
 }

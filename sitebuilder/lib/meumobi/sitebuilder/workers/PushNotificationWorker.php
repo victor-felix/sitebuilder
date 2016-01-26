@@ -7,53 +7,48 @@ require_once 'lib/pushwoosh/Push.php';
 use app\models\Items;
 use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\entities\Visitor;
-use meumobi\sitebuilder\repositories\RecordNotFoundException;//TODO move exceptions for a more generic namespace
+use meumobi\sitebuilder\repositories\RecordNotFoundException;
 use meumobi\sitebuilder\repositories\VisitorsRepository;
 use pushwoosh\Push;
 
 class PushNotificationWorker extends Worker
 {
+	const COMPONENT = 'pushnotif';
+
 	public function perform()
 	{
-		$appId = $this->getSite()->pushwoosh_app_id;
+		$site = $this->getSite();
 		$item = $this->getItem();
 		$category = $item->parent();
-		$content = $item->title;
 		$devices = $this->getDevicesTokens($item);
 
-		$logData = [
-			'item_id' => (string) $item->_id,
+		if (!$site->pushwoosh_app_id || !$category->notification || !$devices) {
+			return;
+		}
+
+		$log = [
+			'item_id' => $item->id(),
 			'category_id' => $category->id,
-			'site_id' => $item->site_id,
+			'site_id' => $site->id,
 		];
 
-		if (!$appId) {
-			Logger::info('push_notification', 'no push app configured for site', $logData);
-			return;
-		}
-
-		if (!$category->notification) {
-			Logger::info('push_notification', 'push disabled on category', $logData);
-			return;
-		}
-
-		if (!$devices) {
-			Logger::info('push_notification', 'no devices available', $logData);
-			return;
-		}
-
-		Logger::info('push_notification', 'sending push notification', $logData + [
-			'content' => $content,
+		Logger::info(self::COMPONENT, 'sending push notification', $log + [
+			'content' => $item->title,
 			'number_of_devices' => count($devices),
 		]);
 
-		$response = Push::notify($appId, $content, $devices);
+		$response = Push::notify([
+			'site' => $site,
+			'item' => $item,
+			'devices' => $devices,
+		]);
 
-		Logger::info('push_notification', 'push notification sent successfully', $logData + [
+		Logger::info(self::COMPONENT, 'push notification sent successfully', $log + [
 			'push_response' => $response,
 		]);
 	}
 
+	// TODO use the new devices repository
 	protected function getDevicesTokens($item)
 	{
 		$repository = new VisitorsRepository();
@@ -73,7 +68,7 @@ class PushNotificationWorker extends Worker
 			}
 
 			return array_merge($tokens, $visitorTokens);
-		},[]);
+		}, []);
 	}
 }
 

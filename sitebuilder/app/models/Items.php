@@ -13,7 +13,6 @@ use GeocodingException;
 use OverQueryLimitException;
 use meumobi\sitebuilder\services\UpdateFeedsService;
 use meumobi\sitebuilder\repositories\RecordNotFoundException;
-use meumobi\sitebuilder\WorkerManager;
 use lithium\util\Collection;
 
 Collection::formats('lithium\net\http\Media');
@@ -120,6 +119,16 @@ class Items extends \lithium\data\Model {
 
 	public function hasSetter($entity, $attr) {
 		return in_array($attr, $this->setters);
+	}
+
+	public function getThumbnail($entity, $width, $height)
+	{
+		$thumbnails = $entity->thumbnails->to('array');
+
+		return current(array_filter($thumbnails, function($thumbnail) use($width, $height) {
+			return $thumbnail['width'] == $width
+				&& $thumbnail['height'] == $height;
+		}));
 	}
 
 	public function toJSON($entity, $visitor) {
@@ -472,14 +481,6 @@ class Items extends \lithium\data\Model {
 		}
 
 		return $chain->next($self, $params, $chain);
-	}
-
-	public function addMediaFileSize($entity)
-	{
-		$hasMedias = count($entity->medias->to('array'));
-		if ($entity->id() && $hasMedias) {
-			WorkerManager::enqueue('media_filesize',  ['item_id' => $entity->id()]);
-		}
 	}
 
 	public static function typeFinder($self, $params, $chain)

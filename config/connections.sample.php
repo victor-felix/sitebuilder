@@ -2,7 +2,7 @@
 use lithium\data\Connections;
 
 $mysql = array (
-		'rimobi' => array (
+		'comunique-se' => array (
 				'driver' => 'MySql',
 				'host' => 'localhost',
 				'user' => 'meumobi',
@@ -37,7 +37,7 @@ $mysql = array (
 );
 
 $mongodb = array (
-		'rimobi' => array (
+		'comunique-se' => array (
 				'type' => 'MongoDb',
 				'host' => 'localhost',
 				'database' => 'rimobi' 

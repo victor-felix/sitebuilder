@@ -1,37 +1,57 @@
 <?php
 namespace meumobi\sitebuilder\services;
 
-use meumobi\sitebuilder\Logger;
-use meumobi\sitebuilder\entities\Visitor;
-use meumobi\sitebuilder\entities\VisitorDevice;
 use app\controllers\api\InvalidArgumentException;
+use meumobi\sitebuilder\Logger;
+use meumobi\sitebuilder\entities\Device;
+use meumobi\sitebuilder\repositories\DevicesRepository;
+use meumobi\sitebuilder\repositories\VisitorsRepository;
+use meumobi\sitebuilder\validators\ParamsValidator;
 
 class CreateOrUpdateDevice
 {
-	public function perform($params)
-	{
-		$created = true;
-		$errors = [];
-		$data = $params['data'];
-		$visitor = $params['visitor'];
+	const COMPONENT = 'devices';
 
-		if (!isset($data['uuid']) || !$data['uuid']) {
-			Logger::info('visitors', 'invalid device uuid', [
-				'visitor' => $visitor->id(),
-				'site' => $visitor->siteId(),
-				'device data' => $data
-			]);
-			$created = false;
-			$errors[] = 'invalid device uuid';
-		} else {
-			$device = $visitor->findDevice($data['uuid']);
-			if ($device) {
-				$device->update($data);
-			} else {
-				$device = new VisitorDevice($data);
-				$visitor->addDevice($device);
-			}
+	public function perform(array $params)
+	{
+		list($uuid, $data, $user, $site) = ParamsValidator::validate(
+			$params, ['uuid', 'data', 'user', 'site']);
+
+		$site_id = $site->id();
+		$user_id = $user ? $user->id() : null;
+
+		$repository = new DevicesRepository();
+		$device = $repository->findBySiteAndUuid($site_id, $uuid);
+
+		$log = [ 'uuid' => $uuid, 'site_id' => $site_id ];
+
+		if ($user) {
+			$log['user_id'] = $user_id;
 		}
-		return [$created, $errors];
+
+		Logger::info(self::COMPONENT, 'creating or updating device', $log);
+
+		if ($device) {
+			if ($user_id != $device->userId()) {
+				throw new InvalidArgumentException('device does not belong to user');
+			}
+
+			Logger::debug(self::COMPONENT, 'device found. updating', $log);
+			$device->update($data);
+
+			return $repository->update($device);
+		} else {
+			Logger::debug(self::COMPONENT, 'device not found. creating new one', $log);
+
+			$data['uuid'] = $uuid;
+			$data['site_id'] = $site_id;
+
+			if ($user) {
+				$data['user_id'] = $user_id;
+			}
+
+			$device = new Device($data);
+			return $repository->create($device);
+		}
 	}
 }
