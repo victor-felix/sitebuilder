@@ -52,7 +52,8 @@ class Push
 			->setBadges('+1');
 
 		if ($icon = $site->appleTouchIcon()) {
-			$android->setIcon(MeuMobi::url($icon->link('72x72'), true));
+			$icon = MeuMobi::url($icon->link('72x72'), true);
+			$android->setIcon($icon)->setCustomIcon($icon);
 		}
 
 		if ($images = $item->images()) {
