@@ -22,7 +22,7 @@ class MigrateDevicesToOwnCollection
 				$device = new Device([
 					'uuid' => $d['uuid'],
 					'userId' => $visitor['_id']->{'$id'},
-					'siteId' => $visitor['site_id'],
+					'siteId' => (int) $visitor['site_id'],
 					'pushId' => $d['push_id'],
 					'model' => $d['model'],
 					'platform' => $d['platform'],

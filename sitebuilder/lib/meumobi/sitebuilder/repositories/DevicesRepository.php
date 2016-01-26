@@ -88,7 +88,7 @@ class DevicesRepository extends Repository
 		$data = [
 			'uuid' => $object->uuid(),
 			'user_id' => $object->userId(),
-			'site_id' => $object->siteId(),
+			'site_id' => (int) $object->siteId(),
 			'push_id' => $object->pushId(),
 			'model' => $object->model(),
 			'platform' => $object->platform(),
