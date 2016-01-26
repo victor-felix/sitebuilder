@@ -1,6 +1,31 @@
 ## Release Notes for meumobi ##
 
-Update these notes using: git log --pretty=format:'* %s' --no-merges rel-2.6.7.2..HEAD
+Update these notes using: git log --pretty=format:'* %s' --no-merges rel-2.7..HEAD
+
+### rel-2.7 (20160126) ###
+
+* Makes site_id an INT all over. Closes #296
+* Migrate devices to their own collection. Closes #286
+* Move footer informations to Segment's config file and remove unused segments, Closes #297
+* Adds badge to android too! Closes #295
+* Removes device (de)?hydrating from Visitors. Closes #294
+* Sets correct thumbnail size for android banner for pushwoosh
+* Adds banner to pushwoosh payload. Closes #293
+* Adds custom data to pushwoosh api. Closes #291
+* Adds header and custom icon in pushwoosh payload. Closes #290
+* Update docs for API related to new Devices endpoint
+* Don't update devices if it doesn't belong to the current user
+* Finishes up DevicesRepository. Closes #285
+* Creates DevicesRepository. WIP #285
+* Code cleanup
+* Clear imagemagick resources once we're done with them. Closes #288
+* Renames VisitorDevice to Device
+* Makes visitor-independent devices backwards-compatible
+* Creates new API endpoint for "devices". Closes #284
+* Creates docs for new API endpoint for "devices". Closes #283
+* Adds the README with install instructions. Closes #136
+* Removes unused files
+* Allow LOGLEVEL env to overwrite Log.Level. Closes #281
 
 ### rel-2.6.7 (20151201) ###
 
