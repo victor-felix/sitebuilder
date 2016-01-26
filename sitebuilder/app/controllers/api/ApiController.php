@@ -257,6 +257,7 @@ class ApiController extends \lithium\action\Controller {
 			? $params['allowExpired']
 			: false;
 
+		$repository = new VisitorsRepository();
 		$this->visitor = $this->checkVisitor();
 
 		if ($this->visitor) {
