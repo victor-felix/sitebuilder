@@ -55,8 +55,8 @@ class Push
 			$android->setIcon(MeuMobi::url($icon->link('72x72'), true));
 		}
 
-		if ($thumbnail = $item->getThumbnail(314, 220)) {
-			$android->setBanner($thumbnail['url']);
+		if ($images = $item->images()) {
+			$android->setBanner(MeuMobi::url($images[0]->link('314x220'), true));
 		}
 
 		$notification = Notification::create()
