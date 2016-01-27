@@ -38,7 +38,7 @@ class DevicesRepository extends Repository
 	public function findBySiteAndUuid($site_id, $uuid)
 	{
 		$result = $this->collection()->findOne([
-			'site_id' => $site_id,
+			'site_id' => (int) $site_id,
 			'uuid' => $uuid,
 		]);
 
