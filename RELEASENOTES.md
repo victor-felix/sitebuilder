@@ -1,6 +1,13 @@
 ## Release Notes for meumobi ##
 
-Update these notes using: git log --pretty=format:'* %s' --no-merges rel-2.7..HEAD
+Update these notes using: git log --pretty=format:'* %s' --no-merges rel-2.7.1..HEAD
+
+### rel-2.7.1 (20160127) ###
+
+* Fixes devices being created with the same UUID over and over
+* Also adds android_custom_icon in pushwoosh's payload
+* Uses different method for getting pushwoosh android banner
+* Fixes missing repository for authenticated API calls
 
 ### rel-2.7 (20160126) ###
 
