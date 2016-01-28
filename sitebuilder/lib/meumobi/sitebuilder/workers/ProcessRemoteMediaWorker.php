@@ -13,4 +13,3 @@ class ProcessRemoteMediaWorker extends Worker
 		$service->perform($this->getItem());
 	}
 }
-

@@ -60,8 +60,8 @@ class ProcessRemoteMedia
 			list($info, $status) = $this->getRemoteInfo($medium['url']);
 
 			if ($info) {
-				$medium['type'] = $info['type'];
-				$medium['length'] = $info['length'];
+				$medium['type'] = $info['type'] ?: $medium['type'];
+				$medium['length'] = $info['length'] ?: $medium['length'];
 
 				$successes += 1;
 
@@ -82,6 +82,8 @@ class ProcessRemoteMedia
 					'status' => $status,
 				]);
 			}
+
+			pr($medium);
 
 			return $medium;
 		}, $item->to('array')['medias']);
