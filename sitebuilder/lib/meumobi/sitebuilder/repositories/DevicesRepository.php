@@ -73,7 +73,17 @@ class DevicesRepository extends Repository
 
 	public function destroy($device)
 	{
-		return $this->collection()->remove(['_id' => new MongoId($device->id())]);
+		return $this->destroyByCriteria(['_id' => new MongoId($device->id())]);
+	}
+
+	public function destroyByUserId($user_id)
+	{
+		return $this->destroyByCriteria(['user_id' => $user_id]);
+	}
+
+	protected function destroyByCriteria($criteria)
+	{
+		return $this->collection()->remove($criteria);
 	}
 
 	protected function hydrate($data)

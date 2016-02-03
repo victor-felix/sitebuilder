@@ -8,6 +8,7 @@ use MongoId;
 use Security;
 use lithium\util\Inflector;
 use meumobi\sitebuilder\entities\Visitor;
+use meumobi\sitebuilder\repositories\DevicesRepository;
 
 class VisitorsRepository extends Repository
 {
@@ -128,7 +129,13 @@ class VisitorsRepository extends Repository
 
 	public function destroy($visitor)
 	{
-		return $this->collection()->remove(['_id' => new MongoId($visitor->id())]);
+		$id = $visitor->id();
+		$result = $this->collection()->remove(['_id' => new MongoId($id)]);
+
+		$devicesRepo = new DevicesRepository();
+		$devicesRepo->destroyByUserId($id);
+
+		return $result;
 	}
 
 	protected function hydrate($data)
