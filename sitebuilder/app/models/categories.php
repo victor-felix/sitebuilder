@@ -339,6 +339,13 @@ class Categories extends AppModel
 		foreach ($items as $item) {
 			Items::remove(array('_id' => $item->id()));
 		}
+
+		$extensions = $this->enabledExtensions();
+
+		foreach ($extensions as $extension) {
+			$extension->priority = Extensions::PRIORITY_HIGH;
+			$extension->save(null, ['callbacks' => false]);
+		}
 	}
 
 	public function enabledExtensions()
