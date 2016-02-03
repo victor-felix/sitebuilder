@@ -29,8 +29,6 @@ class CreateOrUpdateDevice
 			$log['user_id'] = $user_id;
 		}
 
-		Logger::info(self::COMPONENT, 'creating or updating device', $log);
-
 		if ($device) {
 			if ($user_id != $device->userId()) {
 				throw new InvalidArgumentException('device does not belong to user');
@@ -39,7 +37,9 @@ class CreateOrUpdateDevice
 			Logger::debug(self::COMPONENT, 'device found. updating', $log);
 			$device->update($data);
 
-			return $repository->update($device);
+			$repository->update($device);
+
+			Logger::info(self::COMPONENT, 'device updated', $log);
 		} else {
 			Logger::debug(self::COMPONENT, 'device not found. creating new one', $log);
 
@@ -51,7 +51,11 @@ class CreateOrUpdateDevice
 			}
 
 			$device = new Device($data);
-			return $repository->create($device);
+			$repository->create($device);
+
+			Logger::info(self::COMPONENT, 'device created', $log);
 		}
+
+		return true;
 	}
 }

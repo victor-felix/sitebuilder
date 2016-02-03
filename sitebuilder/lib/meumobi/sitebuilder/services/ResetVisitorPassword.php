@@ -5,24 +5,32 @@ namespace meumobi\sitebuilder\services;
 use Mailer;
 use MeuMobi;
 use Model;
+use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\repositories\VisitorsRepository;
 use meumobi\sitebuilder\services\VisitorPasswordGenerationService;
 
 class ResetVisitorPassword
 {
+	const COMPONENT = 'reset_visitor_password';
+
 	public function resetPassword($visitor)
 	{
-		$repository = new VisitorsRepository();
-		$passwordService = new VisitorPasswordGenerationService();
-		$strategy = VisitorPasswordGenerationService::RANDOM_PASSWORD;
-
 		$site = Model::load('Sites')->firstById($visitor->siteId());
 
+		$passwordService = new VisitorPasswordGenerationService();
+		$strategy = VisitorPasswordGenerationService::RANDOM_PASSWORD;
 		$password = $passwordService->generate($visitor, $strategy, $site);
-		$visitor->setPassword($password);
+		$visitor->setPassword($password, true);
 
+		$repository = new VisitorsRepository();
 		$repository->update($visitor);
+
 		$this->sendPasswordEmail($site, $visitor, $password);
+
+		Logger::info(self::COMPONENT, "visitor's password reset", [
+			'site_id' => $visitor->siteId(),
+			'visitor_id' => $visitor->id(),
+		]);
 
 		return true;
 	}
