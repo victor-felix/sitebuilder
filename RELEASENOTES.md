@@ -1,6 +1,13 @@
 ## Release Notes for meumobi ##
 
-Update these notes using: git log --pretty=format:'* %s' --no-merges rel-2.7.1..HEAD
+Update these notes using: git log --pretty=format:'* %s' --no-merges rel-2.7.2..HEAD
+
+### rel-2.7.2 (20160203) ###
+
+* Forces user to renew password when he gets it reset. Closes #301
+* Deletes associated devices when deleting a visitor. Closes #302
+* Raises extension priority when delete all items from category. Closes #282
+* Don't overwrite media types with nulls. Closes #300
 
 ### rel-2.7.1 (20160127) ###
 
