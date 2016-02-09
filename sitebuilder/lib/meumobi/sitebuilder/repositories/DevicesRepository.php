@@ -47,6 +47,20 @@ class DevicesRepository extends Repository
 		}
 	}
 
+	public function findForPushNotif($site_id, $user_ids)
+	{
+		$criteria = [
+			'site_id' => (int) $site_id,
+			'push_id' => ['$ne' => null],
+		];
+
+		if ($user_ids) {
+			$criteria['user_id'] = ['$in' => $user_ids];
+		}
+
+		return $this->hydrateSet($this->collection()->find($criteria));
+	}
+
 	public function create($device)
 	{
 		$device->setCreated(new DateTime('NOW'));

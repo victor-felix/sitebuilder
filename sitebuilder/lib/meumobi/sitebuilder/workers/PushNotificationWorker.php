@@ -6,9 +6,7 @@ require_once 'lib/pushwoosh/Push.php';
 
 use app\models\Items;
 use meumobi\sitebuilder\Logger;
-use meumobi\sitebuilder\entities\Visitor;
-use meumobi\sitebuilder\repositories\RecordNotFoundException;
-use meumobi\sitebuilder\repositories\VisitorsRepository;
+use meumobi\sitebuilder\repositories\DevicesRepository;
 use pushwoosh\Push;
 
 class PushNotificationWorker extends Worker
@@ -48,27 +46,21 @@ class PushNotificationWorker extends Worker
 		]);
 	}
 
-	// TODO use the new devices repository
 	protected function getDevicesTokens($item)
 	{
-		$repository = new VisitorsRepository();
-		$groups = $item->to('array')['groups'];
+		$site = $this->getSite();
+		$visitors = null;
 
-		if ($groups) {
-			$visitors = $repository->findBySiteIdAndGroups($this->getSite()->id, $groups);
-		} else {
-			$visitors = $repository->findBySiteId($this->getSite()->id);
+		if ($site->private) {
+			$groups = $item->to('array')['groups'];
+			$visitors = $groups
+				? $repository->findBySiteIdAndGroups($site->id, $groups)
+				: null;
 		}
 
-		return array_reduce($visitors, function($tokens, $visitor) {
-			$visitorTokens = [];
+		$repository = new DevicesRepository();
+		$devices = $repository->findForPushNotif($site->id, $visitors);
 
-			foreach ($visitor->devices() as $device) {
-				if ($device->pushId()) $visitorTokens[] = $device->pushId();
-			}
-
-			return array_merge($tokens, $visitorTokens);
-		}, []);
+		return array_map(function($device) { return $device->pushId(); }, $devices);
 	}
 }
-
