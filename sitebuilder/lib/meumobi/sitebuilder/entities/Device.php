@@ -11,6 +11,7 @@ class Device extends Entity
 	protected $siteId;
 	protected $pushId;
 	protected $model;
+	protected $manufacturer;
 	protected $platform;
 	protected $platformVersion;
 	protected $appVersion;
@@ -61,6 +62,11 @@ class Device extends Entity
 	public function model()
 	{
 		return $this->model;
+	}
+
+	public function manufacturer()
+	{
+		return $this->manufacturer;
 	}
 
 	public function platform()

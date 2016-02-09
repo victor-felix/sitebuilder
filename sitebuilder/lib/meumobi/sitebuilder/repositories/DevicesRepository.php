@@ -115,6 +115,7 @@ class DevicesRepository extends Repository
 			'site_id' => (int) $object->siteId(),
 			'push_id' => $object->pushId(),
 			'model' => $object->model(),
+			'manufacturer' => $object->manufacturer(),
 			'platform' => $object->platform(),
 			'platform_version' => $object->platformVersion(),
 			'app_version' => $object->appVersion(),

@@ -710,6 +710,7 @@ Parameters:
 - **device[uuid]**
 - **device[push_id]**
 - **device[model]**
+- **device[manufacturer]**
 - **device[platform]**
 - **device[platform_version]**
 - **device[app_version]**
@@ -733,6 +734,7 @@ Parameters:
 - **device[uuid]**
 - **device[push_id]**
 - **device[model]**
+- **device[manufacturer]**
 - **device[platform]**
 - **device[platform_version]**
 - **device[app_version]**
@@ -768,6 +770,7 @@ Parameters:
 
 - **push_id**: device push id
 - **model**: device model
+- **manufacturer**: device manufacturer
 - **platform**: device platform
 - **platform_version**: device platform version
 - **app_version**: app version
