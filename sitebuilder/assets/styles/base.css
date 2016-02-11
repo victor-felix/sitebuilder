@@ -367,13 +367,14 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 }
 
 #header .navigation .business-name span {
-	display: block;
-	margin-bottom: 5px;
 	font-size: 9px;
 	color: #999;
 	letter-spacing: normal;
 	text-transform: uppercase;
-	line-height: 0;
+}
+
+#header .navigation .business-name span#site-id {
+	padding-left: 8px;
 }
 
 #header .navigation .site-url {
