@@ -72,6 +72,7 @@
 							<p class="business-name">
 								<span><?= s('You\'re currently editing') ?></span>
 								<?= $this->string->truncate(e($currentSite->title), 15) ?>
+								<span id="site-id">#<?= $site->id ?></span>
 							</p>
 							<div class="right">
 								<p class="site-url dynamic-text" data-max-font-size="36">
