@@ -3,7 +3,7 @@
 Config::write('Segment', array(
   'id' => 'infobox',
   'title' => 'infobox',
-  'items' => array('articles', 'events'),
+  'items' => array('articles', 'events', 'polls'),
   'extensions' => array('rss'),
   'root' => 'Posts',
   'email' => array('infobox@meumobi.com' => 'InfoBox'),

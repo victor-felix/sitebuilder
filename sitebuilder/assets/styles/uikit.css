@@ -123,6 +123,10 @@
 	border-color: #AAA;
 }
 
+.ui-text-multi {
+    margin-bottom: 8px;
+}
+
 .chosen.large,
 	.ui-text.large,
 	.ui-textarea.large {

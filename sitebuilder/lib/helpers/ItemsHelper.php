@@ -8,6 +8,10 @@ class ItemsHelper extends Helper
 			'class' => 'ui-text'
 		),
 		'string' => array(),
+		'multistring' => array(
+			'type' => 'multistring',
+			'class' => 'ui-text ui-text-multi'
+		),
 		'text' => array(
 			'type' => 'textarea'
 		),
@@ -33,37 +37,18 @@ class ItemsHelper extends Helper
 	);
 	protected $item;
 
-	public function __construct($view) {
+	public function __construct($view)
+	{
 		parent::__construct($view);
+
 		$site = $view->controller->getCurrentSite();
-		$siteId = $site->id;
-		$this->types['related'] = function($type) use ($siteId) {
-			$classname = '\app\models\items\\' . $type[1];
-			$conditions = array(
-				'type' => Inflector::underscore($type[1]),
-				'site_id' => $siteId
-			);
-			$items = $classname::find('all',
-				array(
-					'conditions' => $conditions,
-					'order' => 'title'
-				));
-			$options = array();
-			foreach ($items as $item) {
-				$options[$item->id()] = $item->title;
-			}
-			return array(
-				'name' => 'related[]',
-				'type' => 'select',
-				'multiple' => true,
-				'options' => $options,
-				'class' => 'multiselect'
-			);
-		};
-		$this->addGroupsField($site);
+
+		$this->setupRelatedType($site);
+		$this->setupGroupsType($site);
 	}
 
-	public function form($url, $item, $attr) {
+	public function form($url, $item, $attr)
+	{
 		$this->item = $item;
 		$attr += array(
 			'method' => 'file',
@@ -72,11 +57,13 @@ class ItemsHelper extends Helper
 		return $this->form->create($url, $attr);
 	}
 
-	public function endform() {
+	public function endform()
+	{
 		return $this->form->close();
 	}
 
-	public function input($name) {
+	public function input($name)
+	{
 		$field = $this->item->field($name);
 		$defaults = [ 'label' => s($field->title) ];
 
@@ -98,20 +85,53 @@ class ItemsHelper extends Helper
 		return $this->form->input($name, $attr);
 	}
 
-	protected function addGroupsField($site) {
-		$this->types['groups'] = function($type) use ($site) {
-			$groups = $site->availableVisitorsGroups();
-			$options = array();
-			foreach ($groups as $group) {
-				$options[$group] = $group;//set the group name as value
+	protected function setupRelatedType($site)
+	{
+		$this->types['related'] = function($type) use ($site) {
+			$classname = '\app\models\items\\' . $type[1];
+			$conditions = [
+				'type' => Inflector::underscore($type[1]),
+				'site_id' => $site->id,
+			];
+
+			$items = $classname::find('all', [
+				'conditions' => $conditions,
+				'order' => 'title'
+			]);
+
+			$options = [];
+
+			foreach ($items as $item) {
+				$options[$item->id()] = $item->title;
 			}
-			return array(
-				'name' => 'groups[]',
+
+			return [
+				'name' => 'related[]',
 				'type' => 'select',
 				'multiple' => true,
 				'options' => $options,
 				'class' => 'multiselect'
-			);
+			];
+		};
+	}
+
+	protected function setupGroupsType($site)
+	{
+		$this->types['groups'] = function($type) use ($site) {
+			$groups = $site->availableVisitorsGroups();
+			$options = $options;
+
+			foreach ($groups as $group) {
+				$options[$group] = $group;
+			}
+
+			return [
+				'name' => 'groups[]',
+				'type' => 'select',
+				'multiple' => true,
+				'options' => $options,
+				'class' => 'multiselect',
+			];
 		};
 	}
 }

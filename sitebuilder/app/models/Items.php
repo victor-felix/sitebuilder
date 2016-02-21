@@ -147,6 +147,10 @@ class Items extends \lithium\data\Model {
 				$parser->whitelist('b', 'i', 'color', 'url');
 				$self[$code] = '<p>' . $parser->parse() . '</p>';
 			}
+
+			if ($field['type'] == 'multistring') {
+				$self[$code] = array_filter($self[$code]);
+			}
 		}
 
 		if ($visitor) {
