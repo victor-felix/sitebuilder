@@ -36,7 +36,7 @@ class HtmlHelper extends Helper
 		return $html;
 	}
 
-	public function attr ($attr)
+	public function attr($attr)
 	{
 		$attributes = array();
 		foreach ($attr as $name => $value) :

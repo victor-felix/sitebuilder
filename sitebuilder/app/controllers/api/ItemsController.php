@@ -348,7 +348,7 @@ class ItemsController extends ApiController {
 	protected function getItems($params, $url, $url_params, $reduce = null, $itemsClass = '\app\models\Items') {
 		if ($this->site()->private) {
 			$groups = $this->visitor() ? $this->visitor()->groups() : [];
-			$params['conditions']['groups'] = array_merge($groups, [[]]);//filter by visitor group and ungrouped items
+			$params['conditions']['groups'] = array_merge($groups, [[]]);
 		}
 
 		$items = $itemsClass::find('all', $params)->to('array');
