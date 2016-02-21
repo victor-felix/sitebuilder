@@ -101,7 +101,7 @@ class FormHelper extends Helper {
 	}
 
 	public function multistring($name, $options = []) {
-		if (is_a($options['value'], '\lithium\data\Collection')) {
+		if (is_a($options['value'], '\lithium\data\entity\Document')) {
 			$options['value'] = $options['value']->to('array');
 		}
 
