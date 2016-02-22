@@ -217,6 +217,15 @@ Router::connect(new Route(array(
 )));
 
 Router::connect(new Route(array(
+	'method' => 'POST',
+	'template' => '/api/{:slug}/items/{:item_id}/poll',
+	'params' => array(
+		'action' => 'vote',
+		'controller' => 'polls'
+	) + $defaults['params']
+)));
+
+Router::connect(new Route(array(
 	'method' => 'GET',
 	'template' => '/api/{:slug}/news',
 	'params' => array(
