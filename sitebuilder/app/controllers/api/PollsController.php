@@ -16,7 +16,7 @@ class PollsController extends ApiController
 			'site_id' => $this->site()->id
 		]]);
 		$options = $item->options->to('array');
-		$values = $this->request->get('data:values');
+		$values = $this->request->get('data:value');
 
 		if (!$user || !$item || $item->type() != 'Poll') {
 			throw new RecordNotFoundException('poll not found');
@@ -31,6 +31,8 @@ class PollsController extends ApiController
 		foreach ($values as $key => $value) {
 			if (!isset($options[$key])) {
 				return ['errors' => ["invalid option '$key'"]];
+			} else {
+				$values[$key] = 1;
 			}
 		}
 
