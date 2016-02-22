@@ -83,8 +83,6 @@ class ProcessRemoteMedia
 				]);
 			}
 
-			pr($medium);
-
 			return $medium;
 		}, $item->to('array')['medias']);
 

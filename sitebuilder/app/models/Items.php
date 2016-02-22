@@ -153,6 +153,34 @@ class Items extends \lithium\data\Model {
 			}
 		}
 
+		if (isset($this->_schema['results'])) {
+			$currentVote = null;
+			$results = array_map(function() { return 0; },
+				array_flip(array_keys($self['options'])));
+
+			$results = array_reduce($self['results'],
+				function($results, $vote) use ($visitor, &$currentVote) {
+					foreach ($vote['values'] as $option => $value) {
+						$results[$option] += $value;
+					}
+
+					if ($visitor && $visitor->id() == $vote['user_id']) {
+						$currentVote = $vote;
+					}
+
+					return $results;
+				}, $results
+			);
+
+			$self['results'] = array_map(function($key, $value) {
+				return ['value' => $key, 'votes' => $value];
+			}, array_keys($results), $results);
+
+			if ($visitor) {
+				$self['voted'] = $currentVote;
+			}
+		}
+
 		if ($visitor) {
 			$self['groups'] = array_intersect($self['groups'], $visitor->groups());
 		} else {

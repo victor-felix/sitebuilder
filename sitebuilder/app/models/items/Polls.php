@@ -39,6 +39,7 @@ class Polls extends Items {
 		$self->_schema = $parent->_schema + [
 			'end_date' => ['type' => 'datetime', 'default' => ''],
 			'options' => ['type' => 'array', 'default' => []],
+			'results' => ['type' => 'array', 'default' => []],
 		];
 	}
 }
