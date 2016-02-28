@@ -4,10 +4,11 @@ namespace app\models\items;
 
 use app\models\Items;
 
-class Polls extends Items {
+class Polls extends Items
+{
 	protected $type = 'Poll';
 
-	protected $fields = array(
+	protected $fields = [
 		'title' => [
 			'title' => 'Title',
 			'type' => 'string',
@@ -24,19 +25,25 @@ class Polls extends Items {
 			'title' => 'End Date',
 			'type' => 'datetime',
 		],
+		'multiple_choices' => [
+			'title' => 'Multiple Choices?',
+			'type' => 'boolean',
+		],
 		'groups' => [
 			'title' => 'Group',
 			'type' => 'groups',
 		],
-	);
+	];
 
-	public static function __init() {
+	public static function __init()
+	{
 		parent::__init();
 
 		$self = static::_object();
 		$parent = parent::_object();
 
 		$self->_schema = $parent->_schema + [
+			'multiple_choices' => ['type' => 'boolean', 'default' => false],
 			'end_date' => ['type' => 'datetime', 'default' => ''],
 			'options' => ['type' => 'array', 'default' => []],
 			'results' => ['type' => 'array', 'default' => []],

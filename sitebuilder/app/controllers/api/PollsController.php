@@ -26,21 +26,29 @@ class PollsController extends ApiController
 			return ['errors' => ['vote has not been provided']];
 		}
 
-		$results = $item->results ?: [];
+		$votes = 0;
 
 		foreach ($values as $key => $value) {
-			if (!isset($options[$key])) {
-				return ['errors' => ["invalid option '$key'"]];
-			} else {
+			if ($votes >= 1 && !$item->multiple_choices) {
+				return ['errors' => ['this is not a multiple choice poll']];
+			}
+
+			if (isset($options[$key]) && !empty($options[$key])) {
 				$values[$key] = 1;
+				$votes += 1;
+			} else {
+				return ['errors' => ["invalid option '$key'"]];
 			}
 		}
 
-		$results []= [
+		$vote = [
 			'user_id' => $user->id(),
-			'values' => $this->request->get('data:values'),
+			'values' => $values,
 			'timestamp' => new MongoDate(),
 		];
+
+		$results = $item->results ?: [];
+		$results []= $vote;
 
 		unset($item['results']);
 		$item->set([ 'results' => $results ]);
