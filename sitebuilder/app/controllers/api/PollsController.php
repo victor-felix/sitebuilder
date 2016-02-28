@@ -4,6 +4,7 @@ namespace app\controllers\api;
 
 use MongoDate;
 use app\models\Items;
+use meumobi\sitebuilder\repositories\PollsRepository;
 use meumobi\sitebuilder\repositories\RecordNotFoundException;
 
 class PollsController extends ApiController
@@ -50,9 +51,11 @@ class PollsController extends ApiController
 		$results = $item->results ?: [];
 		$results []= $vote;
 
+		$repo = new PollsRepository();
+		$repo->addVote($item, $vote);
+
 		unset($item['results']);
 		$item->set([ 'results' => $results ]);
-		$item->save();
 
 		return $item->toJSON($user);
 	}
