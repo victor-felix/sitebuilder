@@ -2,18 +2,18 @@
 
 namespace app\models;
 
-use meumobi\sitebuilder\services\GeocodeItemsService;
-
 use Config;
+use GeocodingException;
+use GoogleGeocoding;
 use Inflector;
 use Model;
-use \Decoda\Decoda;
-use GoogleGeocoding;
-use GeocodingException;
 use OverQueryLimitException;
-use meumobi\sitebuilder\services\UpdateFeedsService;
-use meumobi\sitebuilder\repositories\RecordNotFoundException;
+use \Decoda\Decoda;
 use lithium\util\Collection;
+use meumobi\sitebuilder\repositories\PollsRepository;
+use meumobi\sitebuilder\repositories\RecordNotFoundException;
+use meumobi\sitebuilder\services\GeocodeItemsService;
+use meumobi\sitebuilder\services\UpdateFeedsService;
 
 Collection::formats('lithium\net\http\Media');
 
@@ -154,18 +154,16 @@ class Items extends \lithium\data\Model {
 		}
 
 		if (isset($this->_schema['results'])) {
-			$currentVote = null;
+			$repo = new PollsRepository();
+			$votes = $repo->findVotes($entity);
+
 			$results = array_map(function() { return 0; },
 				array_flip(array_keys($self['options'])));
 
-			$results = array_reduce($self['results'],
+			$results = array_reduce($votes,
 				function($results, $vote) use ($visitor, &$currentVote) {
 					foreach ($vote['values'] as $option => $value) {
 						$results[$option] += $value;
-					}
-
-					if ($visitor && $visitor->id() == $vote['user_id']) {
-						$currentVote = $vote;
 					}
 
 					return $results;
@@ -177,7 +175,7 @@ class Items extends \lithium\data\Model {
 			}, array_keys($results), $results);
 
 			if ($visitor) {
-				$self['voted'] = $currentVote;
+				$self['voted'] = $this->userVote($entity, $visitor);
 			}
 		}
 

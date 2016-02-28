@@ -2,7 +2,9 @@
 
 namespace meumobi\sitebuilder\repositories;
 
+use MongoDate;
 use lithium\data\Connections;
+use lithium\util\Inflector;
 
 abstract class Repository
 {
@@ -34,5 +36,34 @@ abstract class Repository
 		return array_map(function($data) {
 			return $this->hydrate($data);
 		}, iterator_to_array($set, false));
+	}
+
+	protected function hydrateDates($data)
+	{
+		return array_reduce($this->dateFields, function($dates, $field) use ($data) {
+			if (isset($data[$field]) && $data[$field] instanceof MongoDate) {
+				$dates[$field] = $data[$field]->toDateTime();
+			} else {
+				$dates[$field] = null;
+			}
+
+			return $dates;
+		}, []);
+	}
+
+	protected function dehydrateDates($object)
+	{
+		return array_reduce($this->dateFields, function($dates, $field) use ($object) {
+			$getter = Inflector::camelize($field);
+			$value = $object->$getter();
+
+			if ($value) {
+				$dates[$field] = new MongoDate($value->getTimestamp());
+			} else {
+				$dates[$field] = null;
+			}
+
+			return $dates;
+		}, []);
 	}
 }

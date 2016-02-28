@@ -160,33 +160,4 @@ class VisitorsRepository extends Repository
 
 		return array_merge($data, $this->dehydrateDates($object));
 	}
-
-	protected function hydrateDates($data)
-	{
-		return array_reduce($this->dateFields, function($dates, $field) use ($data) {
-			if (isset($data[$field]) && $data[$field] instanceof MongoDate) {
-				$dates[$field] = $data[$field]->toDateTime();
-			} else {
-				$dates[$field] = null;
-			}
-
-			return $dates;
-		}, []);
-	}
-
-	protected function dehydrateDates($object)
-	{
-		return array_reduce($this->dateFields, function($dates, $field) use ($object) {
-			$getter = Inflector::camelize($field);
-			$value = $object->$getter();
-
-			if ($value) {
-				$dates[$field] =  new MongoDate($value->getTimestamp());
-			} else {
-				$dates[$field] = null;
-			}
-
-			return $dates;
-		}, []);
-	}
 }

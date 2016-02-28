@@ -12,10 +12,7 @@ class PollsController extends ApiController
 	public function vote()
 	{
 		$user = $this->checkVisitor();
-		$item = Items::find('type', ['conditions' => [
-			'_id' => $this->request->params['item_id'],
-			'site_id' => $this->site()->id
-		]]);
+		$item = $this->findItem($this->request->params['item_id']);
 		$options = $item->options->to('array');
 		$values = $this->request->get('data:value');
 
@@ -48,15 +45,22 @@ class PollsController extends ApiController
 			'timestamp' => new MongoDate(),
 		];
 
-		$results = $item->results ?: [];
-		$results []= $vote;
-
 		$repo = new PollsRepository();
-		$repo->addVote($item, $vote);
 
-		unset($item['results']);
-		$item->set([ 'results' => $results ]);
+		if ($item->userVote($user)) {
+			$repo->modifyVote($item, $vote);
+		} else {
+			$repo->addVote($item, $vote);
+		}
 
-		return $item->toJSON($user);
+		return $this->findItem($item->id())->toJSON($user);
+	}
+
+	protected function findItem($id)
+	{
+		return Items::find('type', ['conditions' => [
+			'_id' => $id,
+			'site_id' => $this->site()->id
+		]]);
 	}
 }

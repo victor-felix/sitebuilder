@@ -3,6 +3,7 @@
 namespace app\models\items;
 
 use app\models\Items;
+use meumobi\sitebuilder\repositories\PollsRepository;
 
 class Polls extends Items
 {
@@ -48,6 +49,18 @@ class Polls extends Items
 			'options' => ['type' => 'array', 'default' => []],
 			'results' => ['type' => 'array', 'default' => []],
 		];
+	}
+
+	public function userVote($entity, $user)
+	{
+		$repo = new PollsRepository();
+		$votes = $repo->findVotes($entity);
+
+		foreach ($votes as $vote) {
+			if ($vote['user_id'] == $user->id()) {
+				return $vote;
+			}
+		}
 	}
 }
 
