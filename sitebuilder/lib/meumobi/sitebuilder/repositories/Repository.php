@@ -8,20 +8,7 @@ abstract class Repository
 {
 	protected $connection;
 	protected $collection;
-
-	abstract public function all();
-
-	abstract public function find($id);
-
-	abstract public function create($visitor);
-
-	abstract public function update($visitor);
-
-	abstract public function destroy($visitor);
-
-	abstract protected function hydrate($data);
-
-	abstract protected function dehydrate($object);
+	protected $collectionName;
 
 	protected function connection()
 	{
@@ -34,11 +21,12 @@ abstract class Repository
 	{
 		if ($this->collection) return $this->collection;
 
-		$class = (new \ReflectionClass($this))->getShortName();
-		// get the collection name from class name
-		$collectionName = strtolower(preg_split('/(?!(^|[a-z]|$))/', $class)[0]);
+		if (!$this->collectionName) {
+			$class = (new \ReflectionClass($this))->getShortName();
+			$this->collectionName = strtolower(preg_split('/(?!(^|[a-z]|$))/', $class)[0]);
+		}
 
-		return $this->collection = $this->connection()->$collectionName;
+		return $this->collection = $this->connection()->{$this->collectionName};
 	}
 
 	protected function hydrateSet($set)
