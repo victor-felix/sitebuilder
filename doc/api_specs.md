@@ -529,6 +529,26 @@ Example response:
 
 Deletes an item.
 
+#### POST /{domain}/items/{id}/poll
+
+Votes for a poll.
+
+Parameters:
+
+- **value[{option}]**: option to be voted on. It's value should always be one.
+
+Headers:
+- **X-Visitor-Token**
+
+Response status:
+- **success: 200**
+- **error: 404 (poll not found for item)**
+- **error: 401 (invalid auth token)**
+
+The example below votes on the third option of the poll:
+
+    $ curl -X POST http://meumobi.com/api/infomobi.meumobi.com/items/56d1f5d3b5a508890f8b4567/poll -H "X-Visitor-Token: ..." -d "values[2]=1"
+
 #### GET /{domain}/items/by_category
 
 Gets items grouped by their parent categories.
