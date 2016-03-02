@@ -163,8 +163,6 @@ class ApiController extends \lithium\action\Controller {
 			'url' => $this->request->url,
 			'data' => $this->request->data,
 		]);
-
-		Logger::debug('api', '$_SERVER', $_SERVER);
 	}
 
 	protected function param($param, $default = null) {
