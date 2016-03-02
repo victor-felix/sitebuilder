@@ -1,6 +1,29 @@
 ## Release Notes for meumobi ##
 
-Update these notes using: git log --pretty=format:'* %s' --no-merges rel-2.7.2..HEAD
+Update these notes using: git log --pretty=format:'* %s' --no-merges rel-2.8..HEAD
+
+### rel-2.8 (20160302) ###
+
+* Updates docs for voting on polls. Closes #304
+* Includes item_id when catching exceptions in ProcessRemoteMedia. #315
+* Removes $_SERVER debug info from logs. Closes #318
+* Allows user to update vote. #304
+* Bypasses lithium when adding votes to a poll to avoid mongodb issues
+* Implements multiple-choice polls
+* Removes abstract methods. A repo can implement whatever it wants
+* Returns an error response on internal errors
+* Shows current site id on header
+* Makes poll votes behave like in documentation
+* Allows users to vote on polls. #304
+* Fixes css mistake related to #308
+* Scaffolding for voting in polls. #304
+* Fixes new polls having no slots for options
+* Minor code cleanup
+* Adds Polls item type. #304
+* Add demo file to show and test RSS import
+* UPDATE: Closes #308, display current site_id on dashboard
+* Adds 'manufacturer' to devices. Closes #305
+* Allow to send push notif on public sites. Closes #114
 
 ### rel-2.7.2 (20160203) ###
 
