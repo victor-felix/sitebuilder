@@ -2,8 +2,6 @@
 
 namespace meumobi\sitebuilder\services;
 
-use Exception;
-use Filesystem;
 use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\services\PdfThumbnailer;
 
