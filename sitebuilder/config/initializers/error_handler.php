@@ -12,20 +12,9 @@ ErrorHandler::apply(
 		'app\controllers\api\UnAuthorizedException',
 		'app\controllers\api\ForbiddenException',
 		'app\controllers\api\InvalidArgumentException',
-		'meumobi\sitebuilder\repositories\RecordNotFoundException'
+		'meumobi\sitebuilder\repositories\RecordNotFoundException',
+		'Exception',
 	]],
-	function($exception, $params) {
-		$response = new Response([
-			'status' => $exception['exception']->status,
-			'body' => json_encode(['error' => $exception['message']])
-		]);
-		echo $response->render();
-	}
-);
-
-ErrorHandler::apply(
-	['lithium\action\Dispatcher', 'run'],
-	['type' => ['Exception']],
 	function($exception, $params) {
 		$e = $exception['exception'];
 		Logger::error('sitebuilder', sprintf('uncaught exception %s: "%s" at %s line %s',
@@ -33,9 +22,12 @@ ErrorHandler::apply(
 			['exception' => $e]);
 
 		$response = new Response([
-			'status' => 500,
-			'body' => json_encode(['error' => 'internal server error'])
+			'status' => property_exists($e, 'status')
+				? $e->status
+				: 500,
+			'body' => json_encode(['error' => $exception['message']])
 		]);
+
 		echo $response->render();
 	}
 );
