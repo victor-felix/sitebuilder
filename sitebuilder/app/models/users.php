@@ -17,7 +17,7 @@ class Users extends AppModel
 	protected $getters = array('firstname', 'lastname');
 	protected $beforeSave = array('hashPassword', 'createToken', 'joinName');
 	protected $beforeDelete = array('removeSites');
-	protected $afterSave = array('authenticate', 'sendWelcomeMail');
+	protected $afterSave = array('authenticate');
 	protected $validates = array(
 		'firstname' => array(
 			'rule' => 'notEmpty',
@@ -351,25 +351,6 @@ class Users extends AppModel
 		));
 
 		$mailer->send();
-	}
-
-	protected function sendWelcomeMail($created)
-	{
-		if ($created) {
-			$segment = MeuMobi::currentSegment();
-			$site = $this->site();
-
-			$subject = s('users/mail/add:subject', $segment->title, $site->title);
-
-			$this->sendMail($segment->email,
-				array($this->email => $this->fullname()),
-				"[{$segment->title}] Account Confirmation",
-				'users/confirm_mail.htm',
-				array(
-					'user' => $this,
-					'title' => s('[{$segment->title}] Account Confirmation')
-				));
-		}
 	}
 
 	protected function sendEmail($to, $subject, $data = [], $template = 'users/invite_mail.htm')
