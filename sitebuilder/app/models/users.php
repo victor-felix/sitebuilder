@@ -340,22 +340,6 @@ class Users extends AppModel
 		return $id;
 	}
 
-	protected function sendMail($from, $to, $subject, $view, $data) {
-		$segment = MeuMobi::currentSegment();
-		$data['segment'] = $segment;
-
-		$mailer = new Mailer(array(
-			'from' => $from,
-			'to' => $to,
-			'subject' => s($subject),
-			'views' => array('text/html' => $view),
-			'layout' => 'mail',
-			'data' => $data,
-		));
-
-		$mailer->send();
-	}
-
 	protected function sendEmail($to, $subject, $data = [], $template = 'users/invite_mail.htm')
 	{
 		$segment = MeuMobi::currentSegment();

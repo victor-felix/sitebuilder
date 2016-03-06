@@ -24,22 +24,13 @@ class MeuMobi
 
 	public static function domain()
 	{
+		if ($instance = self::instance()) {
+			return $instance;
+		}
+
 		$segment = self::currentSegment();
-		$domain = null;
 
-		if ($segment->domain) {
-			$domain = $segment->domain;
-		}
-
-		if (!$domain) {
-			$domain = Config::read('Sites.domain');
-		}
-
-		if (!$domain) {
-			$domain = self::instance();
-		}
-
-		return $domain;
+		return $segment->domain;
 	}
 
 	public static function url($path, $full = false)
