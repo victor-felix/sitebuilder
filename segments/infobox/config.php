@@ -13,4 +13,5 @@ Config::write('Segment', array(
   'analytics' => '',
   'enableFieldSet' => array('visitors', 'weblinks', 'news', 'description', 'contact'),
   'enableApiAccessFromAllDomains' => true,
+  'domain' => 'infobox.meumobilesite.com',
 ));

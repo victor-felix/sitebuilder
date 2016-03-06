@@ -20,4 +20,5 @@ Config::write('Segment', array(
   'themes' => array('paraty', 'posto9', 'leblon', 'helmut', 'flip', 'rimobi', 'flip_app', 'rimobi'),
   'enableFieldSet' => array('photos','weblinks','location', 'contact', 'news', 'description', 'timetable', 'stocks'),
   'enableApiAccessFromAllDomains' => true
+  'domain' => 'enterprise.meumobilesite.com',
 ));

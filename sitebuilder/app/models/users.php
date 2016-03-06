@@ -212,6 +212,7 @@ class Users extends AppModel
 
 				$subject = s('users/mail/invite_request:subject', $segment->title, $this->fullname(), $site->title);
 				$data['link'] = MeuMobi::url("/accept_invite/login/{$data['token']}", true);
+				$data['site'] = $site;
 
 				$this->sendEmail($email, $subject, $data);
 			}
@@ -377,7 +378,7 @@ class Users extends AppModel
 		$mailer = new Mailer(array(
 			'from' => $segment->email,
 			'to' => $to,
-			'subject' => $title,
+			'subject' => $subject,
 			'views' => array('text/html' => $template),
 			'layout' => 'mail',
 			'data' =>  $data,
