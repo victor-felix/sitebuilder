@@ -210,7 +210,7 @@ class Users extends AppModel
 			if ($data) {
 				$segment = MeuMobi::currentSegment();
 
-				$subject = s('users/mail/invite_request:subject', $segment->title, $this->fullname(), $site->title);
+				$subject = s('users/mail/invite_request.subject', $segment->title, $this->fullname(), $site->title);
 				$data['link'] = MeuMobi::url("/accept_invite/login/{$data['token']}", true);
 				$data['site'] = $site;
 
@@ -231,6 +231,8 @@ class Users extends AppModel
 		$user_role = $this->hasSiteAsAdmin() ? self::ROLE_EDITOR : self::ROLE_USER;
 
 		if ($site && $this->addSite($site, $user_role)) {
+			$segment = MeuMobi::currentSegment();
+
 			$hostUser = self::firstById($invite->host_id);
 			$data = array(
 				'site' => $site,
@@ -238,16 +240,17 @@ class Users extends AppModel
 				'host_user' => $hostUser,
 			);
 
-			$subject = s('users/mail/invite_confirm:subject', $segment->title, $this->fullname(), $site->title);
+			$subject = s('users/mail/invite_confirm.subject', $segment->title, $this->fullname(), $site->title);
 			$this->sendEmail($this->email, $subject, $data, 'users/invite_confirmed_mail.htm');
 
 			if ($hostUser) {
-				$subject = s('users/mail/admin_invite_confirm:subject', $segment->title, $this->fullname(), $site->title);
+				$subject = s('users/mail/admin_invite_confirm.subject', $segment->title, $this->fullname(), $site->title);
 				$this->sendEmail($hostUser->email, $subject, $data, 'users/invite_confirmed_host_mail.htm');
 			}
 
 			$this->site($site->id);
 			$invite->delete();
+
 			return true;
 		}
 	}
