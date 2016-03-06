@@ -48,7 +48,8 @@ class UpdateNewsFeed
 			'shouldUpdate' => function($item) use ($extension) {
 				$shouldUpdate = $item->id() && (
 					$item->changed('title') ||
-					$item->changed('description')
+					$item->changed('description') ||
+					$item->changed('medias')
 				);
 
 				if ($shouldUpdate) {
@@ -161,10 +162,18 @@ class UpdateNewsFeed
 					? $author->get_name()
 					: '',
 				'description' => $this->extractDescription($content, $purify),
-				'medias' => $media,
+				//'medias' => $media,
 				'download_images' => $images,
 				'format' => 'html',
 			]);
+
+			$mapToUrl = function($a) { return $a['url']; };
+			$currentMediaNames = array_map($mapToUrl, $article->medias->to('array'));
+			$newMediaNames = array_map($mapToUrl, $media);
+
+			if (array_diff($currentMediaNames, $newMediaNames) || array_diff($newMediaNames, $currentMediaNames)) {
+				$article->set(['medias' => $media]);
+			}
 
 			return $article;
 		}, $items);
