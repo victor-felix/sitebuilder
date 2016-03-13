@@ -109,15 +109,9 @@ class ProcessRemoteMedia
 
 	public function createThumbnail($item, $medium)
 	{
-		try {
-			$thumbnailer = new MediaThumbnailer;
+		$thumbnailer = new MediaThumbnailer;
+		if ($thumbnailer->supportsType($medium['type'])) {
 			$medium = $thumbnailer->perform($item, $medium);
-		} catch (Exception $e) {
-			Logger::error(self::COMPONENT, 'caught exception', [
-				'item_id' => $item->id(),
-				'message' => $e->getMessage(),
-				'exception'  => $e,
-			]);
 		}
 
 		return $medium;

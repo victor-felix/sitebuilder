@@ -69,4 +69,9 @@ class MediaThumbnailer
 			return [null, $error];
 		}
 	}
+
+	public function supportsType($type)
+	{
+		return $type == 'application/pdf';
+	}
 }
