@@ -1,5 +1,7 @@
 <?php
-class LithiumPaginationHelper extends Helper{
+
+class LithiumPaginationHelper extends Helper
+{
 	protected $params;
 
 	public function getParams()
@@ -14,10 +16,10 @@ class LithiumPaginationHelper extends Helper{
 	public function numbers($options = array())
 	{
 		$options += array(
-				'modulus' => 3,
-				'separator' => ' ',
-				'tag' => 'span',
-				'current' => 'current'
+			'modulus' => 3,
+			'separator' => ' ',
+			'tag' => 'span',
+			'current' => 'current'
 		);
 
 		if ($this->pages() < 2) {
@@ -163,7 +165,13 @@ class LithiumPaginationHelper extends Helper{
 
 	protected function getUrl($query)
 	{
-		$currentUrl = substr(Mapper::here(), 0, strpos(Mapper::here(), '?'));
+		$currentUrl = Mapper::here();
+		$questionMarkPos = strpos($currentUrl, '?');
+
+		if ($questionMarkPos !== false) {
+			$currentUrl = substr($currentUrl, 0, $questionMarkPos);
+		}
+
 		return $currentUrl . $query;
 	}
 }
