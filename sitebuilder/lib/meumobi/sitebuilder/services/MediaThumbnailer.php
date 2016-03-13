@@ -2,6 +2,7 @@
 
 namespace meumobi\sitebuilder\services;
 
+use Exception;
 use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\services\PdfThumbnailer;
 
@@ -15,7 +16,22 @@ class MediaThumbnailer
 			'item_id' => $item->id(),
 		]);
 
-		list($thumbnail, $error) = $this->createThumbnail($medium);
+		$startime = microtime();
+
+		try {
+			list($thumbnail, $error) = $this->createThumbnail($medium);
+		} catch (Exception $e) {
+			Logger::error(self::COMPONENT, 'thumbnail generation failed', [
+				'item_id' => $item->id(),
+				'medium_url' => $medium['url'],
+				'type' => $medium['type'],
+				'message' => $e->getMessage(),
+				'exception'  => $e,
+			]);
+		}
+
+		$endtime = microtime();
+		$processingTime = $endtime - $startime;
 
 		if ($thumbnail) {
 			$medium['thumbnails'] = [ $thumbnail ];
@@ -24,6 +40,7 @@ class MediaThumbnailer
 				'item_id' => $item->id(),
 				'medium_url' => $medium['url'],
 				'thumbnail_url' => $thumbnail['url'],
+				'processing_time' => $processingTime,
 			]);
 		} else {
 			Logger::notice(self::COMPONENT, 'thumbnail generation failed', [
@@ -31,6 +48,7 @@ class MediaThumbnailer
 				'medium_url' => $medium['url'],
 				'type' => $medium['type'],
 				'error' => $error,
+				'processing_time' => $processingTime,
 			]);
 		}
 

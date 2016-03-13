@@ -57,7 +57,12 @@ class ProcessRemoteMedia
 				'type' => isset($medium['type']) ? $medium['type'] : null,
 			]);
 
+			$starttime = microtime();
+
 			list($info, $status) = $this->getRemoteInfo($medium['url']);
+
+			$endtime = microtime();
+			$processingTime = $endtime - $starttime;
 
 			if ($info) {
 				$medium['type'] = $info['type'] ?: $medium['type'];
@@ -70,6 +75,7 @@ class ProcessRemoteMedia
 					'url' => $medium['url'],
 					'type' => $info['type'],
 					'length' => $info['length'],
+					'processing_time' => $processingTime,
 				]);
 
 				$medium = $this->createThumbnail($item, $medium);
@@ -80,6 +86,7 @@ class ProcessRemoteMedia
 					'item_id' => $item->id(),
 					'url' => $medium['url'],
 					'status' => $status,
+					'processing_time' => $processingTime,
 				]);
 			}
 
