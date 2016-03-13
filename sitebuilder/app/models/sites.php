@@ -408,8 +408,8 @@ class Sites extends AppModel
 	protected function trimFields($data)
 	{
 		$fieldsToTrim = ['description', 'timetable', 'address', 'email', 'phone',
-										'website', 'google_analytics', 'css_token', 'facebook',
-										'twitter'];
+			'website', 'google_analytics', 'css_token', 'facebook',
+			'twitter'];
 
 		foreach ($fieldsToTrim as $field) {
 			if (isset($data[$field])) {
@@ -423,7 +423,7 @@ class Sites extends AppModel
 	protected function cleanDomainLinks($data)
 	{
 		$fieldsToClean = ['facebook', 'twitter', 'website',
-											'android_app_id', 'ios_app_id'];
+			'android_app_id', 'ios_app_id'];
 
 		foreach ($fieldsToClean as $field) {
 			if (isset($data[$field]) && $data[$field] == 'http://') {
@@ -439,7 +439,8 @@ class Sites extends AppModel
 		$new = !isset($data['id']);
 
 		if ($new) {
-			$data['domains'][] = $data['slug'] . '.' . MeuMobi::domain();
+			$domain = Config::read('Sites.domain');
+			$data['domains'][] = $data['slug'] . '.' . $domain;
 		}
 
 		return $data;
