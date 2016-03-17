@@ -2,6 +2,21 @@
 
 Update these notes using: git log --pretty=format:'* %s' --no-merges rel-2.8..HEAD
 
+### rel-2.8.1 ###
+
+* ENHANCEMENT: Closes #287, don't try to process unsupported types for thumbnails
+* ENHANCEMENT: Closes #277, includes processing time for remote media in logs
+* BUG: Closes #252, fixes item pagination on sitebuilder
+* BUG: Closes #329, use Sites.domain config for site domain attribute
+* Fixes syntax error. Closes #326
+* Update dictionary of c-se for new visitor mail
+* Don't rely on Sites.domain for generating links
+* Fixes undefined vars in invite confirmation mail. Closes #324
+* Removes email confirmation when an user accepts an email. Closes #323
+* Fixes invite email. Closes #289
+* Updates items when media in news feed is updated
+* Don't clobber exceptions if they are handled. Closes #321
+
 ### rel-2.8 (20160302) ###
 
 * Updates docs for voting on polls. Closes #304
