@@ -1,4 +1,4 @@
-set :output, File.expand_path('log/whenever.log')
+set :output, { standard: nil, error: File.expand_path('log/whenever.log') }
 
 every 30.minute do
   command "php #{File.expand_path 'sitebuilder/script/publish_items.php'}"
