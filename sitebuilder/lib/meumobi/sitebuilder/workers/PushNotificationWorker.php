@@ -7,6 +7,7 @@ require_once 'lib/pushwoosh/Push.php';
 use app\models\Items;
 use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\repositories\DevicesRepository;
+use meumobi\sitebuilder\repositories\VisitorsRepository;
 use pushwoosh\Push;
 
 class PushNotificationWorker extends Worker
@@ -53,8 +54,9 @@ class PushNotificationWorker extends Worker
 
 		if ($site->private) {
 			$groups = $item->to('array')['groups'];
+			$visitorsRepo = new VisitorsRepository();
 			$visitors = $groups
-				? $repository->findBySiteIdAndGroups($site->id, $groups)
+				? $visitorsRepo->findBySiteIdAndGroups($site->id, $groups)
 				: null;
 		}
 
