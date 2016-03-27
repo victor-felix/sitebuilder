@@ -1,0 +1,123 @@
+::selection {
+  background: #8ec525;
+  color: white; }
+
+::-moz-selection {
+  background: #8ec525;
+  color: white; }
+
+body {
+  background-color: white; }
+
+#header {
+  border-top-color: #8ec525; }
+
+#header .contextual-navbar ul li a:hover {
+  background-color: #8ec525;
+  border-color: #8ec525; }
+
+#header .navigation .user a:hover {
+  background: #8ec525; }
+
+#header .head h1,
+#header .head .steps li.current {
+  color: #8ec525; }
+
+.businessitems-list li .info a {
+  color: #8ec525; }
+
+.form-edit .fieldset-expand {
+  border-bottom: 1px solid #dddddd;
+  color: #8ec525; }
+
+.theme-picker ul li.selected a img {
+  border-color: #8ec525; }
+
+.skin-picker ul li.selected a {
+  border-color: #8ec525; }
+
+#header p.login a {
+  color: #8ec525; }
+
+.features li p.title {
+  color: #8ec525; }
+
+#login-window p a {
+  color: #8ec525; }
+
+#login-window .cancel,
+#login-window .forgot-password {
+  color: #8ec525; }
+
+.form-register fieldset h2 {
+  color: #8ec525; }
+
+.form-register .fieldset-expand,
+#FormLogin .forgot-password,
+#FormLogin .no-account {
+  color: #8ec525; }
+
+.theme-picker ul li.selected a img {
+  border-color: #8ec525; }
+
+.skin-picker ul li.selected a {
+  border-color: #8ec525; }
+
+.registration-finished h2 a {
+  color: #8ec525; }
+
+.registration-finished .next-steps ul li a {
+  color: #8ec525; }
+
+.tip-register a {
+  color: #8ec525; }
+
+.ui-button,
+#header .contextual-navbar .dropdown li ul a:hover,
+.dropdown li ul a:hover,
+.global-navbar .dropdown:hover > li > p {
+  color: #8ec525; }
+
+.ui-button.red {
+  background: #8ec525;
+  /* Old browsers */
+  background: -webkit-linear-gradient(top, #a1d935 0%, #a7db42 50%, #9dd72c 51%, #8ec525 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #a1d935 0%, #a7db42 50%, #9dd72c 51%, #8ec525 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #a1d935 0%, #a7db42 50%, #9dd72c 51%, #8ec525 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #a1d935 0%, #a7db42 50%, #9dd72c 51%, #8ec525 100%);
+  /* W3C */
+  border-color: #6f9a1d; }
+
+.ui-button.red:hover {
+  background: #a1d935;
+  background: -webkit-linear-gradient(top, #8ec525 0%, #9dd72c 50%, #a7db42 51%, #a1d935 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #8ec525 0%, #9dd72c 50%, #a7db42 51%, #a1d935 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #8ec525 0%, #9dd72c 50%, #a7db42 51%, #a1d935 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #8ec525 0%, #9dd72c 50%, #a7db42 51%, #a1d935 100%);
+  /* W3C */
+  border-color: #8ec525; }
+
+.support,
+.global-navbar,
+.categories-list .ui-button-add,
+.picture-upload-container .default .icon_upload {
+  background-color: #8ec525; }
+
+div.theme-picker > ul > li.selected {
+  box-shadow: 0 0 0 3px #8ec525 inset; }
+
+.featured-list li .link .icon,
+.placeholder-links a img {
+  background-color: #8ec525; }
+
+.featured-list li .link h3,
+.featured-list li .link .icons,
+.featured-list li:hover .arrow,
+div.dashboard .domain a {
+  color: #8ec525; }
