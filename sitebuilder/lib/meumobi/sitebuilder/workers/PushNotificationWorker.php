@@ -56,7 +56,9 @@ class PushNotificationWorker extends Worker
 			$groups = $item->to('array')['groups'];
 			$visitorsRepo = new VisitorsRepository();
 			$visitors = $groups
-				? $visitorsRepo->findBySiteIdAndGroups($site->id, $groups)
+				? array_map(function($v) {
+					return $v->id();
+				}, $visitorsRepo->findBySiteIdAndGroups($site->id, $groups))
 				: null;
 		}
 
