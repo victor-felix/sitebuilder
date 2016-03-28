@@ -241,9 +241,13 @@ class UpdateNewsFeed
 	protected function buildDOMDoc($html)
 	{
 		$html = $html ?: '<html></html>';
+
 		$doc = new DOMDocument('1.0', 'UTF-8');
+		libxml_use_internal_errors(true);
 		$doc->loadHtml(mb_convert_encoding($html, 'HTML-ENTITIES',
 			mb_detect_encoding($html)));
+		libxml_use_internal_errors(false);
+
 		return $doc;
 	}
 
