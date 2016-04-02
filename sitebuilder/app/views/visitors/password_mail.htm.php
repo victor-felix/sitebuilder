@@ -1,11 +1,8 @@
-<?= s('visitors/mail/add.body', $site->title) ?>
+<?= s('visitors/mail/add.body', $first_name, $site->title) ?>
 <br /><br />
 Suas informações de acesso são:
 <br />
 <strong>email:</strong> <?= $email ?>
 <br />
 <strong>senha:</strong> <?= $password ?>
-<?= $this->element('visitors/footer', array(
-	'email' => $site->email,
-	'title' => $site->title
-)) ?>
+<?= s('visitors/mail.footer', $site->email, $site->title) ?>
