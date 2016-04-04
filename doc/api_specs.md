@@ -547,7 +547,7 @@ Response status:
 
 The example below votes on the third option of the poll:
 
-    $ curl -X POST http://meumobi.com/api/infomobi.meumobi.com/items/56d1f5d3b5a508890f8b4567/poll -H "X-Visitor-Token: ..." -d "values[2]=1"
+    $ curl -X POST http://meumobi.com/api/infomobi.meumobi.com/items/56d1f5d3b5a508890f8b4567/poll -H "X-Visitor-Token: ..." -d "value[2]=1"
 
 #### GET /{domain}/items/by_category
 
