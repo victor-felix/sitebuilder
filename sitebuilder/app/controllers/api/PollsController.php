@@ -24,6 +24,10 @@ class PollsController extends ApiController
 			return ['errors' => ['vote has not been provided']];
 		}
 
+		if (time() > $item->end_date->sec) {
+			return ['errors' => ['this poll is already closed']];
+		}
+
 		$votes = 0;
 
 		foreach ($values as $key => $value) {
