@@ -66,6 +66,6 @@ class Polls extends Items
 	}
 }
 
-Events::applyFilter('save', function($self, $params, $chain) {
+Polls::applyFilter('save', function($self, $params, $chain) {
 	return Items::addTimestamps($self, $params, $chain);
 });
