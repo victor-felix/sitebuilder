@@ -1,4 +1,4 @@
-/home/meumobi/PROJECTS/int-meumobi.com/shared/log/*.log {
+/home/meumobi/PROJECTS/mobi.comunique-se.com.br/shared/log/*.log {
   dateext
   rotate 12
   weekly
