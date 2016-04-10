@@ -43,9 +43,11 @@ class Polls extends Items
 		$self = static::_object();
 		$parent = parent::_object();
 
+		$next_week = time() + (7 * 24 * 60 * 60);
+
 		$self->_schema = $parent->_schema + [
 			'multiple_choices' => ['type' => 'boolean', 'default' => false],
-			'end_date' => ['type' => 'datetime', 'default' => ''],
+			'end_date' => ['type' => 'datetime', 'default' => $next_week],
 			'options' => ['type' => 'array', 'default' => []],
 			'results' => ['type' => 'array', 'default' => []],
 		];
