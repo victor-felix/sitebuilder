@@ -39,6 +39,11 @@ class PollsController extends ApiController
 			}
 		}
 
+		// this is a dummy option so PHP understands that we actually want an
+		// associative array, not a numeric index one. that's important so we
+		// can serialize to mongodb and in the API correctly
+		$values['_'] = 0;
+
 		$vote = [
 			'user_id' => $user->id(),
 			'values' => $values,

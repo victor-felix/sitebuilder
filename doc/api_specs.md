@@ -547,7 +547,79 @@ Response status:
 
 The example below votes on the third option of the poll:
 
-    $ curl -X POST http://meumobi.com/api/infomobi.meumobi.com/items/56d1f5d3b5a508890f8b4567/poll -H "X-Visitor-Token: ..." -d "value[2]=1"
+    $ curl -X POST http://meumobi.com/api/visa.meumobi.com/items/570516a09a645dd03ee8d385/poll -H "X-Visitor-Token: ..." -d "value[2]=1"
+    {
+        "_id": "570516a09a645dd03ee8d385",
+        "created": 1459951263,
+        "end_date": 1459932540,
+        "groups": [],
+        "images": [
+            {
+                "author": null,
+                "created": "2016-04-06 16:03:11",
+                "description": null,
+                "filesize": "35496",
+                "filesize_octal": "105250",
+                "foreign_key": "570516a09a645dd03ee8d385",
+                "id": "6927192",
+                "model": "Items",
+                "modified": "2016-04-06 16:03:12",
+                "path": "/uploads/items/6927192.jpg",
+                "title": null,
+                "type": "image/jpeg",
+                "url": null,
+                "visible": "1"
+            }
+        ],
+        "is_published": true,
+        "medias": [],
+        "modified": 1459951392,
+        "multiple_choices": false,
+        "options": [
+            "\u00d3timo",
+            "Bom",
+            "Regular",
+            "Ruim"
+        ],
+        "order": 1,
+        "parent_id": 7183,
+        "pubdate": 1459950540,
+        "published": 1459950540,
+        "results": [
+            {
+                "value": 0,
+                "votes": 1
+            },
+            {
+                "value": 1,
+                "votes": 1
+            },
+            {
+                "value": 2,
+                "votes": 0
+            },
+            {
+                "value": 3,
+                "votes": 0
+            },
+            {
+                "value": "_",
+                "votes": 0
+            }
+        ],
+        "site_id": 484,
+        "thumbnails": [],
+        "title": "Como voc\u00ea avalia a QUALIDADE do atendimento na recep\u00e7\u00e3o ? ",
+        "type": "polls",
+        "voted": {
+            "timestamp": 1460281545,
+            "user_id": "5672e3349a645d456df2ac3b",
+            "values": {
+                "2": 1,
+                "_": 0
+            }
+        }
+    }
 
 #### GET /{domain}/items/by_category
 
