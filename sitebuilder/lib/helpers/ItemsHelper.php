@@ -119,7 +119,7 @@ class ItemsHelper extends Helper
 	{
 		$this->types['groups'] = function($type) use ($site) {
 			$groups = $site->availableVisitorsGroups();
-			$options = $options;
+			$options = [];
 
 			foreach ($groups as $group) {
 				$options[$group] = $group;
