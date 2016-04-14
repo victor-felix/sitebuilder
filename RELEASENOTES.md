@@ -1,6 +1,24 @@
 ## Release Notes for meumobi ##
 
-Update these notes using: git log --pretty=format:'* %s' --no-merges rel-2.8..HEAD
+Update these notes using: git log --pretty=format:'* %s' --no-merges rel-2.8.2..HEAD
+
+### rel-2.8.2 ###
+
+* ENHANCEMENT: Closes #327, display name of visitor on visitors/mail/add
+* add .DS_Store as untracked files
+* create segment residence with its images
+* BUG: Closes #348, don't allow votes on closed polls
+* BUG: Closes #351, forces votes to serialize as a hash by using dummy option
+* BUG: Closes #352, updates ETags when polls are saved
+* BUG: Closes #353, fixes undef var warning in item creation
+* ENHANCEMENT: Closes #355, default end date for poll is in 1 week
+* BUG: updates logrotate config files
+* BUG: fixes poll vote example from API documentation
+* BUG: fixes push notifications not being sent for private sites
+* ENHANCEMENT: don't show HTML5 errors in feed import
+* BUG: Closes #337, use Sites.domain as a fallback for MeuMobi::domain
+* ENHANCEMENT: disables cronjobs logging STDOUT to whenever.log
+* BUG: fixes push notif not being sent for some private sites
 
 ### rel-2.8.1 ###
 
