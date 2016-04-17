@@ -149,7 +149,9 @@ class Items extends \lithium\data\Model {
 			}
 
 			if ($field['type'] == 'multistring') {
-				$self[$code] = array_filter($self[$code]);
+				$self[$code] = array_filter($self[$code], function($i) {
+					return strlen($i);
+				});
 			}
 		}
 
