@@ -405,7 +405,7 @@ class Items extends \lithium\data\Model {
 	public static function addThumbnails($self, $params, $chain)
 	{
 		$item = $params['entity'];
-		$domain = 'http://'. MeuMobi::domain();
+		$domain = 'http://' . MeuMobi::domain();
 		$images = $item->images();
 
 		if ($images) {
