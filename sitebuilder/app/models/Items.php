@@ -77,6 +77,10 @@ class Items extends \lithium\data\Model {
 		return $this->parent = Model::load('Categories')->firstById($entity->parent_id);
 	}
 
+	public function site($entity) {
+		return $this->site = Model::load('Sites')->firstById($entity->site_id);
+	}
+
 	public function resizes() {
 		$config = Config::read('BusinessItems.resizes');
 		if(is_null($config)) {
