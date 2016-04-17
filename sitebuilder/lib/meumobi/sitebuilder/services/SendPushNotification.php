@@ -20,7 +20,7 @@ class SendPushNotification
 		$category = $item->parent();
 		$devices = $this->getDevicesTokens($item, $site);
 
-		if (!$site->pushwoosh_app_id || !$category->notification || !$devices) {
+		if (!$site->pushwoosh_app_id || !$category->notification) {
 			return;
 		}
 
@@ -29,6 +29,11 @@ class SendPushNotification
 			'category_id' => $category->id,
 			'site_id' => $site->id,
 		];
+
+		if (!$devices) {
+			Logger::info(self::COMPONENT, 'no devices found. no push notification will be sent', $log);
+			return;
+		}
 
 		Logger::info(self::COMPONENT, 'sending push notification', $log + [
 			'content' => $item->title,
