@@ -16,7 +16,7 @@ class MediaThumbnailer
 			'item_id' => $item->id(),
 		]);
 
-		$startime = microtime();
+		$startime = microtime(true);
 
 		try {
 			list($thumbnail, $error) = $this->createThumbnail($medium);
@@ -30,7 +30,7 @@ class MediaThumbnailer
 			]);
 		}
 
-		$endtime = microtime();
+		$endtime = microtime(true);
 		$processingTime = $endtime - $startime;
 
 		if ($thumbnail) {

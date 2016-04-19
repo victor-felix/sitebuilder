@@ -57,11 +57,11 @@ class ProcessRemoteMedia
 				'type' => isset($medium['type']) ? $medium['type'] : null,
 			]);
 
-			$starttime = microtime();
+			$starttime = microtime(true);
 
 			list($info, $status) = $this->getRemoteInfo($medium['url']);
 
-			$endtime = microtime();
+			$endtime = microtime(true);
 			$processingTime = $endtime - $starttime;
 
 			if ($info) {
