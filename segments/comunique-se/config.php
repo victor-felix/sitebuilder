@@ -9,7 +9,7 @@ Config::write('Segment', array(
 	'contactTwitter' => 'http://twitter.com/meumobi',
 	'id' => 'comunique-se',
 	'title' => 'comunique-se',
-	'items' => array('articles'),
+	'items' => array('articles', 'polls'),
 	'extensions' => array('rss'),
 	'root' => 'index',
 	'email' => array('no-reply@meumobi.com' => 'comunique-se'),
@@ -19,5 +19,5 @@ Config::write('Segment', array(
 	'analytics' => 'UA-22519238-16',
 	'enableFieldSet' => array('visitors', 'weblinks', 'news', 'description', 'contact'),
 	'enableApiAccessFromAllDomains' => true,
-	'domain' => 'mobi.comunique-se.com.br',
+	'domain' => 'meumobi.com'
 ));
