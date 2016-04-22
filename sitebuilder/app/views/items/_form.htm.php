@@ -52,7 +52,7 @@
 	</div>
 </fieldset>
 <fieldset>
-	<h2><?= s('PDF Files') ?></h2>
+	<h2><?= s('External Media') ?></h2>
 	<div class="field-group">
 		<?php if($item->medias): ?>
 			<?php foreach($item->medias as $key => $media ): ?>

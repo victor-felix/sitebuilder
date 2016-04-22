@@ -1,3 +1,4 @@
+'External Media': 'Mídia externas'
 '%% New Visits': '%% Novas Visitas'
 '%s confirmed the invitation': '%s confirmou o convite'
 '%s': '%s'
@@ -430,7 +431,6 @@
 'Reset password': 'Gerar nova senha'
 'Remove visitor': 'Remover visitante'
 'Use default password: "%s"': 'Usar senha padrão: "%s"'
-'PDF Files': 'Arquivos PDF'
 'Publish at': 'Publicar em'
 'Add file': 'Adicionar arquivo'
 'Remove file': 'Remover arquivo'
