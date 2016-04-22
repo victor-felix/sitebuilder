@@ -2,7 +2,6 @@
 
 namespace meumobi\sitebuilder\workers;
 
-use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\services\ProcessRemoteMedia;
 
 class ProcessRemoteMediaWorker extends Worker

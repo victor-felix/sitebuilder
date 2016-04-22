@@ -3,12 +3,13 @@
 namespace app\models;
 
 use Config;
+use Decoda\Decoda;
 use GeocodingException;
 use GoogleGeocoding;
 use Inflector;
+use MeuMobi;
 use Model;
 use OverQueryLimitException;
-use \Decoda\Decoda;
 use lithium\util\Collection;
 use meumobi\sitebuilder\repositories\PollsRepository;
 use meumobi\sitebuilder\repositories\RecordNotFoundException;
@@ -75,6 +76,10 @@ class Items extends \lithium\data\Model {
 
 	public function parent($entity) {
 		return $this->parent = Model::load('Categories')->firstById($entity->parent_id);
+	}
+
+	public function site($entity) {
+		return $this->site = Model::load('Sites')->firstById($entity->site_id);
 	}
 
 	public function resizes() {
@@ -149,7 +154,9 @@ class Items extends \lithium\data\Model {
 			}
 
 			if ($field['type'] == 'multistring') {
-				$self[$code] = array_filter($self[$code]);
+				$self[$code] = array_filter($self[$code], function($i) {
+					return strlen($i);
+				});
 			}
 		}
 
@@ -398,12 +405,12 @@ class Items extends \lithium\data\Model {
 	public static function addThumbnails($self, $params, $chain)
 	{
 		$item = $params['entity'];
-		$domain = 'http://'. \MeuMobi::domain();
+		$domain = 'http://' . MeuMobi::domain();
 		$images = $item->images();
-		$item->thumbnails = [];//clear previous thumbs
+
 		if ($images) {
 			$item->thumbnails = array_map(function($sizeStr) use ($images, $domain) {
-				$sizeStr = str_replace('#','', $sizeStr);//remove # from size
+				$sizeStr = str_replace('#','', $sizeStr);
 				$sizeArr = explode('x', $sizeStr);
 
 				$size['width'] = $sizeArr[0];
@@ -412,14 +419,15 @@ class Items extends \lithium\data\Model {
 
 				return $size;
 			}, Config::read('BusinessItems.resizes'));
-		}	else if ($item->medias) {//the item don't have images, try media thumbnails
-			foreach ($item->medias as $media) {
-				if ($media['thumbnails']) {//tthis media have a thumb
-					$item->thumbnails = $media['thumbnails'];
-					break;
-				}
-			}
+		} else if (empty($item->to('array')['thumbnails']) && $item->medias) {
+			$thumbnails = array_reduce($item->to('array')['medias'], function($thumbnails, $medium) {
+				return array_merge($thumbnails, $medium['thumbnails']);
+			}, []);
+
+			unset($item['thumbnails']);
+			$item->set([ 'thumbnails' => $thumbnails ]);
 		}
+
 		return $chain->next($self, $params, $chain);
 	}
 

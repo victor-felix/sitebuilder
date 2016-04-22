@@ -147,6 +147,7 @@ class ItemsController extends ApiController {
 			'title' => 'like',
 			'description' => 'like'
 		]);
+		$conditions['is_published'] = true;
 		$conditions['site_id'] = $this->site()->id;
 
 		$params = [

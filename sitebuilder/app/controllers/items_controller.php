@@ -58,6 +58,10 @@ class ItemsController extends AppController
 					}
 				}
 
+				if ($images) {
+					$item->save();
+				}
+
 				if (isset($item->geo) && !$item->geo) {
 					$message = s('Your items are being processed and will appear on the map shortly.');
 				} else {
