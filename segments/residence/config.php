@@ -9,9 +9,12 @@ Config::write('Segment', array(
 	'items' => array('articles', 'polls', 'events'),
   'extensions' => array('rss'),
   'root' => 'index',
-  'email' => array('contact@meumobi.com' => 'meumobi Residence'),
+  'email' => array('contact@meumobi.com' => 'CondMobi'),
   'hideCategories' => false,
   'enableSignup' => false,
   'fullOptions' => true,
   'analytics' => 'UA-22519238-3',
+	'enableFieldSet' => array('visitors', 'weblinks', 'description', 'contact'),
+	'enableApiAccessFromAllDomains' => true,
+	'domain' => 'meumobi.com'
 ));
