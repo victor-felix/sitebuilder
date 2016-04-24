@@ -127,7 +127,6 @@ class ProcessRemoteMedia
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($curl, CURLOPT_TIMEOUT, 60);
-		curl_exec($curl);
 
 		$response = new Response([
 			'message' => curl_exec($curl)
