@@ -60,7 +60,7 @@ EOD;
 			if (!$extension->url || !preg_match($re, $extension->url)) {
 				$invalidUrls[] = $extension->to('array');
 			} else {
-				$headers = get_headers(str_replace('feed://', 'http://', $extension->url));
+				$headers = @get_headers(str_replace('feed://', 'http://', $extension->url));
 				if ($headers) {
 					list($version,$status,$msg) = explode(' ', $headers[0]);
 					if ($status != 200) {
