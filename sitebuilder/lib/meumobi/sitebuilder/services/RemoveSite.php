@@ -5,6 +5,7 @@ use Model;
 use Users;
 use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\entities\Skin;
+use meumobi\sitebuilder\repositories\RecordNotFoundException;
 use meumobi\sitebuilder\repositories\SkinsRepository;
 use meumobi\sitebuilder\repositories\VisitorsRepository;
 
@@ -19,7 +20,6 @@ class RemoveSite
 		$this->removeCategories($site);
 		$this->removeCustomSkin($site);
 		$this->removeImages($site);
-
 
 		$deleted = $site->delete($site->id);
 
@@ -49,7 +49,7 @@ class RemoveSite
 		$repository = new VisitorsRepository();
 		$visitors = $repository->findBySiteId($site->id);
 
-		$removed = array_map(function($visitor) use ($repository) {
+		array_map(function($visitor) use ($repository) {
 			$email = $visitor->email();
 			$repository->destroy($visitor);
 
@@ -75,11 +75,17 @@ class RemoveSite
 
 	protected function removeCustomSkin($site)
 	{
-		$skin = $site->skin();
+		try {
+			$skin = $site->skin();
 
-		if ($skin && $skin->parentId()) {
-			$skinRepo = new SkinsRepository();
-			$skinRepo->destroy($skin);
+			if ($skin && $skin->parentId()) {
+				$skinRepo = new SkinsRepository();
+				$skinRepo->destroy($skin);
+			}
+		} catch (RecordNotFoundException $e) {
+			Logger::info('sites', 'skin not found', [
+				'skin_id' => $site->skin,
+			]);
 		}
 	}
 
