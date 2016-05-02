@@ -57,11 +57,11 @@ class ProcessRemoteMedia
 				'type' => isset($medium['type']) ? $medium['type'] : null,
 			]);
 
-			$starttime = microtime();
+			$starttime = microtime(true);
 
 			list($info, $status) = $this->getRemoteInfo($medium['url']);
 
-			$endtime = microtime();
+			$endtime = microtime(true);
 			$processingTime = $endtime - $starttime;
 
 			if ($info) {
@@ -127,7 +127,6 @@ class ProcessRemoteMedia
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($curl, CURLOPT_TIMEOUT, 60);
-		curl_exec($curl);
 
 		$response = new Response([
 			'message' => curl_exec($curl)

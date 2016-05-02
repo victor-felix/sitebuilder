@@ -17,6 +17,10 @@ class Articles extends \app\models\Items
 			'title' => 'Description',
 			'type' => 'richtext'
 		),
+		'link' => array(
+			'title' => 'Link',
+			'type' => 'string'
+		),
 		'author' => array(
 			'title' => 'Author',
 			'type' => 'string'

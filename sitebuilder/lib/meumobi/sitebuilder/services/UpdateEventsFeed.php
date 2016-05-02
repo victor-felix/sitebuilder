@@ -2,6 +2,9 @@
 
 namespace meumobi\sitebuilder\services;
 
+require_once 'lib/utils/Http.php';
+
+use Http;
 use SimpleXMLElement;
 use app\models\Extensions;
 use app\models\items\Events;
@@ -68,7 +71,7 @@ class UpdateEventsFeed
 			'category_id' => $extension->category_id,
 		]);
 
-		$feed = file_get_contents($url);
+		$feed = Http::request($url);
 
 		Logger::info(self::COMPONENT, 'feed fetched', [
 			'url' => $url,

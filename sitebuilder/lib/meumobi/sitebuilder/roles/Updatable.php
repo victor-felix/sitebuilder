@@ -31,8 +31,7 @@ trait Updatable
 
 			return $category;
 		} catch (RecordNotFoundException $e) {
-			$message = 'category of extension not found';
-			Logger::info('extensions', $message, [
+			Logger::info('extensions', 'category of extension not found', [
 				'extension_id' => (string) $extension->_id,
 				'category_id' => $extension->category_id,
 				'site_id' => $extension->site_id,
