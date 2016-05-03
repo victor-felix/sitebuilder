@@ -1,6 +1,27 @@
 ## Release Notes for meumobi ##
 
-Update these notes using: git log --pretty=format:'* %s' --no-merges rel-2.8.2..HEAD
+Update these notes using: git log --pretty=format:'* %s' --no-merges rel-2.8.3..HEAD
+
+### rel-2.8.3 (20160503) ###
+
+* Update App links of Google Play Download
+* BUG: Closes #364, catch RecordNotFound when trying to delete skin
+* ENHANCEMENT: coding standards
+* BUG: Closes #365, don't try to parse xml if request is not 200
+* BUG: Closes #366, silences warning when URL cannot be fetched
+* ENHANCEMENT: Closes #367, allow article's link to be edited
+* BUG: get microtimes as floats instead of strings
+* Replace wording 'pdf files' by 'External media' to be more generic
+* Update config of residence Segment
+* Remove unexpected tabs yaml
+* Add polls as items.type allowed on comunique-se Segment
+* DOC: Closes #361, save updated vhosts of PROD
+* BUG: Closes #299, save thumbnails when creating an item with images
+* ENHANCEMENT: Closes #257, update item.thumbnails with media.thumbnails
+* ENHANCEMENT: Closes #341, log when no devices are found when sending push notif
+* ENHANCEMENT: move PushNotificationWorker logic to its own service
+* BUG: Closes #360, don't show unpublished items in the search
+* BUG: Closes #363, allows 0 as option in polls
 
 ### rel-2.8.2 ###
 
