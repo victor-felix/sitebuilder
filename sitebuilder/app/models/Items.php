@@ -170,7 +170,9 @@ class Items extends \lithium\data\Model {
 			$results = array_reduce($votes,
 				function($results, $vote) use ($visitor, &$currentVote) {
 					foreach ($vote['values'] as $option => $value) {
-						$results[$option] += $value;
+						if (isset($results[$option])) {
+							$results[$option] += $value;
+						}
 					}
 
 					return $results;
