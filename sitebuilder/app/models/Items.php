@@ -381,7 +381,6 @@ class Items extends \lithium\data\Model {
 		$date = date('Y-m-d H:i:s', $time);
 		$category = $item->parent();
 
-
 		if (!$item->id()) {
 			if (!$item->created) {
 				$item->created = $date;
@@ -391,9 +390,9 @@ class Items extends \lithium\data\Model {
 				$item->published = $date;
 				$item->is_published = true;
 			}
-
-			$item->is_published = $item->published->sec <= $time;
 		}
+
+		$item->is_published = $item->published->sec <= $time;
 
 		$item->modified = $date;
 		$category->modified = $date;
