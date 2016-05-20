@@ -15,6 +15,9 @@ class PollsRepository extends Repository
 		$data = ['$push' => ['results' => $vote]];
 
 		if ($this->collection()->update($criteria, $data)) {
+			# updates timestamps so we get fresh etags
+			$item->save();
+
 			return true;
 		}
 
