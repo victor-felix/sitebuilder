@@ -21,19 +21,11 @@ class CreateOrUpdateDevice
 		$user_id = $user ? $user->id() : null;
 
 		$repository = new DevicesRepository();
-		$device = $repository->findBySiteAndUuid($site_id, $uuid);
+		$device = $repository->findForUpdate($site_id, $uuid, $user_id);
 
-		$log = [ 'uuid' => $uuid, 'site_id' => $site_id ];
-
-		if ($user) {
-			$log['user_id'] = $user_id;
-		}
+		$log = [ 'uuid' => $uuid, 'site_id' => $site_id, 'user_id' => $user_id ];
 
 		if ($device) {
-			if ($user_id != $device->userId()) {
-				throw new InvalidArgumentException('device does not belong to user');
-			}
-
 			Logger::debug(self::COMPONENT, 'device found. updating', $log);
 			$device->update($data);
 

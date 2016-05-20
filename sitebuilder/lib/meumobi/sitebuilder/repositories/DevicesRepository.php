@@ -35,12 +35,18 @@ class DevicesRepository extends Repository
 		]));
 	}
 
-	public function findBySiteAndUuid($site_id, $uuid)
+	public function findForUpdate($site_id, $uuid, $user_id = null)
 	{
-		$result = $this->collection()->findOne([
+		$conditions = [
 			'site_id' => (int) $site_id,
 			'uuid' => $uuid,
-		]);
+		];
+
+		if ($user_id) {
+			$conditions['user_id'] = $user_id;
+		}
+
+		$result = $this->collection()->findOne($conditions);
 
 		if ($result) {
 			return $this->hydrate($result);

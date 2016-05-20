@@ -170,7 +170,9 @@ class Items extends \lithium\data\Model {
 			$results = array_reduce($votes,
 				function($results, $vote) use ($visitor, &$currentVote) {
 					foreach ($vote['values'] as $option => $value) {
-						$results[$option] += $value;
+						if (isset($results[$option])) {
+							$results[$option] += $value;
+						}
 					}
 
 					return $results;
@@ -381,7 +383,6 @@ class Items extends \lithium\data\Model {
 		$date = date('Y-m-d H:i:s', $time);
 		$category = $item->parent();
 
-
 		if (!$item->id()) {
 			if (!$item->created) {
 				$item->created = $date;
@@ -391,9 +392,9 @@ class Items extends \lithium\data\Model {
 				$item->published = $date;
 				$item->is_published = true;
 			}
-
-			$item->is_published = $item->published->sec <= $time;
 		}
+
+		$item->is_published = $item->published->sec <= $time;
 
 		$item->modified = $date;
 		$category->modified = $date;
