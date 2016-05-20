@@ -1,6 +1,18 @@
 ## Release Notes for meumobi ##
 
-Update these notes using: git log --pretty=format:'* %s' --no-merges rel-2.8.3..HEAD
+Update these notes using:
+
+```
+git log --pretty=format:'* %s' --no-merges rel-2.8.4..HEAD
+```
+
+### rel-2.8.4 (20160520) ###
+
+* FIX: wrong urls to download Apps
+* BUG: Closes 372, fixes "undefined index" notice in polls
+* BUG: Closes #370, re-publish items when publish date is set to the past
+* BUG: Closes #374, allows the same device to be used by multiple users
+* BUG: Closes #373, refresh etags when poll is voted
 
 ### rel-2.8.3 (20160503) ###
 
