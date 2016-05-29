@@ -26,14 +26,11 @@
         <li data-parentid="0" data-catid="3" class="level-0">
             <span data-saveurl="/categories/edit/3" class="title"><?php echo $user->fullname() ?></span>
             <div class="controls">
-            <!-- 
-                <a href="/items/add/3" class="ui-button highlight push-scene">add item</a>
-                <a href="/items/index/3" class="ui-button manage push-scene left-join">manage items</a>--> 
                 <?php echo $this->html->link(s('remove'), '/sites/remove_user/' . $user->id, array(
                     'class' => 'ui-button manage'
                 )) ?>
             </div>
-            <div class="children-count"><?php echo s('joined at %s',$user->site()->joined) ?></div>
+            <div class="children-count"><?= $user->email ?></div>
         </li>
         <?php endforeach; ?>
         <?php foreach ($invites as $invite): ?>
