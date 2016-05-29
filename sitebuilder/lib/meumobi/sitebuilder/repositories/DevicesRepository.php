@@ -39,12 +39,9 @@ class DevicesRepository extends Repository
 	{
 		$conditions = [
 			'site_id' => (int) $site_id,
+			'user_id' => $user_id,
 			'uuid' => $uuid,
 		];
-
-		if ($user_id) {
-			$conditions['user_id'] = $user_id;
-		}
 
 		$result = $this->collection()->findOne($conditions);
 
