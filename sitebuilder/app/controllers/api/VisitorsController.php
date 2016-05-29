@@ -47,9 +47,10 @@ class VisitorsController extends ApiController
 
 				$service = new CreateOrUpdateDevice();
 				$service->perform([
-					'uuid' => $deviceData['uuid'],
 					'data' => $deviceData,
+					'site' => $this->site(),
 					'user' => $visitor,
+					'uuid' => $deviceData['uuid'],
 				]);
 			}
 
