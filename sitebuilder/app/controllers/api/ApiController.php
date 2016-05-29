@@ -275,7 +275,13 @@ class ApiController extends \lithium\action\Controller {
 		$repository = new VisitorsRepository();
 		$token = $this->request->env('HTTP_X_VISITOR_TOKEN');
 
-		return $repository->findByAuthToken($token);
+		if ($token) {
+			$visitor = $repository->findByAuthToken($token);
+
+			if (!$visitor) throw new UnAuthorizedException();
+
+			return $visitor;
+		}
 	}
 
 	protected function headers()
