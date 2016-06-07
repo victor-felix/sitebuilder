@@ -3,9 +3,7 @@
 namespace meumobi\sitebuilder\repositories;
 
 use DateTime;
-use MongoDate;
 use MongoId;
-use lithium\util\Inflector;
 use meumobi\sitebuilder\entities\Device;
 
 class DevicesRepository extends Repository

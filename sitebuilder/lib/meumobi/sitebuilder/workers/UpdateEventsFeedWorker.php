@@ -2,10 +2,12 @@
 
 namespace meumobi\sitebuilder\workers;
 
+use DateTime;
 use Exception;
 use app\models\Extensions;
 use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\roles\Updatable;
+use meumobi\sitebuilder\services\CreateJobEvent;
 use meumobi\sitebuilder\services\UpdateEventsFeed;
 use meumobi\sitebuilder\validators\ParamsValidator;
 
@@ -19,6 +21,8 @@ class UpdateEventsFeedWorker extends Worker
 	{
 		list($priority, $extensionId) = ParamsValidator::validate($this->params,
 			['priority', 'extension_id'], false);
+
+		$start = new DateTime();
 
 		$priorities = [
 			'high' => Extensions::PRIORITY_HIGH,
@@ -48,5 +52,15 @@ class UpdateEventsFeedWorker extends Worker
 				]);
 			}
 		}
+
+		$end = new DateTime();
+
+		$createJobEvent = new CreateJobEvent();
+		$createJobEvent->perform([
+			'worker' => self::COMPONENT,
+			'start' => $start,
+			'end' => $end,
+			'params' => compact('priority'),
+		]);
 	}
 }

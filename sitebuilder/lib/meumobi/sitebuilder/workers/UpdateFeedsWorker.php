@@ -7,6 +7,7 @@ use app\models\Extensions;
 use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\roles\Updatable;
 use meumobi\sitebuilder\services\UpdateNewsFeed;
+use meumobi\sitebuilder\services\CreateJobEvent;
 use meumobi\sitebuilder\validators\ParamsValidator;
 
 class UpdateFeedsWorker extends Worker
@@ -19,6 +20,8 @@ class UpdateFeedsWorker extends Worker
 	{
 		list($priority, $extensionId) = ParamsValidator::validate($this->params,
 			['priority', 'extension_id'], false);
+
+		$start = new DateTime();
 
 		$priorities = [
 			'high' => Extensions::PRIORITY_HIGH,
@@ -48,5 +51,15 @@ class UpdateFeedsWorker extends Worker
 				]);
 			}
 		}
+
+		$end = new DateTime();
+
+		$createJobEvent = new CreateJobEvent();
+		$createJobEvent->perform([
+			'worker' => self::COMPONENT,
+			'start' => $start,
+			'end' => $end,
+			'params' => compact('priority'),
+		]);
 	}
 }

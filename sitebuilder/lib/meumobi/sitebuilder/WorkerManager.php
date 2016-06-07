@@ -6,7 +6,6 @@ use Exception;
 use Inflector;
 use app\models\Jobs;
 use meumobi\sitebuilder\Logger;
-use meumobi\sitebuilder\workers\Worker;
 
 class WorkerManager
 {
