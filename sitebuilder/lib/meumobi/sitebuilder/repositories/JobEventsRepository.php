@@ -6,12 +6,14 @@ use MongoDate;
 
 class JobEventsRepository extends Repository
 {
+	protected $collectionName = 'job_events';
+
 	public function createOrUpdate($params)
 	{
-		$start = new MongoDate($data['start']->toDateTime());
-		$end = new MongoDate($data['end']->toDateTime());
+		$start = new MongoDate($params['start']->getTimestamp());
+		$end = new MongoDate($params['end']->getTimestamp());
 
-		$criteria = ['worker' => $data['worker']];
+		$criteria = ['worker' => $params['worker']];
 
 		if (isset($params['params'])) {
 			$criteria += $params['params'];
@@ -19,6 +21,13 @@ class JobEventsRepository extends Repository
 
 		$data = compact('start', 'end') + $criteria;
 
-		$this->collection()->update($criteria, $data, [ 'upsert' => true ]);
+		$result = $this->collection()->update($criteria, $data, [ 'upsert' => true ]);
+
+		if ($result['ok']) {
+			return [
+				'success' => true,
+				'created' => !!$result['nModified'],
+			];
+		}
 	}
 }

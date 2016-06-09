@@ -162,13 +162,13 @@ class UpdateNewsFeed
 					? $author->get_name()
 					: '',
 				'description' => $this->extractDescription($content, $purify),
-				//'medias' => $media,
 				'download_images' => $images,
 				'format' => 'html',
 			]);
 
+			$media = $article->medias ? $article->medias->to('array') : [];
 			$mapToUrl = function($a) { return $a['url']; };
-			$currentMediaNames = array_map($mapToUrl, $article->medias->to('array'));
+			$currentMediaNames = array_map($mapToUrl, $media);
 			$newMediaNames = array_map($mapToUrl, $media);
 
 			if (array_diff($currentMediaNames, $newMediaNames) || array_diff($newMediaNames, $currentMediaNames)) {
