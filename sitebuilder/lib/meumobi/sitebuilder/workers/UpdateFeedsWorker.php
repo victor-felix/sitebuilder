@@ -57,7 +57,7 @@ class UpdateFeedsWorker extends Worker
 
 		$createJobEvent = new CreateJobEvent();
 		$createJobEvent->perform([
-			'worker' => self::COMPONENT,
+			'worker' => get_class($this),
 			'start' => $start,
 			'end' => $end,
 			'params' => compact('priority'),

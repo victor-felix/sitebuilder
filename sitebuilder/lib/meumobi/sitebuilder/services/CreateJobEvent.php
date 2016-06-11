@@ -11,7 +11,10 @@ class CreateJobEvent
 
 	public function perform($params)
 	{
+
 		$repo = new JobEventsRepository;
+		$params['worker'] = join('', array_slice(explode('\\', $params['worker']), -1));
+
 		if ($result = $repo->createOrUpdate($params)) {
 			Logger::info(self::COMPONENT, 'job event created', $params + $result);
 		} else {

@@ -1009,3 +1009,26 @@ ul.dropdown li ul a, ul.dropdown li ul .current {
 .item-media .input.text {
   margin-bottom: 10px;
 }
+
+.table {
+    border-collapse: collapse;
+    font-size: 1.2em;
+    width: 100%;
+}
+
+.table th {
+    text-align: left;
+}
+
+.table th, .table td {
+    border-bottom: 1px solid #ccc;
+    padding: 1em;
+}
+
+.worker-status-ok td {
+    background: #dff0d8;
+}
+
+.worker-status-nok td {
+    background: #f2dede;
+}
