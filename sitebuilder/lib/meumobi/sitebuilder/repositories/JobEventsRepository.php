@@ -28,8 +28,7 @@ class JobEventsRepository extends Repository
 		if ($result['ok']) {
 			return [
 				'success' => true,
-				'created' => !!$result['nModified'],
-			];
+			] + $result;
 		}
 	}
 

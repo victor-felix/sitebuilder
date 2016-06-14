@@ -7,8 +7,6 @@ class StatusController extends AppController
 	protected $uses = [];
 	protected $layout = 'login';
 
-	protected function beforeFilter() {}
-
 	public function index()
 	{
 		// TODO check oldest job
