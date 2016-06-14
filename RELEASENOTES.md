@@ -6,6 +6,17 @@ Update these notes using:
 git log --pretty=format:'* %s' --no-merges rel-2.8.4..HEAD
 ```
 
+### rel-2.8.5 (20160614) ###
+
+* BUG: Closes #377, fetch an empty content range instead of using a HEAD request
+* ENHANCEMENT: Closes #276, shows feed import status at /status
+* BUG: job event creation was not working completely
+* ENHANCEMENT: #276, save events from feed processing
+* BUGFIX: don't allow unauthenticated request to clobber user device
+* BUGFIX: allows device to be created on login without throwing exception
+* BUGFIX: throw Unauthorized if using invalid visitor token
+* ENHANCEMENT: Closes #343, shows emails of invited users
+
 ### rel-2.8.4 (20160520) ###
 
 * FIX: wrong urls to download Apps
