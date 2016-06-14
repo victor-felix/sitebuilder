@@ -120,26 +120,39 @@ class ProcessRemoteMedia
 	protected function getRemoteInfo($url)
 	{
 		$info = [];
+		$headers = '';
 
 		$curl = curl_init($url);
-		curl_setopt($curl, CURLOPT_NOBODY, true);
+
 		curl_setopt($curl, CURLOPT_HEADER, true);
+		curl_setopt($curl, CURLOPT_RANGE, '0-0');
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($curl, CURLOPT_TIMEOUT, 60);
+		curl_setopt($curl, CURLOPT_HEADERFUNCTION, function($curl, $data) use (&$headers) {
+			$headers .= $data;
+			$length = strlen($data);
+			return $length > 2 ? $length : 0;
+		});
+
+		curl_exec($curl);
+		curl_close($curl);
 
 		$response = new Response([
-			'message' => curl_exec($curl)
+			'message' => $headers,
 		]);
 
 		$status = $response->status['code'];
-		$info['length'] = (int) $response->headers('Content-Length');
 		$info['type'] = $this->getFileType($url, $response);
 
-		curl_close($curl);
+		if (($length = $response->headers('Content-Length')) > 1) {
+			$info['length'] = (int) $length;
+		} else if (preg_match('/bytes 0-0\/(\d+)/', $response->headers('Content-Range'), $matches)) {
+			$info['length'] = (int) $matches[1];
+		}
 
 		return [
-			($status == 200 ? $info : null),
+			($status >= 200 && $status < 300 ? $info : null),
 			$status
 		];
 	}
