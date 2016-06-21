@@ -166,9 +166,8 @@ class UpdateNewsFeed
 				'format' => 'html',
 			]);
 
-			$media = $article->medias ? $article->medias->to('array') : [];
 			$mapToUrl = function($a) { return $a['url']; };
-			$currentMediaNames = array_map($mapToUrl, $media);
+			$currentMediaNames = array_map($mapToUrl, $article->medias ? $article->medias->to('array') : []);
 			$newMediaNames = array_map($mapToUrl, $media);
 
 			if (array_diff($currentMediaNames, $newMediaNames) || array_diff($newMediaNames, $currentMediaNames)) {
