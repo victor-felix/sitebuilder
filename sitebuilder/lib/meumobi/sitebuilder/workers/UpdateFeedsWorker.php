@@ -55,12 +55,14 @@ class UpdateFeedsWorker extends Worker
 
 		$end = new DateTime();
 
-		$createJobEvent = new CreateJobEvent();
-		$createJobEvent->perform([
-			'worker' => get_class($this),
-			'start' => $start,
-			'end' => $end,
-			'params' => compact('priority'),
-		]);
+		if (!is_null($priority)) {
+			$createJobEvent = new CreateJobEvent();
+			$createJobEvent->perform([
+				'worker' => get_class($this),
+				'start' => $start,
+				'end' => $end,
+				'params' => compact('priority'),
+			]);
+		}
 	}
 }
