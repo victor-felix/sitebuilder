@@ -6,6 +6,7 @@ Config::write('Segment', array(
   'contactMail' => 'contact@meumobi.com',
 	'contactFacebook' => 'http://facebook.com/meumobi',
 	'contactTwitter' => 'http://twitter.com/meumobi',
+	'downloadAppUrl' => 'https://launchkit.io/websites/q0pRiXkIE5E/',
 	'items' => array('articles', 'polls', 'events'),
   'extensions' => array('rss'),
   'root' => 'index',

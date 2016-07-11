@@ -1,4 +1,4 @@
-<a id="feedback" href="http://<?php echo e($site->domain()) ?>/landing-page" target="_blank" class="feedback"><?php echo s("Check your Meumobi's App landing page: %s", 'http://' . $site->domain() ) ?>/landing-page</a>
+<!--a id="feedback" href="http://<?php echo e($site->domain()) ?>/landing-page" target="_blank" class="feedback"><?php echo s("Check your Meumobi's App landing page: %s", 'http://' . $site->domain() ) ?>/landing-page</a-->
 <?php $this->pageTitle = s('dashboard') ?>
 
 <div class="slide-header">
@@ -11,11 +11,21 @@
 <div class="dashboard">
 	<div class="wrapp">
 		<div class="tip-big">
-			<h2><?php echo s('welcome to your mobile site') ?></h2>
-			<p><?php echo s('keep improving your mobile site') ?></p>
-			<p id="qr-code"><img src="http://api.qrserver.com/v1/create-qr-code/?size=100x100&data=http://<?php echo e($site->domain()) ?>" /></p>
+			<h2><?php echo s('welcome to your mobile App') ?></h2>
+			<p><?php echo s('keep improving your mobile App') ?></p>
+			<p id="qr-code"><img src="http://api.qrserver.com/v1/create-qr-code/?size=100x100&data=<?php echo e(MeuMobi::currentSegment()->downloadAppUrl ? MeuMobi::currentSegment()->downloadAppUrl : "http://".$site->domain()) ?>" /></p>
 		</div>
 		<ul class="featured-list">
+			<?php if ($category): ?>
+			<li id="categories">
+				<a class="link" href="<?php echo MeuMobi::url('/categories') ?>">
+					<i class="icons fa fa-4x fa-pencil-square-o"></i>
+					<h3><?php echo s('Edit content') ?></h3>
+					<small><?php echo s('you can edit your news, polls or events') ?></small>
+					<i class="arrow fa fa-4x fa-angle-right"></i>
+				</a>
+			</li>
+			<?php endif ?>
 			<?php $i = 0; $fieldsets = MeuMobi::currentSegment()->enableFieldSet ? MeuMobi::currentSegment()->enableFieldSet : array() ?>
 			<?php foreach ($fieldsets as $item ): ?>
 			<?php 
@@ -25,16 +35,6 @@
 					break;
 			?>
 			<?php endforeach; ?>
-			<?php if ($category): ?>
-			<li id="categories">
-				<a class="link" href="<?php echo MeuMobi::url('/categories') ?>">
-					<i class="icons fa fa-4x fa-pencil-square-o"></i>
-					<h3><?php echo s('Edit content') ?></h3>
-					<small><?php echo s('you can edit your menu, products, stores or news') ?></small>
-					<i class="arrow fa fa-4x fa-angle-right"></i>
-				</a>
-			</li>
-			<?php endif ?>
 			<li id="add-content" class="open" style="display:none;">
 				<div class="link">
 					<span class="icons fa fa-4x fa-file-o"></span>
@@ -73,11 +73,13 @@
 				</p>
 			</li>
 		</ul>
+		<?php if (!MeuMobi::currentSegment()->downloadAppUrl): ?>
 		<div class="domain">
 			<p><?php echo s('you can access anytime from your mobile phone') ?></p>
 			<?php echo $this->html->link('http://' . e($site->domain()),
 				'http://' . e($site->domain()), array('target' => 'blank')) ?>
 		</div>
+		<?php endif ?>
 	</div>
 	<?php echo $this->element('sites/theme_preview', array(
 		'site' => $site,

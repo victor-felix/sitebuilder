@@ -74,6 +74,7 @@
 								<?= $this->string->truncate(e($currentSite->title), 15) ?>
 								<span id="site-id">#<?= $currentSite->id ?></span>
 							</p>
+							<?php if (!MeuMobi::currentSegment()->downloadAppUrl): ?>
 							<div class="right">
 								<p class="site-url dynamic-text" data-max-font-size="36">
 									<span>
@@ -84,6 +85,7 @@
 									<a id="share" class="popup-link" href="#"><?= s('share') ?> &#8250;</a>
 								</p>
 							</div>
+							<?php endif ?>
 						</div>
 					</div>
 					<ul class="dropdown">

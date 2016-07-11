@@ -7,6 +7,7 @@ Config::write('Segment', array(
 	// 'contactPhone' => '',
 	'contactFacebook' => 'http://facebook.com/meumobi',
 	'contactTwitter' => 'http://twitter.com/meumobi',
+	'downloadAppUrl' => 'https://launchkit.io/websites/Qgoboi9Cb-E/',
 	'id' => 'comunique-se',
 	'title' => 'comunique-se',
 	'items' => array('articles', 'polls'),
@@ -17,7 +18,7 @@ Config::write('Segment', array(
 	'enableSignup' => false,
 	'fullOptions' => true,
 	'analytics' => 'UA-22519238-16',
-	'enableFieldSet' => array('visitors', 'weblinks', 'news', 'description', 'contact'),
+	'enableFieldSet' => array('visitors', 'contact'),
 	'enableApiAccessFromAllDomains' => true,
 	'domain' => 'meumobi.com'
 ));
