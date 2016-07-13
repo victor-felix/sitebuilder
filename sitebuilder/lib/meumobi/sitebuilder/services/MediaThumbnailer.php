@@ -17,17 +17,12 @@ class MediaThumbnailer
 		]);
 
 		$startime = microtime(true);
+		$thumbnail = $exception = null;
 
 		try {
-			list($thumbnail, $error) = $this->createThumbnail($medium);
+			$thumbnail = $this->createThumbnail($medium);
 		} catch (Exception $e) {
-			Logger::error(self::COMPONENT, 'thumbnail generation failed', [
-				'item_id' => $item->id(),
-				'medium_url' => $medium['url'],
-				'type' => $medium['type'],
-				'message' => $e->getMessage(),
-				'exception'  => $e,
-			]);
+			$exception = $e;
 		}
 
 		$endtime = microtime(true);
@@ -47,7 +42,8 @@ class MediaThumbnailer
 				'item_id'  => $item->id(),
 				'medium_url' => $medium['url'],
 				'type' => $medium['type'],
-				'error' => $error,
+				'message' => $exception->getMessage(),
+				'exception' => $exception,
 				'processing_time' => $processingTime,
 			]);
 		}
@@ -63,10 +59,9 @@ class MediaThumbnailer
 				'extension' => 'png'
 			]);
 
-			return [$thumbnail, null];
+			return $thumbnail;
 		} else {
-			$error = sprintf('file type "%s" not supported', $medium['type']);
-			return [null, $error];
+			throw new Exception(sprintf('file type "%s" not supported', $medium['type']));
 		}
 	}
 
