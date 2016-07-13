@@ -47,9 +47,11 @@ class PdfThumbnailer
 
 		$image->setIteratorIndex(0);
 
-		$image->setImageAlphaChannel(11); // Imagick::ALPHACHANNEL_REMOVE
-		$image->setImageBackgroundColor('white');
-		$image->mergeImageLayers(Imagick::LAYERMETHOD_FLATTEN);
+		if ($image->getImageAlphaChannel()) {
+			$image->setImageAlphaChannel(11); // Imagick::ALPHACHANNEL_REMOVE
+			$image->setImageBackgroundColor('white');
+			$image->mergeImageLayers(Imagick::LAYERMETHOD_FLATTEN);
+		}
 
 		$image->setImageFormat($extension);
 		$image->writeImage(APP_ROOT . $to);
