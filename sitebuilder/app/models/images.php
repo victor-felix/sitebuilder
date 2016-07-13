@@ -4,7 +4,12 @@ require_once 'lib/utils/FileUpload.php';
 require_once 'lib/utils/FileDownload.php';
 require_once 'lib/phpthumb/ThumbLib.inc.php';
 
-class Images extends AppModel {
+use meumobi\sitebuilder\Logger;
+
+class Images extends AppModel
+{
+	const COMPONENT = 'images';
+
 	protected $afterSave = array('fillFields');
 	protected $beforeDelete = array('deleteFile', 'updateTimestamps');
 
@@ -129,6 +134,13 @@ class Images extends AppModel {
 
 			return $self;
 		} catch (Exception $e) {
+			Logger::error(self::COMPONENT, "$method failed", [
+				'model' => $model,
+				'path' => $path,
+				'message' => $e->getMessage(),
+				'exception' => $e,
+			]);
+
 			if ($transaction) {
 				$this->rollback();
 			} else {
