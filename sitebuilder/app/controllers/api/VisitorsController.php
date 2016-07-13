@@ -73,7 +73,7 @@ class VisitorsController extends ApiController
 
 			return $response;
 		} else {
-			throw new UnAuthorizedException('invalid visitor');
+			throw new UnAuthorizedException('invalid email or password');
 		}
 	}
 
@@ -104,7 +104,7 @@ class VisitorsController extends ApiController
 				'visitor' => VisitorPresenter::present($visitor)
 			];
 		} else {
-			throw new ForbiddenException('Invalid visitor');
+			throw new ForbiddenException('invalid visitor');
 		}
 	}
 
