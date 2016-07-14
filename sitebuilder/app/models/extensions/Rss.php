@@ -40,8 +40,8 @@ class Rss extends Extensions
 
 		$self->_schema = $parent->_schema + [
 			'url' => ['type' => 'string', 'default' => ''],
-			'use_html_purifier' => ['type' => 'integer', 'default' => 1],
-			'import_mode' => ['type' => 'string', 'default' => BulkImportItems::INCLUSIVE_IMPORT],
+			'use_html_purifier' => ['type' => 'integer', 'default' => 0],
+			'import_mode' => ['type' => 'string', 'default' => BulkImportItems::EXCLUSIVE_IMPORT],
 		];
 	}
 }

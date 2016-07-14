@@ -30,7 +30,7 @@ class Extensions extends Modules
 		$self->_schema = $parent->_schema + array(
 			'extension' => array('type' => 'string', 'null' => false),
 			'category_id' => array('type' => 'integer', 'null' => false),
-			'enabled'=> array('type' => 'integer', 'default' => 0),
+			'enabled'=> array('type' => 'integer', 'default' => 1),
 		);
 	}
 
