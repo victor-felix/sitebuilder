@@ -44,6 +44,8 @@ class FileDownload {
 
         curl_setopt($remote, CURLOPT_FILE, $local);
         curl_setopt($remote, CURLOPT_HEADER, 0);
+        curl_setopt($remote, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($remote, CURLOPT_TIMEOUT, 60);
         curl_exec($remote);
         $status = curl_getinfo($remote, CURLINFO_HTTP_CODE);
         curl_close($remote);

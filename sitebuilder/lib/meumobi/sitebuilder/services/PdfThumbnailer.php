@@ -2,6 +2,7 @@
 
 namespace meumobi\sitebuilder\services;
 
+use Exception;
 use Imagick;
 use MeuMobi;
 use Model;
@@ -26,17 +27,31 @@ class PdfThumbnailer
 		]);
 
 		$image = new Imagick();
-		$image->readImage($url);
 
-		Logger::debug(self::COMPONENT, 'file read', [
-			'medium_url' => $url,
-		]);
+		try {
+			$image->readImage($url);
+
+			Logger::debug(self::COMPONENT, 'file read', [
+				'medium_url' => $url,
+			]);
+		} catch (Exception $e) {
+			Logger::debug(self::COMPONENT, 'file read failed', [
+				'medium_url' => $url,
+				'http_response_headers' => $http_response_header,
+				'message' => $e->getMessage(),
+				'exception' => $e,
+			]);
+
+			throw $e;
+		}
 
 		$image->setIteratorIndex(0);
 
-		$image->setImageAlphaChannel(11); // Imagick::ALPHACHANNEL_REMOVE
-		$image->setImageBackgroundColor('white');
-		$image->mergeImageLayers(Imagick::LAYERMETHOD_FLATTEN);
+		if ($image->getImageAlphaChannel()) {
+			$image->setImageAlphaChannel(11); // Imagick::ALPHACHANNEL_REMOVE
+			$image->setImageBackgroundColor('white');
+			$image->mergeImageLayers(Imagick::LAYERMETHOD_FLATTEN);
+		}
 
 		$image->setImageFormat($extension);
 		$image->writeImage(APP_ROOT . $to);
