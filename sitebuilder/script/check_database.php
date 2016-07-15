@@ -40,12 +40,18 @@ EOD;
 EOD;
 
 		$invalidParents = Model::load('Categories')->query($invalidParentQuery);
-		if ($invalidParents->rowCount())
+		if ($invalidParents->rowCount()) {
 			$this->logger()->info('invalid Categories', ['categories with invalid parents:' => $invalidParents]);
+		} else {
+			$this->logger()->info('No Categories with invalid parents');
+		}
 
 		$invalidSites = Model::load('Categories')->query($invalidSiteQuery);
-		if ($invalidSites->rowCount())
+		if ($invalidSites->rowCount()) {
 			$this->logger()->info('invalid Categories', ['categories with invalid sites:' => $invalidSites]);
+		} else {
+			$this->logger()->info('No Categories with invalid sites');	
+		}
 	}
 
 	public function invalidFeeds() {
@@ -60,7 +66,7 @@ EOD;
 			if (!$extension->url || !preg_match($re, $extension->url)) {
 				$invalidUrls[] = $extension->to('array');
 			} else {
-				$headers = @get_headers(str_replace('feed://', 'http://', $extension->url));
+				$headers = get_headers(str_replace('feed://', 'http://', $extension->url));
 				if ($headers) {
 					list($version,$status,$msg) = explode(' ', $headers[0]);
 					if ($status != 200) {
@@ -72,11 +78,11 @@ EOD;
 			}
 		}
 
-		if ($invalidUrls)
+		if (isset($invalidUrls))
 			$this->logger()->info('invalid Feeds', ['Feeds with invalid url format:' => $invalidUrls]);
-		if ($invalidRequest)
+		if (isset($invalidRequest))
 			$this->logger()->info('invalid Feeds', ['Feeds with invalid request:' => $invalidRequest]);
-		if ($invalidStatus)
+		if (isset($invalidStatus))
 			$this->logger()->info('invalid Feeds', ['Feeds with invalid response status(obs. grouped by status):' => $invalidStatus]);
 	}
 
