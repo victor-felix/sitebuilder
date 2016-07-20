@@ -70,6 +70,8 @@ class ProcessRemoteMedia
 
 				$successes += 1;
 
+				$item->save();
+
 				Logger::info(self::COMPONENT, 'remote media info downloaded', [
 					'item_id' => $item->id(),
 					'url' => $medium['url'],

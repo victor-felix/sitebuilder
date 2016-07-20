@@ -51,9 +51,9 @@ class FileDownload {
         curl_close($remote);
         fclose($local);
 
-        if($status >= 400) {
+        if($status >= 300) {
             Filesystem::delete($target);
-            throw new Exception('source file returned error');
+            throw new Exception("source file returned status $status");
         }
     }
 }
