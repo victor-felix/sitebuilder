@@ -167,10 +167,15 @@ class UpdateNewsFeed
 			]);
 
 			$mapToUrl = function($a) { return $a['url']; };
-			$currentMediaNames = array_map($mapToUrl, $article->medias ? $article->medias->to('array') : []);
+			$currentMediaNames = array_map($mapToUrl,
+				$article->medias
+					? $article->medias->to('array')
+					: []
+			);
 			$newMediaNames = array_map($mapToUrl, $media);
 
 			if (array_diff($currentMediaNames, $newMediaNames) || array_diff($newMediaNames, $currentMediaNames)) {
+				unset($article['medias']);
 				$article->set(['medias' => $media]);
 			}
 
@@ -326,7 +331,10 @@ class UpdateNewsFeed
 	protected function extractMediaFromEnclosure($article, $xpath)
 	{
 		$filter = function($enclosure) {
-			return $enclosure->get_link() && $enclosure->get_medium() != 'image';
+			return $enclosure->get_link() && (
+				$enclosure->get_medium() &&
+				$enclosure->get_medium() != 'image'
+			);
 		};
 
 		$map = function($enclosure) {
