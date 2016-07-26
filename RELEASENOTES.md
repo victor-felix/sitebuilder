@@ -3,8 +3,29 @@
 Update these notes using:
 
 ```
-git log --pretty=format:'* %s' --no-merges rel-2.8.4..HEAD
+git log --pretty=format:'* %s' --no-merges rel-2.8.6..HEAD
 ```
+
+### rel-2.8.6 (20160726) ###
+
+* ENHANCEMENT: Fetches oldest job for status page
+* ENHANCEMENT: add custom bg color on mail layout
+* BUG: consider missing medium on enclosure as images instead of generic media
+* ENHANCEMENT: Closes #396, save items again just before downloading thumbnails
+* FIX: Closes #404, script/check_database raises NOTICE when invalid Urls are empty
+* ENHANCEMENT: Closes #399, By default enable extension and set exclusive and NOT html_purifier properties
+* BUG: Closes #380, consistent error messages for visitors
+* BUG: Closes #387, log when images fail to download
+* BUG: Closes #389, don't set alpha channel if it doesn't exist
+* ENHANCEMENT: better logging for media thumbnailer
+* BUG: don't save job events for workers with no priority
+* ENHANCEMENT: Closes #394, update dashboard links. Introduces App/Site Segment Property
+* ENHANCEMENT: Closes #393, create segment Employee
+* BUG: Closes #381, don't clobber new media with old media
+* ENHANCEMENT: update App download link of condmobi
+* ENHANCEMENT: Closes #382, Update App download url
+* ENHANCEMENT: Closes #383, Update App download url
+* BUG: fixes notices from last deploy
 
 ### rel-2.8.5 (20160614) ###
 
