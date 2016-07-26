@@ -1,4 +1,7 @@
-<?php $logo = isset($site) && $site->logo() ? $site->logo()->link('200x200') : false ?>
+<?php 
+$logo = isset($site) && $site->logo() ? $site->logo()->link('200x200') : false;
+$colors = $site->skin()->colors();
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -7,15 +10,15 @@
     </head>
     <body bgcolor="#EFEFEF">
         <font face="Arial" color="#555">
-        <table border="0" width="640" align="center">
-            <tr>
-                <td><br /><br />
+<table border="0" width="640" align="center">
+<tr bgcolor="<?= $colors["defaultBg"] ?>">
+                <td style="padding: 5px 0 5px 10px">
                     <?php if($logo): ?>
                         <img src="<?= MeuMobi::url($logo, true) ?>" alt="<?= $site->title ?>" />
                     <?php else: ?>
                         <h1><?= $site->title ?></h1>
                     <?php endif ?>
-                <br /><br /></td>
+                </td>
             </tr>
             <tr>
                 <td bgcolor="#FFFFFF">
