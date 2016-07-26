@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Jobs;
 use meumobi\sitebuilder\repositories\JobEventsRepository;
 
 class StatusController extends AppController
@@ -9,7 +10,6 @@ class StatusController extends AppController
 
 	public function index()
 	{
-		// TODO check oldest job
 		// TODO check if API responds
 
 		// $this->checkApiEndpoints();
@@ -18,7 +18,9 @@ class StatusController extends AppController
 		$workers = ['UpdateEventsFeedWorker', 'UpdateFeedsWorker'];
 		$workerStatuses = $jobEvents->getStatus($workers);
 
-		$this->set(compact('workerStatuses'));
+		$oldestJob = Jobs::first([ 'order' => ['modified' => 'ASC'] ]);
+
+		$this->set(compact('workerStatuses', 'oldestJob'));
 	}
 
 	protected function checkApiEndpoints()
