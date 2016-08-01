@@ -1,5 +1,5 @@
 <li class="level-<?= $level ?>" data-catid="<?= $category->id ?>" data-parentid="<?= $category->parent_id ?>">
-	<?php if($level == 1): ?>
+	<?php if($level == 1 && MeuMobi::currentSegment()->enableSubCategories): ?>
 		<?= $this->buttons->rowAdd('/categories/add/' . $category->id) ?>
 	<?php endif ?>
 

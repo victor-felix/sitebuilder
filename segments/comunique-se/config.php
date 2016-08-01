@@ -19,6 +19,7 @@ Config::write('Segment', array(
 	'fullOptions' => true,
 	'analytics' => 'UA-22519238-16',
 	'enableFieldSet' => array('visitors', 'contact'),
+	'enableSubCategories' => false,
 	'enableApiAccessFromAllDomains' => true,
 	'domain' => 'meumobi.com'
 ));

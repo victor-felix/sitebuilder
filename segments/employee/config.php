@@ -12,10 +12,11 @@ Config::write('Segment', array(
   'root' => 'index',
   'email' => array('contact@meumobi.com' => 'meumobi Employee'),
   'hideCategories' => false,
-  'enableSignup' => false,
+  'enableSignup' => true,
   'fullOptions' => true,
   'analytics' => 'UA-22519238-3',
 	'enableFieldSet' => array('visitors', 'weblinks', 'description', 'contact'),
+	'enableSubCategories' => false,
 	'enableApiAccessFromAllDomains' => true,
 	'domain' => 'meumobi.com'
 ));
