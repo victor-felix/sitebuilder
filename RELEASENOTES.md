@@ -6,6 +6,17 @@ Update these notes using:
 git log --pretty=format:'* %s' --no-merges rel-2.8.6..HEAD
 ```
 
+### rel-2.8.7 (20160801) ###
+
+* Updates composer packages
+* BUG: don't warn on new fields when updating items
+* ENHANCEMENT: Closes #406, get mime types for remote media with Mimey
+* BUG: Closes #388, use unique name for temp downloaded images
+* Whitespace changes
+* DOC: add new vhost for employee
+* ENHANCEMENT: allow subcategories creation on segment's config
+* ENHANCEMENT: reduce size of segment's logos
+
 ### rel-2.8.6 (20160726) ###
 
 * ENHANCEMENT: Fetches oldest job for status page
