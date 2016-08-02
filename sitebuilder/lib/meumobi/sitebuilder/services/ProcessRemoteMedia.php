@@ -4,6 +4,7 @@ namespace meumobi\sitebuilder\services;
 
 use Exception;
 use Filesystem;
+use Mimey\MimeTypes;
 use lithium\net\http\Response;
 use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\WorkerManager;
@@ -12,10 +13,6 @@ use meumobi\sitebuilder\services\MediaThumbnailer;
 class ProcessRemoteMedia
 {
 	const COMPONENT = 'remote_media';
-
-	public static $extensionToType = [
-		'pdf' => 'application/pdf',
-	];
 
 	public static $typeBlacklist = ['text/html'];
 
@@ -186,9 +183,8 @@ class ProcessRemoteMedia
 	protected function getFileTypeFromFilename($filename)
 	{
 		$extension = Filesystem::extension($filename);
+		$mimes = new MimeTypes;
 
-		return isset(self::$extensionToType[$extension])
-			? self::$extensionToType[$extension]
-			: null;
+		return $mimes->getMimeType($extension);
 	}
 }
