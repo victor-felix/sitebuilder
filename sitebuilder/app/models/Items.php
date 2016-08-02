@@ -211,7 +211,9 @@ class Items extends \lithium\data\Model {
 		if (!$export['exists']) return true;
 
 		if (isset($export['update'][$field])) {
-			return $export['data'][$field] != $export['update'][$field];
+			return isset($export['data'][$field])
+				? $export['data'][$field] != $export['update'][$field]
+				: true;
 		} else {
 			return false;
 		}
