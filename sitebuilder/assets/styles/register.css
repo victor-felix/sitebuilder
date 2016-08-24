@@ -175,8 +175,8 @@
 	text-decoration: underline;
 }
 
+.status #header,
 .login #header {
-	width: 340px;
 	background-color: #fff;
 	border-radius: 3px 3px 0 0;
 	-webkit-border-radius: 3px 3px 0 0;
@@ -191,8 +191,12 @@
 	border-top-width: 15px;
 }
 
-.login #content {
+.login #header {
 	width: 340px;
+}
+
+.status #content,
+.login #content {
 	border-radius: 0;
 	-webkit-border-radius: 0;
 	-moz-border-radius: 0;
@@ -201,6 +205,10 @@
 	-moz-box-shadow: 0 2px 2px #CCCCCC;
 	border-left: 1px solid #CCCCCC;
 	border-right: 1px solid #CCCCCC;
+}
+
+.login #content {
+	width: 340px;
 }
 
 .login #success-feedback, #error-feedback {

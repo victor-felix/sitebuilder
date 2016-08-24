@@ -1,18 +1,15 @@
 <?php
 
-use Config;
 use app\models\Jobs;
 use meumobi\sitebuilder\repositories\JobEventsRepository;
 
 class StatusController extends AppController
 {
 	protected $uses = [];
-	protected $layout = 'login';
+	protected $layout = 'status';
 
 	public function index()
 	{
-		// TODO check if API responds
-
 		$apiEndpointStatuses = $this->checkApiEndpoints();
 
 		$jobEvents = new JobEventsRepository();
@@ -41,7 +38,7 @@ class StatusController extends AppController
 
 			curl_multi_add_handle($multi, $handle);
 
-			$site_to_handle[$url] = $handle;
+			$site_to_handle[$site] = $handle;
 		}
 
 		$running = null;
@@ -53,7 +50,7 @@ class StatusController extends AppController
 			$statuses []= [
 				'site' => $site,
 				'status' => curl_getinfo($handle, CURLINFO_HTTP_CODE),
-				'content_type' => curl_getinfo($handle, CURLINFO_CONTENT_TYPE);
+				'content_type' => curl_getinfo($handle, CURLINFO_CONTENT_TYPE),
 			];
 		}
 

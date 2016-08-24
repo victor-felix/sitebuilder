@@ -1,3 +1,4 @@
+<?php $this->pageTitle = 'Status' ?>
 <table class="table">
 	<thead>
 		<tr>
