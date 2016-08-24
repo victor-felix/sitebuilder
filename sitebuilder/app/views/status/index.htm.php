@@ -14,5 +14,9 @@
 				<td><?= $status['ok'] ? 'OK' : 'NOK' ?></td>
 			</tr>
 		<?php endforeach ?>
+		<tr class="worker-status-<?= $oldestJobStatus['ok'] ? 'ok' : 'nok' ?>">
+			<td colspan="2"><?= $oldestJobStatus['worker'] ?></td>
+			<td><?= $oldestJobStatus['ok'] ? 'OK' : 'NOK' ?></td>
+		</tr>
 	</tbody>
 </table>

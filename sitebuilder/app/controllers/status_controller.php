@@ -18,14 +18,13 @@ class StatusController extends AppController
 		$workers = ['UpdateEventsFeedWorker', 'UpdateFeedsWorker'];
 		$workerStatuses = $jobEvents->getStatus($workers);
 
-		$oldestJob = Jobs::first([ 'order' => ['modified' => 'ASC'] ]);
+		$oldestJobStatus = $this->checkOldestJob();
 
-		$this->set(compact('workerStatuses', 'oldestJob'));
+		$this->set(compact('workerStatuses', 'oldestJobStatus'));
 	}
 
 	protected function checkApiEndpoints()
 	{
-		// http://php.net/manual/en/function.curl-multi-init.php
 		$urls = ['http://google.com'];
 		$url_to_handle = [];
 		$multi = curl_multi_init();
@@ -51,5 +50,16 @@ class StatusController extends AppController
 		}
 
 		curl_multi_close($multi);
+	}
+
+	protected function checkOldestJob()
+	{
+		$oneHourAgo = time() - 3600;
+		$oldestJob = Jobs::first([ 'order' => ['modified' => 'ASC'] ]);
+
+		return [
+			'worker' => 'WorkerManager',
+			'ok' => $oldestJob->created->sec > $oneHourAgo
+		];
 	}
 }
