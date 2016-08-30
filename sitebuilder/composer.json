@@ -13,6 +13,7 @@
         "mjohnson/decoda": "~6.5.2",
         "gomoob/php-pushwoosh": "~1.2.0",
         "bramus/monolog-colored-line-formatter": "~2.0",
-        "ralouphie/mimey": "~1.0.1"
+        "ralouphie/mimey": "~1.0.1",
+        "madcoda/php-youtube-api": "~1.2"
     }
 }

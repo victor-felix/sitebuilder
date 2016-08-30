@@ -61,12 +61,14 @@ class StatusController extends AppController
 
 	protected function checkOldestJob()
 	{
-		$oneHourAgo = time() - 3600;
+		$twoHoursAgo = time() - 7200;
 		$oldestJob = Jobs::first([ 'order' => ['modified' => 'ASC'] ]);
 
 		return [
 			'worker' => 'WorkerManager',
-			'ok' => $oldestJob->created->sec > $oneHourAgo
+			'ok' => $oldestJob
+				? $oldestJob->created->sec > $twoHoursAgo
+				: true
 		];
 	}
 }
