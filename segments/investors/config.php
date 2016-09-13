@@ -21,5 +21,6 @@ Config::write('Segment', array(
 	'analytics' => 'UA-22519238-3',
 	'themes' => array('rimobi'),
 	'enableFieldSet' => array('stocks', 'photos', 'location', 'contact', 'weblinks', 'description'),
-	'enableApiAccessFromAllDomains' => true
+	'enableApiAccessFromAllDomains' => true,
+	'enableSubCategories' => true
 ));
