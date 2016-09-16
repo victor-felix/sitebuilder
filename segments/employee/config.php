@@ -1,5 +1,7 @@
 <?php
 
+Config::write('Themes.url', 'http://employee.meumobilesite.com/themes.json');
+
 Config::write('Segment', array(
   'id' => 'employee',
   'title' => 'Employee',
@@ -15,7 +17,7 @@ Config::write('Segment', array(
   'enableSignup' => true,
   'fullOptions' => true,
   'analytics' => 'UA-22519238-3',
-	'enableFieldSet' => array('visitors', 'weblinks', 'description', 'contact'),
+	'enableFieldSet' => array('visitors', 'contact'),
 	'enableSubCategories' => false,
 	'enableApiAccessFromAllDomains' => true,
 	'domain' => 'meumobi.com'

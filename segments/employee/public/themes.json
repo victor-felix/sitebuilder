@@ -1,0 +1,23 @@
+[
+  {
+    "assets": {
+      "android_custom_icon": "/images/shared/themes/infomobi/icon.png"
+    },
+    "layout_alternatives": {
+      "tab-2_id": "",
+      "tab-2_icon": "fa-agenda"
+    },
+    "tokens": {
+      "contact_screen_title": "Fale com a comunicação interna"
+    },
+    "colors": {
+      "defaultBg": "#FF8C04"
+    },
+    "name": "infomobi",
+    "main_color": "FF8C04",
+    "thumbnails": [
+      "/images/shared/themes/infomobi/thumbnail_1.png"
+    ],
+    "id": "infomobi"
+  }
+]

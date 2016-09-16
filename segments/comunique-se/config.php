@@ -1,5 +1,7 @@
 <?php
 
+Config::write('Themes.url', 'http://comunique-se.meumobilesite.com/themes.json');
+
 Config::write('Segment', array(
 	//'aboutUsUrl' => '',
 	// 'blogUrl' => '',
