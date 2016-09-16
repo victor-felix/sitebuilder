@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "86e2aae99d42933bd4827fcee17b5ad0",
-    "content-hash": "2ee5946824b228797952a8af89ad39f2",
+    "hash": "38b1250ab045bf56e74736975880442c",
+    "content-hash": "66c3535c26d66cc77d6dfbdbe2282f56",
     "packages": [
         {
             "name": "bramus/ansi-php",
@@ -151,6 +151,51 @@
                 "pushwoosh"
             ],
             "time": "2015-12-25 00:40:55"
+        },
+        {
+            "name": "madcoda/php-youtube-api",
+            "version": "1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/madcoda/php-youtube-api.git",
+                "reference": "f0e44d68d953155462b51cd01caca48496d99188"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/madcoda/php-youtube-api/zipball/f0e44d68d953155462b51cd01caca48496d99188",
+                "reference": "f0e44d68d953155462b51cd01caca48496d99188",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*@stable"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Madcoda": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Madcoda",
+                    "email": "jason@madcoda.com"
+                }
+            ],
+            "description": "PHP wrapper for the Youtube Data API v3",
+            "keywords": [
+                "api",
+                "madcoda",
+                "video",
+                "youtube"
+            ],
+            "time": "2015-09-04 10:42:30"
         },
         {
             "name": "mjohnson/decoda",
@@ -307,6 +352,46 @@
                 "psr-3"
             ],
             "time": "2012-12-21 11:40:51"
+        },
+        {
+            "name": "ralouphie/mimey",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ralouphie/mimey.git",
+                "reference": "53b0bc18ff9cdcf5cd922642ed4dee98194e7e7f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ralouphie/mimey/zipball/53b0bc18ff9cdcf5cd922642ed4dee98194e7e7f",
+                "reference": "53b0bc18ff9cdcf5cd922642ed4dee98194e7e7f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~3.7.0",
+                "satooshi/php-coveralls": ">=1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mimey\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ralph Khattar",
+                    "email": "ralph.khattar@gmail.com"
+                }
+            ],
+            "description": "PHP package for converting file extensions to MIME types and vice versa.",
+            "time": "2016-06-21 04:03:11"
         }
     ],
     "packages-dev": [],

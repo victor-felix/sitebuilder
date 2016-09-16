@@ -161,8 +161,9 @@ class Images extends AppModel
 	{
 		$downloader = new FileDownload();
 		$downloader->path = APP_ROOT . '/' . $this->getPath($model);
+		$salt = md5(time());
 
-		return $downloader->download($image, ':original_name');
+		return $downloader->download($image, "${salt}_:original_name");
 	}
 
 	protected function renameTempImage($info)

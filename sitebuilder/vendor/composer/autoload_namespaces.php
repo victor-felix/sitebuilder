@@ -7,5 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Psr\\Log\\' => array($vendorDir . '/psr/log'),
+    'Madcoda' => array($vendorDir . '/madcoda/php-youtube-api/src'),
     'Decoda' => array($vendorDir . '/mjohnson/decoda/src'),
 );

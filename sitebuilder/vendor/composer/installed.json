@@ -311,5 +311,94 @@
             "push",
             "pushwoosh"
         ]
+    },
+    {
+        "name": "ralouphie/mimey",
+        "version": "1.0.1",
+        "version_normalized": "1.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ralouphie/mimey.git",
+            "reference": "53b0bc18ff9cdcf5cd922642ed4dee98194e7e7f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/ralouphie/mimey/zipball/53b0bc18ff9cdcf5cd922642ed4dee98194e7e7f",
+            "reference": "53b0bc18ff9cdcf5cd922642ed4dee98194e7e7f",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~3.7.0",
+            "satooshi/php-coveralls": ">=1.0"
+        },
+        "time": "2016-06-21 04:03:11",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Mimey\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Ralph Khattar",
+                "email": "ralph.khattar@gmail.com"
+            }
+        ],
+        "description": "PHP package for converting file extensions to MIME types and vice versa."
+    },
+    {
+        "name": "madcoda/php-youtube-api",
+        "version": "1.2",
+        "version_normalized": "1.2.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/madcoda/php-youtube-api.git",
+            "reference": "f0e44d68d953155462b51cd01caca48496d99188"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/madcoda/php-youtube-api/zipball/f0e44d68d953155462b51cd01caca48496d99188",
+            "reference": "f0e44d68d953155462b51cd01caca48496d99188",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">5.3"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "3.7.*@stable"
+        },
+        "time": "2015-09-04 10:42:30",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Madcoda": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Madcoda",
+                "email": "jason@madcoda.com"
+            }
+        ],
+        "description": "PHP wrapper for the Youtube Data API v3",
+        "keywords": [
+            "api",
+            "madcoda",
+            "video",
+            "youtube"
+        ]
     }
 ]

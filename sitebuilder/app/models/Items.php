@@ -211,7 +211,9 @@ class Items extends \lithium\data\Model {
 		if (!$export['exists']) return true;
 
 		if (isset($export['update'][$field])) {
-			return $export['data'][$field] != $export['update'][$field];
+			return isset($export['data'][$field])
+				? $export['data'][$field] != $export['update'][$field]
+				: true;
 		} else {
 			return false;
 		}
@@ -422,6 +424,10 @@ class Items extends \lithium\data\Model {
 			}, Config::read('BusinessItems.resizes'));
 		} else if (empty($item->to('array')['thumbnails']) && $item->medias) {
 			$thumbnails = array_reduce($item->to('array')['medias'], function($thumbnails, $medium) {
+				$medium['thumbnails'] = isset($medium['thumbnails'])
+					? $medium['thumbnails']
+					: [];
+
 				return array_merge($thumbnails, $medium['thumbnails']);
 			}, []);
 

@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
+    'Mimey\\' => array($vendorDir . '/ralouphie/mimey/src'),
     'Gomoob\\' => array($vendorDir . '/gomoob/php-pushwoosh/src/main/php/Gomoob'),
     'Bramus\\Monolog\\' => array($vendorDir . '/bramus/monolog-colored-line-formatter/src'),
     'Bramus\\Ansi\\' => array($vendorDir . '/bramus/ansi-php/src'),
