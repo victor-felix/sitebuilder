@@ -64,8 +64,8 @@ class Sites extends AppModel
 		],
 		'description' => [
 			[
-				'rule' => ['maxLength', 500],
-				'message' => 'The description of the site could contain 500 chars max.'
+				'rule' => ['maxLength', 3000],
+				'message' => 'The description of the site could contain 3000 chars max.'
 			]
 		],
 	];
