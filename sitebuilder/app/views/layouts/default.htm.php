@@ -108,7 +108,6 @@
 							<ul>
 								<li><?= $this->html->link(s('themes'), '/sites/theme') ?></li>
 								<li><?= $this->html->link(s('customization'), '/sites/custom_theme/' . $currentSite->skin ) ?></li>
-								<li><?= $this->html->link(s('application'), '/sites/application') ?></li>
 							</ul>
 						</li>
 						<li>

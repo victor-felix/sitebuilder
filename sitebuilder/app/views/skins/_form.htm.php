@@ -21,6 +21,20 @@
 								'customizeLink' => false,
 							)) ?>
 						<?php endif ?>
+						<div class="form-grid-460 first">
+							<?php if($site->appleTouchIcon()): ?>
+								<?php echo $this->html->image($site->appleTouchIcon()->link(), array(
+									'class' => 'logo'
+								)) ?>
+								<?php echo $this->html->link(s('delete icon'), '/images/delete/' . $site->appleTouchIcon()->id) ?>
+							<?php endif ?>
+							<?php echo $this->form->input('appleTouchIcon', array(
+								'label' => s('icon for iPhone'),
+								'type' => 'file',
+								'class' => 'ui-text'
+							)) ?>
+							<small><?php echo s('The recommended dimensions for image are %s height and %s width', '114px', '114px') ?></small>
+						</div>
 						<?php foreach ((array) $skin->assets() as $name => $asset): ?>
 							<div class="form-grid-460">
 								<?php echo $this->html->image($asset, array(
