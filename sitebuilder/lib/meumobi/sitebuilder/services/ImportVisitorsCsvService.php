@@ -164,7 +164,7 @@ class ImportVisitorsCsvService extends ImportCsvService
 		$mailer = new Mailer([
 			'from' => $segment->email,
 			'to' => $data['email'],
-			'subject' => $data['title'],
+			'subject' => s('visitors/mail/add.subject', $data['title']),
 			'views' => ['text/html' => 'visitors/password_mail.htm'],
 			'layout' => 'mail',
 			'data' =>  $data,
