@@ -43,14 +43,14 @@
 			<?php if (MeuMobi::currentSegment()->isEnabledFieldSet('description')): ?>
 			<div class="form-grid-460">
 				<span class="optional">
-					<?php echo s('<span id="businessCounter">500</span> left') ?>
+					<?php echo s('<span id="businessCounter">3000</span> left') ?>
 				</span>
 				<?php echo $this->form->input('description', array(
 					'id' => 'businessDescription',
 					'label' => s('Description of business'),
 					'type' => 'textarea',
 					'class' => 'ui-textarea large greater',
-					'maxlength' => 500
+					'maxlength' => 3000
 				)) ?>
 				<small>
 					<?php echo s('Give the users a brief description of what your business is, what it does, when it was founded, what your main services or products are, and so on.') ?>

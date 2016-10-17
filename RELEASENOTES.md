@@ -3,8 +3,19 @@
 Update these notes using:
 
 ```
-git log --pretty=format:'* %s' --no-merges rel-2.8.6..HEAD
+git log --pretty=format:'* %s' --no-merges rel-2.8.8..HEAD
 ```
+
+### rel-2.8.8 (20160930) ###
+
+* ENHANCEMENT: Closes #415, site.description now allows up to 3000 characters
+* ENHANCEMENT: add infomobi theme
+* Allow subcategories on investor
+* FEATURE: Closes #407, handle remote youtube media
+* ENHANCEMENT: better layout for status page
+* FEATURE: Closes #356. Monitor response codes of important sites
+* FEATURE: monitor age of jobs in the queue
+* BUG: fixes undef var warning
 
 ### rel-2.8.7 (20160801) ###
 
@@ -242,7 +253,7 @@ git log --pretty=format:'* %s' --no-merges rel-2.8.6..HEAD
 * Make Images->getPath() public
 * Add pdf worker to extract media thumbs
 * Add PdfThumbnailer simple service with a method that gets a remote pdf, extract its thumbnail and returns the local file path
- 
+
 ### rel-2.6.4 (20150921) ###
 * Don't delete untouched items when bulk importing. Closes #228
 * Try to update item only if it has an id
