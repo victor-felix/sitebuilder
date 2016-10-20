@@ -2,13 +2,14 @@
 
 namespace meumobi\sitebuilder\services;
 
-require_once 'lib/pushwoosh/Push.php';
-
+use Config;
+use MeuMobi;
 use app\models\Items;
 use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\repositories\DevicesRepository;
 use meumobi\sitebuilder\repositories\VisitorsRepository;
-use pushwoosh\Push;
+use meumobi\sitebuilder\services\SendOneSignalNotification;
+use meumobi\sitebuilder\services\SendPushwooshNotification;
 
 class SendPushNotification
 {
@@ -19,6 +20,9 @@ class SendPushNotification
 		$site = $item->site();
 		$category = $item->parent();
 		$devices = $this->getDevicesTokens($item, $site);
+		$service = 1 // $site->pushnotif_service == 'pushwoosh'
+			? new SendPushwooshNotification
+			: new SendOneSignalNotification;
 
 		if (!$site->pushwoosh_app_id || !$category->notification) {
 			return;
@@ -40,15 +44,32 @@ class SendPushNotification
 			'number_of_devices' => count($devices),
 		]);
 
-		$response = Push::notify([
-			'site' => $site,
-			'item' => $item,
-			'devices' => $devices,
-		]);
+		$auth = [
+			'app' => $site->pushwoosh_app_id,
+			'authToken' => Config::read('PushWoosh.authToken'),
+		];
 
-		Logger::info(self::COMPONENT, 'push notification sent successfully', $log + [
-			'push_response' => $response,
-		]);
+		$icon = $site->appleTouchIcon()
+			? MeuMobi::url($site->appleTouchIcon()->link('72x72'), true)
+			: null;
+
+		$banner = $item->images()
+			? MeuMobi::url($images[0]->link('314x220'), true)
+			: null;
+
+		$notif = [
+			'header' => $site->title,
+			'content' => $item->title,
+			'banner' => $banner,
+			'icon' => $icon,
+			'data' => [
+				'item_id' => $item->id(),
+				'category_id' => $item->parent_id,
+			],
+			'devices' => $devices,
+		];
+
+		$service->perform($auth, $notif);
 	}
 
 	protected function getDevicesTokens($item, $site)
