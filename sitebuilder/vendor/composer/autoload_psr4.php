@@ -6,8 +6,14 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Symfony\\Component\\OptionsResolver\\' => array($vendorDir . '/symfony/options-resolver'),
+    'React\\Promise\\' => array($vendorDir . '/react/promise/src'),
+    'OneSignal\\' => array($vendorDir . '/norkunas/onesignal-php-api/src'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
     'Mimey\\' => array($vendorDir . '/ralouphie/mimey/src'),
+    'GuzzleHttp\\Stream\\' => array($vendorDir . '/guzzlehttp/streams/src'),
+    'GuzzleHttp\\Ring\\' => array($vendorDir . '/guzzlehttp/ringphp/src'),
+    'GuzzleHttp\\' => array($vendorDir . '/guzzlehttp/guzzle/src'),
     'Gomoob\\' => array($vendorDir . '/gomoob/php-pushwoosh/src/main/php/Gomoob'),
     'Bramus\\Monolog\\' => array($vendorDir . '/bramus/monolog-colored-line-formatter/src'),
     'Bramus\\Ansi\\' => array($vendorDir . '/bramus/ansi-php/src'),
