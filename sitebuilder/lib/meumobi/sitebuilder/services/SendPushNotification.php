@@ -44,9 +44,9 @@ class SendPushNotification
 			'number_of_devices' => count($devices),
 		]);
 
-		$auth = [
-			'app' => $site->pushwoosh_app_id,
-			'authToken' => Config::read('PushWoosh.authToken'),
+		$app = [
+			'appId' => $site->pushwoosh_app_id,
+			'appAuthToken' => '',
 		];
 
 		$icon = $site->appleTouchIcon()
@@ -69,7 +69,7 @@ class SendPushNotification
 			'devices' => $devices,
 		];
 
-		$service->perform($auth, $notif);
+		$service->perform($app, $notif);
 	}
 
 	protected function getDevicesTokens($item, $site)

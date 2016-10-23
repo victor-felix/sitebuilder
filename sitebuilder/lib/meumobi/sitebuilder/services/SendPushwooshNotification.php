@@ -2,6 +2,7 @@
 
 namespace meumobi\sitebuilder\services;
 
+use Config;
 use Gomoob\Pushwoosh\Client\Pushwoosh;
 use Gomoob\Pushwoosh\Model\Notification\Android;
 use Gomoob\Pushwoosh\Model\Notification\IOS;
@@ -13,14 +14,14 @@ class SendPushwooshNotification
 {
 	const COMPONENT = 'pushnotif_pushwoosh';
 
-	public function perform(array $auth, array $notif)
+	public function perform(array $app, array $notif)
 	{
-		list($app, $authToken) = ParamsValidator::validate($options, [
-			'app', 'authToken']);
+		list($appId, $appAuthToken) = ParamsValidator::validate($app,
+			['appId', 'appAuthToken']);
 
 		$client =  Pushwoosh::create()
-			->setApplication($app)
-			->setAuth($authToken);
+			->setApplication($appId)
+			->setAuth(Config::read('PushWoosh.authToken'));
 
 		$notification = $this->notification($notif);
 		$request = CreateMessageRequest::create()
