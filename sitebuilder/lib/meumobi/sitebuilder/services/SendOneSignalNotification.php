@@ -3,8 +3,11 @@
 namespace meumobi\sitebuilder\services;
 
 use Config;
-use OneSignal\Config;
+use Exception;
+use OneSignal\Config as OneSignalConfig;
+use OneSignal\Exception\OneSignalException;
 use OneSignal\OneSignal;
+use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\validators\ParamsValidator;
 
 class SendOneSignalNotification
@@ -16,17 +19,27 @@ class SendOneSignalNotification
 		list($appId, $appAuthToken) = ParamsValidator::validate($app,
 			['appId', 'appAuthToken']);
 
-		$config = new Config();
+		$config = new OneSignalConfig();
 		$config->setApplicationId($appId);
-		$config->setApplicationAuthKey('your_application_auth_key');
+		$config->setApplicationAuthKey($appAuthToken);
 		$config->setUserAuthKey(Config::read('OneSignal.authToken'));
 
 		$api = new OneSignal($config);
 
 		$notification = $this->notification($notif);
-		$api->notifications->add($notification);
 
-		return [];
+		try {
+			$api->notifications->add($notification);
+		} catch (OneSignalException $e) {
+			Logger::error(self::COMPONENT, 'push notification not sent', [
+				'app' => $app,
+				'notifcation' => $notif,
+				'status_code' => $e->getStatusCode(),
+				'errors' => $e->getErrors(),
+			]);
+		}
+
+		return true;
 	}
 
 	protected function notification(array $options)

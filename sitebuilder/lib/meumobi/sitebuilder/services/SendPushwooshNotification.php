@@ -3,11 +3,13 @@
 namespace meumobi\sitebuilder\services;
 
 use Config;
+use Exception;
 use Gomoob\Pushwoosh\Client\Pushwoosh;
 use Gomoob\Pushwoosh\Model\Notification\Android;
 use Gomoob\Pushwoosh\Model\Notification\IOS;
 use Gomoob\Pushwoosh\Model\Notification\Notification;
 use Gomoob\Pushwoosh\Model\Request\CreateMessageRequest;
+use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\validators\ParamsValidator;
 
 class SendPushwooshNotification
@@ -29,17 +31,16 @@ class SendPushwooshNotification
 
 		$response = $client->createMessage($request);
 
-		if ($response->isOk()) {
-			return [
+		if (!$response->isOk()) {
+			Logger::error(self::COMPONENT, 'push notification not sent', [
+				'app' => $app,
+				'notifcation' => $notif,
 				'status_code' => $response->getStatusCode(),
-				'status_message' => $response->getStatusMessage()
-			];
-		} else {
-			throw new Exception("Error sending push notification, "
-				. "status_code: {$response->getStatusCode()}, "
-				. "status_message: {$response->getStatusMessage()}"
-			);
+				'status_message' => $response->getStatusMessage(),
+			]);
 		}
+
+		return true;
 	}
 
 	protected function notification(array $options)

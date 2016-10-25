@@ -20,11 +20,11 @@ class SendPushNotification
 		$site = $item->site();
 		$category = $item->parent();
 		$devices = $this->getDevicesTokens($item, $site);
-		$service = 1 // $site->pushnotif_service == 'pushwoosh'
+		$service = $site->pushnotif_service == 'pushwoosh'
 			? new SendPushwooshNotification
 			: new SendOneSignalNotification;
 
-		if (!$site->pushwoosh_app_id || !$category->notification) {
+		if (!$site->pushnotif_app_id || !$category->notification) {
 			return;
 		}
 
@@ -45,8 +45,8 @@ class SendPushNotification
 		]);
 
 		$app = [
-			'appId' => $site->pushwoosh_app_id,
-			'appAuthToken' => '',
+			'appId' => $site->pushnotif_app_id,
+			'appAuthToken' => $site->pushnotif_app_auth_token,
 		];
 
 		$icon = $site->appleTouchIcon()

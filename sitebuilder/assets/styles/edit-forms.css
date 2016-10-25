@@ -264,6 +264,10 @@
 	margin: -16px 0 0 20px;
 }
 
+.default-form input[type='radio'] + label {
+    margin-left: 8px;
+}
+
 .item-form.default-form fieldset.actions button {
 	margin-left: 207px;
 }

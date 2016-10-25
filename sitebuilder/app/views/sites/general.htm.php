@@ -13,12 +13,35 @@
 )) ?>
 
 <fieldset>
-	<h2><?php echo s('PushWoosh App') ?></h2>
+	<h2><?php echo s('Push Notifications') ?></h2>
 	<div class="field-group">
 		<div class="form-grid-460 first">
 			<span class="optional"><?php echo s('Optional') ?></span>
-			<?php echo $this->form->input('pushwoosh_app_id', array(
-				'label' => s('PushWoosh App id'),
+			<?= $this->form->input('pushnotif_service', array(
+				'label' => s('Push Service'),
+				'type' => 'radio',
+				'class' => '',
+				'options' => [
+					'pushwoosh' => 'PushWoosh',
+					'onesignal' => 'OneSignal',
+				],
+			)) ?>
+		</div>
+
+		<div class="form-grid-460">
+			<span class="optional"><?php echo s('Optional') ?></span>
+			<?php echo $this->form->input('pushnotif_app_id', array(
+				'label' => s('Application ID'),
+				'type' => 'text',
+				'placeholder' => '00000-00000',
+				'class' => 'ui-text large'
+			)) ?>
+		</div>
+
+		<div class="form-grid-460">
+			<span class="optional"><?php echo s('Optional') ?></span>
+			<?php echo $this->form->input('pushnotif_app_auth_token', array(
+				'label' => s('Application Auth Token'),
 				'type' => 'text',
 				'placeholder' => '00000-00000',
 				'class' => 'ui-text large'
