@@ -3,8 +3,20 @@
 Update these notes using:
 
 ```
-git log --pretty=format:'* %s' --no-merges rel-2.8.8..HEAD
+git log --pretty=format:'* %s' --no-merges rel-2.8.9..HEAD
 ```
+
+### rel-2.8.9 (10261027) ###
+
+* ENHANCEMENT: Closes #425, includes file extension when processing remote media
+* FIX: Closes #420, updates app icon from custom theme page
+* FIX: set OneSignal app key
+* ENHANCEMENT: Closes #378, enables push notifications to be sent via OneSignal
+* ENHANCEMENT: #378, adds OneSignal logic to its service
+* ENHANCEMENT: #378, encapsulates Pushwoosh-specific logic into its own service
+* Installs onesignal-php-api
+* HOTFIX: mail title is different when sent by cli (Import visitors) or dashboard
+* ENHANCEMENT: Closes #420, removes themes/application page
 
 ### rel-2.8.8 (20160930) ###
 
