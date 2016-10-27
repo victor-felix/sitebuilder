@@ -76,12 +76,15 @@ class SitesController extends AppController
 
 		if (!empty($this->data)) {
 			$parent = $skinRepo->find($this->data['parent_id']);
+
 			if ($parent->parentId()) {
 				$skin = $parent;
 				$skinData = array_intersect_key($this->data, array_flip(['colors', 'tokens', 'layout_alternatives']));
+
 				if (isset($this->data['uploaded_assets'])) {
 					$skinData['uploaded_assets'] = $this->data['uploaded_assets'];
 				}
+
 				$skin->setAttributes($skinData);
 				$skinRepo->update($skin);
 			} else {
@@ -95,16 +98,23 @@ class SitesController extends AppController
 					'assets' => $parent->assets(),
 					'html5' => $parent->html5(),
 				);
+
 				if (isset($this->data['uploaded_assets'])) {
 					$skinData['uploaded_assets'] = $this->data['uploaded_assets'];
 				}
+
 				$skin = new Skin($skinData);
 				$skinRepo->create($skin);
 			}
+
+			$site->updateAttributes($this->data);
 			$site->theme = $skin->themeId();
 			$site->skin = $skin->id();
+
 			$site->save();
+
 			Session::writeFlash('success', s('Configuration successfully saved'));
+
 			if ($this->data['continue']) {
 				$this->redirect("/sites/custom_theme/{$skin->id()}");
 			} else {
@@ -119,12 +129,14 @@ class SitesController extends AppController
 			}
 
 		}
+
 		try {
 			$theme = $themesRepo->find($skin->themeId());
 		} catch (meumobi\sitebuilder\repositories\RecordNotFoundException $e) {
 			Session::writeFlash('error', s("The theme doesn't exist"));
 			$this->redirect('/');
 		}
+
 		$this->set(compact('site', 'currentSkin', 'skin', 'theme'));
 	}
 
@@ -212,11 +224,6 @@ class SitesController extends AppController
 				'domains' => $this->getCurrentSite()->domains()
 			];
 		$this->set($data);
-	}
-
-	public function application()
-	{
-		$this->general();
 	}
 
 	public function news()
