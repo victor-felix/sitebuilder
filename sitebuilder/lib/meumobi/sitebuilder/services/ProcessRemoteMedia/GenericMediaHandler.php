@@ -43,6 +43,7 @@ class GenericMediaHandler
 
 		$status = $response->status['code'];
 		$info['type'] = $this->getFileType($url, $response);
+		$info['extension'] = $this->getFileExtensionFromType($info['type']);
 
 		if (($length = $response->headers('Content-Length')) > 1) {
 			$info['length'] = (int) $length;
@@ -86,5 +87,12 @@ class GenericMediaHandler
 		$mimes = new MimeTypes;
 
 		return $mimes->getMimeType($extension);
+	}
+
+	protected function getFileExtensionFromType($type)
+	{
+		$mimes = new MimeTypes;
+
+		return $mimes->getExtension($type);
 	}
 }
