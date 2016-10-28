@@ -54,7 +54,7 @@ class SendPushNotification
 			: null;
 
 		$banner = $item->images()
-			? MeuMobi::url($images[0]->link('314x220'), true)
+			? MeuMobi::url($item->images()[0]->link('314x220'), true)
 			: null;
 
 		$notif = [
