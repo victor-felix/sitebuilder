@@ -25,3 +25,10 @@ Set the database config
 ```
 cp config/connections{.sample,}.php
 ```
+
+Execute migrations
+==================
+
+```
+php sitebuilder/scripts/migrate.php
+```
