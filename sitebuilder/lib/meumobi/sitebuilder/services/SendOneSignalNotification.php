@@ -28,8 +28,12 @@ class SendOneSignalNotification
 
 		$notification = $this->notification($notif);
 
+		Logger::debug(self::COMPONENT, 'payload request', $notification);
+
 		try {
 			$api->notifications->add($notification);
+
+			return true;
 		} catch (OneSignalException $e) {
 			Logger::error(self::COMPONENT, 'push notification not sent', [
 				'app' => $app,
@@ -37,9 +41,9 @@ class SendOneSignalNotification
 				'status_code' => $e->getStatusCode(),
 				'errors' => $e->getErrors(),
 			]);
-		}
 
-		return true;
+			return false;
+		}
 	}
 
 	protected function notification(array $options)

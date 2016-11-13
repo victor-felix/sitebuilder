@@ -69,7 +69,13 @@ class SendPushNotification
 			'devices' => $devices,
 		];
 
-		$service->perform($app, $notif);
+		Logger::info(self::COMPONENT, 'delegating to push notif service', $log + [
+			'parameters' => $notif,
+		]);
+
+		if ($service->perform($app, $notif)) {
+			Logger::info(self::COMPONENT, 'push notification sent', $log);
+		}
 	}
 
 	protected function getDevicesTokens($item, $site)

@@ -29,6 +29,8 @@ class SendPushwooshNotification
 		$request = CreateMessageRequest::create()
 			->addNotification($notification);
 
+		Logger::debug(self::COMPONENT, 'payload request', $request->toJSON());
+
 		$response = $client->createMessage($request);
 
 		if (!$response->isOk()) {
@@ -38,6 +40,8 @@ class SendPushwooshNotification
 				'status_code' => $response->getStatusCode(),
 				'status_message' => $response->getStatusMessage(),
 			]);
+
+			return false;
 		}
 
 		return true;
