@@ -331,14 +331,6 @@ class Sites extends AppModel
 		return $options;
 	}
 
-	public function timezoneId() {
-		if (!empty($this->timezone)) {
-			return $this->timezone;
-		} else {
-			return 'America/Sao_Paulo';
-		}
-	}
-
 	public function timezone()
 	{
 		$tz_site = new DateTimeZone($this->timezone);

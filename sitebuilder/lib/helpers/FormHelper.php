@@ -287,7 +287,7 @@ class FormHelper extends Helper {
 
 			if ($value instanceof MongoDate) {
 				$timezone = date_default_timezone_get();
-				date_default_timezone_set($this->view->controller->getCurrentSite()->timezoneId());
+				date_default_timezone_set($this->view->controller->getCurrentSite()->timezone);
 				$value = date('Y-m-d\TH:i', $value->sec);
 				date_default_timezone_set($timezone);
 			}
