@@ -83,10 +83,16 @@
 					'value' => 1
 				)) ?>
 			</div>
+			<div class="form-grid-460 first">
+				<?= $this->form->input('latest_feed_eligible', array(
+					'type' => 'checkbox',
+					'label' => s('This category will be shown in the feed of latest news'),
+					'value' => 1
+				)) ?>
+			</div>
 		</div>
 	</div>
 </fieldset>
-
 
 <?php if(MeuMobi::currentSegment()->fullOptions()): ?>
 <fieldset>

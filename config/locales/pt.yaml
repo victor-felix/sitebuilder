@@ -449,3 +449,4 @@
   subject: '[%s] Reset your %s Password'
 'visitors/mail/add':
   subject: '[%s] Welcome to %s App!'
+'This category will be shown in the feed of latest news': 'Esta categoria será mostrada no feed de últimas notícias'

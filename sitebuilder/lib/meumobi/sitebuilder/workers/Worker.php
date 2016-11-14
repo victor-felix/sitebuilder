@@ -9,6 +9,9 @@ use meumobi\sitebuilder\repositories\RecordNotFoundException;
 
 abstract class Worker
 {
+  const PRIORITY_HIGH = 2;
+  const PRIORITY_LOW = 0;
+  
 	protected $item;
 	protected $job;
 	protected $logger;

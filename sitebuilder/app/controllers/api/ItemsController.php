@@ -197,7 +197,7 @@ class ItemsController extends ApiController {
 		if ($parent_id) {
 			$params['conditions']['parent_id'] = $parent_id;
 		} else {
-			$categories = Model::load('Categories')->allBySiteIdAndVisibility($this->site()->id, 1);
+			$categories = Model::load('Categories')->allBySiteIdAndVisibilityAndLatestFeedEligible($this->site()->id, 1,1);
 			$category_ids = array_map(function($category) {
 				return $category->id;
 			}, $categories);

@@ -1,0 +1,1 @@
+ALTER TABLE `categories` ADD `latest_feed_eligible` BOOLEAN NOT NULL DEFAULT 1 after `visibility`;
