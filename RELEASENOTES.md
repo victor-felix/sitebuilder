@@ -3,10 +3,18 @@
 Update these notes using:
 
 ```
-git log --pretty=format:'* %s' --no-merges rel-2.8.9..HEAD
+git log --pretty=format:'* %s' --no-merges rel-2.8.10..HEAD
 ```
 
-### rel-2.8.9 (10261027) ###
+### rel-2.8.10 (20161116) ###
+
+* ENHANCEMENT: Closes #422, nominate a category on latest feed
+* FIX: Closes #421, each time I save an event it wrongly convert dates
+* BUGFIX: Closes #431, reintroduces logs for push notifications
+* Info of how to execute migrations for sitebuilder setup
+* HOTFIX: fixes undefined variable
+
+### rel-2.8.9 (20161027) ###
 
 * ENHANCEMENT: Closes #425, includes file extension when processing remote media
 * FIX: Closes #420, updates app icon from custom theme page
