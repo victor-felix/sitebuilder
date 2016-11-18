@@ -56,28 +56,39 @@ class ImportItemsCsvService extends ImportCsvService {
 		$item = null;
 		$category = $this->getCategory();
 
-		if (isset($data['id'])) {
+		if (isset($data['id']) && $data['id']!="") {
 			$item = Items::find('first', [
 				'conditions' => [
 					'_id' => $data['id'],
 					'parent_id' => $category->id,
 					]
-			]);
-  
+			]);			
+		} 
+		
+		if ($item) {
 			$item->set($data);
 		} else {
-			$classname = '\app\models\items\\' .
-				\Inflector::camelize($category->type);
-			$item =  $classname::create();
-
-			$data['parent_id'] = $category->id;
-			$data['site_id'] = $category->site_id;
-			$data['type'] = $category->type;
-
-			$item->set($data);
+			$item = $this->buildItem($data);
 		}
 
 		return $item;
+	}
+	
+	function buildItem($data)
+	{
+		$category = $this->getCategory();
+		
+		$classname = '\app\models\items\\' .
+			\Inflector::camelize($category->type);
+		$item =  $classname::create();
+
+		$data['parent_id'] = $category->id;
+		$data['site_id'] = $category->site_id;
+		$data['type'] = $category->type;
+
+		$item->set($data);
+		
+		return $item;	
 	}
   
 	function createItem($item)
