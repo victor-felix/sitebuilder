@@ -1,6 +1,6 @@
 <?php
 
-use meumobi\sitebuilder\services\ImportCsvService;
+use meumobi\sitebuilder\services\ImportItemsCsvService;
 use meumobi\sitebuilder\workers\Worker;
 use meumobi\sitebuilder\LOgger; 
 require_once 'lib/utils/FileUpload.php';
@@ -226,7 +226,7 @@ class Categories extends AppModel
 					&& $this->scheduleImport()) {
 						return $this->save();
 					}
-				$import = new ImportCsvService(['logger_path' => 'log/imports.log']);
+				$import = new ImportItemsCsvService(['logger_path' => 'log/imports.log']);
 				$import->setMethod($this->data['import_method']);
 				$import->setCategory($this);
 				$import->setFile($this->data['import']['tmp_name']);
