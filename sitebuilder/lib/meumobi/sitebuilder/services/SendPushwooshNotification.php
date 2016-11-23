@@ -29,9 +29,9 @@ class SendPushwooshNotification
 		$request = CreateMessageRequest::create()
 			->addNotification($notification);
 
-		Logger::debug(self::COMPONENT, 'payload request', $request->toJSON());
-
 		$response = $client->createMessage($request);
+
+		Logger::debug(self::COMPONENT, 'payload request', $request->toJSON());
 
 		if (!$response->isOk()) {
 			Logger::error(self::COMPONENT, 'push notification not sent', [
