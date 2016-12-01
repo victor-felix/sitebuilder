@@ -143,12 +143,21 @@ class ItemsController extends ApiController {
 	{
 		$this->requireVisitorAuth();
 
+		$visible_categories = Model::load('Categories')->allBySiteIdAndVisibility($this->site()->id, 1);
+		$visible_categories_ids = array_map(function($category) {
+			return $category->id;
+		}, $visible_categories);
+
 		$conditions = $this->postConditions($this->request->query, [
 			'title' => 'like',
 			'description' => 'like'
 		]);
 		$conditions['is_published'] = true;
-		$conditions['site_id'] = $this->site()->id;
+		$conditions['site_id'] = $this->site()->id;		
+		$conditions['parent_id'] = [ '$in' => $visible_categories_ids ];		
+		if ($this->request->get('query:parent_id')) {
+			$conditions['parent_id']['$eq'] = $this->request->get('query:parent_id');
+		}
 
 		$params = [
 			'conditions' => $conditions,
