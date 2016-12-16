@@ -10,6 +10,7 @@ class Device extends Entity
 	protected $userId;
 	protected $siteId;
 	protected $pushId;
+	protected $playerId;
 	protected $model;
 	protected $manufacturer;
 	protected $platform;
@@ -49,6 +50,11 @@ class Device extends Entity
 		return $this->pushId;
 	}
 
+	public function playerId()
+	{
+		return $this->playerId;
+	}
+	
 	public function appVersion()
 	{
 		return $this->appVersion;

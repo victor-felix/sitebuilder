@@ -48,6 +48,20 @@ class DevicesRepository extends Repository
 		}
 	}
 
+	public function findForExport($site_id, $user_ids = null)
+	{
+		$criteria = [
+			'site_id' => (int) $site_id,
+			'player_id' => ['$eq' => null],
+		];
+
+		if ($user_ids) {
+			$criteria['user_id'] = ['$in' => $user_ids];
+		}
+
+		return $this->hydrateSet($this->collection()->find($criteria));
+	}
+
 	public function findForPushNotif($site_id, $user_ids)
 	{
 		$criteria = [
@@ -115,6 +129,7 @@ class DevicesRepository extends Repository
 			'user_id' => $object->userId(),
 			'site_id' => (int) $object->siteId(),
 			'push_id' => $object->pushId(),
+			'player_id' => $object->playerId(),
 			'model' => $object->model(),
 			'manufacturer' => $object->manufacturer(),
 			'platform' => $object->platform(),
