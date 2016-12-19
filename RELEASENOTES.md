@@ -8,6 +8,13 @@ git log --pretty=format:'* %s' --no-merges rel-2.8.11..HEAD
 
 ### rel-2.8.11 (20161219) ###
 
+* Closes #429, Script to import devices to OneSignal service.
+* FIX: Closes #450, GenericMediaHandler improved to match audio/mpeg <=> mp3
+* FIX: Closes #416, Includes publish date in criteria for update the articles.
+* FIX: Closes #268, Removes media.thumbnails when removing Items
+* FIX: Closes #391, _meta.next keeping query parameters in index method
+* ENHANCEMENT: Closes #441, Save the OneSignal notification_id in the Item
+* FIX: Added filter for only visible categories in /items/search requests (#445)
 * FIX: Closes #443, youtube handler provides empty properties
 * BUG: Closes #440, only serialize payload after adding the request to the client
 * fix import when id is empty or wrong
