@@ -52,7 +52,7 @@ class DevicesRepository extends Repository
 	{
 		$criteria = [
 			'site_id' => (int) $site_id,
-			'player_id' => ['$eq' => null],
+			'player_id' => ['$in' => ['', null]],
 		];
 
 		if ($user_ids) {
