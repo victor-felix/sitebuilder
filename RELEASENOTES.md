@@ -3,8 +3,16 @@
 Update these notes using:
 
 ```
-git log --pretty=format:'* %s' --no-merges rel-2.8.10..HEAD
+git log --pretty=format:'* %s' --no-merges rel-2.8.11..HEAD
 ```
+
+### rel-2.8.11 (20161219) ###
+
+* FIX: Closes #443, youtube handler provides empty properties
+* BUG: Closes #440, only serialize payload after adding the request to the client
+* fix import when id is empty or wrong
+* FIX: Closes #437, import items by csv only save last entry (exclusive and inclusive)
+* FIX: Closes #435, Fatal Error "Call to undefined method" raised when import csv
 
 ### rel-2.8.10 (20161116) ###
 
