@@ -19,13 +19,17 @@ class SendPushNotification
 	{
 		$site = $item->site();
 		$category = $item->parent();
-		$devices = $this->getDevicesTokens($item, $site);
-		$service = $site->pushnotif_service == 'pushwoosh'
-			? new SendPushwooshNotification
-			: new SendOneSignalNotification;
 
 		if (!$site->pushnotif_app_id || !$category->notification) {
 			return;
+		}
+
+		if ($site->pushnotif_service == 'pushwoosh') {
+			$service = new SendPushwooshNotification;
+			$devices = $this->getDevicesTokens($item, $site, 'pushwoosh');
+		} else {
+			$service = new SendOneSignalNotification;
+			$devices = $this->getDevicesTokens($item, $site, 'onesignal');
 		}
 
 		$log = [
@@ -84,7 +88,7 @@ class SendPushNotification
 		}
 	}
 
-	protected function getDevicesTokens($item, $site)
+	protected function getDevicesTokens($item, $site, $push_service = 'onesignal')
 	{
 		$visitors = null;
 
@@ -100,6 +104,10 @@ class SendPushNotification
 
 		$repository = new DevicesRepository();
 		$devices = $repository->findForPushNotif($site->id, $visitors);
+
+		if ($push_service == 'onesignal') {
+			return array_map(function($device) { return $device->playerId(); }, $devices);
+		}
 
 		return array_map(function($device) { return $device->pushId(); }, $devices);
 	}
