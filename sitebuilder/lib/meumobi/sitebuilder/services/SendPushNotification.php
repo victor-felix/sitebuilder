@@ -29,11 +29,13 @@ class SendPushNotification
 			$services[] = [
 				'provider' => 'onesignal',
 				'service' => new SendOneSignalNotification,
-				'devices' => $this->getDevicesTokens($item, $site, 'onesignal'),
 				'appConfig' => [
 					'appId' => $site->pushnotif_app_id,
 					'appAuthToken' => $site->pushnotif_app_auth_token,
-				]   
+				],
+				'devices' => $site->private
+					? $this->getDevicesTokens($item, $site, 'onesignal')
+					: null
 			];
 		}
 
@@ -42,10 +44,12 @@ class SendPushNotification
 			$services[] = [
 				'provider' => 'pushwoosh',
 				'service' => new SendPushwooshNotification,
-				'devices' => $this->getDevicesTokens($item, $site, 'pushwoosh'),
 				'appConfig' => [
 					'appId' => $config['app_id']
-				]
+				],
+				'devices' => $site->private
+					? $this->getDevicesTokens($item, $site, 'pushwoosh')
+					: null
 			];
 		}
 
@@ -55,18 +59,9 @@ class SendPushNotification
 			'site_id' => $site->id,
 		];
 
-		//Getting the total of devices for all of push services
-		$num_devices = array_reduce($services, function($res, $service){
-			return $res + count($service['devices']);
-		}, 0);
-		if (!$num_devices) {
-			Logger::info(self::COMPONENT, 'no devices found. no push notification will be sent', $log);
-			return;
-		}
-
 		Logger::info(self::COMPONENT, 'sending push notification', $log + [
 			'content' => $item->title,
-			'number_of_devices' => $num_devices,
+			'number_of_devices' => 'all avaiable',
 		]);		
 
 		$icon = $site->appleTouchIcon()
@@ -95,7 +90,7 @@ class SendPushNotification
 		foreach($services as $serviceData){
 			Logger::info(self::COMPONENT, 'calling the push notif service:' + ' ' + $serviceData['provider']);
 			$app = $serviceData['appConfig'];
-			$notifData = $notif + ['devices' => $serviceData['devices']];
+			$notifData = $notif + [ 'devices' => $serviceData['devices'] ];
 			$service = $serviceData['service'];
 
 			$notification_response = $service->perform($app, $notifData);
@@ -105,7 +100,9 @@ class SendPushNotification
 					$item->notification_id = $notification_response['notification_id'];
 					$item->save();
 				}
-				Logger::info(self::COMPONENT, 'push notification sent', $log);
+				Logger::info(self::COMPONENT, 'push notification sent', $log + [
+					'provider' => $serviceData['provider']
+				]);
 			}
 		}
 

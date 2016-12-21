@@ -62,6 +62,8 @@ class SendOneSignalNotification
 
 		if ($devices) {
 			$notification['include_player_ids'] = $devices;
+		} else {
+			$notification['included_segments'] = ['All'];
 		}
 
 		if ($banner) {
