@@ -22,7 +22,6 @@ class SendOneSignalNotification
 		$config = new OneSignalConfig();
 		$config->setApplicationId($appId);
 		$config->setApplicationAuthKey($appAuthToken);
-		$config->setUserAuthKey(Config::read('OneSignal.authToken'));
 
 		$api = new OneSignal($config);
 
