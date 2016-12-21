@@ -13,5 +13,8 @@ Config::write('Sites.domain', 'meumobi.lvh.me');
 Config::write('Themes.url', LIB_ROOT . '/config/themes.json');
 
 Config::write('PushWoosh.debug', true);
+Config::write('PushWoosh.appIds', [
+    ['site_id'=> 1, 'app_id'=> 123456]
+]);
 
 Config::write('Status.sites', []);
