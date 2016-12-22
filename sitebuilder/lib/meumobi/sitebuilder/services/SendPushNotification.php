@@ -59,9 +59,15 @@ class SendPushNotification
 			'site_id' => $site->id,
 		];
 
+		if (empty($services)) {
+ 			Logger::info(self::COMPONENT, 'no services available. no push notification will be sent', $log);
+ 			return;
+ 		}
+ 
+
 		Logger::info(self::COMPONENT, 'sending push notification', $log + [
 			'content' => $item->title,
-			'number_of_devices' => 'all avaiable',
+			'number_of_devices' => 'all available',
 		]);		
 
 		$icon = $site->appleTouchIcon()
@@ -88,7 +94,7 @@ class SendPushNotification
 		]);
 
 		foreach($services as $serviceData){
-			Logger::info(self::COMPONENT, 'calling the push notif service:' + ' ' + $serviceData['provider']);
+			Logger::info(self::COMPONENT, 'calling the push notif service:' . ' ' . $serviceData['provider']);
 			$app = $serviceData['appConfig'];
 			$notifData = $notif + [ 'devices' => $serviceData['devices'] ];
 			$service = $serviceData['service'];
@@ -121,7 +127,7 @@ class SendPushNotification
 	protected function isSetPushwooshSettings($site)
 	{
 		$settings = $this->getPushwooshSettings($site);
-		return !empty($settings);
+		return (is_array($settings) && !empty($settings));
 	}
 
 	protected function getPushwooshSettings($site)
@@ -132,9 +138,7 @@ class SendPushNotification
 			return $appId['site_id'] == $site->id;
 		});
 
-		return !empty($filteredIds)
-			? $filteredIds[0]
-			: [];
+		return array_shift($filteredIds);
 	}
 
 	protected function getDevicesTokens($item, $site, $push_service = 'onesignal')
@@ -155,9 +159,21 @@ class SendPushNotification
 		$devices = $repository->findForPushNotif($site->id, $visitors);
 
 		if ($push_service == 'onesignal') {
-			return array_map(function($device) { return $device->playerId(); }, $devices);
+			return array_reduce($devices, 
+				function($response, $device) { 
+					if ($device->playerId()) {
+						 array_push($response, $device->playerId()); 
+					}
+					return $response;
+				}, []);
 		}
 
-		return array_map(function($device) { return $device->pushId(); }, $devices);
+		return array_reduce($devices, 
+			function($response, $device) { 
+				if ($device->pushId()) {
+					 array_push($response, $device->pushId()); 
+				}
+				return $response;
+			}, []);
 	}
 }
