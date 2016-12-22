@@ -5,6 +5,15 @@ Update these notes using:
 ```
 git log --pretty=format:'* %s' --no-merges rel-2.8.11..HEAD
 ```
+### rel-2.8.12 (20161222) ###
+
+* FIX: Refactoring and Fixing minor changes;
+* Keys for sites using pushwoosh added.
+* ENHANCEMENT: Closes #461, SendPushNotification Service allows using multiple push providers;
+* FIX: Closes #459, Send push to all subscribers instead array of pushIds
+* ENHANCEMENT: Closes #461, SendPushNotification Service allows using multiple push providers;
+* FIX: Closes #460, Removed OneSignal.authKey from settings
+* FIX: Closes #459, Filtering the subscribers ids according to Push Service used;
 
 ### rel-2.8.11 (20161219) ###
 
