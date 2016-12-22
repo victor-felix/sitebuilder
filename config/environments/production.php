@@ -10,7 +10,7 @@ Config::write('Themes.url', 'http://meu-template-engine.meumobi.com/themes.json'
 
 Config::write('PushWoosh.debug', false);
 Config::write('PushWoosh.appIds', [
-
+	[ 'site_id' => 515, 'app_id'=> 'A9FC4-681E3' ], //katrium
 ]);
 
 Config::write('Status.sites', [
