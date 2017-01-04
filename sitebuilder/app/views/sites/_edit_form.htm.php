@@ -68,8 +68,16 @@
 								'div' => false,
 								'type' => 'text',
 								'class' => 'ui-text' . ($action == 'edit' ? ' disabled' : ''),
-								'disabled' => $action == 'edit'
-							)) ?><span>.<?php echo MeuMobi::domain() ?></span>
+								'disabled' => $action == 'edit',
+								'value' => ($action == 'edit' ? $site->domain() : $site->slug)
+
+							)) ?>							
+							<?php if ($action == 'register'): ?>
+							<span>.<?php echo ($site->domain())
+								? substr($site->domain(), strpos($site->domain(), '.') +1) 
+								: Config::read('Sites.domain') ; ?>
+							</span>
+							<?php endif ?>
 						</p>
 						<div class="clear"></div>
 					</div>
