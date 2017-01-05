@@ -4,6 +4,7 @@ namespace meumobi\sitebuilder\services;
 
 use Exception;
 use Security;
+use Inflector;
 
 class VisitorPasswordGenerationService
 {
@@ -33,6 +34,6 @@ class VisitorPasswordGenerationService
 
 	protected function defaultPassword($site)
 	{
-		return $site->slug;
+		return Inflector::slug($site->title, '');
 	}
 }
