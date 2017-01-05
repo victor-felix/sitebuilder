@@ -69,7 +69,9 @@
 								'type' => 'text',
 								'class' => 'ui-text' . ($action == 'edit' ? ' disabled' : ''),
 								'disabled' => $action == 'edit'
-							)) ?><span>.<?php echo MeuMobi::domain() ?></span>
+							)) ?>							
+							<span>.<?php echo Config::read('Sites.domain'); ?>
+							</span>
 						</p>
 						<div class="clear"></div>
 					</div>
