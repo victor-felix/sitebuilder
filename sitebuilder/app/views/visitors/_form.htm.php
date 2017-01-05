@@ -46,7 +46,7 @@
 		<div class="form-grid-460 first">
 			<?= $this->form->input('default_password', [
 				'type' => 'checkbox',
-				'label' => s('Use default password: "%s"', $site->slug),
+				'label' => s('Use default password: "%s"', Inflector::slug($site->title, '')),
 				'value' => 1
 			]) ?>
 		</div>
