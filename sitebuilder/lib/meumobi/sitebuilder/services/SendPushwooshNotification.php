@@ -62,9 +62,7 @@ class SendPushwooshNotification
 			->setBadges('+1');
 
 		if ($icon) {
-			$android
-				->setIcon($icon)
-				->setCustomIcon($icon);
+			$android->setCustomIcon($icon);
 		}
 
 		if ($banner) {
