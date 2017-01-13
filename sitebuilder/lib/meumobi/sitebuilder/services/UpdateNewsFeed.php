@@ -20,6 +20,7 @@ use app\models\Items;
 use app\models\items\Articles;
 use meumobi\sitebuilder\Logger;
 use meumobi\sitebuilder\validators\ParamsValidator;
+use meumobi\sitebuilder\services\ProcessRemoteMedia\GenericMediaHandler;
 
 class UpdateNewsFeed
 {
@@ -49,7 +50,8 @@ class UpdateNewsFeed
 				$shouldUpdate = $item->id() && (
 					$item->changed('title') ||
 					$item->changed('description') ||
-					$item->changed('medias')
+					$item->changed('medias') ||
+					$item->changed('published')
 				);
 
 				if ($shouldUpdate) {
@@ -356,9 +358,12 @@ class UpdateNewsFeed
 	protected function extractImages($article, $xpath)
 	{
 		$filter = function($enclosure) {
+			$mediaHandler = new GenericMediaHandler;
+			list($info, $httpStatus) = $mediaHandler->perform($enclosure->get_link());
+			list($type) = explode('/', $info['type']);
 			return $enclosure->get_link() && (
-				!$enclosure->get_medium() ||
 				$enclosure->get_medium() == 'image'
+				&& $type == 'image'
 			);
 		};
 

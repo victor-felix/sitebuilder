@@ -10,6 +10,7 @@ use Inflector;
 use MeuMobi;
 use Model;
 use OverQueryLimitException;
+use Filesystem;
 use lithium\util\Collection;
 use meumobi\sitebuilder\repositories\PollsRepository;
 use meumobi\sitebuilder\repositories\RecordNotFoundException;
@@ -45,7 +46,8 @@ class Items extends \lithium\data\Model {
 		'type' => array('type' => 'string', 'null' => false),
 		'title' => array('type' => 'string', 'null' => false),
 		'thumbnails' => array('type' => 'array', 'default' => []),
-		'groups' => array('type' => 'array', 'default' => [])
+		'groups' => array('type' => 'array', 'default' => []),
+		'notification_id' => array('type' => 'string', 'default' => ''),
 	);
 
 	protected $privateFields = ['groups'];
@@ -353,12 +355,39 @@ class Items extends \lithium\data\Model {
 	}
 
 	public static function removeImages($self, $params, $chain)
-	{
+	{		
 		if (isset($params['conditions']['_id'])) {
 			$model = Model::load('Images');
 			$images = $model->allByRecord('Items', $params['conditions']['_id']);
 			foreach ($images as $item) {
 				$model->delete($item->id);
+			}
+		}
+		return $chain->next($self, $params, $chain);
+	}
+
+
+	public static function removeMediaThumbnails($self, $params, $chain)
+	{
+		if (isset($params['conditions']['_id'])) {
+			$id = $params['conditions']['_id'];
+			$item = static::find('first', array(
+				'conditions' => array(
+					'_id' => $id
+				),
+				'fields' => array(
+					'medias'
+				)
+			));			
+			$medias = $item->to('array')['medias'];			
+			foreach ($medias as $media) {
+				foreach ($media['thumbnails'] as $thumb) {
+					$path = parse_url($thumb['url'])['path'];
+					$fullpath = APP_ROOT . $path;
+					if (Filesystem::exists($fullpath) && !Filesystem::isDir($fullpath)) {
+						Filesystem::delete($fullpath);
+					}
+				}
 			}
 		}
 		return $chain->next($self, $params, $chain);
@@ -673,6 +702,10 @@ Items::applyFilter('remove', function($self, $params, $chain) {
 
 Items::applyFilter('remove', function($self, $params, $chain) {
 	return Items::removeImages($self, $params, $chain);
+});
+
+Items::applyFilter('remove', function($self, $params, $chain) {
+	return Items::removeMediaThumbnails($self, $params, $chain);
 });
 
 Items::applyFilter('remove', function($self, $params, $chain) {

@@ -39,7 +39,7 @@ class ItemsController extends ApiController {
 		];
 
 		$url = "/api/{$this->site()->domain()}/categories/{$category->id}/items";
-		$url_params = ['category' => $category_id];
+		$url_params = $this->request->query;
 
 		return $this->paginate($params, $url, $url_params);
 	}
@@ -143,12 +143,21 @@ class ItemsController extends ApiController {
 	{
 		$this->requireVisitorAuth();
 
+		$visible_categories = Model::load('Categories')->allBySiteIdAndVisibility($this->site()->id, 1);
+		$visible_categories_ids = array_map(function($category) {
+			return $category->id;
+		}, $visible_categories);
+
 		$conditions = $this->postConditions($this->request->query, [
 			'title' => 'like',
 			'description' => 'like'
 		]);
 		$conditions['is_published'] = true;
-		$conditions['site_id'] = $this->site()->id;
+		$conditions['site_id'] = $this->site()->id;		
+		$conditions['parent_id'] = [ '$in' => $visible_categories_ids ];		
+		if ($this->request->get('query:parent_id')) {
+			$conditions['parent_id']['$eq'] = $this->request->get('query:parent_id');
+		}
 
 		$params = [
 			'conditions' => $conditions,
@@ -376,13 +385,17 @@ class ItemsController extends ApiController {
 		$url_params['limit'] = $params['limit'];
 
 		if ($params['page'] > 1) {
-			$meta['previous'] = $this->parseUrl($url, $url_params + [
-				'page' => $params['page'] - 1]);
+			$meta['previous'] = $this->parseUrl($url, [
+				'page' => $params['page'] - 1
+				] + $url_params
+			);
 		}
 
 		if ($pages > $params['page']) {
-			$meta['next'] = $this->parseUrl($url, $url_params + [
-				'page' => $params['page'] + 1]);
+			$meta['next'] = $this->parseUrl($url, [
+				'page' => $params['page'] + 1
+				] + $url_params
+			);
 		}
 
 		if (!empty($meta)) $response['_meta'] = $meta;

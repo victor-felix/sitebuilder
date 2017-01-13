@@ -19,13 +19,38 @@ class SendPushNotification
 	{
 		$site = $item->site();
 		$category = $item->parent();
-		$devices = $this->getDevicesTokens($item, $site);
-		$service = $site->pushnotif_service == 'pushwoosh'
-			? new SendPushwooshNotification
-			: new SendOneSignalNotification;
+		$services = [];
 
-		if (!$site->pushnotif_app_id || !$category->notification) {
+		if (!$category->notification) {
 			return;
+		}
+
+		if ($this->isSetOneSignalSettings($site)) {
+			$services[] = [
+				'provider' => 'onesignal',
+				'service' => new SendOneSignalNotification,
+				'appConfig' => [
+					'appId' => $site->pushnotif_app_id,
+					'appAuthToken' => $site->pushnotif_app_auth_token,
+				],
+				'devices' => $site->private
+					? $this->getDevicesTokens($item, $site, 'onesignal')
+					: null
+			];
+		}
+
+		if ($this->isSetPushwooshSettings($site)) {
+			$config = $this->getPushwooshSettings($site);
+			$services[] = [
+				'provider' => 'pushwoosh',
+				'service' => new SendPushwooshNotification,
+				'appConfig' => [
+					'appId' => $config['app_id']
+				],
+				'devices' => $site->private
+					? $this->getDevicesTokens($item, $site, 'pushwoosh')
+					: null
+			];
 		}
 
 		$log = [
@@ -34,20 +59,16 @@ class SendPushNotification
 			'site_id' => $site->id,
 		];
 
-		if (!$devices) {
-			Logger::info(self::COMPONENT, 'no devices found. no push notification will be sent', $log);
-			return;
-		}
+		if (empty($services)) {
+ 			Logger::info(self::COMPONENT, 'no services available. no push notification will be sent', $log);
+ 			return;
+ 		}
+ 
 
 		Logger::info(self::COMPONENT, 'sending push notification', $log + [
 			'content' => $item->title,
-			'number_of_devices' => count($devices),
-		]);
-
-		$app = [
-			'appId' => $site->pushnotif_app_id,
-			'appAuthToken' => $site->pushnotif_app_auth_token,
-		];
+			'number_of_devices' => 'all available',
+		]);		
 
 		$icon = $site->appleTouchIcon()
 			? MeuMobi::url($site->appleTouchIcon()->link('72x72'), true)
@@ -65,20 +86,62 @@ class SendPushNotification
 			'data' => [
 				'item_id' => $item->id(),
 				'category_id' => $item->parent_id,
-			],
-			'devices' => $devices,
+			]
 		];
 
-		Logger::info(self::COMPONENT, 'delegating to push notif service', $log + [
+		Logger::info(self::COMPONENT, 'delegating to push notif services', $log + [
 			'parameters' => $notif,
 		]);
 
-		if ($service->perform($app, $notif)) {
-			Logger::info(self::COMPONENT, 'push notification sent', $log);
+		foreach($services as $serviceData){
+			Logger::info(self::COMPONENT, 'calling the push notif service:' . ' ' . $serviceData['provider']);
+			$app = $serviceData['appConfig'];
+			$notifData = $notif + [ 'devices' => $serviceData['devices'] ];
+			$service = $serviceData['service'];
+
+			$notification_response = $service->perform($app, $notifData);
+
+			if ($notification_response !== false) {
+				if ($serviceData['provider'] == 'onesignal' && isset($notification_response['notification_id'])) {
+					$item->notification_id = $notification_response['notification_id'];
+					$item->save();
+				}
+				Logger::info(self::COMPONENT, 'push notification sent', $log + [
+					'provider' => $serviceData['provider']
+				]);
+			}
 		}
+
 	}
 
-	protected function getDevicesTokens($item, $site)
+	protected function isSetOneSignalSettings($site)
+	{
+		if ($site->pushnotif_service == 'onesignal' 
+			&& $site->pushnotif_app_id 
+			&& $site->pushnotif_app_auth_token){
+			return true;
+		}
+		return false;
+	}
+
+	protected function isSetPushwooshSettings($site)
+	{
+		$settings = $this->getPushwooshSettings($site);
+		return (is_array($settings) && !empty($settings));
+	}
+
+	protected function getPushwooshSettings($site)
+	{
+		$appIds = Config::read('PushWoosh.appIds');
+
+		$filteredIds = array_filter($appIds, function($appId) use ($site) {
+			return $appId['site_id'] == $site->id;
+		});
+
+		return array_shift($filteredIds);
+	}
+
+	protected function getDevicesTokens($item, $site, $push_service = 'onesignal')
 	{
 		$visitors = null;
 
@@ -95,6 +158,22 @@ class SendPushNotification
 		$repository = new DevicesRepository();
 		$devices = $repository->findForPushNotif($site->id, $visitors);
 
-		return array_map(function($device) { return $device->pushId(); }, $devices);
+		if ($push_service == 'onesignal') {
+			return array_reduce($devices, 
+				function($response, $device) { 
+					if ($device->playerId()) {
+						 array_push($response, $device->playerId()); 
+					}
+					return $response;
+				}, []);
+		}
+
+		return array_reduce($devices, 
+			function($response, $device) { 
+				if ($device->pushId()) {
+					 array_push($response, $device->pushId()); 
+				}
+				return $response;
+			}, []);
 	}
 }

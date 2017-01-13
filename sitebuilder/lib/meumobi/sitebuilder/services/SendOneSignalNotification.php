@@ -22,7 +22,6 @@ class SendOneSignalNotification
 		$config = new OneSignalConfig();
 		$config->setApplicationId($appId);
 		$config->setApplicationAuthKey($appAuthToken);
-		$config->setUserAuthKey(Config::read('OneSignal.authToken'));
 
 		$api = new OneSignal($config);
 
@@ -31,9 +30,9 @@ class SendOneSignalNotification
 		Logger::debug(self::COMPONENT, 'payload request', $notification);
 
 		try {
-			$api->notifications->add($notification);
-
-			return true;
+			$response = $api->notifications->add($notification);
+			
+			return [ 'notification_id' => $response['id'] ];
 		} catch (OneSignalException $e) {
 			Logger::error(self::COMPONENT, 'push notification not sent', [
 				'app' => $app,
@@ -63,10 +62,12 @@ class SendOneSignalNotification
 
 		if ($devices) {
 			$notification['include_player_ids'] = $devices;
+		} else {
+			$notification['included_segments'] = ['All'];
 		}
 
 		if ($banner) {
-			$notification['large_picture'] = $banner;
+			$notification['big_picture'] = $banner;
 		}
 
 		if ($icon) {

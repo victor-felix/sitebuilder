@@ -17,6 +17,9 @@ class YoutubeHandler
 	public function perform($url)
 	{
 		$id = $this->getVideoId($url);
+		Logger::debug(self::COMPONENT, 'Extract video id from url', [
+		      'id' => $id
+		    ]);
 		$youtube = new Youtube(['key' => 'AIzaSyDkAG5Oge5ZOyyVSJKpHpyFY6GsSaE3WIc']);
 
 		$info = $youtube->getVideoInfo($id);
@@ -41,8 +44,8 @@ class YoutubeHandler
 		];
 	}
 
-	protected function getVideoId($url) {
-		if (preg_match('/youtube.com\/watch\?v=(\w+)/', $url, $matches)) {
+	protected function getVideoId($url) {	
+		if (preg_match("/^(?:http(?:s)?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user)\/))([^\?&\"'>]+)/", $url, $matches)) {
 			return $matches[1];
 		}
 	}

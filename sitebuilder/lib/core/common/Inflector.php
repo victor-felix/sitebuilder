@@ -28,7 +28,7 @@ class Inflector {
             '/ß/' => 'ss',
             '/[^\w\s]/' => ' ',
             '/\\s+/' => $replace,
-            '/^' . $replace . '+|' . $replace . '+$/' => ''
+            '/^[' . $replace . ']+|[' . $replace . ']+$/' => ''
         );
         
         return strtolower(preg_replace(array_keys($map), array_values($map), $string));

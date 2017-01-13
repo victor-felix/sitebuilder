@@ -3,8 +3,32 @@
 Update these notes using:
 
 ```
-git log --pretty=format:'* %s' --no-merges rel-2.8.10..HEAD
+git log --pretty=format:'* %s' --no-merges rel-2.8.11..HEAD
 ```
+### rel-2.8.12 (20161222) ###
+
+* FIX: Refactoring and Fixing minor changes;
+* Keys for sites using pushwoosh added.
+* ENHANCEMENT: Closes #461, SendPushNotification Service allows using multiple push providers;
+* FIX: Closes #459, Send push to all subscribers instead array of pushIds
+* ENHANCEMENT: Closes #461, SendPushNotification Service allows using multiple push providers;
+* FIX: Closes #460, Removed OneSignal.authKey from settings
+* FIX: Closes #459, Filtering the subscribers ids according to Push Service used;
+
+### rel-2.8.11 (20161219) ###
+
+* Closes #429, Script to import devices to OneSignal service.
+* FIX: Closes #450, GenericMediaHandler improved to match audio/mpeg <=> mp3
+* FIX: Closes #416, Includes publish date in criteria for update the articles.
+* FIX: Closes #268, Removes media.thumbnails when removing Items
+* FIX: Closes #391, _meta.next keeping query parameters in index method
+* ENHANCEMENT: Closes #441, Save the OneSignal notification_id in the Item
+* FIX: Added filter for only visible categories in /items/search requests (#445)
+* FIX: Closes #443, youtube handler provides empty properties
+* BUG: Closes #440, only serialize payload after adding the request to the client
+* fix import when id is empty or wrong
+* FIX: Closes #437, import items by csv only save last entry (exclusive and inclusive)
+* FIX: Closes #435, Fatal Error "Call to undefined method" raised when import csv
 
 ### rel-2.8.10 (20161116) ###
 
