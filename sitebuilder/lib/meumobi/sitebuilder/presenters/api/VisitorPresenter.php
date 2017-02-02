@@ -4,18 +4,18 @@ namespace meumobi\sitebuilder\presenters\api;
 
 class VisitorPresenter
 {
-	public static function present($object)
-	{
-		return [
-			'first_name' => $object->firstName(),
-			'last_name' => $object->lastName(),
-			'email' => $object->email(),
-			'site' => $object->site()->domain(),
-		];
-	}
+    public static function present($object)
+    {
+        return [
+            'first_name' => $object->firstName(),
+            'last_name' => $object->lastName(),
+            'email' => $object->email(),
+            'sites' => $object->sites()
+        ];
+    }
 
-	public static function presentSet($set)
-	{
-		return array_map(array(__CLASS__, 'present'), $set);
-	}
+    public static function presentSet($set)
+    {
+        return array_map(array(__CLASS__, 'present'), $set);
+    }
 }

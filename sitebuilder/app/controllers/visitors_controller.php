@@ -10,130 +10,139 @@ use meumobi\sitebuilder\validators\VisitorsPersistenceValidator;
 
 class VisitorsController extends AppController
 {
-	protected $uses = array();//prevent try to load Visitors model
-	protected $repository;
+    protected $uses = array();//prevent try to load Visitors model
+    protected $repository;
 
-	protected function beforeFilter()
-	{
-		parent::beforeFilter();
-		$this->repository = new VisitorsRepository();
-	}
+    protected function beforeFilter()
+    {
+        parent::beforeFilter();
+        $this->repository = new VisitorsRepository();
+    }
 
-	public function index()
-	{
-		$visitors = $this->repository->findBySiteId($this->getCurrentSite()->id);
-		$report = AudienceReportPresenter::present($visitors);
-		$visitorGraphData['versions-graph'] = $report['appVersions'];
-		$visitorGraphData['subscribed-graph']= [];
-		$visitorGraphData['accepted-graph'] = [];
+    public function index()
+    {
+        $site = $this->getCurrentSite();
+        $visitors = $this->repository->findBySiteId($site->id);
+        $report = AudienceReportPresenter::present($visitors, $site);
+        $visitorGraphData['versions-graph'] = $report['appVersions'];
+        $visitorGraphData['subscribed-graph']= [];
+        $visitorGraphData['accepted-graph'] = [];
 
-		if ($report['subscribedPercent'] || $report['unsubscribedPercent']) {
-			$visitorGraphData['subscribed-graph'] = [
-				'Subscribed' => $report['subscribedPercent'],
-				'Unsubscribed' => $report['unsubscribedPercent'],
-			];
-		}
+        if ($report['subscribedPercent'] || $report['unsubscribedPercent']) {
+            $visitorGraphData['subscribed-graph'] = [
+                'Subscribed' => $report['subscribedPercent'],
+                'Unsubscribed' => $report['unsubscribedPercent'],
+            ];
+        }
 
-		if ($report['accepted'] || $report['pending']) {
-			$visitorGraphData['accepted-graph'] = [
-				'Accepted' => $report['accepted'],
-				'Pending' => $report['pending']
-			];
-		}
+        if ($report['accepted'] || $report['pending']) {
+            $visitorGraphData['accepted-graph'] = [
+                'Accepted' => $report['accepted'],
+                'Pending' => $report['pending']
+            ];
+        }
 
-		$visitorGraphDataJson = VisitorGraphPresenter::present($visitorGraphData);
-		$this->set(compact('visitors', 'visitorGraphData', 'visitorGraphDataJson'));
-	}
+        $visitorGraphDataJson = VisitorGraphPresenter::present($visitorGraphData);
+        $this->set(compact('site', 'visitors', 'visitorGraphData', 'visitorGraphDataJson'));
+    }
 
-	public function add()
-	{
-		$site = $this->getCurrentSite();
-		$data = $this->data;
-		$data['site_id'] = $site->id();
-		//if no group is selected on the multiselect input the property isn't present in the request
-		if (!$this->request->get('data:groups')) $data['groups'] = [];
-		$visitor = new Visitor($data);
-		if (!empty($this->data)) {
-			$data['password'] = $this->setVisitorPassword($visitor, $site);
-			$validator = new VisitorsPersistenceValidator();
-			if ($validator->validate($visitor)->isValid()) {
-				$this->repository->create($visitor);
-				$data['mail_subject'] = s('visitors/mail/add.subject', $site->title);
-				$this->sendVisitorEmail($data);
-				Session::writeFlash('success', s('Visitor successfully created.'));
-				$this->redirect('/visitors');
-			} else {
-				Session::writeFlash('error', s('Sorry, we can\'t save the visitor'));
-			}
-		}
-		$this->set(compact('visitor', 'site'));
-	}
+    public function add()
+    {
+        $site = $this->getCurrentSite();
+        $data = $this->data;
+        $data['site_id'] = $site->id(); //Deprecated Change to the 'sites array'
+        $data['language'] = $this->language;
+        $data['sites'][] = [
+            'site_id' => $site->id(),
+            'role' => $this->request->get('data:role')? $data['role'] : 'visitors',
+            'groups' => $this->request->get('data:groups')? $data['groups'] :[],
+            'last_login' => null
+        ];
+        //if no group is selected on the multiselect input the property isn't present in the request
+        //TODO: Maybe it will need to be defined as a default group when for the site the visitor is being added
+        // r: the groups filter will only apply when the site is private        
+        $visitor = new Visitor($data);
+        if (!empty($this->data)) {
+            $data['password'] = $this->setVisitorPassword($visitor, $site);
+            $validator = new VisitorsPersistenceValidator();
+            if ($validator->validate($visitor)->isValid()) {
+                $this->repository->create($visitor);
+                $data['mail_subject'] = s('visitors/mail/add.subject', $site->title);
+                $this->sendVisitorEmail($data);
+                Session::writeFlash('success', s('Visitor successfully created.'));
+                $this->redirect('/visitors');
+            } else {
+                Session::writeFlash('error', s('Sorry, we can\'t save the visitor'));
+            }
+        }
+        $this->set(compact('visitor', 'site'));
+    }
 
-	public function edit($id)
-	{
-		$site = $this->getCurrentSite();
-		$visitor = $this->repository->find($id);
-		if (!empty($this->data)) {
-			$data = $this->data;
-			//if no group is selected on the multiselect input the property isn't present in the request
-			if (!$this->request->get('data:groups')) $data['groups'] = [];
-			$visitor->setAttributes($data);
-			$validator = new VisitorsPersistenceValidator();
-			if ($validator->validate($visitor)->isValid()) {
-				$this->repository->update($visitor);
-				Session::writeFlash('success', s('Visitor successfully updated.'));
-				$this->redirect('/visitors');
-			} else {
-				Session::writeFlash('error', s('Sorry, we can\'t update the visitor'));
-			}
-		}
-		$this->set(compact('visitor', 'site'));
-	}
+    public function edit($id)
+    {
+        $site = $this->getCurrentSite();
+        $visitor = $this->repository->find($id);
+        if (!empty($this->data)) {
+            $data = $this->data;
+            //if no group is selected on the multiselect input the property isn't present in the request
+            if (!$this->request->get('data:groups')) $data['groups'] = [];
+            $visitor->setAttributes($data);
+            $validator = new VisitorsPersistenceValidator();
+            if ($validator->validate($visitor)->isValid()) {
+                $this->repository->update($visitor);
+                Session::writeFlash('success', s('Visitor successfully updated.'));
+                $this->redirect('/visitors');
+            } else {
+                Session::writeFlash('error', s('Sorry, we can\'t update the visitor'));
+            }
+        }
+        $this->set(compact('visitor', 'site'));
+    }
 
-	public function reset($id)
-	{
-		$site = $this->getCurrentSite();
-		$visitor = $this->repository->find($id);
+    public function reset($id)
+    {
+        $site = $this->getCurrentSite();
+        $visitor = $this->repository->find($id);
 
-		$service = new ResetVisitorPassword();
-		$service->resetPassword($visitor);
+        $service = new ResetVisitorPassword();
+        $service->resetPassword($visitor);
 
-		Session::writeFlash('success', s('Visitor password successfully renewed.'));
-		$this->redirect('/visitors');
-	}
+        Session::writeFlash('success', s('Visitor password successfully renewed.'));
+        $this->redirect('/visitors');
+    }
 
-	public function delete($id)
-	{
-		$visitor = $this->repository->find($id);
-		$this->repository->destroy($visitor);
-		Session::writeFlash('success', s('Visitor successfully removed.'));
-		$this->redirect('/visitors');
-	}
+    public function delete($id)
+    {
+        $visitor = $this->repository->find($id);
+        $this->repository->destroy($visitor);
+        Session::writeFlash('success', s('Visitor successfully removed.'));
+        $this->redirect('/visitors');
+    }
 
-	protected function setVisitorPassword($visitor, $site)
-	{
-		if ($this->request->get('data:default_password')) {
-			$strategy = VisitorPasswordGenerationService::DEFAULT_PASSWORD;
-		} else {
-			$strategy = VisitorPasswordGenerationService::RANDOM_PASSWORD;
-		}
-		$passwordGenerationService = new VisitorPasswordGenerationService();
-		return $passwordGenerationService->generate($visitor, $strategy, $site);
-	}
+    protected function setVisitorPassword($visitor, $site)
+    {
+        if ($this->request->get('data:default_password')) {
+            $strategy = VisitorPasswordGenerationService::DEFAULT_PASSWORD;
+        } else {
+            $strategy = VisitorPasswordGenerationService::RANDOM_PASSWORD;
+        }
+        $passwordGenerationService = new VisitorPasswordGenerationService();
+        return $passwordGenerationService->generate($visitor, $strategy, $site);
+    }
 
-	protected function sendVisitorEmail($data, $template = 'visitors/password_mail.htm')
-	{
-		$segment = \MeuMobi::currentSegment();
-		$data['segment'] = $segment;
-		$data['site'] = $this->getCurrentSite();
-		$mailer = new \Mailer([
-			'from' => $segment->email,
-			'to' => $data['email'],
-			'subject' => $data['mail_subject'],
-			'views' => array('text/html' => $template),
-			'layout' => 'mail',
-			'data' =>  $data,
-		]);
-		return $mailer->send();
-	}
+    protected function sendVisitorEmail($data, $template = 'visitors/password_mail.htm')
+    {
+        $segment = \MeuMobi::currentSegment();
+        $data['segment'] = $segment;
+        $data['site'] = $this->getCurrentSite();
+        $mailer = new \Mailer(
+            ['from' => $segment->email,
+            'to' => $data['email'],
+            'subject' => $data['mail_subject'],
+            'views' => array('text/html' => $template),
+            'layout' => 'mail',
+            'data' =>  $data]
+        );
+        return $mailer->send();
+    }
 }

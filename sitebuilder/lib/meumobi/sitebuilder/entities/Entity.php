@@ -7,38 +7,39 @@ use MongoId;
 
 class Entity
 {
-	protected $id;
+    protected $id;
 
-	public function __construct(array $attrs = [])
-	{
-		$this->setAttributes($attrs);
-	}
+    public function __construct(array $attrs = [])
+    {
+        $this->setAttributes($attrs);
+    }
 
-	public function setAttributes(array $attrs)
-	{
-		foreach ($attrs as $key => $value) {
-			if (is_string($value)) {
-				$value = trim($value);
-			}
+    public function setAttributes(array $attrs)
+    {
+        foreach ($attrs as $key => $value) {
+            if (is_string($value)) {
+                $value = trim($value);
+            }
 
-			$key = Inflector::camelize($key, false);
-			$method = 'set' . Inflector::camelize($key);
+            $key = Inflector::camelize($key, false);
+            $method = 'set' . Inflector::camelize($key);
+            if (method_exists($this, $method)) {
+                error_log('Setting '.$method.' by method');
+                $this->$method($value);
+            } else if (property_exists($this, $key)) {
+                error_log('Setting '.$method.' by property');
+                $this->$key = $value;
+            }
+        }
+    }
 
-			if (method_exists($this, $method)) {
-				$this->$method($value);
-			} else if (property_exists($this, $key)) {
-				$this->$key = $value;
-			}
-		}
-	}
+    public function id()
+    {
+        return $this->id ? $this->id->{'$id'} : null;
+    }
 
-	public function id()
-	{
-		return $this->id ? $this->id->{'$id'} : null;
-	}
-
-	public function setId($id)
-	{
-		$this->id = $id;
-	}
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
 }
