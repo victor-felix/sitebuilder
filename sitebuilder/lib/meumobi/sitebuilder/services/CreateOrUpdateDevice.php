@@ -27,9 +27,6 @@ class CreateOrUpdateDevice
 
 		if ($device) {
 			Logger::debug(self::COMPONENT, 'device found. updating', $log);
-			if ($device->pushId() != $data['push_id']){
-				$data['player_id'] = null;
-			}
 			$device->update($data);
 
 			$repository->update($device);
