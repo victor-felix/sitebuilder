@@ -12,7 +12,7 @@ Config::write('Segment', array(
 	'downloadAppUrl' => 'https://launchkit.io/websites/Qgoboi9Cb-E/',
 	'id' => 'comunique-se',
 	'title' => 'comunique-se',
-	'items' => array('articles', 'polls'),
+	'items' => array('articles', 'polls', 'events', 'contacts'),
 	'extensions' => array('rss'),
 	'root' => 'index',
 	'email' => array('no-reply@meumobi.com' => 'comunique-se'),

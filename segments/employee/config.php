@@ -9,7 +9,7 @@ Config::write('Segment', array(
 	'contactFacebook' => 'http://facebook.com/meumobi',
 	'contactTwitter' => 'http://twitter.com/meumobi',
 	'downloadAppUrl' => 'https://launchkit.io/websites/Qgoboi9Cb-E/',
-  'items' => array('articles', 'polls', 'events'),
+  'items' => array('articles', 'polls', 'events', 'contacts'),
   'extensions' => array('rss'),
   'root' => 'index',
   'email' => array('contact@meumobi.com' => 'meumobi Employee'),
