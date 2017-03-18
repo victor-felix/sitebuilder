@@ -3,6 +3,7 @@ namespace meumobi\sitebuilder\roles;
 
 use Exception;
 use Inflector;
+use MongoId;
 use app\models\Extensions;
 use meumobi\sitebuilder\repositories\RecordNotFoundException;
 use meumobi\sitebuilder\Logger;
@@ -24,6 +25,12 @@ trait Updatable
 
 	public function getCategory($extension)
 	{
+		if (is_array($extension)) {
+			$extension = Extensions::find('first', [
+                    'conditions' => ['_id' =>  $extension['_id'] ]
+                ]);
+		}
+		
 		try {
 			$category = Extensions::category($extension);
 
