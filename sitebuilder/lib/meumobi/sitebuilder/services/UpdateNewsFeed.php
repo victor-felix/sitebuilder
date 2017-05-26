@@ -15,6 +15,7 @@ use HTMLPurifier_Config;
 use Mapper;
 use SimplePie;
 use Video;
+use Config;
 use app\models\Extensions;
 use app\models\Items;
 use app\models\items\Articles;
@@ -24,7 +25,6 @@ use meumobi\sitebuilder\services\ProcessRemoteMedia\GenericMediaHandler;
 
 class UpdateNewsFeed
 {
-	const ARTICLES_TO_KEEP = 50;
 	const COMPONENT = 'update_news_feed';
 
 	protected $blacklist = ['gravatar.com'];
@@ -107,10 +107,10 @@ class UpdateNewsFeed
 
 		$removed = 0;
 
-		if ($count > self::ARTICLES_TO_KEEP) {
+		if ($count > $this->getItemsLimitToKeep($category)) {
 			$items = Articles::find('all', [
 				'conditions' => $conditions,
-				'limit' => $count - self::ARTICLES_TO_KEEP,
+				'limit' => $count - $this->getItemsLimitToKeep($category),
 				'order' => ['published' => 'ASC']
 			]);
 
@@ -131,10 +131,33 @@ class UpdateNewsFeed
 		return $removed;
 	}
 
+	protected function getItemsLimitToKeep($category)
+	{
+		$limit = Config::read('ItemsToKeep.limit');
+
+		/*
+			If category.notification is true, setting a limit should re-create, 
+			and re-send notification, old items if a recent is deleted. 
+			It's why we disallow the limit if notification is enabled on this category
+			
+			$this->getItemsLimitToKeep($category)
+		*/
+		if (empty($limit) || $category->notification) {
+			$limit = 999;
+			Logger::info(self::COMPONENT, 'Articles to keep', [
+				'limit' => $limit,
+				'category_id' => $category->id
+			]);
+		}
+			
+
+		return $limit;
+	}
+
 	protected function extractArticles($feed, $category, $purify)
 	{
 		// gets last n items, most recent last
-		$items = array_slice(array_reverse($feed->get_items()), -self::ARTICLES_TO_KEEP);
+		$items = array_slice(array_reverse($feed->get_items()), -$this->getItemsLimitToKeep($category));
 
 		return array_map(function($item) use ($purify, $category) {
 			$article = Articles::find('first', [
