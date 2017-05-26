@@ -21,7 +21,6 @@ Config::write('Geocode.urls', array(
 	'http://bonita.ipanemax.com',
 ));
 
-Config::write('ItemsToKeep.limit', 50);
 Config::write('SiteLogos.resizes', array('200x200'));
 Config::write('SiteAppleTouchIcon.resizes', array('57x57', '72x72'));
 Config::write('SitePhotos.resizes', array('139x139#', '314x220'));
