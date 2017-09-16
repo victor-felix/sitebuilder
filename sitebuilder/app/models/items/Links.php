@@ -16,10 +16,10 @@ class Links extends \app\models\Items {
             'title' => 'Link',
             'type' => 'string'
         ),
-        'group' => array(
-            'title' => 'Group',
-            'type' => 'string'
-        )
+		'groups' => array(
+			'title' => 'Group',
+			'type' => 'groups'
+		)
     );
 
     public static function __init() {

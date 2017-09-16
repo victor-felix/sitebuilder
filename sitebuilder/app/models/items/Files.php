@@ -21,6 +21,10 @@ class Files extends Items
 			'title' => 'Description',
 			'type' => 'richtext'
 		),
+		'groups' => array(
+			'title' => 'Group',
+			'type' => 'groups'
+		)
 
 	);
 

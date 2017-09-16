@@ -32,10 +32,10 @@ class Events extends Items {
 			'title' => 'Contact',
 			'type' => 'string'
 		),
-		'group' => array(
+		'groups' => array(
 			'title' => 'Group',
-			'type' => 'string'
-		),
+			'type' => 'groups'
+		)
 	);
 
 	public static function __init() {

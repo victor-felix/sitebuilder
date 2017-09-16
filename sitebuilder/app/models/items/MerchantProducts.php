@@ -38,11 +38,10 @@ class MerchantProducts extends Items
 			'title' => 'Link',
 			'type' => 'string'
 		),
-
-		'group' => array(
+		'groups' => array(
 			'title' => 'Group',
-			'type' => 'string'
-		),
+			'type' => 'groups'
+		)
 	);
 
 	public static function __init()
