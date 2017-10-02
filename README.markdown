@@ -6,11 +6,9 @@ Getting Started
 
 Using Vagrant
 =============
-Add on your /etc/hosts
-37.187.106.27   int.meumobi.com
 
 ```
-vagrant box add --name sitebuilder http://int.meumobi.com/vagrant/sitebuilder.box
+vagrant box add sitebuilder http://37.187.106.27/vagrant/sitebuilder.box
 vagrant up
 ```
 
@@ -32,7 +30,9 @@ Execute migrations
 ==================
 
 ```
-php sitebuilder/scripts/migrate.php
+$ vagrant ssh
+$ cd vagrant
+$ php sitebuilder/script/migrate.php
 ```
 
 Contributing
