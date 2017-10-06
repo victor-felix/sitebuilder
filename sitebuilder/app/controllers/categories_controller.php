@@ -13,10 +13,12 @@ class CategoriesController extends AppController
 
 	public function index()
 	{
-		$_categories = $this->getCurrentSite()->categories();
-		$categories = array();
+		$_categories = $this->getCurrentSite()->visibleCategories();
+
+		$categories = [];
+
 		foreach ($_categories as $category) {
-			$categories[$category->parent_id] []= $category;
+			$categories[$category->parent_id][]= $category;
 		}
 
 		$this->set(compact('categories'));
