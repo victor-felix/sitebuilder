@@ -12,6 +12,7 @@ use Exception;
 use Filesystem;
 use HTMLPurifier;
 use HTMLPurifier_Config;
+use lithium\data\entity\Document;
 use Mapper;
 use SimplePie;
 use Video;
@@ -30,6 +31,8 @@ class UpdateNewsFeed
 
     protected $blacklist = ['gravatar.com'];
 
+    protected $checksumNewsFeed;
+
     public function perform($params)
     {
         list($category, $extension) = ParamsValidator::validate(
@@ -41,6 +44,16 @@ class UpdateNewsFeed
         $purifyHtml = $extension['use_html_purifier'];
 
         $feed = $this->fetchFeed($extension['url'], $extension);
+
+        if ($this->isNewsUpToDate($extension)) {
+            Logger::info(self::COMPONENT, 'no news to update', [
+                'extension_id' => $extension['_id'],
+                'category_id' => $extension['category_id']
+            ]);
+
+            return null;
+        }
+
         $articles = $this->extractArticles($feed, $category, $purifyHtml);
 
         $bulkImport = new BulkImportItems();
@@ -90,13 +103,29 @@ class UpdateNewsFeed
         $category->updated = date('Y-m-d H:i:s');
         $category->save();
 
+        $ObjExtension = Extensions::find('first', [
+            'conditions' => ['_id' =>  $extension['_id'] ]
+        ]);
+
+        $ObjExtension->priority = $extension['priority'] != Extensions::PRIORITY_LOW
+            ? Extensions::PRIORITY_LOW
+            : $extension['priority'];
+
+        $ObjExtension->checksum_news_feed = $extension['checksum_news_feed'] != $this->checksumNewsFeed
+            ? $this->checksumNewsFeed
+            : $extension['checksum_news_feed'];
+
+        $ObjExtension->save(null, ['callbacks' => false]);
+
         if ($extension['priority'] != Extensions::PRIORITY_LOW) {
-            $ObjExtension = Extensions::find('first', [
-                    'conditions' => ['_id' =>  $extension['_id'] ]
-            ]);
-            $ObjExtension->priority = Extensions::PRIORITY_LOW;
-            $ObjExtension->save(null, ['callbacks' => false]);
             Logger::info(self::COMPONENT, 'extension priority lowered', [
+                'extension_id' => $extension['_id'],
+                'category_id' => $extension['category_id']
+            ]);
+        }
+
+        if ($extension['checksum_news_feed'] != $this->checksumNewsFeed) {
+            Logger::info(self::COMPONENT, 'checksum updated', [
                 'extension_id' => $extension['_id'],
                 'category_id' => $extension['category_id']
             ]);
@@ -214,6 +243,8 @@ class UpdateNewsFeed
         ]);
 
         $feed->init();
+
+        $this->checksumNewsFeed = md5($feed->get_raw_data().$feed->data['headers']['content-length']);
 
         Logger::info(self::COMPONENT, 'feed fetched', [
             'url' => $url,
@@ -395,5 +426,14 @@ class UpdateNewsFeed
     protected function extractFromEnclosures($enclosures, $filter, $map)
     {
         return array_map($map, array_filter($enclosures, $filter));
+    }
+
+    /**
+     * @param $extension
+     * @return bool
+     */
+    protected function isNewsUpToDate($extension)
+    {
+        return $this->checksumNewsFeed == $extension['checksum_news_feed'];
     }
 }
