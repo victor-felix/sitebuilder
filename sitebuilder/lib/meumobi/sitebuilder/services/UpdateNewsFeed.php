@@ -12,7 +12,6 @@ use Exception;
 use Filesystem;
 use HTMLPurifier;
 use HTMLPurifier_Config;
-use lithium\data\entity\Document;
 use Mapper;
 use SimplePie;
 use Video;
